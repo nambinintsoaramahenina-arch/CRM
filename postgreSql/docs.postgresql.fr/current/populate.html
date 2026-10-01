@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/populate.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>14.4. Remplir une base de données</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="explicit-joins.html" title="14.3. Contrôler le planificateur avec des clauses JOIN explicites" /><link rel="next" href="non-durability.html" title="14.5. Configuration avec une perte acceptée" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/populate.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/populate.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/populate.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/populate.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/populate.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/populate.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/populate.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/populate.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/populate.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/populate.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/populate.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/populate.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/populate.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/populate.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/populate.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/populate.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/populate.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/populate.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/populate.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/populate.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/populate.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="performance-tips.html">Conseils sur les performances</a></span> » <span class="breadcrumb-node">Remplir une base de données</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="explicit-joins.html" title="14.3. Contrôler le planificateur avec des clauses JOIN&#10;   explicites">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="performance-tips.html" title="Chapitre 14. Conseils sur les performances">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="non-durability.html" title="14.5. Configuration avec une perte acceptée">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">14.3. Contrôler le planificateur avec des clauses <code class="literal">JOIN</code>
+   explicites </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 14.5. Configuration avec une perte acceptée</td></tr></table></div><div class="sect1" id="POPULATE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">14.4. Remplir une base de données <a href="#POPULATE" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="populate.html#DISABLE-AUTOCOMMIT">14.4.1. Désactivez la validation automatique (autocommit)</a></span></dt><dt><span class="sect2"><a href="populate.html#POPULATE-COPY-FROM">14.4.2. Utilisez <code class="command">COPY</code></a></span></dt><dt><span class="sect2"><a href="populate.html#POPULATE-RM-INDEXES">14.4.3. Supprimez les index</a></span></dt><dt><span class="sect2"><a href="populate.html#POPULATE-RM-FKEYS">14.4.4. Suppression des contraintes de clés étrangères</a></span></dt><dt><span class="sect2"><a href="populate.html#POPULATE-WORK-MEM">14.4.5. Augmentez <code class="varname">maintenance_work_mem</code></a></span></dt><dt><span class="sect2"><a href="populate.html#POPULATE-MAX-WAL-SIZE">14.4.6. Augmenter <code class="varname">max_wal_size</code></a></span></dt><dt><span class="sect2"><a href="populate.html#POPULATE-PITR">14.4.7. Désactiver l'archivage des journaux de transactions et la
+     réplication en flux</a></span></dt><dt><span class="sect2"><a href="populate.html#POPULATE-ANALYZE">14.4.8. Lancez <code class="command">ANALYZE</code> après</a></span></dt><dt><span class="sect2"><a href="populate.html#POPULATE-PG-DUMP">14.4.9. Quelques notes sur <span class="application">pg_dump</span></a></span></dt></dl></div><p>
+   Vous pourriez avoir besoin d'insérer un grand nombre de données pour
+   remplir une base de données tout au début. Cette section contient quelques
+   suggestions pour réaliser cela de la façon la plus efficace.
+  </p><div class="sect2" id="DISABLE-AUTOCOMMIT"><div class="titlepage"><div><div><h3 class="title">14.4.1. Désactivez la validation automatique (autocommit) <a href="#DISABLE-AUTOCOMMIT" class="id_link">#</a></h3></div></div></div><a id="id-1.5.13.7.3.2" class="indexterm"></a><p>
+    Lors d'<code class="command">INSERT</code> multiples, désactivez la validation
+    automatique et faites une seule validation à la fin (en SQL, ceci
+    signifie de lancer <code class="command">BEGIN</code> au début et
+    <code class="command">COMMIT</code> à la fin. Quelques bibliothèques client
+    pourraient le faire derrière votre dos, auquel cas vous devez vous
+    assurer que la bibliothèque le fait quand vous le voulez). Si vous
+    permettez à chaque insertion d'être validée séparément,
+    <span class="productname">PostgreSQL</span> fait un gros travail pour chaque
+    ligne ajoutée. Un bénéfice supplémentaire de réaliser toutes les
+    insertions dans une seule transaction est que si l'insertion d'une ligne
+    échoue alors les lignes insérées jusqu'à maintenant seront annulées. Vous
+    ne serez donc pas bloqué avec des données partiellement chargées.
+   </p></div><div class="sect2" id="POPULATE-COPY-FROM"><div class="titlepage"><div><div><h3 class="title">14.4.2. Utilisez <code class="command">COPY</code> <a href="#POPULATE-COPY-FROM" class="id_link">#</a></h3></div></div></div><p>
+    Utilisez l'instruction <a class="link" href="sql-copy.html" title="COPY"><code class="command">COPY</code></a> pour charger toutes les
+    lignes en une seule commande, plutôt que d'utiliser une série de
+    commandes <code class="command">INSERT</code>. La commande <code class="command">COPY</code>
+    est optimisée pour charger un grand nombre de lignes ; elle est
+    moins flexible que <code class="command">INSERT</code>, mais introduit
+    significativement moins de surcharge lors du chargement de grosses
+    quantités de données. Comme <code class="command">COPY</code> est une seule
+    commande, il n'y a pas besoin de désactiver la validation automatique
+    (autocommit) si vous utilisez cette méthode pour remplir une table.
+   </p><p>
+    Si vous ne pouvez pas utiliser <code class="command">COPY</code>, utilisez <a class="link" href="sql-prepare.html" title="PREPARE"><code class="command">PREPARE</code></a> pour créer une
+    instruction préparée <code class="command">INSERT</code>, puis utilisez
+    <code class="command">EXECUTE</code> autant de fois que nécessaire. Ceci évite
+    certaines surcharges lors d'une analyse et d'une planification répétées
+    de commandes <code class="command">INSERT</code>. Différentes interfaces
+    fournissent cette fonctionnalité de plusieurs façons ; recherchez
+    <span class="quote">« <span class="quote">instructions préparées</span> »</span> dans la documentation de
+    l'interface.
+   </p><p>
+    Notez que charger un grand nombre de lignes en utilisant
+    <code class="command">COPY</code> est pratiquement toujours plus rapide que
+    d'utiliser <code class="command">INSERT</code>, même si <code class="command">PREPARE ...
+    INSERT</code> est utilisé lorsque de nombreuses insertions sont
+    groupées en une seule transaction.
+   </p><p>
+    <code class="command">COPY</code> est plus rapide quand il est utilisé dans la même
+    transaction que la commande <code class="command">CREATE TABLE</code> ou
+    <code class="command">TRUNCATE</code> précédente. Dans ce cas, les journaux de
+    transactions ne sont pas impactés, car, en cas d'erreur, les fichiers
+    contenant les données nouvellement chargées seront supprimés de toute
+    façon. Néanmoins, cette considération ne s'applique que quand <a class="xref" href="runtime-config-wal.html#GUC-WAL-LEVEL">wal_level</a> vaut <code class="literal">minimal</code> car toutes les
+    commandes doivent écrire dans les journaux de transactions dans les autres
+    cas.
+   </p></div><div class="sect2" id="POPULATE-RM-INDEXES"><div class="titlepage"><div><div><h3 class="title">14.4.3. Supprimez les index <a href="#POPULATE-RM-INDEXES" class="id_link">#</a></h3></div></div></div><p>
+    Si vous chargez une table tout juste créée, la méthode la plus rapide est
+    de créer la table, de charger en lot les données de cette table en
+    utilisant <code class="command">COPY</code>, puis de créer tous les index
+    nécessaires pour la table. Créer un index sur des données déjà existantes
+    est plus rapide que de mettre à jour de façon incrémentale à chaque ligne
+    ajoutée.
+   </p><p>
+    Si vous ajoutez beaucoup de données à une table existante, il pourrait
+    être avantageux de supprimer les index, de charger la table, puis de
+    recréer les index. Bien sûr, les performances de la base de données pour
+    les autres utilisateurs pourraient souffrir tout le temps où les index
+    seront manquants. Vous devez aussi y penser à deux fois avant de
+    supprimer des index uniques, car la vérification d'erreur apportée par la
+    contrainte unique sera perdue tout le temps où l'index est manquant.
+   </p></div><div class="sect2" id="POPULATE-RM-FKEYS"><div class="titlepage"><div><div><h3 class="title">14.4.4. Suppression des contraintes de clés étrangères <a href="#POPULATE-RM-FKEYS" class="id_link">#</a></h3></div></div></div><p>
+    Comme avec les index, une contrainte de clé étrangère peut être vérifiée
+    <span class="quote">« <span class="quote">en gros volume</span> »</span> plus efficacement que ligne par ligne.
+    Donc, il pourrait être utile de supprimer les contraintes de clés
+    étrangères, de charger les données et de créer de nouveau les
+    contraintes. De nouveau, il y a un compromis à faire entre la vitesse de
+    chargement des données et la perte de la vérification des erreurs lorsque
+    la contrainte manque.
+   </p><p>
+    De plus, quand vous chargez des données dans une table contenant des
+    contraintes de clés étrangères, chaque nouvelle ligne requiert une entrée
+    dans la liste des événements de trigger en attente(puisque c'est le
+    lancement d'un trigger qui vérifie la contrainte de clé étrangère de
+    la ligne). Le chargement de plusieurs millions de lignes peut amener la
+    taille de la file d'attente des triggers à dépasser la mémoire
+    disponible, causant ainsi une mise en mémoire swap intolérable, voire
+    l'échec de la commande. Dans ce cas, il peut être
+    <span class="emphasis"><em>nécessaire</em></span>, pas seulement souhaitable, de supprimer
+    et recréer la clé étrangère lors de chargements de grandes quantités de
+    données. Si la suppression temporaire de la contrainte n'est pas
+    acceptable, le seul recours possible est de découper les opérations de
+    chargement en de plus petites transactions.
+   </p></div><div class="sect2" id="POPULATE-WORK-MEM"><div class="titlepage"><div><div><h3 class="title">14.4.5. Augmentez <code class="varname">maintenance_work_mem</code> <a href="#POPULATE-WORK-MEM" class="id_link">#</a></h3></div></div></div><p>
+    Augmenter temporairement la variable <a class="xref" href="runtime-config-resource.html#GUC-MAINTENANCE-WORK-MEM">maintenance_work_mem</a> lors du chargement de grosses
+    quantités de données peut amener une amélioration des performances. Ceci
+    aidera à l'accélération des commandes <code class="command">CREATE INDEX</code> et
+    <code class="command">ALTER TABLE ADD FOREIGN KEY</code>. Cela ne changera pas
+    grand-chose pour la commande <code class="command">COPY</code>. Donc, ce conseil
+    est seulement utile quand vous utilisez une des deux ou les deux
+    techniques ci-dessus.
+   </p></div><div class="sect2" id="POPULATE-MAX-WAL-SIZE"><div class="titlepage"><div><div><h3 class="title">14.4.6. Augmenter <code class="varname">max_wal_size</code> <a href="#POPULATE-MAX-WAL-SIZE" class="id_link">#</a></h3></div></div></div><p>
+    Augmenter temporairement la variable de configuration <a class="xref" href="runtime-config-wal.html#GUC-MAX-WAL-SIZE">max_wal_size</a> peut aussi aider à un chargement rapide de
+    grosses quantités de données. Ceci est dû au fait que charger une grosse
+    quantité de données dans <span class="productname">PostgreSQL</span> causera la
+    venue très fréquente de checkpoints (la fréquence de ces checkpoints est
+    spécifiée par la variable de configuration
+    <code class="varname">checkpoint_timeout</code>). Quand survient un checkpoint,
+    toutes les pages modifiées sont écrites sur disque. En augmentant
+    <code class="varname">max_wal_size</code> temporairement lors du chargement des
+    données, le nombre de checkpoints requis peut être significativement
+    diminué.
+   </p></div><div class="sect2" id="POPULATE-PITR"><div class="titlepage"><div><div><h3 class="title">14.4.7. Désactiver l'archivage des journaux de transactions et la
+     réplication en flux <a href="#POPULATE-PITR" class="id_link">#</a></h3></div></div></div><p>
+    Lors du chargement de grosse quantité de données dans une instance qui
+    utilise l'archivage des journaux de transactions ou la réplication en
+    flux, il pourrait être plus rapide de prendre une nouvelle sauvegarde de
+    base après que le chargement ait terminé, plutôt que de traiter une
+    grosse quantité de données incrémentales dans les journaux de
+    transactions. Pour empêcher un accroissement de la journalisation des
+    transactions lors du chargement, vous pouvez désactiver l'archivage et la
+    réplication en flux lors du chargement en configurant <a class="xref" href="runtime-config-wal.html#GUC-WAL-LEVEL">wal_level</a> à <code class="literal">minimal</code>, <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-MODE">archive_mode</a> à <code class="literal">off</code> et <a class="xref" href="runtime-config-replication.html#GUC-MAX-WAL-SENDERS">max_wal_senders</a> à zéro). Mais notez que le changement de
+    ces paramètres requiert un redémarrage du serveur, et rends toute
+    sauvegarde de base réalisée auparavant inutilisable pour la restauration
+    par archives et pour créer un serveur secondaire, ce qui pourrait amener
+    à des pertes de données.
+   </p><p>
+    En dehors d'éviter le temps de traitement des données des journaux de
+    transactions par l'archiveur ou l'émetteur des journaux de transactions,
+    ce paramétrage accélérera certaines commandes où la sous-transaction
+    (ou transaction de plus haut niveau) courante crée ou tronque une table
+    ou un index : elles n'écriront pas du tout dans les journaux de
+    transactions si <code class="varname">wal_level</code> vaut
+    <code class="literal">minimal</code>. (Elles peuvent garantir la sûreté des données
+    de façon moins coûteuse en exécutant un <code class="function">fsync</code> à la
+    fin plutôt qu'en écrivant les journaux de transactions.)
+   </p></div><div class="sect2" id="POPULATE-ANALYZE"><div class="titlepage"><div><div><h3 class="title">14.4.8. Lancez <code class="command">ANALYZE</code> après <a href="#POPULATE-ANALYZE" class="id_link">#</a></h3></div></div></div><p>
+    Quand vous avez changé significativement la distribution des données à
+    l'intérieur d'une table, exécuter <a class="link" href="sql-analyze.html" title="ANALYZE"><code class="command">ANALYZE</code></a> est fortement
+    recommandé. Ceci inclut le chargement de grosses quantités de données
+    dans la table.
+    Exécuter <code class="command">ANALYZE</code> (ou <code class="command">VACUUM
+    ANALYZE</code>) vous assure que le planificateur dispose de
+    statistiques à jour sur la table. Sans statistiques ou avec des
+    statistiques obsolètes, le planificateur pourrait prendre de mauvaises
+    décisions lors de la planification de la requête, amenant des
+    performances pauvres sur toutes les tables sans statistiques ou avec des
+    statistiques inexactes. Notez que si le démon autovacuum est activé, il
+    pourrait exécuter <code class="command">ANALYZE</code> automatiquement ; voir
+    <a class="xref" href="routine-vacuuming.html#VACUUM-FOR-STATISTICS" title="24.1.3. Maintenir les statistiques de l'optimiseur">Section 24.1.3</a> et <a class="xref" href="routine-vacuuming.html#AUTOVACUUM" title="24.1.6. Le démon auto-vacuum">Section 24.1.6</a>
+    pour plus d'informations.
+   </p></div><div class="sect2" id="POPULATE-PG-DUMP"><div class="titlepage"><div><div><h3 class="title">14.4.9. Quelques notes sur <span class="application">pg_dump</span> <a href="#POPULATE-PG-DUMP" class="id_link">#</a></h3></div></div></div><p>
+    Les scripts de sauvegarde générés par <span class="application">pg_dump</span>
+    appliquent automatiquement plusieurs des indications ci-dessus, mais pas
+    toutes. Pour recharger une sauvegarde <span class="application">pg_dump</span>
+    aussi rapidement que possible, vous avez besoin de faire quelques étapes
+    supplémentaires manuellement (notez que ces points s'appliquent lors de
+    la <span class="emphasis"><em>restauration</em></span> d'une sauvegarde, et non pas lors de
+    sa <span class="emphasis"><em>création</em></span>. Les mêmes points s'appliquent soit lors
+    de la restauration d'une sauvegarde texte avec
+    <span class="application">psql</span> soit lors de l'utilisation de
+    <span class="application">pg_restore</span> pour charger un fichier de
+    sauvegarde <span class="application">pg_dump</span>).
+   </p><p>
+    Par défaut, <span class="application">pg_dump</span> utilise
+    <code class="command">COPY</code> et, lorsqu'il génère une sauvegarde complexe,
+    schéma et données, il est préférable de charger les données avant de
+    créer les index et les clés étrangères. Donc, dans ce cas, plusieurs
+    lignes de conduite sont gérées automatiquement. Ce qui vous reste à faire
+    est de :
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Configurer des valeurs appropriées (c'est-à-dire plus importantes que
+       la normale) pour <code class="varname">maintenance_work_mem</code> et
+       <code class="varname">max_wal_size</code>.
+      </p></li><li class="listitem"><p>
+       Si vous utilisez l'archivage des journaux de transactions ou la
+       réplication en flux, considérez leur désactivation lors de la
+       restauration. Pour faire cela, configurez
+       <code class="varname">archive_mode</code> à <code class="literal">off</code>,
+       <code class="varname">wal_level</code> à <code class="literal">minimal</code> et
+       <code class="varname">max_wal_senders</code> à zéro avant de charger le script
+       de sauvegarde. Après coup, remettez les anciennes valeurs et effectuez
+       une nouvelle sauvegarde de base.
+      </p></li><li class="listitem"><p>
+       Tester le mode parallélisé de la sauvegarde et de la restauration des
+       outils <span class="application">pg_dump</span> et
+       <span class="application">pg_restore</span>, et trouver le nombre optimal de
+       tâches parallélisées à utiliser. La sauvegarde et la restauration en
+       parallèle avec l'option <code class="option">-j</code> devraient vous donner de
+       meilleures performances.
+      </p></li><li class="listitem"><p>
+       Se demander si la sauvegarde complète doit être restaurée dans une
+       seule transaction. Pour cela, passez l'option <code class="option">-1</code> ou
+       <code class="option">--single-transaction</code> à
+       <span class="application">psql</span> ou
+       <span class="application">pg_restore</span>. Lors de l'utilisation de ce
+       mode, même les erreurs les plus petites annuleront la restauration
+       complète, peut-être en annulant des heures de traitements. Suivant à
+       quel point les données sont en relation, il peut être préférable de
+       faire un nettoyage manuel. Les commandes <code class="command">COPY</code>
+       s'exécuteront plus rapidement si vous utilisez une transaction simple
+       et que vous avez désactivé l'archivage des journaux de transaction.
+      </p></li><li class="listitem"><p>
+       Si plusieurs processeurs sont disponibles sur le serveur, penser à
+       utiliser l'option <code class="option">--jobs</code> de
+       <span class="application">pg_restore</span>. Cela permet la parallélisation
+       du chargement des données et de la création des index.
+      </p></li><li class="listitem"><p>
+       Exécuter <code class="command">ANALYZE</code> après coup.
+      </p></li></ul></div><p>
+   </p><p>
+    Une sauvegarde des données seules utilise toujours
+    <code class="command">COPY</code>, mais elle ne supprime ni ne recrée les index et
+    elle ne touche généralement pas les clés étrangères.
+
+     <a href="#ftn.id-1.5.13.7.11.4.2" class="footnote"><sup class="footnote" id="id-1.5.13.7.11.4.2">[14]</sup></a>
+    Donc, lorsque vous chargez une sauvegarde ne contenant que les données,
+    c'est à vous de supprimer et recréer les index et clés étrangères si vous
+    souhaitez utiliser ces techniques. Il est toujours utile d'augmenter
+    <code class="varname">max_wal_size</code> lors du chargement des données, mais ne
+    vous embêtez pas à augmenter
+    <code class="varname">maintenance_work_mem</code> ; en fait, vous le ferez
+    lors d'une nouvelle création manuelle des index et des clés étrangères.
+    Et n'oubliez pas <code class="command">ANALYZE</code> une fois que vous avez
+    terminé ; voir <a class="xref" href="routine-vacuuming.html#VACUUM-FOR-STATISTICS" title="24.1.3. Maintenir les statistiques de l'optimiseur">Section 24.1.3</a> et <a class="xref" href="routine-vacuuming.html#AUTOVACUUM" title="24.1.6. Le démon auto-vacuum">Section 24.1.6</a> pour plus d'informations.
+   </p></div><div class="footnotes"><br /><hr style="width:100; text-align:left;margin-left: 0" /><div id="ftn.id-1.5.13.7.11.4.2" class="footnote"><p><a href="#id-1.5.13.7.11.4.2" class="para"><sup class="para">[14] </sup></a>
+       Vous pouvez obtenir l'effet de désactivation des clés étrangères en
+       utilisant l'option <code class="option">--disable-triggers</code>  --  mais
+       réalisez que cela élimine, plutôt que repousse, la validation des clés
+       étrangères et qu'il est du coup possible d'insérer des données
+       mauvaises si vous l'utilisez.
+      </p></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/populate.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+</html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/dml-returning.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:25 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>6.4. Renvoyer des données provenant de lignes modifiées</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="dml-delete.html" title="6.3. Supprimer des données" /><link rel="next" href="queries.html" title="Chapitre 7. Requêtes" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/dml-returning.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/dml-returning.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/dml-returning.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/dml-returning.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/dml-returning.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/dml-returning.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/dml-returning.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/dml-returning.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/dml-returning.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/dml-returning.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/dml-returning.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/dml-returning.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/dml-returning.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/dml-returning.html">9.2</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/dml-returning.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="dml.html">Manipulation de données</a></span> » <span class="breadcrumb-node">Renvoyer des données provenant de lignes modifiées</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="dml-delete.html" title="6.3. Supprimer des données">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="dml.html" title="Chapitre 6. Manipulation de données">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="queries.html" title="Chapitre 7. Requêtes">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">6.3. Supprimer des données </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 7. Requêtes</td></tr></table></div><div class="sect1" id="DML-RETURNING"><div class="titlepage"><div><div><h2 class="title" style="clear: both">6.4. Renvoyer des données provenant de lignes modifiées <a href="#DML-RETURNING" class="id_link">#</a></h2></div></div></div><a id="id-1.5.5.6.2" class="indexterm"></a><a id="id-1.5.5.6.3" class="indexterm"></a><a id="id-1.5.5.6.4" class="indexterm"></a><a id="id-1.5.5.6.5" class="indexterm"></a><a id="id-1.5.5.6.6" class="indexterm"></a><p>
+   Parfois, il est intéressant d'obtenir des données de lignes modifiées
+   pendant qu'elles sont manipulées. Les commandes <code class="command">INSERT</code>,
+   <code class="command">UPDATE</code>, <code class="command">DELETE</code> et
+   <code class="command">MERGE</code> ont toutes une
+   clause <code class="literal">RETURNING</code> optionnelle qui le permet.
+   L'utilisation de la clause <code class="literal">RETURNING</code> évite l'exécution
+   d'une requête supplémentaire pour coller les données, et est
+   particulièrement intéressante quand il serait difficile d'identifier
+   autrement les lignes modifiées.
+  </p><p>
+   Le contenu autorisé d'une clause <code class="literal">RETURNING</code> est identique
+   à celui de la liste de sortie d'une commande <code class="command">SELECT</code>
+   (voir <a class="xref" href="queries-select-lists.html" title="7.3. Listes de sélection">Section 7.3</a>). Elle peut contenir les noms
+   des colonnes de la table cible ou des expressions utilisant ces colonnes.
+   Un raccourci habituel est <code class="literal">RETURNING *</code>, qui sélectionne
+   toutes les colonnes de la table cible, dans l'ordre de définition.
+  </p><p>
+   Avec un <code class="command">INSERT</code>, les données disponibles à
+   <code class="literal">RETURNING</code> sont la ligne qui a été insérée. Ceci n'est pas
+   utile pour les insertions simples, car cela ne fera que répéter les données
+   fournies par le client, mais cela peut devenir très utile si la commande se
+   base sur les valeurs calculées par défaut. Par exemple, lors de
+   l'utilisation d'une colonne <a class="link" href="datatype-numeric.html#DATATYPE-SERIAL" title="8.1.4. Types seriés"><code class="type">serial</code></a> fournissant des
+   identifiants uniques, <code class="literal">RETURNING</code> peut renvoyer
+   l'identifiant affecté à une nouvelle ligne :
+</p><pre class="programlisting">
+CREATE TABLE utilisateurs (prenom text, nom text, id serial primary key);
+
+INSERT INTO utilisateurs (prenom, nom) VALUES ('Joe', 'Cool') RETURNING id;
+   </pre><p>
+   La clause <code class="literal">RETURNING</code> est aussi très utile avec un
+   <code class="literal">INSERT ... SELECT</code>
+  </p><p>
+   Dans un <code class="command">UPDATE</code>, les données disponibles pour la clause
+   <code class="literal">RETURNING</code> correspondent au nouveau contenu de la ligne
+   modifiée. Par exemple :
+   </p><pre class="programlisting">
+UPDATE produits SET prix = prix * 1.10
+  WHERE prix &lt;= 99.99
+  RETURNING nom, prix AS nouveau_prix;
+   </pre><p>
+  </p><p>
+   Dans un <code class="command">DELETE</code>, les données disponibles pour la clause
+   <code class="literal">RETURNING</code> correspondent au contenu de la ligne
+   supprimée. Par exemple :
+   </p><pre class="programlisting">
+DELETE FROM produits
+  WHERE date_perime = 'today'
+  RETURNING *;
+   </pre><p>
+  </p><p>
+   Dans un <code class="command">MERGE</code>, les données disponibles pour la clause
+   <code class="literal">RETURNING</code> est le contenu de la ligne cible ainsi que le
+   contenu de la ligne cible insérée, mise à jour ou supprimée. Comme il est
+   souvent commun que la source et la cible aient un grand nombre de colonnes
+   en commun, indiquer <code class="literal">RETURNING *</code> peut ajouter un grand
+   nombre de colonnes dupliquées, donc il est souvent plus utile de le
+   qualifier pour qu'il ne renvoie que la ligne source ou cible. Par
+   exemple :
+</p><pre class="programlisting">
+MERGE INTO products p USING new_products n ON p.product_no = n.product_no
+  WHEN NOT MATCHED THEN INSERT VALUES (n.product_no, n.name, n.price)
+  WHEN MATCHED THEN UPDATE SET name = n.name, price = n.price
+  RETURNING p.*;
+</pre><p>
+  </p><p>
+   Si des triggers (<a class="xref" href="triggers.html" title="Chapitre 37. Triggers (triggers)">Chapitre 37</a>) sont définis sur la table
+   cible, les données disponibles pour la clause <code class="literal">RETURNING</code>
+   correspondent à la ligne modifiée par les triggers. De ce fait, une
+   utilisation courante de la clause <code class="literal">RETURNING</code> est
+   d'inspecter les colonnes calculées par les triggers.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/dml-returning.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:25 GMT -->
+</html>

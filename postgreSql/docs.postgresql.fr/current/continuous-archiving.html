@@ -1,0 +1,988 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/continuous-archiving.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>25.3. Archivage continu et récupération d'un instantané (PITR)</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="backup-file.html" title="25.2. Sauvegarde de niveau système de fichiers" /><link rel="next" href="high-availability.html" title="Chapitre 26. Haute disponibilité, répartition de charge et réplication" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/continuous-archiving.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/continuous-archiving.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/continuous-archiving.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/continuous-archiving.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/continuous-archiving.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/continuous-archiving.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/continuous-archiving.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/continuous-archiving.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/continuous-archiving.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/continuous-archiving.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/continuous-archiving.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/continuous-archiving.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/continuous-archiving.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/continuous-archiving.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/continuous-archiving.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/continuous-archiving.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/continuous-archiving.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/continuous-archiving.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/continuous-archiving.html">8.2</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/continuous-archiving.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="backup.html">Sauvegardes et restaurations</a></span> » <span class="breadcrumb-node">Archivage continu et récupération d'un instantané (PITR)</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="backup-file.html" title="25.2. Sauvegarde de niveau système de fichiers">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="backup.html" title="Chapitre 25. Sauvegardes et restaurations">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="high-availability.html" title="Chapitre 26. Haute disponibilité, répartition de charge et réplication">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">25.2. Sauvegarde de niveau système de fichiers </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 26. Haute disponibilité, répartition de charge et réplication</td></tr></table></div><div class="sect1" id="CONTINUOUS-ARCHIVING"><div class="titlepage"><div><div><h2 class="title" style="clear: both">25.3. Archivage continu et récupération d'un instantané (PITR) <a href="#CONTINUOUS-ARCHIVING" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="continuous-archiving.html#BACKUP-ARCHIVING-WAL">25.3.1. Configurer l'archivage des journaux de transactions</a></span></dt><dt><span class="sect2"><a href="continuous-archiving.html#BACKUP-BASE-BACKUP">25.3.2. Réaliser une sauvegarde de base</a></span></dt><dt><span class="sect2"><a href="continuous-archiving.html#BACKUP-INCREMENTAL-BACKUP">25.3.3. Réaliser une sauvegarde incrémentale</a></span></dt><dt><span class="sect2"><a href="continuous-archiving.html#BACKUP-LOWLEVEL-BASE-BACKUP">25.3.4. Effectuer une sauvegarde de base avec l'API bas niveau</a></span></dt><dt><span class="sect2"><a href="continuous-archiving.html#BACKUP-PITR-RECOVERY">25.3.5. Restauration à partir d'un archivage continu</a></span></dt><dt><span class="sect2"><a href="continuous-archiving.html#BACKUP-TIMELINES">25.3.6. Lignes temporelles (<span class="foreignphrase"><em class="foreignphrase">Timelines</em></span>)</a></span></dt><dt><span class="sect2"><a href="continuous-archiving.html#BACKUP-TIPS">25.3.7. Conseils et exemples</a></span></dt><dt><span class="sect2"><a href="continuous-archiving.html#CONTINUOUS-ARCHIVING-CAVEATS">25.3.8. Restrictions</a></span></dt></dl></div><a id="id-1.6.12.7.2" class="indexterm"></a><a id="id-1.6.12.7.3" class="indexterm"></a><a id="id-1.6.12.7.4" class="indexterm"></a><p>
+   <span class="productname">PostgreSQL</span> maintient en permanence des journaux
+   de transactions(<em class="firstterm">Write Ahead Log</em> ou
+   <acronym class="acronym">WAL</acronym>) dans le sous-répertoire
+   <code class="filename">pg_wal/</code> du répertoire de données de l'instance. Ces
+   journaux enregistrent chaque modification effectuée sur les fichiers de
+   données des bases. Ils existent principalement pour se prémunir des suites
+   d'un arrêt brutal : si le système s'arrête brutalement, la base de
+   données peut être restaurée dans un état cohérent en
+   <span class="quote">« <span class="quote">rejouant</span> »</span> les entrées des journaux enregistrées depuis le
+   dernier checkpoint. Néanmoins, l'existence de ces journaux rend possible
+   l'utilisation d'une troisième stratégie pour la sauvegarde des bases de
+   données : la combinaison d'une sauvegarde de niveau système de
+   fichiers avec la sauvegarde des journaux de transactions. Si la
+   restauration est nécessaire, la sauvegarde des fichiers est restaurée,
+   puis les journaux de transactions sauvegardés sont rejoués pour amener la
+   sauvegarde jusqu'à la date actuelle. Cette approche est plus complexe à
+   administrer que toutes les autres approches mais elle apporte des
+   bénéfices importants :
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Il n'est pas nécessaire de disposer d'une sauvegarde des fichiers
+      parfaitement cohérente comme point de départ. Toute incohérence dans la
+      sauvegarde est corrigée par la ré-exécution des journaux (ceci n'est
+      pas significativement différent de ce qu'il se passe lors d'un
+      rejeu après un arrêt brutal). La fonctionnalité d'image du
+      système de fichiers n'est alors pas nécessaire,
+      <span class="application">tar</span> ou tout autre outil d'archivage est
+      suffisant.
+     </p></li><li class="listitem"><p>
+      Puisqu'une longue séquence de journaux de transactions peut être
+      assemblée pour être rejoués, une sauvegarde continue est obtenue en
+      continuant simplement à archiver les journaux de transactions. C'est
+      particulièrement intéressant pour les grosses bases de données dont une
+      sauvegarde complète fréquente est difficilement réalisable.
+     </p></li><li class="listitem"><p>
+      Les entrées des journaux de transactions ne doivent pas obligatoirement
+      être rejouées intégralement. La ré-exécution peut être stoppée en tout
+      point, tout en garantissant une image cohérente de la base de données
+      telle qu'elle était à ce moment-là. Ainsi, cette technique autorise la
+      <em class="firstterm">restauration d'un instantané</em> (PITR) : il
+      est possible de restaurer l'état de la base de données telle qu'elle
+      était en tout point dans le temps depuis la dernière sauvegarde de
+      base.
+     </p></li><li class="listitem"><p>
+      Si la série de journaux de transactions est fournie en continu à une
+      autre machine chargée avec le même fichier de sauvegarde de base, on
+      obtient un système <span class="quote">« <span class="quote">de reprise intermédiaire</span> »</span>
+      (<span class="foreignphrase"><em class="foreignphrase">warm standby</em></span>) : à tout moment, la
+      deuxième machine peut être montée et disposer d'une copie
+      quasi-complète de la base de données.
+     </p></li></ul></div><p>
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    <span class="application">pg_dump</span> et
+    <span class="application">pg_dumpall</span> ne font pas de sauvegardes au
+    niveau système de fichiers. Ce type de sauvegarde est qualifié de
+    <span class="emphasis"><em>logique</em></span> et ne contient pas suffisamment
+    d'informations pour permettre le rejeu des journaux de transactions.
+   </p></div><p>
+   Tout comme la technique de sauvegarde standard du système de fichiers,
+   cette méthode ne supporte que la restauration d'une instance de bases de
+   données complet, pas d'un sous-ensemble. De plus, un espace d'archivage
+   important est requis : la sauvegarde de la base peut être volumineuse
+   et un système très utilisé engendre un trafic de journaux de transactions
+   à archiver de plusieurs Mo. Malgré tout, c'est la technique de sauvegarde
+   préférée dans de nombreuses situations où une haute fiabilité est
+   requise.
+  </p><p>
+   Une restauration fructueuse à partir de l'archivage continu (aussi appelé
+   <span class="quote">« <span class="quote">sauvegarde à chaud</span> »</span> par certains vendeurs de SGBD) nécessite
+   une séquence ininterrompue de journaux de transactions archivés qui
+   s'étend au moins jusqu'au point de départ de la sauvegarde. Pour
+   commencer, il faut configurer et tester la procédure d'archivage des
+   journaux de transactions <span class="emphasis"><em>avant</em></span> d'effectuer la
+   première sauvegarde de base. C'est pourquoi la suite du document commence
+   par présenter les mécanismes d'archivage des journaux de transactions.
+  </p><div class="sect2" id="BACKUP-ARCHIVING-WAL"><div class="titlepage"><div><div><h3 class="title">25.3.1. Configurer l'archivage des journaux de transactions <a href="#BACKUP-ARCHIVING-WAL" class="id_link">#</a></h3></div></div></div><p>
+    Au sens abstrait, un système <span class="productname">PostgreSQL</span>
+    fonctionnel produit une séquence infinie d'enregistrements de journaux de
+    transactions. Le système divise physiquement cette séquence en
+    <em class="firstterm">fichiers de segment</em> WAL de 16 Mo chacun
+    (en général, mais cette taille peut être modifiée lors de l'exécution
+    d'<span class="application">initdb</span>). Les fichiers segment reçoivent des
+    noms numériques pour refléter leur position dans la séquence abstraite
+    des journaux de transactions. Lorsque le système n'utilise pas
+    l'archivage des journaux de transactions, il ne crée que quelques
+    fichiers segments, qu'il <span class="quote">« <span class="quote">recycle</span> »</span> en renommant les fichiers
+    devenus inutiles. Un fichier segment dont le contenu précède le dernier
+    checkpoint est supposé inutile et peut être recyclé.
+   </p><p>
+    Lors de l'archivage des journaux de transactions, le contenu de chaque
+    fichier segment doit être capturé dès qu'il est rempli pour sauvegarder les
+    données ailleurs avant son recyclage. En fonction de l'application et du
+    matériel disponible, <span class="quote">« <span class="quote">sauvegarder les données ailleurs</span> »</span> peut se
+    faire de plusieurs façons : les fichiers segment peuvent être copiés
+    dans un répertoire NFS monté sur une autre machine, être écrits sur une
+    cartouche (après s'être assuré qu'il existe un moyen d'identifier le nom
+    d'origine de chaque fichier) ou être groupés pour gravure sur un CD, ou
+    toute autre chose. Pour fournir autant de flexibilité que possible à
+    l'administrateur de la base de données,
+    <span class="productname">PostgreSQL</span> essaie de ne faire aucune supposition
+    sur la façon dont l'archivage est réalisé. À la place,
+    <span class="productname">PostgreSQL</span> permet de préciser une commande shell
+    ou une bibliothèque d'archivage à exécuter pour copier le fichier segment
+    complet à l'endroit désiré. Cela peut être aussi simple qu'une commande
+    shell qui utilise <code class="literal">cp</code> ou cela peut appeler une fonction C
+    complexe  --  c'est l'utilisateur qui décide.
+   </p><p>
+    Pour activer l'archivage des journaux de transaction, configurez le
+    paramètre de configuration <a class="xref" href="runtime-config-wal.html#GUC-WAL-LEVEL">wal_level</a> à
+    <code class="literal">replica</code> ou supérieur, <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-MODE">archive_mode</a>
+    à <code class="literal">on</code>, et précisez la commande shell à utiliser dans le
+    paramètre de configuration <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-COMMAND">archive_command</a> ou précisez
+    la bibliothèque à utiliser dans le paramètre <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-LIBRARY">archive_library</a> de la configuration. En fait, ces paramètres
+    seront toujours placés dans le fichier <code class="filename">postgresql.conf</code>.
+   </p><p>
+    Un moyen simple d'archiver est de configurer le paramètre
+    <code class="varname">archive_library</code> avec une chaîne vide et de spécifier une
+    commande shell au niveau du paramètre <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-COMMAND">archive_command</a>.
+    Dans cette chaîne, un <code class="literal">%p</code> est remplacé par le chemin
+    absolu de l'archive alors qu'un <code class="literal">%f</code> n'est remplacé que par
+    le nom du fichier. (Le nom du chemin est relatif au répertoire de travail du
+    serveur, c'est-à-dire le répertoire des données de l'instance.)
+    <code class="literal">%%</code> est utilisé pour écrire le caractère
+    <code class="literal">%</code> dans la commande. La commande la plus simple ressemble
+    à :
+
+</p><pre class="programlisting">archive_command = 'test ! -f /mnt/serveur/repertoire_archive/%f &amp;&amp; cp %p /mnt/serveur/repertoire_archive/%f'  # Unix
+  archive_command = 'copy "%p" "C:\\serveur\\repertoire_archive\\%f"'  # Windows</pre><p>
+
+    qui copie les segments WAL archivables dans le répertoire
+    <code class="filename">/mnt/serveur/repertoire_archive</code>. (Ceci est un
+    exemple, pas une recommandation, et peut ne pas fonctionner sur toutes
+    les plateformes.) Après le remplacement des paramètres
+    <code class="literal">%p</code> et <code class="literal">%f</code>, la commande réellement
+    exécutée peut ressembler à :
+
+</p><pre class="programlisting">test ! -f /mnt/serveur/repertoire_archive/00000001000000A900000065 &amp;&amp; cp pg_wal/00000001000000A900000065 /mnt/serveur/repertoire_archive/00000001000000A900000065</pre><p>
+
+    Une commande similaire est produite pour chaque nouveau fichier à archiver.
+   </p><p>
+    La bibliothèque d'archivage est exécutée sous l'identité de l'utilisateur
+    propriétaire du serveur <span class="productname">PostgreSQL</span>. La série
+    de journaux de transactions en cours d'archivage contient absolument tout
+    ce qui se trouve dans la base de données, il convient donc de s'assurer
+    que les données archivées sont protégées des autres utilisateurs ;
+    on peut, par exemple, archiver dans un répertoire sur lequel les droits
+    de lecture ne sont positionnés ni pour le groupe ni pour le reste du
+    monde.
+   </p><p>
+    Il est important que la commande d'archivage renvoie le statut de sortie
+    zéro si et seulement si elle réussit. En cas de réception d'un code zéro,
+    <span class="productname">PostgreSQL</span> supposera que le fichier a été archivé
+    avec succès, et le supprimera ou le recyclera. Néanmoins, un code différent
+    de zéro indique à <span class="productname">PostgreSQL</span> que le fichier n'a
+    pas été archivé ; il essaiera de nouveau périodiquement jusqu'à sa
+    réussite.
+   </p><p>
+    Une autre façon d'archiver est d'utiliser un module d'archivage personnalisé
+    avec <code class="varname">archive_library</code>. Comme de tels modules sont écrits
+    en C, créer son propre module nécessite considérablement plus d'effort que
+    d'écrire une commande shell. Néanmoins, les modules d'archivage peuvent être
+    plus performants que l'archivage via le shell, et ils auront accès à un
+    grand nombre de ressources serveurs utiles.  Pour plus d'informations sur
+    les modules d'archivage, voir <a class="xref" href="archive-modules.html" title="Chapitre 49. Modules d'archivage">Chapitre 49</a>.
+   </p><p>
+    Quand la commande d'archivage est terminée par un signal (autre que le
+    signal <span class="systemitem">SIGTERM</span> qui est utilisé comme partie d'un
+    arrêt du serveur) ou une erreur par le shell avec un statut de sortie plus
+    grand que 125 (tel que « command not found »), ou si la fonction
+    d'archivage émet un message <code class="literal">ERROR</code> ou
+    <code class="literal">FATAL</code>, le processus d'archivage annule ou est redémarré
+    par le processus postmaster. Dans de tels cas, l'échec n'est pas reporté
+    dans <a class="xref" href="monitoring-stats.html#PG-STAT-ARCHIVER-VIEW" title="Tableau 27.22. Vue pg_stat_archiver">pg_stat_archiver</a>.
+   </p><p>
+    En général, les commande et bibliothèques d'archivage doivent être conçue
+    pour refuser d'écraser tout fichier archive déjà existant. C'est une
+    fonctionnalité de sécurité importante pour préserver l'intégrité de
+    l'archive dans le cas d'une erreur de l'administrateur (comme l'envoi de la
+    sortie de deux serveurs différents dans le même répertoire d'archivage).
+    Il est conseillé de tester la commande ou la bibliothèque d'archivage
+    proposée pour s'assurer, qu'en effet, elle n'écrase pas un fichier existant
+   </p><p>
+    Dans de rare cas, <span class="productname">PostgreSQL</span> pourrait tenter
+    d'archiver de nouveau un journal de transaction qui a déjà été archivé.?
+    Par exemple, si le système s'arrête brutalement avant que le serveur ait
+    pu enregistrer de manière durable le succès de l'archivage, le serveur
+    tentera d'archiver de nouveau le fichier après avoir redémarré (en supposant
+    que l'archivage est toujours activé). Quand une commande ou une bibliothèque
+    d'archivage rencontre un fichier existant, il doit renvoyer respectivement
+    le statut zéro ou <code class="literal">true</code> si le journal a un contenu
+    identique au journal archivé et que l'archive actuelle est correctement
+    enregistré sur disque. Si un fichier pré-existant contient un contenu différent
+    du journal à archiver, la commande d'archivage ou la bibliothèque
+    <span class="emphasis"><em>doivent</em></span> renvoyer respectivement un statut différent de
+    zéro ou <code class="literal">false</code>.
+   </p><p>
+    La commande d'exemple pour Unix ci-dessus évite d'écraser une archive pré-existante
+    grâce à l'étape <code class="command">test</code>
+    séparée. Sur certaines plateformes Unix, la commande <code class="command">cp</code>
+    dispose d'une option, comme <code class="option">-i</code> pouvant être utilisé pour
+    faire la même chose, mais en moins verbeux. Cependant, vous ne devriez pas
+    vous baser là-dessus sans vous assurer que le code de sortie renvoyé est le
+    bon. (En particulier, la commande <code class="command">cp</code> de GNU renvoie un
+    code zéro quand <code class="option">-i</code> est utilisé et que le fichier cible
+    existe déjà, ce qui n'est <span class="emphasis"><em>pas</em></span> le comportement désiré.)
+   </p><p>
+    Lors de la conception de votre configuration d'archivage, il faut considérer
+    ce qui peut se produire si la commande ou la bibliothèque d'archivage échoue
+    de façon répétée, que ce soit parce qu'une intervention de l'opérateur
+    s'avère nécessaire ou par manque d'espace dans le répertoire d'archivage.
+    Ceci peut arriver, par exemple, lors de l'écriture sur une cartouche sans
+    changeur automatique ; quand la cartouche est pleine, rien ne peut être
+    archivé tant que la cassette n'est pas changée. Toute erreur ou requête à un
+    opérateur humain doit être rapportée de façon appropriée pour que la
+    situation puisse être résolue rapidement. Le répertoire
+    <code class="filename">pg_wal/</code> continue à se remplir de fichiers de segment
+    WAL jusqu'à la résolution de la situation.(Si le système de fichiers
+    contenant <code class="filename">pg_wal/</code> se remplit,
+    <span class="productname">PostgreSQL</span> s'arrête en mode PANIC. Aucune
+    transaction validée n'est perdue mais la base de données est inaccessible
+    tant que de l'espace n'a pas été libéré.)
+   </p><p>
+    La vitesse de la commande ou de la bibliothèque d'archivage n'est pas
+    importante, tant qu'elle suit le rythme de génération des journaux de
+    transactions du serveur. Les opérations normales continuent même si le
+    processus d'archivage est un peu plus lent. Si l'archivage est
+    significativement plus lent, alors la quantité de données qui peut être
+    perdue croît. Cela signifie aussi que le répertoire
+    <code class="filename">pg_wal/</code> contient un grand nombre de fichiers segment
+    non archivés, qui peuvent finir par remplir l'espace disque disponible. Il
+    est conseillé de surveiller le processus d'archivage pour s'assurer que tout
+    fonctionne normalement.
+   </p><p>
+    Lors de l'écriture de la commande ou de la bibliothèque d'archivage, il faut
+    garder à l'esprit que les noms de fichier à archiver peuvent contenir
+    jusqu'à 64 caractères et être composés de toute combinaison de lettres
+    ASCII, de chiffres et de points. Il n'est pas nécessaire de conserver le
+    chemin relatif original (<code class="literal">%p</code>) mais il est nécessaire de se
+    rappeler du nom du fichier (<code class="literal">%f</code>).
+   </p><p>
+    Bien que l'archivage des journaux de transactions autorise à restaurer
+    toute modification réalisée sur les données de la base, il ne restaure
+    pas les modifications effectuées sur les fichiers de configuration
+    (c'est-à-dire <code class="filename">postgresql.conf</code>,
+    <code class="filename">pg_hba.conf</code> et <code class="filename">pg_ident.conf</code>)
+    car ceux-ci sont édités manuellement et non au travers d'opérations SQL.
+    Il est souhaitable de conserver les fichiers de configuration à un
+    endroit où ils sont sauvegardés par les procédures standard de sauvegarde
+    du système de fichiers. Voir la <a class="xref" href="runtime-config-file-locations.html" title="19.2. Emplacement des fichiers">Section 19.2</a> pour savoir comment modifier
+    l'emplacement des fichiers de configuration.
+   </p><p>
+    La commande ou la bibliothèque d'archivage n'est appelée que sur les
+    fichiers segments WAL complets. Du coup, si le serveur engendre peu de
+    trafic dans les journaux de transactions (ou qu'il y a des périodes de calme
+    où le trafic est léger), il peut y avoir un long délai entre la fin d'une
+    transaction et son enregistrement garanti dans le stockage d'archive. Pour
+    placer une limite sur l'ancienneté des données archivées, il faut configurer
+    <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-TIMEOUT">archive_timeout</a>, ce qui permet de forcer le serveur à
+    changer de fichier segment WAL passé ce délai. Les fichiers archivés lors
+    d'un tel forçage ont toujours la même taille que les fichiers complets.  Il
+    est donc déconseillé de configurer un délai
+    <code class="varname">archive_timeout</code> trop court  --  cela fait grossir
+    anormalement le stockage. Une minute pour <code class="varname">archive_timeout</code>
+    est généralement raisonnable.
+   </p><p>
+    De plus, le changement d'un segment peut être forcé manuellement avec
+    <code class="function">pg_switch_wal</code>. Cela permet de s'assurer qu'une
+    transaction tout juste terminée est archivée aussi vite que possible.
+    D'autres fonctions utilitaires relatives à la gestion des journaux de
+    transactions sont disponibles dans <a class="xref" href="functions-admin.html#FUNCTIONS-ADMIN-BACKUP-TABLE" title="Tableau 9.95. Fonctions de contrôle de la sauvegarde">Tableau 9.95</a>.
+   </p><p>
+    Quand <code class="varname">wal_level</code> est configuré à la valeur
+    <code class="literal">minimal</code>, certaines commandes SQL sont optimisées pour
+    éviter la journalisation des transactions, de la façon décrite dans <a class="xref" href="populate.html#POPULATE-PITR" title="14.4.7. Désactiver l'archivage des journaux de transactions et la réplication en flux">Section 14.4.7</a>. Si l'archivage ou la réplication en flux sont
+    activés lors de l'exécution d'une de ces instructions, les journaux de
+    transaction ne contiennent pas suffisamment d'informations pour une
+    restauration via les archives. (La restauration après un arrêt brutal n'est
+    pas affectée.) Pour cette raison, <code class="varname">wal_level</code> ne peut être
+    modifié qu'au lancement du serveur. Néanmoins,
+    <code class="varname">archive_command</code> et <code class="varname">archive_library</code>
+    peut être modifié par rechargement du fichier de configuration. Si vous
+    archivez via le shell et souhaitez arrêter temporairement l'archivage, une
+    façon de le faire est de peut placer une chaîne vide (<code class="literal">''</code>)
+    dans <code class="varname">archive_command</code>.  Les journaux de transactions sont
+    alors accumulés dans <code class="filename">pg_wal/</code> jusqu'au rétablissement
+    d'un paramètre <code class="varname">archive_command</code> fonctionnel.
+   </p></div><div class="sect2" id="BACKUP-BASE-BACKUP"><div class="titlepage"><div><div><h3 class="title">25.3.2. Réaliser une sauvegarde de base <a href="#BACKUP-BASE-BACKUP" class="id_link">#</a></h3></div></div></div><p>
+    La manière la plus simple pour effectuer une sauvegarde revient à utiliser
+    l'outil <a class="xref" href="app-pgbasebackup.html" title="pg_basebackup"><span class="refentrytitle"><span class="application">pg_basebackup</span></span></a>. Il peut créer une sauvegarde
+    de base sous la forme soit de fichiers standards, soit d'une archive tar.
+    Pour les cas plus complexes, il est possible de réaliser une sauvegarde
+    de base en utilisant l'API bas niveau (voir <a class="xref" href="continuous-archiving.html#BACKUP-LOWLEVEL-BASE-BACKUP" title="25.3.4. Effectuer une sauvegarde de base avec l'API bas niveau">Section 25.3.4</a>).
+   </p><p>
+    La durée d'une sauvegarde de base n'est pas toujours un critère
+    déterminant. Toutefois, si vous exploitez votre serveur avec l'option
+    <code class="varname">full_page_writes</code> désactivée, vous constaterez une
+    baisse des performances lorsque la sauvegarde est effectuée car l'option
+    <code class="varname">full_page_writes</code> est activée de force pendant les
+    opérations de sauvegarde.
+   </p><p>
+    Pour utiliser une sauvegarde, vous devez conserver tous les fichiers
+    segments WAL générés pendant et après la sauvegarde des fichiers. Pour
+    vous aider dans cette tâche, le processus de sauvegarde crée un
+    <em class="firstterm">fichier historique de sauvegarde</em> qui est
+    immédiatement enregistré dans la zone d'archivage des journaux de
+    transactions. Le nom de ce fichier reprend le nom du premier fichier
+    segment WAL que vous devez conserver. Par exemple, si le premier fichier
+    segment WAL à garder est <code class="literal">0000000100001234000055CD</code>,
+    alors le fichier historique de sauvegarde sera nommé de la manière
+    suivante <code class="literal">0000000100001234000055CD.007C9330.backup</code>.
+    (La seconde partie du nom de fichier indique la position exacte à
+    l'intérieur du fichier segment WAL. Cette information peut être ignorée.)
+    Une fois que vous avez archivé avec précaution la sauvegarde de base et
+    les fichiers segments WAL générés pendant la sauvegarde (tel qu'indiqué
+    par le fichier historique de sauvegarde), tous les fichiers segments WAL
+    antérieurs ne sont plus nécessaires pour restaurer votre sauvegarde de
+    base. Ils peuvent être supprimés. Toutefois, il est conseillé de
+    conserver plusieurs groupes de sauvegardes pour être absolument certain
+    de récupérer vos données.
+   </p><p>
+    Le fichier historique de sauvegarde est un simple fichier texte. Il
+    contient le label que vous avez attribué à l'opération <a class="xref" href="app-pgbasebackup.html" title="pg_basebackup"><span class="refentrytitle"><span class="application">pg_basebackup</span></span></a>, ainsi que les dates de début, de fin et la
+    liste des fichiers segments WAL de la sauvegarde. Si vous avez utilisé le
+    label pour identifier le fichier de sauvegarde associé, alors le fichier
+    historique vous permet de savoir quel fichier de sauvegarde vous devez
+    utiliser pour la restauration.
+   </p><p>
+    Puisque vous devez archiver tous les fichiers segments WAL depuis votre
+    dernière sauvegarde de base, l'intervalle entre deux sauvegardes de base
+    doit être déterminé en fonction de l'espace de stockage que vous avez
+    alloué pour l'archivage des fichiers segments WAL. Vous devez également
+    prendre en compte le temps de restauration (le système devra rejouer tous
+    les fichiers segments WAL, cela prendra un certain temps si la sauvegarde
+    de base est ancienne).
+   </p></div><div class="sect2" id="BACKUP-INCREMENTAL-BACKUP"><div class="titlepage"><div><div><h3 class="title">25.3.3. Réaliser une sauvegarde incrémentale <a href="#BACKUP-INCREMENTAL-BACKUP" class="id_link">#</a></h3></div></div></div><p>
+    Vous pouvez utiliser <a class="xref" href="app-pgbasebackup.html" title="pg_basebackup"><span class="refentrytitle"><span class="application">pg_basebackup</span></span></a> pour réaliser
+    une sauvegarde incrémentale en spécifiant l'option
+    <code class="literal">--incremental</code>. Vous devez préciser comme argument
+    de <code class="literal">--incremental</code> le manifeste de sauvegarde d'une
+    précédente sauvegarde du même serveur. Dans la sauvegarde résultante,
+    les fichiers ne correspondant pas à des relations seront inclus dans leur
+    intégralité, mais certains fichiers de relations seront remplacés par des
+    fichiers incrémentaux, plus petits, contenant uniquement les blocs
+    modifiés depuis la sauvegarde précédente, et suffisamment de métadonnées
+    pour reconstruire la version courante du fichier.
+   </p><p>
+    Pour trouver les blocs à sauvegarder, le serveur
+    utilise les résumés de journaux de transactions, résumés stockés
+    dans le sous-répertoire <code class="literal">pg_wal/summaries</code> du
+    répertoire des données. Si les fichiers résumés requis sont absents,
+    toute tentative de sauvegarde incrémentale échouera. Les résumés présents
+    dans ce répertoire doivent couvrir tous les LSN depuis le LSN de début
+    de la sauvegarde précédente. Comme le serveur recherche les résumés des
+    journaux de transaction juste après avoir établi le LSN de départ de
+    la sauvegarde courante, les fichiers de résumé nécessaires ne seront
+    pas instantanément présents sur disque, mais le serveur attendra
+    l'arrivée des fichiers manquants. Ceci aide aussi si le processus
+    résumant les journaux a pris du retard. Néanmoins, si les fichiers
+    nécessaires ont déjà été supprimés, ou si le processus de résumé des
+    journaux ne rattrape pas son retard suffisamment rapidement, la
+    sauvegarde incrémentale échouera.
+   </p><p>
+    Lors de la restauration d'une sauvegarde incrémentale, il sera nécessaire
+    d'avoir non seulement la sauvegarde incrémentale, mais aussi toutes les
+    sauvegardes précédentes requises pour fournir les blocs absents de la
+    sauvegarde incrémentale. Voir <a class="xref" href="app-pgcombinebackup.html" title="pg_combinebackup"><span class="refentrytitle"><span class="application">pg_combinebackup</span></span></a> pour
+    plus d'informations sur ce prérequis. Notez qu'il existe des restrictions
+    sur l'utilisation de <code class="literal">pg_combinebackup</code> quand le statut
+    des sommes de contrôle sur l'instance a changé ; voir les
+    <a class="link" href="app-pgcombinebackup.html#APP-PGCOMBINEBACKUP-LIMITATIONS" title="Limitations">limitations de
+    pg_combinebackup</a>.
+   </p><p>
+    Notez que tous les prérequis sur l'utilisation d'une sauvegarde complète
+    s'appliquent aussi à une sauvegarde incrémentale. Par exemple, vous aurez
+    besoin de tous les segments de fichiers WAL générés pendant et après la
+    sauvegarde du système de fichiers, ainsi que de tous les fichiers
+    d'historique. Vous aurez toujours encore besoin de créer un fichier
+    <code class="literal">recovery.signal</code> (ou <code class="literal">standby.signal</code>)
+    et d'exécuter la restauration, comme décrit dans <a class="xref" href="continuous-archiving.html#BACKUP-PITR-RECOVERY" title="25.3.5. Restauration à partir d'un archivage continu">Section 25.3.5</a>. Le besoin des sauvegardes précédentes
+    au moment de la restauration et l'utilisation de
+    <code class="literal">pg_combinebackup</code> est une condition supplémentaire en plus
+    de tout le reste. Gardez en tête que
+    <span class="application">PostgreSQL</span>, seul, ne sait pas
+    détecter quelles sont les sauvegardes nécessaires à la restauration d'une
+    sauvegarde incrémentale postérieure. Vous devez garder la trace des liens entre
+    vos sauvegardes complète et incrémentales, et vous assurer de ne pas
+    supprimer les sauvegardes précédentes si elles sont nécessaires pour
+    restaurer des sauvegardes incrémentales ultérieures.
+   </p><p>
+    Les sauvegardes incrémentales n'ont d'interêt que pour des
+    bases de données relativement volumineuses, où une portion significative
+    des données ne change pas, ou change à un faible rythme. Pour une petite
+    base, il est plus simple d'oublier les sauvegardes
+    incrémentales et de rester sur des sauvegardes complètes, bien plus
+    simples à gérer. Pour une base de données volumineuse et lourdement
+    modifiée, les sauvegardes incrémentales ne seront pas beaucoup plus
+    petites que les sauvegardes complètes.
+   </p><p>
+    Une sauvegarde incrémentale est seulement possible si le rejeu peut
+    commencer à partir un checkpoint ultérieur à la précédente sauvegarde dont
+    il dépend. Si vous réalisez une sauvegarde incrémentale à partir du
+    serveur primaire, cette condition est toujours satisfaite car chaque
+    sauvegarde déclenche un nouveau checkpoint. Sur un serveur secondaire,
+    le rejeu commence à partir du restartpoint le plus récent. De ce fait, une
+    sauvegarde incrémentale d'un serveur secondaire peut échouer s'il y a eu
+    très peu d'activité depuis la sauvegarde précédente car aucun nouveau
+    restartpoint n'aura été créé.
+   </p></div><div class="sect2" id="BACKUP-LOWLEVEL-BASE-BACKUP"><div class="titlepage"><div><div><h3 class="title">25.3.4. Effectuer une sauvegarde de base avec l'API bas niveau <a href="#BACKUP-LOWLEVEL-BASE-BACKUP" class="id_link">#</a></h3></div></div></div><p>
+    Au lieu de prendre une sauvegarde de base complète ou incrémentale
+    avec <a class="xref" href="app-pgbasebackup.html" title="pg_basebackup"><span class="refentrytitle"><span class="application">pg_basebackup</span></span></a>, vous pouvez faire
+    une sauvegarde de base en utilisant l'API bas niveau. Cette procédure
+    contient quelques étapes supplémentaires à la méthode
+    <span class="application">pg_basebackup</span> mais reste relativement simple.
+    Il est
+    très important de dérouler ces étapes dans l'ordre, et de
+    vérifier que chacune s'est déroulée correctement avant de passer à
+    la suivante.
+   </p><p>
+    Plusieurs sauvegardes peuvent s'exécuter en même temps (celles
+    démarrées en utilisant cette API comme celles démarrées avec
+    <a class="xref" href="app-pgbasebackup.html" title="pg_basebackup"><span class="refentrytitle"><span class="application">pg_basebackup</span></span></a>).
+   </p><p>
+     </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>
+        S'assurer que l'archivage des journaux de transactions est activé et
+        fonctionnel.
+       </p></li><li class="listitem"><p>
+        Se connecter au serveur (peu importe la base) en tant qu'utilisateur
+        ayant les droits d'exécuter la fonction
+        <code class="function">pg_backup_start</code> (donc soit un superutilisateur,
+        soit un utilisateur ayant gagné le droit <code class="literal">EXECUTE</code>
+        sur cette fonction) et lancer la commande :
+
+        </p><pre class="programlisting">SELECT pg_backup_start(label =&gt; 'label', fast =&gt; false);</pre><p>
+
+        où <code class="literal">label</code> est une chaîne utilisée pour identifier de
+        façon unique l'opération de sauvegarde. La connexion appelant
+        <code class="function">pg_backup_start</code> doit être maintenue jusqu'à la
+        fin de la sauvegarde. Dans le cas contraire, la sauvegarde sera
+        automatiquement avortée.
+       </p><p>
+        Les sauvegardes en ligne sont toujours démarrées au début d'un
+        checkpoint.  Par défaut, <code class="function">pg_backup_start</code> attendra
+        le prochain checkpoint planifié pour se terminer, ce qui peut prendre un
+        long moment (voir les paramètres de configuration <a class="xref" href="runtime-config-wal.html#GUC-CHECKPOINT-TIMEOUT">checkpoint_timeout</a> et <a class="xref" href="runtime-config-wal.html#GUC-CHECKPOINT-COMPLETION-TARGET">checkpoint_completion_target</a>). C'est généralement
+        préférable car cela minimise l'impact sur le système en cours
+        d'exécution. Si vous voulez démarrer la sauvegarde aussi vite que
+        possible, passez <code class="literal">true</code> sur le second paramètre de
+        <code class="function">pg_backup_start</code> et il demandera un checkpoint
+        immédiat, qui finira aussi rapidement que possible en utilisant autant
+        de bande passante disque que possible.
+       </p></li><li class="listitem"><p>
+        Effectuer la sauvegarde à l'aide de tout outil de sauvegarde du
+        système de fichiers, tel <span class="application">tar</span> ou
+        <span class="application">cpio</span> (mais ni
+        <span class="application">pg_dump</span> ni
+        <span class="application">pg_dumpall</span>). Il n'est ni nécessaire ni
+        désirable de stopper les opérations normales de la base de données
+        pour cela. Voir la section <a class="xref" href="continuous-archiving.html#BACKUP-LOWLEVEL-BASE-BACKUP-DATA" title="25.3.4.1. Sauvegarder le répertoire de données">Section 25.3.4.1</a> pour les considérations
+        à prendre en compte durant cette sauvegarde.
+       </p></li><li class="listitem"><p>
+        Dans la même connexion que précédemment, lancer la commande :
+
+        </p><pre class="programlisting">SELECT * FROM pg_backup_stop(wait_for_archive =&gt; true);</pre><p>
+
+        Cela met fin au processus de sauvegarde. Sur un serveur primaire, cela
+        réalise aussi une bascule automatique au prochain segment de journal
+        de transactions. Sur un serveur secondaire, il n'est pas possible de
+        basculer automatiquement les segments des journaux de transactions,
+        donc vous pourriez vouloir utiliser
+        <code class="function">pg_switch_wal</code> sur le primaire pour réaliser une
+        bascule manuelle. Cette bascule est nécessaire pour permettre au
+        dernier fichier de segment WAL écrit pendant la sauvegarde d'être
+        immédiatement archivable.
+       </p><p>
+        La fonction <code class="function">pg_backup_stop</code> retournera une ligne
+        avec trois valeurs. Le second de ces champs devra être écrit dans un
+        fichier nommé <code class="filename">backup_label</code> dans le répertoire
+        racine de la sauvegarde. Le troisième champ devra être écrit dans un
+        fichier nommé <code class="filename">tablespace_map</code> sauf si le champ
+        est vide. Ces fichiers sont vitaux pour le fonctionnement de la
+        sauvegarde et doivent être écrits octet par octet sans modification,
+        ce qui nécessite de les ouvrir en mode binaire.
+       </p></li><li class="listitem"><p>
+        Une fois que les fichiers segment WAL utilisés lors de la sauvegarde
+        sont archivés, c'est terminé. Le fichier identifié par le résultat de
+        <code class="function">pg_backup_stop</code> est le dernier segment nécessaire
+        pour produire un jeu complet de fichiers de sauvegarde. Sur un serveur
+        primaire, si <code class="varname">archive_mode</code> est activé et que le
+        paramètre <code class="literal">wait_for_archive</code> est activé (valeur
+        <code class="literal">true</code>), <code class="function">pg_backup_stop</code> ne rend
+        pas la main avant que le dernier segment n'ait été archivé.  Sur un
+        serveur secondaire, le paramètre <code class="varname">archive_mode</code> doit
+        valoir <code class="literal">always</code> pour que la fonction
+        <code class="function">pg_backup_stop</code> soit en attente. L'archivage de ces
+        fichiers est automatique puisque <code class="varname">archive_command</code> ou
+        <code class="varname">archive_library</code> est déjà configuré. Dans la plupart
+        des cas, c'est rapide, mais il est conseillé de surveiller le système
+        d'archivage pour s'assurer qu'il n'y a pas de retard. Si le processus
+        d'archivage a pris du retard en raison d'échecs de la commande ou de la
+        bibliothèque d'archivage, il continuera d'essayer jusqu'à ce que
+        l'archivage réussisse et que la sauvegarde soit complète. Pour
+        positionner une limite au temps d'exécution de
+        <code class="function">pg_backup_stop</code>, il faut positionner
+        <code class="varname">statement_timeout</code> à une valeur appropriée, mais il
+        faut noter que si <code class="function">pg_backup_stop</code> est interrompu à
+        cause de cette configuration, la sauvegarde peut ne pas être correcte.
+       </p><p>
+        Si le processus de sauvegarde surveille et s'assure que tous les
+        fichiers segments WAL nécessaires à la sauvegarde soient archivés
+        avec succès, le paramètre <code class="literal">wait_for_archive</code>
+        (positionné à true par défaut) peut être positionné à false pour que
+        <code class="function">pg_backup_stop</code> renvoie la main dès que
+        l'enregistrement de fin de sauvegarde est écrit dans le journal de
+        transaction en cours. Par défaut, <code class="function">pg_backup_stop</code>
+        attendra jusqu'à ce que tous les journaux de transactions aient été
+        archivés, ce qui peut prendre un certain temps.  Cette option doit
+        être utilisée avec précaution : si l'archivage des journaux de
+        transactions n'est pas supervisé correctement, alors la sauvegarde
+        pourrait ne pas inclure tous les fichiers segments WAL, et serait
+        donc incomplète et impossible à restaurer.
+       </p></li></ol></div><p>
+    </p><div class="sect3" id="BACKUP-LOWLEVEL-BASE-BACKUP-DATA"><div class="titlepage"><div><div><h4 class="title">25.3.4.1. Sauvegarder le répertoire de données <a href="#BACKUP-LOWLEVEL-BASE-BACKUP-DATA" class="id_link">#</a></h4></div></div></div><p>
+     Certains outils de sauvegarde de fichiers émettent des messages
+     d'avertissement ou d'erreur si les fichiers qu'ils essaient de copier
+     sont modifiés au cours de la copie. Cette situation, normale lors de la
+     sauvegarde d'une base active, ne doit pas être considérée comme une
+     erreur ; il suffit de s'assurer que ces messages puissent être
+     distingués des autres messages. Certaines versions de
+     <span class="application">rsync</span>, par exemple, renvoient un code de
+     sortie distinct en cas de <span class="quote">« <span class="quote">disparition de fichiers source</span> »</span>.
+     Il est possible d'écrire un script qui considère ce code de sortie comme
+     normal.
+    </p><p>
+     De plus, certaines versions de GNU <span class="application">tar</span>
+     retournent un code d'erreur qu'on peut confondre avec une erreur fatale
+     si le fichier a été tronqué pendant sa copie par
+     <span class="application">tar</span>. Heureusement, les versions 1.16 et
+     suivantes de GNU <span class="application">tar</span> retournent 1 si le
+     fichier a été modifié pendant la sauvegarde et 2 pour les autres
+     erreurs. Avec GNU <span class="application">tar</span> version 1.23 et les
+     versions ultérieures, vous pouvez utiliser les options d'avertissement
+     <code class="literal">--warning=no-file-changed
+     --warning=no-file-removed</code> pour cacher les messages
+     d'avertissement en relation.
+    </p><p>
+     La sauvegarde doit inclure tous les fichiers du répertoire dde l'instance
+     de bases de données(<code class="filename">/usr/local/pgsql/data</code>, par
+     exemple). Si des <span class="foreignphrase"><em class="foreignphrase">tablespaces</em></span> qui ne se
+     trouvent pas dans ce répertoire sont utilisés, il ne faut pas oublier de
+     les inclure (et s'assurer également que la sauvegarde archive les liens
+     symboliques comme des liens, sans quoi la restauration va corrompre les
+     <span class="foreignphrase"><em class="foreignphrase">tablespaces</em></span>).
+    </p><p>
+     Néanmoins, les fichiers du sous-répertoire <code class="filename">pg_wal/</code>,
+     contenu dans le répertoire de l'instance, devraient être omis. Ce léger
+     ajustement permet de réduire le risque d'erreurs lors de la
+     restauration. C'est facile à réaliser si <code class="filename">pg_wal/</code>
+     est un lien symbolique vers quelque endroit extérieur au répertoire de
+     l'instance, ce qui est une configuration courante pour des raisons de
+     performance. Il peut être aussi intéressant d'exclure
+     <code class="filename">postmaster.pid</code> et
+     <code class="filename">postmaster.opts</code>, qui enregistrent des informations
+     sur le <span class="application">postmaster</span> en cours d'exécution, mais
+     pas sur le <span class="application">postmaster</span> qui va utiliser cette
+     sauvegarde. De plus, ces fichiers peuvent poser problème à
+     <span class="application">pg_ctl</span>.
+    </p><p>
+     C'est souvent une bonne idée d'omettre de la sauvegarde les fichiers
+     provenant du répertoire <code class="filename">pg_replslot/</code> de l'instance,
+     pour que les slots de réplication existant sur le primaire ne deviennent
+     pas partie intégrante de la sauvegarde. Dans le cas contraire,
+     l'utilisation de la sauvegarde pour créer un secondaire pourrait
+     résulter en une rétention infinie des journaux de transactions sur le
+     secondaire et aussi de la fragmentation sur le primaire si les messages
+     de retour d'un secondaire en Hot Standby sont activés, parce que les
+     clients qui utilisent ces slots de réplication se connecteront toujours
+     et mettront à jour les slots sur le primaire et non pas sur le
+     secondaire. Même si la sauvegarde a pour but d'être utilisée pour la
+     création d'un nouveau primaire, copier les slots de réplication n'est
+     pas un comportement attendu car il n'a pas de raison d'être, le contenu
+     de ces slots sera très probablement obsolète au moment où le nouveau
+     primaire sera en ligne.
+    </p><p>
+     Le contenu des répertoires <code class="filename">pg_dynshmem/</code>,
+     <code class="filename">pg_notify/</code>, <code class="filename">pg_serial/</code>,
+     <code class="filename">pg_snapshots/</code>, <code class="filename">pg_stat_tmp/</code> et
+     <code class="filename">pg_subtrans/</code> (mais pas les répertoires eux-même)
+     peut être exclu de la sauvegarde puisqu'il sera réinitialisé au
+     démarrage de postmaster.
+    </p><p>
+     N'importe quel fichier ou répertoire commençant par
+     <code class="filename">pgsql_tmp</code> peut être exclu de la sauvegarde. Ces
+     fichiers sont supprimés au démarrage de postmaster et les répertoires
+     seront recréés si nécessaire.
+    </p><p>
+     Les fichiers <code class="filename">pg_internal.init</code> peuvent être omis de
+     la sauvegarde quand un fichier de ce nom est trouvé. Ces fichiers
+     contiennent les données du cache des relations qui est toujours
+     reconstruit lors de la restauration.
+    </p><p>
+     Le fichier de label de la sauvegarde inclut la chaîne de label passée à
+     <code class="function">pg_backup_start</code>, l'heure à laquelle
+     <code class="function">pg_backup_start</code> a été exécutée et le nom du fichier
+     segment WAL initial. En cas de confusion, il est ainsi possible de
+     regarder dans ce fichier de label et de déterminer avec précision de
+     quelle session de sauvegarde il provient. Le fichier des tablespaces
+     inclut les noms des liens symboliques s'ils existent dans le répertoire
+     <code class="filename">pg_tblspc/</code> et le chemin complet de chaque lien
+     symbolique. Néanmoins, ces fichiers n'existent pas uniquement pour vous
+     informer. Leurs présences et contenus sont critiques au bon déroulement
+     du processus de restauration.
+    </p><p>
+     Il est aussi possible de faire une sauvegarde alors que le serveur est
+     arrêté. Dans ce cas, les fonctions <code class="function">pg_backup_start</code>
+     et <code class="function">pg_backup_stop</code> ne peuvent pas être utilisées.
+     L'utilisateur doit alors se débrouiller pour identifier les fichiers de
+     sauvegarde et déterminer jusqu'où remonter avec les fichiers segments
+     WAL associés. Il est généralement préférable de suivre la procédure
+     d'archivage continu décrite ci-dessus.
+    </p></div></div><div class="sect2" id="BACKUP-PITR-RECOVERY"><div class="titlepage"><div><div><h3 class="title">25.3.5. Restauration à partir d'un archivage continu <a href="#BACKUP-PITR-RECOVERY" class="id_link">#</a></h3></div></div></div><p>
+    Le pire est arrivé et il faut maintenant repartir d'une sauvegarde. Voici
+    la procédure :
+
+    </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>
+       Arrêter le serveur s'il est en cours d'exécution.
+      </p></li><li class="listitem"><p>
+       Si la place nécessaire est disponible, copier le répertoire complet de
+       données de l'instance et tous les
+       <span class="foreignphrase"><em class="foreignphrase">tablespaces</em></span> dans un emplacement
+       temporaire en prévision d'un éventuel besoin ultérieur. Cette
+       précaution nécessite qu'un espace suffisant sur le système soit
+       disponible pour contenir deux copies de la base de données existante.
+       S'il n'y a pas assez de place disponible, il faut au minimum copier le
+       contenu du sous-répertoire <code class="filename">pg_wal</code> du répertoire
+       des données de l'instance car il peut contenir des journaux de
+       transactions qui n'ont
+       pas été archivés avant l'arrêt du serveur.
+      </p></li><li class="listitem"><p>
+       Effacer tous les fichiers et sous-répertoires existant sous le
+       répertoire des données de l'instance et sous les répertoires racines des
+       <span class="foreignphrase"><em class="foreignphrase">tablespaces</em></span>.
+      </p></li><li class="listitem"><p>
+       Si vous restaurez une sauvegarde complète, vous pouvez restaurer les
+       fichiers de la base directement dans les répertoires cibles.
+       Il faut veiller à ce qu'ils soient restaurés avec le bon
+       propriétaire (l'utilisateur système de la base de données, et non pas
+       <code class="literal">root</code> !) et avec les bons droits. Si des
+       <span class="foreignphrase"><em class="foreignphrase">tablespaces</em></span> sont utilisés, il faut
+       s'assurer que les liens symboliques dans
+       <code class="filename">pg_tblspc/</code> ont été correctement restaurés.
+      </p></li><li class="listitem"><p>
+       Si vous restaurez une sauvegarde incrémentale, vous aurez besoin de
+       restaurer la sauvegarde incrémentale et toutes les sauvegardes
+       précédentes qui en dépendant, directement ou indirectement, sur la
+       machine où vous voulez restaurer. Ces sauvegardes devront être placées
+       dans des répertoires séparées, pas dans les répertoires cibles où vous
+       voudrez exécuter le serveur. Une fois ceci fait, utilisez
+       <a class="xref" href="app-pgcombinebackup.html" title="pg_combinebackup"><span class="refentrytitle"><span class="application">pg_combinebackup</span></span></a> pour récupérer les données de la
+       sauvegarde complète et des sauvegardes incrémentales suivantes, pour
+       écrire la sauvegarde complète synthétique dans les répertoires cibles.
+       Comme ci-dessus, vérifiez que les droits et les liens des tablespaces
+       sont corrects.
+      </p></li><li class="listitem"><p>
+       Supprimer tout fichier présent dans <code class="filename">pg_wal/</code> ;
+       ils proviennent de la sauvegarde et sont du coup probablement
+       obsolètes. Si <code class="filename">pg_wal/</code> n'a pas été archivé, il
+       suffit de recréer ce répertoire en faisant attention à le créer en
+       tant que lien symbolique, si c'était le cas auparavant.
+      </p></li><li class="listitem"><p>
+       Si des fichiers segments WAL non archivés ont été sauvegardés dans
+       l'étape 2, les copier dans <code class="filename">pg_wal/</code>. Il est
+       préférable de les copier plutôt que de les déplacer afin qu'une
+       version non modifiée de ces fichiers soit toujours disponible si un
+       problème survient et qu'il faille recommencer.
+      </p></li><li class="listitem"><p>
+       Configurer les commandes de restauration dans
+       <code class="filename">postgresql.conf</code>(voir <a class="xref" href="runtime-config-wal.html#RUNTIME-CONFIG-WAL-ARCHIVE-RECOVERY" title="19.5.5. Restauration des archives">Section 19.5.5</a>) et créer un fichier
+       <code class="filename">recovery.signal</code> dans le répertoire des données de
+       l'instance. De plus, il peut être judicieux de modifier temporairement
+       le fichier <code class="filename">pg_hba.conf</code> pour empêcher les
+       utilisateurs ordinaires de se connecter tant qu'il n'est pas certain
+       que la restauration a réussi.
+      </p></li><li class="listitem"><p>
+       Démarrer le serveur. Le serveur se trouve alors en mode restauration et
+       commence la lecture des fichiers segments WAL archivés dont il a
+       besoin. Si la restauration se termine sur une erreur externe, le
+       serveur peut tout simplement être relancé. Il continue alors la
+       restauration. À la fin du processus de restauration, le serveur
+       supprime le fichier <code class="filename">recovery.signal</code>(pour éviter
+       de retourner accidentellement en mode de restauration), puis passe en
+       mode de fonctionnement normal.
+      </p></li><li class="listitem"><p>
+       Inspecter le contenu de la base de données pour s'assurer que la
+       restauration a bien fonctionné. Dans le cas contraire, retourner à
+       l'étape 1. Si tout va bien, le fichier
+       <code class="filename">pg_hba.conf</code> peut être restauré pour autoriser les
+       utilisateurs à se reconnecter.
+      </p></li></ol></div><p>
+   </p><p>
+    Le point clé de tout ceci est la configuration de la restauration qui
+    décrit comment et jusqu'où restaurer. La seule chose qu'il faut
+    absolument préciser dans <code class="filename">postgresql.conf</code>, c'est la
+    valeur du paramètre <code class="varname">restore_command</code> qui indique à
+    <span class="productname">PostgreSQL</span> comment récupérer les fichiers
+    segments WAL archivés. À l'instar d'<code class="varname">archive_command</code>,
+    c'est une chaîne de commande shell. Elle peut contenir
+    <code class="literal">%f</code>, qui est remplacé par le nom du journal de
+    transactions souhaité,
+    et <code class="literal">%p</code>, qui est remplacé par le chemin du répertoire où
+    copier le journal de transactions.(Le nom du chemin est relatif au répertoire de travail
+    du serveur, c'est-à-dire le répertoire des données du cluster.) Pour
+    écrire le caractère <code class="literal">%</code> dans la commande, on utilise
+    <code class="literal">%%</code>. La commande la plus simple ressemble à :
+
+    </p><pre class="programlisting">restore_command = 'cp /mnt/serveur/répertoire_archive/%f %p'</pre><p>
+
+    qui copie les fichiers segments WAL précédemment archivés à partir du
+    répertoire <code class="filename">/mnt/serveur/répertoire_archive</code>.  Il est
+    toujours possible d'utiliser une commande plus compliquée, voire même un
+    script shell qui demande à l'utilisateur de monter la cassette
+    appropriée.
+   </p><p>
+    Il est important que la commande renvoie un code de sortie différent de
+    zéro en cas d'échec. Des fichiers absents de l'archive
+    <span class="emphasis"><em>seront</em></span> demandés à la commande ; elle doit
+    renvoyer autre chose que zéro dans ce cas. Ce n'est pas une condition
+    d'erreur. Une exception est possible si la commande a été terminée par un
+    signal (autre que <span class="systemitem">SIGTERM</span>, qui est utilisé pour
+    l'arrêt du serveur) ou par une erreur shell (comme une commande
+    introuvable). Dans ces cas, la restauration va s'arrêter et le serveur ne
+    démarrera plus.
+   </p><p>
+    Tous les fichiers demandés ne seront pas des fichiers segments WAL ;
+    vous pouvez aussi vous attendre à des demandes de fichiers suffixés par
+    <code class="literal">.history</code>. Il faut également garder à l'esprit que le
+    nom de base du chemin <code class="literal">%p</code> diffère de
+    <code class="literal">%f</code> ; ils ne sont pas interchangeables.
+   </p><p>
+    Les segments WAL qui ne se trouvent pas dans l'archive sont recherchés
+    dans <code class="filename">pg_wal/</code> ; cela autorise l'utilisation de
+    segments récents non archivés. Néanmoins, les segments disponibles dans
+    l'archive sont utilisés de préférence aux fichiers contenus dans
+    <code class="filename">pg_wal/</code>.
+   </p><p>
+    Normalement, la récupération traite tous les segments WAL disponibles,
+    restaurant du coup la base de données à l'instant présent (ou aussi
+    proche que possible, en fonction des fichiers segments WAL disponibles).
+    Une récupération normale se finit avec un message <span class="quote">« <span class="quote">fichier non
+    trouvé</span> »</span>, le texte exact du message d'erreur dépendant du choix de
+    <code class="varname">restore_command</code>. Un message d'erreur au début de la
+    restauration peut également apparaître concernant un fichier nommé dont
+    le nom ressemble à <code class="filename">00000001.history</code>. Ceci est aussi
+    normal et n'indique pas un problème dans les situations de restauration
+    standards. Voir <a class="xref" href="continuous-archiving.html#BACKUP-TIMELINES" title="25.3.6. Lignes temporelles (Timelines)">Section 25.3.6</a> pour plus
+    d'informations.
+   </p><p>
+    Pour restaurer jusqu'à un moment précis (avant que le DBA junior n'ait
+    supprimé la table principale par exemple), il suffit d'indiquer le <a class="link" href="runtime-config-wal.html#RUNTIME-CONFIG-WAL-RECOVERY-TARGET" title="19.5.6. Cible de restauration">point d'arrêt</a> requis.
+    Le point d'arrêt, aussi nommé <span class="quote">« <span class="quote">cible de récupération</span> »</span>
+    (<span class="quote">« <span class="quote">recovery target</span> »</span> dans la version originale) , peut être
+    précisé par une combinaison de date et d'heure, par un point de
+    restauration nommé ou par un identifiant de transaction. Actuellement,
+    seules les options date/heure et point de restauration nommé sont
+    vraiment utilisables car il n'existe pas d'outils permettant d'identifier
+    avec précision l'identifiant de transaction à utiliser.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Le point d'arrêt doit être postérieur à la fin de la sauvegarde de la
+     base (le moment où <code class="function">pg_backup_stop</code> se termine). Une
+     sauvegarde ne peut pas être utilisée pour repartir d'un instant où elle
+     était encore en cours (pour ce faire, il faut récupérer la sauvegarde
+     précédente et rejouer à partir de là).
+    </p></div><p>
+    Si la restauration fait face à une corruption des données des journaux de
+    transactions, le rejeu s'interrompt juste avant la corruption détectée et
+    le serveur ne démarre pas. Dans un tel cas, le processus de restauration
+    peut alors être ré-exécuté à partir du début en précisant une
+    <span class="quote">« <span class="quote">cible de restauration</span> »</span> antérieure au point de corruption
+    pour permettre à cette dernière de se terminer correctement. Si la
+    restauration échoue pour une raison externe (arrêt brutal du système ou
+    archive devenue inaccessible), la restauration peut être simplement
+    relancée. Elle redémarre alors quasiment là où elle a échoué. Le
+    redémarrage de la restauration fonctionne comme les checkpoints du
+    déroulement normal : le serveur force une écriture régulière de son
+    état sur les disques et actualise alors le fichier
+    <code class="filename">pg_control</code> pour indiquer que les données déjà
+    traitées des journaux de transactions n'ont plus à être parcourues.
+   </p></div><div class="sect2" id="BACKUP-TIMELINES"><div class="titlepage"><div><div><h3 class="title">25.3.6. Lignes temporelles (<span class="foreignphrase"><em class="foreignphrase">Timelines</em></span>) <a href="#BACKUP-TIMELINES" class="id_link">#</a></h3></div></div></div><a id="id-1.6.12.7.14.2" class="indexterm"></a><a id="id-1.6.12.7.14.3" class="indexterm"></a><p>
+    La possibilité de restaurer la base de données à partir d'un instantané
+    crée une complexité digne des histoires de science-fiction traitant du
+    voyage dans le temps et des univers parallèles.
+   </p><p>
+    Par exemple, dans l'historique original de la base de données, supposez
+    qu'une table critique ait été supprimée à 17h15 mardi soir, mais que
+    personne n'ait réalisé cette erreur avant mercredi midi. Sans stress, la
+    sauvegarde est récupérée et restaurée dans l'état où elle se trouvait à
+    17h14 mardi soir. La base est fonctionnelle. Dans
+    <span class="emphasis"><em>cette</em></span> histoire de l'univers de la base de données,
+    la table n'a jamais été supprimée. Or, l'utilisateur réalise peu après
+    que ce n'était pas une si grande idée et veut revenir à un quelconque
+    moment du mercredi matin. Cela n'est pas possible, si, alors que la base
+    de données est de nouveau fonctionnelle, elle réutilise certaines
+    séquences de fichiers segments WAL qui permettent de retourner à ce
+    point. Il est donc nécessaire de pouvoir distinguer les séries
+    d'enregistrements des journaux de transactions engendrées après la
+    restauration de l'instantané de celles issues de l'historique originel de
+    la base.
+   </p><p>
+    Pour gérer ces difficultés, <span class="productname">PostgreSQL</span> inclut
+    la notion de <em class="firstterm">lignes temporelles</em>
+    (ou <span class="foreignphrase"><em class="foreignphrase">timelines</em></span>). Quand une récupération
+    d'archive est terminée, une nouvelle ligne temporelle est créée pour
+    identifier la série d'enregistrements de journaux de transactions
+    produits après cette restauration. Le numéro d'identifiant de la timeline
+    est inclus dans le nom des fichiers segments WAL. De ce fait, une
+    nouvelle timeline ne réécrit pas sur les données engendrées par des
+    timelines précédentes. Par exemple, dans le nom de journal
+    <code class="filename">0000000100001234000055CD</code>, le début
+    <code class="literal">00000001</code> est l'identifiant de la timeline en hexadécimal.
+    (Notez que, dans d'autres contexyes, comme les traces du serveur, les
+    identifiants de timeline sont habituellement affichés en décimal.)
+   </p><p>
+     En fait, il est possible d'archiver plusieurs
+    timelines différentes. Bien que cela semble être une fonctionnalité
+    inutile, cela peut parfois sauver des vies. Dans une situation où
+    l'instantané à restaurer n'est pas connu avec certitude, il va falloir
+    tester les restaurations de différents instantanés jusqu'à trouver le
+    meilleur. Sans les timelines, ce processus engendre vite un bazar
+    ingérable. Avec les timelines, il est possible de restaurer
+    <span class="emphasis"><em>n'importe quel</em></span> état précédent, même les états de
+    branches temporelles abandonnées.
+   </p><p>
+    Chaque fois qu'une nouvelle timeline est créée,
+    <span class="productname">PostgreSQL</span> crée un fichier d'<span class="quote">« <span class="quote">historique
+    des timelines</span> »</span> qui indique à quelle timeline il est attaché, et
+    depuis quand. Ces fichiers d'historique sont nécessaires pour permettre
+    au système de choisir les bons fichiers segments WAL lors de la
+    restauration à partir d'une archive qui contient plusieurs timelines. Ils
+    sont donc archivés comme tout fichier segment WAL. Puisque ce sont de
+    simples fichiers texte, il est peu coûteux et même judicieux de les
+    conserver indéfiniment(contrairement aux fichiers segments, bien plus
+    volumineux). Il est possible d'ajouter des commentaires au fichier
+    d'historique expliquant comment et pourquoi cette timeline a été créée.
+    De tels commentaires s'avèrent précieux lorsque l'expérimentation conduit
+    à de nombreuses timelines.
+   </p><p>
+    Par défaut, la restauration s'effectue jusqu'à la dernière timeline
+    trouvée dans l'archive. Si vous souhaitez effectuer la restauration
+    uniquement pour la timeline de la sauvegarde ou jusqu'à une timeline
+    précise (c'est-à-dire retourner à un état enregistré après une tentative
+    de restauration), il faut préciser <code class="literal">current</code> ou
+    l'identifiant de la timeline cible dans <a class="xref" href="runtime-config-wal.html#GUC-RECOVERY-TARGET-TIMELINE">recovery_target_timeline</a>. Il n'est pas possible de
+    restaurer dans des timelines antérieures à la sauvegarde.
+   </p></div><div class="sect2" id="BACKUP-TIPS"><div class="titlepage"><div><div><h3 class="title">25.3.7. Conseils et exemples <a href="#BACKUP-TIPS" class="id_link">#</a></h3></div></div></div><p>
+    Quelques conseils de configuration de l'archivage continu sont donnés
+    ici.
+   </p><div class="sect3" id="BACKUP-STANDALONE"><div class="titlepage"><div><div><h4 class="title">25.3.7.1. Configuration de la récupération <a href="#BACKUP-STANDALONE" class="id_link">#</a></h4></div></div></div><p>
+     Il est possible d'utiliser les capacités de sauvegarde de
+     <span class="productname">PostgreSQL</span> pour produire des sauvegardes
+     autonomes à chaud. Ce sont des sauvegardes qui ne peuvent pas être
+     utilisées pour la restauration à un instant donné, mais ce sont des
+     sauvegardes qui sont typiquement plus rapides à obtenir et à restaurer
+     que celles issues de <span class="application">pg_dump</span>. (Elles sont
+     aussi bien plus volumineuses qu'un export
+     <span class="application">pg_dump</span>, il se peut donc que l'avantage de
+     rapidité soit négatif.)
+    </p><p>
+     Comme pour les sauvegardes de base, la manière la plus simple de créer
+     une sauvegarde à chaud autonome est d'utiliser l'outil <a class="xref" href="app-pgbasebackup.html" title="pg_basebackup"><span class="refentrytitle"><span class="application">pg_basebackup</span></span></a>. Si vous ajoutez le paramètre
+     <code class="literal">-X</code> au lancement de la sauvegarde, tout l'historique
+     des transactions nécessaire sera inclus automatiquement dans la
+     sauvegarde et vous n'aurez pas d'action supplémentaire à effectuer pour
+     restaurer votre sauvegarde.
+    </p></div><div class="sect3" id="COMPRESSED-ARCHIVE-LOGS"><div class="titlepage"><div><div><h4 class="title">25.3.7.2. Compression des fichiers archives <a href="#COMPRESSED-ARCHIVE-LOGS" class="id_link">#</a></h4></div></div></div><p>
+     Si la taille du stockage des archives est un problème, vous pouvez
+     utiliser <span class="application">gzip</span> pour compresser les fichiers
+     archives :
+
+     </p><pre class="programlisting">archive_command = 'gzip &lt; %p &gt; /mnt/server/archivedir/%f'</pre><p>
+
+     Vous aurez alors besoin d'utiliser <span class="application">gunzip</span>
+     pendant la restauration :
+
+     </p><pre class="programlisting">restore_command = 'gunzip &lt; /mnt/server/archivedir/%f.gz &gt; %p'</pre><p>
+    </p></div><div class="sect3" id="BACKUP-SCRIPTS"><div class="titlepage"><div><div><h4 class="title">25.3.7.3. Scripts <code class="varname">archive_command</code> <a href="#BACKUP-SCRIPTS" class="id_link">#</a></h4></div></div></div><p>
+
+     Nombreux sont ceux qui choisissent d'utiliser des scripts pour définir
+     leur <code class="varname">archive_command</code>, de sorte que leur
+     <code class="filename">postgresql.conf</code> semble très simple :
+
+     </p><pre class="programlisting">archive_command = 'local_backup_script.sh "%p" "%f"'</pre><p>
+
+     Utiliser un script séparé est conseillé à chaque fois qu'il est envisagé
+     d'utiliser plusieurs commandes pour le processus d'archivage. Ainsi,
+     toute la complexité est gérée dans le script qui peut être écrit dans un
+     langage de scripts populaires comme <span class="application">bash</span> ou
+     <span class="application">perl</span>.
+    </p><p>
+     Quelques exemples de besoins résolus dans un script :
+     </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+        copier des données vers un stockage distant ;
+       </p></li><li class="listitem"><p>
+        copier les journaux de transactions en groupe pour qu'ils soient
+        transférés toutes les trois heures plutôt qu'un à la fois ;
+       </p></li><li class="listitem"><p>
+        s'interfacer avec d'autres outils de sauvegarde et de
+        restauration ;
+       </p></li><li class="listitem"><p>
+        s'interfacer avec un outil de surveillance pour y renvoyer les
+        erreurs.
+       </p></li></ul></div><p>
+    </p><div class="tip"><h3 class="title">Astuce</h3><p>
+      Lors de l'utilisation d'un script pour le paramètre
+      <code class="varname">archive_command</code>, il est préférable d'activer <a class="xref" href="runtime-config-logging.html#GUC-LOGGING-COLLECTOR">logging_collector</a>. Tout message écrit sur
+      <span class="systemitem">stderr</span> à partir du script apparaîtra ensuite
+      dans les traces du serveur, permettant un diagnostic facilité de
+      configurations complexes en cas de problème.
+     </p></div></div></div><div class="sect2" id="CONTINUOUS-ARCHIVING-CAVEATS"><div class="titlepage"><div><div><h3 class="title">25.3.8. Restrictions <a href="#CONTINUOUS-ARCHIVING-CAVEATS" class="id_link">#</a></h3></div></div></div><p>
+    Au moment où ces lignes sont écrites, plusieurs limitations de la
+    technique d'archivage en continu sont connues. Elles seront probablement
+    corrigées dans une prochaine version :
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Si une commande <a class="link" href="sql-createdatabase.html" title="CREATE DATABASE"><code class="command">CREATE
+       DATABASE</code></a> est exécutée alors qu'une sauvegarde est en
+       cours, et que la base de données modèle utilisée par l'instruction
+       <code class="command">CREATE DATABASE</code> est à son tour modifiée pendant la
+       sauvegarde, il est possible que la récupération propage ces
+       modifications dans la base de données créée. Pour éviter ce risque,
+       il est préférable de ne pas modifier les bases de données modèle lors
+       d'une sauvegarde de base.
+      </p></li><li class="listitem"><p>
+       Les commandes <a class="link" href="sql-createtablespace.html" title="CREATE TABLESPACE"><code class="command">CREATE
+       TABLESPACE</code></a> sont tracées dans les journaux de
+       transactions avec le chemin absolu et sont donc rejouées en tant que
+       créations de <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span> suivant le
+       même chemin absolu. Cela n'est pas forcément souhaitable si le
+       journal de transactions est rejoué sur une autre machine. De plus, cela peut s'avérer
+       dangereux même lorsque le journal de transactions est rejoué sur la même machine,
+       mais dans un répertoire différent : la ré-exécution surcharge
+       toujours le contenu du <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span>
+       original. Pour éviter de tels problèmes, la meilleure solution
+       consiste à effectuer une nouvelle sauvegarde de la base après la
+       création ou la suppression de
+       <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span>.
+      </p></li></ul></div><p>
+   </p><p>
+    De plus, il faut garder à l'esprit que le format actuel des journaux de
+    transactions est extrêmement volumineux car il inclut de nombreuses
+    images complètes des blocs disques. Ces images de bloc sont conçues pour
+    supporter la restauration après un arrêt brutal, puisqu'il peut être
+    nécessaire de corriger des blocs disque partiellement écrits. En fonction
+    du matériel et des logiciels composant le système, le risque d'écriture
+    partielle peut être suffisamment faible pour être ignoré, auquel cas le
+    volume total des traces archivées peut être considérablement réduit par
+    la désactivation des images de bloc à l'aide du paramètre <a class="xref" href="runtime-config-wal.html#GUC-FULL-PAGE-WRITES">full_page_writes</a>(lire les notes et avertissements dans
+    <a class="xref" href="wal.html" title="Chapitre 28. Fiabilité et journaux de transaction">Chapitre 28</a> avant de le faire). Désactiver les images de bloc
+    n'empêche pas l'utilisation des traces pour les opérations PITR. Un piste
+    éventuelle de développement futur consiste à compresser les données des
+    journaux de transactions archivés en supprimant les copies inutiles de
+    blocs même si <code class="varname">full_page_writes</code> est actif. Entre temps,
+    les administrateurs peuvent souhaiter réduire le nombre d'images de blocs
+    inclus dans les journaux de transactions en augmentant autant que
+    possible les paramètres d'intervalle entre les checkpoints.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/continuous-archiving.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+</html>

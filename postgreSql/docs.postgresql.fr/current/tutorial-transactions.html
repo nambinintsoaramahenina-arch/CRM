@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/tutorial-transactions.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:24 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>3.4. Transactions</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tutorial-fk.html" title="3.3. Clés étrangères" /><link rel="next" href="tutorial-window.html" title="3.5. Fonctions de fenêtrage" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/tutorial-transactions.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/tutorial-transactions.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/tutorial-transactions.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/tutorial-transactions.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/tutorial-transactions.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/tutorial-transactions.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/tutorial-transactions.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/tutorial-transactions.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/tutorial-transactions.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/tutorial-transactions.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/tutorial-transactions.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/tutorial-transactions.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/tutorial-transactions.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/tutorial-transactions.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/tutorial-transactions.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/tutorial-transactions.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/tutorial-transactions.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/tutorial-transactions.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/tutorial-transactions.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/tutorial-transactions.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/tutorial-transactions.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="tutorial.html">Tutoriel</a></span> » <span class="breadcrumb-link"><a href="tutorial-advanced.html">Fonctionnalités avancées</a></span> » <span class="breadcrumb-node">Transactions</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tutorial-fk.html" title="3.3. Clés étrangères">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="tutorial-advanced.html" title="Chapitre 3. Fonctionnalités avancées">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial-window.html" title="3.5. Fonctions de fenêtrage">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">3.3. Clés étrangères </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 3.5. Fonctions de fenêtrage</td></tr></table></div><div class="sect1" id="TUTORIAL-TRANSACTIONS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">3.4. Transactions <a href="#TUTORIAL-TRANSACTIONS" class="id_link">#</a></h2></div></div></div><a id="id-1.4.5.5.2" class="indexterm"></a><p>
+    Les <em class="firstterm">transactions</em> sont un concept fondamental de tous
+    les systèmes de bases de données. Une transaction assemble plusieurs étapes
+    en une seule opération tout ou rien. Les états intermédiaires entre les
+    étapes ne sont pas visibles par les transactions concurrentes. De plus, si
+    un échec survient qui empêche le succès de la transaction, alors aucune des
+    étapes n'affecte la base de données.
+   </p><p>
+    Si l'on considère, par exemple, la base de données d'une banque qui
+    contient le solde de différents comptes clients et le solde total des
+    dépôts par branches et que l'on veut enregistrer un virement de 100
+    euros du compte d'Alice vers celui de Bob, les commandes SQL peuvent
+    ressembler à cela (après simplification) :
+
+</p><pre class="programlisting">UPDATE comptes SET balance = balance - 100.00
+    WHERE nom = 'Alice';
+UPDATE branches SET balance = balance - 100.00
+    WHERE nom = (SELECT nom_branche FROM comptes WHERE nom = 'Alice');
+UPDATE comptes SET balance = balance + 100.00
+    WHERE nom = 'Bob';
+UPDATE branches SET balance = balance + 100.00
+    WHERE nom = (SELECT nom_branche FROM comptes WHERE nom = 'Bob');</pre><p>
+   </p><p>
+    Ce ne sont pas les détails des commandes qui importent ici ; le point
+    important est la nécessité de plusieurs mises à jour séparées pour
+    accomplir cette opération assez simple. Les employés de la banque veulent
+    être assurés que, soit toutes les commandes sont effectuées, soit aucune ne
+    l'est. Il n'est pas envisageable que, suite à une erreur du système, Bob
+    reçoive 100 euros qui n'ont pas été débités du compte d'Alice. De la même
+    façon, Alice ne restera pas longtemps une cliente fidèle si elle est
+    débitée du montant sans que celui-ci ne soit crédité sur le compte de Bob.
+    Il est important de garantir que si quelque chose se passe mal, aucune des
+    étapes déjà exécutées n'est prise en compte. Le regroupement des mises à
+    jour au sein d'une <em class="firstterm">transaction</em> apporte cette
+    garantie. Une transaction est dite <em class="firstterm">atomique</em> :
+    du point de vue des autres transactions, elle passe complètement ou pas du
+    tout.
+   </p><p>
+    Il est également nécessaire de garantir qu'une fois la transaction terminée
+    et validée par la base de données, les transactions sont enregistrées
+    définitivement et ne peuvent être perdues, même si une panne survient peu
+    après. Ainsi, si un retrait d'argent est effectué par Bob, il ne faut
+    absolument pas que le débit de son compte disparaisse suite à une panne
+    survenant juste après son départ de la banque. Une base de données
+    transactionnelle garantit que toutes les mises à jour faites lors d'une
+    transaction sont stockées de manière persistante (c'est-à-dire sur disque)
+    avant que la transaction ne soit déclarée validée.
+   </p><p>
+    Une autre propriété importante des bases de données transactionnelles est
+    en relation étroite avec la notion de mises à jour atomiques : quand
+    plusieurs transactions sont lancées en parallèle, aucune d'entre elles ne
+    doit être capable de voir les modifications incomplètes effectuées par les
+    autres. Ainsi, si une transaction calcule le total de toutes les branches,
+    inclure le débit de la branche d'Alice sans le crédit de la branche de Bob,
+    ou vice-versa, est une véritable erreur. Les transactions doivent donc être
+    tout ou rien, non seulement pour leur effet persistant sur la base de
+    données, mais aussi pour leur visibilité au moment de leur exécution. Les
+    mises à jour faites jusque-là par une transaction ouverte sont invisibles
+    aux autres transactions jusqu'à la fin de celle-ci. À ce moment, toutes les
+    mises à jour deviennent simultanément visibles.
+   </p><p>
+    Sous <span class="productname">PostgreSQL</span>, une transaction est déclarée
+    en entourant les commandes SQL de la transaction par les commandes
+    <code class="command">BEGIN</code> et <code class="command">COMMIT</code>. La transaction
+    bancaire ressemble alors à ceci :
+
+</p><pre class="programlisting">BEGIN;
+UPDATE comptes SET balance = balance - 100.00
+    WHERE nom = 'Alice';
+-- etc etc
+COMMIT;</pre><p>
+   </p><p>
+    Si, au cours de la transaction, il est décidé de ne pas valider (peut-être
+    la banque s'aperçoit-elle que la balance d'Alice passe en négatif), la
+    commande <code class="command">ROLLBACK</code> peut être utilisée à la place de
+    <code class="command">COMMIT</code>. Toutes les mises à jour réalisées jusque-là sont
+    alors annulées.
+   </p><p>
+    En fait, <span class="productname">PostgreSQL</span> traite chaque instruction
+    SQL comme si elle était exécutée dans une transaction. En l'absence de
+    commande <code class="command">BEGIN</code> explicite, chaque instruction
+    individuelle se trouve implicitement entourée d'un <code class="command">BEGIN</code>
+    et (en cas de succès) d'un <code class="command">COMMIT</code>. Un groupe
+    d'instructions entourées par <code class="command">BEGIN</code> et
+    <code class="command">COMMIT</code> est parfois appelé <em class="firstterm">bloc
+    transactionnel</em>.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Quelques bibliothèques clientes lancent les commandes
+     <code class="command">BEGIN</code> et <code class="command">COMMIT</code> automatiquement.
+     L'utilisateur bénéficie alors des effets des blocs transactionnels sans
+     les demander. Vérifiez la documentation de l'interface que vous utilisez.
+    </p></div><p>
+    Il est possible d'augmenter la granularité du contrôle des instructions au
+    sein d'une transaction en utilisant des <em class="firstterm">points de
+    retournement</em> (<span class="foreignphrase"><em class="foreignphrase">savepoint</em></span>).
+    Ceux-ci permettent d'annuler des parties de la transaction tout en validant
+    le reste. Après avoir défini un point de retournement à l'aide de
+    <code class="command">SAVEPOINT</code>, les instructions exécutées depuis ce point
+    peuvent, au besoin, être annulées avec <code class="command">ROLLBACK TO</code>.
+    Toutes les modifications de la base de données effectuées par la
+    transaction entre le moment où le point de retournement a été défini et
+    celui où l'annulation est demandée sont annulées, mais les modifications
+    antérieures à ce point sont conservées.
+   </p><p>
+    Le retour à un point de retournement ne l'annule pas. Il reste défini et
+    peut donc être utilisé plusieurs fois. À l'inverse, lorsqu'il n'est plus
+    nécessaire de revenir à un point de retournement particulier, il peut être
+    relâché, ce qui permet de libérer des ressources système. Il faut savoir
+    toutefois que relâcher un point de retournement ou y revenir relâche tous
+    les points de retournement qui ont été définis après.
+   </p><p>
+    Tout ceci survient à l'intérieur du bloc de transaction, et n'est donc pas
+    visible par les autres sessions en cours sur la base de données. Si le
+    bloc est validé, et à ce moment-là seulement, toutes les actions validées
+    deviennent immédiatement visibles par les autres sessions, tandis que les
+    actions annulées ne le seront jamais.
+   </p><p>
+    Reconsidérant la base de données de la banque, on peut supposer vouloir
+    débiter le compte d'Alice de $100.00, somme à créditer sur le compte de Bob,
+    mais considérer plus tard que c'est le compte de Wally qu'il convient de
+    créditer. À l'aide des points de retournement, cela peut se dérouler
+    ainsi :
+
+</p><pre class="programlisting">BEGIN;
+UPDATE comptes SET balance = balance - 100.00
+    WHERE nom = 'Alice';
+SAVEPOINT mon_pointdesauvegarde;
+UPDATE comptes SET balance = balance + 100.00
+    WHERE nom = 'Bob';
+-- oups ... oublions ça et créditons le compte de Wally
+ROLLBACK TO mon_pointdesauvegarde;
+UPDATE comptes SET balance = balance + 100.00
+    WHERE nom = 'Wally';
+COMMIT;</pre><p>
+   </p><p>
+    Cet exemple est bien sûr très simplifié, mais de nombreux contrôles sont
+    réalisables au sein d'un bloc de transaction grâce à l'utilisation des
+    points de retournement. Qui plus est, <code class="command">ROLLBACK TO</code> est le
+    seul moyen de regagner le contrôle d'un bloc de transaction placé dans un
+    état d'annulation par le système du fait d'une erreur. C'est plus rapide
+    que de tout annuler pour tout recommencer.
+   </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/tutorial-transactions.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:24 GMT -->
+</html>

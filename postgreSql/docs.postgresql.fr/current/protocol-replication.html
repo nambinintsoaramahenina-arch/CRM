@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/protocol-replication.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:49 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>53.4. Protocole de réplication en flux</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="sasl-authentication.html" title="53.3. Authentification SASL" /><link rel="next" href="protocol-logical-replication.html" title="53.5. Protocole de réplication logique en flux" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/protocol-replication.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/protocol-replication.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/protocol-replication.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/protocol-replication.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/protocol-replication.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/protocol-replication.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/protocol-replication.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/protocol-replication.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/protocol-replication.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/protocol-replication.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/protocol-replication.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/protocol-replication.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/protocol-replication.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/protocol-replication.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/protocol-replication.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/protocol-replication.html">9.0</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/protocol-replication.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="protocol.html">Protocole Frontend/Backend</a></span> » <span class="breadcrumb-node">Protocole de réplication en flux</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="sasl-authentication.html" title="53.3. Authentification SASL">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="protocol.html" title="Chapitre 53. Protocole Frontend/Backend">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="protocol-logical-replication.html" title="53.5. Protocole de réplication logique en flux">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">53.3. Authentification SASL </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 53.5. Protocole de réplication logique en flux</td></tr></table></div><div class="sect1" id="PROTOCOL-REPLICATION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">53.4. Protocole de réplication en flux <a href="#PROTOCOL-REPLICATION" class="id_link">#</a></h2></div></div></div><p>
+   Pour initier une réplication en flux, le client envoie le paramètre
+   <code class="literal">replication</code> dans le message de démarrage. Une valeur
+   booléenne à <code class="literal">true</code> (ou <code class="literal">on</code>,
+   <code class="literal">yes</code>, <code class="literal">1</code>) indique au backend d'entrer
+   dans le mode walsender de réplication physique, dans lequel un petit ensemble
+   de commandes de réplication, affichées ci-dessous, peut être exécuté à la
+   place de requêtes SQL.
+  </p><p>
+   Passer <code class="literal">database</code> comme valeur du paramètre
+   <code class="literal">replication</code> instruit le backend à entrer en mode walsender
+   de réplication logique, se connectant à la base de données spécifiée par le
+   paramètre <code class="literal">dbname</code>. Dans le mode walsender de réplication
+   logique, les commandes de réplication affichées ci-dessous peuvent être
+   exécutées ainsi que des commandes SQL standards.
+  </p><p>
+   Dans les deux modes walsender, seul le protocole de requête simple peut
+   être utilisé.
+  </p><p>
+   Dans le but de tester des commandes de réplication, vous pouvez faire une
+   connexion de réplication via l'outil <span class="application">psql</span> ou tout
+   autre outil utilisant la bibliothèque <span class="application">libpq</span> avec
+   une chaîne de connexion incluant l'option <code class="literal">replication</code>, par
+   exemple :
+</p><pre class="programlisting">
+psql "dbname=postgres replication=database" -c "IDENTIFY_SYSTEM;"
+</pre><p>
+   Néanmoins, il est souvent plus utile d'utiliser
+   <a class="xref" href="app-pgreceivewal.html" title="pg_receivewal"><span class="refentrytitle"><span class="application">pg_receivewal</span></span></a> (pour la réplication physique) ou
+   <a class="xref" href="app-pgrecvlogical.html" title="pg_recvlogical"><span class="refentrytitle"><span class="application">pg_recvlogical</span></span></a> (pour la réplication logique).
+  </p><p>
+   Les commandes de réplication sont tracées dans les journaux applicatifs du
+   serveur quand <a class="xref" href="runtime-config-logging.html#GUC-LOG-REPLICATION-COMMANDS">log_replication_commands</a> est activé.
+  </p><p>
+   Les commandes acceptées en mode réplication sont :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt id="PROTOCOL-REPLICATION-IDENTIFY-SYSTEM"><span class="term"><code class="literal">IDENTIFY_SYSTEM</code>
+      <a id="id-1.10.6.9.7.1.1.1.2" class="indexterm"></a>
+     </span> <a href="#PROTOCOL-REPLICATION-IDENTIFY-SYSTEM" class="id_link">#</a></dt><dd><p>
+       Demande au serveur de s'identifier. Le serveur répond avec un ensemble de
+       résultats contenant une ligne composée de quatre champs :
+      </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">systemid</code> (<code class="type">text</code>)</span></dt><dd><p>
+          L'identifiant système unique de l'instance. Ceci peut être utilisé
+          pour vérifier que la sauvegarde utilisée pour initialiser le serveur
+          secondaire provient bien de la même instance.
+         </p></dd><dt><span class="term"><code class="literal">timeline</code> (<code class="type">int8</code>)</span></dt><dd><p>
+          Identifiant de timeline actuel. Aussi utile pour vérifier que le
+          serveur secondaire est cohérent avec le primaire.
+         </p></dd><dt><span class="term"><code class="literal">xlogpos</code> (<code class="type">text</code>)</span></dt><dd><p>
+          Emplacement actuel de vidage des journaux de transactions. Utile
+          pour obtenir un emplacement connu dans les journaux de transactions
+          où commencer le flux.
+         </p></dd><dt><span class="term"><code class="literal">dbname</code> (<code class="type">text</code>)</span></dt><dd><p>
+          Base de données où se connecter, ou NULL.
+         </p></dd></dl></div></dd><dt id="PROTOCOL-REPLICATION-SHOW"><span class="term"><code class="literal">SHOW</code> <em class="replaceable"><code>nom</code></em>
+      <a id="id-1.10.6.9.7.1.2.1.3" class="indexterm"></a>
+     </span> <a href="#PROTOCOL-REPLICATION-SHOW" class="id_link">#</a></dt><dd><p>
+       Demande au serveur d'envoyer la configuration actuelle d'un paramètre.
+       C'est similaire à la commande SQL <a class="xref" href="sql-show.html" title="SHOW"><span class="refentrytitle">SHOW</span></a>.
+      </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><em class="replaceable"><code>nom</code></em></span></dt><dd><p>
+          Le nom d'un paramètre. Les paramètres disponibles sont documentées
+          dans <a class="xref" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Chapitre 19</a>.
+         </p></dd></dl></div></dd><dt id="PROTOCOL-REPLICATION-TIMELINE-HISTORY"><span class="term"><code class="literal">TIMELINE_HISTORY</code> <em class="replaceable"><code>tli</code></em>
+      <a id="id-1.10.6.9.7.1.3.1.3" class="indexterm"></a>
+     </span> <a href="#PROTOCOL-REPLICATION-TIMELINE-HISTORY" class="id_link">#</a></dt><dd><p>
+       Demande au serveur d'envoyer le fichier d'historique des timelines pour
+       la timeline <em class="replaceable"><code>tli</code></em>. Le serveur
+       répond avec un ensemble de résultat d'une seule ligne comprenant deux
+       champs. Bien que les champs soient du type <code class="type">text</code>, elles
+       renvoient réellement des octets bruts sans conversion d'encodage :
+      </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">filename</code> (<code class="type">text</code>)</span></dt><dd><p>
+          Nom du fichier d'historique des timelines, par exemple
+          <code class="filename">00000002.history</code>.
+         </p></dd><dt><span class="term"><code class="literal">content</code> (<code class="type">text</code>)</span></dt><dd><p>
+          Contenu du fichier d'historique des timelines.
+         </p></dd></dl></div></dd><dt id="PROTOCOL-REPLICATION-CREATE-REPLICATION-SLOT"><span class="term"><code class="literal">CREATE_REPLICATION_SLOT</code> <em class="replaceable"><code>nom_slot</code></em> [ <code class="literal">TEMPORARY</code> ] { <code class="literal">PHYSICAL</code> | <code class="literal">LOGICAL</code> <em class="replaceable"><code>plugin_sortie</code></em> } [ ( <em class="replaceable"><code>option</code></em> [, ...] ) ]
+      <a id="id-1.10.6.9.7.1.4.1.8" class="indexterm"></a>
+     </span> <a href="#PROTOCOL-REPLICATION-CREATE-REPLICATION-SLOT" class="id_link">#</a></dt><dd><p>
+       Crée un slot de réplication physique ou logique. Voir
+       <a class="xref" href="warm-standby.html#STREAMING-REPLICATION-SLOTS" title="26.2.6. Slots de réplication">Section 26.2.6</a> pour plus d'informations
+       sur les slots de réplication.
+      </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><em class="replaceable"><code>nom_slot</code></em></span></dt><dd><p>
+          Le nom du slot à créer. Ce doit être un nom valide pour un slot de
+          réplication (voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION-SLOTS-MANIPULATION" title="26.2.6.1. Requêter et manipuler des slots de réplication">Section 26.2.6.1</a>).
+         </p></dd><dt><span class="term"><em class="replaceable"><code>output_plugin</code></em></span></dt><dd><p>
+          Le nom du plugin de sortie utilisé pour le décodage logique
+          (voir <a class="xref" href="logicaldecoding-output-plugin.html" title="47.6. Plugins de sortie de décodage logique">Section 47.6</a>).
+         </p></dd><dt><span class="term"><code class="literal">TEMPORARY</code></span></dt><dd><p>
+          Indique que ce slot de réplication est un slot temporaire. Les slots
+          temporaires ne sont pas sauvegardés sur disque et sont automatiquement
+          supprimés en cas d'erreur ou quand la session est terminée.
+         </p></dd></dl></div><p>Les options suivantes sont acceptées :</p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">TWO_PHASE [ <em class="replaceable"><code>boolean</code></em> ]</code></span></dt><dd><p>
+          Si true, ce slot de réplication logique accepte le décodage des
+          validations en deux phases. Avec cette option, les commandes relatives
+          au 2PC telles que <code class="literal">PREPARE TRANSACTION</code>,
+          <code class="literal">COMMIT PREPARED</code> et <code class="literal">ROLLBACK
+          PREPARED</code> sont décodées et transmises. La transaction sera
+          décodée et transmise au moment du <code class="literal">PREPARE
+          TRANSACTION</code>. La valeur par défaut est false.
+         </p></dd><dt><span class="term"><code class="literal">RESERVE_WAL [ <em class="replaceable"><code>boolean</code></em> ]</code></span></dt><dd><p>
+          Si true, ce slot de réplication physique réserve immédiatement les
+          <acronym class="acronym">WAL</acronym>. Sinon, les <acronym class="acronym">WAL</acronym> sont
+          seulement réservés à la connexion d'un client de réplication en flux.
+          La valeur par défaut est false.
+         </p></dd><dt><span class="term"><code class="literal">SNAPSHOT { 'export' | 'use' | 'nothing' }</code></span></dt><dd><p>
+          Décide ce qu'il faut faire du snapshot créé lors de l'initialisation
+          du slot logique. <code class="literal">'export'</code>, qui est la valeur par
+          défaut, exportera le snapshot à utiliser dans d'autres sessions. Cette
+          option ne peut pas être utilisée à l'intérieur d'une transaction.
+          <code class="literal">'use'</code> utilisera le snapshot pour la transaction
+          courante exécutant la commande. Cette option doit être utilisée dans
+          une transaction, et <code class="literal">CREATE_REPLICATION_SLOT</code> doit
+          être la première commande exécutée dans cette transaction. Enfin,
+          <code class="literal">'nothing'</code> utilisera uniquement le snapshot pour le
+          décodage logique comme d'habitude mais ne fera rien de plus avec.
+         </p></dd><dt><span class="term"><code class="literal">FAILOVER [ <em class="replaceable"><code>boolean</code></em> ]</code></span></dt><dd><p>
+          Si true, le slot est activé pour être synchronisé vers les
+          serveurs secondaires, pour que la réplication logique puisse
+          continuer après une bascule de type failover. La valeur par défaut
+          est false.
+         </p></dd></dl></div><p>
+       En réponse à cette commande, le serveur enverra un ensemble de résultat
+       d'une ligne contenant les champs suivants :
+
+       </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">slot_name</code> (<code class="type">text</code>)</span></dt><dd><p>
+           Le nom du slot de réplication nouvellement créé.
+          </p></dd><dt><span class="term"><code class="literal">consistent_point</code> (<code class="type">text</code>)</span></dt><dd><p>
+           L'emplacement dans les WAL à partir duquel le slot devient cohérent.
+           C'est l'emplacement le plus proche à partir duquel le flux peut
+           commencer sur ce slot de réplication.
+          </p></dd><dt><span class="term"><code class="literal">snapshot_name</code> (<code class="type">text</code>)</span></dt><dd><p>
+           L'identifiant du snapshot exporté par la commande. Le snapshot est
+           valide jusqu'à l'exécution d'une nouvelle commande sur cette
+           connexion ou jusqu'à la fermeture de la connexion de réplication.
+           NULL si le slot créé est physique.
+          </p></dd><dt><span class="term"><code class="literal">output_plugin</code> (<code class="type">text</code>)</span></dt><dd><p>
+           Le nom du plugin de sortie utilisé par le slot de réplication
+           nouvellement créé. NULL si le slot créé est physique.
+          </p></dd></dl></div><p>
+      </p></dd><dt id="PROTOCOL-REPLICATION-CREATE-REPLICATION-SLOT-LEGACY"><span class="term"><code class="literal">CREATE_REPLICATION_SLOT</code> <em class="replaceable"><code>slot_name</code></em> [ <code class="literal">TEMPORARY</code> ] { <code class="literal">PHYSICAL</code> [ <code class="literal">RESERVE_WAL</code> ] | <code class="literal">LOGICAL</code> <em class="replaceable"><code>output_plugin</code></em> [ <code class="literal">EXPORT_SNAPSHOT</code> | <code class="literal">NOEXPORT_SNAPSHOT</code> | <code class="literal">USE_SNAPSHOT</code> | <code class="literal">TWO_PHASE</code> ] }
+     </span> <a href="#PROTOCOL-REPLICATION-CREATE-REPLICATION-SLOT-LEGACY" class="id_link">#</a></dt><dd><p>
+       Pour la compatibilité avec les anciennes versions, cette syntaxe
+       alternative pour <code class="literal">CREATE_REPLICATION_SLOT</code> est toujours
+       acceptée.
+      </p></dd><dt id="PROTOCOL-REPLICATION-ALTER-REPLICATION-SLOT"><span class="term"><code class="literal">ALTER_REPLICATION_SLOT</code> <em class="replaceable"><code>nom_slot</code></em> ( <em class="replaceable"><code>option</code></em> [, ...] )
+      <a id="id-1.10.6.9.7.1.6.1.4" class="indexterm"></a>
+     </span> <a href="#PROTOCOL-REPLICATION-ALTER-REPLICATION-SLOT" class="id_link">#</a></dt><dd><p>
+       Modifie la définition d'un slot de réplication. Voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION-SLOTS" title="26.2.6. Slots de réplication">Section 26.2.6</a> pour plus d'informations sur
+       les slots de réplication. Cette commande accepte actuellement
+       uniquement les slots de réplication logique.
+      </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><em class="replaceable"><code>slot_name</code></em></span></dt><dd><p>
+          Le nom du slot à modifier. Doit être un nom valide de slot de
+          réplication (voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION-SLOTS-MANIPULATION" title="26.2.6.1. Requêter et manipuler des slots de réplication">Section 26.2.6.1</a>).
+         </p></dd></dl></div><p>Les options suivants sont acceptées :</p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">FAILOVER [ <em class="replaceable"><code>boolean</code></em> ]</code></span></dt><dd><p>
+          Si true, le slot est activé pour être synchronisé vers les serveurs
+          secondaires pour que la réplication logique puisse continuer après
+          une bascule de type failover.
+         </p></dd></dl></div></dd><dt id="PROTOCOL-REPLICATION-READ-REPLICATION-SLOT"><span class="term"><code class="literal">READ_REPLICATION_SLOT</code> <em class="replaceable"><code>nom_slot</code></em>
+      <a id="id-1.10.6.9.7.1.7.1.3" class="indexterm"></a>
+     </span> <a href="#PROTOCOL-REPLICATION-READ-REPLICATION-SLOT" class="id_link">#</a></dt><dd><p>
+       Lit certaines informations associées avec un slot de réplication.
+       Renvoie une ligne avec des valeurs <code class="literal">NULL</code> si le slot de
+       réplication n'existe pas. Cette commande est actuellement uniquement
+       acceptée pour les slots de réplication physique.
+      </p><p>
+       En réponse à cette commande, le serveur renverra un ensemble de
+       résultats d'une ligne, contenant les champs suivants :
+       </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">slot_type</code> (<code class="type">text</code>)</span></dt><dd><p>
+           Le type du slot de réplication, soit <code class="literal">physical</code>
+           soit <code class="literal">NULL</code>.
+          </p></dd><dt><span class="term"><code class="literal">restart_lsn</code> (<code class="type">text</code>)</span></dt><dd><p>
+           Le <code class="literal">restart_lsn</code> du slot de réplication.
+          </p></dd><dt><span class="term"><code class="literal">restart_tli</code> (<code class="type">int8</code>)</span></dt><dd><p>
+           L'identifiant de timeline associé avec <code class="literal">restart_lsn</code>,
+           suivant l'historique actuelle des timelines.
+          </p></dd></dl></div><p>
+      </p></dd><dt id="PROTOCOL-REPLICATION-START-REPLICATION"><span class="term"><code class="literal">START_REPLICATION</code> [ <code class="literal">SLOT</code> <em class="replaceable"><code>slot_name</code></em> ] [ <code class="literal">PHYSICAL</code> ] <em class="replaceable"><code>XXX/XXX</code></em> [ <code class="literal">TIMELINE</code> <em class="replaceable"><code>tli</code></em> ]
+      <a id="id-1.10.6.9.7.1.8.1.8" class="indexterm"></a>
+     </span> <a href="#PROTOCOL-REPLICATION-START-REPLICATION" class="id_link">#</a></dt><dd><p>
+       Demande au serveur de commencer le flux de WAL, en commençant à
+       l'emplacement <em class="replaceable"><code>XXX/XXX</code></em>.  Si
+       l'option <code class="literal">TIMELINE</code> est spécifiée, le flux commence sur
+       la timeline <em class="replaceable"><code>tli</code></em> ; sinon
+       la timeline actuelle du serveur est sélectionnée. Le serveur peut
+       répondre avec une erreur, par exemple si la section demandée de WAL a
+       déjà été recyclée. En cas de succès, le serveur répond avec un message
+       CopyBothResponse, puis commence le flux de WAL vers le client.
+      </p><p>
+       Si un nom de slot est fourni via <em class="replaceable"><code>slot_name</code></em>, il sera mis à jour au fur et à
+       mesure de la progression de la réplication pour que le serveur se
+       rappelle des segments WAL et, si <code class="varname">hot_standby_feedback</code>
+       vaut <code class="literal">on</code>, des transactions toujours nécessaires pour le
+       secondaire.
+      </p><p>
+       If the client requests a timeline that's not the latest but is part of
+       the history of the server, the server will stream all the WAL on that
+       timeline starting from the requested start point up to the point where
+       the server switched to another timeline. If the client requests
+       streaming at exactly the end of an old timeline, the server skips COPY
+       mode entirely.
+      </p><p>
+       Après le flux de tous les WAL d'une timeline qui n'est pas la dernière,
+       le serveur terminera le flux en sortant du mode COPY. Quand le client
+       reconnait cette situation en quittant lui aussi le mode COPY, le serveur
+       envoie un ensemble de résultats d'une ligne et de deux colonnes,
+       indiquant la prochaine timeline dans l'historique du serveur. La première
+       colonne est l'identifiant de la prochaine timeline (type
+       <code class="type">int8</code>), et la deuxième colonne est l'emplacement des WAL où
+       la bascule a eu lieu (type <code class="type">text</code>). Habituellement, la
+       position de bascule est la fin du WAL en cours de flux, mais il existe
+       des cas particuliers où le serveur peut envoyer certains WAL de
+       l'ancienne timeline qu'il n'a pas encore rejoué avant la promotion.
+       Enfin, le serveur envoie deux messages CommandComplete (un qui termine le
+       CopyData et l'autre qui termine le <code class="literal">START_REPLICATION</code>
+       lui-même), et est prêt à accepter une nouvelle commande.
+      </p><p>
+       Les données WAL sont envoyées sous la forme d'une série de messages
+       CopyData ;
+       voir <a class="xref" href="protocol-message-types.html" title="53.6. Types de données des messages">Section 53.6</a> et <a class="xref" href="protocol-message-formats.html" title="53.7. Formats de message">Section 53.7</a> pour les détails.
+       (Ceci permet le mélange d'autres informations ; en
+       particulier, le serveur peut envoyer un message ErrorResponse s'il
+       rencontre un échec après le début du flux.) La charge de chaque message
+       CopyData du serveur vers le client contient un message sur un des formats
+       suivants :
+      </p><div class="variablelist"><dl class="variablelist"><dt id="PROTOCOL-REPLICATION-XLOGDATA"><span class="term">XLogData (B)</span> <a href="#PROTOCOL-REPLICATION-XLOGDATA" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('w')</span></dt><dd><p>
+             Identifie le message comme des données WAL.
+            </p></dd><dt><span class="term">Int64</span></dt><dd><p>
+             Le début des données WAL dans ce message.
+            </p></dd><dt><span class="term">Int64</span></dt><dd><p>
+             La fin actuelle des WAL sur le serveur.
+            </p></dd><dt><span class="term">Int64</span></dt><dd><p>
+             L'horloge système du serveur au moment de la transmission,
+             en microsecondes depuis le 1er janvier 2000 à minuit.
+            </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+             Une section du flux de données WAL.
+            </p><p>
+             Un enregistrement WAL seul n'est jamais divisé en deux messages
+             XLogData. Quand un enregistrement WAL arrive sur une limite de
+             page d'un WAL et est, de ce fait, déjà divisé en utilisant les
+             enregistrements de continuité, il peut être divisé sur la limite de
+             la page. Autrement dit, le premier enregistrement WAL principal et
+             ses enregistrements de continuité peuvent être envoyés dans
+             différents messages XLogData.
+            </p></dd></dl></div></dd><dt id="PROTOCOL-REPLICATION-PRIMARY-KEEPALIVE-MESSAGE"><span class="term">Primary keepalive message (B)</span> <a href="#PROTOCOL-REPLICATION-PRIMARY-KEEPALIVE-MESSAGE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('k')</span></dt><dd><p>
+             Identifie le message comme un keepalive de l'envoyeur.
+            </p></dd><dt><span class="term">Int64</span></dt><dd><p>
+             La fin actuelle du WAL sur le serveur.
+            </p></dd><dt><span class="term">Int64</span></dt><dd><p>
+             L'horloge système du serveur au moment de la transmission, en
+             microsecondes depuis le 1er janvier 2000.
+            </p></dd><dt><span class="term">Byte1</span></dt><dd><p>
+             1 signifie que le client devrait répondre à ce message aussi
+             vite que possible pour éviter une déconnexion par dépassement
+             de délai d'attente.
+            </p></dd></dl></div></dd></dl></div><p>
+       Le processus en réception peut envoyer des réponses à l'émetteur à tout
+       moment, en utilisant un des formats de message suivants (aussi dans la
+       charge d'un message CopyData) :
+      </p><div class="variablelist"><dl class="variablelist"><dt id="PROTOCOL-REPLICATION-STANDBY-STATUS-UPDATE"><span class="term">Standby status update (F)</span> <a href="#PROTOCOL-REPLICATION-STANDBY-STATUS-UPDATE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('r')</span></dt><dd><p>
+             Identifie le message comme mise à jour du statut du receveur.
+            </p></dd><dt><span class="term">Int64</span></dt><dd><p>
+             L'emplacement du dernier octet du WAL + 1 réçu et écrit sur
+             disque par le secondaire.
+            </p></dd><dt><span class="term">Int64</span></dt><dd><p>
+             L'emplacement du dernier octet du WAL + 1 vidé sur disque par le
+             secondaire.
+            </p></dd><dt><span class="term">Int64</span></dt><dd><p>
+             L'emplacement du dernier octet du WAL + 1 appliqué sur disque par le
+             secondaire.
+            </p></dd><dt><span class="term">Int64</span></dt><dd><p>
+             L'horloge système du serveur au moment de la transmission, en
+             microsecondes depuis le 1er janvier 2000.
+            </p></dd><dt><span class="term">Byte1</span></dt><dd><p>
+             Si 1, le client demande au serveur de répondre immédiatement à
+             ce message. Ceci peut être utilisé pour appeler le serveur,
+             pour tester si la connexion est toujours active.
+            </p></dd></dl></div></dd><dt id="PROTOCOL-REPLICATION-HOT-STANDBY-FEEDBACK-MESSAGE"><span class="term">Hot standby feedback message (F)</span> <a href="#PROTOCOL-REPLICATION-HOT-STANDBY-FEEDBACK-MESSAGE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('h')</span></dt><dd><p>
+             Identifie le message comme un message de retour d'informations du
+             serveur secondaire.
+            </p></dd><dt><span class="term">Int64</span></dt><dd><p>
+             L'horloge système du serveur au moment de la transmission, en
+             microsecondes depuis le 1er janvier 2000.
+            </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+             Le <code class="literal">xmin</code> global actuel du secondaire, excluant
+             le <code class="literal">catalog_xmin</code> de tout slot de réplication.
+             Si cette valeur et le <code class="literal">catalog_xmin</code> suivant
+             sont à 0, ceci est traité comme une notification que le retour
+             du secondaire ne sera plus envoyé sur cette connexion. Des
+             messages ultérieurs différents de zéro pourraient ré-initier le
+             mécanisme de retour.
+            </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+             Le nombre epoch du <code class="literal">xmin</code> global sur le
+             serveur secondaire.
+            </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+             Le <code class="literal">catalog_xmin</code> le plus bas de tout slot de
+             réplication sur le secondaire. Configuré à 0 si aucun
+             <code class="literal">catalog_xmin</code> n'existe sur le secondaire ou si
+             le retour d'informations du secondaire est en cours de
+             désactivation.
+            </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+             Le nombre epoch du <code class="literal">catalog_xmin</code> sur le secondaire.
+            </p></dd></dl></div></dd></dl></div></dd><dt id="PROTOCOL-REPLICATION-START-REPLICATION-SLOT-LOGICAL"><span class="term"><code class="literal">START_REPLICATION</code> <code class="literal">SLOT</code> <em class="replaceable"><code>slot_name</code></em> <code class="literal">LOGICAL</code> <em class="replaceable"><code>XXX/XXX</code></em> [ ( <em class="replaceable"><code>option_name</code></em> [ <em class="replaceable"><code>option_value</code></em> ] [, ...] ) ]</span> <a href="#PROTOCOL-REPLICATION-START-REPLICATION-SLOT-LOGICAL" class="id_link">#</a></dt><dd><p>
+       Demande au serveur de commencer le flux de WAL pour la réplication
+       logique, en commençant soit à la position WAL <em class="replaceable"><code>XXX/XXX</code></em> soit à la position
+       <code class="literal">confirmed_flush_lsn</code> du slot (voir <a class="xref" href="view-pg-replication-slots.html" title="52.19. pg_replication_slots">Section 52.19</a>), suivant la position la plus
+       grande. Ce comportement facilite la tache pour les clients qui évitent
+       ainsi de mettre à jour le statut LSN local quand il n'y a aucune donnée à
+       traiter. Cependant, commencer à un LSN différent de celui demandé
+       pourrait ne pas récupérer certaines types d'erreurs clients ; donc
+       le client pourrait souhaiter vérifier que
+       <code class="literal">confirmed_flush_lsn</code> correspond à ses attentes avant de
+       lancer <code class="literal">START_REPLICATION</code>.
+      </p><p>
+       Le serveur peut répondre avec une erreur, par exemple si le slot
+       n'existe pas. En cas de succès, le serveur répond avec un message
+       CopyBothResponse, puis lance le flux de WAL vers le client.
+      </p><p>
+       Le message à l'intérieur des messages CopyBothResponse sont du même
+       format documenté que pour <code class="literal">START_REPLICATION ...
+       PHYSICAL</code>, ceci incluant les deux messages CommandComplete.
+      </p><p>
+       Le plugin de sortie associé avec le slot sélectionné est utilisé pour
+       traiter la sortie pour le flux.
+      </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">SLOT</code> <em class="replaceable"><code>slot_name</code></em></span></dt><dd><p>
+          Le nom du slot pour lequel envoyer en flux les changements. Ce
+          paramètre est requis, et doit correspondre à un slot existant de
+          réplication logique créé avec
+          <code class="literal">CREATE_REPLICATION_SLOT</code> dans le mode
+          <code class="literal">LOGICAL</code> mode.
+         </p></dd><dt><span class="term"><em class="replaceable"><code>XXX/XXX</code></em></span></dt><dd><p>
+          L'emplacement dans le WAL à partir duquel commence le flot.
+         </p></dd><dt><span class="term"><em class="replaceable"><code>option_name</code></em></span></dt><dd><p>
+          Le nom d'une option passée au plugin de décodage logique du slot.
+          Voir <a class="xref" href="protocol-logical-replication.html" title="53.5. Protocole de réplication logique en flux">Section 53.5</a> pour les options
+          qui sont acceptées par le plugin standard (<code class="literal">pgoutput</code>).
+         </p></dd><dt><span class="term"><em class="replaceable"><code>option_value</code></em></span></dt><dd><p>
+          Valeur optionnelle, sous le forme d'une constante de type chaîne de
+          caractères, associée à l'option indiquée.
+         </p></dd></dl></div></dd><dt id="PROTOCOL-REPLICATION-DROP-REPLICATION-SLOT"><span class="term">
+      <code class="literal">DROP_REPLICATION_SLOT</code> <em class="replaceable"><code>slot_name</code></em> [<span class="optional"> <code class="literal">WAIT</code> </span>]
+      <a id="id-1.10.6.9.7.1.10.1.4" class="indexterm"></a>
+     </span> <a href="#PROTOCOL-REPLICATION-DROP-REPLICATION-SLOT" class="id_link">#</a></dt><dd><p>
+       Supprime un slot de réplication, libérant toute ressource réservée.
+      </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><em class="replaceable"><code>slot_name</code></em></span></dt><dd><p>
+          Le nom du slot à supprimer.
+         </p></dd><dt><span class="term"><code class="literal">WAIT</code></span></dt><dd><p>
+          Cette option force la commande à attendre si le slot est actif et
+          jusqu'à ce que ce dernier devienne inactif. Dans le cas contraire,
+          une erreur est levée (comportement par défaut).
+         </p></dd></dl></div></dd><dt id="PROTOCOL-REPLICATION-UPLOAD-MANIFEST"><span class="term">
+      <code class="literal">UPLOAD_MANIFEST</code>
+      <a id="id-1.10.6.9.7.1.11.1.2" class="indexterm"></a>
+     </span> <a href="#PROTOCOL-REPLICATION-UPLOAD-MANIFEST" class="id_link">#</a></dt><dd><p>
+       Charge un manifeste de sauvegarde pour préparer une sauvegarde
+       incrémentale.
+      </p></dd><dt id="PROTOCOL-REPLICATION-BASE-BACKUP"><span class="term"><code class="literal">BASE_BACKUP</code> [ ( <em class="replaceable"><code>option</code></em> [, ...] ) ]
+      <a id="id-1.10.6.9.7.1.12.1.3" class="indexterm"></a>
+     </span> <a href="#PROTOCOL-REPLICATION-BASE-BACKUP" class="id_link">#</a></dt><dd><p>
+       Demande au serveur le lancement d'une sauvegarde en flux. Le système
+       sera automatiquement placé en mode sauvegarde avant que la sauvegarde ne
+       commence, et sorti de ce mode quand la sauvegarde est terminée. Les options
+       suivantes sont acceptées :
+
+       </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">LABEL</code> <em class="replaceable"><code>'label'</code></em></span></dt><dd><p>
+           Configure le label de la sauvegarde. Si aucun label n'est donné, le
+           label <code class="literal">base backup</code> sera utilisé. Les règles de
+           guillemet pour le label sont les mêmes que pour une chaîne SQL
+           standard lorsque <a class="xref" href="runtime-config-compatible.html#GUC-STANDARD-CONFORMING-STRINGS">standard_conforming_strings</a>
+           vaut <code class="literal">on</code>.
+          </p></dd><dt><span class="term"><code class="literal">TARGET</code> <em class="replaceable"><code>'target'</code></em></span></dt><dd><p>
+           Indique au serveur où envoyer la sauvegarde. Si la cible est
+           <code class="literal">client</code> (ce qui est la valeur par défaut), les
+           données de la sauvegarde sont envoyées au client. Si elle vaut
+           <code class="literal">server</code>, les données de la sauvegarde sont écrites
+           sur le serveur dans le chemin indiqué par l'option
+           <code class="literal">TARGET_DETAIL</code>. Si elle vaut
+           <code class="literal">blackhole</code>, les données de la sauvegarde ne sont
+           pas envoyées ; elles sont simplement ignorées.
+          </p><p>
+           La cible <code class="literal">server</code> nécessite l'attribut
+           <code class="literal">SUPERUSER</code> ou être membre du rôle
+           <code class="literal">pg_write_server_files</code>.
+          </p></dd><dt><span class="term"><code class="literal">TARGET_DETAIL</code> <em class="replaceable"><code>'detail'</code></em></span></dt><dd><p>
+           Fournit des informations supplémentaires sur la cible de sauvegarde.
+          </p><p>
+           Actuellement, cette option peut seulement être utilisée quand la
+           cible de sauvegarde est <code class="literal">server</code>. Elle indique le
+           répertoire du serveur, répertoire dans lequel la sauvegarde sera
+           écrite.
+          </p></dd><dt><span class="term"><code class="literal">PROGRESS [ <em class="replaceable"><code>boolean</code></em> ]</code></span></dt><dd><p>
+           Si configuré à true, réclame des informations nécessaires pour
+           générer un rapport de progression. Cela enverra une taille
+           approximative dans l'en-tête de chaque tablespace, qui peut être
+           utilisé pour calculer le reste du flux. Le calcul se fait en
+           énumérant toutes les tailles de fichier avant que le transfert ne
+           commence, et cela pourrait avoir un impact négatif sur les
+           performances. En particulier, cela pourrait prendre du temps avant
+           que les premières données ne soient envoyées. Comme les fichiers de
+           la base peuvent évoluer pendant la sauvegarde, la taille n'est
+           qu'approximative, et pourrait soit augmenter soit diminuer entre le
+           moment de l'approximation et celui de l'envoi des fichiers. La valeur
+           par défaut est false.
+          </p></dd><dt><span class="term"><code class="literal">CHECKPOINT { 'fast' | 'spread' }</code></span></dt><dd><p>
+           Configure le type de checkpoint à réaliser au début de la
+           sauvegarde. La valeur par défaut est <code class="literal">spread</code>.
+          </p></dd><dt><span class="term"><code class="literal">WAL [ <em class="replaceable"><code>boolean</code></em> ]</code></span></dt><dd><p>
+           Si configuré à true, inclut les segments WAL nécessaires dans la
+           sauvegarde. Cela inclura tous les fichiers entre le début et la fin
+           de la sauvegarde, et ils seront placés dans le répertoire
+           <code class="filename">pg_wal</code> du répertoire principal. La valeur par
+           défaut est false.
+          </p></dd><dt><span class="term"><code class="literal">WAIT [ <em class="replaceable"><code>boolean</code></em> ]</code></span></dt><dd><p>
+           Si configuré à true, la sauvegarde attendra jusqu'à ce que le dernier
+           segment WAL requis soit archivé ou émettra un message d'avertissement
+           si l'archivage des journaux de transactions n'est pas activé. Si
+           false, la sauvegarde n'attendra pas et ne préviendra pas, laissant le
+           client responsable de la vérification de la disponibilité du dernier
+           segment WAL. La valeur par défaut est false.
+          </p></dd><dt><span class="term"><code class="literal">COMPRESSION</code> <em class="replaceable"><code>'method'</code></em></span></dt><dd><p>
+           Demande au serveur de compresser la sauvegarde en utilisant la
+           méthode indiquée.  Actuellement, les méthodes acceptées sont
+           <code class="literal">gzip</code>, <code class="literal">lz4</code> et
+           <code class="literal">zstd</code>.
+          </p></dd><dt><span class="term"><code class="literal">COMPRESSION_DETAIL</code> <em class="replaceable"><code>detail</code></em></span></dt><dd><p>
+           Donne les détails sur la méthode de compression choisie. Ceci devrait
+           être utilisé en conjonction avec l'option
+           <code class="literal">COMPRESSION</code>. Si la valeur est un entier, elle
+           indique le niveau de compression. Sinon, elle peut être une liste
+           d'éléments séparés par des virgules, chaque élément étant de la forme
+           <em class="replaceable"><code>motclé</code></em> ou <em class="replaceable"><code>motclé=valeur</code></em>.
+           Actuellement, les mots clés acceptés sont <code class="literal">level</code>,
+           <code class="literal">long</code> et <code class="literal">workers</code>.
+          </p><p>
+           Le mot clé <code class="literal">level</code> configure le niveau de
+           compression. Pour <code class="literal">gzip</code>, le niveau de compression
+           devrait être un entier compris entre <code class="literal">1</code> et
+           <code class="literal">9</code> (par défaut
+           <code class="literal">Z_DEFAULT_COMPRESSION</code> ou <code class="literal">-1</code>),
+           pour <code class="literal">lz4</code> un entier compris entre 1 et 12 (par
+           défaut <code class="literal">0</code> pour le mode de compression rapide), et
+           pour <code class="literal">zstd</code> un entier compris entre
+           <code class="literal">ZSTD_minCLevel()</code> (habituellement
+           <code class="literal">-131072</code>) et <code class="literal">ZSTD_maxCLevel()</code>
+           (habituellement <code class="literal">22</code>), (par défaut
+           <code class="literal">ZSTD_CLEVEL_DEFAULT</code> ou <code class="literal">3</code>).
+          </p><p>
+           Le mot clé <code class="literal">long</code> active le mode de correspondance
+           longue distance pour un ratio de compression amélioré, aux dépends
+           d'une utilisation plus forte de la mémoire. Le mode longue distance
+           est acceptée uniquement pour <code class="literal">zstd</code>.
+          </p><p>
+           Le mot clé <code class="literal">workers</code> configure le nombre de threads
+           devant être utilisé pour paralléliser la compression. Cette
+           fonctionnalité n'est disponible qu'avec <code class="literal">zstd</code>.
+          </p></dd><dt><span class="term"><code class="literal">MAX_RATE</code> <em class="replaceable"><code>rate</code></em></span></dt><dd><p>
+           Limite la quantité maximale de données transférées du serveur au
+           client par unité de temps. L'unité attendue est du Ko par seconde.
+           Si cette option est indiqué, la valeur doit être soit égale à zéro,
+           soit être compris dans l'intervalle allant de 32 ko à 1 Go (valeurs
+           inclues). Si un zéro est passé ou si l'option n'est pas indiquée,
+           aucune restriction n'est imposée pendant le transfert.
+          </p></dd><dt><span class="term"><code class="literal">TABLESPACE_MAP [ <em class="replaceable"><code>boolean</code></em> ]</code></span></dt><dd><p>
+           Si true, inclut des informations sur les liens symboliques présents
+           dans le répertoire <code class="filename">pg_tblspc</code> dans un fichier
+           nommé <code class="filename">tablespace_map</code>. Le fichier de cartographie
+           des tablespaces inclut, pour chaque tablespace, le nom du lien
+           symbolique dans le répertoire <code class="filename">pg_tblspc/</code> et le
+           chemin complet de ce lien symbolique.  La valeur par défaut est
+           false.
+          </p></dd><dt><span class="term"><code class="literal">VERIFY_CHECKSUMS [ <em class="replaceable"><code>boolean</code></em> ]</code></span></dt><dd><p>
+           Si true, les sommes de contrôle sont vérifiées lors d'une sauvegarde
+           si elles sont activées. Si false, elles sont ignorées. La valeur par
+           défaut est true.
+          </p></dd><dt><span class="term"><code class="literal">MANIFEST</code> <em class="replaceable"><code>manifest_option</code></em></span></dt><dd><p>
+           Quand cette option est indiquée avec une valeur
+           <code class="literal">yes</code> ou <code class="literal">force-encode</code>, un
+           manifest de sauvegarde est créé et envoyé avec la sauvegarde. Le
+           manifeste est une liste de chaque fichier présent dans la sauvegarde
+           à l'exception des fichiers WAL qui y sont inclus. Il enregistre aussi
+           la taille, l'horodatage de la dernière modification et en option une
+           somme de contrôle pour chaque fichier. Une valeur de
+           <code class="literal">force-encode</code> force tous les noms de fichier à être
+           codé en hexadécimal ; sinon ce type d'encodage est réalisé
+           seulement pour les fichiers dont le nom est une séquence d'octets non
+           UTF8. <code class="literal">force-encode</code> existe principalement pour des
+           tests, pour être sûr que les clients qui lisent le manifeste de
+           sauvegarde puissent gérer ce cas. Pour la compatibilité avec les
+           anciennes versions, la valeur par défaut est <code class="literal">MANIFEST
+           'no'</code>.
+          </p></dd><dt><span class="term"><code class="literal">MANIFEST_CHECKSUMS</code> <em class="replaceable"><code>checksum_algorithm</code></em></span></dt><dd><p>
+           Précise l'algorithme des sommes de contrôle, à appliquer à chaque
+           fichier inclus dans le manifeste de sauvegarde. Actuellement, les
+           seuls algorithmes disponibles sont <code class="literal">NONE</code>,
+           <code class="literal">CRC32C</code>, <code class="literal">SHA224</code>,
+           <code class="literal">SHA256</code>, <code class="literal">SHA384</code> et
+           <code class="literal">SHA512</code>.  La valeur par défaut est
+           <code class="literal">CRC32C</code>.
+          </p></dd><dt><span class="term"><code class="literal">INCREMENTAL</code></span></dt><dd><p>
+           Réclame une sauvegarde incrémentale. La commande
+           <code class="literal">UPLOAD_MANIFEST</code> doit être exécutée avant de
+           lancer une sauvegarde de base avec cette option.
+          </p></dd></dl></div><p>
+      </p><p>
+       Quand la sauvegarde est lancée, le serveur enverra tout d'abord deux
+       ensembles de résultats ordinaires, suivis par un ou plusieurs résultats
+       CopyOutResponse.
+      </p><p>
+       Le premier ensemble de résultat contient la position de départ de la
+       sauvegarde, sur une liste ligne comprenant deux colonnes. La première
+       colonne contient la position de départ donné dans un format correspondant
+       à XLogRecPtr, et la deuxième colonne contient l'identifiant de la
+       timeline correspondante.
+      </p><p>
+       Le deuxième ensemble de résultat a une ligne pour chaque tablespace.
+       Voici la liste des champs de cette ligne :
+
+       </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">spcoid</code> (<code class="type">oid</code>)</span></dt><dd><p>
+           L'OID du tablespace, ou NULL s'il s'agit du répertoire principal.
+          </p></dd><dt><span class="term"><code class="literal">spclocation</code> (<code class="type">text</code>)</span></dt><dd><p>
+           Le chemin complet du répertoire du tablespace, ou NULL si c'est le
+           répertoire principal.
+          </p></dd><dt><span class="term"><code class="literal">size</code> (<code class="type">int8</code>)</span></dt><dd><p>
+           La taille approximative du tablespace, en kilooctets (1024 octets),
+           si le rapport de progression a été demandé ; sinon NULL.
+          </p></dd></dl></div><p>
+      </p><p>
+       Après le deuxième ensemble de résultats, un message CopyOutResponse sera
+       envoyé. La chaque de chaque message CopyData contiendra un message dans
+       un des formats suivants :
+      </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">new archive (B)</span></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('n')</span></dt><dd><p>
+            Identifie le messaage comme indiquant le début d'une nouvelle
+            archive. Il y a aura une archive pour le répertoire principal des
+            données et une archive pour chaque tablespace supplémentaire ;
+            chacune utilisera le format tar (en suivant le format <span class="quote">« <span class="quote">ustar
+            interchange format</span> »</span> spécifié dans le standard POSIX
+            1003.1-2008).
+           </p></dd><dt><span class="term">String</span></dt><dd><p>
+            Le nom du fichier pour cette archive.
+           </p></dd><dt><span class="term">String</span></dt><dd><p>
+            Pour le répertoire principal des données, une chaîne vide. Pour
+            les autres tablespaces, le chemin complet vers le répertoire à
+            partir duquel cette archive a été créée.
+           </p></dd></dl></div></dd><dt><span class="term">manifest (B)</span></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('m')</span></dt><dd><p>
+            Identifie le message comme indiquant le début d'un manifeste de
+            sauvegarde.
+           </p></dd></dl></div></dd><dt><span class="term">archive or manifest data (B)</span></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('d')</span></dt><dd><p>
+            Identifie le message comme contenant une archive ou des données
+            du manifeste.
+           </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+            Octets des données.
+           </p></dd></dl></div></dd><dt><span class="term">progress report (B)</span></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('p')</span></dt><dd><p>
+            Identifie le message comme un rapport de progression.
+           </p></dd><dt><span class="term">Int64</span></dt><dd><p>
+            Le nombre d'octets du tablespace actuel pour lequel le traitement a
+            terminé.
+           </p></dd></dl></div></dd></dl></div><p>
+       Après que le CopyOutResponse et tous ces types de réponses aient été
+       envoyés, un ensemble de résultat ordinaire final sera envoyé, contenant
+       la position finale dans les WAL de la sauvegarde, dans le même format que
+       la position de départ.
+      </p><p>
+       L'archive tar pour le répertoire de données principal et pour chaque
+       tablespace contiendra tous les fichiers des répertoires, qu'ils
+       appartiennent à <span class="productname">PostgreSQL</span> ou pas (fichiers
+       ajoutées dans le même répertoire).  Les fichiers exclus sont :
+
+       </p><div class="itemizedlist"><ul class="itemizedlist compact" style="list-style-type: bullet; "><li class="listitem" style="list-style-type: disc"><p>
+          <code class="filename">postmaster.pid</code>
+         </p></li><li class="listitem" style="list-style-type: disc"><p>
+          <code class="filename">postmaster.opts</code>
+         </p></li><li class="listitem" style="list-style-type: disc"><p>
+          <code class="filename">pg_internal.init</code> (trouvé dans plusieurs répertoires)
+         </p></li><li class="listitem" style="list-style-type: disc"><p>
+          Différents fichiers et répertoires temporaires créés pendant les
+          opérations du serveur PostgreSQL, tels que les fichiers ou répertoire
+          commençant avec <code class="filename">pgsql_tmp</code> et les objets
+          temporaires.
+         </p></li><li class="listitem" style="list-style-type: disc"><p>
+          Relations non journalisées, sauf pour le type init qui est requis pour
+          recréer à vide les relations non journalisés lors d'une restauration.
+         </p></li><li class="listitem" style="list-style-type: disc"><p>
+          <code class="filename">pg_wal</code>, en incluant les sous-répertoires. Si la
+          sauvegarde est exécuté avec les fichiers WAL inclus, une version
+          synthétisée de <code class="filename">pg_wal</code> sera inclus, mais elle
+          contiendra seulement les fichiers nécessaires pour que la sauvegarde
+          fonctionne, et pas le reste du contenu.
+         </p></li><li class="listitem" style="list-style-type: disc"><p>
+          <code class="filename">pg_dynshmem</code>, <code class="filename">pg_notify</code>,
+          <code class="filename">pg_replslot</code>, <code class="filename">pg_serial</code>,
+          <code class="filename">pg_snapshots</code>, <code class="filename">pg_stat_tmp</code> et
+          <code class="filename">pg_subtrans</code> sont copiés sous la forme de
+          répertoires vides (même s'il s'agit de lien symbolique).
+         </p></li><li class="listitem" style="list-style-type: disc"><p>
+          Fichiers autres que les fichiers et répertoires standards, tels que des
+          liens symboliques (autre que pour les répertoires indiqués ci-dessus),
+          les fichiers périphériques et les fichiers du système d'exploitation.
+          Les liens symboliques dans
+          <code class="filename">pg_tblspc</code> sont maintenus.)
+         </p></li></ul></div><p>
+       Propriétaire, groupe et droits sont configurés si le système de fichiers
+       sous-jacent l'accepte.
+      </p></dd></dl></div><p>
+  </p><p>
+   Dans toutes les commandes ci-dessus, lors de la spécification d'un
+   paramètre de type <code class="type">boolean</code>, la partie
+   <em class="replaceable"><code>valeur</code></em> peut être omise,
+   ce qui sera équivalent à indiquer <code class="literal">TRUE</code>.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/protocol-replication.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:49 GMT -->
+</html>

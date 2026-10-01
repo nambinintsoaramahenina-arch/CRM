@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/warm-standby.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>26.2. Serveurs secondaires par transfert de journaux</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="different-replication-solutions.html" title="26.1. Comparaison de différentes solutions" /><link rel="next" href="warm-standby-failover.html" title="26.3. Bascule (Failover)" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/warm-standby.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/warm-standby.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/warm-standby.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/warm-standby.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/warm-standby.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/warm-standby.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/warm-standby.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/warm-standby.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/warm-standby.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/warm-standby.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/warm-standby.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/warm-standby.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/warm-standby.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/warm-standby.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/warm-standby.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/warm-standby.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/warm-standby.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/warm-standby.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/warm-standby.html">8.2</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/warm-standby.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="high-availability.html">Haute disponibilité, répartition de charge et réplication</a></span> » <span class="breadcrumb-node">Serveurs secondaires par transfert de journaux</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="different-replication-solutions.html" title="26.1. Comparaison de différentes solutions">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="high-availability.html" title="Chapitre 26. Haute disponibilité, répartition de charge et réplication">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="warm-standby-failover.html" title="26.3. Bascule (Failover)">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">26.1. Comparaison de différentes solutions </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 26.3. Bascule (<span class="foreignphrase"><em class="foreignphrase">Failover</em></span>)</td></tr></table></div><div class="sect1" id="WARM-STANDBY"><div class="titlepage"><div><div><h2 class="title" style="clear: both">26.2. Serveurs secondaires par transfert de journaux <a href="#WARM-STANDBY" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="warm-standby.html#STANDBY-PLANNING">26.2.1. Préparatifs</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#STANDBY-SERVER-OPERATION">26.2.2. Fonctionnement du serveur secondaire</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#PREPARING-PRIMARY-FOR-STANDBY">26.2.3. Préparer le primaire pour les serveurs secondaires</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#STANDBY-SERVER-SETUP">26.2.4. Paramétrer un serveur secondaire</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#STREAMING-REPLICATION">26.2.5. Réplication en flux</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#STREAMING-REPLICATION-SLOTS">26.2.6. Slots de réplication</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#CASCADING-REPLICATION">26.2.7. Réplication en cascade</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#SYNCHRONOUS-REPLICATION">26.2.8. Réplication synchrone</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#CONTINUOUS-ARCHIVING-IN-STANDBY">26.2.9. Archivage continu côté secondaire</a></span></dt></dl></div><p>
+   L'archivage en continu peut être utilisé pour créer une configuration
+   de cluster en <em class="firstterm">haute disponibilité</em> (HA) avec un ou
+   plusieurs <em class="firstterm">serveurs secondaires</em> prêts à prendre la main
+   sur les opérations si le serveur primaire fait défaut. Cette fonctionnalité
+   est généralement appelée
+   <em class="firstterm">warm standby</em> ou <em class="firstterm">log shipping</em>.
+  </p><p>
+   Les serveurs primaire et secondaire travaillent de concert pour fournir cette fonctionnalité,
+   bien que les serveurs ne soient que faiblement couplés. Le serveur primaire opère
+   en mode d'archivage en continu, tandis que le serveur secondaire opère en
+   mode de récupération en continu, en lisant les fichiers WAL provenant du primaire. Aucune
+   modification des tables de la base ne sont requises pour activer cette fonctionnalité,
+   elle entraîne donc moins de travail d'administration par rapport à d'autres
+   solutions de réplication. Cette configuration a aussi un impact relativement
+   faible sur les performances du serveur primaire.
+  </p><p>
+   Déplacer directement des enregistrements de WAL d'un serveur de bases de données à un autre
+   est habituellement appelé log shipping. <span class="productname">PostgreSQL</span>
+   implémente le log shipping par fichier, ce qui signifie que les enregistrements de WAL sont
+   transférés un fichier (segment de WAL) à la fois. Les fichiers de WAL (16Mo) peuvent être
+   transférés facilement et de façon peu coûteuse sur n'importe quelle distance, que ce soit sur un
+   système adjacent, un autre système sur le même site, ou un autre système à
+   l'autre bout du globe. La bande passante requise pour cette technique
+   varie en fonction du débit de transactions du serveur primaire.
+   La technique de la réplication en flux permet d'optimiser cette bande
+   passante en utilisant une granularité plus fine que le log shipping
+   par fichier. Pour cela, les modifications apportées au journal de
+   transactions sont traitées sous forme de flux au travers d'une
+   connexion réseau (voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION" title="26.2.5. Réplication en flux">Section 26.2.5</a>).
+  </p><p>
+   Il convient de noter que le log shipping est asynchrone, c'est à dire que les
+   enregistrements de WAL sont transférés après que la transaction ait été validée. Par conséquent, il y a
+   un laps de temps pendant lequel une perte de données pourrait se produire si le serveur primaire
+   subissait un incident majeur; les transactions pas encore transférées seront perdues. La taille de la fenêtre
+   de temps de perte de données peut être réduite par l'utilisation du paramètre
+   <code class="varname">archive_timeout</code>, qui peut être abaissé à des valeurs
+   de quelques secondes. Toutefois, un paramètre si bas augmentera de façon
+   considérable la bande passante nécessaire pour le transfert de fichiers.
+   L'utilisation de la technique de la réplication en flux (voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION" title="26.2.5. Réplication en flux">Section 26.2.5</a>)
+   permet de diminuer la taille de la fenêtre de temps de perte de données.
+  </p><p>
+   La performance de la récupération est suffisamment bonne pour que le serveur secondaire ne
+   soit en général qu'à quelques instants de la pleine
+   disponibilité à partir du moment où il aura été activé. C'est pour cette raison que
+   cette configuration de haute disponibilité est appelée warm standby.
+   Restaurer un serveur d'une base de sauvegarde archivée, puis appliquer tous les journaux
+   prendra largement plus de temps, ce qui fait que cette technique est une solution
+   de 'disaster recovery' (reprise après sinistre), pas de haute disponibilité.
+   Un serveur secondaire peut aussi être utilisé pour des requêtes en lecture seule, dans
+   quel cas il est appelé un serveur Hot Standby. Voir <a class="xref" href="hot-standby.html" title="26.4. Hot Standby">Section 26.4</a> pour
+   plus d'information.
+  </p><a id="id-1.6.13.17.7" class="indexterm"></a><a id="id-1.6.13.17.8" class="indexterm"></a><a id="id-1.6.13.17.9" class="indexterm"></a><a id="id-1.6.13.17.10" class="indexterm"></a><a id="id-1.6.13.17.11" class="indexterm"></a><a id="id-1.6.13.17.12" class="indexterm"></a><div class="sect2" id="STANDBY-PLANNING"><div class="titlepage"><div><div><h3 class="title">26.2.1. Préparatifs <a href="#STANDBY-PLANNING" class="id_link">#</a></h3></div></div></div><p>
+    Il est habituellement préférable de créer les serveurs primaire et secondaires
+    de façon à ce qu'ils soient aussi similaires que possible, au moins du
+    point de vue du serveur de bases de données. En particulier, les chemins
+    associés avec les tablespaces seront passés d'un nœud à l'autre sans conversion, ce qui
+    implique que les serveurs primaire et secondaires doivent avoir les mêmes chemins de montage pour
+    les tablespaces si cette fonctionnalité est utilisée. Gardez en tête que si
+    <a class="xref" href="sql-createtablespace.html" title="CREATE TABLESPACE"><span class="refentrytitle">CREATE TABLESPACE</span></a>
+    est exécuté sur le primaire, tout nouveau point de montage nécessaire pour cela doit être créé
+    sur le primaire et tous les secondaires avant que la commande ne
+    soit exécutée. Le matériel n'a pas besoin d'être exactement le même, mais l'expérience monte
+    que maintenir deux systèmes identiques est plus facile que maintenir deux
+    différents sur la durée de l'application et du système.
+    Quoi qu'il en soit, l'architecture hardware doit être la même  --  répliquer
+    par exemple d'un serveur 32 bits vers un 64 bits ne fonctionnera pas.
+   </p><p>
+    De manière générale, le log shipping entre serveurs exécutant des versions
+    majeures différentes de <span class="productname">PostgreSQL</span> est
+    impossible. La politique du PostgreSQL Global Development Group est de ne pas
+    réaliser de changement sur les formats disques lors des mises à jour mineures,
+    il est par conséquent probable que l'exécution de versions mineures différentes
+    sur le primaire et le secondaire fonctionne correctement. Toutefois, il n'y a
+    aucune garantie formelle de cela et il est fortement conseillé de garder le
+    serveur primaire et celui de secondaire au même niveau de version autant que faire
+    se peut. Lors d'une mise à jour vers une nouvelle version mineure, la politique la
+    plus sûre est de mettre à jour les serveurs secondaires d'abord  --  une nouvelle
+    version mineure est davantage susceptible de lire les enregistrements WAL d'une
+    ancienne version mineure que l'inverse.
+   </p></div><div class="sect2" id="STANDBY-SERVER-OPERATION"><div class="titlepage"><div><div><h3 class="title">26.2.2. Fonctionnement du serveur secondaire <a href="#STANDBY-SERVER-OPERATION" class="id_link">#</a></h3></div></div></div><p>
+    Un serveur entre en mode standby si un fichier <span id="FILE-STANDBY-SIGNAL"></span>
+    <code class="filename">standby.signal</code>
+    <a id="id-1.6.13.17.14.2.3" class="indexterm"></a>
+    existe dans le répertoire de données du serveur.
+   </p><p>
+    En mode standby, le serveur applique continuellement les WAL reçus du
+    serveur primaire. Le serveur secondaire peut lire les WAL d'une archive WAL
+    (voir <a class="xref" href="runtime-config-wal.html#GUC-RESTORE-COMMAND">restore_command</a>) ou directement du primaire via une
+    connexion TCP (réplication en flux). Le serveur secondaire essaiera aussi de
+    restaurer tout WAL trouvé dans le répertoire <code class="filename">pg_wal</code> de
+    l'instance du secondaire. Cela se produit habituellement après un redémarrage de
+    serveur, quand le secondaire rejoue à nouveau les WAL qui ont été reçu du primaire
+    avant le redémarrage, mais vous pouvez aussi copier manuellement des fichiers dans
+    <code class="filename">pg_wal</code> à tout moment pour qu'ils soient rejoués.
+   </p><p>
+    Au démarrage, le serveur secondaire commence par restaurer tous les WAL
+    disponibles à l'endroit où se trouvent les archives, en appelant la
+    <code class="varname">restore_command</code>. Une fois qu'il a épuisé tous les WAL
+    disponibles à cet endroit et que <code class="varname">restore_command</code>
+    échoue, il essaie de restaurer tous les WAL disponibles dans le répertoire
+    <code class="filename">pg_wal</code>. Si cela échoue, et que la réplication en flux
+    a été activée, le serveur secondaire essaie
+    de se connecter au serveur primaire et de démarrer la réception des WAL depuis
+    le dernier enregistrement valide trouvé dans les archives ou
+    <code class="filename">pg_wal</code>. Si cela
+    échoue ou que la réplication en flux n'est pas configurée, ou que la connexion
+    est plus tard déconnectée, le secondaire retourne à l'étape 1 et essaie de
+    restaurer le fichier à partir de l'archive à nouveau. Cette boucle de
+    retentatives de l'archive, <code class="filename">pg_wal</code> et par la
+    réplication en flux continue
+    jusqu'à ce que le serveur soit arrêté ou promu.
+    déclenché.
+   </p><p>
+    Le mode standby est quitté et le serveur bascule en mode de
+    fonctionnement normal quand <code class="command">pg_ctl promote</code> est exécuté ou
+    que <code class="command">pg_promote()</code> est appelé. Avant de basculer,
+    tout WAL immédiatement disponible dans l'archive ou le
+    <code class="filename">pg_wal</code> sera restauré, mais aucune tentative ne sera
+    faite pour se connecter au primaire.
+   </p></div><div class="sect2" id="PREPARING-PRIMARY-FOR-STANDBY"><div class="titlepage"><div><div><h3 class="title">26.2.3. Préparer le primaire pour les serveurs secondaires <a href="#PREPARING-PRIMARY-FOR-STANDBY" class="id_link">#</a></h3></div></div></div><p>
+    Mettez en place un archivage en continu sur le primaire vers un répertoire
+    d'archivage accessible depuis le secondaire, comme décrit
+    dans <a class="xref" href="continuous-archiving.html" title="25.3. Archivage continu et récupération d'un instantané (PITR)">Section 25.3</a>. La destination d'archivage devrait être
+    accessible du secondaire même quand le primaire est inaccessible, c'est à dire qu'il
+    devrait se trouver sur le serveur secondaire lui-même ou un autre serveur de confiance, pas sur
+    le serveur primaire.
+   </p><p>
+    Si vous voulez utiliser la réplication en flux, mettez en place l'authentification sur le
+    serveur primaire pour autoriser les connexions de réplication à partir du (ou des) serveur(s)
+    secondaire(s) ; c'est-à-dire, créez un rôle et mettez en place une ou des entrées appropriées dans
+    <code class="filename">pg_hba.conf</code> avec le champ database positionné à
+    <code class="literal">replication</code>. Vérifiez aussi que <code class="varname">max_wal_senders</code> est positionné
+    à une valeur suffisamment grande dans le fichier de configuration du serveur primaire.
+    Si des slots de réplication seront utilisés, il faut s'assurer que
+    <code class="varname">max_replication_slots</code> est également positionné à une
+    valeur suffisamment grande.
+   </p><p>
+    Effectuez une sauvegarde de base comme décrit dans <a class="xref" href="continuous-archiving.html#BACKUP-BASE-BACKUP" title="25.3.2. Réaliser une sauvegarde de base">Section 25.3.2</a>
+    pour initialiser le serveur secondaire.
+   </p></div><div class="sect2" id="STANDBY-SERVER-SETUP"><div class="titlepage"><div><div><h3 class="title">26.2.4. Paramétrer un serveur secondaire <a href="#STANDBY-SERVER-SETUP" class="id_link">#</a></h3></div></div></div><p>
+    Pour paramétrer le serveur secondaire, restaurez la sauvegarde de base
+    effectué sur le serveur primaire (voir <a class="xref" href="continuous-archiving.html#BACKUP-PITR-RECOVERY" title="25.3.5. Restauration à partir d'un archivage continu">Section 25.3.5</a>). Créez un fichier
+    <a class="link" href="warm-standby.html#FILE-STANDBY-SIGNAL"><code class="filename">standby.signal</code></a>
+    <a id="id-1.6.13.17.16.2.3" class="indexterm"></a>
+    dans le répertoire de données de l'instance du secondaire.
+    Positionnez <a class="xref" href="runtime-config-wal.html#GUC-RESTORE-COMMAND">restore_command</a> à
+    une simple commande qui recopie les fichiers de l'archive de WAL. Si vous
+    comptez disposer de plusieurs serveurs secondaires pour mettre en
+    œuvre de la haute disponibilité, assurez-vous que
+    <code class="varname">recovery_target_timeline</code> est configuré à
+    <code class="literal">latest</code> (la valeur par défaut), pour indiquer que le
+    serveur secondaire devra prendre en compte la ligne temporelle définie
+    lors de la bascule à un autre serveur secondaire.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     <a class="xref" href="runtime-config-wal.html#GUC-RESTORE-COMMAND">restore_command</a> devrait retourner immédiatement si
+     le fichier n'existe pas ; le serveur essaiera la commande à nouveau
+     si nécessaire.
+    </p></div><p>
+    Si vous souhaitez utiliser la réplication en flux, renseignez
+    <a class="xref" href="runtime-config-replication.html#GUC-PRIMARY-CONNINFO">primary_conninfo</a> avec une chaîne de connexion libpq,
+    contenant le nom d'hôte (ou l'adresse IP) et tout détail supplémentaire
+    nécessaire pour se connecter au serveur primaire. Si le primaire a besoin d'un
+    mot de passe pour l'authentification, le mot de passe doit aussi être spécifié dans
+    <a class="xref" href="runtime-config-replication.html#GUC-PRIMARY-CONNINFO">primary_conninfo</a>.
+   </p><p>
+    Si vous mettez en place le serveur secondaire pour des besoins de haute disponibilité,
+    mettez en place l'archivage de WAL, les connexions et l'authentification à l'identique
+    du serveur primaire, parce que le serveur secondaire fonctionnera comme un serveur primaire
+    après la bascule.
+   </p><p>
+    Si vous utilisez une archive WAL, sa taille peut être réduite en utilisant
+    l'option <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-CLEANUP-COMMAND">archive_cleanup_command</a> pour supprimer les
+    fichiers qui ne sont plus nécessaires au serveur secondaire. L'outil
+    <span class="application">pg_archivecleanup</span> est conçu spécifiquement pour
+    être utilisé avec <code class="varname">archive_cleanup_command</code> dans des
+    configurations typiques de secondaire, voir <a class="xref" href="pgarchivecleanup.html" title="pg_archivecleanup"><span class="refentrytitle"><span class="application">pg_archivecleanup</span></span></a>.
+    Notez toutefois que si vous utilisez l'archive à des fins de sauvegarde,
+    vous avez besoin de garder les fichiers nécessaires pour restaurer à partir
+    de votre dernière sauvegarde de base, même si ces fichiers ne sont plus
+    nécessaires pour le serveur secondaire.
+   </p><p>
+    Voici un simple exemple :
+    </p><pre class="programlisting">
+primary_conninfo = 'host=192.168.1.50 port=5432 user=foo password=foopass options=''-c wal_sender_timeout=5000'''
+restore_command = 'cp /path/to/archive/%f %p'
+archive_cleanup_command = 'pg_archivecleanup /path/to/archive %r'
+    </pre><p>
+   </p><p>
+    Vous pouvez avoir n'importe quel nombre de serveurs secondaires, mais si vous
+    utilisez la réplication en flux, assurez vous d'avoir positionné
+    <code class="varname">max_wal_senders</code> suffisamment haut sur le primaire pour leur permettre
+    de se connecter simultanément.
+   </p></div><div class="sect2" id="STREAMING-REPLICATION"><div class="titlepage"><div><div><h3 class="title">26.2.5. Réplication en flux <a href="#STREAMING-REPLICATION" class="id_link">#</a></h3></div></div></div><a id="id-1.6.13.17.17.2" class="indexterm"></a><p>
+    La réplication en flux permet à un serveur secondaire de rester plus
+    à jour qu'il n'est possible avec l'envoi de journaux par fichiers. Le
+    standby se connecte au primaire, qui envoie au standby les enregistrements
+    de WAL dès qu'ils sont générés, sans attendre qu'un fichier de WAL soit rempli.
+   </p><p>
+    La réplication en flux est asynchrone par défaut (voir <a class="xref" href="warm-standby.html#SYNCHRONOUS-REPLICATION" title="26.2.8. Réplication synchrone">Section 26.2.8</a>), auquel cas il y a un petit délai
+    entre la validation d'une transaction sur le primaire et le moment où les
+    changements sont visibles sur le standby. Le délai est toutefois beaucoup plus petit
+    qu'avec l'envoi de fichiers, habituellement en dessous d'une seconde en partant
+    de l'hypothèse que le standby est suffisamment puissant pour supporter la charge. Avec
+    la réplication en flux, <code class="varname">archive_timeout</code> n'est pas nécessaire
+    pour réduire la fenêtre de perte de données.
+   </p><p>
+    Si vous utilisez la réplication en flux sans archivage en continu des fichiers,
+    le serveur primaire pourrait recycler de vieux journaux de transactions avant que le
+    serveur en standby ne les ait reçus. Si cela arrive, le serveur en standby devra être
+    recréé à partir d'une nouvelle sauvegarde de l'instance. Vous pouvez éviter cela en
+    positionnant <code class="varname">wal_keep_size</code> à une valeur suffisamment
+    grande pour s'assurer que les journaux de transactions ne sont pas recyclés
+    trop tôt, ou en configurant un slot de réplication pour le serveur en
+    standby. Si un archivage des journaux de transactions est en place, et que
+    les fichiers archivés sont disponibles depuis le serveur en standby, cette
+    solution n'est pas nécessaire, puisque le serveur en standby peut toujours
+    utiliser les fichiers archivés pour rattraper son retard, sous réserve que
+    suffisamment de fichiers soient conservés.
+   </p><p>
+    Pour utiliser la réplication en flux, mettez en place un serveur secondaire
+    en mode fichier comme décrit dans <a class="xref" href="warm-standby.html" title="26.2. Serveurs secondaires par transfert de journaux">Section 26.2</a>. L'étape qui
+    transforme un secondaire en mode fichier en secondaire dans une réplication en flux est de
+    faire pointer <code class="varname">primary_conninfo</code> vers le serveur primaire. Positionnez
+    <a class="xref" href="runtime-config-connection.html#GUC-LISTEN-ADDRESSES">listen_addresses</a> et les options d'authentification
+    (voir <code class="filename">pg_hba.conf</code>) sur le primaire pour que le serveur
+    secondaire puisse se connecter à la pseudo-base <code class="literal">replication</code>
+    sur le serveur primaire (voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION-AUTHENTICATION" title="26.2.5.1. Authentification">Section 26.2.5.1</a>).
+   </p><p>
+    Sur les systèmes qui supportent l'option de keepalive sur les sockets, positionner
+    <a class="xref" href="runtime-config-connection.html#GUC-TCP-KEEPALIVES-IDLE">tcp_keepalives_idle</a>,
+    <a class="xref" href="runtime-config-connection.html#GUC-TCP-KEEPALIVES-INTERVAL">tcp_keepalives_interval</a> et
+    <a class="xref" href="runtime-config-connection.html#GUC-TCP-KEEPALIVES-COUNT">tcp_keepalives_count</a> aide le primaire à reconnaître rapidement
+    une connexion interrompue.
+   </p><p>
+    Positionnez le nombre maximum de connexions concurrentes à partir des
+    serveurs secondaires (voir <a class="xref" href="runtime-config-replication.html#GUC-MAX-WAL-SENDERS">max_wal_senders</a> pour les détails).
+   </p><p>
+    Quand le secondaire est démarré et que <code class="varname">primary_conninfo</code> est
+    positionné correctement, le secondaire se connectera au primaire après avoir
+    rejoué tous les fichiers WAL disponibles dans l'archive. Si la connexion
+    est établie avec succès, vous verrez un processus
+    <code class="literal">walreceiver</code> sur le secondaire, et un processus
+    <code class="literal">walsender</code> correspondant sur le primaire.
+   </p><div class="sect3" id="STREAMING-REPLICATION-AUTHENTICATION"><div class="titlepage"><div><div><h4 class="title">26.2.5.1. Authentification <a href="#STREAMING-REPLICATION-AUTHENTICATION" class="id_link">#</a></h4></div></div></div><p>
+     Il est très important que les droits d'accès pour la réplication
+     soient paramétrés pour que seuls les utilisateurs de confiance puissent
+     lire le flux WAL, parce qu'il est facile d'en extraire des informations
+     privilégiées. Les serveurs secondaires doivent s'authentifier au serveur
+     primaire en tant qu'un compte disposant de l'attribut
+     <code class="literal">REPLICATION</code> ou <code class="literal">SUPERUSER</code>. Il est
+     recommandé de créer un compte utilisateur dédié pour la réplication. Il
+     doit disposer des attributs <code class="literal">REPLICATION</code> et
+     <code class="literal">LOGIN</code>. Alors que l'attribut
+     <code class="literal">REPLICATION</code> donne beaucoup de droits, il ne permet pas
+     à l'utilisateur de modifier de données sur le serveur primaire,
+     contrairement à l'attribut <code class="literal">SUPERUSER</code>.
+    </p><p>
+     L'authentification cliente pour la réplication est contrôlée par un enregistrement de
+     <code class="filename">pg_hba.conf</code> spécifiant <code class="literal">replication</code> dans le champ
+     <em class="replaceable"><code>database</code></em>. Par exemple, si le secondaire s'exécute sur un hôte d'IP
+     <code class="literal">192.168.1.100</code> et que le nom de l'utilisateur pour la réplication est
+     <code class="literal">foo</code>, l'administrateur peut ajouter la ligne suivante au fichier
+     <code class="filename">pg_hba.conf</code>  sur le primaire:
+
+
+     </p><pre class="programlisting">
+# Autoriser l'utilisateur "foo" de l'hôte 192.168.1.100 à se connecter au primaire
+# en tant que secondaire si le mot de passe de l'utilisateur est correctement fourni
+#
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+host    replication     foo             192.168.1.100/32        md5
+     </pre><p>
+    </p><p>
+     Le nom d'hôte et le numéro de port du primaire, le nom d'utilisateur de la connexion,
+     et le mot de passe sont spécifiés dans le paramètre <a class="xref" href="runtime-config-replication.html#GUC-PRIMARY-CONNINFO">primary_conninfo</a>.
+     Le mot de passe peut aussi être enregistré dans le fichier
+     <code class="filename">~/.pgpass</code> sur le serveur en attente (en précisant
+     <code class="literal">replication</code> dans le champ
+     <em class="replaceable"><code>database</code></em>).
+     Par exemple, si le primaire s'exécute sur l'hôte d'IP <code class="literal">192.168.1.50</code>,
+     port <code class="literal">5432</code>, que le nom de l'utilisateur pour la réplication est
+     <code class="literal">foo</code>, et que le mot de passe est <code class="literal">foopass</code>, l'administrateur
+     peut ajouter la ligne suivante au fichier <code class="filename">postgresql.conf</code> sur le secondaire :
+
+     </p><pre class="programlisting">
+# Le secondaire se connecte au primaire qui s'exécute sur l'hôte 192.168.1.50
+# et port 5432 en tant qu'utilisateur "foo" dont le mot de passe est "foopass"
+primary_conninfo = 'host=192.168.1.50 port=5432 user=foo password=foopass'
+     </pre><p>
+    </p></div><div class="sect3" id="STREAMING-REPLICATION-MONITORING"><div class="titlepage"><div><div><h4 class="title">26.2.5.2. Supervision <a href="#STREAMING-REPLICATION-MONITORING" class="id_link">#</a></h4></div></div></div><p>
+     Un important indicateur de santé de la réplication en flux est le nombre
+     d'enregistrements générés sur le primaire, mais pas encore appliqués sur
+     le secondaire. Vous pouvez calculer ce retard en comparant le point d'avancement
+     des écritures du WAL sur le primaire avec le dernier point d'avancement reçu par
+     le secondaire. Ils peuvent être récupérés en utilisant
+     <code class="function">pg_current_wal_lsn</code> sur le primaire et
+     <code class="function">pg_last_wal_receive_lsn</code> sur le secondaire
+     (voir <a class="xref" href="functions-admin.html#FUNCTIONS-ADMIN-BACKUP-TABLE" title="Tableau 9.95. Fonctions de contrôle de la sauvegarde">Tableau 9.95</a> et
+     <a class="xref" href="functions-admin.html#FUNCTIONS-RECOVERY-INFO-TABLE" title="Tableau 9.96. Fonctions d'information sur la restauration">Tableau 9.96</a> pour plus de détails).
+     Le point d'avancement de la réception dans le secondaire est aussi affiché dans
+     le statut du processus de réception des WAL (wal receiver), affiché par
+     la commande <code class="command">ps</code> (voir <a class="xref" href="monitoring-ps.html" title="27.1. Outils Unix standard">Section 27.1</a> pour plus de détails).
+    </p><p>
+     Vous pouvez obtenir la liste des processus émetteurs de WAL au moyen de la vue
+     <a class="link" href="monitoring-stats.html#MONITORING-PG-STAT-REPLICATION-VIEW" title="27.2.4. pg_stat_replication"><code class="structname">
+       pg_stat_replication</code></a>
+     D'importantes différences entre les champs <code class="function">pg_current_wal_lsn</code> et
+     <code class="literal">sent_lsn</code> peuvent indiquer que le serveur primaire est en surcharge,
+     tandis que des différences entre <code class="literal">sent_lsn</code> et
+     <code class="function">pg_last_wal_receive_lsn</code> sur le secondaire peuvent soit indiquer une latence
+     réseau importante, soit que le secondaire est surchargé.
+    </p><p>
+     Sur un secondaire en hot standby, le statut du processus wal receiver est récupérable
+     avec la vue <a class="link" href="monitoring-stats.html#MONITORING-PG-STAT-WAL-RECEIVER-VIEW" title="27.2.6. pg_stat_wal_receiver">
+      <code class="structname">pg_stat_wal_receiver</code></a>. Une différence
+     importante entre <code class="function">pg_last_wal_replay_lsn</code> et la
+     colonne <code class="literal">flushed_lsn</code> de la vue indique que les WAL
+     sont reçus plus rapidement qu'ils ne sont rejoués.
+    </p></div></div><div class="sect2" id="STREAMING-REPLICATION-SLOTS"><div class="titlepage"><div><div><h3 class="title">26.2.6. Slots de réplication <a href="#STREAMING-REPLICATION-SLOTS" class="id_link">#</a></h3></div></div></div><a id="id-1.6.13.17.18.2" class="indexterm"></a><p>
+    Les slots de réplication fournissent une manière automatisée de s'assurer
+    que le primaire ne supprime pas les journaux de transactions avant qu'ils
+    n'aient été reçus par tous les serveurs secondaires, et que le serveur
+    primaire ne supprime pas des lignes qui pourraient causer un
+    <a class="link" href="hot-standby.html#HOT-STANDBY-CONFLICT" title="26.4.2. Gestion des conflits avec les requêtes">conflit de restauration</a> même si
+    le serveur secondaire est déconnecté.
+   </p><p>
+    Au lieu d'utiliser des slots de réplication, il est possible d'empêcher la
+    suppression des anciens journaux de transactions en utilisant <a class="xref" href="runtime-config-replication.html#GUC-WAL-KEEP-SIZE">wal_keep_size</a>, ou en les stockant dans un répertoire
+    d'archive en utilisant <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-COMMAND">archive_command</a> ou <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-LIBRARY">archive_library</a>. Un inconvénient de ces méthodes est
+    qu'elles ont souvent pour
+    résultat le stockage de plus de journaux de transactions que nécessaire,
+    alors que les slots de réplication ne conservent que le nombre nécessaire de
+    journaux de transactions.
+   </p><p>
+    De façon similaire, <a class="xref" href="runtime-config-replication.html#GUC-HOT-STANDBY-FEEDBACK">hot_standby</a> tout seul,
+    sans slot de réplication, fournir une protection contre la suppression
+    par vacuum des lignes pertinentes, mais ne fournit aucune protection lorsque
+    le secondaire n'est pas connecté.
+   </p><div class="caution"><h3 class="title">Attention</h3><p>
+     Attention au fait que les slots de réplication peuvent causer au serveur
+     la rétention d'un si grand nombre de segments WAL qu'ils vont remplir la
+     place allouée pour le répertoire <code class="literal">pg_wal</code>.
+     <a class="xref" href="runtime-config-replication.html#GUC-MAX-SLOT-WAL-KEEP-SIZE">max_slot_wal_keep_size</a> peut être utilisé pour
+     limiter la volumétrie globale des fichiers WAL retenus par les slots
+     de réplication.
+    </p></div><div class="sect3" id="STREAMING-REPLICATION-SLOTS-MANIPULATION"><div class="titlepage"><div><div><h4 class="title">26.2.6.1. Requêter et manipuler des slots de réplication <a href="#STREAMING-REPLICATION-SLOTS-MANIPULATION" class="id_link">#</a></h4></div></div></div><p>
+     Chaque slot de réplication à un nom, qui peut contenir des lettres en
+     minuscule, des nombres ou un tiret bas.
+    </p><p>
+     Les slots de réplication existants et leur états peuvent être vus dans la vue
+     <a class="link" href="view-pg-replication-slots.html" title="52.19. pg_replication_slots"><code class="structname">pg_replication_slots</code></a>.
+    </p><p>
+     Les slots de réplication peuvent être créés et supprimés soit via le
+     protocole de réplication en flux (voir <a class="xref" href="protocol-replication.html" title="53.4. Protocole de réplication en flux">Section 53.4</a>)
+     soit via des fonctions SQL (voir <a class="xref" href="functions-admin.html#FUNCTIONS-REPLICATION" title="9.28.6. Fonctions de gestion de la réplication">Section 9.28.6</a>).
+    </p></div><div class="sect3" id="STREAMING-REPLICATION-SLOTS-CONFIG"><div class="titlepage"><div><div><h4 class="title">26.2.6.2. Exemple de configuration <a href="#STREAMING-REPLICATION-SLOTS-CONFIG" class="id_link">#</a></h4></div></div></div><p>
+     Il est possible de créer un slot de réplication ainsi :
+     </p><pre class="programlisting">
+postgres=# SELECT * FROM pg_create_physical_replication_slot('node_a_slot');
+  slot_name  | lsn
+-------------+-----
+ node_a_slot |
+
+postgres=# SELECT slot_name, slot_type, active FROM pg_replication_slots;
+  slot_name  | slot_type | active
+-------------+-----------+--------
+ node_a_slot | physical  | f
+     </pre><p>
+     Pour configurer le serveur secondaire pour utiliser ce slot,
+     <code class="varname">primary_slot_name</code> devrait être configuré sur le secondaire.
+     Voici un exemple simple :
+     </p><pre class="programlisting">
+primary_conninfo = 'host=192.168.1.50 port=5432 user=foo password=foopass'
+primary_slot_name = 'node_a_slot'
+     </pre><p>
+    </p></div></div><div class="sect2" id="CASCADING-REPLICATION"><div class="titlepage"><div><div><h3 class="title">26.2.7. Réplication en cascade <a href="#CASCADING-REPLICATION" class="id_link">#</a></h3></div></div></div><a id="id-1.6.13.17.19.2" class="indexterm"></a><p>
+    La fonctionnalité de réplication en cascade permet à un serveur
+    secondaire d'accepter les connexions de réplication et d'envoyer un flux
+    d'enregistrements de journaux de transactions à d'autres secondaires,
+    agissant ainsi comme un relais. C'est généralement utilisé pour réduire
+    le nombre de connexions directes au primaire et minimiser ainsi l'utilisation
+    de bande passante entre sites distants.
+   </p><p>
+    Un serveur secondaire agissant à la fois comme un receveur et comme un
+    émetteur est connu sous le nom de secondaire en cascade
+    (<span class="foreignphrase"><em class="foreignphrase">cascading standby</em></span>). Les secondaires qui
+    sont plus proches du serveur primaire sont connus sous le nom
+    de serveurs <span class="foreignphrase"><em class="foreignphrase">upstream</em></span> alors que les serveurs
+    secondaires en bout de chaîne sont des serveurs
+    <span class="foreignphrase"><em class="foreignphrase">downstream</em></span>. La réplication en cascade
+    ne pose pas de limites sur le nombre ou l'arrangement des serveurs
+    <span class="foreignphrase"><em class="foreignphrase">downstream</em></span>. Chaque secondaire se connecte à un
+    seul serveur <span class="foreignphrase"><em class="foreignphrase">upstream</em></span>, qui finit par
+    arriver à un seul serveur primaire.
+   </p><p>
+    Un secondaire en cascade envoie non seulement les enregistrements reçus de
+    journaux de transactions mais aussi ceux restaurés des archives. Donc,
+    même si la connexion de réplication d'une connexion upstream est
+    rompue, la réplication en flux continue vers le serveur downstream tant
+    que de nouveaux enregistrements de journaux de transactions sont
+    disponibles.
+   </p><p>
+    La réplication en cascade est actuellement asynchrone. La réplication
+    synchrone (voir <a class="xref" href="warm-standby.html#SYNCHRONOUS-REPLICATION" title="26.2.8. Réplication synchrone">Section 26.2.8</a>) n'a aucun
+    effet sur la réplication en cascade.
+   </p><p>
+    Les messages en retour des serveurs Hot Standby se propagent vers les
+    serveurs upstream, quelle que soit la configuration de la réplication en
+    cascade.
+   </p><p>
+    Si un serveur secondaire upstream est promu pour devenir le nouveau serveur
+    primaire, les serveurs downstream continueront à recevoir le flux de
+    réplication du nouveau primaire si le paramètre
+    <code class="varname">recovery_target_timeline</code> est configuré à
+    <code class="literal">'latest'</code> (valeur par défaut).
+   </p><p>
+    Pour utiliser la réplication en cascade, configurez le secondaire en cascade
+    de façon à ce qu'il accepte les connexions de réplication (configurez
+    <a class="xref" href="runtime-config-replication.html#GUC-MAX-WAL-SENDERS">max_wal_senders</a> et <a class="xref" href="runtime-config-replication.html#GUC-HOT-STANDBY">hot_standby</a>,
+    ainsi que l'<a class="link" href="auth-pg-hba-conf.html" title="20.1. Le fichier pg_hba.conf">authentification</a>).
+    Vous aurez aussi besoin de configurer la variable
+    <code class="varname">primary_conninfo</code> dans le secondaire downstream pour qu'elle
+    pointe vers le secondaire en cascade.
+   </p></div><div class="sect2" id="SYNCHRONOUS-REPLICATION"><div class="titlepage"><div><div><h3 class="title">26.2.8. Réplication synchrone <a href="#SYNCHRONOUS-REPLICATION" class="id_link">#</a></h3></div></div></div><a id="id-1.6.13.17.20.2" class="indexterm"></a><p>
+    La réplication en flux mise en œuvre par <span class="productname">PostgreSQL</span> est asynchrone
+    par défaut. Si le serveur primaire est hors-service, les transactions produites alors
+    peuvent ne pas avoir été répliquées sur le serveur secondaire, impliquant une perte
+    de données. La quantité de données perdues est proportionnelle au délai de réplication
+    au moment de la bascule.
+   </p><p>
+    La réplication synchrone permet de confirmer que tous les changements
+    effectués par une transaction ont bien été transférées vers un ou plusieurs
+    serveurs secondaires synchrones. Cette propriété étend le niveau de robustesse
+    standard offert par un commit. En science informatique, ce niveau de
+    protection est appelé réplication à deux états (<span class="foreignphrase"><em class="foreignphrase">2-safe
+     replication</em></span>) et <span class="foreignphrase"><em class="foreignphrase">group-1-safe</em></span>
+    (<span class="foreignphrase"><em class="foreignphrase">group-safe</em></span> et
+    <span class="foreignphrase"><em class="foreignphrase">1-safe</em></span>) quand
+    <code class="varname">synchronous_commit</code> est configuré à la valeur
+    <code class="literal">remote_write</code>.
+   </p><p>
+    Lorsque la réplication synchrone est utilisée, chaque validation portant
+    sur une écriture va nécessiter d'attendre la confirmation
+    de l'écriture de cette validation dans les journaux de transactions sur les disques
+    du serveur primaire et des serveurs secondaires. Le seul moyen possible pour que des données
+    soient perdues est que les serveur primaire et secondaire soient hors service au
+    même moment. Ce mécanisme permet d'assurer un niveau plus élevé de robustesse, en admettant que
+    l'administrateur système ait pris garde à l'emplacement et à la gestion de ces deux
+    serveurs. Attendre après la confirmation de l'écriture augmente la confiance que l'utilisateur pourra avoir sur
+    la conservation des modifications dans le cas où un serveur serait hors service mais il augmente aussi
+    en conséquence le temps de réponse de chaque requête.
+    Le temps minimum d'attente est celui de l'aller-retour entre les serveurs primaire et secondaire.
+   </p><p>
+    Les transactions où seule une lecture est effectuée ou qui consistent à annuler une transaction ne nécessitent pas d'attendre
+    les serveurs secondaires. Les validations concernant les transactions imbriquées ne nécessitent pas non plus d'attendre
+    la réponse des serveurs secondaires, cela n'affecte en fait que les validations principales. De longues
+    opérations comme le chargement de données ou la création d'index n'attendent pas
+    le commit final pour synchroniser les données. Toutes les actions de validation en deux étapes
+    nécessitent d'attendre la validation du secondaire, incluant autant l'opération de préparation que l'opération de validation.
+   </p><p>
+    Un secondaire synchrone peut être un secondaire de réplication physique ou un
+    abonné d'une réplication logique. Il peut aussi être tout autre
+    consommateur de flux de réplication physique ou logique qui sait comment
+    gérer les messages de retour appropriés. En plus des systèmes intégrés de
+    réplication physique et logique, cela inclut le support des outils tels
+    que <code class="command">pg_receivewal</code> et <code class="command">pg_recvlogical</code>
+    ainsi que les systèmes de réplication et outils personnalisés tiers.
+   </p><div class="sect3" id="SYNCHRONOUS-REPLICATION-CONFIG"><div class="titlepage"><div><div><h4 class="title">26.2.8.1. Configuration de base <a href="#SYNCHRONOUS-REPLICATION-CONFIG" class="id_link">#</a></h4></div></div></div><p>
+     Une fois la réplication en flux configurée, la configuration de la réplication synchrone
+     ne demande qu'une unique étape de configuration supplémentaire :
+     la variable <a class="xref" href="runtime-config-replication.html#GUC-SYNCHRONOUS-STANDBY-NAMES">synchronous_standby_names</a> doit être définie à
+     une valeur non vide. La variable <code class="varname">synchronous_commit</code> doit aussi être définie à
+     <code class="literal">on</code>, mais comme il s'agit d'une valeur par défaut, il n'est pas nécessaire de la
+     modifier. (Voir <a class="xref" href="runtime-config-wal.html#RUNTIME-CONFIG-WAL-SETTINGS" title="19.5.1. Paramètres">Section 19.5.1</a> et
+     <a class="xref" href="runtime-config-replication.html#RUNTIME-CONFIG-REPLICATION-PRIMARY" title="19.6.2. Serveur primaire">Section 19.6.2</a>.)
+     Cette configuration va entraîner l'attente de la confirmation de l'écriture permanente de chaque validation
+     sur le serveur secondaire.
+     La variable <code class="varname">synchronous_commit</code> peut être définie soit par des
+     utilisateurs, soit par le fichier de configuration pour des utilisateurs ou des bases de données fixées, soit
+     dynamiquement par des applications, pour contrôler la robustesse des échanges transactionnels.
+    </p><p>
+     Suite à l'enregistrement sur disque d'une validation sur le serveur primaire,
+     l'enregistrement WAL est envoyé au serveur secondaire. Le serveur secondaire
+     retourne une réponse à chaque fois qu'un nouveau lot de données WAL est
+     écrit sur disque, à moins que le paramètre
+     <code class="varname">wal_receiver_status_interval</code> soit défini à zéro sur le
+     serveur secondaire. Dans le cas où le paramètre <code class="varname">synchronous_commit</code>
+     est configuré à la valeur <code class="literal">remote_apply</code>, le serveur
+     secondaire envoie des messages de réponse quand l'enregistrement de validation
+     (commit) est rejoué, rendant la transaction visible. Si le serveur secondaire
+     est configuré en serveur synchrone d'après la configuration du paramètre
+     <code class="varname">synchronous_standby_names</code>
+     sur le primaire, le message de réponse provenant du secondaire sera considéré
+     parmi ceux des autres serveurs secondaires pour décider du moment de libération
+     des transactions attendant la confirmation de la bonne réception de
+     l'enregistrement de commit. Ces paramètres permettent à l'administrateur
+     de spécifier quels serveurs secondaires suivront un comportement synchrone.
+     Remarquez ici que la configuration de la réplication synchrone se situe
+     sur le serveur primaire. Les serveurs secondaires nommés doivent être
+     directement connectés au primaire ; le primaire ne connaît rien des
+     serveurs secondaires utilisant la réplication en cascade.
+    </p><p>
+     Configurer <code class="varname">synchronous_commit</code> à
+     <code class="literal">remote_write</code> fera que chaque COMMIT attendra la
+     confirmation de la réception en mémoire de l'enregistrement du COMMIT
+     par le secondaire et son écriture via la système d'exploitation, sans que
+     les données du cache du système ne soient vidées sur disque au niveau
+     du serveur secondaire. Cette configuration fournit une garantie moindre
+     de durabilité que la configuration <code class="literal">on</code> : le secondaire
+     peut perdre les données dans le cas d'un crash du système d'exploitation,
+     mais pas dans le cas du crash de <span class="productname">PostgreSQL</span>.
+     Cependant, il s'agit d'une configuration utile en pratique car il diminue
+     le temps de réponse pour la transaction. Des pertes de données ne peuvent
+     survenir que si le serveur primaire et le secondaire tombent en même temps et
+     que la base de données du primaire est corrompue.
+    </p><p>
+     Configurer <code class="varname">synchronous_commit</code> à <code class="literal">remote_apply</code>
+     fera en sorte que chaque commit devra attendre le retour des secondaires synchrones
+     actuels indiquant qu'ils ont bien rejoué la transaction, la rendant visible aux
+     requêtes des utilisateurs. Dans des cas simples, ceci permet une répartition de
+     charge sans incohérence.
+    </p><p>
+     Habituellement, un signal d'arrêt rapide (<span class="foreignphrase"><em class="foreignphrase">fast shutdown</em></span>)
+     annule les transactions en cours sur tous les processus serveur. Cependant, dans
+     le cas de la réplication asynchrone, le serveur n'effectuera pas un
+     arrêt complet avant que chaque enregistrement WAL ne soit transféré aux serveurs
+     secondaires connectés.
+    </p></div><div class="sect3" id="SYNCHRONOUS-REPLICATION-MULTIPLE-STANDBYS"><div class="titlepage"><div><div><h4 class="title">26.2.8.2. Multiple secondaires synchrones <a href="#SYNCHRONOUS-REPLICATION-MULTIPLE-STANDBYS" class="id_link">#</a></h4></div></div></div><p>
+     La réplication synchrone supporte un ou plusieurs serveurs secondaires
+     synchrones. Les transactions attendront que tous les serveurs secondaires
+     considérés synchrones confirment la réception de leurs données. Le nombre
+     de secondaires dont les transactions doivent attendre la réponse est indiqué
+     dans le paramètre <code class="varname">synchronous_standby_names</code>. Ce paramètre
+     indique aussi une liste des noms des serveurs secondaires ou l'emploi
+     de la méthode (<code class="literal">FIRST</code> ou <code class="literal">ANY</code>) pour choisir
+     sur quel serveur synchrone basculer parmi l'ensemble des serveurs listés.
+    </p><p>
+     La méthode <code class="literal">FIRST</code> définit une réplication synchrone
+     priorisée : elle temporise la validation de la transaction
+     jusqu'à ce que les enregistrements WAL soient répliqués en
+     fonction de la priorité définie des serveurs secondaires dans une liste
+     ordonnée.
+     Le serveur secondaire dont le nom apparaît en premier sur la liste est
+     prioritaire et est celui qui est considéré comme synchrone.
+     Les serveurs secondaires suivants sont considérés comme un/des
+     serveurs secondaires synchrones potentiels.
+     Si le premier serveur synchrone venait à tomber,
+     il serait immédiatement remplacé par le serveur
+     secondaire prioritaire suivant.
+
+    </p><p>
+     Voici un exemple de configuration de <code class="varname">synchronous_standby_names</code> pour la
+     réplication synchrone priorisée :
+     </p><pre class="programlisting">
+synchronous_standby_names = 'FIRST 2 (s1, s2, s3)'
+     </pre><p>
+     Dans cet exemple, si les quatre serveurs secondaires <code class="literal">s1</code>,
+     <code class="literal">s2</code>, <code class="literal">s3</code> et <code class="literal">s4</code>
+     sont fonctionnels et en cours d'exécution, les deux serveurs
+     <code class="literal">s1</code> et <code class="literal">s2</code> seront choisis comme
+     secondaires synchrones car leurs noms apparaissent en premier dans la
+     liste des serveurs secondaires. <code class="literal">s3</code> est un serveur
+     secondaire synchrone potentiel et prendra le rôle d'un secondaire synchrone
+     si <code class="literal">s1</code> ou <code class="literal">s2</code> tombe.
+     <code class="literal">s4</code> est un secondaire asynchrone et son nom n'est pas dans la liste.
+    </p><p>
+     La méthode <code class="literal">ANY</code> définit une réplication synchrone
+     basée sur un quorum : elle temporise la validation de la
+     transaction jusqu'à ce que les enregistrements WAL soient répliqués
+     <span class="emphasis"><em>au moins</em></span> sur le nombre de serveurs définis dans
+     la liste.
+    </p><p>
+     Voici un exemple de configuration du paramètre <code class="varname">synchronous_standby_names</code> pour la
+     réplication synchrone avec un quorum :
+     </p><pre class="programlisting">
+ synchronous_standby_names = 'ANY 2 (s1, s2, s3)'
+     </pre><p>
+     Dans cet exemple, sur quatre serveurs secondaires démarrés <code class="literal">s1</code>,
+     <code class="literal">s2</code>,<code class="literal">s3</code> et <code class="literal">s4</code>,
+     pour obtenir la validation d'une transaction, le serveur primaire
+     attendra la réponse d'au minimum deux secondaires parmi <code class="literal">s1</code>,
+     <code class="literal">s2</code> et <code class="literal">s3</code>. <code class="literal">s4</code>
+     est un secondaire asynchrone et son nom n'est pas dans la liste.
+    </p><p>
+     L'état de synchronicité des serveurs secondaires peut être consulté
+     avec la vue <code class="structname">pg_stat_replication</code>.
+    </p></div><div class="sect3" id="SYNCHRONOUS-REPLICATION-PERFORMANCE"><div class="titlepage"><div><div><h4 class="title">26.2.8.3. S'organiser pour obtenir de bonnes performances <a href="#SYNCHRONOUS-REPLICATION-PERFORMANCE" class="id_link">#</a></h4></div></div></div><p>
+     La réplication synchrone nécessite souvent d'organiser avec une grande attention
+     les serveurs secondaires pour apporter un bon niveau de performances aux applications. Les phases d'attente d'écriture
+     n'utilisent pas les ressources systèmes, mais les verrous transactionnels restent
+     positionnés jusqu'à ce que le transfert vers les serveurs secondaires soit confirmé. En conséquence, une utilisation non avertie de
+     la réplication synchrone aura pour impact une baisse des performances de la base de données
+     d'une application due à l'augmentation des temps de réponses et à un moins bon support de la charge.
+    </p><p>
+     <span class="productname">PostgreSQL</span> permet aux développeurs d'application
+     de spécifier le niveau de robustesse à employer pour la réplication. Cela peut être
+     spécifié pour le système entier, mais aussi pour
+     des utilisateurs ou des connexions spécifiques, ou encore pour des transactions individuelles.
+    </p><p>
+     Par exemple, une répartition de charge pour une application pourrait être constituée de :
+     10 % de modifications concernant des articles de clients importants, et
+     90 % de modifications de moindre importance et qui ne devraient pas avoir d'impact sur le métier
+     si elles venaient à être perdues, comme des dialogues de messagerie entre utilisateurs.
+    </p><p>
+     Les options de réplication synchrone spécifiées par une application
+     (sur le serveur primaire) permettent de n'utiliser la réplication synchrone que pour les modifications les plus
+     importantes, sans affecter les performances sur la plus grosse partie des traitements.
+     Les options modifiables par les applications sont un outil important permettant
+     d'apporter les bénéfices de la réplication synchrone aux applications nécessitant de la haute performance.
+    </p><p>
+     Il est conseillé de disposer d'une bande passante réseau supérieure
+     à la quantité de données WAL générées.
+    </p></div><div class="sect3" id="SYNCHRONOUS-REPLICATION-HA"><div class="titlepage"><div><div><h4 class="title">26.2.8.4. S'organiser pour la haute disponibilité <a href="#SYNCHRONOUS-REPLICATION-HA" class="id_link">#</a></h4></div></div></div><p>
+     <code class="varname">synchronous_standby_names</code> indique le nombre et les noms
+     des serveurs secondaires synchrones pour lesquels les validations de
+     transactions effectuées lorsque <code class="varname">synchronous_commit</code> est
+     configurée à <code class="literal">on</code>, <code class="literal">remote_apply</code> ou
+     <code class="literal">remote_write</code>, attendront leur réponse. Ces validations
+     de transactions pourraient ne jamais se terminer si un des secondaires
+     synchrones s'arrêtait brutalement.
+    </p><p>
+     La meilleure solution pour la haute disponibilité est de s'assurer que vous
+     conservez autant de serveurs secondaires synchrones que demandés. Ceci se fait
+     en nommant plusieurs secondaires synchrones potentiels avec
+     <code class="varname">synchronous_standby_names</code>.
+    </p><p>
+     Dans la réplication synchrone dite priorisée, les serveurs secondaires dont les noms
+     apparaissent en premier seront utilisé comme secondaires synchrones.
+     Les secondaires définis ensuite prendront la place de serveur
+     synchrone si l'un des serveurs venait à tomber.
+
+    </p><p>
+     Dans la réplication dite de quorum, tous les secondaires spécifiés dans la liste
+     seront utilisés comme des secondaires synchrones potentiels.
+     Même si l'un d'entre eux tombe, les autres secondaires continueront de
+     prétendre au rôle de secondaire synchrone.
+    </p><p>
+     Au moment où le premier serveur secondaire s'attache au serveur primaire, il est possible qu'il ne soit pas exactement
+     synchronisé. Cet état est appelé le mode <code class="literal">catchup</code>. Une fois
+     la différence entre le serveur secondaire et le serveur primaire ramenée à zéro,
+     le mode <code class="literal">streaming</code> est atteint.
+     La durée du mode catchup peut être longue surtout juste après la création du serveur secondaire.
+     Si le serveur secondaire est arrêté sur cette période, alors la durée du mode catchup
+     sera d'autant plus longue.
+     Le serveur secondaire ne peut devenir un serveur secondaire synchrone
+     que lorsque le mode <code class="literal">streaming</code> est atteint.
+     L'état de synchronicité des serveurs secondaires peut être consulté
+     avec la vue <code class="structname">pg_stat_replication</code>.
+    </p><p>
+     Si le serveur primaire redémarre alors que des opérations de commit étaient en attente de confirmation, les
+     transactions en attente ne seront réellement enregistrées qu'au moment où la base de données du serveur primaire
+     sera redémarrée.
+     Il n'y a aucun moyen de savoir si tous les serveurs secondaires ont reçu toutes
+     les données WAL nécessaires au moment où le serveur primaire est déclaré hors-service. Des
+     transactions pourraient ne pas être considérées comme sauvegardées sur le serveur secondaire, même si
+     elles l'étaient sur le serveur primaire. La seule garantie offerte dans ce cadre est que
+     l'application ne recevra pas de confirmation explicite de la
+     réussite d'une opération de validation avant qu'il ne soit sûr que les données WAL sont
+     reçues proprement par tous les serveurs secondaires synchrones.
+    </p><p>
+     Si vous ne pouvez vraiment pas conserver autant de serveurs secondaires
+     synchrones que demandés, alors vous devriez diminuer le nombre de secondaires
+     synchrones dont le système doit attendre les réponses aux validations de
+     transactions, en modifiant <code class="varname">synchronous_standby_names</code> (ou
+     en le désactivant) et en rechargeant le fichier de configuration du serveur
+     primaire.
+    </p><p>
+     Si le serveur primaire n'est pas accessible par les serveurs secondaires restants, il est conseillé
+     de basculer vers le meilleur candidat possible parmi ces serveurs secondaires.
+    </p><p>
+     S'il est nécessaire de recréer un serveur secondaire alors que des
+     transactions sont en attente de confirmation, prenez garde à ce que les
+     fonctions <code class="function">pg_backup_start()</code> et
+     <code class="function">pg_backup_stop()</code> soient exécutées dans un contexte
+     où la variable <code class="varname">synchronous_commit</code> vaut
+     <code class="literal">off</code> car, dans le cas contraire, ces requêtes
+     attendront indéfiniment l'apparition de ce serveur secondaire.
+    </p></div></div><div class="sect2" id="CONTINUOUS-ARCHIVING-IN-STANDBY"><div class="titlepage"><div><div><h3 class="title">26.2.9. Archivage continu côté secondaire <a href="#CONTINUOUS-ARCHIVING-IN-STANDBY" class="id_link">#</a></h3></div></div></div><a id="id-1.6.13.17.21.2" class="indexterm"></a><p>
+    Lorsque l'archivage continu est utilisé sur un secondaire, il existe deux
+    scénarios possibles : soit les archives sont partagées entre le serveur
+    primaire et le serveur secondaire, soit le secondaire peut avoir ses propres
+    archives. Si le serveur possède ses propres archives, en définissant le
+    paramètre <code class="varname">archive_mode</code> à <code class="literal">always</code>, le
+    secondaire exécutera la commande d'archivage pour chaque segment de WAL
+    qu'il aura reçu, peu importe qu'il utilise la réplication par les archives
+    ou la réplication en flux. La gestion par archivage partagé peut être faite
+    de la même manière, mais <code class="varname">archive_command</code> ou
+    <code class="varname">archive_library</code> doit d'abord tester si le segment de WAL
+    existe, et si le fichier existant contient les mêmes informations. Cela
+    demande plus de précaution lors de la définition de la commande, car elle
+    doit vérifier qu'elle n'écrase pas un fichier existant avec un contenu
+    différent, et doit renvoyer un succès si le même fichier est archivé deux
+    fois. Tout ceci devant être en plus effectué sans concurrence si deux
+    serveurs essaient d'archiver le même fichier au même moment.
+   </p><p>
+    Si <code class="varname">archive_mode</code> est défini à <code class="literal">on</code>,
+    l'archivage n'est pas actif pendant les modes recovery et standby. Si le
+    serveur secondaire est promu, il commencera à réaliser l'archivage après sa
+    promotion, et il archivera uniquement les fichiers (WAL et historique)
+    qu'il a lui même produit. Pour être sûr d'obtenir un jeu complet
+    d'archives, vous devez vous assurer que tous les fichiers WAL ont été
+    archivés avant qu'ils atteignent le secondaire. C'est implicitement toujours
+    le cas avec un log shipping s'appuyant sur les archives, car le secondaire
+    ne récupère que des informations provenant de ces mêmes fichiers
+    archivés. Ce n'est pas le cas dans le cadre de la réplication en flux.
+    Lorsqu'un serveur n'est pas en mode recovery, il n'y a aucune différence entre les
+    modes <code class="literal">on</code> et <code class="literal">always</code>.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/warm-standby.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+</html>

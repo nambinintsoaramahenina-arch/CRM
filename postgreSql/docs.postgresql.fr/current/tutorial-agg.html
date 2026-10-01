@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/tutorial-agg.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:24 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2.7. Fonctions d'agrégat</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tutorial-join.html" title="2.6. Jointures entre les tables" /><link rel="next" href="tutorial-update.html" title="2.8. Mises à jour" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/tutorial-agg.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/tutorial-agg.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/tutorial-agg.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/tutorial-agg.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/tutorial-agg.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/tutorial-agg.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/tutorial-agg.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/tutorial-agg.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/tutorial-agg.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/tutorial-agg.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/tutorial-agg.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/tutorial-agg.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/tutorial-agg.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/tutorial-agg.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/tutorial-agg.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/tutorial-agg.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/tutorial-agg.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/tutorial-agg.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/tutorial-agg.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/tutorial-agg.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/tutorial-agg.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="tutorial.html">Tutoriel</a></span> » <span class="breadcrumb-link"><a href="tutorial-sql.html">Le langage <acronym class="acronym">SQL</acronym></a></span> » <span class="breadcrumb-node">Fonctions d'agrégat</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tutorial-join.html" title="2.6. Jointures entre les tables">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="tutorial-sql.html" title="Chapitre 2. Le langage SQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial-update.html" title="2.8. Mises à jour">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">2.6. Jointures entre les tables </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 2.8. Mises à jour</td></tr></table></div><div class="sect1" id="TUTORIAL-AGG"><div class="titlepage"><div><div><h2 class="title" style="clear: both">2.7. Fonctions d'agrégat <a href="#TUTORIAL-AGG" class="id_link">#</a></h2></div></div></div><a id="id-1.4.4.8.2" class="indexterm"></a><p>
+    Comme la plupart des autres produits de bases de données relationnelles,
+    <span class="productname">PostgreSQL</span> supporte les <em class="firstterm">fonctions
+    d'agrégat</em>. Une fonction d'agrégat calcule un seul résultat à
+    partir de plusieurs lignes en entrée. Par exemple, il y a des agrégats pour
+    calculer le nombre (<code class="function">count</code>), la somme
+    (<code class="function">sum</code>), la moyenne (<code class="function">avg</code>), le
+    maximum (<code class="function">max</code>) et le minimum (<code class="function">min</code>)
+    d'un ensemble de lignes.
+   </p><p>
+    Comme exemple, nous pouvons trouver la température la plus haute parmi les
+    températures basses avec :
+
+</p><pre class="programlisting">SELECT max(t_basse) FROM temps;</pre><p>
+
+</p><pre class="screen"> max
+-----
+  46
+(1 row)</pre><p>
+   </p><p>
+    <a id="id-1.4.4.8.5.1" class="indexterm"></a>
+
+    Si nous voulons connaître dans quelle ville (ou villes) ces lectures se
+    sont produites, nous pouvons essayer :
+
+</p><pre class="programlisting">SELECT ville FROM temps WHERE t_basse = max(t_basse);
+<em class="lineannotation"><span class="lineannotation">FAUX</span></em></pre><p>
+
+    mais cela ne marchera pas puisque l'agrégat <code class="function">max</code> ne
+    peut pas être utilisé dans une clause <code class="literal">WHERE</code> (cette
+    restriction existe parce que la clause <code class="literal">WHERE</code> détermine
+    les lignes qui seront traitées par l'agrégat ; donc les lignes
+    doivent être évaluées avant que les fonctions d'agrégat ne calculent
+    leur résultat). Cependant, comme cela est souvent le cas, la requête peut
+    être répétée pour arriver au résultat attendu, ici en utilisant une
+    <em class="firstterm">sous-requête</em> :
+
+</p><pre class="programlisting">SELECT ville FROM temps
+    WHERE t_basse = (SELECT max(t_basse) FROM temps);</pre><p>
+
+</p><pre class="screen">     ville
+---------------
+ San Francisco
+(1 row)</pre><p>
+
+    Ceci est correct, car la sous-requête est un calcul indépendant qui traite
+    son propre agrégat séparément à partir de ce qui se passe dans la requête
+    externe.
+   </p><p>
+    <a id="id-1.4.4.8.6.1" class="indexterm"></a>
+    <a id="id-1.4.4.8.6.2" class="indexterm"></a>
+
+    Les agrégats sont également très utiles s'ils sont combinés avec les clauses
+    <code class="literal">GROUP BY</code>. Par exemple, nous pouvons obtenir le nombre de
+    prises de température et la
+    température la plus haute parmi les températures basses observées dans
+    chaque ville avec :
+
+</p><pre class="programlisting">SELECT ville, count(*), max(t_basse)
+    FROM temps
+    GROUP BY ville;</pre><p>
+
+</p><pre class="screen">     ville     | count | max
+---------------+-------|-----
+ Hayward       |     1 |  37
+ San Francisco |     2 |  46
+(2 rows)</pre><p>
+
+    ce qui nous donne une ligne par ville dans le résultat. Chaque résultat
+    d'agrégat est calculé avec les lignes de la table correspondant à la ville.
+    Nous pouvons filtrer ces lignes groupées en utilisant
+    <code class="literal">HAVING</code> :
+
+</p><pre class="programlisting">SELECT ville, count(*), max(t_basse)
+    FROM temps
+    GROUP BY ville
+    HAVING max(t_basse) &lt; 40;</pre><p>
+
+</p><pre class="screen">  ville  | count | max
+---------+-------+-----
+ Hayward |     1 |  37
+(1 row)</pre><p>
+
+    ce qui nous donne le même résultat uniquement pour les villes qui ont
+    toutes leurs valeurs de  <code class="structfield">t_basse</code> en dessous de
+    40. Pour finir, si nous nous préoccupons seulement des villes dont le nom
+    commence par <span class="quote">« <span class="quote"><code class="literal">S</code></span> »</span>, nous pouvons faire :
+
+</p><pre class="programlisting">SELECT ville, count(*), max(t_basse)
+    FROM temps
+    WHERE ville LIKE 'S%' -- <span id="co.tutorial-agg-like"></span>(1)
+    GROUP BY ville;</pre><p>
+
+</p><pre class="screen">
+     city      | count | max
+---------------+-------+-----
+ San Francisco |     2 |  46
+(1 row)
+</pre><p>
+   </p><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left"><p><a href="#co.tutorial-agg-like">(1)</a> </p></td><td valign="top" align="left"><p>
+      L'opérateur <code class="literal">LIKE</code> fait la correspondance avec un
+      motif ; cela est expliqué dans la <a class="xref" href="functions-matching.html" title="9.7. Correspondance de motif">Section 9.7</a>.
+     </p></td></tr></table></div><p>
+   </p><p>
+    Il est important de comprendre l'interaction entre les agrégats et les
+    clauses <acronym class="acronym">SQL</acronym> <code class="literal">WHERE</code> et
+    <code class="literal">HAVING</code>. La différence fondamentale entre
+    <code class="literal">WHERE</code> et <code class="literal">HAVING</code> est que
+    <code class="literal">WHERE</code> sélectionne les lignes en entrée avant que les
+    groupes et les agrégats ne soient traités (donc, cette clause contrôle les
+    lignes qui se retrouvent dans le calcul de l'agrégat), tandis que
+    <code class="literal">HAVING</code> sélectionne les lignes groupées après que les
+    groupes et les agrégats ont été traités. Donc, la clause
+    <code class="literal">WHERE</code> ne doit pas contenir de fonctions d'agrégat ;
+    cela n'a aucun sens d'essayer d'utiliser un agrégat pour déterminer les
+    lignes en entrée des agrégats. D'un autre côté, la clause
+    <code class="literal">HAVING</code> contient toujours des fonctions d'agrégat (pour
+    être précis, vous êtes autorisés à écrire une clause
+    <code class="literal">HAVING</code> qui n'utilise pas d'agrégat, mais c'est rarement
+    utilisé. La même condition pourra être utilisée plus efficacement par un
+    <code class="literal">WHERE</code>).
+   </p><p>
+    Dans l'exemple précédent, nous pouvons appliquer la restriction sur le nom
+    de la ville dans la clause <code class="literal">WHERE</code> puisque cela ne
+    nécessite aucun agrégat. C'est plus efficace que d'ajouter la restriction
+    dans <code class="literal">HAVING</code> parce que nous évitons le groupement et les
+    calculs d'agrégat pour toutes les lignes qui ont échoué lors du contrôle
+    fait par <code class="literal">WHERE</code>.
+   </p><p>
+    Une autre façon de sélectionner les lignes qui vont dans le calcul d'un
+    agrégat est d'utiliser la clause <code class="literal">FILTER</code>, qui est une
+    option par agrégat :
+
+</p><pre class="programlisting">
+SELECT ville, count(*) FILTER (WHERE t_basse &lt; 45), max(t_basse)
+    FROM temps
+    GROUP BY ville;
+</pre><p>
+
+</p><pre class="screen">
+     city      | count | max
+---------------+-------+-----
+ Hayward       |     1 |  37
+ San Francisco |     1 |  46
+(2 rows)
+</pre><p>
+
+    <code class="literal">FILTER</code> ressemble beaucoup à <code class="literal">WHERE</code>,
+    sauf qu'elle supprime les lignes uniquement sur l'entrée de la fonction
+    d'agrégat à laquelle elle est attachée. Dans cet exemple, l'agrégat
+    <code class="literal">count</code> compte seulement les lignes pour lesquelles la
+    colonne <code class="literal">t_basse</code> a une valeur inférieure à 45 alors que
+    l'agrégat <code class="literal">max</code> est toujours appliqué à toutes les lignes,
+    donc il trouve toujours la valeur 46.
+   </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/tutorial-agg.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:24 GMT -->
+</html>

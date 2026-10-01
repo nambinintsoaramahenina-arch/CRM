@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/extend-type-system.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:42 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>36.2. Le système des types de PostgreSQL</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="extend-how.html" title="36.1. L'extensibilité" /><link rel="next" href="xfunc.html" title="36.3. Fonctions utilisateur" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/extend-type-system.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/extend-type-system.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/extend-type-system.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/extend-type-system.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/extend-type-system.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/extend-type-system.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/extend-type-system.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/extend-type-system.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/extend-type-system.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/extend-type-system.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/extend-type-system.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/extend-type-system.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/extend-type-system.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/extend-type-system.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/extend-type-system.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/extend-type-system.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/extend-type-system.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/extend-type-system.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/extend-type-system.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/extend-type-system.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/extend-type-system.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="extend.html">Étendre <acronym class="acronym">SQL</acronym></a></span> » <span class="breadcrumb-node">Le système des types de <span class="productname">PostgreSQL</span></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="extend-how.html" title="36.1. L'extensibilité">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="extend.html" title="Chapitre 36. Étendre SQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="xfunc.html" title="36.3. Fonctions utilisateur">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">36.1. L'extensibilité </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 36.3. Fonctions utilisateur</td></tr></table></div><div class="sect1" id="EXTEND-TYPE-SYSTEM"><div class="titlepage"><div><div><h2 class="title" style="clear: both">36.2. Le système des types de <span class="productname">PostgreSQL</span> <a href="#EXTEND-TYPE-SYSTEM" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="extend-type-system.html#EXTEND-TYPE-SYSTEM-BASE">36.2.1. Les types de base</a></span></dt><dt><span class="sect2"><a href="extend-type-system.html#EXTEND-TYPE-SYSTEM-CONTAINER">36.2.2. Les types conteneurs</a></span></dt><dt><span class="sect2"><a href="extend-type-system.html#EXTEND-TYPE-SYSTEM-DOMAINS">36.2.3. Les domaines</a></span></dt><dt><span class="sect2"><a href="extend-type-system.html#EXTEND-TYPE-SYSTEM-PSEUDO">36.2.4. Pseudo-types</a></span></dt><dt><span class="sect2"><a href="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC">36.2.5. Types et fonctions polymorphes</a></span></dt></dl></div><a id="id-1.8.3.5.2" class="indexterm"></a><a id="id-1.8.3.5.3" class="indexterm"></a><a id="id-1.8.3.5.4" class="indexterm"></a><a id="id-1.8.3.5.5" class="indexterm"></a><a id="id-1.8.3.5.6" class="indexterm"></a><a id="id-1.8.3.5.7" class="indexterm"></a><p>
+   Les types de données de <span class="productname">PostgreSQL</span> sont répartis
+   en types de base, types conteneurs, domaines et pseudo-types.
+  </p><div class="sect2" id="EXTEND-TYPE-SYSTEM-BASE"><div class="titlepage"><div><div><h3 class="title">36.2.1. Les types de base <a href="#EXTEND-TYPE-SYSTEM-BASE" class="id_link">#</a></h3></div></div></div><p>
+    Les types de base sont ceux qui, comme <code class="type">integer</code>, sont implantés
+    sous le niveau du langage <acronym class="acronym">SQL</acronym> (typiquement dans un
+    langage de bas niveau comme le C). Ils correspondent généralement à ce que
+    l'on appelle les types de données abstraits.
+    <span class="productname">PostgreSQL</span> ne peut opérer sur de tels types
+    qu'au moyen de fonctions utilisateur et n'en comprend le fonctionnement que
+    dans la limite de la description qu'en a fait l'utilisateur. Les types de
+    base internes sont décrits dans <a class="xref" href="datatype.html" title="Chapitre 8. Types de données">Chapitre 8</a>.
+   </p><p>
+    Les types énumérés (enum) peuvent être considérés comme une sous-catégorie
+    des types de base. La différence principale est qu'ils peuvent être créés
+    en utilisant juste les commandes <acronym class="acronym">SQL</acronym>, sans
+    programmation de bas niveau. Référez-vous à <a class="xref" href="datatype-enum.html" title="8.7. Types énumération">Section 8.7</a> pour plus d'informations.
+   </p></div><div class="sect2" id="EXTEND-TYPE-SYSTEM-CONTAINER"><div class="titlepage"><div><div><h3 class="title">36.2.2. Les types conteneurs <a href="#EXTEND-TYPE-SYSTEM-CONTAINER" class="id_link">#</a></h3></div></div></div><p>
+    <span class="productname">PostgreSQL</span> a trois genres de types
+    <span class="quote">« <span class="quote">conteneurs</span> »</span>, qui sont des types contenant plusieurs valeurs
+    d'autres types. Ce sont des tableaux, des valeurs composites et des
+    intervalles.
+   </p><p>
+    Les tableaux peuvent contenir plusieurs valeurs qui sont toutes du même
+    type. Un type tableau est automatiquement créé pour chaque type de base,
+    type composite, type intervalle et type domaine. Par contre, il n'y a pas
+    de tableaux de tableaux. Pour ce qui concerne le système de typage, les
+    tableaux multi-dimensionnels sont identiques aux tableaux
+    uni-dimensionnels. Référez-vous à <a class="xref" href="arrays.html" title="8.15. Tableaux">Section 8.15</a> pour plus
+    d'informations.
+   </p><p>
+    Les types composites, ou types lignes, sont créés chaque fois qu'un
+    utilisateur crée une table. Il est également possible de définir un type
+    composite autonome sans table associée. Un type composite n'est
+    qu'une simple liste de types de base avec des noms de champs associés. Une
+    valeur de type composite est une ligne ou un enregistrement de valeurs de
+    champ. La <a class="xref" href="rowtypes.html" title="8.16. Types composites">Section 8.16</a>
+    fournit de plus amples informations sur ces types.
+   </p><p>
+
+    Un type intervalle (<span class="foreignphrase"><em class="foreignphrase">range</em></span>) peut contenir
+    deux valeurs de même type, qui sont les bornes inférieure et supérieure de
+    l'intervalle. Les types intervalle sont créés par les utilisateurs,
+    bien que quelques-uns soient intégrés.
+
+    Référez-vous à <a class="xref" href="rangetypes.html" title="8.17. Types intervalle de valeurs">Section 8.17</a> pour plus d'informations.
+   </p></div><div class="sect2" id="EXTEND-TYPE-SYSTEM-DOMAINS"><div class="titlepage"><div><div><h3 class="title">36.2.3. Les domaines <a href="#EXTEND-TYPE-SYSTEM-DOMAINS" class="id_link">#</a></h3></div></div></div><p>
+    Un domaine est basé sur un type sous-jacent donné particulier, et est
+    interchangeable avec ce type dans beaucoup d'utilisations. Cependant,
+    un domaine peut avoir des contraintes restreignant ses valeurs à un
+    sous-ensemble de ce que permet le type sous-jacent. Les domaines sont
+    créés avec la fonction <acronym class="acronym">SQL</acronym> <a class="xref" href="sql-createdomain.html" title="CREATE DOMAIN"><span class="refentrytitle">CREATE DOMAIN</span></a>.
+    Référez-vous à <a class="xref" href="domains.html" title="8.18. Types domaine">Section 8.18</a> pour plus d'informations.
+   </p></div><div class="sect2" id="EXTEND-TYPE-SYSTEM-PSEUDO"><div class="titlepage"><div><div><h3 class="title">36.2.4. Pseudo-types <a href="#EXTEND-TYPE-SYSTEM-PSEUDO" class="id_link">#</a></h3></div></div></div><p>
+    Il existe quelques <span class="quote">« <span class="quote">pseudo-types</span> »</span> pour des besoins
+    particuliers. Les pseudo-types ne peuvent pas apparaître comme champs de
+    table ou comme composants de types conteneurs, mais ils peuvent être
+    utilisés pour déclarer les types des arguments et des résultats de
+    fonctions. Dans le système de typage, ils fournissent un mécanisme
+    d'identification des classes spéciales de fonctions. La
+    <a class="xref" href="datatype-pseudo.html#DATATYPE-PSEUDOTYPES-TABLE" title="Tableau 8.27. Pseudo-Types">Tableau 8.27</a> donne la liste des
+    pseudo-types qui existent.
+   </p></div><div class="sect2" id="EXTEND-TYPES-POLYMORPHIC"><div class="titlepage"><div><div><h3 class="title">36.2.5. Types et fonctions polymorphes <a href="#EXTEND-TYPES-POLYMORPHIC" class="id_link">#</a></h3></div></div></div><a id="id-1.8.3.5.13.2" class="indexterm"></a><a id="id-1.8.3.5.13.3" class="indexterm"></a><a id="id-1.8.3.5.13.4" class="indexterm"></a><a id="id-1.8.3.5.13.5" class="indexterm"></a><p>
+    Les pseudo-types ayant un intérêt particulier sont les <em class="firstterm">types
+     polymorphiques</em>, utilisés pour déclarer des
+    <em class="firstterm">fonctions polymorphiques</em>. Cette puissante
+    fonctionnalité permet à une définition unique de fonction d'opérer sur
+    différents types de données, le type de données étant déterminé par le
+    type passé lors d'un appel donné. Les types polymorphiques sont indiqués
+    dans <a class="xref" href="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC-TABLE" title="Tableau 36.1. Types polymorphiques">Tableau 36.1</a>. Quelques exemples
+    de leurs usages apparaissent dans <a class="xref" href="xfunc-sql.html#XFUNC-SQL-POLYMORPHIC-FUNCTIONS" title="36.5.11. Fonctions SQL polymorphes">Section 36.5.11</a>.
+   </p><div class="table" id="EXTEND-TYPES-POLYMORPHIC-TABLE"><p class="title"><strong>Tableau 36.1. Types polymorphiques</strong></p><div class="table-contents"><table class="table" summary="Types polymorphiques" border="1"><colgroup><col class="col1" /><col class="col2" /><col class="col3" /></colgroup><thead><tr><th>Nom</th><th>Famille</th><th>Description</th></tr></thead><tbody><tr><td><code class="type">anyelement</code></td><td>Simple</td><td>Indique qu'une fonction accepte n'importe quel type de données</td></tr><tr><td><code class="type">anyarray</code></td><td>Simple</td><td>Indique qu'une fonction accepte n'importe quel type de données tableau.</td></tr><tr><td><code class="type">anynonarray</code></td><td>Simple</td><td>Indique qu'une fonction accepte n'importe quel type de données
+        qui n'est pas un tableau</td></tr><tr><td><code class="type">anyenum</code></td><td>Simple</td><td>Indique que cette fonction accepte n'importe quel type de données enum
+        (voir <a class="xref" href="datatype-enum.html" title="8.7. Types énumération">Section 8.7</a>)
+       </td></tr><tr><td><code class="type">anyrange</code></td><td>Simple</td><td>Indique que cette fonction accepte n'importe quel type interval
+        (voir <a class="xref" href="rangetypes.html" title="8.17. Types intervalle de valeurs">Section 8.17</a>)
+       </td></tr><tr><td><code class="type">anymultirange</code></td><td>Simple</td><td>Indique qu'une fonction accepte tout type de données multirange
+       (voir <a class="xref" href="rangetypes.html" title="8.17. Types intervalle de valeurs">Section 8.17</a>)
+       </td></tr><tr><td><code class="type">anycompatible</code></td><td>Common</td><td>
+        Indique que la fonction accepte n'importe quel type de données, avec
+        promotion automatique d'arguments multiples en un type de données commun.
+       </td></tr><tr><td><code class="type">anycompatiblearray</code></td><td>Common</td><td>
+        Indique que la fonction accepte n'importe quel type de données tableau, avec
+        promotion automatique d'arguments multiples en un type de données commun.
+       </td></tr><tr><td><code class="type">anycompatiblenonarray</code></td><td>Common</td><td>
+        Indique que la fonction accepte n'importe quel type de données qui
+        n'est pas un tableau, avec promotion automatique d'arguments multiples
+        en un type de données commun.
+       </td></tr><tr><td><code class="type">anycompatiblerange</code></td><td>Common</td><td>
+        Indique que la fonction accepte n'importe quel type de données interval, avec
+        promotion automatique d'arguments multiples en un type de données commun.
+       </td></tr><tr><td><code class="type">anycompatiblemultirange</code></td><td>Common</td><td>Indique qu'une fonction accepte tout type de données multirange,
+       avec une promotion automatique de plusieurs arguments vers un type de
+       données commun</td></tr></tbody></table></div></div><br class="table-break" /><p>
+    Les arguments et résultats polymorphes sont liés entre eux et sont résolus
+    dans un type de données spécifique quand une requête faisant appel à une
+    fonction polymorphe est analysée. Quand il y a plus d'un argument
+    polymorphique, les types de données courants doivent correspondre comme
+    décrit ci-dessous. Si le type de résultat de la fonction est
+    polymorphique, or que ses arguments de sortie sont de types
+    polymorphiques, alors les types de ces résultats sont déduits par les
+    types polymorphiques en entrée présents comme décrit ci-dessous.
+   </p><p>
+    Pour les types polymorphiques de famille <span class="quote">« <span class="quote">simple</span> »</span>, la
+    correspondance et les règles de déduction fonctionnent ainsi :
+   </p><p>
+    Chaque occurrence (argument
+    ou valeur de retour) déclarée comme <code class="type">anyelement</code>
+    peut prendre n'importe quel type réel de données mais, lors d'un
+    appel de fonction donné, elles doivent toutes avoir le
+    <span class="emphasis"><em>même</em></span> type réel. Chaque occurrence déclarée comme
+    <code class="type">anyarray</code> peut prendre n'importe quel type de données tableau.
+    De façon similaire, les occurrences déclarées en tant que
+    <code class="type">anyrange</code> doivent toutes être du même type.
+    <code class="type">anymultirange</code>.
+   </p><p>
+    De la même façon, si des occurrences sont déclarées comme
+    <code class="type">anyarray</code> et d'autres comme <code class="type">anyelement</code> ou
+    <code class="type">anyarray</code>, le type réel de tableau des occurrences
+    <code class="type">anyarray</code> doit être un tableau dont les éléments sont du même
+    type que ceux apparaissant dans les occurrences de type
+    <code class="type">anyelement</code>. <code class="type">anynonarray</code> est traité de la même
+    façon que <code class="type">anyelement</code> mais ajoute une contrainte
+    supplémentaire. Le type réel ne doit pas être un tableau.
+    <code class="type">anyenum</code> est traité de la même façon que
+    <code class="type">anyelement</code> mais ajoute une contrainte supplémentaire. Le
+    type doit être un type enuméré.
+   </p><p>
+    De façon similaire, S'il existe des positions déclarées
+    <code class="type">anyrange</code> et d'autres déclarées <code class="type">anyelement</code> ou
+    <code class="type">anyarray</code>, le type intervalle réel dans les positions
+    <code class="type">anyrange</code> doit être un intervalle dont le sous-type est le
+    même type apparaissant dans les positions <code class="type">anyelement</code> et le
+    même que le type élément des positions <code class="type">anyarray</code>. S'il existe
+    des positions déclarées <code class="type">anymultirange</code>, leur type multirange
+    réel doit contenir des intervalles correspondant aux paramètres déclarés
+    <code class="type">anyrange</code> et des éléments de base correspondant aux
+    paramètres déclarés <code class="type">anyelement</code> et <code class="type">anyarray</code>.
+   </p><p>
+    Ainsi, quand plusieurs occurrences d'argument sont déclarées avec un type
+    polymorphe, seules certaines combinaisons de
+    types réels d'argument sont autorisées. Par exemple, une fonction déclarée
+    comme <code class="literal">foo(anyelement, anyelement)</code> peut prendre comme
+    arguments n'importe quelles valeurs à condition qu'elles soient du même
+    type de données.
+   </p><p>
+    Quand la valeur renvoyée par une fonction est déclarée de type polymorphe,
+    il doit exister au moins une occurrence d'argument également polymorphe, et
+    le type réel de donnée passé comme argument détermine le(s) type(s) réel(s)
+    du résultat renvoyé lors de cet appel à la fonction. Par exemple, s'il
+    n'existe pas déjà un mécanisme d'indexation d'éléments de
+    tableau, on peut définir une fonction qui code ce mécanisme :
+    <code class="literal">indice(anyarray, integer) returns anyelement</code>. La
+    déclaration de fonction contraint le premier argument réel à être de type
+    tableau et permet à l'analyseur d'inférer le type correct de résultat à
+    partir du type réel du premier argument. Une fonction déclarée de cette
+    façon <code class="literal">f(anyarray) returns anyenum</code> n'accepte que des
+    tableaux contenant des valeurs de type enum.
+   </p><p>
+    Dans la plupart des cas, l'analyseur peut inférer que le type de données
+    réel pour un type résultat polymorphique pour des arguments qui sont d'un
+    type polymorphique différent dans la même famille  par exemple
+    <code class="type">anyarray</code> peut
+    être déduit à partir de <code class="type">anyelement</code> et vice versa. Une exception
+    est qu'un résultat polymorphique de type <code class="type">anyrange</code> nécessite
+    un argument de type <code class="type">anyrange</code> ; il ne peut pas être
+    déduit d'arguments <code class="type">anyarray</code> ou <code class="type">anyelement</code>. Ceci
+    est dû au fait qu'il pourrait y avoir plusieurs types d'intervalles avec
+    le même sous-type.
+   </p><p>
+    <code class="type">anynonarray</code> et <code class="type">anyenum</code> ne représentent
+    pas des variables de type séparé ; elles sont du même type que
+    <code class="type">anyelement</code>, mais avec une contrainte supplémentaire. Par
+    exemple, déclarer une fonction <code class="literal">f(anyelement, anyenum)</code>
+    est équivalent à la déclarer <code class="literal">f(anyenum, anyenum)</code> :
+    les deux arguments réels doivent être du même type enum.
+   </p><p>
+    Pour la famille de types polymorphiques <span class="quote">« <span class="quote">common</span> »</span>, la
+    correspondance et les règles de déduction fonctionnent presque pareilles
+    que pour la famille <span class="quote">« <span class="quote">simple</span> »</span>, avec une différence majeure :
+    les types courants des arguments n'ont pas besoin d'être identiques,
+    aussi longtemps qu'ils peuvent être implicitement convertis en un type commun simple.
+    Le type commun est sélectionné en suivant la même règle que pour <code class="literal">UNION</code>
+    et les constructions liées (voir <a class="xref" href="typeconv-union-case.html" title="10.5. Constructions UNION, CASE et constructions relatives">Section 10.5</a>).
+    La sélection du type commun considère les types présents
+    <code class="type">anycompatible</code> et <code class="type">anycompatiblenonarray</code> en entrée,
+    les éléments de type tableau <code class="type">anycompatiblearray</code> en entrée, et
+    les sous-types <code class="type">anycompatiblerange</code> et
+    <code class="type">anycompatiblemultirange</code> en entrée.
+    Si <code class="type">anycompatiblenonarray</code> est présent, alors le type commun doit
+    être un type qui n'est pas un tableau. Une fois le type commun identifié, les arguments
+    en position <code class="type">anycompatible</code> et <code class="type">anycompatiblenonarray</code>
+    sont automatiquement convertis en ce type, et les arguments en position
+    <code class="type">anycompatiblearray</code> sont automatiquement convertis en type tableau
+    pour ce type.
+
+   </p><p>
+    Du fait qu'il n'y a pas de moyen de sélectionner le type interval à partir
+    uniquement de son sous-type, l'usage de <code class="type">anycompatiblerange</code>
+    et/ou <code class="type">anycompatiblemultirange</code> requiert que tous les
+    arguments déclarés avec ce type aient le même type range et/ou
+    multirange, et que le type du sous-type est en accord avec le type commun
+    sélectionné, pour qu'il n'y ait pas de conversion nécessaire de la valeur
+    de l'intervalle. Comme avec <code class="type">anyrange</code> et
+    <code class="type">anymultirange</code>, l'usage de <code class="type">anycompatiblerange</code> et
+    <code class="type">anymultirange</code> en tant que type de résultat de fonction
+    demande qu'il y ait un argument <code class="type">anycompatiblerange</code> ou
+    <code class="type">anycompatiblemultirange</code>.
+   </p><p>
+    Notez qu'il n'y a aucun type <code class="type">anycompatibleenum</code>. Un tel
+    type ne serait pas très utile, du fait qu'il n'y a normalement aucune
+    conversion implicite de types enum, signifiant ainsi qu'il n'y aura aucune
+    façon de résoudre un type commun pour des entrées enum différentes.
+   </p><p>
+    Les familles polymorphiques <span class="quote">« <span class="quote">simple</span> »</span> et <span class="quote">« <span class="quote">common</span> »</span>
+    représentent deux ensembles de types de variable indépendants. Considérez
+    par exemple :
+    </p><pre class="programlisting">
+CREATE FUNCTION myfunc(a anyelement, b anyelement,
+                       c anycompatible, d anycompatible)
+RETURNS anycompatible AS ...
+    </pre><p>
+    Dans un appel de cette fonction, les deux premières entrées doivent avoir
+    le même type exact. Les deux dernières entrées doivent être convertibles
+    en un type commun, mais ce type nécessite d'être complétement différent du type
+    des deux premières entrées. Le résultat aura le type commun des deux
+    dernières entrées.
+   </p><p>
+    Une fonction variadic (c'est-à-dire une fonction acceptant un nombre
+    variable d'arguments, comme dans <a class="xref" href="xfunc-sql.html#XFUNC-SQL-VARIADIC-FUNCTIONS" title="36.5.6. Fonctions SQL avec un nombre variables d'arguments">Section 36.5.6</a>) peut être polymorphique :
+    cela se fait en déclarant son dernier paramètre <code class="literal">VARIADIC</code>
+    <code class="type">anyarray</code> ou <code class="literal">VARIADIC</code>
+    <code class="type">anycompatiblearray</code>. Pour s'assurer de la correspondance des
+    arguments et déterminer le type de la valeur en retour, ce type de
+    fonction se comporte de la même façon que si vous aviez écrit le nombre
+    approprié de paramètres <code class="type">anynonarray</code> ou
+    <code class="type">anycompatiblenonarray</code>.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/extend-type-system.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:42 GMT -->
+</html>

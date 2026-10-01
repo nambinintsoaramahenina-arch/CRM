@@ -1,0 +1,674 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/extend-extensions.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>36.17. Empaqueter des objets dans une extension</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="xindex.html" title="36.16. Interfacer des extensions d'index" /><link rel="next" href="extend-pgxs.html" title="36.18. Outils de construction d'extension" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/extend-extensions.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/extend-extensions.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/extend-extensions.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/extend-extensions.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/extend-extensions.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/extend-extensions.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/extend-extensions.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/extend-extensions.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/extend-extensions.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/extend-extensions.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/extend-extensions.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/extend-extensions.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/extend-extensions.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/extend-extensions.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/extend-extensions.html">9.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/extend-extensions.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="extend.html">Étendre <acronym class="acronym">SQL</acronym></a></span> » <span class="breadcrumb-node">Empaqueter des objets dans une extension</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="xindex.html" title="36.16. Interfacer des extensions d'index">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="extend.html" title="Chapitre 36. Étendre SQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="extend-pgxs.html" title="36.18. Outils de construction d'extension">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">36.16. Interfacer des extensions d'index </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 36.18. Outils de construction d'extension</td></tr></table></div><div class="sect1" id="EXTEND-EXTENSIONS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">36.17. Empaqueter des objets dans une extension <a href="#EXTEND-EXTENSIONS" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="extend-extensions.html#EXTEND-EXTENSIONS-FILES">36.17.1. Fichiers des extensions</a></span></dt><dt><span class="sect2"><a href="extend-extensions.html#EXTEND-EXTENSIONS-RELOCATION">36.17.2. Possibilités concernant le déplacement des extensions</a></span></dt><dt><span class="sect2"><a href="extend-extensions.html#EXTEND-EXTENSIONS-CONFIG-TABLES">36.17.3. Tables de configuration des extensions</a></span></dt><dt><span class="sect2"><a href="extend-extensions.html#EXTEND-EXTENSIONS-UPDATES">36.17.4. Mise à jour d'extension</a></span></dt><dt><span class="sect2"><a href="extend-extensions.html#EXTEND-EXTENSIONS-UPDATE-SCRIPTS">36.17.5. Installer des extensions en utilisant des scripts de mise à jour</a></span></dt><dt><span class="sect2"><a href="extend-extensions.html#EXTEND-EXTENSIONS-SECURITY">36.17.6. Considérations de sécurité pour les extensions</a></span></dt><dt><span class="sect2"><a href="extend-extensions.html#EXTEND-EXTENSIONS-EXAMPLE">36.17.7. Exemples d'extensions</a></span></dt></dl></div><a id="id-1.8.3.20.2" class="indexterm"></a><p>
+   Une extension à <span class="productname">PostgreSQL</span> utile contient généralement
+   plusieurs objets SQL. Par exemple, un nouveau type de données va nécessiter de
+   nouvelles fonctions, de nouveaux opérateurs et probablement de nouvelles méthodes
+   d'indexation.
+   Il peut être utile de les grouper en un unique paquetage pour simplifier la gestion
+   des bases de données. Avec <span class="productname">PostgreSQL</span>, ces paquetages sont
+   appelés <em class="firstterm">extension</em>. Pour créer une extension, vous avez besoin
+   au minimum d'un <em class="firstterm">fichier de script</em> qui contient les commandes
+   <acronym class="acronym">SQL</acronym> permettant de créer ses objets, et un
+   <em class="firstterm">fichier de contrôle</em> qui rapporte quelques propriétés de base
+   de cette extension. Si cette extension inclut du code C, elle sera aussi généralement
+   accompagnée d'une bibliothèque dans lequel le code C aura été compilé.
+   Une fois ces fichiers en votre possession, un simple appel à la commande
+   <a class="link" href="sql-createextension.html" title="CREATE EXTENSION"><code class="command">CREATE EXTENSION</code></a> vous permettra de charger ses objets dans la base
+   de données.
+  </p><p>
+   Le principal avantage des extensions n'est toutefois pas de pouvoir de charger une
+   grande quantité d'objets dans votre base de donnée. Les extensions permettent en effet
+   surtout à <span class="productname">PostgreSQL</span> de comprendre que ces objets sont liés par cette
+   extension. Vous pouvez par exemple supprimer tous ces objets avec une simple commande
+   <a class="link" href="sql-dropextension.html" title="DROP EXTENSION"><code class="command">DROP EXTENSION</code></a>. Il n'est
+   ainsi pas nécessaire de maintenir un script de
+   <span class="quote">« <span class="quote">désinstallation</span> »</span>.
+   Plus utile encore, l'outil <span class="application">pg_dump</span> saura reconnaître les objets
+   appartenant à une extension et, plutôt que de les extraire individuellement, ajoutera simplement
+   une commande <code class="command">CREATE EXTENSION</code> à la sauvegarde.
+   Ce mécanisme simplifie aussi la migration à une nouvelle version de l'extension
+   qui peut contenir de nouveaux objets ou des objets différents de la version d'origine.
+   Notez bien toutefois qu'il est nécessaire de disposer des fichiers de contrôles, de script,
+   et autres pour permettre la restauration d'une telle sauvegarde dans une nouvelle base
+   de donnée.
+  </p><p>
+   <span class="productname">PostgreSQL</span> ne vous laissera pas supprimer
+   de manière individuelle les objets d'une extension sans supprimer
+   l'extension tout entière.
+   Aussi, bien que vous ayez la possibilité de modifier la définition d'un objet inclus dans
+   une extension (par exemple via la commande <code class="command">CREATE OR REPLACE FUNCTION</code> dans
+   le cas d'une fonction), il faut garder en tête que cette modification ne sera pas sauvegardée
+   par l'outil <span class="application">pg_dump</span>. Une telle modification n'est en pratique raisonnable
+   que si vous modifiez parallèlement le fichier de script de l'extension. Il existe toutefois des
+   cas particuliers comme celui des tables qui contiennent des données de
+   configuration (voir <a class="xref" href="extend-extensions.html#EXTEND-EXTENSIONS-CONFIG-TABLES" title="36.17.3. Tables de configuration des extensions">Section 36.17.3</a>.)
+   Dans les situations de production, il est généralement préférable de créer
+   un script de mise à jour de l'extension pour réaliser les modifications sur
+   les objets membres de l'extension.
+  </p><p>
+   Le script de l'extension peut mettre en place des droits sur les objets qui
+   font partie de l'extension via les instructions <code class="command">GRANT</code> et
+   <code class="command">REVOKE</code>. La configuration finale des droits pour chaque
+   objet (si des droits sont à configurer) sera enregistrée dans le catalogue
+   système <a class="link" href="catalog-pg-init-privs.html" title="51.28. pg_init_privs"><code class="structname">pg_init_privs</code></a>.
+   Quand <span class="application">pg_dump</span> est utilisé, la commande
+   <code class="command">CREATE EXTENSION</code> sera inclue dans la sauvegarde, suivi
+   de la mise en place des instructions <code class="command">GRANT</code> et
+   <code class="command">REVOKE</code> pour configurer les droits sur les objets, tels
+   qu'ils étaient au moment où la sauvegarde a été faite.
+  </p><p>
+   <span class="productname">PostgreSQL</span> ne supporte pas l'exécution
+   d'instructions <code class="command">CREATE POLICY</code> et <code class="command">SECURITY
+    LABEL</code> par le script. Elles doivent être exécutées après la
+   création de l'extension. Toutes les politiques RLS et les labels de
+   sécurité placés sur les objets d'une extension seront inclus dans les
+   sauvegardes créées par <span class="application">pg_dump</span>.
+  </p><p>
+   Il existe aussi un mécanisme permettant de créer des scripts de mise à jour de la définition des objets
+   <acronym class="acronym">SQL</acronym> contenus dans une extension.
+   Par exemple, si la version 1.1 d'une extension ajoute une fonction et change le corps d'une autre
+   vis-à-vis de la version 1.0 d'origine, l'auteur de l'extension peut fournir un <em class="firstterm">script
+    de mise à jour</em> qui effectue uniquement ces deux modifications. La commande <code class="command">
+    ALTER EXTENSION UPDATE</code> peut alors être utilisée pour appliquer ces changements et vérifier
+   quelle version de l'extension est actuellement installée sur une base de donnée spécifiée.
+  </p><p>
+   Les catégories d'objets <acronym class="acronym">SQL</acronym> qui peuvent être inclus dans une extension
+   sont spécifiées dans la description de la commande <a class="link" href="sql-alterextension.html" title="ALTER EXTENSION"><code class="command">ALTER EXTENSION</code></a>.
+   D'une manière générale, les objets qui sont communs à l'ensemble de la base ou du cluster,
+   comme les bases de données, les rôles, les tablespaces ne peuvent être inclus dans une
+   extension car une extension n'est référencée qu'à l'intérieur d'une base de donnée.
+   À noter que rien n'empêche la création de fichier de script qui crée de tels objets, mais
+   qu'ils ne seront alors pas considérés après leur création comme faisant partie de l'extension.
+   À savoir en outre que bien que les tables puissent être incluses dans une extension, les objets
+   annexes tels que les index ne sont pas automatiquement inclus dans l'extension et devront être
+   explicitement mentionnés dans les fichiers de script.
+  </p><p>
+   Si un script d'extension créé n'importe quel objet temporaire (comme des
+   tables temporaires), ces objets seront traités comme des membres de
+   l'extension pour le reste de la session courante, mais seront
+   automatiquement supprimés à la fin de la session, tout comme n'importe quel
+   objet temporaire le serait également.  C'est une exception à la règle que
+   les objets membres d'une extension ne peuvent pas être supprimés sans
+   supprimer l'intégralité de l'extension.
+  </p><div class="sect2" id="EXTEND-EXTENSIONS-FILES"><div class="titlepage"><div><div><h3 class="title">36.17.1. Fichiers des extensions <a href="#EXTEND-EXTENSIONS-FILES" class="id_link">#</a></h3></div></div></div><a id="id-1.8.3.20.11.2" class="indexterm"></a><p>
+    La commande <code class="command">CREATE EXTENSION</code> repose sur un fichier de contrôle
+    associé à chaque extension. Ce fichier doit avoir le même nom que l'extension suivi du suffixe
+    <code class="literal">.control</code>, et doit être placé dans le sous-répertoire <code class="literal">SHAREDIR/extension</code>
+    du répertoire d'installation. Il doit être accompagné d'au moins un fichier de script <acronym class="acronym">SQL</acronym>
+    dont le nom doit répondre à la syntaxe <code class="literal"><em class="replaceable"><code>extension</code></em>--<em class="replaceable"><code>version</code></em>.sql</code>
+    (par exemple, <code class="literal">foo--1.0.sql</code> pour la version <code class="literal">1.0</code> de l'extension <code class="literal">foo</code>).
+    Par défaut, les fichiers de script sont eux-aussi situés dans le répertoire <code class="literal">SHAREDIR/extension</code>. Le fichier
+    de contrôle peut toutefois spécifier un répertoire différent pour chaque fichier de script.
+   </p><p>
+    Le format du fichier de contrôle d'une extension est le même que pour le
+    fichier <code class="filename">postgresql.conf</code>, à savoir une liste d'affectation
+    <em class="replaceable"><code>nom_paramètre</code></em> <code class="literal">=</code> <em class="replaceable"><code>valeur</code></em>
+    avec un maximum d'une affectation par ligne.
+    Les lignes vides et les commentaires introduits par <code class="literal">#</code> sont eux-aussi autorisés.
+    Prenez garde à placer entre guillemets les valeurs qui ne sont ni des nombres ni des mots isolés.
+   </p><p>
+    Un fichier de contrôle peut définir les paramètres suivants :
+   </p><div class="variablelist"><dl class="variablelist"><dt id="EXTEND-EXTENSIONS-FILES-DIRECTORY"><span class="term"><code class="varname">directory</code> (<code class="type">string</code>)</span> <a href="#EXTEND-EXTENSIONS-FILES-DIRECTORY" class="id_link">#</a></dt><dd><p>
+       Le répertoire qui inclut les scripts <acronym class="acronym">SQL</acronym> de l'extension.
+       Si un chemin relatif est spécifié, le sous-répertoire <code class="literal">SHAREDIR</code>
+       du répertoire d'installation sera choisi comme base.
+       Le comportement par défaut de ce paramètre revient à le définir tel que
+       <code class="literal">directory = 'extension'</code>.
+      </p></dd><dt id="EXTEND-EXTENSIONS-FILES-DEFAULT-VERSION"><span class="term"><code class="varname">default_version</code> (<code class="type">string</code>)</span> <a href="#EXTEND-EXTENSIONS-FILES-DEFAULT-VERSION" class="id_link">#</a></dt><dd><p>
+       La version par défaut de l'extension, qui sera installée si aucune
+       version n'est spécifiée avec la commande <code class="command">CREATE EXTENSION</code>.
+       Ainsi, bien que ce paramètre puisse ne pas être précisé, il reste
+       recommandé de le définir pour éviter que la commande
+       <code class="command">CREATE EXTENSION</code> ne provoque une erreur
+       en l'absence de l'option <code class="literal">VERSION</code>.
+      </p></dd><dt id="EXTEND-EXTENSIONS-FILES-COMMENT"><span class="term"><code class="varname">comment</code> (<code class="type">string</code>)</span> <a href="#EXTEND-EXTENSIONS-FILES-COMMENT" class="id_link">#</a></dt><dd><p>
+       Un commentaire de type chaîne de caractère au sujet de l'extension. Le
+       commentaire est appliqué à la création de l'extension, mais pas pendant
+       les mises à jour de cette extension (car cela pourrait écraser des
+       commentaires ajoutés par l'utilisateur). Une alternative consiste à
+       utiliser la commande <a class="xref" href="sql-comment.html" title="COMMENT"><span class="refentrytitle">COMMENT</span></a> dans le script de
+       l'extension.
+      </p></dd><dt id="EXTEND-EXTENSIONS-FILES-ENCODING"><span class="term"><code class="varname">encoding</code> (<code class="type">string</code>)</span> <a href="#EXTEND-EXTENSIONS-FILES-ENCODING" class="id_link">#</a></dt><dd><p>
+       L'encodage des caractères utilisé par les fichiers de script. Ce paramètre
+       doit être spécifié si les fichiers de script contiennent des caractères
+       non ASCII. Le comportement par défaut en l'absence de ce paramètre consiste à utiliser
+       l'encodage de la base de donnée.
+      </p></dd><dt id="EXTEND-EXTENSIONS-FILES-MODULE-PATHNAME"><span class="term"><code class="varname">module_pathname</code> (<code class="type">string</code>)</span> <a href="#EXTEND-EXTENSIONS-FILES-MODULE-PATHNAME" class="id_link">#</a></dt><dd><p>
+       La valeur de ce paramètre sera utilisée pour toute référence à <code class="literal">MODULE_PATHNAME</code>
+       dans les fichiers de script. Si ce paramètre n'est pas défini, la substitution ne sera pas effectuée.
+       La valeur <code class="literal">$libdir/<em class="replaceable"><code>nom_de_bibliothèque</code></em></code> lui est usuellement attribuée
+       et dans ce cas, <code class="literal">MODULE_PATHNAME</code> est utilisé dans la commande <code class="command">CREATE
+        FUNCTION</code> concernant les fonctions en langage C, de manière à ne pas mentionner <span class="quote">« <span class="quote">en dur</span> »</span>
+       le nom de la bibliothèque partagée.
+      </p></dd><dt id="EXTEND-EXTENSIONS-FILES-REQUIRES"><span class="term"><code class="varname">requires</code> (<code class="type">string</code>)</span> <a href="#EXTEND-EXTENSIONS-FILES-REQUIRES" class="id_link">#</a></dt><dd><p>
+       Une liste de noms d'extension dont dépend cette extension, comme
+       par exemple <code class="literal">requires = 'foo, bar'</code>.  Ces extensions
+       doivent être installées avant que l'extension puisse être installée.
+      </p></dd><dt id="EXTEND-EXTENSIONS-FILES-NO-RELOCATE"><span class="term"><code class="varname">no_relocate</code> (<code class="type">string</code>)</span> <a href="#EXTEND-EXTENSIONS-FILES-NO-RELOCATE" class="id_link">#</a></dt><dd><p>
+       Une liste de noms d'extensions dont dépend cette extension et qui
+       doivent être empêchées de changer de schéma via <code class="command">ALTER
+       EXTENSION ... SET SCHEMA</code>.
+       Ceci est nécessaire si le script de l'extension fait référence au nom du
+       schéma d'une extension requise (en utilisant
+       la syntaxe <code class="literal">@extschema:<em class="replaceable"><code>nom</code></em>@</code>)
+       d'une façon qui ne permet de tracer les renommages.
+      </p></dd><dt id="EXTEND-EXTENSIONS-FILES-SUPERUSER"><span class="term"><code class="varname">superuser</code> (<code class="type">boolean</code>)</span> <a href="#EXTEND-EXTENSIONS-FILES-SUPERUSER" class="id_link">#</a></dt><dd><p>
+       Si ce paramètre est à <code class="literal">true</code> (il s'agit de la valeur par défaut),
+       seuls les superutilisateurs pourront créer cet extension ou la mettre à jour.
+       Si ce paramètre est à <code class="literal">false</code>, seuls les droits nécessaires
+       seront requis pour installer ou mettre à jour l'extension.
+       Ce paramètre devrait normalement être mis à <code class="literal">true</code> si au moins
+       une commandes du script nécessite les privilèges superuser. (Ces commandes
+       échoueront en tous cas, mais il est plus convivial de fournir une erreur en amont.)
+      </p></dd><dt id="EXTEND-EXTENSIONS-FILES-TRUSTED"><span class="term"><code class="varname">trusted</code> (<code class="type">boolean</code>)</span> <a href="#EXTEND-EXTENSIONS-FILES-TRUSTED" class="id_link">#</a></dt><dd><p>
+       Ce paramètre, si mis à <code class="literal">true</code> (qui n'est pas le défaut),
+       permet à des utilisateurs standards, sans attribut <code class="literal">SUPERUSER</code>,
+       d'installer une extension qui a
+       <code class="varname">superuser</code> affecté à <code class="literal">true</code>.
+       Plus précisemment, l'installation sera permise pour toute personne
+       qui a le droit <code class="literal">CREATE</code> sur la base courante.
+       Si l'utilisateur qui exécute <code class="command">CREATE EXTENSION</code> n'est
+       pas superutilisateur mais est autorisé à installer de part ce paramètre, alors
+       le script d'installation ou de mise à jour est exécuté comme bootstrap
+       superutilisateur, et non pas comme l'utilisateur appelant.
+       Ce paramètre n'as pas d'effet si <code class="varname">superuser</code> est
+       <code class="literal">false</code>.
+       En général, le paramètre ne doit pas être mis à <code class="literal">true</code> pour
+       les extensions qui peuvent autoriser des accès aux capacités réservées aux
+       superutilisateurs, telles que les accès au système de fichiers.
+      </p></dd><dt id="EXTEND-EXTENSIONS-FILES-RELOCATABLE"><span class="term"><code class="varname">relocatable</code> (<code class="type">boolean</code>)</span> <a href="#EXTEND-EXTENSIONS-FILES-RELOCATABLE" class="id_link">#</a></dt><dd><p>
+       Une extension est dite <span class="quote">« <span class="quote">déplaçable</span> »</span> (<em class="firstterm">relocatable</em>)
+       s'il est possible de déplacer les objets qu'elle contient dans un schéma différent
+       de celui attribué initialement par l'extension. La valeur par défaut est à
+       <code class="literal">false</code>, ce qui signifie que l'extension n'est pas déplaçable.
+       Voir <a class="xref" href="extend-extensions.html#EXTEND-EXTENSIONS-RELOCATION" title="36.17.2. Possibilités concernant le déplacement des extensions">Section 36.17.2</a> pour des
+       informations complémentaires.
+      </p></dd><dt id="EXTEND-EXTENSIONS-FILES-SCHEMA"><span class="term"><code class="varname">schema</code> (<code class="type">string</code>)</span> <a href="#EXTEND-EXTENSIONS-FILES-SCHEMA" class="id_link">#</a></dt><dd><p>
+       Ce paramètre ne peut être spécifié que pour les extensions non
+       déplaçables. Il permet de forcer l'extension à charger ses objets dans
+       le schéma spécifié et aucun autre. Le paramètre
+       <code class="varname">schema</code> est uniquement consulté lors de la création
+       initiale de l'extension, pas pendant ses mises à jour. Voir <a class="xref" href="extend-extensions.html#EXTEND-EXTENSIONS-RELOCATION" title="36.17.2. Possibilités concernant le déplacement des extensions">Section 36.17.2</a> pour plus d'informations.
+      </p></dd></dl></div><p>
+    En complément au fichier de contrôle <code class="literal"><em class="replaceable"><code>extension</code></em>.control</code>,
+    une extension peut disposer de fichiers de contrôle secondaires pour chaque version dont le nommage correspond à
+    <code class="literal"><em class="replaceable"><code>extension</code></em>--<em class="replaceable"><code>version</code></em>.control</code>.
+    Ces fichiers doivent se trouver dans le répertoire des fichiers de script de l'extension.
+    Les fichiers de contrôle secondaires suivent le même format que le fichier de contrôle principal.
+    Tout paramètre spécifié dans un fichier de contrôle secondaire surcharge la valeur spécifiée dans le
+    fichier de contrôle principal concernant les installations ou mises à jour à la version considérée.
+    Cependant, il n'est pas possible de spécifier les paramètres <code class="varname">directory</code> et
+    <code class="varname">default_version</code> dans un fichier de contrôle secondaire.
+   </p><p>
+    Un fichier de script <acronym class="acronym">SQL</acronym> d'une extension peut contenir toute commande
+    SQL, à l'exception des commandes de contrôle de transaction (<code class="command">BEGIN</code>,
+    <code class="command">COMMIT</code>, etc), et des commandes qui ne peuvent être exécutées au sein
+    d'un bloc transactionnel (comme la commande <code class="command">VACUUM</code>). Cette contrainte
+    est liée au fait que les fichiers de script sont implicitement exécutés dans une transaction.
+   </p><p>
+    Les scripts <acronym class="acronym">SQL</acronym> d'une extension peuvent aussi contenir
+    des lignes commençant par <code class="literal">\echo</code>, qui seront ignorées
+    (traitées comme des commentaires) par le mécanisme d'extension. Ceci est
+    souvent utilisé pour renvoyer une erreur si le script est passé à
+    <span class="application">psql</span> plutôt qu'exécuter par <code class="command">CREATE
+     EXTENSION</code> (voir un script d'exemple dans <a class="xref" href="extend-extensions.html#EXTEND-EXTENSIONS-EXAMPLE" title="36.17.7. Exemples d'extensions">Section 36.17.7</a>). Sans cela, les utilisateurs
+    pourraient charger accidentellement le contenu de l'extension sous la
+    forme d'objets <span class="quote">« <span class="quote">autonomes</span> »</span> plutôt que faisant partie d'une
+    extension, ce qui est assez pénible à corriger.
+   </p><p>
+    Si le script d'extension contient la chaine <code class="literal">@extowner@</code>,
+    celle-ci est remplacé avec le nom (encadré de double apostrophe si nécessaire)
+    de l'utilisateur exécutant <code class="command">CREATE
+     EXTENSION</code> ou <code class="command">ALTER EXTENSION</code>. Habituellement,
+    cette fonctionnalité est employée par les extensions notées de confiance pour
+    affecter l'appropriation des objets sélectionnés par l'utilisateur exécutant plutôt
+    que par le bootstrap superuser. (Il faut cependant être prudent avec cela. Par
+    exemple, affecter à une fonction en langage C un propriétaire non superutilisateur
+    ouvre une voie pour une escalade de privilèges à cet utilisateur.)
+   </p><p>
+    Bien que les fichiers de script puissent contenir n'importe quel caractère
+    autorisé par l'encodage spécifié, les fichiers de contrôle ne peuvent
+    contenir que des caractères ASCII non formatés. En effet,
+    <span class="productname">PostgreSQL</span> ne peut pas déterminer l'encodage
+    utilisé par les fichiers de contrôle. Dans la pratique, cela ne pose
+    problème que dans le cas où vous voudriez utiliser des caractères non
+    ASCII dans le commentaire de l'extension. Dans ce cas de figure, il est
+    recommandé de ne pas utiliser le paramètre <code class="varname">comment</code> du
+    fichier de contrôle pour définir ce commentaire, mais plutôt la commande
+    <code class="command">COMMENT ON EXTENSION</code> dans un fichier de script.
+   </p></div><div class="sect2" id="EXTEND-EXTENSIONS-RELOCATION"><div class="titlepage"><div><div><h3 class="title">36.17.2. Possibilités concernant le déplacement des extensions <a href="#EXTEND-EXTENSIONS-RELOCATION" class="id_link">#</a></h3></div></div></div><p>
+    Les utilisateurs souhaitent souvent charger les objets d'une extension
+    dans un schéma différent de celui imposé par l'auteur. Trois niveaux
+    de déplacement sont supportés :
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Une extension supportant complétement le déplacement peut être déplacé
+      dans un autre schéma à tout moment, y compris après son chargement
+      dans une base de donnée.
+      Initialement, tous les objets de l'extension installée appartiennent à un
+      premier schéma (excepté les objets qui n'appartiennent à aucun schéma comme les
+      langages procéduraux).
+      L'opération de déplacement peut alors être réalisée avec la commande <code class="command">ALTER EXTENSION SET SCHEMA</code>,
+      qui renomme automatiquement tous les objets de l'extension pour être intégrés dans le nouveau
+      schéma.  Le déplacement ne sera toutefois fonctionnel
+      que si l'extension ne contient aucune référence de l'appartenance d'un de ses objets à un schéma.
+      Dans ce cadre, il est alors possible de spécifier qu'une extension supporte complétement le déplacement en initialisant
+      <code class="literal">relocatable = true</code> dans son fichier de contrôle.
+     </p></li><li class="listitem"><p>
+      Une extension peut être déplaçable durant l'installation et ne plus l'être
+      par la suite. Un exemple courant est celui du fichier de script de l'extension
+      qui doit référencer un schéma cible de manière explicite pour des fonctions SQL, par exemple en définissant
+      la propriété <code class="literal">search_path</code>.
+      Pour de telles extensions, il faut définir <code class="literal">relocatable = false</code> dans
+      son fichier de contrôle, et utiliser <code class="literal">@extschema@</code> pour référencer
+      le schéma cible dans le fichier de script. Toutes les occurrences de cette chaîne dans le
+      fichier de script seront remplacées par le nom du schéma choisi (entre guillemets doubles
+      si nécessaire) avant son exécution.
+      Le nom du schéma choisi peut être fixé par l'option <code class="literal">SCHEMA</code> de la
+      commande <code class="command">CREATE EXTENSION</code>.
+     </p></li><li class="listitem"><p>
+      Si l'extension ne permet pas du tout le déplacement, il faut définir <code class="literal">relocatable = false</code>
+      dans le fichier de contrôle, mais aussi définir <code class="literal">schema</code> comme étant le nom du schéma cible.
+      Cette précaution permettra d'empêcher l'usage de l'option <code class="literal">SCHEMA</code> de la commande <code class="command">CREATE
+       EXTENSION</code>, à moins que cette option ne référence la même valeur que celle spécifiée dans le fichier de
+      contrôle. Ce choix est à priori nécessaire si l'extension contient des références à son nom
+      de schéma qui ne peuvent être remplacés par <code class="literal">@extschema@</code>. À noter que même si son usage reste
+      relativement limité dans ce cas de figure puisque le nom du schéma est alors fixé dans le fichier de contrôle,
+      le mécanisme de substitution de <code class="literal">@extschema@</code> reste toujours opérationnel.
+     </p></li></ul></div><p>
+    Dans tous les cas, le fichier de script sera exécuté avec comme valeur de <a class="xref" href="runtime-config-client.html#GUC-SEARCH-PATH">search_path</a>
+    le schéma cible. Cela signifie que la commande <code class="command">CREATE EXTENSION</code> réalisera l'équivalent
+    de la commande suivante :
+    </p><pre class="programlisting">
+SET LOCAL search_path TO @extschema@, pg_temp;
+    </pre><p>
+    Cela permettra aux objets du fichier de script d'être créés dans le schéma cible. Le fichier de script
+    peut toutefois modifier la valeur de <code class="varname">search_path</code> si nécessaire, mais cela n'est
+    généralement pas le comportement souhaité. La variable <code class="varname">search_path</code> retrouvera sa valeur
+    initiale à la fin de l'exécution de la commande <code class="command">CREATE EXTENSION</code>.
+   </p><p>
+    Le schéma cible est déterminé par le paramètre <code class="varname">schema</code> dans le
+    fichier de contrôle s'il est précisé, sinon par l'option <code class="literal">SCHEMA</code>
+    de la commande <code class="command">CREATE EXTENSION</code> si elle est spécifiée, sinon
+    par le schéma de création par défaut actuel (le premier rencontré en suivant le
+    chemin de recherche <code class="varname">search_path</code> de l'appelant). Quand le paramètre
+    <code class="varname">schema</code> du fichier de contrôle est utilisé, le schéma cible sera créé
+    s'il n'existe pas encore. Dans les autres cas, il devra exister au préalable.
+   </p><p>
+    Si des extensions requises sont définies par <code class="varname">requires</code> dans le fichier
+    de contrôle, leur schéma cible est ajouté à la valeur initiale de
+    <code class="varname">search_path</code>, d'après le schéma cible de la nouvelle
+    extension.
+    Cela permet à leurs objets d'être visibles dans le fichier de script de l'extension installée.
+   </p><p>
+    Pour des raisons de sécurité, <code class="literal">pg_temp</code> est ajouté
+    automatiquement à la fin de <code class="varname">search_path</code> dans tous les
+    cas.
+   </p><p>
+    Une extension peut contenir des objets répartis dans plusieurs schémas.
+    Il est alors conseillé de regrouper dans un unique schéma l'ensemble des objets destinés à un usage
+    externe à l'extension, qui sera alors le schéma cible de l'extension. Une telle organisation est compatible
+    avec la définition par défaut de <code class="varname">search_path</code> pour la création d'extensions
+    qui en seront dépendantes.
+   </p><p>
+    Si une extension référence des objets appartenant à une autre extension,
+    il est recommandé de qualifier ces références avec le nom du schéma.
+    Pour faire cela, écrivez <code class="literal">@extschema:<em class="replaceable"><code>nom</code></em>@</code>
+    dans le script de l'extension, où <em class="replaceable"><code>nom</code></em>
+    est le nom de l'autre extension (qui doit être listé dans la liste
+    <code class="literal">requires</code> de cette extension). Cette chaîne sera
+    remplacée par le nom (avec guillemets doubles si nécessaire) du schéma
+    cible de cette extension. Bien que cette notation évite le besoin de
+    coder en dur le nom supposé des schémas dans le script de l'extension,
+    son utilisation peut intégrer le nom du schéma de l'autre extension
+    dans les objets installés de cette extension. (Typiquement, ceci
+    survient quand <code class="literal">@extschema:<em class="replaceable"><code>name</code></em>@</code>
+    est utilisé dans une chaîne constante, telle que le corps d'une fonction
+    ou dans le paramétrage du <code class="varname">search_path</code>. Dans d'autres cas,
+    la référence de l'objet est réduite à son OID lors de l'analyse, et ne
+    requiert pas de recherche ultérieure.) Si le nom du schéma de l'autre
+    extension est très embarquée, vous devez empêcher l'autre extension
+    d'être changée de schéma après que la votre ne soit installée, en ajoutant
+    le nom de l'autre extension dans votre liste <code class="literal">no_relocate</code>.
+   </p></div><div class="sect2" id="EXTEND-EXTENSIONS-CONFIG-TABLES"><div class="titlepage"><div><div><h3 class="title">36.17.3. Tables de configuration des extensions <a href="#EXTEND-EXTENSIONS-CONFIG-TABLES" class="id_link">#</a></h3></div></div></div><p>
+    Certaines extensions incluent des tables de configuration, contenant
+    des données qui peuvent être ajoutées ou changées par l'utilisateur
+    après l'installation de l'extension. Normalement, si la table fait
+    partie de l'extension, ni la définition de la table, ni son contenu
+    ne sera sauvegardé par <span class="application">pg_dump</span>. Mais
+    ce comportement n'est pas celui attendu pour une table de configuration.
+    Les données modifiées par un utilisateur nécessitent d'être sauvegardées,
+    ou l'extension aura un comportement différent après rechargement.
+   </p><a id="id-1.8.3.20.13.3" class="indexterm"></a><p>
+    Pour résoudre ce problème, un fichier de script d'extension peut marquer
+    une table ou une séquence comme étant une relation de configuration, ce qui indiquera à <span class="application">pg_dump</span>
+    d'inclure le contenu de la table ou de la séquence (et non sa définition) dans la sauvegarde. Pour cela, il s'agit d'appeler
+    la fonction <code class="function">pg_extension_config_dump(regclass, text)</code> après avoir
+    créé la table ou la séquence, par exemple
+    </p><pre class="programlisting">
+CREATE TABLE my_config (key text, value text);
+CREATE SEQUENCE my_config_seq;
+
+SELECT pg_catalog.pg_extension_config_dump('my_config', '');
+SELECT pg_catalog.pg_extension_config_dump('my_config_seq', '');
+    </pre><p>
+    Cette fonction permet de marquer autant de tables ou de séquences
+    que nécessaire. Les séquences associées avec des colonnes de type
+    <code class="type">serial</code> ou <code class="type">bigserial</code> peuvent être marquées
+    ainsi.
+   </p><p>
+    Si le second argument de <code class="function">pg_extension_config_dump</code> est une
+    chaîne vide, le contenu entier de la table sera sauvegardé par l'application
+    <span class="application">pg_dump</span>. Cela n'est correct que si la table
+    était initialement vide après l'installation du script. Si un mélange de données
+    initiales et de données ajoutées par l'utilisateur est présent dans la table,
+    le second argument de <code class="function">pg_extension_config_dump</code> permet de
+    spécifier une condition <code class="literal">WHERE</code> qui sélectionne les données à
+    sauvegarder.
+    Par exemple, vous pourriez faire
+    </p><pre class="programlisting">
+CREATE TABLE my_config (key text, value text, standard_entry boolean);
+
+SELECT pg_catalog.pg_extension_config_dump('my_config', 'WHERE NOT standard_entry');
+    </pre><p>
+    et vous assurer que la valeur de <code class="structfield">standard_entry</code> soit
+    true uniquement lorsque les lignes ont été créées par le script de l'extension.
+   </p><p>
+    Pour les séquences, le deuxième argument de <code class="function">pg_extension_config_dump</code>
+    n'a pas d'effet.
+   </p><p>
+    Des situations plus compliquées, comme des données initiales qui peuvent être modifiées
+    par l'utilisateur, peuvent être prises en charge en créant des triggers sur la table de configuration
+    pour s'assurer que les lignes ont été marquées correctement.
+   </p><p>
+    Vous pouvez modifier la condition du filtre associé avec une table de
+    configuration en appelant de nouveau
+    <code class="function">pg_extension_config_dump</code>. (Ceci serait typiquement
+    utile dans un script de mise à jour d'extension.)  La seule façon de marquer
+    une table est de la dissocier de l'extension avec la commande
+    <code class="command">ALTER EXTENSION ... DROP TABLE</code>.
+   </p><p>
+    Notez que les relations de clés étrangères entre ces tables dicteront
+    l'ordre dans lequel les tables seront sauvegardées par pg_dump. Plus
+    spécifiquement, pg_dump tentera de sauvegarder en premier la table
+    référencé, puis la table référante. Comme les relations de clés étrangères
+    sont configurées lors du CREATE EXTENSION (avant que les données ne soient
+    chargées dans les tables), les dépendances circulaires ne sont pas gérées.
+    Quand des dépendances circulaires existent, les données seront toujours
+    sauvegardées mais ne seront pas restaurables directement. Une intervention
+    de l'utilisateur sera nécessaire.
+   </p><p>
+    Les séquences associées avec des colonnes de type <code class="type">serial</code> ou
+    <code class="type">bigserial</code> doivent être directement marquées pour sauvegarder
+    leur état. Marquer la relation parent n'est pas suffisant pour ça.
+   </p></div><div class="sect2" id="EXTEND-EXTENSIONS-UPDATES"><div class="titlepage"><div><div><h3 class="title">36.17.4. Mise à jour d'extension <a href="#EXTEND-EXTENSIONS-UPDATES" class="id_link">#</a></h3></div></div></div><p>
+    Un des avantages du mécanisme d'extension est de proposer un moyen
+    simple de gérer la mise à jour des commandes SQL qui définissent les objets
+    de l'extension. Cela est rendu possible par l'association d'un nom ou d'un numéro
+    de version à chaque nouvelle version du script d'installation de l'extension.
+    En complément, si vous voulez qu'un utilisateur soit capable de mettre à jour
+    sa base de données dynamiquement d'une version à une autre, vous pouvez
+    fournir <em class="firstterm">des scripts de mise à jour</em> qui feront les
+    modifications nécessaires. Les scripts de mise à jour ont un nom qui correspond au format
+    <code class="literal"><em class="replaceable"><code>extension</code></em>--<em class="replaceable"><code>ancienne_version</code></em>--<em class="replaceable"><code>nouvelle_version</code></em>.sql</code>
+    (par exemple, <code class="literal">foo--1.0--1.1.sql</code> contient les commandes pour modifier
+    la version <code class="literal">1.0</code> de l'extension <code class="literal">foo</code> en la version
+    <code class="literal">1.1</code>).
+   </p><p>
+    En admettant qu'un tel script de mise à jour soit disponible, la commande
+    <code class="command">ALTER EXTENSION UPDATE</code> mettra à jour une extension installée
+    vers la nouvelle version spécifiée. Le script de mise à jour est exécuté dans le
+    même environnement que celui que la commande <code class="command">CREATE EXTENSION</code>
+    fournit pour l'installation de scripts : en particulier, la variable <code class="varname">search_path</code>
+    est définie de la même façon et tout nouvel objet créé par le script est automatiquement
+    ajouté à l'extension.  De plus, si le script choisit de supprimer des
+    objets membres de l'extension, ils sont automatiquement dissociés de
+    l'extension.
+   </p><p>
+    Si une extension a un fichier de contrôle secondaire, les paramètres de contrôle qui
+    sont utilisés par un script de mise à jour sont ceux définis par le script de la version
+    cible.
+   </p><p>
+    La commande <code class="command">ALTER EXTENSION</code> peut exécuter des mises à jour en séquence pour
+    réussir une mise à jour. Par exemple, si seuls les fichiers <code class="literal">foo--1.0--1.1.sql</code>
+    et <code class="literal">foo--1.1--2.0.sql</code> sont disponibles, la commande <code class="command">ALTER
+     EXTENSION</code> les exécutera séquentiellement si une mise à jour vers la version <code class="literal">2.0</code>
+    est demandée alors que la version <code class="literal">1.0</code> est installée.
+   </p><p>
+    <span class="productname">PostgreSQL</span> ne suppose rien au sujet des noms de version.
+    Par exemple, il ne sait pas si <code class="literal">1.1</code> suit <code class="literal">1.0</code>.
+    Il effectue juste une correspondance entre les noms de version et suit un chemin
+    qui nécessite d'appliquer le moins de fichier de script possible.
+    Un nom de version peut en réalité être toute chaîne qui ne contiendrait pas
+    <code class="literal">--</code> ou qui ne commencerait ou ne finirait pas par <code class="literal">-</code>.
+   </p><p>
+    Il peut parfois être utile de fournir des scripts de retour en arrière, comme par exemple
+    <code class="literal">foo--1.1--1.0.sql</code> pour autoriser d'inverser les modifications effectuées
+    par la mise à jour en version <code class="literal">1.1</code>. Si vous procédez ainsi, ayez conscience
+    de la possibilité laissée à <span class="productname">PostgreSQL</span> d'exécuter un tel script de retour
+    en arrière s'il permet d'atteindre la version cible d'une mise à jour en un nombre réduit d'étapes.
+    La cause du risque se trouve dans les scripts de mise à jour optimisés permettant de passer
+    plusieurs versions en un seul script. La longueur du chemin commençant par un retour en
+    arrière suivi d'un script optimisé pourrait être inférieure à la longueur du chemin qui monterait
+    de version une par une. Si le script de retour en arrière supprime un objet irremplaçable, les conséquences
+    pourraient en être facheuses.
+   </p><p>
+    Pour vérifier que vous ne serez pas confronté à des chemins de mise à jour inattendus, utilisez cette commande :
+    </p><pre class="programlisting">
+SELECT * FROM pg_extension_update_paths('<em class="replaceable"><code>extension_name</code></em>');
+    </pre><p>
+    Cette commande permet d'afficher chaque paire de noms de version connues pour l'extension spécifiée, ainsi
+    que le chemin de mise à jour qui serait suivi depuis la version de départ jusque la version cible, ou la valeur
+    <code class="literal">NULL</code> si aucun chemin valable n'est disponible. Le chemin est affiché sous une forme textuelle
+    avec des séparateurs <code class="literal">--</code>. Vous pouvez utiliser <code class="literal">regexp_split_to_array(path,'--')</code>
+    si vous préférez le format tableau.
+   </p></div><div class="sect2" id="EXTEND-EXTENSIONS-UPDATE-SCRIPTS"><div class="titlepage"><div><div><h3 class="title">36.17.5. Installer des extensions en utilisant des scripts de mise à jour <a href="#EXTEND-EXTENSIONS-UPDATE-SCRIPTS" class="id_link">#</a></h3></div></div></div><p>
+    Une extension qui a existé un certain temps existera probabement dans
+    plusieurs version, pour lesquelles l'auteur devra écrire des scripts de
+    mise à jour.  Par exemple, si vous avez sorti une extension
+    <code class="literal">foo</code> dans les versions <code class="literal">1.0</code>,
+    <code class="literal">1.1</code>, et <code class="literal">1.2</code>, il devrait exister les
+    scripts de mise à jour <code class="filename">foo--1.0--1.1.sql</code> et
+    <code class="filename">foo--1.1--1.2.sql</code>.  Avant
+    <span class="productname">PostgreSQL</span> 10, il était nécessaire de créer
+    également de nouveaux fichiers de scripts
+    <code class="filename">foo--1.1.sql</code> et <code class="filename">foo--1.2.sql</code> qui
+    construisent directement les nouvelles versions de l'extension, ou sinon
+    les nouvelles version ne pourraient pas être installées directement, mais
+    uniquement en installant <code class="literal">1.0</code> puis en effectuant les
+    mises à jour.  C'était fastidieux et source de doublons, mais c'est
+    maintenant inutile car <code class="command">CREATE EXTENSION</code> peut suivre les
+    chaînes de mise à jour automatiquement.
+    Par exemple, si seuls les fichiers de script
+    <code class="filename">foo--1.0.sql</code>, <code class="filename">foo--1.0--1.1.sql</code>,
+    et <code class="filename">foo--1.1--1.2.sql</code> sont disponibles, alors une demande d'installation
+    de la version <code class="literal">1.2</code> pourra être effectuée en lançant ces
+    trois scripts les uns à la suite des autres.  Le traitement est le même
+    que si vous aviez d'abord installé <code class="literal">1.0</code> puis mis à jour
+    vers <code class="literal">1.2</code>.  (Comme pour <code class="command">ALTER EXTENSION
+     UPDATE</code>, si de multiples chemins sont disponibles alors le plus
+    court sera choisi.)  Arranger les fichiers de script d'une extension de
+    cette façon peut réduire la quantité nécessaire d'effort de maintenance à
+    fournir pour produires de petites mises à jour.
+   </p><p>
+    Si vous utilisez des fichiers de contrôle secondaires (spécifique à la
+    version) avec une extension maintenant de cette façon, gardez à l'esprit
+    que chaque version nécessite un fichier de contrôle même s'il n'y a pas de
+    script d'installation spécifique pour cette version, car ce fichier de
+    contrôle déterminera comment une mise à jour implicite vers cette version
+    est effectuée.  Par exemple, si <code class="filename">foo--1.0.control</code>
+    spécifie <code class="literal">requires = 'bar'</code> mais que l'autre fichier de
+    contrôle de <code class="literal">foo</code> ne le spécifie pas, la dépendance sur
+    l'extension <code class="literal">bar</code> sera supprimée lors de la mise à jour de
+    <code class="literal">1.0</code> vers une autre version.
+   </p></div><div class="sect2" id="EXTEND-EXTENSIONS-SECURITY"><div class="titlepage"><div><div><h3 class="title">36.17.6. Considérations de sécurité pour les extensions <a href="#EXTEND-EXTENSIONS-SECURITY" class="id_link">#</a></h3></div></div></div><p>
+    Les extensions largement distribuées devraient assumer peu sur la base
+    qu'elles occupent. De ce fait, il est adéquat d'écrire des fonctions
+    fournies par une extension dans un style sécurisé qui ne peut pas être
+    compromis par des attaques basées sur le search_path.
+   </p><p>
+    Une extension qui dispose de la propriété <code class="varname">superuser</code>
+    configurée à true doit aussi considérer les risques de sécurité pour les
+    actions effectuées par ses scripts d'installation et de mise à jour. Il
+    n'est pas particulièrement compliqué pour un utilisateur mal intentionné
+    de créer des objets chevaux de Troie qui compromettront une exécution
+    ultérieure d'un script d'extension mal écrit, permettant à son utilisateur
+    de gagner les droits d'un superutilisateur.
+   </p><p>
+    Des conseils sur l'écriture de fonctions sécurisées sont donnés dans <a class="xref" href="extend-extensions.html#EXTEND-EXTENSIONS-SECURITY-FUNCS" title="36.17.6.1. Considérations de sécurité pour les fonctions d'extensions">Section 36.17.6.1</a> ci-dessous, et d'autres
+    conseils, sur l'écriture de scripts d'installation sécurisés, sont donnés
+    dans <a class="xref" href="extend-extensions.html#EXTEND-EXTENSIONS-SECURITY-SCRIPTS" title="36.17.6.2. Considérations de sécurité pour les scripts d'extension">Section 36.17.6.2</a>.
+   </p><div class="sect3" id="EXTEND-EXTENSIONS-SECURITY-FUNCS"><div class="titlepage"><div><div><h4 class="title">36.17.6.1. Considérations de sécurité pour les fonctions d'extensions <a href="#EXTEND-EXTENSIONS-SECURITY-FUNCS" class="id_link">#</a></h4></div></div></div><p>
+     Les fonctions en langage SQL et PL fournies par les extensions peuvent
+     être l'objet d'attaques basées sur le search_path quand elles sont
+     exécutées car l'analyse de ces fonctions survient lors de leur exécution
+     et non pas lors de leur création.
+    </p><p>
+     La page de référence de <a class="link" href="sql-createfunction.html#SQL-CREATEFUNCTION-SECURITY" title="Écrire des fonctions SECURITY DEFINER en toute sécurité"><code class="command">CREATE
+       FUNCTION</code></a> contient des conseils sur la bonne écriture de
+     fonctions <code class="literal">SECURITY DEFINER</code>. Il est conseillé
+     d'appliquer ces techniques pour toute fonction fournie par une extension
+     car la fonction pourrait être appelée par un utilisateur avec des droits
+     importants.
+    </p><p>
+     Si vous ne pouvez pas configurer le <code class="varname">search_path</code> pour
+     contenir seulement les schémas sécurisés, supposez que chaque nom non
+     qualifié pourrait désigner un objet défini par un utilisateur mal
+     intentionné. Faites attention aux requêtes qui pourraient dépendre
+     implicitement d'un <code class="varname">search_path</code> ; par exemple,
+     <code class="token">IN</code> et <code class="literal">CASE <em class="replaceable"><code>expression</code></em>
+      WHEN</code> sélectionnent toujours un opérateur utilisant le chemin de
+     recherche. À la place, utilisez
+     <code class="literal">OPERATOR(<em class="replaceable"><code>schema</code></em>.=) ANY</code> et
+     <code class="literal">CASE WHEN <em class="replaceable"><code>expression</code></em></code>.
+    </p><p>
+     Une extension standard ne devrait généralement pas supposer qu'elle a été
+     installée dans un schéma sécurisé, ce qui signifie que même les
+     références à ses propres objets en qualifiant leur nom de celui du schéma
+     ne sont pas entièrement sans risque. Par exemple, si l'extension a défini
+     une fonction <code class="literal">monschema.mafonction(bigint)</code>, alors un
+     appel tel que <code class="literal">monschema.mafonction(42)</code> pourrait être
+     capturée par une fonction hostile
+     <code class="literal">monschema.mafonction(integer)</code>. Faites attention que
+     les types de données de la fonction et les paramètres de l'opérateur
+     correspondent exactement aux types d'argument déclarés, en utilisant des
+     conversions explicites si nécessaire.
+    </p></div><div class="sect3" id="EXTEND-EXTENSIONS-SECURITY-SCRIPTS"><div class="titlepage"><div><div><h4 class="title">36.17.6.2. Considérations de sécurité pour les scripts d'extension <a href="#EXTEND-EXTENSIONS-SECURITY-SCRIPTS" class="id_link">#</a></h4></div></div></div><p>
+     Un script d'installation ou de mise à jour d'extension devrait être écrit
+     pour se garder contre les attaques se basant sur le schéma, survenant
+     lors de l'exécution du script. Si la référence d'un objet dans le script
+     peut se faire en résolvant un autre objet que celui voulu par l'auteur de
+     script, une compromission peut survenir immédiatement ou ultérieurement
+     quand l'object mal défini est utilisé.
+    </p><p>
+     Les commandes DDL telles que <code class="command">CREATE FUNCTION</code> et
+     <code class="command">CREATE OPERATOR CLASS</code> sont généralement sécurisées,
+     mais il convient de faire attention à toute commande ayant une expression
+     standard comme composant. Par exemple, <code class="command">CREATE VIEW</code>
+     nécessite d'être validé, comme une expression <code class="literal">DEFAULT</code>
+     dans <code class="command">CREATE FUNCTION</code>.
+    </p><p>
+     Quelque fois, un script d'extension peut avoir besoin d'exécuter un SQL,
+     par exemple pour réaliser des ajustements sur le catalogue qui ne
+     seraient pas possibles via une DDL. Faites bien attention d'exécuter de
+     telles commandes avec un <code class="varname">search_path</code> sécurisé ;
+     ne faites <span class="emphasis"><em>pas</em></span> confiance au chemin fourni par
+     <code class="command">CREATE/ALTER EXTENSION</code> comme étant sécurisé. Une
+     meilleure approche est de configurer temporairement
+     <code class="varname">search_path</code> à <code class="literal">pg_catalog, pg_temp</code>
+     et d'insérer explicitement des références au schéma d'installation de
+     l'expression si nécessaire. (Cette pratique peut être utile pour créer
+     des vues.) Des exemples sont disponibles dans les modules
+     <code class="filename">contrib</code> de la distribution des sources de
+     <span class="productname">PostgreSQL</span>.
+    </p><p>
+     Les références entre extensions sont très difficiles à sécuriser
+     complètement, en partie à cause de l'incertitude sur le schéma
+     d'installation de l'autre extension. Ce risque est réduit si les deux
+     extensions sont installées dans le même schéma parce que, dans ce cas, un
+     objet hostile ne peut pas être placé avant l'extension référencée dans le
+     <code class="varname">search_path</code> d'installation. Néanmoins, aucun mécanisme
+     n'existe actuellement pour forcer cela.
+    </p></div></div><div class="sect2" id="EXTEND-EXTENSIONS-EXAMPLE"><div class="titlepage"><div><div><h3 class="title">36.17.7. Exemples d'extensions <a href="#EXTEND-EXTENSIONS-EXAMPLE" class="id_link">#</a></h3></div></div></div><p>
+    Ci-après, un exemple complet d'une extension écrite uniquement en <acronym class="acronym">SQL</acronym>,
+    un type composite de deux éléments qui peut stocker n'importe quelle valeur dans chaque
+    emplacement, qui sont nommés <span class="quote">« <span class="quote">k</span> »</span> et <span class="quote">« <span class="quote">v</span> »</span>. Les valeurs non textuelles
+    sont automatiquement changées en texte avant stockage.
+   </p><p>
+    Le fichier de script <code class="filename">pair--1.0.sql</code> ressemble à ceci:
+
+    </p><pre class="programlisting">
+-- se plaint si le script est exécuté directement dans psql, plutôt que via CREATE EXTENSION
+\echo Use "CREATE EXTENSION pair" to load this file. \quit
+
+CREATE TYPE pair AS ( k text, v text );
+
+CREATE pair(text, text)
+RETURNS pair LANGUAGE SQL AS 'SELECT ROW($1, $2)::@extschema@.pair;';
+
+CREATE OPERATOR ~&gt; (LEFTARG = text, RIGHTARG = text, FUNCTION = pair);
+
+-- "SET search_path" is easy to get right, but qualified names perform better.
+CREATE FUNCTION lower(pair)
+RETURNS pair LANGUAGE SQL
+AS 'SELECT ROW(lower($1.k), lower($1.v))::@extschema@.pair;'
+SET search_path = pg_temp;
+
+CREATE FUNCTION pair_concat(pair, pair)
+RETURNS pair LANGUAGE SQL
+AS 'SELECT ROW($1.k OPERATOR(pg_catalog.||) $2.k,
+               $1.v OPERATOR(pg_catalog.||) $2.v)::@extschema@.pair;';
+
+    </pre><p>
+   </p><p>
+    Le fichier de contrôle <code class="filename">pair.control</code> ressemble à ceci:
+
+    </p><pre class="programlisting">
+# extension pair
+comment = 'Un type de donnees representant un couple clef/valeur'
+default_version = '1.0'
+# n'est pas déplaçable à cause de l'utilisation de @extschema@
+relocatable = false
+    </pre><p>
+   </p><p>
+    Si vous avez besoin d'un fichier d'installation pour installer ces deux fichiers dans le bon répertoire,
+    vous pouvez utiliser le fichier <code class="filename">Makefile</code> qui suit :
+
+    </p><pre class="programlisting">
+EXTENSION = pair
+DATA = pair--1.0.sql
+
+PG_CONFIG = pg_config
+PGXS := $(shell $(PG_CONFIG) --pgxs)
+include $(PGXS)
+    </pre><p>
+
+    Ce fichier d'installation s'appuye sur <acronym class="acronym">PGXS</acronym>, qui est décrit dans <a class="xref" href="extend-pgxs.html" title="36.18. Outils de construction d'extension">Section 36.18</a>.
+    La commande <code class="literal">make install</code> va installer les fichiers de contrôle et de script dans le
+    répertoire adéquat tel qu'indiqué par <span class="application">pg_config</span>.
+   </p><p>
+    Une fois les fichiers installés, utilisez la commande <code class="command">CREATE
+    EXTENSION</code> pour charger les objets dans une base de donnée.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/extend-extensions.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:43 GMT -->
+</html>

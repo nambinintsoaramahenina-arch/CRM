@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-statistics.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.9. Statistiques d'exécution</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-logging.html" title="19.8. Remonter et tracer les erreurs" /><link rel="next" href="runtime-config-autovacuum.html" title="19.10. Nettoyage (vacuum) automatique" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/runtime-config-statistics.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/runtime-config-statistics.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/runtime-config-statistics.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/runtime-config-statistics.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/runtime-config-statistics.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/runtime-config-statistics.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/runtime-config-statistics.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/runtime-config-statistics.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/runtime-config-statistics.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/runtime-config-statistics.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/runtime-config-statistics.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/runtime-config-statistics.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/runtime-config-statistics.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/runtime-config-statistics.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/runtime-config-statistics.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/runtime-config-statistics.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/runtime-config-statistics.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/runtime-config-statistics.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/runtime-config-statistics.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/runtime-config-statistics.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/runtime-config-statistics.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="runtime-config.html">Configuration du serveur</a></span> » <span class="breadcrumb-node">Statistiques d'exécution</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-logging.html" title="19.8. Remonter et tracer les erreurs">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-autovacuum.html" title="19.10. Nettoyage (vacuum) automatique">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">19.8. Remonter et tracer les erreurs </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 19.10. Nettoyage (<code class="command">vacuum</code>) automatique</td></tr></table></div><div class="sect1" id="RUNTIME-CONFIG-STATISTICS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.9. Statistiques d'exécution <a href="#RUNTIME-CONFIG-STATISTICS" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="runtime-config-statistics.html#RUNTIME-CONFIG-CUMULATIVE-STATISTICS">19.9.1. Statistiques cumulatives sur les requêtes et index</a></span></dt><dt><span class="sect2"><a href="runtime-config-statistics.html#RUNTIME-CONFIG-STATISTICS-MONITOR">19.9.2. Surveillance et statistiques</a></span></dt></dl></div><div class="sect2" id="RUNTIME-CONFIG-CUMULATIVE-STATISTICS"><div class="titlepage"><div><div><h3 class="title">19.9.1. Statistiques cumulatives sur les requêtes et index <a href="#RUNTIME-CONFIG-CUMULATIVE-STATISTICS" class="id_link">#</a></h3></div></div></div><p>
+  Ces paramètres contrôlent le système de statistiques cumulatives.
+  Lorsqu'il est activé, les données récupérées peuvent être
+  visualisées à travers la
+  famille de vues systèmes <code class="structname">pg_stat</code> et
+  <code class="structname">pg_statio</code>. Consultez
+  <a class="xref" href="monitoring.html" title="Chapitre 27. Superviser l'activité de la base de données">Chapitre 27</a> pour plus d'informations.
+ </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-TRACK-ACTIVITIES"><span class="term"><code class="varname">track_activities</code> (<code class="type">boolean</code>)</span> <a href="#GUC-TRACK-ACTIVITIES" class="id_link">#</a></dt><dd><a id="id-1.6.6.12.2.3.1.2.1" class="indexterm"></a><p>
+     Active la collecte d'informations sur la commande en cours d'exécution dans
+     chaque session, avec son identifiant et l'heure de démarrage de la
+     commande. Ce paramètre est activé par défaut. Même si le paramètre est
+     activé, cette information est seulement visible aux superutilisateurs, aux
+     rôles ayant les droits du rôle <code class="literal">pg_read_all_stats</code> et au
+     rôle propriétaire des sessions tracées (y compris celles appartenant à un
+     rôle dont ils sont membres) ; de ce fait, cela ne représente pas une
+     faille de sécurité. Seuls les superutilisateurs et les utilisateurs
+     disposant des droits <code class="literal">SET</code> adéquats peuvent modifier ce
+     paramètre.
+    </p></dd><dt id="GUC-TRACK-ACTIVITY-QUERY-SIZE"><span class="term"><code class="varname">track_activity_query_size</code> (<code class="type">integer</code>)</span> <a href="#GUC-TRACK-ACTIVITY-QUERY-SIZE" class="id_link">#</a></dt><dd><a id="id-1.6.6.12.2.3.2.2.1" class="indexterm"></a><p>
+     Indique la quantité de mémoire réservée pour enregistrer le texte de la
+     commande en cours d'exécution pour chaque session active, pour le champ
+     <code class="structname">pg_stat_activity</code>.<code class="structfield">query</code>.
+     Si cette valeur est spécifiée sans unité, elle est comprise comme un
+     nombre d'octets. La valeur par défaut est 1024 octets. Ce paramètre peut
+     seulement être configuré au démarrage du serveur.
+    </p></dd><dt id="GUC-TRACK-COUNTS"><span class="term"><code class="varname">track_counts</code> (<code class="type">boolean</code>)</span> <a href="#GUC-TRACK-COUNTS" class="id_link">#</a></dt><dd><a id="id-1.6.6.12.2.3.3.2.1" class="indexterm"></a><p>
+     Active la récupération de statistiques sur l'activité de la base
+     de données. Ce paramètre est activé par défaut car le processus
+     autovacuum utilise les informations ainsi récupérées. Seuls les
+     superutilisateurs et les utilisateurs disposant des droits
+     <code class="literal">SET</code> adéquats peuvent modifier ce paramètre.
+    </p></dd><dt id="GUC-TRACK-IO-TIMING"><span class="term"><code class="varname">track_io_timing</code> (<code class="type">boolean</code>)</span> <a href="#GUC-TRACK-IO-TIMING" class="id_link">#</a></dt><dd><a id="id-1.6.6.12.2.3.4.2.1" class="indexterm"></a><p>
+     Active le chronométrage des appels d'entrées/sorties de la base de données.
+     Ce paramètre est désactivé par défaut car il demandera sans cesse l'heure
+     courante au système d'exploitation, ce qui peut causer une surcharge
+     significative sur certaines plateformes. Vous pouvez utiliser l'outil <a class="xref" href="pgtesttiming.html" title="pg_test_timing"><span class="refentrytitle"><span class="application">pg_test_timing</span></span></a> pour mesurer la surcharge causée par le
+     chronométrage sur votre système. Les informations de chronométrage des
+     entrées/sorties sont affichées dans <a class="link" href="monitoring-stats.html#MONITORING-PG-STAT-DATABASE-VIEW" title="27.2.17. pg_stat_database">
+     <code class="structname">pg_stat_database</code></a>, <a class="link" href="monitoring-stats.html#MONITORING-PG-STAT-IO-VIEW" title="27.2.13. pg_stat_io"><code class="structname">pg_stat_io</code></a>,
+     dans la sortie de <a class="xref" href="sql-explain.html" title="EXPLAIN"><span class="refentrytitle">EXPLAIN</span></a> quand l'option <code class="literal">BUFFERS</code> est
+     utilisée, dans la sortie de <a class="xref" href="sql-vacuum.html" title="VACUUM"><span class="refentrytitle" id="SQL-VACUUM-TITLE">VACUUM</span></a> quand l'option
+     <code class="literal">VERBOSE</code> est utilisée, par autovacuum pour les
+     auto-vacuums et auto-analyzes quand <a class="xref" href="runtime-config-logging.html#GUC-LOG-AUTOVACUUM-MIN-DURATION">log_autovacuum_min_duration</a> est configurée, et par <a class="xref" href="pgstatstatements.html" title="F.30. pg_stat_statements -- récupérer les statistiques de planification et d'exécution de requêtes SQL">pg_stat_statements</a>.  Seuls les superutilisateurs et les
+     utilisateurs disposant des droits <code class="literal">SET</code> adéquats peuvent
+     modifier cette configuration.
+    </p></dd><dt id="GUC-TRACK-WAL-IO-TIMING"><span class="term"><code class="varname">track_wal_io_timing</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.12.2.3.5.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-TRACK-WAL-IO-TIMING" class="id_link">#</a></dt><dd><p>
+     Active le chronométrage des I/O pour les journaux de transactions. Ce
+     paramètre est désactivé par défaut car il implique de nombreux appels
+     supplémentaires au système d'exploitation, ce qui peut être consommateur
+     de ressources pour la plateforme. Vous pouvez utiliser l'outil
+     <span class="application">pg_test_timing</span> pour mesurer la surcharge du
+     chronométrage sur votre système. Les informations de chronométrage des
+     I/O sont disponibles dans la vue <a class="link" href="monitoring-stats.html#MONITORING-PG-STAT-WAL-VIEW" title="27.2.16. pg_stat_wal"><code class="structname">pg_stat_wal</code></a>.
+     Seuls les superutilisateurs et les utilisateurs disposant des droits
+     <code class="literal">SET</code> adéquats peuvent modifier ce paramètre.
+    </p></dd><dt id="GUC-TRACK-FUNCTIONS"><span class="term"><code class="varname">track_functions</code> (<code class="type">enum</code>)</span> <a href="#GUC-TRACK-FUNCTIONS" class="id_link">#</a></dt><dd><a id="id-1.6.6.12.2.3.6.2.1" class="indexterm"></a><p>
+     Active le suivi du nombre et de la durée des appels aux fonctions.
+     Précisez <code class="literal">pl</code> pour ne tracer que les fonctions
+     de langages procéduraux, ou <code class="literal">all</code> pour suivre aussi
+     les fonctions SQL et C. La valeur par défaut est <code class="literal">none</code>,
+     qui désactive le suivi des statistiques de fonctions.
+     Seuls les superutilisateurs et les utilisateurs disposant des
+     droits <code class="literal">SET</code> adéquats peuvent modifier ce paramètre.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Les fonctions en langage SQL qui sont assez simples pour être
+      <span class="quote">« <span class="quote">inlined</span> »</span>, c'est à dire substituées dans le code de la
+      requête appelante, ne seront pas suivies, quelle que soit la valeur de
+      ce paramètre.
+     </p></div></dd><dt id="GUC-STATS-FETCH-CONSISTENCY"><span class="term"><code class="varname">stats_fetch_consistency</code> (<code class="type">enum</code>)
+   <a id="id-1.6.6.12.2.3.7.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-STATS-FETCH-CONSISTENCY" class="id_link">#</a></dt><dd><p>
+     Détermine le comportement quand des statistiques cumulatives sont accédées
+     plusieurs fois dans une transaction. Si configuré à
+     <code class="literal">none</code>, chaque accès récupère de nouveau les compteurs à
+     partir de la mémoire partagée. Si configuré à <code class="literal">cache</code>, le
+     premier accès aux statistiques pour un objet met en cache ces statistiques
+     jusqu'à la fin de la transaction sauf si
+     <code class="function">pg_stat_clear_snapshot()</code> est appelée. Si configuré à
+     <code class="literal">snapshot</code>, le premier accès aux statistiques met en cache
+     toutes les statistiques accessibles pour la base de données de connexion,
+     jusqu'à la fin de la transaction, sauf si
+     <code class="function">pg_stat_clear_snapshot()</code> est appelée. La valeur par
+     défaut est <code class="literal">cache</code>.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      <code class="literal">none</code> est conseillé pour les systèmes de supervision. Si
+      les valeurs ne sont accédées qu'une seule fois, cette configuration est
+      plus efficace. <code class="literal">cache</code> assure que des accès répétées
+      rapportent les mêmes valeurs, ce qui est important pour des requêtes
+      impliquant, par exemple;, des jointures sur soi-même.
+      <code class="literal">snapshot</code> peut être utile lors d'une inspection
+      itérative des statistiques mais a une surcharge importante, en particulier
+      si beaucoup d'objets existent.
+     </p></div></dd><dt id="GUC-RESTRICT-NONSYSTEM-RELATION-KIND"><span class="term"><code class="varname">restrict_nonsystem_relation_kind</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.12.2.3.8.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-RESTRICT-NONSYSTEM-RELATION-KIND" class="id_link">#</a></dt><dd><p>
+     Configure le type de relation pour lesquels l'accès aux relations non
+     systèmes est interdit. La valeur prend la forme d'une liste séparée par
+     des virgules des types de relation. Actuellement, les types de relation
+     acceptés sont <code class="literal">view</code> et
+     <code class="literal">foreign-table</code>.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-STATISTICS-MONITOR"><div class="titlepage"><div><div><h3 class="title">19.9.2. Surveillance et statistiques <a href="#RUNTIME-CONFIG-STATISTICS-MONITOR" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-COMPUTE-QUERY-ID"><span class="term"><code class="varname">compute_query_id</code> (<code class="type">enum</code>)
+   <a id="id-1.6.6.12.3.2.1.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-COMPUTE-QUERY-ID" class="id_link">#</a></dt><dd><p>
+     Active le calcul des identifiants de requête. Les identifiants de requête
+     sont disponibles dans la vue <a class="link" href="monitoring-stats.html#MONITORING-PG-STAT-ACTIVITY-VIEW" title="27.2.3. pg_stat_activity"><code class="structname">pg_stat_activity</code></a>,
+     en utilisant <code class="command">EXPLAIN</code>, ou dans les traces de
+     PostgreSQL si cela a été configuré avec le paramètre <a class="xref" href="runtime-config-logging.html#GUC-LOG-LINE-PREFIX">log_line_prefix</a>. L'extension <a class="xref" href="pgstatstatements.html" title="F.30. pg_stat_statements -- récupérer les statistiques de planification et d'exécution de requêtes SQL">pg_stat_statements</a> nécessite aussi un identifiant de requête.
+     Notez bien qu'un module externe peut être une alternative acceptable
+     pour calculer un identifiant de requête. Dans ce cas, pensez à
+     désactiver le calcul automatique des identifiants de requête par
+     PostgreSQL. Les valeurs acceptées pour ce paramètre sont
+     <code class="literal">off</code> (toujours désactivé), <code class="literal">on</code>
+     (toujours activé), <code class="literal">auto</code> qui permet à des modules
+     externes comme <a class="xref" href="pgstatstatements.html" title="F.30. pg_stat_statements -- récupérer les statistiques de planification et d'exécution de requêtes SQL">pg_stat_statements</a> de l'activer
+     automatiquement, et <code class="literal">regress</code> qui a le même effet que
+     <code class="literal">auto</code>, sauf que l'identifiant de requête n'est pas
+     affiché dans la sortie <code class="literal">EXPLAIN</code> pour faciliter les
+     tests de régression automatisés. La valeur par défaut est <code class="literal">auto</code>.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Pour garantir qu'un seul identifiant de requête soit généré et affiché,
+      les extensions qui génèrent des identifiants de requête doivent lever
+      une erreur si un identifiant de requête a déjà été généré pour une
+      requête.
+     </p></div></dd><dt id="GUC-LOG-STATEMENT-STATS"><span class="term"><code class="varname">log_statement_stats</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.12.3.2.2.1.3" class="indexterm"></a>
+   <br /></span><span class="term"><code class="varname">log_parser_stats</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.12.3.2.2.2.3" class="indexterm"></a>
+   <br /></span><span class="term"><code class="varname">log_planner_stats</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.12.3.2.2.3.3" class="indexterm"></a>
+   <br /></span><span class="term"><code class="varname">log_executor_stats</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.12.3.2.2.4.3" class="indexterm"></a>
+   </span> <a href="#GUC-LOG-STATEMENT-STATS" class="id_link">#</a></dt><dd><p>
+     Écrivent, pour chaque requête, les statistiques de performance du
+     module respectif dans les traces du serveur. C'est un outil de
+     profilage très simpliste, similaire aux possibilités de l'appel
+     <code class="function">getrusage()</code> du système d'exploitation Unix.
+     <code class="varname">log_statement_stats</code> rapporte les statistiques
+     d'instructions globales, tandis que les autres fournissent un rapport
+     par module. <code class="varname">log_statement_stats</code> ne peut pas être
+     activé conjointement à une option de module. Par défaut, toutes ces
+     options sont désactivées. Seuls les superutilisateurs et les
+     utilisateurs disposant des droits <code class="literal">SET</code> adéquats peuvent
+     modifier ces paramètres.
+    </p></dd></dl></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-statistics.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+</html>

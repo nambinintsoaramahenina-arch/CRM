@@ -1,0 +1,963 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/plpgsql-control-structures.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>41.6. Structures de contrôle</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="plpgsql-statements.html" title="41.5. Instructions de base" /><link rel="next" href="plpgsql-cursors.html" title="41.7. Curseurs" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/plpgsql-control-structures.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/plpgsql-control-structures.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/plpgsql-control-structures.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/plpgsql-control-structures.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/plpgsql-control-structures.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/plpgsql-control-structures.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/plpgsql-control-structures.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/plpgsql-control-structures.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/plpgsql-control-structures.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/plpgsql-control-structures.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/plpgsql-control-structures.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/plpgsql-control-structures.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/plpgsql-control-structures.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/plpgsql-control-structures.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/plpgsql-control-structures.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/plpgsql-control-structures.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/plpgsql-control-structures.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/plpgsql-control-structures.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/plpgsql-control-structures.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/plpgsql-control-structures.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/plpgsql-control-structures.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="plpgsql.html"><span class="application">PL/pgSQL</span>  --  Langage de procédures <acronym class="acronym">SQL</acronym></a></span> » <span class="breadcrumb-node">Structures de contrôle</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="plpgsql-statements.html" title="41.5. Instructions de base">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="plpgsql.html" title="Chapitre 41. PL/pgSQL  --  Langage de procédures SQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="plpgsql-cursors.html" title="41.7. Curseurs">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">41.5. Instructions de base </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 41.7. Curseurs</td></tr></table></div><div class="sect1" id="PLPGSQL-CONTROL-STRUCTURES"><div class="titlepage"><div><div><h2 class="title" style="clear: both">41.6. Structures de contrôle <a href="#PLPGSQL-CONTROL-STRUCTURES" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="plpgsql-control-structures.html#PLPGSQL-STATEMENTS-RETURNING">41.6.1. Retour d'une fonction</a></span></dt><dt><span class="sect2"><a href="plpgsql-control-structures.html#PLPGSQL-STATEMENTS-RETURNING-PROCEDURE">41.6.2. Retour d'une procédure</a></span></dt><dt><span class="sect2"><a href="plpgsql-control-structures.html#PLPGSQL-STATEMENTS-CALLING-PROCEDURE">41.6.3. Appeler une procédure</a></span></dt><dt><span class="sect2"><a href="plpgsql-control-structures.html#PLPGSQL-CONDITIONALS">41.6.4. Contrôles conditionnels</a></span></dt><dt><span class="sect2"><a href="plpgsql-control-structures.html#PLPGSQL-CONTROL-STRUCTURES-LOOPS">41.6.5. Boucles simples</a></span></dt><dt><span class="sect2"><a href="plpgsql-control-structures.html#PLPGSQL-RECORDS-ITERATING">41.6.6. Boucler dans les résultats de requêtes</a></span></dt><dt><span class="sect2"><a href="plpgsql-control-structures.html#PLPGSQL-FOREACH-ARRAY">41.6.7. Boucler dans des tableaux</a></span></dt><dt><span class="sect2"><a href="plpgsql-control-structures.html#PLPGSQL-ERROR-TRAPPING">41.6.8. Récupérer les erreurs</a></span></dt><dt><span class="sect2"><a href="plpgsql-control-structures.html#PLPGSQL-CALL-STACK">41.6.9. Obtenir des informations sur l'emplacement d'exécution</a></span></dt></dl></div><p>
+    Les structures de contrôle sont probablement la partie la plus utile (et importante)
+    de <span class="application">PL/pgSQL</span>. Grâce aux structures de contrôle de
+    <span class="application">PL/pgSQL</span>, vous pouvez manipuler les données
+    <span class="productname">PostgreSQL</span> de façon très flexible et puissante.
+   </p><div class="sect2" id="PLPGSQL-STATEMENTS-RETURNING"><div class="titlepage"><div><div><h3 class="title">41.6.1. Retour d'une fonction <a href="#PLPGSQL-STATEMENTS-RETURNING" class="id_link">#</a></h3></div></div></div><p>
+     Il y a deux commandes disponibles qui vous permettent de renvoyer des données
+     d'une fonction : <code class="command">RETURN</code> et <code class="command">RETURN
+     NEXT</code>.
+    </p><div class="sect3" id="PLPGSQL-STATEMENTS-RETURNING-RETURN"><div class="titlepage"><div><div><h4 class="title">41.6.1.1. <code class="command">RETURN</code> <a href="#PLPGSQL-STATEMENTS-RETURNING-RETURN" class="id_link">#</a></h4></div></div></div><pre class="synopsis">RETURN <em class="replaceable"><code>expression</code></em>;
+    </pre><p>
+     <code class="command">RETURN</code> accompagné d'une expression termine la fonction et
+     renvoie le valeur de l'<em class="replaceable"><code>expression</code></em> à l'appelant.
+     Cette forme doit être utilisée avec des fonctions <span class="application">PL/pgSQL</span>
+     qui ne renvoient pas d'ensemble de valeurs.
+    </p><p>
+     Dans une fonction qui renvoie un type scalaire, le résultat de
+     l'expression sera automatiquement convertie dans le type que la fonction
+     renvoie. Mais pour renvoyer une valeur composite (ligne), vous devez
+     écrire une expression renvoyant exactement l'ensemble de colonnes souhaité.
+     Ceci peut demander l'utilisation de conversion explicite.
+    </p><p>
+     Si vous déclarez la fonction avec des paramètres en sortie, écrivez
+     seulement <code class="command">RETURN</code> sans expression. Les valeurs
+     courantes des paramètres en sortie seront renvoyées.
+    </p><p>
+     Si vous déclarez que la fonction renvoie <code class="type">void</code>, une
+     instruction <code class="command">RETURN</code> peut être utilisée pour quitter
+     rapidement la fonction ; mais n'écrivez pas d'expression après
+     <code class="command">RETURN</code>.
+    </p><p>
+     La valeur de retour d'une fonction ne peut pas être laissée indéfinie.
+     Si le contrôle atteint la fin du bloc de haut niveau de la fonction,
+     sans parvenir à une instruction <code class="command">RETURN</code>, une erreur
+     d'exécution survient. Néanmoins, cette restriction ne s'applique pas
+     aux fonctions sans paramètre de sortie et aux fonctions renvoyant
+     <code class="type">void</code>. Dans ces cas, une instruction
+     <code class="command">RETURN</code> est automatiquement exécutée si le bloc de
+     haut niveau est terminé.
+    </p><p>
+     Quelques exemples :
+
+     </p><pre class="programlisting">
+-- fonctions renvoyant un type scalaire
+RETURN 1 + 2;
+RETURN scalar_var;
+
+-- fonctions renvoyant un type composite
+RETURN composite_type_var;
+RETURN (1, 2, 'three'::text);  -- must cast columns to correct types
+     </pre><p>
+    </p></div><div class="sect3" id="PLPGSQL-STATEMENTS-RETURNING-RETURN-NEXT"><div class="titlepage"><div><div><h4 class="title">41.6.1.2. <code class="command">RETURN NEXT</code> et <code class="command">RETURN QUERY</code> <a href="#PLPGSQL-STATEMENTS-RETURNING-RETURN-NEXT" class="id_link">#</a></h4></div></div></div><a id="id-1.8.8.8.3.4.2" class="indexterm"></a><a id="id-1.8.8.8.3.4.3" class="indexterm"></a><pre class="synopsis">
+RETURN NEXT <em class="replaceable"><code>expression</code></em>;
+RETURN QUERY <em class="replaceable"><code>requete</code></em>;
+RETURN QUERY EXECUTE <em class="replaceable"><code>command-string</code></em> [<span class="optional"> USING <em class="replaceable"><code>expression</code></em> [<span class="optional">, ...</span>] </span>];
+    </pre><p>
+     Quand une fonction <span class="application">PL/pgSQL</span> déclare renvoyer
+     <code class="literal">SETOF <em class="replaceable"><code>un_certain_type</code></em></code>, la
+     procédure à suivre est un peu différente. Dans ce cas, les éléments
+     individuels à renvoyer sont spécifiés par une séquence de commandes
+     <code class="command">RETURN NEXT</code> ou <code class="command">RETURN QUERY</code>, suivies
+     de la commande finale <code class="command">RETURN</code> sans argument qui est
+     utilisée pour indiquer la fin de l'exécution de la fonction.
+     <code class="command">RETURN NEXT</code> peut être utilisé avec des types de données
+     scalaires comme composites ; avec un type de résultat composite, une
+     <span class="quote">« <span class="quote">table</span> »</span> entière de résultats sera renvoyée.
+     <code class="command">RETURN QUERY</code> ajoute les résultats de l'exécution d'une
+     requête à l'ensemble des résultats de la fonction. <code class="command">RETURN
+      NEXT</code> et <code class="command">RETURN QUERY</code> peuvent être
+     utilisés dans la même fonction, auquel cas leurs résultats seront
+     concaténées.
+    </p><p>
+     <code class="command">RETURN NEXT</code> et <code class="command">RETURN
+      QUERY</code> ne quittent pas réellement la fonction  --  elles
+     ajoutent simplement zéro ou plusieurs lignes à l'ensemble de résultats
+     de la fonction. L'exécution continue ensuite avec l'instruction
+     suivante de la fonction <span class="application">PL/pgSQL</span>. Quand
+     plusieurs commandes <code class="command">RETURN NEXT</code> et/ou <code class="command">RETURN
+      QUERY</code> successives sont exécutées, l'ensemble de résultats
+     augmente. Un <code class="command">RETURN</code>, sans argument, permet
+     de quitter la fonction mais vous pouvez aussi continuer jusqu'à la fin
+     de la fonction.
+    </p><p>
+     <code class="command">RETURN QUERY</code> dispose d'une variante
+     <code class="command">RETURN QUERY EXECUTE</code>, qui spécifie la requête à exécuter
+     dynamiquement. Les expressions de paramètres peuvent être insérées dans
+     la chaîne calculée via <code class="literal">USING</code>, de la même façon que le
+     fait la commande <code class="command">EXECUTE</code>.
+    </p><p>
+     Si vous déclarez la fonction avec des paramètres en sortie, écrivez
+     <code class="command">RETURN NEXT</code> sans expression. À chaque exécution,
+     les valeurs actuelles des variables paramètres en sortie seront
+     sauvegardées pour un renvoi éventuel en tant que résultat en sortie.
+     Notez que vous devez déclarer la fonction en tant que
+     <code class="literal">SETOF record</code> quand il y a plusieurs paramètres en
+     sortie, ou <code class="literal">SETOF <em class="replaceable"><code>un_certain_type</code></em></code>
+     quand il y a un seul paramètre en sortie, et de type
+     <em class="replaceable"><code>un_certain_type</code></em>, pour créer une fonction SRF
+     avec des paramètres en sortie.
+    </p><p>
+     Voici un exemple d'une fonction utilisant <code class="command">RETURN
+      NEXT</code> :
+
+     </p><pre class="programlisting">
+CREATE TABLE truc (id_truc INT, sousid_truc INT, nom_truc TEXT);
+INSERT INTO truc VALUES (1, 2, 'trois');
+INSERT INTO truc VALUES (4, 5, 'six');
+
+CREATE OR REPLACE FUNCTION obtenir_tous_les_trucs() RETURNS SETOF foo AS
+$BODY$
+DECLARE
+    r truc%rowtype;
+BEGIN
+    FOR r IN
+        SELECT * FROM truc WHERE id_truc &gt; 0
+    LOOP
+        -- quelques traitements
+        RETURN NEXT r; -- renvoie la ligne courante du SELECT
+    END LOOP;
+    RETURN;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT * FROM obtenir_tous_les_trucs();
+     </pre><p>
+    </p><p>
+     Voici un exemple de fonction utilisant <code class="command">RETURN
+      QUERY</code> :
+
+     </p><pre class="programlisting">
+CREATE FUNCTION obtient_idvol_disponibles(date) RETURNS SETOF integer AS
+$BODY$
+BEGIN
+    RETURN QUERY SELECT idvol
+                   FROM vol
+                  WHERE datevol &gt;= $1
+                    AND datevol &lt; ($1 + 1);
+
+    -- Comme l'exécution n'est pas terminée, nous vérifions si les lignes
+    -- ont été renvoyées et levons une exception dans le cas contraire.
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Aucun vol à %.', $1;
+    END IF;
+
+    RETURN;
+ END
+$BODY$
+LANGUAGE plpgsql;
+
+-- Renvoie les vols disponibles ou lève une exception si aucun vol
+-- n'est disponible.
+SELECT * FROM obtient_idvol_disponibles(CURRENT_DATE);
+     </pre><p>
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      L'implémentation actuelle de <code class="command">RETURN NEXT</code> et de
+      <code class="command">RETURN QUERY</code> pour
+      <span class="application">PL/pgSQL</span> récupère la totalité de l'ensemble des
+      résultats avant
+      d'effectuer le retour de la fonction, comme vu plus haut. Cela signifie que
+      si une fonction <span class="application">PL/pgSQL</span> produit une structure résultat
+      très grande, les performances peuvent être faibles : les données seront
+      écrites sur le disque pour éviter un épuisement de la mémoire mais la fonction
+      en elle-même ne renverra rien jusqu'à ce que l'ensemble complet des résultats
+      soit généré. Une version future de  <span class="application">PL/pgSQL</span>
+      permettra aux utilisateurs de définir des fonctions renvoyant des ensembles qui
+      n'auront pas cette limitation. Actuellement, le point auquel les données commencent
+      à être écrites sur le disque est contrôlé par la variable de configuration
+      <a class="xref" href="runtime-config-resource.html#GUC-WORK-MEM">work_mem</a>. Les administrateurs
+      ayant une mémoire suffisante pour enregistrer des ensembles de résultats
+      plus importants en mémoire doivent envisager l'augmentation de ce
+      paramètre.
+     </p></div></div></div><div class="sect2" id="PLPGSQL-STATEMENTS-RETURNING-PROCEDURE"><div class="titlepage"><div><div><h3 class="title">41.6.2. Retour d'une procédure <a href="#PLPGSQL-STATEMENTS-RETURNING-PROCEDURE" class="id_link">#</a></h3></div></div></div><p>
+    Une procédure n'a pas de valeur de retour. De ce fait, une procédure peut
+    se terminer sans instruction <code class="command">RETURN</code>. Si vous souhaitez
+    utiliser l'instruction <code class="command">RETURN</code> pour quitter le code en
+    avance, écrivez juste <code class="command">RETURN</code> sans expression.
+   </p><p>
+    Si une procédure a des paramètres en sortie, les valeurs finales des paramètres
+    en sortie seront renvoyées à l'appelant.
+   </p></div><div class="sect2" id="PLPGSQL-STATEMENTS-CALLING-PROCEDURE"><div class="titlepage"><div><div><h3 class="title">41.6.3. Appeler une procédure <a href="#PLPGSQL-STATEMENTS-CALLING-PROCEDURE" class="id_link">#</a></h3></div></div></div><p>
+    Une fonction, une procédure et un bloc <code class="command">DO</code> en
+    <span class="application">PL/pgSQL</span> peut appeler une procédure en
+    appelant <code class="command">CALL</code>. Les paramètres en sortie sont gérées
+    différemment de la façon dont <code class="command">CALL</code> fonctionne en SQL.
+    Chaque paramètre <code class="literal">OUT</code> ou <code class="literal">INOUT</code> de la procédure doit
+    correspondre à une variable dans l'instruction <code class="command">CALL</code> et
+    le retour de la procédure est affecté à cette variable au retour. Par
+    exemple :
+
+    </p><pre class="programlisting">
+CREATE PROCEDURE triple(INOUT x int)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    x := x * 3;
+END;
+$$;
+
+DO $$
+DECLARE myvar int := 5;
+BEGIN
+  CALL triple(myvar);
+  RAISE NOTICE 'myvar = %', myvar;  -- prints 15
+END
+$$;
+    </pre><p>
+     La variable correspondant à un paramètre en sortie peut être une variable
+     ou un champ simple d'une variable de type composite. Actuellement, cela
+     ne peut pas être un élément d'un tableau.
+   </p></div><div class="sect2" id="PLPGSQL-CONDITIONALS"><div class="titlepage"><div><div><h3 class="title">41.6.4. Contrôles conditionnels <a href="#PLPGSQL-CONDITIONALS" class="id_link">#</a></h3></div></div></div><p>
+    Les instructions <code class="command">IF</code> et <code class="command">CASE</code> vous permettent d'exécuter des commandes
+    basées sur certaines conditions. <span class="application">PL/pgSQL</span> a trois formes de
+    <code class="literal">IF</code> :
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><code class="literal">IF ... THEN ... END IF</code></p></li><li class="listitem"><p><code class="literal">IF ... THEN ... ELSE ... END IF</code></p></li><li class="listitem"><p><code class="literal">IF ... THEN ... ELSIF ... THEN ... ELSE ... END IF</code></p></li></ul></div><p>
+
+    et deux formes de <code class="command">CASE</code> :
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><code class="literal">CASE ... WHEN ... THEN ... ELSE ... END CASE</code></p></li><li class="listitem"><p><code class="literal">CASE WHEN ... THEN ... ELSE ... END CASE</code></p></li></ul></div><p>
+   </p><div class="sect3" id="PLPGSQL-CONDITIONALS-IF-THEN"><div class="titlepage"><div><div><h4 class="title">41.6.4.1. <code class="literal">IF-THEN</code> <a href="#PLPGSQL-CONDITIONALS-IF-THEN" class="id_link">#</a></h4></div></div></div><pre class="synopsis">IF <em class="replaceable"><code>expression-booleenne</code></em> THEN
+    <em class="replaceable"><code>instructions</code></em>
+END IF;
+    </pre><p>
+     Les instructions <code class="literal">IF-THEN</code> sont la forme la plus simple de
+     <code class="literal">IF</code>. Les instructions entre <code class="literal">THEN</code> et
+     <code class="literal">END IF</code> seront exécutées si la condition est vraie. Autrement,
+     elles seront ignorées.
+    </p><p>
+     Exemple :
+     </p><pre class="programlisting">IF v_id_utilisateur &lt;&gt; 0 THEN
+    UPDATE utilisateurs SET email = v_email WHERE id_utilisateur = v_id_utilisateur;
+END IF;
+     </pre><p>
+    </p></div><div class="sect3" id="PLPGSQL-CONDITIONALS-IF-THEN-ELSE"><div class="titlepage"><div><div><h4 class="title">41.6.4.2. <code class="literal">IF-THEN-ELSE</code> <a href="#PLPGSQL-CONDITIONALS-IF-THEN-ELSE" class="id_link">#</a></h4></div></div></div><pre class="synopsis">IF <em class="replaceable"><code>expression-booleenne</code></em> THEN
+    <em class="replaceable"><code>instructions</code></em>
+ELSE
+    <em class="replaceable"><code>instructions</code></em>
+END IF;
+    </pre><p>
+     Les instructions <code class="literal">IF-THEN-ELSE</code> s'ajoutent au
+     <code class="literal">IF-THEN</code> en vous permettant de spécifier un autre ensemble
+     d'instructions à exécuter si la condition n'est pas vraie (notez que ceci
+     inclut le cas où la condition s'évalue à NULL.).
+    </p><p>
+     Exemples :
+     </p><pre class="programlisting">IF id_parent IS NULL OR id_parent = ''
+THEN
+    RETURN nom_complet;
+ELSE
+    RETURN hp_true_filename(id_parent) || '/' || nom_complet;
+END IF;
+     </pre><p>
+
+     </p><pre class="programlisting">IF v_nombre &gt; 0 THEN
+    INSERT INTO nombre_utilisateurs (nombre) VALUES (v_nombre);
+    RETURN 't';
+ELSE
+    RETURN 'f';
+END IF;
+     </pre><p>
+    </p></div><div class="sect3" id="PLPGSQL-CONDITIONALS-IF-THEN-ELSIF"><div class="titlepage"><div><div><h4 class="title">41.6.4.3. <code class="literal">IF-THEN-ELSIF</code> <a href="#PLPGSQL-CONDITIONALS-IF-THEN-ELSIF" class="id_link">#</a></h4></div></div></div><pre class="synopsis">IF <em class="replaceable"><code>expression-booleenne</code></em> THEN
+    <em class="replaceable"><code>instructions</code></em>
+[<span class="optional"> ELSIF <em class="replaceable"><code>expression-booleenne</code></em> THEN
+    <em class="replaceable"><code>instructions</code></em>
+[<span class="optional"> ELSIF <em class="replaceable"><code>expression-booleenne</code></em> THEN
+    <em class="replaceable"><code>instructions</code></em>
+    ...
+</span>]
+</span>]
+[<span class="optional"> ELSE
+    <em class="replaceable"><code>instructions</code></em> </span>]
+END IF;
+    </pre><p>
+     Quelques fois, il existe plus de deux alternatives.
+     <code class="literal">IF-THEN-ELSIF</code> fournit une méthode agréable pour
+     vérifier différentes alternatives. Les conditions
+     <code class="literal">IF</code> sont testées successivement jusqu'à trouver la
+     bonne. Alors les instructions associées sont exécutées, puis le
+     contrôle est passé à la prochaine instruction après <code class="literal">END
+      IF</code>. (Toute autre condition <code class="literal">IF</code> n'est
+     <span class="emphasis"><em>pas</em></span> testée.) Si aucune des conditions
+     <code class="literal">IF</code> n'est vraie, alors le bloc
+     <code class="literal">ELSE</code> (s'il y en a un) est exécuté.
+    </p><p>
+     Voici un exemple :
+
+     </p><pre class="programlisting">IF nombre = 0 THEN
+    resultat := 'zero';
+ELSIF nombre &gt; 0 THEN
+    resultat := 'positif';
+ELSIF nombre &lt; 0 THEN
+    resultat := 'negatif';
+ELSE
+    -- hmm, la seule possibilité est que le nombre soit NULL
+    resultat := 'NULL';
+END IF;
+     </pre><p>
+    </p><p>
+     Le mot clé <code class="literal">ELSIF</code> peut aussi s'écrire
+     <code class="literal">ELSEIF</code>.
+    </p><p>
+     Une façon alternative d'accomplir la même tâche est d'intégrer les
+     instructions <code class="literal">IF-THEN-ELSE</code>, comme dans l'exemple
+     suivant :
+
+     </p><pre class="programlisting">
+IF demo_row.sex = 'm' THEN
+    pretty_sex := 'man';
+ELSE
+    IF demo_row.sex = 'f' THEN
+        pretty_sex := 'woman';
+    END IF;
+END IF;
+     </pre><p>
+    </p><p>
+     Néanmoins, cette méthode requiert d'écrire un <code class="literal">END
+      IF</code> pour chaque <code class="literal">IF</code>, donc c'est un peu plus
+     compliqué que d'utiliser <code class="literal">ELSIF</code> quand il y a beaucoup
+     d'autres alternatives.
+    </p></div><div class="sect3" id="PLPGSQL-CONDITIONALS-SIMPLE-CASE"><div class="titlepage"><div><div><h4 class="title">41.6.4.4. <code class="literal">CASE</code> simple <a href="#PLPGSQL-CONDITIONALS-SIMPLE-CASE" class="id_link">#</a></h4></div></div></div><pre class="synopsis">
+CASE <em class="replaceable"><code>expression_recherche</code></em>
+    WHEN <em class="replaceable"><code>expression</code></em> [<span class="optional">, <em class="replaceable"><code>expression</code></em> [<span class="optional"> ... </span>]</span>] THEN
+      <em class="replaceable"><code>instructions</code></em>
+  [<span class="optional"> WHEN <em class="replaceable"><code>expression</code></em> [<span class="optional">, <em class="replaceable"><code>expression</code></em> [<span class="optional"> ... </span>]</span>] THEN
+      <em class="replaceable"><code>instructions</code></em>
+    ... </span>]
+  [<span class="optional"> ELSE
+      <em class="replaceable"><code>instructions</code></em> </span>]
+END CASE;
+    </pre><p>
+     La forme simple de <code class="command">CASE</code> fournit une exécution
+     conditionnelle basée sur l'égalité des opérandes.
+     L'<em class="replaceable"><code>expression-recherche</code></em> est évaluée (une fois)
+     puis comparée successivement à chaque <em class="replaceable"><code>expression</code></em>
+     dans les clauses <code class="literal">WHEN</code>. Si une correspondance est
+     trouvée, alors les <em class="replaceable"><code>instructions</code></em> correspondantes
+     sont exécutées, puis le contrôle est passé à la prochaine instruction
+     après <code class="literal">END CASE</code>. (Les autres expressions
+     <code class="literal">WHEN</code> ne sont pas testées.) Si aucune correspondance
+     n'est trouvée, les <em class="replaceable"><code>instructions</code></em> du bloc
+     <code class="literal">ELSE</code> sont exécutées ; s'il n'y a pas de bloc
+     <code class="literal">ELSE</code>, une exception <code class="literal">CASE_NOT_FOUND</code>
+     est levée.
+    </p><p>
+     Voici un exemple simple :
+
+     </p><pre class="programlisting">
+CASE x
+    WHEN 1, 2 THEN
+        msg := 'un ou deux';
+    ELSE
+        msg := 'autre valeur que un ou deux';
+END CASE;
+     </pre><p>
+    </p></div><div class="sect3" id="PLPGSQL-CONDITIONALS-SEARCHED-CASE"><div class="titlepage"><div><div><h4 class="title">41.6.4.5. <code class="literal">CASE</code> recherché <a href="#PLPGSQL-CONDITIONALS-SEARCHED-CASE" class="id_link">#</a></h4></div></div></div><pre class="synopsis">
+CASE
+    WHEN <em class="replaceable"><code>expression_booléenne</code></em> THEN
+      <em class="replaceable"><code>instructions</code></em>
+  [<span class="optional"> WHEN <em class="replaceable"><code>expression_booléenne</code></em> THEN
+      <em class="replaceable"><code>instructions</code></em>
+    ... </span>]
+  [<span class="optional"> ELSE
+      <em class="replaceable"><code>instructions</code></em> </span>]
+END CASE;
+    </pre><p>
+     La forme recherchée de <code class="command">CASE</code> fournit une exécution
+     conditionnelle basée sur la vérification d'expressions booléennes.
+     Chaque <em class="replaceable"><code>expression-booléenne</code></em> de la clause
+     <code class="literal">WHEN</code> est évaluée à son tour jusqu'à en trouver
+     une qui est validée (<code class="literal">true</code>). Les
+     <em class="replaceable"><code>instructions</code></em> correspondantes sont exécutées,
+     puis le contrôle est passé à la prochaine instruction après <code class="literal">END
+      CASE</code>. (Les expressions <code class="literal">WHEN</code> suivantes ne
+     sont pas testées.) Si aucun résultat vrai n'est trouvé, les
+     <em class="replaceable"><code>instructions</code></em> du bloc <code class="literal">ELSE</code>
+     sont exécutées. Si aucun bloc <code class="literal">ELSE</code> n'est présent, une
+     exception <code class="literal">CASE_NOT_FOUND</code> est levée.
+    </p><p>
+     Voici un exemple :
+
+     </p><pre class="programlisting">
+CASE
+    WHEN x BETWEEN 0 AND 10 THEN
+        msg := 'valeur entre zéro et dix';
+    WHEN x BETWEEN 11 AND 20 THEN
+        msg := 'valeur entre onze et vingt';
+END CASE;
+     </pre><p>
+    </p><p>
+     Cette forme de <code class="command">CASE</code> est entièrement équivalente à
+     <code class="literal">IF-THEN-ELSIF</code>, sauf pour la règle qui dit qu'atteindre
+     une clause <code class="literal">ELSE</code> omise résulte dans une erreur plutôt
+     que ne rien faire.
+    </p></div></div><div class="sect2" id="PLPGSQL-CONTROL-STRUCTURES-LOOPS"><div class="titlepage"><div><div><h3 class="title">41.6.5. Boucles simples <a href="#PLPGSQL-CONTROL-STRUCTURES-LOOPS" class="id_link">#</a></h3></div></div></div><a id="id-1.8.8.8.7.2" class="indexterm"></a><p>
+    Grâce aux instructions <code class="literal">LOOP</code>, <code class="literal">EXIT</code>,
+    <code class="literal">CONTINUE</code>, <code class="literal">WHILE</code>
+    <code class="literal">FOR</code> et <code class="literal">FOREACH</code>, vous pouvez faire en sorte que vos fonctions
+    <span class="application">PL/pgSQL</span> répètent une série de commandes.
+   </p><div class="sect3" id="PLPGSQL-CONTROL-STRUCTURES-LOOPS-LOOP"><div class="titlepage"><div><div><h4 class="title">41.6.5.1. <code class="literal">LOOP</code> <a href="#PLPGSQL-CONTROL-STRUCTURES-LOOPS-LOOP" class="id_link">#</a></h4></div></div></div><pre class="synopsis">[<span class="optional">&lt;&lt;<em class="replaceable"><code>label</code></em>&gt;&gt;</span>]
+LOOP
+    <em class="replaceable"><code>instructions</code></em>
+END LOOP [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>];
+    </pre><p>
+     <code class="literal">LOOP</code> définit une boucle inconditionnelle répétée indéfiniment
+     jusqu'à ce qu'elle soit terminée par une instruction <code class="literal">EXIT</code> ou
+     <code class="command">RETURN</code>.  Le <em class="replaceable"><code>label</code></em> optionnel
+     peut être utilisé par les instructions <code class="literal">EXIT</code> et
+     <code class="literal">CONTINUE</code> dans le cas de boucles imbriquées pour définir la
+     boucle impliquée.
+    </p></div><div class="sect3" id="PLPGSQL-CONTROL-STRUCTURES-LOOPS-EXIT"><div class="titlepage"><div><div><h4 class="title">41.6.5.2. <code class="literal">EXIT</code> <a href="#PLPGSQL-CONTROL-STRUCTURES-LOOPS-EXIT" class="id_link">#</a></h4></div></div></div><a id="id-1.8.8.8.7.5.2" class="indexterm"></a><pre class="synopsis">EXIT [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>] [<span class="optional"> WHEN <em class="replaceable"><code>expression-booléenne</code></em> </span>];
+    </pre><p>
+     Si aucun <em class="replaceable"><code>label</code></em> n'est donné, la boucle la plus
+     imbriquée se termine et l'instruction suivant <code class="literal">END LOOP</code> est
+     exécutée.
+     Si un <em class="replaceable"><code>label</code></em> est donné, ce doit être
+     le label de la boucle, du bloc courant ou d'un niveau moins imbriqué.
+     La boucle ou le bloc nommé se termine alors et le contrôle continue
+     avec l'instruction située après le <code class="literal">END</code> de la boucle ou du bloc
+     correspondant.
+    </p><p>
+     Si <code class="literal">WHEN</code> est spécifié, la sortie de boucle ne s'effectue que
+     si <em class="replaceable"><code>expression-booléenne</code></em> est vraie. Sinon, le contrôle passe à
+     l'instruction suivant le <code class="literal">EXIT</code>.
+    </p><p>
+     <code class="literal">EXIT</code> peut être utilisé pour tous les types de
+     boucles ; il n'est pas limité aux boucles non conditionnelles.
+    </p><p>
+     Lorsqu'il est utilisé avec un bloc <code class="literal">BEGIN</code>,
+     <code class="literal">EXIT</code> passe le contrôle à la prochaine instruction
+     après la fin du bloc. Notez qu'un label doit être utilisé pour
+     cela ; un <code class="literal">EXIT</code> sans label n'est jamais pris
+     en compte pour correspondre à un bloc <code class="literal">BEGIN</code>.
+     (Ceci est un changement de la version 8.4 de
+     <span class="productname">PostgreSQL</span>. Auparavant, il était permis
+     de faire correspondre un <code class="literal">EXIT</code> sans label avec un
+     bloc <code class="literal">BEGIN</code>.)
+    </p><p>
+     Exemples :
+     </p><pre class="programlisting">LOOP
+    -- quelques traitements
+    IF nombre &gt; 0 THEN
+        EXIT;  -- sortie de boucle
+    END IF;
+END LOOP;
+
+LOOP
+    -- quelques traitements
+    EXIT WHEN nombre &gt; 0;
+END LOOP;
+
+&lt;&lt;un_bloc&gt;&gt;
+BEGIN
+    -- quelques traitements
+    IF stocks &gt; 100000 THEN
+        EXIT un_bloc;  -- cause la sortie (EXIT) du bloc BEGIN
+    END IF;
+    -- les traitements ici seront ignorés quand stocks &gt; 100000
+END;
+     </pre><p>
+    </p></div><div class="sect3" id="PLPGSQL-CONTROL-STRUCTURES-LOOPS-CONTINUE"><div class="titlepage"><div><div><h4 class="title">41.6.5.3. <code class="literal">CONTINUE</code> <a href="#PLPGSQL-CONTROL-STRUCTURES-LOOPS-CONTINUE" class="id_link">#</a></h4></div></div></div><a id="id-1.8.8.8.7.6.2" class="indexterm"></a><pre class="synopsis">CONTINUE [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>] [<span class="optional"> WHEN <em class="replaceable"><code>expression-booléenne</code></em> </span>];
+    </pre><p>
+     Si aucun <em class="replaceable"><code>label</code></em> n'est donné, la prochaine
+     itération de la boucle interne est commencée. C'est-à-dire que toutes
+     les instructions restantes dans le corps de la boucle sont ignorées et
+     le contrôle revient à l'expression de contrôle de la boucle pour
+     déterminer si une autre itération de boucle est nécessaire.
+     Si le <em class="replaceable"><code>label</code></em> est présent, il spécifie le label
+     de la boucle dont l'exécution va être continuée.
+    </p><p>
+     Si <code class="literal">WHEN</code> est spécifié, la prochaine itération de la boucle
+     est commencée seulement si l'<em class="replaceable"><code>expression-booléenne</code></em> est vraie.
+     Sinon, le contrôle est passé à l'instruction après
+     <code class="literal">CONTINUE</code>.
+    </p><p>
+     <code class="literal">CONTINUE</code> peut être utilisé avec tous les types de
+     boucles ; il n'est pas limité à l'utilisation des boucles
+     inconditionnelles.
+    </p><p>
+     Exemples :
+     </p><pre class="programlisting">LOOP
+    -- quelques traitements
+    EXIT WHEN nombre &gt; 100;
+    CONTINUE WHEN nombre &lt; 50;
+    -- quelques traitements pour nombre IN [50 .. 100]
+END LOOP;
+     </pre><p>
+    </p></div><div class="sect3" id="PLPGSQL-CONTROL-STRUCTURES-LOOPS-WHILE"><div class="titlepage"><div><div><h4 class="title">41.6.5.4. <code class="literal">WHILE</code> <a href="#PLPGSQL-CONTROL-STRUCTURES-LOOPS-WHILE" class="id_link">#</a></h4></div></div></div><a id="id-1.8.8.8.7.7.2" class="indexterm"></a><pre class="synopsis">[<span class="optional">&lt;&lt;<em class="replaceable"><code>label</code></em>&gt;&gt;</span>]
+WHILE <em class="replaceable"><code>expression-booléenne</code></em> LOOP
+    <em class="replaceable"><code>instructions</code></em>
+END LOOP [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>];
+    </pre><p>
+     L'instruction <code class="literal">WHILE</code> répète une séquence d'instructions aussi longtemps
+     que <em class="replaceable"><code>expression-booléenne</code></em> est évaluée à vrai. L'expression est vérifiée juste
+     avant chaque entrée dans le corps de la boucle.
+    </p><p>
+     Par exemple :
+     </p><pre class="programlisting">WHILE montant_possede &gt; 0 AND balance_cadeau &gt; 0 LOOP
+    -- quelques traitements ici
+END LOOP;
+
+WHILE NOT termine LOOP
+    -- quelques traitements ici
+END LOOP;
+     </pre><p>
+    </p></div><div class="sect3" id="PLPGSQL-INTEGER-FOR"><div class="titlepage"><div><div><h4 class="title">41.6.5.5. <code class="literal">FOR</code> (variante avec entier) <a href="#PLPGSQL-INTEGER-FOR" class="id_link">#</a></h4></div></div></div><pre class="synopsis">[<span class="optional">&lt;&lt;<em class="replaceable"><code>label</code></em>&gt;&gt;</span>]
+FOR <em class="replaceable"><code>nom</code></em> IN [<span class="optional"> REVERSE </span>] <em class="replaceable"><code>expression</code></em> .. <em class="replaceable"><code>expression</code></em> [<span class="optional"> BY <em class="replaceable"><code>expression</code></em> </span>] LOOP
+    <em class="replaceable"><code>instruction</code></em>
+END LOOP [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>];
+    </pre><p>
+     Cette forme de <code class="literal">FOR</code> crée une boucle qui effectue une itération
+     sur une plage de valeurs entières. La variable <em class="replaceable"><code>nom</code></em>
+     est automatiquement définie comme un type <code class="type">integer</code> et n'existe
+     que dans la boucle (toute définition de la variable est ignorée à l'intérieur
+     de la boucle). Les deux expressions donnant les limites inférieures et
+     supérieures de la plage sont évaluées une fois en entrant dans la boucle.
+     Si la clause <code class="literal">BY</code> n'est pas spécifiée, l'étape
+     d'itération est de 1, sinon elle est de la valeur spécifiée dans la
+     clause <code class="literal">BY</code>, qui est évaluée encore une fois à l'entrée
+     de la boucle. Si <code class="literal">REVERSE</code> est indiquée,
+     alors la valeur de l'étape est soustraite, plutôt qu'ajoutée, après chaque
+     itération.
+    </p><p>
+     Quelques exemples de boucles <code class="literal">FOR</code> avec entiers :
+     </p><pre class="programlisting">FOR i IN 1..10 LOOP
+    -- prend les valeurs 1,2,3,4,5,6,7,8,9,10 dans la boucle
+END LOOP;
+
+FOR i IN REVERSE 10..1 LOOP
+    -- prend les valeurs 10,9,8,7,6,5,4,3,2,1 dans la boucle
+END LOOP;
+
+FOR i IN REVERSE 10..1 BY 2 LOOP
+    -- prend les valeurs 10,8,6,4,2 dans la boucle
+END LOOP;
+
+     </pre><p>
+    </p><p>
+     Si la limite basse est plus grande que la limite haute (ou moins grande
+     dans le cas du <code class="literal">REVERSE</code>), le corps de la boucle
+     n'est pas exécuté du tout. Aucune erreur n'est renvoyée.
+    </p><p>
+     Si un <em class="replaceable"><code>label</code></em> est attaché à la boucle
+     <code class="literal">FOR</code>, alors la variable entière de boucle peut être
+     référencée avec un nom qualifié en utilisant ce
+     <em class="replaceable"><code>label</code></em>.
+    </p></div></div><div class="sect2" id="PLPGSQL-RECORDS-ITERATING"><div class="titlepage"><div><div><h3 class="title">41.6.6. Boucler dans les résultats de requêtes <a href="#PLPGSQL-RECORDS-ITERATING" class="id_link">#</a></h3></div></div></div><p>
+    En utilisant un type de <code class="literal">FOR</code> différent, vous pouvez itérer au travers
+    des résultats d'une requête et par là-même manipuler ces données. La
+    syntaxe est la suivante :
+    </p><pre class="synopsis">[<span class="optional">&lt;&lt;<em class="replaceable"><code>label</code></em>&gt;&gt;</span>]
+FOR <em class="replaceable"><code>cible</code></em> IN <em class="replaceable"><code>requête</code></em> LOOP
+    <em class="replaceable"><code>instructions</code></em>
+END LOOP [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>];
+    </pre><p>
+    La <em class="replaceable"><code>cible</code></em> est une variable de type record, row
+    ou une liste de variables scalaires séparées par une virgule. La
+    <em class="replaceable"><code>cible</code></em> est affectée successivement à chaque ligne
+    résultant de la <em class="replaceable"><code>requête</code></em> et le corps de la boucle
+    est exécuté pour chaque ligne. Voici un exemple :
+    </p><pre class="programlisting">CREATE FUNCTION rafraichir_vuemat() RETURNS integer AS $$
+DECLARE
+    vues_mat RECORD;
+BEGIN
+    RAISE NOTICE 'Rafraichissement de toutes les vues matérialisées...';
+
+    FOR mviews IN
+       SELECT n.nspname AS mv_schema,
+              c.relname AS mv_name,
+              pg_catalog.pg_get_userbyid(c.relowner) AS owner
+         FROM pg_catalog.pg_class c
+    LEFT JOIN pg_catalog.pg_namespace n ON (n.oid = c.relnamespace)
+        WHERE c.relkind = 'm'
+     ORDER BY 1
+    LOOP
+
+        -- Maintenant "mviews" contient un enregistrement avec les informations sur la vue matérialisée
+
+        RAISE NOTICE 'Rafraichissement de la vue matérialisée %.% (propriétaire : %)...',
+                     quote_ident(mviews.mv_schema),
+                     quote_ident(mviews.mv_name),
+                     quote_ident(mviews.owner);
+        EXECUTE format('REFRESH MATERIALIZED VIEW %I.%I', mviews.mv_schema, mviews.mv_name);
+    END LOOP;
+
+    RAISE NOTICE 'Fin du rafraichissement des vues matérialisées.';
+    RETURN 1;
+END;
+$$ LANGUAGE plpgsql;
+    </pre><p>
+
+    Si la boucle est terminée par une instruction <code class="literal">EXIT</code>, la dernière valeur
+    ligne affectée est toujours accessible après la boucle.
+   </p><p>
+    La <em class="replaceable"><code>requête</code></em> utilisée dans ce type d'instruction
+    <code class="literal">FOR</code> peut être toute commande SQL qui renvoie des lignes
+    à l'appelant : <code class="command">SELECT</code> est le cas le plus commun
+    mais vous pouvez aussi utiliser <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+    <code class="command">DELETE</code> ou <code class="command">MERGE</code> avec une clause <code class="literal">RETURNING</code>.
+    Certaines commandes comme <code class="command">EXPLAIN</code> fonctionnent aussi.
+   </p><p>
+    Les variables <span class="application">PL/pgSQL</span> sont remplacées par les
+    paramètres de la requête, et le plan de requête est mis en cache pour une
+    réutilisation possible. C'est couvert en détail dans la
+    <a class="xref" href="plpgsql-implementation.html#PLPGSQL-VAR-SUBST" title="41.11.1. Substitution de variables">Section 41.11.1</a> et dans la
+    <a class="xref" href="plpgsql-implementation.html#PLPGSQL-PLAN-CACHING" title="41.11.2. Mise en cache du plan">Section 41.11.2</a>.
+   </p><p>
+    L'instruction <code class="literal">FOR-IN-EXECUTE</code> est un moyen d'itérer sur des
+    lignes :
+    </p><pre class="synopsis">[<span class="optional">&lt;&lt;<em class="replaceable"><code>label</code></em>&gt;&gt;</span>]
+FOR <em class="replaceable"><code>target</code></em> IN EXECUTE <em class="replaceable"><code>text_expression</code></em> [<span class="optional"> USING <em class="replaceable"><code>expression</code></em> [<span class="optional">, ...</span>] </span>] LOOP
+    <em class="replaceable"><code>instructions</code></em>
+END LOOP [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>];
+    </pre><p>
+    Ceci est identique à la forme précédente, à ceci près que l'expression
+    de la requête source est spécifiée comme une expression chaîne,
+    évaluée et replanifiée à chaque entrée dans la boucle <code class="literal">FOR</code>. Ceci
+    permet au développeur de choisir entre la vitesse d'une requête préplanifiée et la
+    flexibilité d'une requête dynamique, uniquement avec l'instruction
+    <code class="command">EXECUTE</code>.
+    Comme avec <code class="command">EXECUTE</code>, les valeurs de paramètres peuvent
+    être insérées dans la commande dynamique via <code class="literal">USING</code>.
+   </p><p>
+    Une autre façon de spécifier la requête dont les résultats devront être
+    itérés est de la déclarer comme un curseur. Ceci est décrit dans
+    <a class="xref" href="plpgsql-cursors.html#PLPGSQL-CURSOR-FOR-LOOP" title="41.7.4. Boucler dans les résultats d'un curseur">Section 41.7.4</a>.
+   </p></div><div class="sect2" id="PLPGSQL-FOREACH-ARRAY"><div class="titlepage"><div><div><h3 class="title">41.6.7. Boucler dans des tableaux <a href="#PLPGSQL-FOREACH-ARRAY" class="id_link">#</a></h3></div></div></div><p>
+    La boucle <code class="literal">FOREACH</code> ressemble beaucoup à une
+    boucle <code class="literal">FOR</code> mais, au lieu d'itérer sur les lignes
+    renvoyées par une requêtes SQL, elle itère sur les éléments d'une
+    valeur de type tableau. (En général, <code class="literal">FOREACH</code>
+    est fait pour boucler sur les composants d'une expression
+    composite ; les variantes pour boucler sur des composites en
+    plus des tableaux pourraient être ajoutées dans le futur.)
+    L'instruction <code class="literal">FOREACH</code> pour boucler sur un
+    tableau est :
+
+    </p><pre class="synopsis">
+[<span class="optional"> &lt;&lt;<em class="replaceable"><code>label</code></em>&gt;&gt; </span>]
+FOREACH <em class="replaceable"><code>target</code></em> [<span class="optional"> SLICE <em class="replaceable"><code>nombre</code></em> </span>] IN ARRAY <em class="replaceable"><code>expression</code></em> LOOP
+    <em class="replaceable"><code>instructions</code></em>
+END LOOP [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>];
+    </pre><p>
+   </p><p>
+    Sans <code class="literal">SLICE</code> ou si <code class="literal">SLICE 0</code> est
+    indiqué, la boucle itère au niveau des éléments individuels du
+    tableau produit par l'évaluation de
+    l'<em class="replaceable"><code>expression</code></em>. La variable
+    <em class="replaceable"><code>cible</code></em> se voit affectée chaque valeur
+    d'élément en séquence, et le corps de la boucle est exécuté pour
+    chaque élément. Voici un exemple de boucle sur les éléments d'un
+    tableau d'entiers :
+
+    </p><pre class="programlisting">
+CREATE FUNCTION somme(int[]) RETURNS int8 AS $$
+DECLARE
+  s int8 := 0;
+  x int;
+BEGIN
+  FOREACH x IN ARRAY $1
+  LOOP
+    s := s + x;
+  END LOOP;
+  RETURN s;
+END;
+$$ LANGUAGE plpgsql;
+    </pre><p>
+
+    Les éléments sont parcourus dans l'ordre de leur stockage, quelque
+    soit le nombre de dimensions du tableau. Bien que la
+    <em class="replaceable"><code>cible</code></em> est habituellement une simple
+    variable, elle peut être une liste de variables lors d'une boucle
+    dans un tableau de valeurs composites (des enregistrements). Dans
+    ce cas, pour chaque élément du tableau, les variables se voient
+    affectées les colonnes de la valeur composite.
+   </p><p>
+    Avec une valeur <code class="literal">SLICE</code> positive,
+    <code class="literal">FOREACH</code> itère au travers des morceaux du tableau
+    plutôt que des éléments seuls. La valeur de <code class="literal">SLICE</code>
+    doit être un entier constant, moins large que le nombre de
+    dimensions du tableau. La variable <em class="replaceable"><code>cible</code></em>
+    doit être un tableau et elle reçoit les morceaux successifs de la
+    valeur du tableau, où chaque morceau est le nombre de dimensions
+    indiquées par <code class="literal">SLICE</code>. Voici un exemple d'itération
+    sur des morceaux à une dimension :
+
+    </p><pre class="programlisting">
+CREATE FUNCTION parcourt_lignes(int[]) RETURNS void AS $$
+DECLARE
+  x int[];
+BEGIN
+  FOREACH x SLICE 1 IN ARRAY $1
+  LOOP
+    RAISE NOTICE 'ligne = %', x;
+  END LOOP;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT parcourt_lignes(ARRAY[[1,2,3],[4,5,6],[7,8,9],[10,11,12]]);
+
+NOTICE:  ligne = {1,2,3}
+NOTICE:  ligne = {4,5,6}
+NOTICE:  ligne = {7,8,9}
+NOTICE:  ligne = {10,11,12}
+    </pre><p>
+   </p></div><div class="sect2" id="PLPGSQL-ERROR-TRAPPING"><div class="titlepage"><div><div><h3 class="title">41.6.8. Récupérer les erreurs <a href="#PLPGSQL-ERROR-TRAPPING" class="id_link">#</a></h3></div></div></div><a id="id-1.8.8.8.10.2" class="indexterm"></a><p>
+    Par défaut, toute erreur survenant dans une fonction
+    <span class="application">PL/pgSQL</span> annule l'exécution de la fonction mais
+    aussi de la transaction qui l'entoure. Vous pouvez récupérer les erreurs
+    en utilisant un bloc <code class="command">BEGIN</code> avec une clause
+    <code class="literal">EXCEPTION</code>. La syntaxe est une extension de la syntaxe
+    habituelle pour un bloc <code class="command">BEGIN</code> :
+
+    </p><pre class="synopsis">  [<span class="optional"> &lt;&lt;<em class="replaceable"><code>label</code></em>&gt;&gt; </span>]
+  [<span class="optional"> DECLARE
+    <em class="replaceable"><code>declarations</code></em> </span>]
+  BEGIN
+  <em class="replaceable"><code>instructions</code></em>
+  EXCEPTION
+  WHEN <em class="replaceable"><code>condition</code></em> [<span class="optional"> OR <em class="replaceable"><code>condition</code></em> ... </span>] THEN
+  <em class="replaceable"><code>instructions_gestion_erreurs</code></em>
+  [<span class="optional"> WHEN <em class="replaceable"><code>condition</code></em> [<span class="optional"> OR <em class="replaceable"><code>condition</code></em> ... </span>] THEN
+    <em class="replaceable"><code>instructions_gestion_erreurs</code></em>
+    ... </span>]
+  END;
+    </pre><p>
+   </p><p>
+    Si aucune erreur ne survient, cette forme de bloc exécute simplement
+    toutes les <em class="replaceable"><code>instructions</code></em> puis passe le
+    contrôle à l'instruction suivant <code class="literal">END</code>. Mais si une erreur
+    survient à l'intérieur des <em class="replaceable"><code>instructions</code></em>,
+    le traitement en cours des <em class="replaceable"><code>instructions</code></em> est
+    abandonné et le contrôle est passé à la liste d'<code class="literal">EXCEPTION</code>.
+    Une recherche est effectuée sur la liste pour la première
+    <em class="replaceable"><code>condition</code></em> correspondant à l'erreur survenue.
+    Si une correspondance est trouvée, les
+    <em class="replaceable"><code>instructions_gestion_erreurs</code></em> correspondantes
+    sont exécutées puis le contrôle est passé à l'instruction suivant le
+    <code class="literal">END</code>. Si aucune correspondance n'est trouvée, l'erreur se
+    propage comme si la clause <code class="literal">EXCEPTION</code> n'existait pas du
+    tout : l'erreur peut être récupérée par un bloc l'enfermant avec
+    <code class="literal">EXCEPTION</code> ou, s'il n'existe pas, elle annule le traitement de
+    la fonction.
+   </p><p>
+    Les noms des <em class="replaceable"><code>condition</code></em> sont indiquées dans
+    l'<a class="xref" href="errcodes-appendix.html" title="Annexe A. Codes d'erreur de PostgreSQL">Annexe A</a>. Un nom de catégorie correspond à toute
+    erreur contenue dans cette catégorie. Le nom de condition spéciale
+    <code class="literal">OTHERS</code> correspond à tout type d'erreur sauf
+    <code class="literal">QUERY_CANCELED</code> et <code class="literal">ASSERT_FAILURE</code> (il
+    est possible, mais pas recommandé, de
+    récupérer ces deux types d'erreur par leur nom). Les noms des
+    conditions ne sont pas sensibles à la casse. De plus, une condition d'erreur
+    peut être indiquée par un code <code class="literal">SQLSTATE</code> ; par exemple,
+    ces deux cas sont équivalents :
+    </p><pre class="programlisting">
+        WHEN division_by_zero THEN ...
+        WHEN SQLSTATE '22012' THEN ...
+    </pre><p>
+   </p><p>
+    Si une nouvelle erreur survient à l'intérieur des
+    <em class="replaceable"><code>instructions_gestion_erreurs</code></em> sélectionnées, elle
+    ne peut pas être récupérée par cette clause <code class="literal">EXCEPTION</code> mais
+    est propagée en dehors. Une clause <code class="literal">EXCEPTION</code> l'englobant
+    pourrait la récupérer.
+   </p><p>
+    Quand une erreur est récupérée par une clause <code class="literal">EXCEPTION</code>, les
+    variables locales de la fonction <span class="application">PL/pgSQL</span> restent
+    dans le même état qu'au moment où l'erreur est survenue mais toutes les
+    modifications à l'état persistant de la base de données à l'intérieur
+    du bloc sont annulées. Comme exemple, considérez ce fragment :
+
+    </p><pre class="programlisting">INSERT INTO mon_tableau(prenom, nom) VALUES('Tom', 'Jones');
+BEGIN
+  UPDATE mon_tableau SET prenom = 'Joe' WHERE nom = 'Jones';
+  x := x + 1;
+  y := x / 0;
+  EXCEPTION
+    WHEN division_by_zero THEN
+      RAISE NOTICE 'récupération de l''erreur division_by_zero';
+RETURN x;
+END;
+    </pre><p>
+
+    Quand le contrôle parvient à l'affectation de <code class="literal">y</code>, il échouera
+    avec une erreur <code class="literal">division_by_zero</code>. Elle sera récupérée par la
+    clause <code class="literal">EXCEPTION</code>. La valeur renvoyée par l'instruction
+    <code class="command">RETURN</code> sera la valeur incrémentée de <code class="literal">x</code> mais
+    les effets de la commande <code class="command">UPDATE</code> auront été annulés. La
+    commande <code class="command">INSERT</code> précédant le bloc ne sera pas annulée, du
+    coup le résultat final est que la base de données contient
+    <code class="literal">Tom Jones</code> et non pas <code class="literal">Joe Jones</code>.
+   </p><div class="tip"><h3 class="title">Astuce</h3><p>
+     Un bloc contenant une clause <code class="literal">EXCEPTION</code> est
+     significativement plus coûteuse en entrée et en sortie qu'un bloc
+     sans. Du coup, n'utilisez pas <code class="literal">EXCEPTION</code> sans besoin.
+    </p></div><div class="example" id="PLPGSQL-UPSERT-EXAMPLE"><p class="title"><strong>Exemple 41.2. Exceptions avec <code class="command">UPDATE</code>/<code class="command">INSERT</code></strong></p><div class="example-contents"><p>
+     Cet exemple utilise un gestionnaire d'exceptions pour réaliser soit un
+     <code class="command">UPDATE</code> soit un <code class="command">INSERT</code>, comme approprié.
+     Il est recommandé d'utiliser la commande <code class="command">INSERT</code>
+     avec la clause <code class="literal">ON CONFLICT DO UPDATE</code> plutôt
+     que cette logique. Cet exemple ne sert qu'à illustrer l'usage des
+     structures de contrôle de <span class="application">PL/pgSQL</span> :
+
+     </p><pre class="programlisting">CREATE TABLE base (a INT PRIMARY KEY, b TEXT);
+
+CREATE FUNCTION fusionne_base(cle INT, donnee TEXT) RETURNS VOID AS
+$$
+BEGIN
+    LOOP
+        -- commençons par tenter la mise à jour de la clé
+        UPDATE base SET b = donnee WHERE a = cle;
+        IF found THEN
+            RETURN;
+        END IF;
+
+        -- si elle n'est pas dispo, tentons l'insertion de la clé
+        -- si quelqu'un essaie d'insérer la même clé en même temps,
+        -- il y aura une erreur pour violation de clé unique
+        BEGIN
+            INSERT INTO base(a,b) VALUES (cle, donnee);
+            RETURN;
+        EXCEPTION WHEN unique_violation THEN
+            -- ne rien faire, et tente de nouveau la mise à jour
+        END;
+    END LOOP;
+END;
+$$
+LANGUAGE plpgsql;
+
+SELECT fusionne_base(1, 'david');
+SELECT fusionne_base(1, 'dennis');
+     </pre><p>
+
+     Ce code suppose que l'erreur <code class="literal">unique_violation</code> est causée
+     par la commande <code class="command">INSERT</code>, et pas par un
+     <code class="command">INSERT</code> dans une fonction trigger sur la table. Cela
+     pourrait avoir un mauvais comportement s'il y a plus d'un index unique sur
+     la table car il ré-essaiera l'opération quelque soit l'index qui a causé
+     l'erreur. On pourrait avoir plus de sécurité en utilisant la fonctionnalité
+     discuté ci-après pour vérifier que l'erreur récupérée était celle attendue.
+    </p></div></div><br class="example-break" /><div class="sect3" id="PLPGSQL-EXCEPTION-DIAGNOSTICS"><div class="titlepage"><div><div><h4 class="title">41.6.8.1. Obtenir des informations sur une erreur <a href="#PLPGSQL-EXCEPTION-DIAGNOSTICS" class="id_link">#</a></h4></div></div></div><p>
+     Les gestionnaires d'exception ont fréquemment besoin d'identifier l'erreur
+     spécifique qui est survenue. Il existe deux façons d'obtenir l'information
+     sur l'exception en cours dans <span class="application">PL/pgSQL</span> :
+     des variables spéciales et la commande <code class="command">GET STACKED
+      DIAGNOSTICS</code>.
+    </p><p>
+     Avec un gestionnaire d'exceptions, la variable spéciale
+     <code class="varname">SQLSTATE</code> contient le code d'erreur qui correspond à
+     l'exception qui a été levée (voir <a class="xref" href="errcodes-appendix.html#ERRCODES-TABLE" title="Tableau A.1. Codes d'erreur de PostgreSQL">Tableau A.1</a> pour la
+     liste de codes d'erreur possibles). La variable spéciale
+     <code class="varname">SQLERRM</code> contient le message d'erreur associé à
+     l'exception. Ces variables ne sont pas définies en dehors des gestionnaires
+     d'exception.
+    </p><p>
+     Dans le gestionnaire d'exceptions, il est possible de récupérer des
+     informations sur l'exception en cours en utilisant la commande
+     <code class="command">GET STACKED DIAGNOSTICS</code> qui a la forme :
+
+     </p><pre class="synopsis">
+GET STACKED DIAGNOSTICS <em class="replaceable"><code>variable</code></em> { = | := } <em class="replaceable"><code>élément</code></em> [<span class="optional"> , ... </span>];
+     </pre><p>
+
+     Chaque <em class="replaceable"><code>élément</code></em> est un mot clé identifiant une
+     valeur de statut à assigner à la <em class="replaceable"><code>variable</code></em> spécifiée (qui doit être du bon
+     type de données). Les éléments de statut actuellement disponibles sont
+     indiqués dans <a class="xref" href="plpgsql-control-structures.html#PLPGSQL-EXCEPTION-DIAGNOSTICS-VALUES" title="Tableau 41.2. Diagnostics et erreurs">Tableau 41.2</a>.
+    </p><div class="table" id="PLPGSQL-EXCEPTION-DIAGNOSTICS-VALUES"><p class="title"><strong>Tableau 41.2. Diagnostics et erreurs</strong></p><div class="table-contents"><table class="table" summary="Diagnostics et erreurs" border="1"><colgroup><col class="col1" /><col class="col2" /><col class="col3" /></colgroup><thead><tr><th>Nom</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">RETURNED_SQLSTATE</code></td><td><code class="type">text</code></td><td>le code d'erreur SQLSTATE de l'exception</td></tr><tr><td><code class="literal">COLUMN_NAME</code></td><td><code class="type">text</code></td><td>le nom de la colonne en relation avec l'exception</td></tr><tr><td><code class="literal">CONSTRAINT_NAME</code></td><td><code class="type">text</code></td><td>le nom de la contrainte en relation avec l'exception</td></tr><tr><td><code class="literal">PG_DATATYPE_NAME</code></td><td><code class="type">text</code></td><td>le nom du type de données en relation avec l'exception</td></tr><tr><td><code class="literal">MESSAGE_TEXT</code></td><td><code class="type">text</code></td><td>le texte du message principal de l'exception</td></tr><tr><td><code class="literal">TABLE_NAME</code></td><td><code class="type">text</code></td><td>le nom de la table en relation avec l'exception</td></tr><tr><td><code class="literal">SCHEMA_NAME</code></td><td><code class="type">text</code></td><td>le nom du schéma en relation avec l'exception</td></tr><tr><td><code class="literal">PG_EXCEPTION_DETAIL</code></td><td><code class="type">text</code></td><td>le texte du message détaillée de l'exception, si disponible</td></tr><tr><td><code class="literal">PG_EXCEPTION_HINT</code></td><td><code class="type">text</code></td><td>le texte du message d'astuce de l'exception, si disponible</td></tr><tr><td><code class="literal">PG_EXCEPTION_CONTEXT</code></td><td><code class="type">text</code></td><td>ligne(s) de texte décrivant la pile d'appel au moment de
+         l'exception (voir <a class="xref" href="plpgsql-control-structures.html#PLPGSQL-CALL-STACK" title="41.6.9. Obtenir des informations sur l'emplacement d'exécution">Section 41.6.9</a>)</td></tr></tbody></table></div></div><br class="table-break" /><p>
+     Si l'exception n'a pas configuré une valeur pour un élément, une chaîne
+     vide sera renvoyée.
+    </p><p>
+     Voici un exemple :
+     </p><pre class="programlisting">
+DECLARE
+  text_var1 text;
+  text_var2 text;
+  text_var3 text;
+BEGIN
+  -- un traitement qui cause une exception
+  ...
+EXCEPTION WHEN OTHERS THEN
+  GET STACKED DIAGNOSTICS text_var1 = MESSAGE_TEXT,
+                          text_var2 = PG_EXCEPTION_DETAIL,
+                          text_var3 = PG_EXCEPTION_HINT;
+END;
+     </pre><p>
+    </p></div></div><div class="sect2" id="PLPGSQL-CALL-STACK"><div class="titlepage"><div><div><h3 class="title">41.6.9. Obtenir des informations sur l'emplacement d'exécution <a href="#PLPGSQL-CALL-STACK" class="id_link">#</a></h3></div></div></div><p>
+    La commande <code class="command">GET DIAGNOSTICS</code>, précédemment décrite dans
+    <a class="xref" href="plpgsql-statements.html#PLPGSQL-STATEMENTS-DIAGNOSTICS" title="41.5.5. Obtention du statut du résultat">Section 41.5.5</a>, récupère des informations
+    sur l'état d'exécution courant (alors que la commande <code class="command">GET STACKED
+     DIAGNOSTICS</code> discutée ci-dessus rapporte des informations sur
+    l'état d'exécution de l'erreur précédente). Son élément de statut
+    <code class="literal">PG_CONTEXT</code> est utile pour vérifier l'emplacement
+    d'exécution courant. <code class="literal">PG_CONTEXT</code> renvoie une chaîne de
+    texte dont les lignes correspondent à la pile d'appels. La première ligne
+    fait référence à la fonction en cours et qui exécute <code class="command">GET
+     DIAGNOSTICS</code>. La seconde ligne et toutes les lignes suivantes font
+    référence aux fonctions appelantes dans la pile d'appel. Par exemple :
+
+    </p><pre class="programlisting">
+CREATE OR REPLACE FUNCTION fonction_externe() RETURNS integer AS $$BEGIN
+  RETURN fonction_interne();
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION fonction_interne() RETURNS integer AS $$
+DECLARE
+  stack text;
+BEGIN
+  GET DIAGNOSTICS stack = PG_CONTEXT;
+  RAISE NOTICE E'--- Pile d''appel ---\n%', stack;
+  RETURN 1;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT fonction_externe();
+
+NOTICE:  --- Call Stack ---
+PL/pgSQL function fonction_interne() line 5 at GET DIAGNOSTICS
+PL/pgSQL function fonction_externe() line 3 at RETURN
+CONTEXT:  PL/pgSQL function fonction_externe() line 3 at RETURN
+ fonction_externe
+ -----------------
+                1
+(1 row)
+    </pre><p>
+
+   </p><p>
+    <code class="literal">GET STACKED DIAGNOSTICS ... PG_EXCEPTION_CONTEXT</code>
+    renvoie le même type de pile d'appels, mais en décrivant l'emplacement où
+    l'erreur a été détectée, plutôt que l'emplacement actuel.
+   </p><p>
+    La clause <code class="literal">SCROLL</code> ne peut pas être utilisée quand la
+    requête du curseur utilise <code class="literal">FOR UPDATE/SHARE</code>. De plus,
+    il est préférable d'utiliser <code class="literal">NO SCROLL</code> avec une
+    requête qui implique des fonctions volatiles. L'implémentation de
+    <code class="literal">SCROLL</code> suppose que relire la sortie de la requête
+    donnera des résultats cohérents, ce qu'une fonction volatile pourrait ne
+    pas faire.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/plpgsql-control-structures.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:44 GMT -->
+</html>

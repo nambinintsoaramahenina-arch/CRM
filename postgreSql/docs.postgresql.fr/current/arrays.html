@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/arrays.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:26 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>8.15. Tableaux</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="datatype-json.html" title="8.14. Types JSON" /><link rel="next" href="rowtypes.html" title="8.16. Types composites" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/arrays.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/arrays.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/arrays.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/arrays.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/arrays.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/arrays.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/arrays.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/arrays.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/arrays.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/arrays.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/arrays.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/arrays.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/arrays.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/arrays.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/arrays.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/arrays.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/arrays.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/arrays.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/arrays.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/arrays.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/arrays.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="datatype.html">Types de données</a></span> » <span class="breadcrumb-node">Tableaux</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="datatype-json.html" title="8.14. Types JSON">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="datatype.html" title="Chapitre 8. Types de données">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="rowtypes.html" title="8.16. Types composites">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">8.14. Types <acronym class="acronym">JSON</acronym> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 8.16. Types composites</td></tr></table></div><div class="sect1" id="ARRAYS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">8.15. Tableaux <a href="#ARRAYS" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="arrays.html#ARRAYS-DECLARATION">8.15.1. Déclaration des types tableaux</a></span></dt><dt><span class="sect2"><a href="arrays.html#ARRAYS-INPUT">8.15.2. Saisie de valeurs de type tableau</a></span></dt><dt><span class="sect2"><a href="arrays.html#ARRAYS-ACCESSING">8.15.3. Accès aux tableaux</a></span></dt><dt><span class="sect2"><a href="arrays.html#ARRAYS-MODIFYING">8.15.4. Modification de tableaux</a></span></dt><dt><span class="sect2"><a href="arrays.html#ARRAYS-SEARCHING">8.15.5. Recherche dans les tableaux</a></span></dt><dt><span class="sect2"><a href="arrays.html#ARRAYS-IO">8.15.6. Syntaxe d'entrée et de sortie des tableaux</a></span></dt></dl></div><a id="id-1.5.7.23.2" class="indexterm"></a><p>
+  <span class="productname">PostgreSQL</span> permet de définir des colonnes de
+  table comme des tableaux multidimensionnels de longueur variable. Il est
+  possible de créer des tableaux de n'importe quel type utilisateur :
+  de base, énuméré, composé, intervalle, domaine.
+ </p><div class="sect2" id="ARRAYS-DECLARATION"><div class="titlepage"><div><div><h3 class="title">8.15.1. Déclaration des types tableaux <a href="#ARRAYS-DECLARATION" class="id_link">#</a></h3></div></div></div><a id="id-1.5.7.23.4.2" class="indexterm"></a><p>
+   La création de la table suivante permet d'illustrer l'utilisation des types
+   tableaux :
+   </p><pre class="programlisting">CREATE TABLE sal_emp (
+    nom              text,
+    paye_par_semaine integer[],
+    planning         text[][]
+);</pre><p>
+  Comme indiqué ci-dessus, un type de données tableau est nommé en ajoutant des
+  crochets (<code class="literal">[]</code>) au type de données des éléments du tableau. La
+  commande ci-dessus crée une table nommée <code class="structname">sal_emp</code>
+  avec une colonne de type <code class="type">text</code> (<code class="structfield">nom</code>),
+  un tableau à une dimension de type <code class="type">integer</code>
+  (<code class="structfield">paye_par_semaine</code>), représentant le salaire d'un
+  employé par semaine et un tableau à deux dimensions de type
+  <code class="type">text</code> (<code class="structfield">planning</code>), représentant le
+  planning hebdomadaire de l'employé.
+ </p><p>
+  La syntaxe de <code class="command">CREATE TABLE</code> permet de préciser la taille
+  exacte des tableaux, par exemple :
+
+</p><pre class="programlisting">CREATE TABLE tictactoe (
+    carres   integer[3][3]
+);</pre><p>
+
+  Néanmoins, l'implantation actuelle ignore toute limite fournie pour la taille
+  du tableau, c'est-à-dire que le comportement est identique à celui des
+  tableaux dont la longueur n'est pas précisée.
+ </p><p>
+  De plus, l'implantation actuelle n'oblige pas non plus à déclarer le
+  nombre de dimensions. Les tableaux d'un type d'élément particulier sont tous
+  considérés comme étant du même type, quelles que soient leur taille et leur
+  nombre de dimensions. Déclarer la taille du tableau ou le nombre de dimensions
+  dans <code class="command">CREATE TABLE</code> n'a qu'un but documentaire. Le
+  comportement de l'application n'en est pas affecté.
+ </p><p>
+  Une autre syntaxe, conforme au standard SQL via l'utilisation du mot-clé
+  <code class="literal">ARRAY</code>, peut être employée pour les tableaux à une
+  dimension. <code class="structfield">paye_par_semaine</code> peut être défini
+  ainsi :
+</p><pre class="programlisting">paye_par_semaine  integer ARRAY[4],</pre><p>
+  ou si aucune taille du tableau n'est spécifiée :
+</p><pre class="programlisting">
+    paye_par_semaine  integer ARRAY,
+   </pre><p>
+   Néanmoins, comme indiqué précédemment, <span class="productname">PostgreSQL</span>
+   n'impose aucune restriction sur la taille dans tous les cas.
+  </p></div><div class="sect2" id="ARRAYS-INPUT"><div class="titlepage"><div><div><h3 class="title">8.15.2. Saisie de valeurs de type tableau <a href="#ARRAYS-INPUT" class="id_link">#</a></h3></div></div></div><a id="id-1.5.7.23.5.2" class="indexterm"></a><p>
+   Pour écrire une valeur de type tableau comme une constante littérale,
+   on encadre les valeurs des éléments par des accolades et on les sépare par des
+   virgules (ce n'est pas différent de la syntaxe C utilisée
+   pour initialiser les structures). Des guillemets doubles peuvent être
+   positionnés autour des valeurs des éléments. C'est d'ailleurs obligatoire
+   si elles
+   contiennent des virgules ou des accolades (plus de détails ci-dessous).
+   Le format général d'une constante de type tableau est donc le
+   suivant :
+   </p><pre class="synopsis">'{ <em class="replaceable"><code>val1</code></em> <em class="replaceable"><code>delim</code></em> <em class="replaceable"><code>val2</code></em> <em class="replaceable"><code>delim</code></em> ... }'</pre><p>
+   où <em class="replaceable"><code>delim</code></em> est le caractère de délimitation pour ce
+   type, tel qu'il est enregistré dans son entrée <code class="literal">pg_type</code>.
+   Parmi les types de données standards fournis par la distribution
+   <span class="productname">PostgreSQL</span>, tous utilisent une virgule
+   (<code class="literal">,</code>), sauf pour le type <code class="type">box</code> qui utilise
+   un point-virgule (<code class="literal">;</code>). Chaque <em class="replaceable"><code>val</code></em> est soit une constante
+   du type des éléments du tableau soit un sous-tableau.
+  </p><p>
+   Exemple de constante tableau :
+</p><pre class="programlisting">'{{1,2,3},{4,5,6},{7,8,9}}'</pre><p>
+   Cette constante a deux dimensions, un tableau 3 par 3 consistant en trois
+   sous-tableaux d'entiers.
+  </p><p>
+   Pour initialiser un élément d'un tableau à NULL, on écrit <code class="literal">NULL</code>
+   pour la valeur de cet élément. (Toute variante majuscule et/ou minuscule de
+   <code class="literal">NULL</code> est acceptée.) Si <span class="quote">« <span class="quote">NULL</span> »</span> doit être
+   utilisé comme valeur de chaîne, on place des guillemets doubles autour.
+  </p><p>
+   Ces types de constantes tableau sont en fait un cas particulier
+   des constantes de type générique abordées dans la <a class="xref" href="sql-syntax-lexical.html#SQL-SYNTAX-CONSTANTS-GENERIC" title="4.1.2.7. Constantes d'autres types">Section 4.1.2.7</a>. La constante est traitée
+   initialement comme une chaîne et passée à la routine de conversion d'entrées
+   de tableau. Une spécification explicite du type peut être nécessaire.
+  </p><p>
+  Quelques instructions <code class="command">INSERT</code> :
+
+</p><pre class="programlisting">INSERT INTO sal_emp
+    VALUES ('Bill',
+    '{10000, 10000, 10000, 10000}',
+    '{{"rendez-vous", "repas"}, {"entrainement", "présentation"}}');
+
+INSERT INTO sal_emp
+    VALUES ('Carol',
+    '{20000, 25000, 25000, 25000}',
+    '{{"petit-déjeuner", "consultation"}, {"rendez-vous", "repas"}}');</pre><p>
+ </p><p>
+  Le résultat des deux insertions précédentes ressemble à :
+</p><pre class="programlisting">SELECT * FROM sal_emp;
+ nom   |      paye_par_semaine     |      planning
+-------+---------------------------+--------------------
+Bill   | {10000,10000,10000,10000} | {{rendez-vous,repas},{entrainement,présentation}}
+Carol  | {20000,25000,25000,25000} | {{petit-déjeuner,consultation},{rendez-vous,repas}}
+(2 rows)</pre><p>
+ </p><p>
+  Les tableaux multidimensionnels doivent avoir des échelles correspondantes
+  pour chaque dimension. Une différence cause la levée d'une erreur. Par
+  exemple :
+
+</p><pre class="programlisting">
+INSERT INTO sal_emp
+    VALUES ('Bill',
+    '{10000, 10000, 10000, 10000}',
+    '{{"rendez-vous", "repas"}, {"rendez-vous"}}');
+ERROR:  malformed array literal: "{{"rendez-vous", "repas"}, {"rendez-vous"}}"
+DETAIL:  Multidimensional arrays must have sub-arrays with matching dimensions.
+   </pre><p>
+  </p><p>
+   La syntaxe du constructeur <code class="literal">ARRAY</code> peut aussi être
+   utilisée :
+   </p><pre class="programlisting">INSERT INTO sal_emp
+    VALUES ('Bill',
+    ARRAY[10000, 10000, 10000, 10000],
+    ARRAY[['rendez-vous', 'repas'], ['entrainement','présentation']]);
+
+INSERT INTO sal_emp
+    VALUES ('Carol',
+    ARRAY[20000, 25000, 25000, 25000],
+    ARRAY[['petit-déjeuner', 'consultation'], ['rendez-vous', 'repas']]);</pre><p>
+ </p><p>
+  Les éléments du tableau sont des constantes SQL ordinaires ou
+  des expressions ; par exemple, les chaînes de caractères littérales sont
+  encadrées par des guillemets simples au lieu de guillemets doubles comme cela
+  est le cas dans un tableau littéral. La syntaxe du constructeur
+  <code class="literal">ARRAY</code> est discutée plus en profondeur dans la <a class="xref" href="sql-expressions.html#SQL-SYNTAX-ARRAY-CONSTRUCTORS" title="4.2.12. Constructeurs de tableaux">Section 4.2.12</a>.
+ </p></div><div class="sect2" id="ARRAYS-ACCESSING"><div class="titlepage"><div><div><h3 class="title">8.15.3. Accès aux tableaux <a href="#ARRAYS-ACCESSING" class="id_link">#</a></h3></div></div></div><a id="id-1.5.7.23.6.2" class="indexterm"></a><p>
+  Quelques requêtes lancées sur la table permettent d'éclairer le propos
+  précédent. Tout d'abord, l'accès à un seul élément du tableau.
+  Cette requête retrouve le nom des employés dont la paye a
+  changé au cours de la deuxième semaine :
+
+</p><pre class="programlisting">SELECT nom FROM sal_emp WHERE paye_par_semaine[1] &lt;&gt; paye_par_semaine[2];
+
+ nom
+-------
+ Carol
+(1 row)</pre><p>
+
+  Les indices du tableau sont écrits entre crochets. Par défaut,
+  <span class="productname">PostgreSQL</span> utilise la convention des indices
+  commençant à 1 pour les tableaux, c'est-à-dire un tableau à
+  <em class="replaceable"><code>n</code></em> éléments commence avec <code class="literal">array[1]</code> et finit
+  avec <code class="literal">array[<em class="replaceable"><code>n</code></em>]</code>.
+ </p><p>
+  Récupérer la paye de la troisième semaine de tous les
+  employés :
+
+</p><pre class="programlisting">SELECT paye_par_semaine[3] FROM sal_emp;
+
+ paye_par_semaine
+------------------
+          10000
+          25000
+(2 rows)</pre><p>
+ </p><p>
+  Il est également possible d'accéder à des parties rectangulaires arbitraires ou à des
+  sous-tableaux. Une partie de tableau est indiquée par l'écriture
+  <code class="literal"><em class="replaceable"><code>extrémité basse</code></em>:<em class="replaceable"><code>extrémité haute</code></em></code>
+  sur n'importe quelle dimension. Ainsi, la requête suivante retourne
+  le premier élément du planning de Bill pour les deux premiers jours de la
+  semaine :
+
+</p><pre class="programlisting">SELECT planning[1:2][1:1] FROM sal_emp WHERE nom = 'Bill';
+
+      planning
+--------------------
+ {{rendez-vous},{entrainement}}
+(1 row)</pre><p>
+
+  Si l'une des dimensions est écrite comme une partie, c'est-à-dire si elle contient
+  le caractère deux-points, alors toutes les dimensions sont traitées comme
+  des parties. Toute dimension qui n'a qu'un numéro (pas de
+  deux-points), est traitée comme allant de 1
+  au nombre indiqué. Par exemple, <code class="literal">[2]</code> est traitée comme
+  <code class="literal">[1:2]</code>, comme le montre cet exemple :
+
+</p><pre class="programlisting">SELECT planning[1:2][2] FROM sal_emp WHERE nom = 'Bill';
+
+         planning
+---------------------------
+ {{rendez-vous,repas},{entrainement,présentation}}
+(1 row)</pre><p>
+
+  Pour éviter toute confusion avec le cas sans indice, il est préférable d'utiliser
+  la syntaxe avec indice pour toutes les dimensions, c'est-à-dire
+  <code class="literal">[1:2][1:1]</code> et non pas <code class="literal">[2][1:1]</code>.
+ </p><p>
+  Il est possible d'omettre la <em class="replaceable"><code>limite basse</code></em> et/ou la
+  <em class="replaceable"><code>limite haute</code></em> dans les indices. La limite manquante
+  est remplacée par la limite basse ou haute des dimensions du tableau.
+  Par exemple :
+
+</p><pre class="programlisting">
+SELECT planning[:2][2:] FROM sal_emp WHERE nom = 'Bill';
+
+        planning
+------------------------
+ {{lunch},{presentation}}
+(1 row)
+
+SELECT planning[:][1:1] FROM sal_emp WHERE nom = 'Bill';
+
+        schedule
+------------------------
+ {{meeting},{training}}
+(1 row)
+   </pre><p>
+  </p><p>
+   Une expression indicée de tableau retourne NULL si le tableau ou une
+   des expressions est NULL. De plus, NULL est renvoyé si un indice se trouve en
+   dehors de la plage du tableau (ce cas n'amène pas d'erreur).
+   Par exemple, si <code class="literal">planning</code> a les dimensions
+   <code class="literal">[1:3][1:2]</code>, faire référence à
+   <code class="literal">planning[3][3]</code> donne un
+   résultat NULL. De la même façon, une référence sur un tableau avec une
+   valeur d'indices incorrecte retourne une valeur NULL plutôt qu'une erreur.
+  </p><p>
+   Une expression de découpage d'un tableau est aussi NULL si, soit le
+   tableau, soit une des expressions indicées est NULL. Néanmoins, dans
+   certains cas particuliers comme la sélection d'une partie d'un tableau
+   complètement en dehors de la plage de ce dernier, l'expression de
+   cette partie est un tableau vide (zéro dimension) et non pas un tableau
+   NULL. (Ceci ne correspond pas au comportement sans indice, et est fait
+   pour des raisons historiques.)
+   Si la partie demandée surcharge partiellement les limites du
+   tableau, alors elle est réduite silencieusement à la partie surchargée
+   au lieu de renvoyer NULL.
+  </p><p>
+   Les dimensions actuelles de toute valeur de type tableau sont disponibles avec la
+   fonction <code class="function">array_dims</code> :
+
+   </p><pre class="programlisting">SELECT array_dims(planning) FROM sal_emp WHERE nom = 'Carol';
+
+ array_dims
+------------
+ [1:2][1:2]
+(1 row)</pre><p>
+
+  <code class="function">array_dims</code> donne un résultat de type <code class="type">text</code>,
+  ce qui est pratique à lire, mais peut s'avérer plus difficile à interpréter
+  par les
+  programmes. Les dimensions sont aussi récupérables avec
+  <code class="function">array_upper</code> et <code class="function">array_lower</code>, qui
+  renvoient respectivement la limite haute et la limite basse du tableau
+  précisé :
+
+</p><pre class="programlisting">SELECT array_upper(planning, 1) FROM sal_emp WHERE nom = 'Carol';
+
+ array_upper
+-------------
+           2
+(1 row)</pre><p>
+
+ <code class="function">array_length</code> renverra la longueur de la dimension indiquée
+ pour le tableau :
+
+</p><pre class="programlisting">
+SELECT array_length(planning, 1) FROM sal_emp WHERE nom = 'Carol';
+
+ array_length
+--------------
+            2
+(1 row)
+   </pre><p>
+
+   <code class="function">cardinality</code> renvoie le nombre total d'éléments d'un tableau
+   sur toutes ses dimensions. Autrement dit, c'est le nombre de lignes que renverrait
+   un appel à la fonction <code class="function">unnest</code> :
+
+   </p><pre class="programlisting">
+SELECT cardinality(planning) FROM sal_emp WHERE nom = 'Carol';
+
+ cardinality
+-------------
+           4
+(1 row)
+   </pre><p>
+  </p></div><div class="sect2" id="ARRAYS-MODIFYING"><div class="titlepage"><div><div><h3 class="title">8.15.4. Modification de tableaux <a href="#ARRAYS-MODIFYING" class="id_link">#</a></h3></div></div></div><a id="id-1.5.7.23.7.2" class="indexterm"></a><p>
+   La valeur d'un tableau peut être complètement remplacée :
+
+   </p><pre class="programlisting">UPDATE sal_emp SET paye_par_semaine = '{25000,25000,27000,27000}'
+    WHERE nom = 'Carol';</pre><p>
+
+  ou en utilisant la syntaxe de l'expression <code class="literal">ARRAY</code> :
+
+</p><pre class="programlisting">UPDATE sal_emp SET paye_par_semaine = ARRAY[25000,25000,27000,27000]
+    WHERE nom = 'Carol';</pre><p>
+
+  On peut aussi mettre à jour un seul élément d'un tableau :
+
+</p><pre class="programlisting">UPDATE sal_emp SET paye_par_semaine[4] = 15000
+    WHERE nom = 'Bill';</pre><p>
+
+  ou faire une mise à jour par tranche :
+
+</p><pre class="programlisting">UPDATE sal_emp SET paye_par_semaine[1:2] = '{27000,27000}'
+    WHERE nom = 'Carol';</pre><p>
+
+  Les syntaxes des indices avec la <em class="replaceable"><code>limite basse</code></em>
+  et/ou la limite <em class="replaceable"><code>upper-bound</code></em> omise peuvent aussi
+  être utilisées lors de la mise à jour d'une valeur d'un tableau qui est
+  différent de NULL ou à plus de zéro dimension (sinon, il n'existe pas
+  de limite à substituer).
+ </p><p>
+  Un tableau peut être agrandi en y stockant des éléments qui n'y sont pas
+  déjà présents. Toute position entre ceux déjà présents et les nouveaux
+  éléments est remplie avec la valeur NULL. Par exemple, si le tableau
+  <code class="literal">mon_tableau</code> a actuellement quatre éléments, il en aura
+  six après une mise à jour qui affecte <code class="literal">mon_tableau[6]</code>,
+  car <code class="literal">mon_tableau[5]</code> est alors rempli avec une valeur NULL.
+  Actuellement, l'agrandissement de cette façon n'est autorisé que pour
+  les tableaux à une dimension, pas pour les tableaux multidimensionnels.
+ </p><p>
+  L'affectation par parties d'un tableau permet la création de tableaux dont
+  l'indice de départ n'est pas 1. On peut ainsi affecter, par exemple,
+  <code class="literal">mon_tableau[-2:7]</code> pour créer un tableau avec des valeurs d'indices
+  allant de -2 à 7.
+ </p><p>
+  Les valeurs de nouveaux tableaux peuvent aussi être construites en utilisant
+  l'opérateur de concaténation,
+  <code class="literal">||</code> :
+</p><pre class="programlisting">SELECT ARRAY[1,2] || ARRAY[3,4];
+   ?column?
+---------------
+ {1,2,3,4}
+(1 row)
+
+SELECT ARRAY[5,6] || ARRAY[[1,2],[3,4]];
+      ?column?
+---------------------
+ {{5,6},{1,2},{3,4}}
+(1 row)</pre><p>
+</p><p>
+  L'opérateur de concaténation autorise un élément à être placé au début ou à
+  la fin d'un tableau à une dimension. Il accepte aussi deux tableaux à
+  <em class="replaceable"><code>N</code></em> dimensions, ou un tableau à <em class="replaceable"><code>N</code></em> dimensions
+  et un à <em class="replaceable"><code>N+1</code></em> dimensions.
+  </p><p>
+  Quand un élément seul est poussé soit au début soit à la fin d'un tableau à
+  une dimension, le résultat est un tableau avec le même indice bas que l'opérande
+  du tableau. Par exemple :
+</p><pre class="programlisting">SELECT array_dims(1 || '[0:1]={2,3}'::int[]);
+ array_dims
+------------
+ [0:2]
+(1 row)
+
+SELECT array_dims(ARRAY[1,2] || 3);
+ array_dims
+------------
+ [1:3]
+(1 row)</pre><p>
+ </p><p>
+  Lorsque deux tableaux ayant un même nombre de dimensions sont concaténés, le
+  résultat conserve la limite inférieure de l'opérande gauche. Le résultat est
+  un tableau comprenant chaque élément de l'opérande gauche suivi de chaque
+  élément de l'opérande droit. Par exemple :
+</p><pre class="programlisting">SELECT array_dims(ARRAY[1,2] || ARRAY[3,4,5]);
+ array_dims
+------------
+ [1:5]
+(1 row)
+
+SELECT array_dims(ARRAY[[1,2],[3,4]] || ARRAY[[5,6],[7,8],[9,0]]);
+ array_dims
+------------
+ [1:5][1:2]
+(1 row)</pre><p>
+ </p><p>
+  Lorsqu'un tableau à <em class="replaceable"><code>N</code></em> dimensions est placé au début ou à la
+  fin d'un tableau à <em class="replaceable"><code>N+1</code></em> dimensions, le résultat est analogue au
+  cas ci-dessus. Chaque sous-tableau de dimension <em class="replaceable"><code>N</code></em> est en
+  quelque sorte un élément de la dimension externe d'un tableau à
+  <em class="replaceable"><code>N+1</code></em> dimensions. Par exemple :
+</p><pre class="programlisting">SELECT array_dims(ARRAY[1,2] || ARRAY[[3,4],[5,6]]);
+ array_dims
+------------
+ [1:3][1:2]
+(1 row)</pre><p>
+ </p><p>
+  Un tableau peut aussi être construit en utilisant les fonctions
+  <code class="function">array_prepend</code>, <code class="function">array_append</code>
+  ou <code class="function">array_cat</code>. Les deux premières ne supportent que les
+  tableaux à une dimension alors que <code class="function">array_cat</code> supporte les
+  tableaux multidimensionnels. Quelques exemples :
+
+</p><pre class="programlisting">SELECT array_prepend(1, ARRAY[2,3]);
+ array_prepend
+---------------
+ {1,2,3}
+(1 row)
+
+SELECT array_append(ARRAY[1,2], 3);
+ array_append
+--------------
+ {1,2,3}
+(1 row)
+
+SELECT array_cat(ARRAY[1,2], ARRAY[3,4]);
+   array_cat
+---------------
+ {1,2,3,4}
+(1 row)
+
+SELECT array_cat(ARRAY[[1,2],[3,4]], ARRAY[5,6]);
+      array_cat
+---------------------
+ {{1,2},{3,4},{5,6}}
+(1 row)
+
+SELECT array_cat(ARRAY[5,6], ARRAY[[1,2],[3,4]]);
+      array_cat
+---------------------
+ {{5,6},{1,2},{3,4}}</pre><p>
+ </p><p>
+  Dans les cas simples, l'opération de concaténation discutée ci-dessus est
+  préférée à l'utilisation directe de ces fonctions. Néanmoins, comme
+  l'opérateur de concaténation est surchargé pour servir les trois cas,
+  certaines utilisations peuvent bénéficier de l'utilisation d'une fonction
+  pour éviter toute ambiguïté. Par exemple :
+
+</p><pre class="programlisting">
+SELECT ARRAY[1, 2] || '{3, 4}';  -- le littéral non typé est pris pour un tableau
+ ?column?
+-----------
+ {1,2,3,4}
+
+SELECT ARRAY[1, 2] || '7';                 -- idem pour celui-ci
+ERROR:  malformed array literal: "7"
+
+SELECT ARRAY[1, 2] || NULL;                -- pareil pour un NULL
+ ?column?
+----------
+ {1,2}
+(1 row)
+
+SELECT array_append(ARRAY[1, 2], NULL);    -- ceci peut être voulu
+ array_append
+--------------
+ {1,2,NULL}
+   </pre><p>
+
+   Dans l'exemple ci-dessus, l'analyseur voit un tableau d'entiers d'un côté de
+   l'opérateur de concaténation et une constante de type indéterminé de
+   l'autre. L'heuristique utilisée pour résoudre le type de la constante revient
+   à assumer qu'elle est de même type que l'autre entrée de l'opérateur  -- 
+   dans ce cas, un tableau d'entiers. Donc, l'opérateur de concaténation est
+   supposé représenter <code class="function">array_cat</code>, et non pas
+   <code class="function">array_append</code>. Quand le choix est erroné, cela peut se
+   corriger en convertissant la constante dans le type de données d'un élément
+   du tableau. L'utilisation de la fonction <code class="function">array_append</code>
+   peut être préférable.
+  </p></div><div class="sect2" id="ARRAYS-SEARCHING"><div class="titlepage"><div><div><h3 class="title">8.15.5. Recherche dans les tableaux <a href="#ARRAYS-SEARCHING" class="id_link">#</a></h3></div></div></div><a id="id-1.5.7.23.8.2" class="indexterm"></a><p>
+   Pour rechercher une valeur dans un tableau, il faut vérifier chaque valeur
+   dans le tableau. Ceci peut se faire à la main lorsque la taille du
+   tableau est connue. Par exemple :
+
+   </p><pre class="programlisting">SELECT * FROM sal_emp WHERE paye_par_semaine[1] = 10000 OR
+                            paye_par_semaine[2] = 10000 OR
+                            paye_par_semaine[3] = 10000 OR
+                            paye_par_semaine[4] = 10000;</pre><p>
+
+  Ceci devient toutefois rapidement fastidieux pour les gros tableaux et n'est
+  pas très utile si la taille du tableau n'est pas connue. Une autre méthode
+  est décrite dans la <a class="xref" href="functions-comparisons.html" title="9.25. Comparaisons de ligne et de tableau">Section 9.25</a>. La requête ci-dessus
+  est remplaçable par :
+
+</p><pre class="programlisting">SELECT * FROM sal_emp WHERE 10000 = ANY (paye_par_semaine);</pre><p>
+
+  De la même façon, on trouve les lignes où le tableau n'a que des valeurs
+  égales à 10000 avec :
+
+</p><pre class="programlisting">SELECT * FROM sal_emp WHERE 10000 = ALL (paye_par_semaine);</pre><p>
+
+ </p><p>
+  Sinon, la fonction <code class="function">generate_subscripts</code> peut être utilisée.
+  Par exemple :
+
+</p><pre class="programlisting">
+SELECT * FROM
+   (SELECT paye_par_semaine,
+           generate_subscripts(paye_par_semaine, 1) AS s
+      FROM sal_emp) AS foo
+ WHERE paye_par_semaine[s] = 10000;
+   </pre><p>
+
+   Cette fonction est décrite dans <a class="xref" href="functions-srf.html#FUNCTIONS-SRF-SUBSCRIPTS" title="Tableau 9.68. Fonctions générant des indices">Tableau 9.68</a>.
+  </p><p>
+   Vous pouvez aussi chercher dans un tableau en utilisant l'opérateur
+   <code class="literal">&amp;&amp;</code>, qui vérifie si l'opérande gauche a des éléments
+   communs avec l'opérande droit. Par exemple :
+
+   </p><pre class="programlisting">
+SELECT * FROM sal_emp WHERE paye_par_semaine &amp;&amp; ARRAY[10000];
+   </pre><p>
+
+   Les opérateurs sur les tableaux sont décrits plus en profondeur dans
+   <a class="xref" href="functions-array.html" title="9.19. Fonctions et opérateurs tableau">Section 9.19</a>. Leurs performances peuvent profiter d'un
+   index approprié, comme décrit dans <a class="xref" href="indexes-types.html" title="11.2. Types d'index">Section 11.2</a>.
+  </p><p>
+   Vous pouvez aussi rechercher des valeurs spécifiques dans un tableau en utilisant les
+   fonctions <code class="function">array_position</code> et <code class="function">array_positions</code>.
+   La première renvoie l'indice de la première occurrence d'une valeur dans un tableau.
+   La seconde renvoie un tableau avec les indices de toutes les occurrences de la valeur
+   dans le tableau. Par exemple :
+
+   </p><pre class="programlisting">SELECT array_position(ARRAY['sun','mon','tue','wed','thu','fri','sat'], 'mon');
+ array_position
+----------------
+              2
+(1 row)
+
+SELECT array_positions(ARRAY[1, 4, 3, 1, 3, 4, 2, 1], 1);
+ array_positions
+-----------------
+ {1,4,8}
+(1 row)</pre><p>
+  </p><div class="tip"><h3 class="title">Astuce</h3><p>
+    Les tableaux ne sont pas des ensembles ; rechercher des éléments
+    spécifiques dans un tableau peut être un signe d'une mauvaise conception de
+    la base de données. On utilise plutôt une table séparée avec une
+    ligne pour chaque élément faisant partie du tableau. Cela simplifie
+    la recherche et fonctionne mieux dans le cas d'un grand nombre
+    d'éléments.
+   </p></div></div><div class="sect2" id="ARRAYS-IO"><div class="titlepage"><div><div><h3 class="title">8.15.6. Syntaxe d'entrée et de sortie des tableaux <a href="#ARRAYS-IO" class="id_link">#</a></h3></div></div></div><a id="id-1.5.7.23.9.2" class="indexterm"></a><p>
+   La représentation externe du type texte d'une valeur de type tableau consiste en
+   des éléments interprétés suivant les règles de conversion d'entrées/sorties
+   pour le type de l'élément du tableau, plus des décorations indiquant la
+   structure du tableau. L'affichage est constitué d'accolades (<code class="literal">{</code>
+   et <code class="literal">}</code>) autour des valeurs du tableau et de caractères de
+   délimitation entre éléments adjacents. Le caractère délimiteur est
+   habituellement une virgule (<code class="literal">,</code>) mais peut différer :
+   il est déterminé par le paramètre <code class="literal">typdelim</code> du type de l'élément
+   tableau. Parmi les types de données standards supportés par l'implantation
+   de <span class="productname">PostgreSQL</span>, seul le type <code class="type">box</code> utilise un
+   point-virgule (<code class="literal">;</code>), tous les autres utilisant la virgule.
+   Dans un tableau multidimensionnel, chaque dimension (row, plane, cube, etc.)
+   utilise son propre niveau d'accolades et les délimiteurs doivent être
+   utilisés entre des entités adjacentes au sein d'accolades de même niveau.
+  </p><p>
+   La routine de sortie du tableau place des guillemets doubles autour des
+   valeurs des éléments si ce sont des chaînes vides, si elles contiennent des
+   accolades, des caractères délimiteurs, des guillemets doubles, des antislashs
+   ou des espaces ou si elles correspondent à <code class="literal">NULL</code>. Les guillemets
+   doubles et les antislashs intégrés aux valeurs
+   des éléments sont échappés à l'aide d'un antislash. Pour les types de données
+   numériques, on peut supposer sans risque que les doubles guillemets
+   n'apparaissent jamais, mais pour les types de données texte, il faut être
+   préparé à gérer la présence et l'absence de guillemets.
+  </p><p>
+   Par défaut, la valeur de la limite basse d'un tableau est initialisée à 1.
+   Pour représenter des tableaux avec des limites basses différentes, les
+   indices du tableau doivent être indiqués explicitement avant d'écrire le
+   contenu du tableau.
+   Cet affichage est constitué de crochets (<code class="literal">[]</code>) autour
+   de chaque limite basse et haute d'une
+   dimension avec un délimiteur deux-points (<code class="literal">:</code>) entre
+   les deux.
+   L'affichage des dimensions du tableau est suivi par un signe d'égalité
+   (<code class="literal">=</code>). Par exemple :
+   </p><pre class="programlisting">
+SELECT f1[1][-2][3] AS e1, f1[1][-1][5] AS e2
+ FROM (SELECT '[1:1][-2:-1][3:5]={{{1,2,3},{4,5,6}}}'::int[] AS f1) AS ss;
+
+ e1 | e2
+----+----
+  1 |  6
+(1 row)
+   </pre><p>
+   La routine de sortie du tableau inclut les dimensions explicites dans
+   le résultat uniquement lorsqu'au moins une limite basse est différente
+   de 1.
+  </p><p>
+   Si la valeur écrite pour un élément est <code class="literal">NULL</code> (toute
+   variante), l'élément est considéré NULL. La présence de guillemets ou
+   d'antislashs désactive ce fonctionnement et autorise la saisie de la valeur littérale de
+   la chaîne <span class="quote">« <span class="quote">NULL</span> »</span>. De plus, pour une compatibilité ascendante
+   avec les versions antérieures à la version 8.2 de
+   <span class="productname">PostgreSQL</span>,
+   le paramètre de configuration <a class="xref" href="runtime-config-compatible.html#GUC-ARRAY-NULLS">array_nulls</a> doit être
+   désactivé (<code class="literal">off</code>) pour supprimer la reconnaissance de
+   <code class="literal">NULL</code> comme un NULL.
+  </p><p>
+   Comme indiqué précédemment, lors de l'écriture d'une valeur de tableau,
+   des guillemets doubles peuvent être utilisés autour de chaque élément
+   individuel du tableau. Il <span class="emphasis"><em>faut</em></span> le faire si leur absence
+   autour d'un élément induit en erreur l'analyseur de tableau.
+   Par exemple, les éléments contenant des crochets, virgules (ou tout type de
+   données pour le caractère délimiteur correspondant),
+   guillemets doubles, antislashs ou espace (en début comme en fin) doivent
+   avoir des guillemets doubles. Les chaînes vides et les chaînes <code class="literal">NULL</code>
+   doivent aussi être entre guillemets. Pour placer un guillemet double ou un antislash
+   dans une valeur d'élément d'un tableau, faites le précéder d'un antislash.
+   Alternativement, il est possible de se passer de guillemets et d'utiliser l'échappement par
+   antislash pour protéger tous les caractères de données qui seraient autrement interprétés
+   en tant que caractères de syntaxe de tableau.
+  </p><p>
+   Des espaces peuvent être ajoutées avant un crochet gauche ou après un crochet
+   droit. Comme avant tout élément individuel.
+   Dans tous ces cas-là, les espaces sont ignorées. En revanche, les espaces à
+   l'intérieur des éléments entre guillemets doubles ou entourées de
+   caractères autres que des espaces ne sont pas ignorées.
+  </p><div class="tip"><h3 class="title">Astuce</h3><p>
+    La syntaxe du constructeur <code class="literal">ARRAY</code> (voir <a class="xref" href="sql-expressions.html#SQL-SYNTAX-ARRAY-CONSTRUCTORS" title="4.2.12. Constructeurs de tableaux">Section 4.2.12</a>) est souvent plus facile à utiliser
+    que la syntaxe de tableau littéral lors de l'écriture des valeurs du tableau
+    en commandes SQL. Avec <code class="literal">ARRAY</code>, les valeurs de l'élément individuel
+    sont écrites comme elles le seraient si elles ne faisaient pas partie d'un tableau.
+   </p></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/arrays.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:26 GMT -->
+</html>

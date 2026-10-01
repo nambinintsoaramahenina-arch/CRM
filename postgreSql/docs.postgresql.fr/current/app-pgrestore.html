@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/app-pgrestore.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:07 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>pg_restore</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="app-pgrecvlogical.html" title="pg_recvlogical" /><link rel="next" href="app-pgverifybackup.html" title="pg_verifybackup" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/app-pgrestore.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/app-pgrestore.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/app-pgrestore.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/app-pgrestore.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/app-pgrestore.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/app-pgrestore.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/app-pgrestore.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/app-pgrestore.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/app-pgrestore.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/app-pgrestore.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/app-pgrestore.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/app-pgrestore.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/app-pgrestore.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/app-pgrestore.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/app-pgrestore.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/app-pgrestore.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/app-pgrestore.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/app-pgrestore.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/app-pgrestore.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/app-pgrestore.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/app-pgrestore.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="reference.html">Référence</a></span> » <span class="breadcrumb-link"><a href="reference-client.html">Applications client de PostgreSQL</a></span> » <span class="breadcrumb-node"><span class="application">pg_restore</span></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="app-pgrecvlogical.html" title="pg_recvlogical">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="reference-client.html" title="Applications client de PostgreSQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="app-pgverifybackup.html" title="pg_verifybackup">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top"><span class="application">pg_recvlogical</span> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> <span class="application">pg_verifybackup</span></td></tr></table></div><div class="refentry" id="APP-PGRESTORE"><div class="titlepage"></div><a id="id-1.9.4.19.1" class="indexterm"></a><div class="refnamediv"><h2><span class="refentrytitle"><span class="application">pg_restore</span></span></h2><p>pg_restore — 
+   restaure une base de données <span class="productname">PostgreSQL</span> à partir
+   d'un fichier d'archive créé par <span class="application">pg_dump</span>
+  </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p id="id-1.9.4.19.4.1"><code class="command">pg_restore</code> [<em class="replaceable"><code>option_connexion</code></em>...] [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>nom_fichier</code></em>]</p></div></div><div class="refsect1" id="APP-PGRESTORE-DESCRIPTION"><h2>Description</h2><p>
+   <span class="application">pg_restore</span> est un outil pour restaurer une base
+   de données <span class="productname">PostgreSQL</span> à partir d'une archive
+   créée par <a class="xref" href="app-pgdump.html" title="pg_dump"><span class="refentrytitle"><span class="application">pg_dump</span></span></a> dans un des formats non textuel. Il
+   lance les commandes nécessaires pour reconstruire la base de données dans
+   l'état où elle était au moment de sa sauvegarde. Les fichiers d'archive
+   permettent aussi à <span class="application">pg_restore</span> d'être sélectif
+   sur ce qui est restauré ou même de réordonner les éléments à restaurer. Les
+   fichiers d'archive sont conçus pour être portables entre les architectures.
+  </p><p>
+   <span class="application">pg_restore</span> peut opérer dans deux modes. Si un
+   nom de base de données est spécifié, <span class="application">pg_restore</span>
+   se connecte à cette base de données et restaure le contenu de l'archive
+   directement dans la base de données. Sinon, un script contenant les
+   commandes SQL nécessaires pour reconstruire la base de données est créé et
+   écrit dans un fichier ou sur la sortie standard. La sortie du script est
+   équivalente à celles créées par le format en texte plein de
+   <span class="application">pg_dump</span>. Quelques-unes des options contrôlant la
+   sortie sont du coup analogues aux options de
+   <span class="application">pg_dump</span>.
+  </p><p>
+   De toute évidence, <span class="application">pg_restore</span> ne peut pas
+   restaurer l'information qui ne se trouve pas dans le fichier d'archive.
+   Par exemple, si l'archive a été réalisée en utilisant l'option donnant les
+   <span class="quote">« <span class="quote">données sauvegardées par des commandes
+    <code class="command">INSERT</code></span> »</span>, <span class="application">pg_restore</span> ne
+   sera pas capable de charger les données en utilisant des instructions
+   <code class="command">COPY</code>.
+  </p><div class="warning"><h3 class="title">Avertissement</h3><p>
+    Restaurer une sauvegarde fait que la destination exécute du code arbitraire.
+    Les sauvegardes et restaurations partielles ne limitent pas cela. S'il n'est
+    pas possible de faire confiance aux superutilisateurs de la source, les
+    requêtes SQL de restauration doivent être inspectées avant d'être exécutées.
+    Les sauvegardes binaires peuvent être inspectées en utilisant l'option
+    <code class="option">--file</code> de <span class="application">pg_restore</span>. Notez que
+    le client exécutant la sauvegarde et la restauration n'a pas besoin de
+    faire confiance aux superutilisateurs source et destination.
+   </p></div></div><div class="refsect1" id="APP-PGRESTORE-OPTIONS"><h2>Options</h2><p>
+   <span class="application">pg_restore</span> accepte les arguments suivants en
+   ligne de commande.
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><em class="replaceable"><code>nom_fichier</code></em></span></dt><dd><p>
+       Spécifie l'emplacement du fichier d'archive (ou du répertoire pour une
+       archive au format « directory ») à restaurer. S'il n'est pas spécifié,
+       l'entrée standard est utilisée.
+      </p></dd><dt><span class="term"><code class="option">-a</code><br /></span><span class="term"><code class="option">--data-only</code></span></dt><dd><p>
+       Restaure seulement les données, pas les schémas (définitions des
+       données). Les données des tables, les Large Objects, et les valeurs des
+       séquences sont restaurées si elles sont présentes dans l'archive.
+      </p><p>
+       Cette option est similaire à <code class="option">--section=data</code> mais, pour
+       des raisons historiques, elle n'est pas identique.
+      </p></dd><dt><span class="term"><code class="option">-c</code><br /></span><span class="term"><code class="option">--clean</code></span></dt><dd><p>
+       Avant de restaurer les objets de la base, lance des commandes SQL
+       <code class="command">DROP</code> pour supprimer tous les objets à restaurer.
+       Cette option est utile pour surcharger une base existante. Si un
+       des objets n'existe pas dans la base de destination, des messages
+       d'erreurs, à ignorer, seront renvoyées sauf si l'option
+       <code class="option">--if-exists</code> est aussi indiquée.
+      </p></dd><dt><span class="term"><code class="option">-C</code><br /></span><span class="term"><code class="option">--create</code></span></dt><dd><p>
+       Crée la base de données avant de la restaurer. Si l'option
+       <code class="option">--clean</code> est aussi indiquée, supprime puis crée de
+       nouveau la base de données cible avant de s'y connecter.
+      </p><p>
+       Avec <code class="option">--create</code>, <span class="application">pg_restore</span>
+       restaure aussi le commentaire de la base de données, s'il a été
+       configuré, et toutes variables de configuration spécifiques à cette
+       base, autrement dit toutes les commandes <code class="command">ALTER DATABASE ...
+        SET ...</code> et <code class="command">ALTER ROLE ... IN DATABASE ... SET
+        ...</code> qui mentionnent cette base. Les droits d'accès à la base
+       elle-même sont aussi restaurés sauf si <code class="option">--no-acl</code> est
+       spécifié.
+      </p><p>
+       Quand cette option est utilisée, la base de données nommée via l'option
+       <code class="option">-d</code> est utilisée seulement pour exécuter les commandes
+       <code class="command">DROP DATABASE</code> et <code class="command">CREATE DATABASE</code>.
+       Toutes les données sont restaurées dans la base dont le nom se trouve
+       dans l'archive.
+      </p></dd><dt><span class="term"><code class="option">-d <em class="replaceable"><code>nom_base</code></em></code><br /></span><span class="term"><code class="option">--dbname=<em class="replaceable"><code>nom_base</code></em></code></span></dt><dd><p>
+       Se connecte à la base de données <em class="replaceable"><code>nom_base</code></em> et restaure directement dans
+       la base de données. Ce nom de base peut être remplacé par une <a class="link" href="libpq-connect.html#LIBPQ-CONNSTRING" title="32.1.1. Chaînes de connexion">chaîne de connexion</a>. Dans ce cas, les
+       paramètres de la chaîne de connexion surchargeront toutes les options
+       en ligne de commande conflictuelles.
+      </p></dd><dt><span class="term"><code class="option">-e</code><br /></span><span class="term"><code class="option">--exit-on-error</code></span></dt><dd><p>
+       Quitte si une erreur est rencontrée lors de l'envoi des commandes SQL à
+       la base de données. La valeur par défaut est de continuer et d'afficher
+       le nombre d'erreurs à la fin de la restauration.
+      </p></dd><dt><span class="term"><code class="option">-f <em class="replaceable"><code>nom_fichier</code></em></code><br /></span><span class="term"><code class="option">--file=<em class="replaceable"><code>filename</code></em></code></span></dt><dd><p>
+       Spécifie le fichier en sortie pour le script généré ou pour la liste
+       lorsqu'elle est utilisée avec <code class="option">-l</code>. Utilisez
+       <code class="literal">-</code> pour <span class="systemitem">stdout</span>.
+      </p></dd><dt><span class="term"><code class="option">--filter=<em class="replaceable"><code>filename</code></em></code></span></dt><dd><p>
+        Indique un nom de fichier à partir duquel lire les motifs des objets
+        exclus ou inclus d'une restauration. Les motifs sont interprétés
+        suivant les mêmes règles que
+        <code class="option">-n</code>/<code class="option">--schema</code> pour inclure les objets
+        dans les schémas,
+        <code class="option">-N</code>/<code class="option">--exclude-schema</code> pour exclure
+        les objets dans les schémas,
+        <code class="option">-P</code>/<code class="option">--function</code> pour restaurer les
+        fonctions nommées, <code class="option">-I</code>/<code class="option">--index</code> pour
+        restaurer les index nommés,
+        <code class="option">-t</code>/<code class="option">--table</code> pour restaurer les
+        tables nommés ou <code class="option">-T</code>/<code class="option">--trigger</code> pour
+        restaurer les triggers. Pour lire à partir de
+        <code class="literal">STDIN</code>, utilisez <code class="filename">-</code> comme nom
+        de fichier. L'option <code class="option">--filter</code> peut être utilisé en
+        même temps que les options listées ci-dessus pour inclure ou exclure
+        des objets, et peut aussi être utilisée plus d'une fois pour prendre
+        en compte plusieurs fichiers de filtre.
+       </p><p>
+        Le fichier liste un motif de base par ligne en respectant le
+        format suivant :
+</p><pre class="synopsis">
+{ include | exclude } { function | index | schema | table | trigger } <em class="replaceable"><code>MOTIF</code></em>
+</pre><p>
+       </p><p>
+        Le premier mot clé indique si les objets correspondant aux motifs
+        doivent être inclus ou exclus. Le deuxième mot clé précise le
+        type d'objet à filtrer suivant le motif :
+        </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+           <code class="literal">function</code> : fonctions, fonctionne comme
+           l'option <code class="option">-P</code>/<code class="option">--function</code>. Ce
+           mot clé peut seulement être utilisé avec le mot clé
+           <code class="literal">include</code>.
+          </p></li><li class="listitem"><p>
+           <code class="literal">index</code> : index, fonctionne comme l'option
+           <code class="option">-I</code>/<code class="option">--indexes</code>. Ce mot clé peut
+           seulement être utilisé avec le mot clé <code class="literal">include</code>.
+          </p></li><li class="listitem"><p>
+           <code class="literal">schema</code> : schémas, fonctionne comme les
+           options <code class="option">-n</code>/<code class="option">--schema</code> et
+           <code class="option">-N</code>/<code class="option">--exclude-schema</code>.
+          </p></li><li class="listitem"><p>
+           <code class="literal">table</code> : tables, fonctionne comme l'option
+           <code class="option">-t</code>/<code class="option">--table</code>. Ce mot clé peut
+           seulement être utilisé avec le mot clé <code class="literal">include</code>.
+          </p></li><li class="listitem"><p>
+           <code class="literal">trigger</code> : triggers, fonctionne comme
+           l'option <code class="option">-T</code>/<code class="option">--trigger</code>. Ce mot
+           clé peut seulement être utilisé avec le mot clé
+           <code class="literal">include</code>.
+          </p></li></ul></div><p>
+       </p><p>
+        Les lignes commençant avec <code class="literal">#</code> sont considérées
+        comme des commentaires et, de ce fait, sont ignorées. Les
+        commentaires peuvent aussi être placés après une ligne de motif
+        d'objet. Les lignes blanches sont elles-aussi ignorées. Voir
+        <a class="xref" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs">Motifs</a> pour savoir comment réaliser
+        l'échappement dans les motifs.
+       </p></dd><dt><span class="term"><code class="option">-F <em class="replaceable"><code>format</code></em></code><br /></span><span class="term"><code class="option">--format=<em class="replaceable"><code>format</code></em></code></span></dt><dd><p>
+       Spécifie le format de l'archive. Il n'est pas nécessaire de le
+       spécifier car <span class="application">pg_restore</span> détermine le format
+       automatiquement. Si spécifié, il peut être un des suivants :
+
+       </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">c</code><br /></span><span class="term"><code class="literal">custom</code></span></dt><dd><p>
+           L'archive est dans le format personnalisé de
+           <span class="application">pg_dump</span>.
+          </p></dd><dt><span class="term"><code class="literal">d</code><br /></span><span class="term"><code class="literal">directory</code></span></dt><dd><p>
+           L'archive est un répertoire
+           (<span class="foreignphrase"><em class="foreignphrase">directory</em></span>).
+          </p></dd><dt><span class="term"><code class="literal">t</code><br /></span><span class="term"><code class="literal">tar</code></span></dt><dd><p>
+           L'archive est une archive <code class="command">tar</code>.
+          </p></dd></dl></div><p>
+      </p></dd><dt><span class="term"><code class="option">-I <em class="replaceable"><code>index</code></em></code><br /></span><span class="term"><code class="option">--index=<em class="replaceable"><code>index</code></em></code></span></dt><dd><p>
+       Restaure uniquement la définition des index nommés. Plusieurs index
+       peuvent être donnés en utilisant autant de fois l'option
+       <code class="option">-I</code>.
+      </p></dd><dt><span class="term"><code class="option">-j <em class="replaceable"><code>nombre-de-jobs</code></em></code><br /></span><span class="term"><code class="option">--jobs=<em class="replaceable"><code>nombre-de-jobs</code></em></code></span></dt><dd><p>
+       Exécute les parties les plus consommatrices en temps de
+       <span class="application">pg_restore</span>  --  celles des chargements de
+       données, créations d'index et créations de contraintes  --  en
+       parallèle, utilisant jusqu'à <em class="replaceable"><code>nombre-de-jobs</code></em> sessions parallèles.
+       Cette option peut réduire de beaucoup le temps pour restaurer une
+       grosse base de données pour un serveur fonctionnant sur une machine
+       multi-processus. Cette option est ignorée lors de la création d'un
+       script, plutôt que lors d'une connexion directe à un serveur de bases
+       de données.
+      </p><p>
+       Chaque job est un processus ou un thread, suivant le système
+       d'exploitation, et utilise une connexion séparée au serveur.
+      </p><p>
+       La valeur optimale pour cette option dépend de la configuration
+       matérielle du serveur, du client et du réseau. Les facteurs incluent le
+       nombre de cœurs CPU et la configuration disque. Un bon moyen pour
+       commencer est le nombre de cœurs CPU du serveur, mais une valeur
+       plus grande que ça peut amener des temps de restauration encore
+       meilleurs dans de nombreux cas. Bien sûr, les valeurs trop hautes
+       apporteront des performances en baisse.
+      </p><p>
+       Seuls les formats d'archivage personnalisé et répertoire sont supportés
+       avec cette option. Le fichier en entrée doit être un fichier standard
+       (pas un tube, pas l'entrée standard). De plus,
+       plusieurs jobs ne peuvent pas être utilisés ensemble si vous voulez
+       l'option <code class="option">--single-transaction</code>.
+      </p></dd><dt><span class="term"><code class="option">-l</code><br /></span><span class="term"><code class="option">--list</code></span></dt><dd><p>
+       Liste le contenu de l'archive. Le résultat de cette opération peut être
+       utilisé en entrée de l'option <code class="option">-L</code>. Notez que, si vous
+       utilisez des options de filtre telles que <code class="option">-n</code> ou
+       <code class="option">-t</code> avec l'option <code class="option">-l</code>, elles
+       restreignent les éléments listés.
+      </p></dd><dt><span class="term"><code class="option">-L <em class="replaceable"><code>fichier_liste</code></em></code><br /></span><span class="term"><code class="option">--use-list=<em class="replaceable"><code>fichier_liste</code></em></code></span></dt><dd><p>
+       Restaure seulement les objets qui sont listés dans le fichier
+       <em class="replaceable"><code>fichier_liste</code></em>, et les
+       restaure dans l'ordre où elles apparaissent dans le fichier. Notez que,
+       si des options de filtre comme <code class="option">-n</code> et
+       <code class="option">-t</code> sont utilisées avec <code class="option">-L</code>, elles
+       ajouteront cette restriction aux éléments restaurés.
+      </p><p>
+       <em class="replaceable"><code>fichier_liste</code></em> est
+       normalement créé en éditant la sortie d'une précédente opération
+       <code class="option">-l</code>. Les lignes peuvent être déplacées ou supprimées,
+       et peuvent aussi être mise en commentaire en ajoutant un point-virgule
+       (<code class="literal">;</code>) au début de la ligne. Voir ci-dessous pour des
+       exemples.
+      </p></dd><dt><span class="term"><code class="option">-n <em class="replaceable"><code>nom_schema</code></em></code><br /></span><span class="term"><code class="option">--schema=<em class="replaceable"><code>nom_schema</code></em></code></span></dt><dd><p>
+       Restaure seulement les objets qui sont dans le schéma nommé. Plusieurs
+       schémas peuvent être donnés en utilisant autant de fois l'option
+       <code class="option">-n</code>. Elle peut être combinée avec l'option
+       <code class="option">-t</code> pour ne restaurer qu'une seule table.
+      </p></dd><dt><span class="term"><code class="option">-N <em class="replaceable"><code>nom_schema</code></em></code><br /></span><span class="term"><code class="option">--exclude-schema=<em class="replaceable"><code>nom_schema</code></em></code></span></dt><dd><p>
+       Ne pas restaurer les objets qui sont dans le schéma nommé. Plusieurs
+       schémas à exclure peuvent être spécifiés grâce à de multiples
+       commutateurs <code class="option">-N</code>.
+      </p><p>
+       Si les commutateurs <code class="option">-n</code> et <code class="option">-N</code> sont
+       tous deux présents pour le même schéma, le commutateur
+       <code class="option">-N</code> sera prépondérant et le schéma exclu.
+      </p></dd><dt><span class="term"><code class="option">-O</code><br /></span><span class="term"><code class="option">--no-owner</code></span></dt><dd><p>
+       Ne pas donner les commandes initialisant les propriétaires des objets
+       pour correspondre à la base de données originale. Par défaut,
+       <span class="application">pg_restore</span> lance des instructions
+       <code class="command">ALTER OWNER</code> ou <code class="command">SET SESSION
+        AUTHORIZATION</code> pour configurer le propriétaire des éléments du
+       schéma créé. Ces instructions échouent sauf si la connexion initiale à
+       la base de données est réalisée par un superutilisateur (ou le même
+       utilisateur que le propriétaire des objets du script). Avec
+       <code class="option">-O</code>, tout nom d'utilisateur peut être utilisé pour la
+       connexion initiale et cet utilisateur est le propriétaire des objets
+       créés.
+      </p></dd><dt><span class="term"><code class="option">-P <em class="replaceable"><code>nom_fonction(argtype [,
+        ...])</code></em></code><br /></span><span class="term"><code class="option">--function=<em class="replaceable"><code>nom_fonction(argtype [,
+        ...])</code></em></code></span></dt><dd><p>
+       Restaure seulement la fonction nommée. Faites attention à épeler le nom
+       de la fonction et les arguments exactement comme ils apparaissent dans
+       la table des matières du fichier de sauvegarde. Plusieurs fonctions
+       peuvent être données en utilisant autant de fois l'option
+       <code class="option">-P</code>.
+      </p></dd><dt><span class="term"><code class="option">-r</code><br /></span><span class="term"><code class="option">--no-reconnect</code></span></dt><dd><p>
+       Cette option est obsolète mais est toujours acceptée pour des raisons
+       de compatibilité ascendante.
+      </p></dd><dt><span class="term"><code class="option">-s</code><br /></span><span class="term"><code class="option">--schema-only</code></span></dt><dd><p>
+       Restaure seulement le schéma (autrement dit, la définition des
+       données), mais pas les données, à condition que cette définition est
+       présente dans l'archive.
+      </p><p>
+       Cette option est l'inverse de <code class="option">--data-only</code>. Elle est
+       similaire, mais pas identique (pour des raisons historiques), à
+       <code class="option">--section=pre-data --section=post-data</code>.
+      </p><p>
+       (Ne pas la confondre avec l'option <code class="option">--schema</code> qui
+       utilise le mot <span class="quote">« <span class="quote">schema</span> »</span> dans un contexte différent.)
+      </p></dd><dt><span class="term"><code class="option">-S <em class="replaceable"><code>nom_utilisateur</code></em></code><br /></span><span class="term"><code class="option">--superuser=<em class="replaceable"><code>nom_utilisateur</code></em></code></span></dt><dd><p>
+       Spécifie le nom d'utilisateur du superutilisateur à utiliser pour
+       désactiver les triggers. Ceci est seulement nécessaire si
+       <code class="option">--disable-triggers</code> est utilisé.
+      </p></dd><dt><span class="term"><code class="option">-t <em class="replaceable"><code>table</code></em></code><br /></span><span class="term"><code class="option">--table=<em class="replaceable"><code>table</code></em></code></span></dt><dd><p>
+       Restaure la définition et/ou les données de la table nommée uniquement.
+       Dans ce cadre, <span class="quote">« <span class="quote">table</span> »</span> inclut les vues, les vues
+       matérialisées, les séquences et les tables distantes. Plusieurs tables
+       peuvent être sélectionnées en ajoutant plusieurs options
+       <code class="option">-t</code>. Cette option peut être combinée avec l'option
+       <code class="option">-n</code> pour indiquer les tables d'un schéma particulier.
+      </p><div class="note"><h3 class="title">Note</h3><p>
+        Quand l'option <code class="option">-t</code> est indiquée,
+        <span class="application">pg_restore</span> ne tente pas de restaurer les
+        autres objets de la base de données qui pourraient être liés à la
+        table sélectionnée. De ce fait, il n'y a aucune garantie qu'une
+        restauration d'une table spécifique dans une base propre réussira.
+       </p></div><div class="note"><h3 class="title">Note</h3><p>
+        Cette option ne se comporte pas de la même façon que l'option
+        <code class="option">-t</code> de <span class="application">pg_dump</span>. Il n'existe
+        pas actuellement de support pour la recherche de motifs dans
+        <span class="application">pg_restore</span>. De plus, vous ne pouvez pas
+        inclure un nom de schéma dans <code class="option">-t</code>. Et, pendant que
+        l'option <code class="option">-t</code> de <span class="application">pg_dump</span>
+        sauvegardera aussi les objets liés (comme les index) des tables
+        sélectionnées, l'option <code class="option">-t</code> de
+        <span class="application">pg_restore</span> n'incluera pas les objets liés.
+       </p></div><div class="note"><h3 class="title">Note</h3><p>
+        Dans les versions de <span class="productname">PostgreSQL</span> antérieures
+        à la 9.6, cette option correspondant seulement aux tables, pas aux
+        autres types de relation.
+       </p></div></dd><dt><span class="term"><code class="option">-T <em class="replaceable"><code>trigger</code></em></code><br /></span><span class="term"><code class="option">--trigger=<em class="replaceable"><code>trigger</code></em></code></span></dt><dd><p>
+       Restaure uniquement le trigger nommé. Plusieurs triggers peuvent être
+       donnés en utilisant autant de fois l'option <code class="option">-T</code>..
+      </p></dd><dt><span class="term"><code class="option">-v</code><br /></span><span class="term"><code class="option">--verbose</code></span></dt><dd><p>
+       Spécifie le mode verbeux. Ceci aura pour conséquence que
+       <span class="application">pg_restore</span> affichera des commentaires
+       détaillés sur les objets, ainsi que les heures de début et de fin dans
+       le fichier en sortie, et des messages de progression sur la sortie des
+       erreurs. Répéter cette option cause l'apparition de messages
+       supplémentaires de débuggage sur la sortie des erreurs.
+      </p></dd><dt><span class="term"><code class="option">-V</code><br /></span><span class="term"><code class="option">--version</code></span></dt><dd><p>
+       Affiche la version de <span class="application">pg_restore</span>, puis
+       quitte.
+      </p></dd><dt><span class="term"><code class="option">-x</code><br /></span><span class="term"><code class="option">--no-privileges</code><br /></span><span class="term"><code class="option">--no-acl</code></span></dt><dd><p>
+       Empêche la restauration des droits d'accès (commandes grant/revoke).
+      </p></dd><dt><span class="term"><code class="option">-1</code><br /></span><span class="term"><code class="option">--single-transaction</code></span></dt><dd><p>
+       Exécute la restauration en une seule transaction (autrement dit, toutes
+       les commandes de restauration sont placées entre un
+       <code class="command">BEGIN</code> et un <code class="command">COMMIT</code>). Ceci assure
+       l'utilisateur que soit toutes les commandes réussissent, soit aucun
+       changement n'est appliqué. Cette option implique
+       <code class="option">--exit-on-error</code>.
+      </p></dd><dt><span class="term"><code class="option">--disable-triggers</code></span></dt><dd><p>
+       Cette option n'est pertinente que lors d'une restauration des données
+       seules. Elle demande à <span class="application">pg_restore</span> d'exécuter
+       des commandes pour désactiver temporairement les triggers sur les
+       tables cibles pendant que les données sont rechargées. Utilisez ceci si
+       vous avez des vérifications d'intégrité référentielle sur les tables
+       que vous ne voulez pas appeler lors du rechargement des données.
+      </p><p>
+       Actuellement, les commandes émises pour
+       <code class="option">--disable-triggers</code> doivent être exécutées par un
+       superutilisateur. Donc, vous devriez aussi spécifier un nom de
+       superutilisateur avec <code class="option">-S</code> ou, de préférence, lancer
+       <span class="application">pg_restore</span> en tant que superutilisateur
+       <span class="productname">PostgreSQL</span>.
+      </p></dd><dt><span class="term"><code class="option">--enable-row-security</code></span></dt><dd><p>
+       Cette option n'est adéquate que lors de la restauration du contenu du
+       table disposant de l'option RLS. Par défaut,
+       <span class="application">pg_restore</span> configurera <a class="xref" href="runtime-config-client.html#GUC-ROW-SECURITY">row_security</a> à off, pour s'assurer que toutes les
+       données sont restaurées dans la table. Si l'utilisateur n'a pas les
+       droits nécessaires pour contourner la sécurité au niveau ligne, alors
+       une erreur est levée. Ce paramètre demande à
+       <span class="application">pg_restore</span> de configurer <a class="xref" href="runtime-config-client.html#GUC-ROW-SECURITY">row_security</a> à on, permettant à l'utilisateur d'essayer
+       de restaurer le contenu de la table avec la sécurité au niveau ligne
+       activée. Ceci pourrait échouer si l'utilisateur n'a pas le droit
+       d'insérer des lignes dans la table.
+      </p><p>
+       Notez que cette option requiert aussi actuellement que la sauvegarde
+       soit au format <code class="command">INSERT</code> car <code class="command">COPY
+        FROM</code> n'est pas supportée par la sécurité au niveau ligne.
+      </p></dd><dt><span class="term"><code class="option">--if-exists</code></span></dt><dd><p>
+       Utilise des commandes <code class="literal">DROP ... IF EXISTS</code> pour
+       supprimer des objets dans le mode <code class="option">--clean</code>. Cela
+       permet de supprimer les erreurs <span class="quote">« <span class="quote">does not exist</span> »</span> qui
+       seraient sinon renvoyées. Cette option n'est pas valide sauf si
+       <code class="option">--clean</code> est aussi indiquée.
+      </p></dd><dt><span class="term"><code class="option">--no-comments</code></span></dt><dd><p>
+       Ne génère pas les commande de restauration des commentaires même si
+       l'archive les contient.
+      </p></dd><dt><span class="term"><code class="option">--no-data-for-failed-tables</code></span></dt><dd><p>
+       Par défaut, les données de la table sont restaurées même si la commande
+       de création de cette table a échoué (par exemple parce qu'elle existe
+       déjà). Avec cette option, les données de cette table seront ignorées.
+       Ce comportement est utile si la base cible contient déjà des données
+       pour cette table. Par exemple, les tables supplémentaires des
+       extensions de <span class="productname">PostgreSQL</span> comme
+       <span class="productname">PostGIS</span> pourraient avoir déjà été créées et
+       remplies sur la base cible ; indiquer cette option empêche l'ajout
+       de données dupliquées ou obsolètes.
+      </p><p>
+       Cette option est seulement efficace lors de la restauration directe
+       d'une base, pas lors de la réalisation d'une sortie de script SQL.
+      </p></dd><dt><span class="term"><code class="option">--no-publications</code></span></dt><dd><p>
+       Ne pas afficher les commandes pour restaurer les publications,
+       même si l'archive les contient.
+      </p></dd><dt><span class="term"><code class="option">--no-security-labels</code></span></dt><dd><p>
+       Ne récupère pas les commandes de restauration des labels de sécurité,
+       même si l'archive les contient.
+      </p></dd><dt><span class="term"><code class="option">--no-subscriptions</code></span></dt><dd><p>
+       Ne pas afficher les commandes pour restaurer les souscriptions, même si
+       l'archive les contient.
+      </p></dd><dt><span class="term"><code class="option">--no-table-access-method</code></span></dt><dd><p>
+       Ne pas afficher les commandes pour sélectionner les méthodes d'accès aux
+       tables. Avec cette option, tous les objets seront créés avec la méthode
+       d'accès de table par défaut lors de la restauration.
+      </p></dd><dt><span class="term"><code class="option">--no-tablespaces</code></span></dt><dd><p>
+       Ne sélectionne pas les tablespaces. Avec cette option, tous les objets
+       seront créés dans le tablespace par défaut lors de la restauration.
+      </p></dd><dt><span class="term"><code class="option">--restrict-key=<em class="replaceable"><code>restrict_key</code></em></code></span></dt><dd><p>
+       Utilise la chaîne fournie comme clé de <code class="command">\restrict</code> dans
+       <span class="application">psql</span> dans la sortie de la sauvegarde. Cela
+       peut seulement être indiqué pour les sauvegardes textes, autrement dit
+       quand l'option <code class="option">--file</code> est utilisée. Si aucune clé de
+       restriction n'est indiquée, <span class="application">pg_restore</span> en
+       générera une aléatoirement si nécessaire. Les clés doivent contenir
+       uniquement des caractères alphanumériques.
+      </p><p>
+       Cette option a principalement pour but des tests et d'autres scénarios
+       nécessitant une sortie répétable (par exemple pour comparer les fichiers
+       de sauvegarde). Ce n'est pas recommandé pour une utilisation standard, car
+       un serveur malicieux avec une connaissance de la clé pourrait injecter un
+       code arbitraire qui sera exécuté sur la machine qui lance
+       <span class="application">psql</span> avec la sauvegarde en sortie.
+      </p></dd><dt><span class="term"><code class="option">--section=<em class="replaceable"><code>nom_section</code></em></code></span></dt><dd><p>
+       Restaure seulement la section nommée. Le nom de la section peut être
+       <code class="option">pre-data</code>, <code class="option">data</code> ou
+       <code class="option">post-data</code>. Cette option peut être spécifiée plus d'une
+       fois pour sélectionner plusieurs sections. La valeur par défaut est
+       toutes les sections.
+      </p><p>
+       La section data contient toutes les données des tables ainsi que la
+       définition des Large Objects. Les éléments post-data consistent en la
+       définition des index, triggers, règles et contraintes (autres que les
+       contraintes de vérification). Les éléments pre-data consistent en tous
+       les autres éléments de définition.
+      </p></dd><dt><span class="term"><code class="option">--strict-names</code></span></dt><dd><p>
+       Requiert que chaque qualificateur de schéma (<code class="option">-n</code> /
+       <code class="option">--schema</code>) et table (<code class="option">-t</code> /
+       <code class="option">--table</code>) correspond à au moins un schéma/table dans le
+       fichier de sauvegarde.
+      </p></dd><dt><span class="term"><code class="option">--transaction-size=<em class="replaceable"><code>N</code></em></code></span></dt><dd><p>
+       Exécute la restauration dans une série de transactions, chacune
+       traitant jusqu'à <em class="replaceable"><code>N</code></em>
+       objets de la base. Cette option implique
+       <code class="option">--exit-on-error</code>.
+      </p><p>
+       <code class="option">--transaction-size</code> propose un choix intermédiaire
+       entre le comportement par défaut (une transaction par commande SQL) et
+       l'option <code class="option">-1</code>/<code class="option">--single-transaction</code>
+       (une transaction pour tous les objets restaurés). Alors que
+       <code class="option">--single-transaction</code> a la surcharge la moins
+       importante, cela pourrait se révéler peu pratique pour les grosses
+       bases de données du fait du verrou pris sur la transaction sur chaque
+       objet restauré, possiblement en récupérant tout l'espace mémoire du
+       serveur pour les verrous. Utiliser <code class="option">--transaction-size</code>
+       avec une taille de quelques milliers d'objets offre pratiquement les
+       mêmes bénéfices de performance tout en limitant la quantité de mémoire
+       nécessaire pour les verrous.
+      </p></dd><dt><span class="term"><code class="option">--use-set-session-authorization</code></span></dt><dd><p>
+       Affiche les commandes <code class="command">SET SESSION AUTHORIZATION</code> du
+       standard SQL à la place des commandes <code class="command">ALTER OWNER</code>
+       pour déterminer le propriétaire de l'objet. Ceci rend la sauvegarde
+       plus compatible avec les standards mais, suivant l'historique des
+       objets dans la sauvegarde, pourrait ne pas restaurer correctement.
+      </p></dd><dt><span class="term"><code class="option">-?</code><br /></span><span class="term"><code class="option">--help</code></span></dt><dd><p>
+       Affiche l'aide sur les arguments en ligne de commande de
+       <span class="application">pg_restore</span>, puis quitte.
+      </p></dd></dl></div><p>
+  </p><p>
+   <span class="application">pg_restore</span> accepte aussi les arguments suivants
+   en ligne de commande pour les paramètres de connexion :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-h <em class="replaceable"><code>hôte</code></em></code><br /></span><span class="term"><code class="option">--host=<em class="replaceable"><code>hôte</code></em></code></span></dt><dd><p>
+       Spécifie le nom d'hôte de la machine sur lequel le serveur est en cours
+       d'exécution. Si la valeur commence par un slash, elle est utilisée
+       comme répertoire du socket de domaine Unix. La valeur par défaut est
+       prise dans la variable d'environnement <code class="envar">PGHOST</code>, si elle
+       est initialisée, sinon une connexion socket de domaine Unix est tentée.
+      </p></dd><dt><span class="term"><code class="option">-p <em class="replaceable"><code>port</code></em></code><br /></span><span class="term"><code class="option">--port=<em class="replaceable"><code>port</code></em></code></span></dt><dd><p>
+       Spécifie le port TCP ou l'extension du fichier socket de domaine Unix
+       sur lequel le serveur écoute les connexions. Par défaut, l'outil
+       utilise la variable d'environnement <code class="envar">PGPORT</code>, si elle est
+       configurée, sinon il utilise la valeur indiquée à la compilation.
+      </p></dd><dt><span class="term"><code class="option">-U
+       <em class="replaceable"><code>nom_utilisateur</code></em></code><br /></span><span class="term"><code class="option">--username=<em class="replaceable"><code>nom_utilisateur</code></em></code></span></dt><dd><p>
+       Se connecte en tant que cet utilisateur
+      </p></dd><dt><span class="term"><code class="option">-w</code><br /></span><span class="term"><code class="option">--no-password</code></span></dt><dd><p>
+       Ne demande jamais un mot de passe. Si le serveur en réclame un pour
+       l'authentification et qu'un mot de passe n'est pas disponible d'une
+       autre façon (par exemple avec le fichier <code class="filename">.pgpass</code>),
+       la tentative de connexion échouera. Cette option peut être utile pour
+       les scripts où aucun utilisateur n'est présent pour saisir un mot de
+       passe.
+      </p></dd><dt><span class="term"><code class="option">-W</code><br /></span><span class="term"><code class="option">--password</code></span></dt><dd><p>
+       Force <span class="application">pg_restore</span> à demander un mot de passe
+       avant la connexion à une base de données.
+      </p><p>
+       Cette option n'est jamais obligatoire car
+       <span class="application">pg_restore</span> demandera automatiquement un mot
+       de passe si le serveur exige une authentification par mot de passe.
+       Néanmoins, <span class="application">pg_restore</span> perdra une tentative
+       de connexion pour trouver que le serveur veut un mot de passe. Dans
+       certains cas, il est préférable d'ajouter l'option <code class="option">-W</code>
+       pour éviter la tentative de connexion.
+      </p></dd><dt><span class="term"><code class="option">--role=<em class="replaceable"><code>nom_rôle</code></em></code></span></dt><dd><p>
+       Indique un nom de rôle utilisé pour la restauration. Cette option fait
+       que <span class="application">pg_restore</span> exécute un <code class="command">SET
+        ROLE</code> <em class="replaceable"><code>nom_rôle</code></em>
+       après connexion à la base de données. C'est utile quand l'utilisateur
+       authentifié (indiqué par l'option <code class="option">-U</code>) n'a pas les
+       droits demandés par <span class="application">pg_restore</span>, mais peut
+       devenir le rôle qui a les droits requis. Certaines installations ont une
+       politique contre la connexion en superutilisateur directement, et
+       utilisent cette option pour permettre aux restaurations de se faire
+       sans violer cette règle.
+      </p></dd></dl></div><p>
+  </p></div><div class="refsect1" id="id-1.9.4.19.7"><h2>Environnement</h2><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">PGHOST</code><br /></span><span class="term"><code class="envar">PGOPTIONS</code><br /></span><span class="term"><code class="envar">PGPORT</code><br /></span><span class="term"><code class="envar">PGUSER</code></span></dt><dd><p>
+      Paramètres de connexion par défaut
+     </p></dd><dt><span class="term"><code class="envar">PG_COLOR</code></span></dt><dd><p>
+      Indique s'il faut utiliser les couleurs dans les messages de diagnostic.
+      Les valeurs possibles sont <code class="literal">always</code>,
+      <code class="literal">auto</code>, <code class="literal">never</code>.
+     </p></dd></dl></div><p>
+   Cet outil, comme la plupart des autres outils
+   <span class="productname">PostgreSQL</span>, utilise aussi les variables
+   d'environnement supportées par la bibliothèque
+   <span class="application">libpq</span> (voir <a class="xref" href="libpq-envars.html" title="32.15. Variables d'environnement">Section 32.15</a>).
+   Néanmoins, il ne lit pas la variable <code class="envar">PGDATABASE</code> quand le nom
+   d'une base n'est pas fournie.
+  </p></div><div class="refsect1" id="APP-PGRESTORE-DIAGNOSTICS"><h2>Diagnostics</h2><p>
+   Quand une connexion directe à la base de données est spécifiée avec
+   l'option <code class="option">-d</code>, <span class="application">pg_restore</span> exécute
+   en interne des instructions <acronym class="acronym">SQL</acronym>. Si vous avez des
+   problèmes en exécutant <span class="application">pg_restore</span>, assurez-vous
+   d'être capable de sélectionner des informations à partir de la base de
+   données en utilisant, par exemple à partir de <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle" id="APP-PSQL-TITLE"><span class="application">psql</span></span></a>.
+   De plus, tout paramètre de connexion par défaut et toute variable
+   d'environnement utilisé par la bibliothèque
+   <span class="application">libpq</span> s'appliqueront.
+  </p></div><div class="refsect1" id="APP-PGRESTORE-NOTES"><h2>Notes</h2><p>
+   Si votre installation dispose d'ajouts locaux à la base de données
+   <code class="literal">template1</code>, faites attention à charger la sortie de
+   <span class="application">pg_restore</span> dans une base de données réellement
+   vide ; sinon, vous avez des risques d'obtenir des erreurs dûes aux
+   définitions dupliquées des objets ajoutés. Pour créer une base de données
+   vide sans ajout local, copiez à partir de <code class="literal">template0</code>, et
+   non pas de <code class="literal">template1</code>, par exemple :
+   </p><pre class="programlisting">CREATE DATABASE foo WITH TEMPLATE template0;
+   </pre><p>
+  </p><p>
+   Les limitations de <span class="application">pg_restore</span> sont détaillées
+   ci-dessous.
+
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Lors de la restauration des données dans une table pré-existante et que
+      l'option <code class="option">--disable-triggers</code> est utilisée,
+      <span class="application">pg_restore</span> émet des commandes pour désactiver
+      les triggers sur les tables utilisateur avant d'insérer les données,
+      puis émet les commandes pour les réactiver après l'insertion des
+      données. Si la restauration est stoppée en plein milieu, les catalogues
+      système pourraient être abandonnés dans le mauvais état.
+     </p></li><li class="listitem"><p>
+      <span class="application">pg_restore</span> ne peut pas restaurer les « large
+      objects » de façon sélective, par exemple seulement ceux d'une table
+      précisée. Si une archive contient des « large objects », alors tous les
+      « large objects » seront restaurées (ou aucun s'ils sont exclus avec
+      l'option <code class="option">-L</code>, l'option <code class="option">-t</code> ou encore
+      d'autres options.
+     </p></li></ul></div><p>
+  </p><p>
+   Voir aussi la documentation de <a class="xref" href="app-pgdump.html" title="pg_dump"><span class="refentrytitle"><span class="application">pg_dump</span></span></a> pour les
+   détails sur les limitations de <span class="application">pg_dump</span>.
+  </p><p>
+   Une fois la restauration terminée, il est conseillé de lancer
+   <code class="command">ANALYZE</code> sur chaque table restaurée de façon à ce que
+   l'optimiseur dispose de statistiques utiles. Voir <a class="xref" href="routine-vacuuming.html#VACUUM-FOR-STATISTICS" title="24.1.3. Maintenir les statistiques de l'optimiseur">Section 24.1.3</a> et <a class="xref" href="routine-vacuuming.html#AUTOVACUUM" title="24.1.6. Le démon auto-vacuum">Section 24.1.6</a> pour
+   plus d'informations.
+  </p></div><div class="refsect1" id="APP-PGRESTORE-EXAMPLES"><h2>Exemples</h2><p>
+   Supposons que nous avons sauvegardé une base nommée
+   <code class="literal">ma_base</code> dans un fichier de sauvegarde au format
+   personnalisé :
+
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>pg_dump -Fc ma_base &gt; ma_base.dump</code></strong>
+   </pre><p>
+  </p><p>
+   Pour supprimer la base et la re-créer à partir de la sauvegarde :
+
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>dropdb ma_base</code></strong>
+<code class="prompt">$</code> <strong class="userinput"><code>pg_restore -C -d postgres ma_base.dump</code></strong>
+   </pre><p>
+
+   La base nommée avec l'option <code class="option">-d</code> peut être toute base de
+   données existante dans le cluster ;
+   <span class="application">pg_restore</span> l'utilise seulement pour exécuter la
+   commande <code class="command">CREATE DATABASE</code> pour
+   <code class="literal">ma_base</code>.  Avec <code class="option">-C</code>, les données sont
+   toujours restaurées dans le nom de la base qui apparaît dans le fichier de
+   sauvegarde.
+  </p><p>
+   Pour charger la sauvegarde dans une nouvelle base nommée
+   <code class="literal">nouvelle_base</code> :
+
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>createdb -T template0 nouvelle_base</code></strong>
+<code class="prompt">$</code> <strong class="userinput"><code>pg_restore -d nouvelle_base db.dump</code></strong>
+   </pre><p>
+
+   Notez que nous n'utilisons pas <code class="option">-C</code> et que nous nous sommes
+   connectés directement sur la base à restaurer. De plus, notez que nous
+   clonons la nouvelle base à partir de <code class="literal">template0</code> et non
+   pas de <code class="literal">template1</code>, pour s'assurer qu'elle est vide.
+  </p><p>
+   Pour réordonner les éléments de la base de données, il est tout d'abord
+   nécessaire de sauvegarder la table des matières de l'archive :
+   </p><pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_restore -l ma_base.dump &gt; ma_base.liste</code></strong>
+   </pre><p>
+   Le fichier de liste consiste en un en-tête et d'une ligne par élément, par
+   exemple :
+   </p><pre class="programlisting">;
+; Archive created at Mon Sep 14 13:55:39 2009
+;     dbname: DBDEMOS
+;     TOC Entries: 81
+;     Compression: 9
+;     Dump Version: 1.10-0
+;     Format: CUSTOM
+;     Integer: 4 bytes
+;     Offset: 8 bytes
+;     Dumped from database version: 8.3.5
+;     Dumped by pg_dump version: 8.3.8
+;
+;
+; Selected TOC Entries:
+;
+3; 2615 2200 SCHEMA - public pasha
+1861; 0 0 COMMENT - SCHEMA public pasha
+1862; 0 0 ACL - public pasha
+317; 1247 17715 TYPE public composite pasha
+319; 1247 25899 DOMAIN public domain0 pasha
+   </pre><p>
+   Les points virgules commencent un commentaire et les numéros au début des
+   lignes se réfèrent à l'ID d'archive interne affectée à chaque élément.
+  </p><p>
+   Les lignes dans le fichier peuvent être commentées, supprimées et
+   réordonnées. Par exemple :
+   </p><pre class="programlisting">10; 145433 TABLE map_resolutions postgres
+;2; 145344 TABLE species postgres
+;4; 145359 TABLE nt_header postgres
+6; 145402 TABLE species_records postgres
+;8; 145416 TABLE ss_old postgres
+   </pre><p>
+   peut être utilisé en entrée de <span class="application">pg_restore</span> et ne
+   restaure que les éléments 10 et 6 dans cet ordre :
+   </p><pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_restore -L mabase.liste mabase.fichier</code></strong>
+   </pre><p>
+  </p></div><div class="refsect1" id="id-1.9.4.19.11"><h2>Voir aussi</h2><span class="simplelist"><a class="xref" href="app-pgdump.html" title="pg_dump"><span class="refentrytitle"><span class="application">pg_dump</span></span></a>, <a class="xref" href="app-pg-dumpall.html" title="pg_dumpall"><span class="refentrytitle"><span class="application">pg_dumpall</span></span></a>, <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle" id="APP-PSQL-TITLE"><span class="application">psql</span></span></a></span></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/app-pgrestore.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:07 GMT -->
+</html>

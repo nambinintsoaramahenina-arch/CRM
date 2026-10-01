@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/seg.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.37. seg -- un type de données pour les segments de ligne et pour les intervalles en virgule flottante</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="postgres-fdw.html" title="F.36. postgres_fdw -- accéder à des données enregistrées dans des serveurs PostgreSQL externes" /><link rel="next" href="sepgsql.html" title="F.38. sepgsql -- module de sécurité SELinux pour le contrôle d'accès basé sur les labels" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/seg.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/seg.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/seg.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/seg.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/seg.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/seg.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/seg.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/seg.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/seg.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/seg.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/seg.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/seg.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/seg.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/seg.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/seg.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/seg.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/seg.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/seg.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/seg.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="appendixes.html">Annexes</a></span> » <span class="breadcrumb-link"><a href="contrib.html">Modules et extensions supplémentaires fournis</a></span> » <span class="breadcrumb-node">seg  --  un type de données pour les segments de ligne et pour
+ les intervalles en virgule flottante</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="postgres-fdw.html" title="F.36. postgres_fdw  -- &#10;   accéder à des données enregistrées dans des serveurs PostgreSQL&#10;   externes">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="sepgsql.html" title="F.38. sepgsql  -- &#10;   module de sécurité SELinux pour le contrôle d'accès basé sur les labels">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">F.36. postgres_fdw  -- 
+   accéder à des données enregistrées dans des serveurs <span class="productname">PostgreSQL</span>
+   externes </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> F.38. sepgsql  -- 
+   module de sécurité SELinux pour le contrôle d'accès basé sur les labels</td></tr></table></div><div class="sect1" id="SEG"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.37. seg  --  un type de données pour les segments de ligne et pour
+ les intervalles en virgule flottante <a href="#SEG" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="seg.html#SEG-RATIONALE">F.37.1. Explications</a></span></dt><dt><span class="sect2"><a href="seg.html#SEG-SYNTAX">F.37.2. Syntaxe</a></span></dt><dt><span class="sect2"><a href="seg.html#SEG-PRECISION">F.37.3. Précision</a></span></dt><dt><span class="sect2"><a href="seg.html#SEG-USAGE">F.37.4. Utilisation</a></span></dt><dt><span class="sect2"><a href="seg.html#SEG-NOTES">F.37.5. Notes</a></span></dt><dt><span class="sect2"><a href="seg.html#SEG-CREDITS">F.37.6. Crédits</a></span></dt></dl></div><a id="id-1.11.7.48.2" class="indexterm"></a><p>
+  Ce module code le type de données <code class="type">seg</code> pour représenter
+  des segments de ligne ou des intervalles de nombres à virgule flottante.
+  <code class="type">seg</code> peut représenter l'incertitude des points
+  extrêmes d'un intervalle, ce qui le rend particulièrement utile pour représenter
+  des mesures de laboratoires.
+ </p><p>
+  Ce module est considéré <span class="quote">« <span class="quote">trusted</span> »</span>, ce qui indique qu'il peut
+  être installé par des utilisateurs qui n'ont pas l'attribut
+  <code class="literal">SUPERUSER</code> mais qui ont l'attribut <code class="literal">CREATE</code>
+  sur la base de données courante.
+ </p><div class="sect2" id="SEG-RATIONALE"><div class="titlepage"><div><div><h3 class="title">F.37.1. Explications <a href="#SEG-RATIONALE" class="id_link">#</a></h3></div></div></div><p>
+   La géométrie des mesures est habituellement plus complexe qu'un point
+   dans un continuum numérique. Une mesure est habituellement un segment
+   de ce continuum avec des limites non définissables. Les mesures
+   apparaissent comme des intervalles à cause de ce côté incertain et
+   du hasard, ainsi qu'à cause du fait que la valeur mesurée peut
+   naturellement être un intervalle indiquant certaines conditions comme
+   une échelle de température pour la stabilité d'une protéine.
+  </p><p>
+   En utilisant le bon sens, il apparaît plus agréable de stocker de telles
+   données sous la forme d'intervalle, plutôt que sous la forme d'une paire
+   de nombres. En pratique, c'est même plus efficace dans la plupart des
+   applications.
+  </p><p>
+   En allant plus loin, le côté souple des limites suggère que l'utilisation
+   des types de données numériques traditionnels amène en fait une certaine
+   perte d'informations. Pensez à ceci : votre instrument lit
+   6.50, et vous saisissez cette valeur dans la base de données.
+   Qu'obtenez-vous en la récupérant ? Regardez :
+
+   </p><pre class="screen">
+test=&gt; select 6.50 :: float8 as "pH";
+ pH
+---
+6.5
+(1 row)
+   </pre><p>
+
+   Dans le monde des mesures, 6.50 n'est pas identique à 6.5. La différence
+   pourrait même être critique. Les personnes ayant réalisé l'expérience
+   écrivent habituellement (et publient) les chiffres qu'ils connaissent.
+   6.50 est en fait un intervalle incertain compris dans un intervalle
+   plus grand et encore plus incertain, 6.5, le point central étant
+   (probablement) la seule fonctionnalité commune qu'ils partagent. Nous
+   ne voulons pas que de telles différences de données apparaissent de
+   façon identique.
+  </p><p>
+   La conclusion ? il est agréable d'avoir un type de données spécial
+   qui peut enregistrer les limites d'un intervalle avec une précision
+   variable arbitraire. Variable dans le sens où chaque élément de données
+   enregistre sa propre précision.
+  </p><p>
+   Vérifiez ceci :
+
+   </p><pre class="screen">
+test=&gt; select '6.25 .. 6.50'::seg as "pH";
+          pH
+------------
+6.25 .. 6.50
+(1 row)
+   </pre><p>
+  </p></div><div class="sect2" id="SEG-SYNTAX"><div class="titlepage"><div><div><h3 class="title">F.37.2. Syntaxe <a href="#SEG-SYNTAX" class="id_link">#</a></h3></div></div></div><p>
+   La représentation externe d'un intervalle se forme en utilisant un ou deux
+   nombres à virgule flottante joint par l'opérateur d'échelle
+   (<code class="literal">..</code> ou <code class="literal">...</code>). Sinon, il peut être
+   spécifié comme un point central plus ou moins une déviation.
+   Des indicateurs optionnels (<code class="literal">&lt;</code>,
+   <code class="literal">&gt;</code> et <code class="literal">~</code>) peuvent aussi être stockés.
+   (Néanmoins, ces indicateurs sont ignorés par la logique interne.)
+   <a class="xref" href="seg.html#SEG-REPR-TABLE" title="Tableau F.27. Représentations externes de seg">Tableau F.27</a> donne un aperçu des représentations
+   autorisées ; <a class="xref" href="seg.html#SEG-INPUT-EXAMPLES" title="Tableau F.28. Exemples d'entrées valides de type seg">Tableau F.28</a> montre quelques
+   exemples.
+  </p><p>
+   Dans <a class="xref" href="seg.html#SEG-REPR-TABLE" title="Tableau F.27. Représentations externes de seg">Tableau F.27</a>, <em class="replaceable"><code>x</code></em>,
+   <em class="replaceable"><code>y</code></em> et <em class="replaceable"><code>delta</code></em> dénotent
+   des nombres à virgule flottante. <em class="replaceable"><code>x</code></em> et
+   <em class="replaceable"><code>y</code></em>, mais pas <em class="replaceable"><code>delta</code></em>,
+   peuvent être précédés par un indicateur de certitude :
+  </p><div class="table" id="SEG-REPR-TABLE"><p class="title"><strong>Tableau F.27. Représentations externes de <code class="type">seg</code></strong></p><div class="table-contents"><table class="table" summary="Représentations externes de seg" border="1"><colgroup><col /><col /></colgroup><tbody><tr><td><code class="literal"><em class="replaceable"><code>x</code></em></code></td><td>Valeur seule (intervalle de longueur zéro)
+      </td></tr><tr><td><code class="literal"><em class="replaceable"><code>x</code></em> .. <em class="replaceable"><code>y</code></em></code></td><td>Intervalle de <em class="replaceable"><code>x</code></em> à <em class="replaceable"><code>y</code></em>
+      </td></tr><tr><td><code class="literal"><em class="replaceable"><code>x</code></em> (+-) <em class="replaceable"><code>delta</code></em></code></td><td>Intervalle de <em class="replaceable"><code>x</code></em> - <em class="replaceable"><code>delta</code></em> à
+       <em class="replaceable"><code>x</code></em> + <em class="replaceable"><code>delta</code></em>
+      </td></tr><tr><td><code class="literal"><em class="replaceable"><code>x</code></em> ..</code></td><td>Intervalle ouvert avec une limite inférieure <em class="replaceable"><code>x</code></em>
+      </td></tr><tr><td><code class="literal">.. <em class="replaceable"><code>x</code></em></code></td><td>Intervalle ouvert avec une limite supérieure <em class="replaceable"><code>x</code></em>
+      </td></tr></tbody></table></div></div><br class="table-break" /><div class="table" id="SEG-INPUT-EXAMPLES"><p class="title"><strong>Tableau F.28. Exemples d'entrées valides de type <code class="type">seg</code></strong></p><div class="table-contents"><table class="table" summary="Exemples d'entrées valides de type seg" border="1"><colgroup><col class="col1" /><col class="col2" /></colgroup><tbody><tr><td><code class="literal">5.0</code></td><td>
+       Crée un segment de longueur zéro (un point si vous préférez)
+      </td></tr><tr><td><code class="literal">~5.0</code></td><td>
+       Crée un segment de taille nulle et enregistre
+       <code class="literal">~</code> dans les données. <code class="literal">~</code> est ignoré
+       par les opérations <code class="type">seg</code> mais conservé en commentaire.
+      </td></tr><tr><td><code class="literal">&lt;5.0</code></td><td>
+       Crée un point à 5.0. <code class="literal">&lt;</code> est ignoré mais conservé
+       en commentaire.
+      </td></tr><tr><td><code class="literal">&gt;5.0</code></td><td>
+       Crée un point à 5.0. <code class="literal">&gt;</code> est ignoré mais conservé
+       en commentaire.
+      </td></tr><tr><td><code class="literal">5(+-)0.3</code></td><td>
+       Crée un intervalle <code class="literal">4.7 .. 5.3</code>.
+       Notez que la notation <code class="literal">(+-)</code> n'est pas conservée.
+      </td></tr><tr><td><code class="literal">50 .. </code></td><td>Tout ce qui supérieur ou égal à 50</td></tr><tr><td><code class="literal">.. 0</code></td><td>Tout ce qui est inférieur ou égal à 0</td></tr><tr><td><code class="literal">1.5e-2 .. 2E-2 </code></td><td>Crée un intervalle <code class="literal">0.015 .. 0.02</code></td></tr><tr><td><code class="literal">1 ... 2</code></td><td>
+       Identique à <code class="literal">1...2</code>, ou <code class="literal">1 .. 2</code>,
+       ou <code class="literal">1..2</code>
+       (les espaces autour de l'opérateur d'échelle sont ignorés)
+      </td></tr></tbody></table></div></div><br class="table-break" /><p>
+   Comme <code class="literal">...</code> est largement utilisé dans les sources de
+   données, il est autorisé comme autre orthographe possible de
+   <code class="literal">..</code>. Malheureusement, ceci crée une ambiguité pour
+   l'analyseur : la limite supérieure dans <code class="literal">0...23</code> est
+   <code class="literal">23</code> ou <code class="literal">0.23</code>. Ceci se résout en
+   réclamant au moins un chiffre avant le point décimal dans tous les nombres
+   de type <code class="type">seg</code>.
+  </p><p>
+   Comme vérification, <code class="type">seg</code> rejette les intervalles dont la limite
+   inférieure est supérieure à la limite supérieure, par exemple
+   <code class="literal">5 .. 2</code>.
+  </p></div><div class="sect2" id="SEG-PRECISION"><div class="titlepage"><div><div><h3 class="title">F.37.3. Précision <a href="#SEG-PRECISION" class="id_link">#</a></h3></div></div></div><p>
+   Les valeurs <code class="type">seg</code> sont stockées en interne sous la forme de paires
+   de nombres en virgule flottante de 32 bits. Cela signifie que les nombres
+   avec plus de sept chiffres significatifs sont tronqués.
+  </p><p>
+   Les nombres avec moins ou avec exactement sept chiffres significatifs
+   conservent leur précision originale. C'est-à-dire que, si votre requête
+   renvoie 0.00, vous serez sûr que les zéros qui suivent ne sont pas des
+   conséquences du formatage : elles reflètent la précision de la donnée
+   originale. Le nombre de zéro au début n'affecte pas la précision :
+   deux chiffres significatifs sont considérés pour la valeur 0.0067.
+  </p></div><div class="sect2" id="SEG-USAGE"><div class="titlepage"><div><div><h3 class="title">F.37.4. Utilisation <a href="#SEG-USAGE" class="id_link">#</a></h3></div></div></div><p>
+   Le module <code class="filename">seg</code> inclut une classe d'opérateurs pour les
+   index GiST dans le cas des valeurs <code class="type">seg</code>. Les opérateurs
+   supportés par la classe d'opérateurs GiST sont visibles dans <a class="xref" href="seg.html#SEG-GIST-OPERATORS" title="Tableau F.29. Opérateurs GiST du type Seg">Tableau F.29</a>.
+  </p><div class="table" id="SEG-GIST-OPERATORS"><p class="title"><strong>Tableau F.29. Opérateurs GiST du type Seg</strong></p><div class="table-contents"><table class="table" summary="Opérateurs GiST du type Seg" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+        Opérateur
+       </p>
+       <p>
+        Description
+       </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">seg</code> <code class="literal">&lt;&lt;</code> <code class="type">seg</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier <code class="type">seg</code> est entièrement à gauche du second ?
+        [a, b] &lt;&lt; [c, d] est vrai si b &lt; c.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">seg</code> <code class="literal">&gt;&gt;</code> <code class="type">seg</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier <code class="type">seg</code> est entièrement à droite du second ?
+        [a, b] &gt;&gt; [c, d] est vrai si a &gt; d.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">seg</code> <code class="literal">&amp;&lt;</code> <code class="type">seg</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier <code class="type">seg</code> ne s'étend pas à droite du second ?
+        [a, b] &amp;&lt; [c, d] est vrai si b &lt;= d.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">seg</code> <code class="literal">&amp;&gt;</code> <code class="type">seg</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier <code class="type">seg</code> ne s'étend pas à gauche du second ?
+        [a, b] &amp;&gt; [c, d] est vrai si a &gt;= c.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">seg</code> <code class="literal">=</code> <code class="type">seg</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que les deux <code class="type">seg</code> sont égaux ?
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">seg</code> <code class="literal">&amp;&amp;</code> <code class="type">seg</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que les deux <code class="type">seg</code> se chevauchent ?
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">seg</code> <code class="literal">@&gt;</code> <code class="type">seg</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier <code class="type">seg</code> contient le second ?
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">seg</code> <code class="literal">&lt;@</code> <code class="type">seg</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier <code class="type">seg</code> est contenu dans le second ?
+       </p></td></tr></tbody></table></div></div><br class="table-break" /><p>
+   En plus des opérateurs ci-dessus, les opérateurs de comparaison habituels de
+   <a class="xref" href="functions-comparison.html#FUNCTIONS-COMPARISON-OP-TABLE" title="Tableau 9.1. Opérateurs de comparaison">Tableau 9.1</a> sont disponibles pour le type
+   <code class="type">seg</code>. Ces opérateurs comparent en premier (a) à (c) et, s'ils
+   sont égaux, comparent (b) à (d). Cela fait un bon tri dans la plupart des
+   cas, ce qui est utile si vous voulez utiliser ORDER BY avec ce type.
+  </p></div><div class="sect2" id="SEG-NOTES"><div class="titlepage"><div><div><h3 class="title">F.37.5. Notes <a href="#SEG-NOTES" class="id_link">#</a></h3></div></div></div><p>
+   Pour des exemples d'utilisation, voir les tests de régression
+   <code class="filename">sql/seg.sql</code>.
+  </p><p>
+   Le mécanisme qui convertit <code class="literal">(+-)</code> en échelles standards
+   n'est pas entièrement précis pour déterminer le nombre de chiffres
+   significatifs pour les limites. Par exemple, si vous ajoutez un chiffre
+   supplémentaire à la limite basse si l'intervalle résultat inclut une
+   puissance de dix :
+
+   </p><pre class="screen">
+postgres=&gt; select '10(+-)1'::seg as seg;
+      seg
+---------
+9.0 .. 11             -- should be: 9 .. 11
+   </pre><p>
+  </p><p>
+   La performance d'un index R-tree peut dépendre largement de l'ordre des
+   valeurs en entrée. Il pourrait être très utile de trier la table en entrée
+   sur la colonne <code class="type">seg</code> ; voir le script
+   <code class="filename">sort-segments.pl</code> pour un exemple.
+  </p></div><div class="sect2" id="SEG-CREDITS"><div class="titlepage"><div><div><h3 class="title">F.37.6. Crédits <a href="#SEG-CREDITS" class="id_link">#</a></h3></div></div></div><p>
+   Auteur original : Gene Selkov, Jr. <code class="email">&lt;<a class="email" href="mailto:selkovjr@mcs.anl.gov">selkovjr@mcs.anl.gov</a>&gt;</code>,
+   Mathematics and Computer Science Division, Argonne National Laboratory.
+  </p><p>
+   Mes remerciements vont principalement au professeur Joe Hellerstein
+   (<a class="ulink" href="http://db.cs.berkeley.edu/jmh/" target="_top">http://db.cs.berkeley.edu/jmh/</a>) pour avoir élucidé
+   l'idée centrale de GiST (<a class="ulink" href="http://gist.cs.berkeley.edu/" target="_top">http://gist.cs.berkeley.edu/</a>). Mes remerciements aussi aux
+   développeurs de PostgreSQL pour m'avoir permis de créer mon propre monde
+   et de pouvoir y vivre sans perturbation. Argonne Lab et le département
+   américain de l'énergie ont aussi toute ma gratitude pour les années de
+   support dans ma recherche sur les bases de données.
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/seg.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+</html>

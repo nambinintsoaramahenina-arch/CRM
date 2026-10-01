@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/spgist.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:16 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>64.3. Index SP-GiST</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="gist.html" title="64.2. Index GiST" /><link rel="next" href="gin.html" title="64.4. Index GIN" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/spgist.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/spgist.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/spgist.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/spgist.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/spgist.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/spgist.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/spgist.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/spgist.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/spgist.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/spgist.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/spgist.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/spgist.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/spgist.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/spgist.html">9.2</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/spgist.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="indextypes.html">Méthodes d'accès natives des index</a></span> » <span class="breadcrumb-node">Index SP-GiST</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="gist.html" title="64.2. Index GiST">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="indextypes.html" title="Chapitre 64. Méthodes d'accès natives des index">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="gin.html" title="64.4. Index GIN">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">64.2. Index GiST </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 64.4. Index GIN</td></tr></table></div><div class="sect1" id="SPGIST"><div class="titlepage"><div><div><h2 class="title" style="clear: both">64.3. Index SP-GiST <a href="#SPGIST" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="spgist.html#SPGIST-INTRO">64.3.1. Introduction</a></span></dt><dt><span class="sect2"><a href="spgist.html#SPGIST-BUILTIN-OPCLASSES">64.3.2. Classes d'opérateurs internes</a></span></dt><dt><span class="sect2"><a href="spgist.html#SPGIST-EXTENSIBILITY">64.3.3. Extensibilité</a></span></dt><dt><span class="sect2"><a href="spgist.html#SPGIST-IMPLEMENTATION">64.3.4. Implémentation</a></span></dt><dt><span class="sect2"><a href="spgist.html#SPGIST-EXAMPLES">64.3.5. Exemples</a></span></dt></dl></div><a id="id-1.10.17.4.2" class="indexterm"></a><div class="sect2" id="SPGIST-INTRO"><div class="titlepage"><div><div><h3 class="title">64.3.1. Introduction <a href="#SPGIST-INTRO" class="id_link">#</a></h3></div></div></div><p>
+   <acronym class="acronym">SP-GiST</acronym> est une abréviation pour les espaces géographiques
+   partitionnées avec <acronym class="acronym">GiST</acronym>. <acronym class="acronym">SP-GiST</acronym>
+   supporte les arbres de recherche partitionnés, qui facilitent le développement
+   d'un grand nombre de structures de données non balancées différentes, comme
+   les <span class="foreignphrase"><em class="foreignphrase">quadtree</em></span>, les arbres k-d et les arbres de
+   <span class="foreignphrase"><em class="foreignphrase">radix</em></span>.
+   Le principal intérêt de ces structures et la division régulière de l'espace de recherche
+   en partitions de taille égales. Les recherches qui correspondent bien avec la règle
+   de partitionnement peuvent être très rapides.
+  </p><p>
+   Ces fameuses structures de données ont été initialement conçues pour une
+   exécution en mémoire. Dans la mémoire principale, elles sont généralement
+   conçues comme un ensemble de nœuds alloués dynamiquement et reliés entre eux
+   par des pointeurs. Cette organisation ne peut pas être transposée directement
+   sur disque car ces suites de pointeurs peuvent nécessiter un nombre d'accès
+   disque trop important. Au contraire, les structures de données adaptées
+   au disque devraient permettre de charger simultanément un grand nombre de données
+   (<span class="foreignphrase"><em class="foreignphrase">high fanout</em></span>) pour minimiser les accès disque.
+   Le challenge proposé par <acronym class="acronym">SP-GiST</acronym> est de faire correspondre
+   les nœuds des arbres de recherche avec les pages du disque de manière à ce
+   qu'une recherche ne nécessite qu'un faible nombre d'accès disque, même si
+   il nécessite de traverser plusieurs nœuds.
+  </p><p>
+   Tout comme <acronym class="acronym">GiST</acronym>, <acronym class="acronym">SP-GiST</acronym> est destiné
+   à permettre le développement de types de données personnalisées, disposant
+   des méthodes d'accès appropriées, par un expert du domaine plutôt que par
+   un expert en base de données.
+  </p><p>
+   Une partie des informations fournies ici sont extraites du
+   <a class="ulink" href="https://www.cs.purdue.edu/spgist/" target="_top">site web</a> du projet
+   d'indexation SP-GiST de l'université Purdue.
+   L'implémentation de <acronym class="acronym">SP-GiST</acronym> dans <span class="productname">PostgreSQL</span>
+   est principalement maintenue par Teodor Sigaev et Oleg Bartunov, plus
+   d'informations sont disponibles sur leur
+   
+   <a class="ulink" href="http://www.sai.msu.su/~megera/wiki/spgist_dev" target="_top">site web</a>.
+  </p></div><div class="sect2" id="SPGIST-BUILTIN-OPCLASSES"><div class="titlepage"><div><div><h3 class="title">64.3.2. Classes d'opérateurs internes <a href="#SPGIST-BUILTIN-OPCLASSES" class="id_link">#</a></h3></div></div></div><p>
+   La distribution de <span class="productname">PostgreSQL</span> inclut les classes
+   d'opérateur <acronym class="acronym">SP-GiST</acronym> indiquées dans <a class="xref" href="spgist.html#SPGIST-BUILTIN-OPCLASSES-TABLE" title="Tableau 64.2. Classes d'opérateurs SP-GiST internes">Tableau 64.2</a>.
+  </p><div class="table" id="SPGIST-BUILTIN-OPCLASSES-TABLE"><p class="title"><strong>Tableau 64.2. Classes d'opérateurs <acronym class="acronym">SP-GiST</acronym> internes</strong></p><div class="table-contents"><table class="table" summary="Classes d'opérateurs SP-GiST internes" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Nom</th><th>Opérateurs indexables</th><th>Opérateurs d'ordre</th></tr></thead><tbody><tr><td rowspan="12" valign="middle"><code class="literal">box_ops</code></td><td><code class="literal">&lt;&lt; (box,box)</code></td><td rowspan="12" valign="middle"><code class="literal">&lt;-&gt; (box,point)</code></td></tr><tr><td><code class="literal">&amp;&lt; (box,box)</code></td></tr><tr><td><code class="literal">&amp;&gt; (box,box)</code></td></tr><tr><td><code class="literal">&gt;&gt; (box,box)</code></td></tr><tr><td><code class="literal">&lt;@ (box,box)</code></td></tr><tr><td><code class="literal">@&gt; (box,box)</code></td></tr><tr><td><code class="literal">~= (box,box)</code></td></tr><tr><td><code class="literal">&amp;&amp; (box,box)</code></td></tr><tr><td><code class="literal">&lt;&lt;| (box,box)</code></td></tr><tr><td><code class="literal">&amp;&lt;| (box,box)</code></td></tr><tr><td><code class="literal">|&amp;&gt; (box,box)</code></td></tr><tr><td><code class="literal">|&gt;&gt; (box,box)</code></td></tr><tr><td rowspan="11" valign="middle"><code class="literal">inet_ops</code></td><td><code class="literal">&lt;&lt; (inet,inet)</code></td><td rowspan="11" valign="middle"> </td></tr><tr><td><code class="literal">&lt;&lt;= (inet,inet)</code></td></tr><tr><td><code class="literal">&gt;&gt; (inet,inet)</code></td></tr><tr><td><code class="literal">&gt;&gt;= (inet,inet)</code></td></tr><tr><td><code class="literal">= (inet,inet)</code></td></tr><tr><td><code class="literal">&lt;&gt; (inet,inet)</code></td></tr><tr><td><code class="literal">&lt; (inet,inet)</code></td></tr><tr><td><code class="literal">&lt;= (inet,inet)</code></td></tr><tr><td><code class="literal">&gt; (inet,inet)</code></td></tr><tr><td><code class="literal">&gt;= (inet,inet)</code></td></tr><tr><td><code class="literal">&amp;&amp; (inet,inet)</code></td></tr><tr><td rowspan="6" valign="middle"><code class="literal">kd_point_ops</code></td><td><code class="literal">|&gt;&gt; (point,point)</code></td><td rowspan="6" valign="middle"><code class="literal">&lt;-&gt; (point,point)</code></td></tr><tr><td><code class="literal">&lt;&lt; (point,point)</code></td></tr><tr><td><code class="literal">&gt;&gt; (point,point)</code></td></tr><tr><td><code class="literal">&lt;&lt;| (point,point)</code></td></tr><tr><td><code class="literal">~= (point,point)</code></td></tr><tr><td><code class="literal">&lt;@ (point,box)</code></td></tr><tr><td rowspan="12" valign="middle"><code class="literal">poly_ops</code></td><td><code class="literal">&lt;&lt; (polygon,polygon)</code></td><td rowspan="12" valign="middle"><code class="literal">&lt;-&gt; (polygon,point)</code></td></tr><tr><td><code class="literal">&amp;&lt; (polygon,polygon)</code></td></tr><tr><td><code class="literal">&amp;&gt; (polygon,polygon)</code></td></tr><tr><td><code class="literal">&gt;&gt; (polygon,polygon)</code></td></tr><tr><td><code class="literal">&lt;@ (polygon,polygon)</code></td></tr><tr><td><code class="literal">@&gt; (polygon,polygon)</code></td></tr><tr><td><code class="literal">~= (polygon,polygon)</code></td></tr><tr><td><code class="literal">&amp;&amp; (polygon,polygon)</code></td></tr><tr><td><code class="literal">&lt;&lt;| (polygon,polygon)</code></td></tr><tr><td><code class="literal">&amp;&lt;| (polygon,polygon)</code></td></tr><tr><td><code class="literal">|&gt;&gt; (polygon,polygon)</code></td></tr><tr><td><code class="literal">|&amp;&gt; (polygon,polygon)</code></td></tr><tr><td rowspan="6" valign="middle"><code class="literal">quad_point_ops</code></td><td><code class="literal">|&gt;&gt; (point,point)</code></td><td rowspan="6" valign="middle"><code class="literal">&lt;-&gt; (point,point)</code></td></tr><tr><td><code class="literal">&lt;&lt; (point,point)</code></td></tr><tr><td><code class="literal">&gt;&gt; (point,point)</code></td></tr><tr><td><code class="literal">&lt;&lt;| (point,point)</code></td></tr><tr><td><code class="literal">~= (point,point)</code></td></tr><tr><td><code class="literal">&lt;@ (point,box)</code></td></tr><tr><td rowspan="10" valign="middle"><code class="literal">range_ops</code></td><td><code class="literal">= (anyrange,anyrange)</code></td><td rowspan="10" valign="middle"> </td></tr><tr><td><code class="literal">&amp;&amp; (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">@&gt; (anyrange,anyelement)</code></td></tr><tr><td><code class="literal">@&gt; (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&lt;@ (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&lt;&lt; (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&gt;&gt; (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&amp;&lt; (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&amp;&gt; (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">-|- (anyrange,anyrange)</code></td></tr><tr><td rowspan="10" valign="middle"><code class="literal">text_ops</code></td><td><code class="literal">= (text,text)</code></td><td rowspan="10" valign="middle"> </td></tr><tr><td><code class="literal">&lt; (text,text)</code></td></tr><tr><td><code class="literal">&lt;= (text,text)</code></td></tr><tr><td><code class="literal">&gt; (text,text)</code></td></tr><tr><td><code class="literal">&gt;= (text,text)</code></td></tr><tr><td><code class="literal">~&lt;~ (text,text)</code></td></tr><tr><td><code class="literal">~&lt;=~ (text,text)</code></td></tr><tr><td><code class="literal">~&gt;=~ (text,text)</code></td></tr><tr><td><code class="literal">~&gt;~ (text,text)</code></td></tr><tr><td><code class="literal">^@ (text,text)</code></td></tr></tbody></table></div></div><br class="table-break" /><p>
+   Sur les deux classes d'opérateurs pour le type <code class="type">point</code>,
+   <code class="literal">quad_point_ops</code> est celui par défaut.
+   <code class="literal">kd_point_ops</code> gère les mêmes opérateurs mais utilise une
+   structure de données différente pour l'index, structure pouvant offrir de
+   meilleures performances pour certaines utilisations.
+  </p><p>
+   Les classes d'opérateurs <code class="literal">quad_point_ops</code>,
+   <code class="literal">kd_point_ops</code> et <code class="literal">poly_ops</code> supportent
+   l'ordre d'opérateur <code class="literal">&lt;-&gt;</code>, qui active la recherche de
+   type voisin-le-plus-proche (<code class="literal">k-NN</code>) sur des ensembles de
+   données composés de point ou polygon.
+  </p></div><div class="sect2" id="SPGIST-EXTENSIBILITY"><div class="titlepage"><div><div><h3 class="title">64.3.3. Extensibilité <a href="#SPGIST-EXTENSIBILITY" class="id_link">#</a></h3></div></div></div><p>
+   <acronym class="acronym">SP-GiST</acronym> offre une interface avec un haut niveau d'abstraction,
+   imposant au développeur des méthodes d'accès de n'implémenter que des méthodes
+   spécifiques à un type de donnée spécifié. Le cœur de <acronym class="acronym">SP-GiST</acronym>
+   est responsable de l'efficacité du stockage sur le disque et de la recherche
+   dans la structure arborescente. Il s'occupe aussi de la concurrence d'accès
+   et des journaux.
+  </p><p>
+   Les lignes des feuilles d'un arbre <acronym class="acronym">SP-GiST</acronym> contiennent
+   habituellement des valeurs du même type de données que la colonne indexée,
+   bien qu'il soit possible qu'ils contiennent des représentations à perte de
+   la colonne indexée. Les enregistrements des feuilles stockés à la racine
+   représenteront directement la valeur originale de la donnée indexée, mais
+   les enregistrements des feuilles à des niveaux plus bas pourraient ne contenir
+   qu'une valeur partielle, telle qu'un suffixe. Dans ce cas, les
+   classes d'opérateurs des fonctions supportées devront être capables de
+   reconstruire la valeur originale en utilisant les informations accumulées
+   dans les lignes intermédiaires au travers du parcours de l'arbre et vers
+   le niveau le plus bas.
+  </p><p>
+   Quand un index <acronym class="acronym">SP-GiST</acronym> est créé avec des colonnes
+   <code class="literal">INCLUDE</code>, les valeurs de ces colonnes sont aussi
+   stockées dans des enregistrements feuilles. Les colonnes
+   <code class="literal">INCLUDE</code> ne concernent pas la classe d'opérateurs
+   <acronym class="acronym">SP-GiST</acronym>, donc elles ne seront pas discutées avec plus
+   de détails ici.
+  </p><p>
+   Les lignes internes sont plus complexes car elles relient des points
+   dans l'arbre de recherche. Chaque ligne intermédiaire contient un ensemble
+   d'au moins un <em class="firstterm">nœud</em>, qui représente des groupes
+   de valeurs similaires de feuilles. Un nœud contient un lien qui mène
+   vers un autre nœud de niveau inférieur, ou une petite liste de lignes de
+   feuilles qui appartiennent toutes à la même page d'index.
+   Chaque nœud a un <em class="firstterm">label</em> qui le décrit. Par exemple,
+   dans un arbre <span class="foreignphrase"><em class="foreignphrase">radix</em></span>, le label du nœud
+   peut être le caractère suivant de la chaîne de caractère. (Sinon, une
+   classe d'opérateurs peut omettre les labels des nœuds si elle
+   fonctionne avec un ensemble fixe de nœuds pour les enregistrements
+   internes ; voir <a class="xref" href="spgist.html#SPGIST-NULL-LABELS" title="64.3.4.2. SP-GiST sans label de nœud">Section 64.3.4.2</a>.) En option, une
+   ligne intermédiaire peut avoir une valeur
+   de <em class="firstterm">préfixe</em> qui décrit tous ses membres. Dans un arbre
+   <span class="foreignphrase"><em class="foreignphrase">radix</em></span>, cela peut être le préfixe commun des chaînes représentant les données.
+   La valeur du préfixe n'est pas nécessairement réellement un préfixe, mais peut
+   être toute donnée utilisée par la classe d'opérateurs. Par exemple, pour un
+   <span class="foreignphrase"><em class="foreignphrase">quadtree</em></span>, il peut stocker le barycentre des
+   quatre points représenté par chaque feuille. Une ligne intermédiaire d'un
+   <span class="foreignphrase"><em class="foreignphrase">quadtree</em></span> contiendra aussi quatre nœuds correspondants
+   à des points autour de ce point central.
+  </p><p>
+   Quelques algorithmes de recherche arborescente nécessite la connaissance
+   du niveau (ou profondeur) de la ligne en cours, et ainsi le cœur de
+   <acronym class="acronym">SP-GiST</acronym> fournit aux classes d'opérateurs la possibilité
+   de gérer le décompte des niveaux lors du parcours de l'arbre.
+   Il fournit aussi le moyen de reconstruire de façon incrémentale la valeur
+   représentée lorsque cela est nécessaire, et pour passer des données
+   supplémentaires (appelées <em class="firstterm">valeurs traverses</em>) lors de
+   la descente de l'arbre.
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    Le code du cœur de <acronym class="acronym">SP-GiST</acronym> tient aussi compte
+    des valeurs NULL. Bien que les index <acronym class="acronym">SP-GiST</acronym>
+    stockent des entrées pour les valeurs NULL dans les colonnes indexées,
+    cette implémentation reste non apparente au code de l'index de classe
+    d'opérateur : aucune valeur NULL d'index ou de condition de recherche ne sera
+    jamais transmis aux méthodes de la classe d'opérateurs (il est convenu
+    que les opérateurs <acronym class="acronym">SP-GiST</acronym> sont stricts et ainsi
+    ne peuvent trouver des valeurs NULL). Le cas des valeurs NULL n'est
+    ainsi plus abordé dans les paragraphes qui suivent.
+   </p></div><p>
+   Un index de classe d'opérateurs pour <acronym class="acronym">SP-GiST</acronym> peut
+   proposer cinq méthodes personnalisées, et deux optionnelles. Chacune de ces
+   cinq méthodes obligatoires doit suivre la convention qui consiste à
+   accepter deux arguments de type <code class="type">internal</code>, le premier étant un
+   pointeur vers une structure C contenant les valeurs en entrée de cette
+   méthode, et le second étant un pointeur vers une structure C où les valeurs
+   en sortie seront placées. Quatre de ces méthodes retournent
+   <code class="type">void</code> car leurs résultats sont présents dans la structure en
+   sortie. Mais la méthode <code class="function">leaf_consistent</code> retourne
+   une valeur de type <code class="type">boolean</code>. Les méthodes ne doivent
+   modifier aucun des champs de la structure en entrée. Dans tous les cas, la
+   structure en sortie est initialisée avec des zéros avant l'appel à la
+   méthode personnalisée. La sixième méthode, optionnelle,
+   <code class="function">compress</code> accepte un <code class="type">datum</code> à indexer
+   comme seul argument et renvoie une valeur convenable pour un enregistrement
+   physique dans une ligne feuille. La septième méthode, optionnelle, est
+   appelée <code class="function">options</code> et accepte un pointeur
+   <code class="type">internal</code> vers une structure C, remplie avec les paramètres
+   spécifiques à la classe d'opérateurs, et renvoie <code class="type">void</code>.
+  </p><p>
+   Les cinq méthodes personnalisées sont :
+  </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="function">config</code></span></dt><dd><p>
+      Retourne des informations statiques concernant l'implémentation des index,
+      incluant les OID du type de données du préfixe et le type de données
+      du label du nœud.
+     </p><p>
+      La déclaration <acronym class="acronym">SQL</acronym> de la fonction doit ressembler à :
+      </p><pre class="programlisting">
+CREATE FUNCTION ma_configuration(internal, internal) RETURNS void ...
+      </pre><p>
+      Le premier argument est un pointeur vers une structure C <code class="structname">spgConfigIn</code>,
+      qui contient les données en entrée de la fonction.
+      Le second argument est un pointeur vers une structure C <code class="structname">spgConfigOut</code>,
+      qui permet à la fonction d'y spécifier les données en sortie.
+      </p><pre class="programlisting">
+typedef struct spgConfigIn
+{
+    Oid         attType;        /* Le type de donnée à indexer */
+} spgConfigIn;
+
+typedef struct spgConfigOut
+{
+    Oid         prefixType;     /* Le type de donnée des préfixe des tuples intermédiaires */
+    Oid         labelType;      /* Le type de donnée des labels de nœud des tuples intermédiaires */
+    Oid         leafType;       /* Type de données pour les valeurs de tuple feuille */
+    bool        canReturnData;  /* Opclass peut reconstruire les données originales */
+    bool        longValuesOK;   /* Opclass sait gérer les valeurs plus grandes qu'une page */
+} spgConfigOut;
+      </pre><p>
+
+      <code class="structfield">attType</code> est fourni pour gérer les index polymorphiques
+      de classe d'opérateurs. Pour les types de données ordinaires de classe d'opérateurs (fixés),
+      il aura toujours la même valeur et peut ainsi être ignoré.
+     </p><p>
+      Pour les classes d'opérateurs qui n'utilisent pas de préfixe,
+      <code class="structfield">prefixType</code> peut être défini à <code class="literal">VOIDOID</code>.
+      De la même façon, pour les classes d'opérateurs qui n'utilisent pas de label de nœud,
+      <code class="structfield">labelType</code> peut être défini à <code class="literal">VOIDOID</code>.
+      <code class="structfield">canReturnData</code> peut être défini à true si la classe d'opérateurs
+      est capable de reconstruire la valeur d'index fournie initialement.
+      <code class="structfield">longValuesOK</code> doit être défini à true uniquement lorsque
+      <code class="structfield">attType</code> est de longueur variable et que la classe
+      d'opérateur est capable de segmenter les grandes valeurs en répétant les suffixes
+      (voir <a class="xref" href="spgist.html#SPGIST-LIMITS" title="64.3.4.1. Limites de SP-GiST">Section 64.3.4.1</a>).
+     </p><p>
+      <code class="structfield">leafType</code> doit correspondre au type de
+      stockage de l'index défini par l'entrée de catalogue
+      <code class="structfield">opckeytype</code> de la classe d'opérateurs.
+      (Notez que <code class="structfield">opckeytype</code> peut valoir zéro,
+      impliquant que le type de stockage est le même que le type en entrée de
+      la classe d'opérateurs, ce qui est la situation la plus commune.) Pour
+      des raisons de compatibilité ascendante, la méthode
+      <code class="function">config</code> peut configurer
+      <code class="structfield">leafType</code> à toute autre valeur, et cette
+      valeur sera utilisée ; mais ceci est abandonné car le contenu de
+      l'index est alors incorrectement identifié dans les catalogues. De
+      plus, il est autorisé de laisser leave
+      <code class="structfield">leafType</code> non initialisé (zéro) ; ceci
+      est interprété comme signifiant que le type de stockage de l'index est
+      dérivé de <code class="structfield">opckeytype</code>.
+     </p><p>
+      Quand <code class="structfield">attType</code> et
+      <code class="structfield">leafType</code> sont différents, alors la méthode
+      optionnelle <code class="function">compress</code> doit être fournie. La méthode
+      <code class="function">compress</code> est responsable de la transformation des
+      datums pour les indexer de <code class="structfield">attType</code> vers
+      <code class="structfield">leafType</code>.
+     </p></dd><dt><span class="term"><code class="function">choose</code></span></dt><dd><p>
+      Choisit une méthode pour insérer une nouvelle valeur dans une ligne intermédiaire.
+     </p><p>
+      La déclaration <acronym class="acronym">SQL</acronym> de la fonction doit ressembler à :
+      </p><pre class="programlisting">
+CREATE FUNCTION mon_choix(internal, internal) RETURNS void ...
+      </pre><p>
+      Le premier argument est un pointeur vers une structure C <code class="structname">spgChooseIn</code>,
+      qui contient les données en entrée de la fonction.
+      Le second argument est un pointeur vers une structure C <code class="structname">spgChooseOut</code>,
+      qui permet à la fonction d'y spécifier les données en sortie.
+      </p><pre class="programlisting">
+typedef struct spgChooseIn
+{
+    Datum       datum;          /* donnée initiale à indexer */
+    Datum       leafDatum;      /* donnée en cours à stocker dans la feuille */
+    int         level;          /* niveau en cours (à partir de 0) */
+
+    /* Données issues de la ligne intermédiaire */
+    bool        allTheSame;     /* la ligne contient des valeurs équivalentes ? */
+    bool        hasPrefix;      /* la ligne a-t-elle un préfixe? */
+    Datum       prefixDatum;    /* si c'est le cas, la valeur de ce préfixe */
+    int         nNodes;         /* nombre de nœuds dans la ligne intermédiaire */
+    Datum      *nodeLabels;     /* valeurs du label du nœud (NULL sinon) */
+} spgChooseIn;
+
+typedef enum spgChooseResultType
+{
+    spgMatchNode = 1,           /* descend dans le nœud existant */
+    spgAddNode,                 /* ajoute un nœud dans la ligne intermédiaire */
+    spgSplitTuple               /* scinde une ligne intermédiaire (modifie son préfixe) */
+} spgChooseResultType;
+
+typedef struct spgChooseOut
+{
+    spgChooseResultType resultType;     /* code d'action, voir plus bas */
+    union
+    {
+        struct                  /* resultats de spgMatchNode */
+        {
+            int         nodeN;      /* descend dans ce nœud (à partir de 0) */
+            int         levelAdd;   /* incrémente le niveau de cette valeur */
+            Datum       restDatum;  /* nouvelle valeur de la feuille */
+        }           matchNode;
+        struct                  /* résultats de spgAddNode */
+        {
+            Datum       nodeLabel;  /* nouveau label du nœud */
+            int         nodeN;      /* là où l'insérer (à partir de 0) */
+        }           addNode;
+        struct                  /* résultats pour spgSplitTuple */
+        {
+	    /* Information pour former une ligne de niveau supérieur avec un nœud fils */
+            bool        prefixHasPrefix;    /* la ligne doit-elle avoir un préfixe ? */
+            Datum       prefixPrefixDatum;  /* si oui, sa valeur */
+            int         prefixNNodes;       /* nombre de nœuds */
+            Datum      *prefixNodeLabels;   /* leurs labels (ou NULL si
+                                             * aucun label) */
+            int         childNodeN;         /* quel nœud a un nœud fils */
+
+            /* Informations pour former une nouvelle ligne intermédaire de niveau inférieur
+			à partir de tous les anciens nœuds */
+            bool        postfixHasPrefix;   /* la ligne doit-elle avoir un préfixe ? */
+            Datum       postfixPrefixDatum; /* si oui, sa valeur */
+        }           splitTuple;
+    }           result;
+} spgChooseOut;
+      </pre><p>
+
+      <code class="structfield">datum</code> est la valeur initiale de type
+      <code class="structname">spgConfigIn</code>.<code class="structfield">attType</code>
+      de la donnée qui a été insérée dans l'index.
+      <code class="structfield">leafDatum</code> est une valeur de type
+      <code class="structname">spgConfigOut</code>.<code class="structfield">leafType</code>
+      qui est initialement un résultat de la méthode
+      <code class="function">compress</code> appliquée à <code class="structfield">datum</code>
+      quand la méthode <code class="function">compress</code> est fournie, ou la même valeur que
+      <code class="structfield">datum</code> dans le cas contraire.
+      <code class="structfield">leafDatum</code> peut changer à des niveaux inférieurs de l'arbre
+      si la fonction <code class="function">choose</code> ou <code class="function">picksplit</code>
+      change cette valeur. Lorsque la recherche liée à l'insertion atteint une feuille,
+      la valeur actuelle de <code class="structfield">leafDatum</code> sera stockée
+      dans la nouvelle ligne de feuille créée.
+      <code class="structfield">level</code> est le niveau actuel de la ligne
+      intermédiaire, en considérant que 0 est le niveau racine.
+      <code class="structfield">allTheSame</code> est true si la ligne intermédiaire
+      actuelle est marquée comme contenant plusieurs nœuds équivalents.
+      (voir <a class="xref" href="spgist.html#SPGIST-ALL-THE-SAME" title="64.3.4.3. Lignes intermédiaires « All-the-same »">Section 64.3.4.3</a>).
+      <code class="structfield">hasPrefix</code> est vrai si la ligne intermédiaire
+      actuelle contient un préfixe ; si c'est le cas,
+      <code class="structfield">prefixDatum</code> est sa valeur.
+      <code class="structfield">nNodes</code> est le nombre de nœuds enfants contenus
+      dans la ligne intermédiaire, et <code class="structfield">nodeLabels</code> est
+      un tableau des valeurs de leurs labels, ou NULL s'il n'y a pas de labels.
+     </p><p>
+      La fonction <code class="function">choose</code> peut déterminer si la nouvelle
+      valeur correspond à un des nœuds enfants existants, ou si un nouvel
+      enfant doit être ajouté, ou si la nouvelle valeur n'est pas consistante
+      avec les préfixes de ligne et qu'ainsi la ligne intermédiaire doit être
+      découpée pour créer un préfixe moins restrictif.
+     </p><p>
+      Si la nouvelle valeur correspond à un des nœuds enfants existants,
+      définir <code class="structfield">resultType</code> à <code class="literal">spgMatchNode</code>.
+      et définir <code class="structfield">nodeN</code> à l'index (à partir de 0) du nœud dans
+      le tableau de nœud.
+      Définir <code class="structfield">levelAdd</code> à l'incrément de
+      <code class="structfield">level</code> nécessaire pour descendre au travers de ce nœud,
+      ou le laisser à 0 si la classe d'opérateurs n'utilise pas de niveaux.
+      Définir <code class="structfield">restDatum</code> à la valeur de <code class="structfield">leafDatum</code>
+      si la classe d'opérateurs ne modifie pas les valeurs d'un niveau au suivant,
+      ou dans le cas contraire, définir la valeur modifiée pour être utilisée comme
+      valeur de <code class="structfield">leafDatum</code> au niveau suivant.
+     </p><p>
+      Si un nouveau nœud enfant doit être ajouté,
+      définir <code class="structfield">resultType</code> à <code class="literal">spgAddNode</code>.
+      Définir <code class="structfield">nodeLabel</code> au label à utiliser pour le nouveau nœud,
+      et définir <code class="structfield">nodeN</code> à l'index (de 0) auquel insérer
+      le nœud dans le tableau de nœud.
+      Après que ce nœud a été ajouté, la fonction <code class="function">choose</code>
+      sera appelée à nouveau avec la ligne intermédiaire modifiée.
+      Cet appel devrait produire un résultat <code class="literal">spgMatchNode</code>.
+     </p><p>
+      Si la nouvelle valeur est cohérente avec le préfixe de ligne,
+      définir <code class="structfield">resultType</code> à <code class="literal">spgSplitTuple</code>.
+      Cette action déplace tous les nœuds existants dans le nouveau niveau inférieur
+      de la ligne intermédiaire, et remplace la ligne intermédiaire existant avec une ligne
+      qui dispose d'un unique nœud qui est lié à la nouvelle ligne intermédiaire de niveau inférieur.
+      Définir <code class="structfield">prefixHasPrefix</code> pour indiquer si les nouvelles lignes
+      supérieures doivent avoir un préfixe, et si c'est le cas, définir
+      <code class="structfield">prefixPrefixDatum</code> à la valeur du préfixe. Cette nouvelle
+      valeur de préfixe doit être suffisamment moins restrictive que l'original pour accepter
+      que la nouvelle valeur soit indexée.
+
+      Définir <code class="structfield">prefixNNodes</code> au nombre de nœuds
+      nécessaires pour la nouvelle ligne et définir <code class="structfield">prefixNodeLabels</code>
+      à un tableau alloué avec palloc de leurs labels, ou à NULL si les labels
+      des nœuds ne sont pas nécessaires. Noter que la taille totale de la nouvelle
+      ligne supérieure ne doit pas dépasser la taille totale de la ligne qu'elle remplace ;
+      cela contraint les longueurs des nouveaux préfixes et labels. 
+      Définir <code class="structfield">postfixHasPrefix</code> pour indiquer si la nouvelle
+      ligne intermédiaire de niveau inférieur aura un préfixe, et dans ce cas définir
+      <code class="structfield">postfixPrefixDatum</code> à la valeur du préfixe. La 
+      combinaison de ces deux préfixes et le label additionnel doit
+      avoir la même signification que le préfixe original car il n'y a pas de moyen
+      de modifier le label du nœud qui est déplacé vers la nouvelle ligne de niveau inférieur,
+      ni de modifier une quelconque entrée d'index enfant.
+      Après que ce nœud ait été découpé, la fonction <code class="function">choose</code>
+      sera appelée à nouveau avec la ligne intermédiaire de remplacement.
+      Cet appel devrait retourner un <code class="literal">spgAddNode</code> car,
+      à priori, le label du nœud ajouté lors de l'étape de découpage ne correspondra
+      pas à la nouvelle valeur. Ainsi, après cette étape, il y aura une troisième étape
+      qui retournera finalement <code class="literal">spgMatchNode</code> et permettra l'insertion
+      pour descendre au niveau feuille.
+     </p></dd><dt><span class="term"><code class="function">picksplit</code></span></dt><dd><p>
+      Décide de la manière à suivre pour créer une ligne intermédiaire à partir d'un ensemble de lignes de feuilles.
+     </p><p>
+      La déclaration de fonction <acronym class="acronym">SQL</acronym> doit ressembler à :
+      </p><pre class="programlisting">
+CREATE FUNCTION mon_decoupage(internal, internal) RETURNS void ...
+      </pre><p>
+      Le premier argument est un pointeur vers une structure C <code class="structname">spgPickSplitIn</code>,
+      qui contient les données en entrée de la fonction.
+      Le second argument est un pointeur vers une structure C <code class="structname">spgPickSplitOut</code>,
+      qui permet à la fonction d'y spécifier les données en sortie.
+      </p><pre class="programlisting">
+typedef struct spgPickSplitIn
+{
+    int         nTuples;        /* nombre de lignes feuilles */
+    Datum      *datums;         /* leur données (tableau de taille nTuples) */
+    int         level;          /* niveau actuel (à partir de 0) */
+} spgPickSplitIn;
+
+typedef struct spgPickSplitOut
+{
+    bool        hasPrefix;      /* les nouvelles lignes intermédiaires doivent-elles avoir un préfixe ? */
+    Datum       prefixDatum;    /* si oui, la valeur du préfixe */
+
+    int         nNodes;         /* nombre de nœud pour une nouvelle ligne intermédiaire */
+    Datum      *nodeLabels;     /* leurs labels (ou NULL s'il n'y a aucun label) */
+
+    int        *mapTuplesToNodes;   /* index du nœud de chaque ligne feuille */
+    Datum      *leafTupleDatums;    /* données à stocker dans chaque nouvelle ligne feuille */
+} spgPickSplitOut;
+      </pre><p>
+
+      <code class="structfield">nTuples</code> est le nombre de lignes feuilles fournies.
+      <code class="structfield">datums</code> est un tableau de leurs données de type
+      <code class="structname">spgConfigOut</code>.<code class="structfield">leafType</code>.
+      <code class="structfield">level</code> est le niveau actuel que les lignes feuille concernées
+      partagent, qui deviendra le niveau de la nouvelle ligne intermédiaire.
+     </p><p>
+      Définir <code class="structfield">hasPrefix</code> pour indiquer que la nouvelle ligne intermédiaire
+      doit avoir un préfixe, et dans ce cas, définir <code class="structfield">prefixDatum</code>
+      à la valeur de ce préfixe.
+      Définir <code class="structfield">nNodes</code> pour indiquer le nombre de nœuds que contiendra
+      la nouvelle ligne intermédiaire, et
+      spécifier dans <code class="structfield">nodeLabels</code> un tableau de leurs labels,
+      ou NULL si les labels ne sont pas nécessaires.
+      Attribuer à <code class="structfield">mapTuplesToNodes</code> un tableau des index (à partir de zéro)
+      des nœuds auxquels seront assignés chaque ligne feuille.
+      Attribuer à <code class="structfield">leafTupleDatums</code> un tableau des valeurs à
+      stocker dans la nouvelle ligne de feuilles (ces valeurs seront les mêmes que celles des données
+      <code class="structfield">datums</code> fournies en paramètre si la classe d'opérateurs ne modifie
+      pas les données d'un niveau à un autre).
+      À noter que la fonction <code class="function">picksplit</code> est responsable de l'allocation de mémoire
+      des tableaux <code class="structfield">nodeLabels</code>, <code class="structfield">mapTuplesToNodes</code> et
+      <code class="structfield">leafTupleDatums</code>.
+     </p><p>
+      Si plus d'une ligne de feuille est fournie, il est nécessaire que la fonction
+      <code class="function">picksplit</code> les classent en plus d'un nœud.
+      Dans le cas contraire, il ne sera pas possible de répartir les lignes des feuilles
+      sur des pages différentes, ce qui est pourtant l'objectif de cette opération.
+      À cet effet, si la fonction <code class="function">picksplit</code> se termine après avoir
+      réparti toutes les lignes des feuilles dans le même nœud, le code du moteur de
+      SP-GiST ne tiendra pas compte de cette décision, et générera une ligne intermédiaire
+      dans lequel chaque ligne de feuille sera assigné aléatoirement à plusieurs nœuds
+      de labels identiques. De telles lignes sont marquées <code class="literal">allTheSame</code> pour
+      garder une trace de cette décision. Les fonctions <code class="function">choose</code> et
+      <code class="function">inner_consistent</code> doivent tenir compte de ces lignes
+      intermédiaires.
+      Voir <a class="xref" href="spgist.html#SPGIST-ALL-THE-SAME" title="64.3.4.3. Lignes intermédiaires « All-the-same »">Section 64.3.4.3</a> pour plus d'informations.
+     </p><p>
+      <code class="function">picksplit</code> peut être appliqué à une unique ligne de feuille
+      lorsque la fonction <code class="function">config</code> définit <code class="structfield">longValuesOK</code>
+      à true et qu'une valeur plus large qu'une page est donnée en paramètre.
+      Dans ce cas, l'objectif de la fonction est d'extraire un préfixe et de produire
+      une donnée de feuille moins longue. Cet appel sera répété jusqu'à ce que la donnée
+      de la feuille soit suffisamment petite pour tenir dans une page. Voir
+      <a class="xref" href="spgist.html#SPGIST-LIMITS" title="64.3.4.1. Limites de SP-GiST">Section 64.3.4.1</a> pour plus d'information.
+     </p></dd><dt><span class="term"><code class="function">inner_consistent</code></span></dt><dd><p>
+      Retourne un ensemble de nœuds (branches) à suivre durant une recherche arborescente.
+     </p><p>
+      La déclaration <acronym class="acronym">SQL</acronym> de cette fonction doit ressembler à :
+      </p><pre class="programlisting">
+CREATE FUNCTION ma_suite_de_nœuds(internal, internal) RETURNS void ...
+      </pre><p>
+      Le premier argument est un pointeur vers une structure C <code class="structname">spgInnerConsistentIn</code>,
+      qui contient les données en entrée de la fonction.
+      Le second argument est un pointeur vers une structure C <code class="structname">spgInnerConsistentOut</code>,
+      qui permet à la fonction d'y spécifier les données en sortie.
+
+      </p><pre class="programlisting">
+typedef struct spgInnerConsistentIn
+{
+    ScanKey     scankeys;       /* tableau d'opérateurs et de valeurs de comparaison */
+    ScanKey     orderbys;       /* tableau d'opérateurs de tri et comparaison */
+                                 * de valeur */
+    int         nkeys;          /* taille du tableau scankeys */
+    int         norderbys;      /* taille du tableau orderbys */
+
+    Datum       reconstructedValue;     /* valeur reconstruite au niveau parent */
+    MemoryContext traversalMemoryContext;   /* placer les nouvelles valeurs ici */
+    int         level;          /* niveau actuel (à partir de zéro) */
+    bool        returnData;     /* retourner la valeur originale ? */
+
+    /* Données du tuple intermédiaire en cours */
+    bool        allTheSame;     /* la ligne est-elle identifiée comme all-the-same ? */
+    bool        hasPrefix;      /* la ligne a-t-elle un préfixe ? */
+    Datum       prefixDatum;    /* dans ce cas, la valeur du préfixe */
+    int         nNodes;         /* nombre de nœuds dans la ligne intermédiaire */
+    Datum      *nodeLabels;     /* labels du nœud (NULL si pas de labels) */
+    void      **traversalValues;        /* valeurs traverses spécifiques de la classe d'opérateurs */
+    double    **distances;              /* distances associées */
+} spgInnerConsistentIn;
+
+typedef struct spgInnerConsistentOut
+{
+    int         nNodes;         /* nombre de nœuds enfants à visiter */
+    int        *nodeNumbers;    /* leurs index dans le tableau de nœuds */
+    int        *levelAdds;      /* l'incrément à apporter au niveau pour chaque enfant */
+    Datum      *reconstructedValues;    /* valeurs reconstruites associées */
+} spgInnerConsistentOut;
+      </pre><p>
+
+      Le tableau <code class="structfield">scankeys</code>, de longueur <code class="structfield">nkeys</code>,
+      décrit les conditions de recherche d'index. Ces conditions sont combinées avec un opérateur
+      et seules les entrées d'index qui correspondent à toutes ces conditions sont conservées
+      (à noter que <code class="structfield">nkeys</code> = 0 implique que toutes les entrées d'index sont
+      conservées). Généralement, la fonction <code class="function">inner_consistent</code> ne tient compte que
+      des champs <code class="structfield">sk_strategy</code> et <code class="structfield">sk_argument</code>
+      de chaque entrée de tableau, qui fournissent respectivement l'opérateur indexé et la valeur de comparaison.
+      En particulier, il n'est pas nécessaire de vérifier si <code class="structfield">sk_flags</code> est NULL
+      car le moteur de SP-GiST aura complété cette valeur.
+      Le tableau <code class="structfield">orderbys</code>, de longueur <code class="structfield">norderbys</code>,
+      décrit les opérateurs de tri (s'il y en a) de la même manière.
+      <code class="structfield">reconstructedValue</code> est la valeur reconstruite pour la ligne parent.
+      La valeur est <code class="literal">(Datum) 0</code> au niveau le plus haut ou si la fonction
+      <code class="function">inner_consistent</code> ne fournit pas de valeur pour le
+      niveau supérieur.
+      <code class="structfield">traversalValue</code> est un
+      pointer vers toute donnée traverse passée à l'appel précédent de
+      <code class="function">inner_consistent</code> sur l'enregistrement parent de
+      l'index, ou NULL à la racine.
+      <code class="structfield">traversalMemoryContext</code> est le contexte
+      mémoire de stockage des valeurs traverses en sortie (voir ci-dessous).
+      <code class="structfield">level</code> est le niveau actuel de la ligne intermédiaire, en commençant à 0 pour le niveau racine.
+      <code class="structfield">returnData</code> est <code class="literal">true</code> pour la valeur reconstruite pour cette requête.
+      Ce n'est le cas que si la fonction <code class="function">config</code> définit <code class="structfield">canReturnData</code>.
+      <code class="structfield">allTheSame</code> est true si la ligne intermédiaire en cours est
+      marquée <span class="quote">« <span class="quote">all-the-same</span> »</span>. Dans ce cas, tous les nœuds ont le même label (si un label est défini) et
+      ainsi soit ils correspondent tous à la requête, soit aucun ne correspond (voir <a class="xref" href="spgist.html#SPGIST-ALL-THE-SAME" title="64.3.4.3. Lignes intermédiaires « All-the-same »">Section 64.3.4.3</a>).
+      <code class="structfield">hasPrefix</code> est true si la ligne intermédiaire en cours contient un préfixe.
+      Dans ce cas, <code class="structfield">prefixDatum</code> est sa valeur.
+      <code class="structfield">nNodes</code> est le nombre de nœuds enfants de la ligne intermédiaire, et
+      <code class="structfield">nodeLabels</code> est un tableau de leurs labels, ou NULL
+      si les nœuds n'ont pas de labels.
+     </p><p>
+      <code class="structfield">nNodes</code> doit être défini comme le nombre de
+      nœuds enfants qui doivent être visités durant la recherche, et
+      <code class="structfield">nodeNumbers</code> doit être défini comme le
+      tableau de leurs index. Si la classe d'opérateurs effectue le suivi des
+      niveaux, définir <code class="structfield">levelAdds</code> comme un tableau
+      des incréments à ajouter aux niveaux pour descendre vers chaque nœud à
+      visiter (dans la plupart des cas, les incréments seront les mêmes pour
+      chaque nœud, mais ce n'est pas systématique, et ainsi un tableau est
+      employé). Si la reconstruction de la valeur est nécessaire, définir
+      <code class="structfield">reconstructedValues</code> en un tableau des
+      valeurs reconstruites pour chaque nœud enfant à visiter. Sinon, laisser
+      <code class="structfield">reconstructedValues</code> à la valeur NULL. Si une
+      recherche triée est exécutée, initialise
+      <code class="structfield">distances</code> à un tableau de valeurs de
+      distance suivant le tableau <code class="structfield">orderbys</code>
+      (les nœuds avec les plus petites distances seront traitées en premier).
+      Laisse NULL sinon. Les valeurs reconstruites sont supposées être de
+      type
+      <code class="structname">spgConfigOut</code>.<code class="structfield">leafType</code>.
+      (Néanmoins, comme le coeur du système ne fera rien avec elles sauf
+      potentiellementles copier, il est suffisant qu'elles aient les mêmes
+      propriétés <code class="literal">typlen</code> et <code class="literal">typbyval</code> que
+      <code class="structfield">leafType</code>.) S'il est souhaitable de passer
+      les informations supplémentaires hors bande
+      (<span class="quote">« <span class="quote">valeurs traverses</span> »</span>) pour diminuer les niveaux de l'arbre
+      de recherche, initialiser <code class="structfield">traversalValues</code> en
+      un tableau des valeurs traverses appropriées, un pour chaque nœud
+      enfants à visiter ; sinon laisser
+      <code class="structfield">traversalValues</code> à NULL. Notez que la
+      fonction <code class="function">inner_consistent</code> est responsable de
+      l'allocation mémoire des tableaux
+      <code class="structfield">nodeNumbers</code>,
+      <code class="structfield">levelAdds</code>,
+      <code class="structfield">distances</code>,
+      <code class="structfield">reconstructedValues</code> et
+      <code class="structfield">traversalValues</code> dans le contexte mémoire
+      actuel. Néanmoins, toute valeur traverse en sortie pointée par le
+      tableau <code class="structfield">traversalValues</code> devrait être allouée
+      dans <code class="structfield">traversalMemoryContext</code>. Chaque valeur
+      traverse doit être un morceau simple alloué avec la fonction palloc.
+     </p></dd><dt><span class="term"><code class="function">leaf_consistent</code></span></dt><dd><p>
+      Retourne true si une ligne de feuille satisfait une requête.
+     </p><p>
+      La déclaration <acronym class="acronym">SQL</acronym> de cette fonction doit ressembler à :
+      </p><pre class="programlisting">
+CREATE FUNCTION ma_fonction_leaf_consistent(internal, internal) RETURNS bool ...
+      </pre><p>
+      Le premier argument est un pointeur vers une structure C <code class="structname">spgLeafConsistentIn</code>,
+      qui contient les données en entrée de la fonction.
+      Le second argument est un pointeur vers une structure C <code class="structname">spgLeafConsistentOut</code>,
+      qui permet à la fonction d'y spécifier les données en sortie.
+
+      </p><pre class="programlisting">
+typedef struct spgLeafConsistentIn
+{
+    ScanKey     scankeys;       /* tableau d'opérateurs et de valeurs de comparaison */
+    ScanKey     orderbys;       /* tableau d'opérateurs de tri et comparaison */
+                                 * de valeurs */
+    int         nkeys;          /* taille du tableau scankeys */
+    int         norderbys;      /* taille du tableau orderbys */
+
+    Datum       reconstructedValue;     /* valeur reconstruite au parent */
+    void       *traversalValue; /* valeur traverse spécifique à la classe d'opérateurs */
+    int         level;          /* niveau actuel (à partir de zéro) */
+    bool        returnData;     /* les données originales doivent-elles être reconstruites ? */
+
+    Datum       leafDatum;      /* données de la ligne de feuille */
+} spgLeafConsistentIn;
+
+typedef struct spgLeafConsistentOut
+{
+    Datum       leafValue;      /* données originales reconstruites, le cas échéant */
+    bool        recheck;        /* définir à true si l'opérateur doit être revérifié */
+    Datum       leafValue;        /* valeur d'origine reconstruite, le cas échéant */
+    bool        recheck;          /* positionné à true si l'opérateur doit être revérifié */
+    bool        recheckDistances; /* positionné à true si les distances doivent être revérifiées */
+    double     *distances;        /* associated distances */
+} spgLeafConsistentOut;
+      </pre><p>
+
+      Le tableau <code class="structfield">scankeys</code>, de longueur <code class="structfield">nkeys</code>,
+      décrit les conditions de recherche dans l'index. Ces conditions sont uniquement combinées avec AND  -- 
+      Seules les entrées d'index qui satisfont toutes les conditions satisfont la requête
+      (Notez que <code class="structfield">nkeys</code> = 0 implique que toutes les entrées de l'index satisfont la requête).
+      Généralement, la fonction de recherche ne tient compte que des champs <code class="structfield">sk_strategy</code> et
+      <code class="structfield">sk_argument</code> de chaque entrée du tableau, qui correspondent
+      respectivement à l'opérateur indexable et à la valeur de comparaison.
+      En particulier, il n'est pas nécessaire de vérifier <code class="structfield">sk_flags</code> pour
+      savoir que la valeur de comparaison est NULL car le code du cœur de SP-GiST filtre
+      ces conditions.
+      Le tableau <code class="structfield">orderbys</code>, de taille <code class="structfield">norderbys</code>,
+      décrit les opérateurs de tri de la même manière.
+      <code class="structfield">reconstructedValue</code> est la valeur reconstruite pour la ligne parent ;
+      Il s'agit de <code class="literal">(Datum) 0</code> au niveau racine ou si la fonction
+      <code class="function">inner_consistent</code> ne fournit pas de valeur au niveau parent.
+      <code class="structfield">traversalValue</code> est un pointeur vers toute
+      donnée traverse passée lors de l'appel précédent à
+      <code class="function">inner_consistent</code> de l'enregistrement parent de
+      l'index ou NULL à la racine.
+      <code class="structfield">level</code> est le niveau actuel de la ligne de feuille, qui commence à zéro
+      pour le niveau racine.
+      <code class="structfield">returnData</code> est <code class="literal">true</code> s'il est nécessaire de reconstruire
+      les données pour cette requête. Cela ne sera le cas que lorsque la fonction
+      <code class="function">config</code> vérifie <code class="structfield">canReturnData</code>.
+      <code class="structfield">leafDatum</code> est la valeur de la clé stockée de
+      <code class="structname">spgConfigOut</code>.<code class="structfield">leafType</code> dans la ligne de feuille en cours.
+     </p><p>
+      La fonction doit retourner <code class="literal">true</code> si la ligne de feuille correspond à la requête
+      ou <code class="literal">false</code> sinon. Dans le cas où la valeur serait <code class="literal">true</code>,
+      et que <code class="structfield">returnData</code> est <code class="literal">true</code> alors
+      <code class="structfield">leafValue</code> doit être défini à la valeur originale, de type
+      <code class="structname">spgConfigIn</code>.<code class="structfield">attType</code> fournie
+      pour être indexée pour cette ligne de feuille.
+      <code class="structfield">recheck</code> peut être défini à <code class="literal">true</code> si la correspondance
+      est incertaine et ainsi l'opérateur doit être réappliqué à la pile de ligne courante
+      pour vérifier la correspondance.
+      Si une recherche triée est effectuée, positionne <code class="structfield">distances</code>
+      à un tableau de distance suivant le tableau <code class="structfield">orderbys</code>
+      Laisse NULL sinon. Si au moins une des distances retournées n'est pas
+      exacte, positionne <code class="structfield">recheckDistances</code> à true.
+      Dans ce cas, l'exécuteur recalculera la distance exacte après avoir
+      récupéré toutes les lignes de la table, et réordonnera les lignes si
+      besoin.
+     </p></dd></dl></div><p>
+   Les méthodes optionnelles définies par l'utilisateur sont :
+  </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="function">Datum compress(Datum in)</code></span></dt><dd><p>
+      Convertit un élément de données dans un format convenable pour un
+      stockage physique dans un enregistrement feuille d'un index.
+      Elle accepte une valeur de type
+      <code class="structname">spgConfigIn</code>.<code class="structfield">attType</code>
+      et renvoie une valeur de type
+      <code class="structname">spgConfigOut</code>.<code class="structfield">leafType</code>.
+      La valeur en sortie ne doit pas contenir un pointeur TOAST hors ligne.
+     </p><p>
+      Note : la méthode <code class="function">compress</code> est seulement
+      appliquée aux valeurs à enregistrer. Les méthodes cohérentes reçoivent
+      les clés de parcours non modifiées, sans transformation utilisant
+      <code class="function">compress</code>.
+     </p></dd><dt><span class="term"><code class="function">options</code></span></dt><dd><p>
+      Définit un ensemble de paramètres visibles aux utilisateurs qui
+      contrôlent le comportement d'une classe d'opérateurs.
+     </p><p>
+      La déclaration <acronym class="acronym">SQL</acronym> de la fonction doit ressembler à
+      ceci :
+
+      </p><pre class="programlisting">
+CREATE OR REPLACE FUNCTION my_options(internal)
+RETURNS void
+AS 'MODULE_PATHNAME'
+LANGUAGE C STRICT;
+      </pre><p>
+     </p><p>
+      La fonction <code class="function">options</code> se voit donné un pointeur
+      vers une structure <code class="structname">local_relopts</code> qui doit
+      être remplie avec un ensemble d'options spécifiques à la classe
+      d'opérateur. Les options peuvent être accédées à partir des autres
+      fonctions de support en utilisant les macros
+      <code class="literal">PG_HAS_OPCLASS_OPTIONS()</code> et
+      <code class="literal">PG_GET_OPCLASS_OPTIONS()</code>.
+     </p><p>
+      Étant donné que la représentation de la clé dans
+      <acronym class="acronym">SP-GiST</acronym> est flexible, elle peut dépendre de
+      paramètres spécifiés par l'utilisateur.
+     </p></dd></dl></div><p>
+   Toutes les méthodes permettant d'utiliser SP-GiST sont normalement exécutées dans un
+   contexte mémoire de courte durée, c'est-à-dire que <code class="varname">CurrentMemoryContext</code> sera remis à zéro
+   après le traitement de chaque ligne. Il n'est cependant pas réellement important de se soucier
+   de désallouer la mémoire allouée avec palloc (la méthode <code class="function">config</code> est
+   une exception : elle essaiera d'éviter les fuites mémoire. Mais généralement, la méthode
+   <code class="function">config</code> ne nécessite rien si ce n'est assigner des constantes
+   aux structures passées en paramètre).
+  </p><p>
+   Si la colonne indexée a un type de donnée collationnable, l'index de collationnement
+   sera passé à toutes les méthodes, en utilisant le mécanisme standard
+   <code class="function">PG_GET_COLLATION()</code>.
+  </p></div><div class="sect2" id="SPGIST-IMPLEMENTATION"><div class="titlepage"><div><div><h3 class="title">64.3.4. Implémentation <a href="#SPGIST-IMPLEMENTATION" class="id_link">#</a></h3></div></div></div><p>
+   Cette section traite des détails d'implémentation et d'autres astuces qui sont
+   utiles à connaître pour implémenter des opérateurs de classe <acronym class="acronym">SP-GiST</acronym>.
+  </p><div class="sect3" id="SPGIST-LIMITS"><div class="titlepage"><div><div><h4 class="title">64.3.4.1. Limites de SP-GiST <a href="#SPGIST-LIMITS" class="id_link">#</a></h4></div></div></div><p>
+    Les lignes de feuille individuelles et les lignes intermédiaires doivent tenir dans une
+    unique page d'index (8 ko par défaut). Cependant, lorsque des données de taille variable
+    sont indexées, les longues valeurs ne sont uniquement supportées que par les arbres suffixés,
+    dans lesquels chaque niveau de l'arbre contient un préfixe qui est suffisamment petit
+    pour tenir dans une page. La classe d'opérateurs doit uniquement définir <code class="structfield">longValuesOK</code>
+    à TRUE si elle supporte ce cas de figure. Dans le cas contraire, le cœur de <acronym class="acronym">SP-GiST</acronym>
+    rejettera l'indexation d'une valeur plus large qu'une page.
+   </p><p>
+    De la même manière, il est de la responsabilité de l'opérateur de classe
+    de s'assurer que la taille des lignes intermédiaires soit plus petite
+    qu'une page ; cela limite le nombre de nœuds enfants qui peuvent être utilisés
+    dans une ligne intermédiaire, ainsi que la taille maximum d'un préfixe.
+   </p><p>
+    Une autre limite est que lorsqu'un nœud de ligne intermédiaire pointe vers
+    un ensemble de lignes de feuille, ces lignes doivent toutes être dans la même
+    page d'index (il s'agit d'une décision d'architecture pour réduire le temps de recherche
+    et utiliser moins de mémoire dans les liens qui lient de telles lignes ensemble).
+    Si l'ensemble de lignes de feuille grandit plus qu'une page, un découpage est réalisé
+    et un nœud intermédiaire est inséré. Pour que ce mécanisme résolve le problème,
+    le nouveau nœud intermédiaire <span class="emphasis"><em>doit</em></span> diviser l'ensemble de valeurs
+    de feuilles en plus d'un groupe de nœuds. Si la fonction <code class="function">picksplit</code>
+    de la classe d'opérateurs n'y parvient pas, le cœur de <acronym class="acronym">SP-GiST</acronym> met en œuvre
+    des mesures extraordinaires telles que décrites dans <a class="xref" href="spgist.html#SPGIST-ALL-THE-SAME" title="64.3.4.3. Lignes intermédiaires « All-the-same »">Section 64.3.4.3</a>.
+   </p><p>
+    Quand <code class="structfield">longValuesOK</code> vaut true, il est attendu
+    que les niveaux successifs de l'arbre <acronym class="acronym">SP-GiST</acronym>
+    absorbera de plus en plus d'informations dans les prefixes et labels de
+    noeuds des enregistrements internes, rendant la donnée feuille de plus en
+    plus petite, pour qu'à la fin, elle tienne sur un bloc. Pour empêcher les
+    bugs dans les classes d'opérateurs, du style boucle d'insertions infinies,
+    le code principal de  <acronym class="acronym">SP-GiST</acronym> lèvera une erreur si la
+    donnée feuille ne devient pas plus petite au bout de dix cycles d'appel à
+    la méthode <code class="function">choose</code>.
+   </p><p>
+    Quand <code class="structfield">longValuesOK</code> vaut true, il est attendu
+    que les niveaux successifs de l'arbre <acronym class="acronym">SP-GiST</acronym>
+    absorberont de plus en plus d'informations dans les préfixes et labels de
+    nœuds des lignes internes, rendant la donnée requise pour la feuille de
+    plus en plus petite, jusqu'à ce qu'elle tienne sur un bloc. Pour empêcher
+    que des bugs dans les classes d'opérateurs causent des boucles d'insertion
+    infinies, le noyau de <acronym class="acronym">SP-GiST</acronym> lèvera une erreur si la
+    donnée de la feuille ne devient pas plus petite dans les dix cycles
+    d'appel à la méthode <code class="function">choose</code>.
+   </p></div><div class="sect3" id="SPGIST-NULL-LABELS"><div class="titlepage"><div><div><h4 class="title">64.3.4.2. SP-GiST sans label de nœud <a href="#SPGIST-NULL-LABELS" class="id_link">#</a></h4></div></div></div><p>
+    Certains algorithmes d'arbres utilisent un ensemble de nœuds figé pour chaque ligne intermédiaire ;
+    par exemple, l'arbre quad-tree impose exactement quatre nœuds correspondant aux quatre coins autour du
+    centroïde de la ligne intermédiaire. Dans ce cas, le code travaille généralement avec les nœuds
+    au moyen de leur identifiant, et le besoin de label de nœud ne se fait pas ressentir.
+    Pour supprimer les labels de nœud (et ainsi gagner de l'espace), la fonction <code class="function">picksplit</code>
+    peut retourner NULL pour le tableau <code class="structfield">nodeLabels</code>, et de même, la fonction
+    <code class="function">choose</code> peut retourner NULL pour le tableau <code class="structfield">prefixNodeLabels</code>
+    lors de l'action <code class="literal">spgSplitTuple</code>
+    Cela aura pour effet d'obtenir une valeur NULL pour <code class="structfield">nodeLabels</code> lors des appels
+    aux fonctions <code class="function">choose</code> et <code class="function">inner_consistent</code>.
+    En principe, les labels de nœuds peuvent être utilisés par certaines lignes intermédiaires, et ignorés
+    pour les autres de même index.
+   </p><p>
+    Lorsqu'une ligne intermédaire sans label est concerné, la fonction <code class="function">choose</code>
+    ne peut pas retourner <code class="literal">spgAddNode</code> car l'ensemble
+    des nœuds est supposé être fixé dans de tels cas.
+   </p></div><div class="sect3" id="SPGIST-ALL-THE-SAME"><div class="titlepage"><div><div><h4 class="title">64.3.4.3. Lignes intermédiaires <span class="quote">« <span class="quote">All-the-same</span> »</span> <a href="#SPGIST-ALL-THE-SAME" class="id_link">#</a></h4></div></div></div><p>
+    Le cœur de <acronym class="acronym">SP-GiST</acronym> peut surcharger les résultats de
+    la fonction <code class="function">picksplit</code> de l'opérateur de classe lorsque
+    <code class="function">picksplit</code> ne réussit pas à diviser la valeur de la feuille fournie en
+    au moins un nœud. Dans ce cas, la nouvelle ligne intermédiaire
+    est créée avec de multiples nœuds qui ont tous le même label (si un label est défini)
+    qui est celui attribué au nœud utilisé par <code class="function">picksplit</code> et les valeurs
+    des feuilles sont divisées aléatoirement entre les nœuds équivalents.
+    Le drapeau <code class="literal">allTheSame</code> est activé sur la ligne intermédiaire pour signifier aux fonctions
+    <code class="function">choose</code> et <code class="function">inner_consistent</code> que la
+    ligne n'a pas l'ensemble de nœud attendu.
+   </p><p>
+    Lorsque le cas d'une ligne <code class="literal">allTheSame</code> est rencontré, le résultat de la fonction <code class="function">choose</code>
+    sous la forme <code class="literal">spgMatchNode</code> est interprété de manière à ce que la nouvelle valeur
+    puisse être assignée à chacun des nœuds équivalents ; le code du cœur de <acronym class="acronym">SP-GiST</acronym> ignorera
+    la valeur <code class="structfield">nodeN</code> fournie et descendra dans l'un des nœuds enfants
+    au hasard (pour conserver l'équilibre de l'arbre). Il s'agirait d'une erreur si
+    la fonction <code class="function">choose</code> retournait <code class="literal">spgAddNode</code> car tous
+    les nœuds ne seraient pas équivalent ; l'action <code class="literal">spgSplitTuple</code> doit être utilisée
+    si la valeur à insérer ne correspond pas aux nœuds existants.
+   </p><p>
+    Lorsque le cas d'une ligne <code class="literal">allTheSame</code> est rencontré, la fonction
+    <code class="function">inner_consistent</code> peut tout autant retourner tous les nœuds ou aucun des nœuds ciblés
+    pour continuer la recherche indexée car ils sont tous équivalents.
+    Cela peut éventuellement nécessiter du code spécifique, suivant le support
+    réalisé par la fonction <code class="function">inner_consistent</code> concernant
+    la signification des nœuds.
+   </p></div></div><div class="sect2" id="SPGIST-EXAMPLES"><div class="titlepage"><div><div><h3 class="title">64.3.5. Exemples <a href="#SPGIST-EXAMPLES" class="id_link">#</a></h3></div></div></div><p>
+   Les sources de <span class="productname">PostgreSQL</span> incluent plusieurs
+   exemples de classes d'opérateurs d'index pour <acronym class="acronym">SP-GiST</acronym>
+   comme décrit dans <a class="xref" href="spgist.html#SPGIST-BUILTIN-OPCLASSES-TABLE" title="Tableau 64.2. Classes d'opérateurs SP-GiST internes">Tableau 64.2</a>. Lire le
+   code dans <code class="filename">src/backend/access/spgist/</code> et
+   <code class="filename">src/backend/utils/adt/</code>.
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/spgist.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:17 GMT -->
+</html>

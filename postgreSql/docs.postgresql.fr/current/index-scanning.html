@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/index-scanning.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:16 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>62.3. Parcours d'index</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="index-functions.html" title="62.2. Fonctions des méthodes d'accès aux index" /><link rel="next" href="index-locking.html" title="62.4. Considérations sur le verrouillage d'index" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/index-scanning.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/index-scanning.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/index-scanning.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/index-scanning.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/index-scanning.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/index-scanning.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/index-scanning.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/index-scanning.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/index-scanning.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/index-scanning.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/index-scanning.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/index-scanning.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/index-scanning.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/index-scanning.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/index-scanning.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/index-scanning.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/index-scanning.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/index-scanning.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/index-scanning.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/index-scanning.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/index-scanning.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="indexam.html">Définition de l'interface des méthodes d'accès aux index</a></span> » <span class="breadcrumb-node">Parcours d'index</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="index-functions.html" title="62.2. Fonctions des méthodes d'accès aux index">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="indexam.html" title="Chapitre 62. Définition de l'interface des méthodes d'accès aux index">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="index-locking.html" title="62.4. Considérations sur le verrouillage d'index">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">62.2. Fonctions des méthodes d'accès aux index </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 62.4. Considérations sur le verrouillage d'index</td></tr></table></div><div class="sect1" id="INDEX-SCANNING"><div class="titlepage"><div><div><h2 class="title" style="clear: both">62.3. Parcours d'index <a href="#INDEX-SCANNING" class="id_link">#</a></h2></div></div></div><p>
+   Dans un parcours d'index, la responsabilité de la méthode d'accès
+   est de recracher tous les TID de toutes les lignes qu'on lui a dit correspondre
+   aux <em class="firstterm">clés de parcours</em>. La méthode d'accès n'est
+   impliquée <span class="emphasis"><em>ni</em></span> dans la récupération de ces lignes dans la
+   table parente de l'index, <span class="emphasis"><em>ni</em></span> dans les tests de
+   qualification ou autre condition.
+  </p><p>
+   Une clé de parcours est une représentation interne d'une clause
+   <code class="literal">WHERE</code> de la forme <em class="replaceable"><code>clé_index</code></em>
+   <em class="replaceable"><code>opérateur</code></em> <em class="replaceable"><code>constante</code></em>,
+   où la clé est une des colonnes de l'index et l'opérateur un des
+   membres de la famille d'opérateurs associée à cette colonne. Un
+   parcours d'index a entre zéro et plusieurs clés de parcours assemblées
+   implicitement avec des AND  --  les lignes renvoyées doivent satisfaire
+   toutes les conditions indiquées.
+  </p><p>
+   La méthode d'accès peut indiquer que l'index est <em class="firstterm">à
+    perte</em> ou nécessite une vérification pour une requête
+   particulière ; ceci implique que le parcours d'index renvoie toutes les
+   entrées qui correspondent à la clé de parcours, plus éventuellement des
+   entrées supplémentaires qui ne correspondent pas. La machinerie du parcours
+   d'index du système principal applique alors les conditions de l'index à
+   la ligne pour vérifier si elle doit effectivement être retenue. Si l'option
+   de vérification n'est pas indiquée, le parcours d'index doit renvoyer
+   exactement l'ensemble d'entrées correspondantes.
+  </p><p>
+   La méthode d'accès doit s'assurer
+   qu'elle trouve correctement toutes les entrées correspondantes aux clés de
+   parcours données, et seulement celles-ci. De plus, le système principal
+   se contente de transférer toutes les clauses <code class="literal">WHERE</code>
+   qui correspondent aux clés d'index
+   et aux familles d'opérateurs, sans analyse sémantique permettant de
+   déterminer si elles sont redondantes ou contradictoires. Par exemple, avec
+   <code class="literal">WHERE x &gt; 4 AND x &gt; 14</code>, où <code class="literal">x</code>
+   est une colonne
+   indexée par B-tree, c'est à la fonction B-tree <code class="function">amrescan</code>
+   de déterminer que la première clé de parcours est redondante et peut être
+   annulée. Le supplément de pré-traitement nécessaire lors de
+   <code class="function">amrescan</code> dépend du niveau de réduction des clés de
+   parcours en une forme <span class="quote">« <span class="quote">normalisée</span> »</span> nécessaire à la
+   méthode d'accès à l'index.
+  </p><p>
+   Certaines méthodes d'accès renvoient des entrées d'index dans un ordre bien
+   défini, d'autres non. Il existe en fait deux façons différentes permettant
+   à une méthode d'accès de fournir une sortie triée :
+
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Les méthodes d'accès qui renvoient toujours les entrées dans l'ordre
+      naturel des données (comme les B-tree) doivent configurer
+      <code class="structfield">amcanorder</code> à
+      true. Actuellement, ces méthodes d'accès doivent utiliser des nombres
+      de stratégie compatibles avec les B-tree pour les opérateurs d'égalité
+      et de tri.
+     </p></li><li class="listitem"><p>
+      Les méthodes d'accès qui supportent les opérateurs de tri doivent
+      configurer <code class="structfield">amcanorderbyop</code>
+      à true. Ceci indique que l'index est capable de renvoyer les entrées
+      dans un ordre satisfaisant <code class="literal">ORDER BY</code>
+      <em class="replaceable"><code>clé_index</code></em> <em class="replaceable"><code>opérateur</code></em>
+      <em class="replaceable"><code>constante</code></em>. Les modificateurs de parcours de
+      cette forme peuvent être passés à <code class="function">amrescan</code> comme
+      décrit précédemment.
+     </p></li></ul></div><p>
+  </p><p>
+   La fonction <code class="function">amgettuple</code> dispose d'un argument
+   <code class="literal">direction</code>,
+   qui peut être soit <code class="literal">ForwardScanDirection</code> (le cas normal), soit
+   <code class="literal">BackwardScanDirection</code>. Si le premier appel après
+   <code class="function">amrescan</code> précise <code class="literal">BackwardScanDirection</code>, alors
+   l'ensemble des entrées d'index correspondantes est à parcourir de l'arrière
+   vers l'avant plutôt que dans la direction normale (d'avant en arrière).
+   <code class="function">amgettuple</code> doit donc renvoyer la dernière ligne correspondante dans
+   l'index, plutôt que la première, comme cela se fait normalement. (Cela ne
+   survient que pour les méthodes
+   d'accès qui initialise <code class="structfield">amcanorder</code> à true.) Après
+   le premier appel, <code class="function">amgettuple</code>
+   doit être préparé pour continuer le parcours dans la direction adaptée à partir de
+   l'entrée la plus récemment renvoyée. (Mais si
+   <code class="structfield">amcanbackward</code> vaut
+   false, tous les appels suivants auront la même direction que le premier.)
+  </p><p>
+   Les méthodes d'accès qui supportent les parcours ordonnés doivent supporter
+   le <span class="quote">« <span class="quote">marquage</span> »</span> d'une position dans un parcours pour retourner
+   plus tard à la position marquée. La même position peut être restaurée
+   plusieurs fois. Néanmoins, seule une position par parcours a besoin d'être
+   conservée en mémoire ; un nouvel appel à <code class="function">ammarkpos</code>
+   surcharge la position anciennement marquée. Une méthode d'accès qui ne
+   supporte pas les parcours ordonnés n'a pas besoin de fournir les fonctions
+   <code class="function">ammarkpos</code> et <code class="function">amrestrpos</code> dans sa
+   structure <code class="structname">IndexAmRoutine</code> ; configurez ces
+   pointeurs à NULL dans ce cas.
+  </p><p>
+   Les positions du parcours et du marquage doivent être conservées de façon
+   cohérente dans le cas d'insertions et de suppressions concurrentes dans
+   l'index. Il est acceptable qu'une entrée tout juste insérée ne soit
+   pas retournée par un parcours qui l'aurait trouvée
+   si l'entrée avait existé au démarrage du
+   parcours. De même est-il correct qu'un parcours
+   retourne une telle entrée lors d'un re-parcours ou d'un retour arrière,
+   alors même qu'il ne l'a pas retournée lors du parcours initial.
+   De même, une suppression concurrente peut être, ou non, visible dans
+   les résultats d'un parcours. Il est primordial qu'insertions et suppressions
+   ne conduisent pas le parcours à oublier ou dupliquer des entrées qui ne sont
+   pas insérées ou supprimées.
+  </p><p>
+   Si l'index stocke les valeurs originales des données indexées (et pas une
+   représentation à perte), il est utile de supporter les <a class="link" href="indexes-index-only-scans.html" title="11.9. Parcours d'index seul et index couvrants">parcours d'index seul</a>, pour
+   lesquels l'index renvoie la donnée réelle et non pas
+   juste le TID de la ligne dans la table. Ceci n'évitera des I/O que
+   si la carte de visibilité montre que le TID est sur une page dont toutes
+   les lignes sont visibles par toutes les transactions en cours. Sinon, la
+   ligne de la table doit être visitée de toute façon pour s'assurer de
+   sa visibilité pour la transaction en cours. Mais cela ne concerne pas la
+   méthode d'accès.
+  </p><p>
+   Un parcours d'index peut utiliser <code class="function">amgetbitmap</code> à la place de
+   <code class="function">amgettuple</code> pour
+   récupérer toutes les lignes en un unique appel. Cette méthode peut s'avérer
+   nettement plus efficace que <code class="function">amgettuple</code> parce qu'elle
+   permet d'éviter les cycles de verrouillage/déverrouillage à l'intérieur de la
+   méthode d'accès. En principe, <code class="function">amgetbitmap</code> a les mêmes
+   effets que des appels répétés à <code class="function">amgettuple</code>, mais
+   plusieurs restrictions ont été imposées pour simplifier la procédure. En
+   premier lieu, <code class="function">amgetbitmap</code> renvoie toutes les lignes
+   en une fois et le marquage ou la restauration des positions de parcours n'est
+   pas supporté. Ensuite, les lignes sont renvoyées dans un bitmap qui n'a pas
+   d'ordre spécifique, ce qui explique pourquoi <code class="function">amgetbitmap</code>
+   ne prend pas de <code class="literal">direction</code> en argument. (Les opérateurs
+   de tri ne seront jamais fournis non plus pour un tel parcours.)
+   De plus, il n'existe aucune disposition pour les parcours d'index seul avec
+   <code class="function">amgetbitmap</code> car il n'y a aucun moyen de renvoyer le
+   contenu des lignes d'index.
+   Enfin, <code class="function">amgetbitmap</code> ne garantit pas le verrouillage
+   des lignes renvoyées, avec les implications précisées dans <a class="xref" href="index-locking.html" title="62.4. Considérations sur le verrouillage d'index">Section 62.4</a>.
+  </p><p>
+   Notez qu'il est permis à une méthode d'accès d'implémenter seulement
+   <code class="function">amgetbitmap</code> et pas <code class="function">amgettuple</code>, ou
+   vice versa, si son fonctionnement interne ne convient qu'à une seule des API.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/index-scanning.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:16 GMT -->
+</html>

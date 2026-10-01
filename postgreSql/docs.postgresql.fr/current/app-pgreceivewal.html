@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/app-pgreceivewal.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:06 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>pg_receivewal</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="app-pg-isready.html" title="pg_isready" /><link rel="next" href="app-pgrecvlogical.html" title="pg_recvlogical" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/app-pgreceivewal.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/app-pgreceivewal.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/app-pgreceivewal.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/app-pgreceivewal.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/app-pgreceivewal.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/app-pgreceivewal.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/app-pgreceivewal.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/app-pgreceivewal.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/app-pgreceivewal.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/app-pgreceivewal.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="reference.html">Référence</a></span> » <span class="breadcrumb-link"><a href="reference-client.html">Applications client de PostgreSQL</a></span> » <span class="breadcrumb-node"><span class="application">pg_receivewal</span></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="app-pg-isready.html" title="pg_isready">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="reference-client.html" title="Applications client de PostgreSQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="app-pgrecvlogical.html" title="pg_recvlogical">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top"><span class="application">pg_isready</span> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> <span class="application">pg_recvlogical</span></td></tr></table></div><div class="refentry" id="APP-PGRECEIVEWAL"><div class="titlepage"></div><a id="id-1.9.4.17.1" class="indexterm"></a><div class="refnamediv"><h2><span class="refentrytitle"><span class="application">pg_receivewal</span></span></h2><p>pg_receivewal — suit le flux des journaux de transactions d'un serveur
+   <span class="productname">PostgreSQL</span></p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p id="id-1.9.4.17.4.1"><code class="command">pg_receivewal</code> [<em class="replaceable"><code>option</code></em>...]</p></div></div><div class="refsect1" id="id-1.9.4.17.5"><h2>Description</h2><p>
+   <span class="application">pg_receivewal</span> est utilisé pour suivre le flux
+   des journaux de transactions d'une instance de
+   <span class="productname">PostgreSQL</span> en cours d'activité. Les journaux de
+   transactions sont suivis en utilisant le flux du protocole de réplication,
+   et sont écrits sous forme de fichiers dans un répertoire local. Ce
+   répertoire peut être utilisé comme emplacement des archives dans l'optique
+   d'une restauration utilisant le mécanisme de sauvegarde à chaud et de
+   récupération à un instant t (<span class="foreignphrase"><em class="foreignphrase">PITR</em></span>, voir
+   <a class="xref" href="continuous-archiving.html" title="25.3. Archivage continu et récupération d'un instantané (PITR)">Section 25.3</a>).
+  </p><p>
+   <span class="application">pg_receivewal</span> suit le flux des journaux de
+   transactions en temps réel alors qu'il est généré sur le serveur principal.
+   Il n'attend pas la fin de l'écriture d'un segment complet d'un journal de
+   transactions comme <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-COMMAND">archive_command</a> et
+   <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-LIBRARY">archive_library</a> le font. Pour ces
+   raisons, il n'est pas nécessaire de configurer <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-TIMEOUT">archive_timeout</a> lors de l'utilisation de
+   <span class="application">pg_receivewal</span>
+  </p><p>
+   Contrairement au receveur de WAL d'un serveur PostgreSQL standby,
+   <span class="application">pg_receivewal</span> place les données WAL sur disque
+   par défaut uniquement quand un fichier WAL est fermé. L'option
+   <code class="option">--synchronous</code> doit être ajoutée pour que les données WAL
+   soient écrites en temps réel. Comme <span class="application">pg_receivewal</span>
+   n'applique pas les WAL, vous ne devez pas lui permettre de devenir un
+   standby synchrone quand <a class="xref" href="runtime-config-wal.html#GUC-SYNCHRONOUS-COMMIT">synchronous_commit</a> vaut
+   <code class="literal">remote_apply</code>. Dans le cas contraire, ce sera un standby
+   qui ne réussit jamais à rattraper son retard et causera le blocage des
+   validations des transactions. Pour éviter ceci, vous devez soit configurer
+   une valeur appropriée pour <a class="xref" href="runtime-config-replication.html#GUC-SYNCHRONOUS-STANDBY-NAMES">synchronous_standby_names</a>,
+   soit spécifier une valeur pour le paramètre
+   <code class="varname">application_name</code> pour
+   <span class="application">pg_receivexlog</span> qui ne correspond pas, soit
+   modifier la valeur du paramètre <code class="varname">synchronous_commit</code> à
+   quelque chose d'autres que <code class="literal">remote_apply</code>.
+  </p><p>
+   Le journal de transactions est envoyé via une connexion
+   <span class="productname">PostgreSQL</span> traditionnelle, et utilise le
+   protocole de réplication. La connexion doit être créée avec un compte
+   superutilisateur ou utilisateur disposant des droits
+   <code class="literal">REPLICATION</code> (voir <a class="xref" href="role-attributes.html" title="21.2. Attributs des rôles">Section 21.2</a>) et
+   le fichier <code class="filename">pg_hba.conf</code> doit permettre la connexion de
+   réplication. Le serveur doit aussi être configuré avec une valeur
+   suffisamment haute du paramètre <a class="xref" href="runtime-config-replication.html#GUC-MAX-WAL-SENDERS">max_wal_senders</a> pour
+   laisser au moins une session disponible pour le flux.
+  </p><p>
+   Le point de démarrage du flux des journaux de transactions est calculé
+   quand <span class="application">pg_receivewal</span> démarre :
+   </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>
+      Tout d'abord, il parcourt le répertoire où les segments de journaux de
+      transactions sont écrits et trouver le segment terminé le plus récent
+      pour l'utiliser comme point de départ du prochain segment.
+     </p></li><li class="listitem"><p>
+      Si un point de démarrage ne peut pas être calculé avec la méthode
+      précédente et si un slot de réplication est utilisé, une commande
+      <code class="command">READ_REPLICATION_SLOT</code> supplémentaire est exécutée pour
+      récupérer le <code class="literal">restart_lsn</code> du slot et l'utiliser comme
+      point de démarrage. Cette option est seulement disponible quand les
+      journaux de transactions en flux proviennent de
+      <span class="productname">PostgreSQL</span> 15 ou ultérieur.
+     </p></li><li class="listitem"><p>
+      Si un point de démarrage ne peut pas être calculé avec la méthode
+      précédente, l'emplacement de vidage des journaux de transactions est
+      utilisé comme indiqué par le serveur à partir d'une commande
+      <code class="literal">IDENTIFY_SYSTEM</code>.
+     </p></li></ol></div><p>
+  </p><p>
+   Si la connexion est perdue ou si elle ne peux pas être établie
+   initialement, via une erreur non fatale,
+   <span class="application">pg_receivewal</span> essaiera à nouveau indéfiniment,
+   et rétablira le flux dès que possible. Pour éviter ce comportement,
+   utilisez le paramètre <code class="literal">-n</code>.
+  </p><p>
+   En l'absence d'erreurs fatales, <span class="application">pg_receivewal</span>
+   s'exécutera jusqu'à recevoir le signal <span class="systemitem">SIGINT</span>
+   (<span class="keycap"><strong>Control</strong></span>+<span class="keycap"><strong>C</strong></span>)
+   ou <span class="systemitem">SIGTERM</span>.
+  </p></div><div class="refsect1" id="id-1.9.4.17.6"><h2>Options</h2><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-D <em class="replaceable"><code>répertoire</code></em></code><br /></span><span class="term"><code class="option">--directory=<em class="replaceable"><code>répertoire</code></em></code></span></dt><dd><p>
+      Répertoire dans lequel écrire le résultat.
+     </p><p>
+      Ce paramètre est obligatoire.
+     </p></dd><dt><span class="term"><code class="option">-E <em class="replaceable"><code>lsn</code></em></code><br /></span><span class="term"><code class="option">--endpos=<em class="replaceable"><code>lsn</code></em></code></span></dt><dd><p>
+      Arrête automatiquement la réplication et quitte avec le code de sortie
+      standard 0 une fois arrivé au LSN indiqué.
+     </p><p>
+      S'il n'y a pas d'enregistrement avec un LSN strictement identique à
+      <em class="replaceable"><code>lsn</code></em>, l'enregistrement sera traité.
+     </p></dd><dt><span class="term"><code class="option">--if-not-exists</code></span></dt><dd><p>
+      Ne renvoie pas une erreur quand <code class="option">--create-slot</code> est
+      indiqué et qu'un slot de même nom existe déjà.
+     </p></dd><dt><span class="term"><code class="option">-n</code><br /></span><span class="term"><code class="option">--no-loop</code></span></dt><dd><p>
+      N'effectue pas de nouvelle tentative en cas d'erreur à la connexion. À
+      la place, le programme s'arrête en retournant une erreur.
+     </p></dd><dt><span class="term"><code class="option">--no-sync</code></span></dt><dd><p>
+      Cette option force <code class="command">pg_receivewal</code> à ne pas imposer de
+      vider les données WAL sur disque. C'est plus rapide mais cela signifie
+      aussi qu'un crash du système d'exploitation peut laisser les segments
+      WAL corrompus. En règle général, cette option est utile pour des tests
+      mais ne devrait pas être utilisée lors de l'archivage de journaux de
+      transactions sur un système en production.
+
+     </p><p>
+      Cette option est incompatible avec <code class="literal">--synchronous</code>.
+     </p></dd><dt><span class="term"><code class="option">-s <em class="replaceable"><code>intervalle</code></em></code><br /></span><span class="term"><code class="option">--status-interval=<em class="replaceable"><code>intervalle</code></em></code></span></dt><dd><p>
+      Spécifie le rythme en secondes de l'envoi des paquets au serveur
+      informant de l'état en cours. Ceci permet une supervision plus simple du
+      progrès à partir du serveur. Une valeur de zéro désactive complètement
+      la mise à jour périodique du statut, bien qu'une mise à jour sera
+      toujours envoyée si elle est réclamée par le serveur pour éviter la
+      déconnexion après un certain délai. La valeur par défaut est de 10
+      secondes.
+     </p></dd><dt><span class="term">
+     <code class="option">-S <em class="replaceable"><code>slotname</code></em></code>
+     <code class="option">--slot=<em class="replaceable"><code>nom_slot</code></em></code>
+    </span></dt><dd><p>
+      Requiert l'utilisation d'un slot de réplication existant avec
+      <span class="application">pg_receivewal</span> (voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION-SLOTS" title="26.2.6. Slots de réplication">Section 26.2.6</a>). Quand cette option est
+      utilisée, <span class="application">pg_receivewal</span> renverra une position
+      de vidage au serveur, indiquant quand chaque segment a été synchronisé
+      sur disque. Cela permet au serveur de supprimer ce segment s'il n'est
+      pas utile ailleurs.
+     </p><p>
+      Quand le client de réplication <span class="application">pg_receivewal</span>
+      est configuré sur le serveur comme un standby synchrone, l'utilisation
+      d'un slot de réplication renverra la position de vidage sur disque du
+      serveur, mais seulement lors de la fermeture d'un fichier WAL. De ce
+      fait, cette configuration entraînera que les transactions sur le
+      primaire attendront un long moment, ce qui aura pour effet de ne pas
+      fonctionner de manière satisfaisante. L'option
+      <code class="literal">--synchronous</code> (voir ci- dessous) doit être ajoutée
+      pour que cela fonctionne correctement.
+     </p></dd><dt><span class="term"><code class="option">--synchronous</code></span></dt><dd><p>
+      Vide les données WAL sur disque dès leur réception. De plus, envoie un
+      paquet de statut au serveur immédiatement après le vidage, quelque soit
+      la configuration de l'option <code class="literal">--status-interval</code>.
+     </p><p>
+      Cette option doit être utilisée si le client de réplication de
+      <span class="application">pg_receivewal</span> est configuré en tant que
+      serveur standby synchrone pour s'assurer que le retour est renvoyé à
+      temps au serveur principal.
+     </p></dd><dt><span class="term"><code class="option">-v</code><br /></span><span class="term"><code class="option">--verbose</code></span></dt><dd><p>
+      Active le mode verbeux.
+     </p></dd><dt><span class="term"><code class="option">-Z <em class="replaceable"><code>niveau</code></em></code><br /></span><span class="term"><code class="option">-Z <em class="replaceable"><code>méthode</code></em>[:<em class="replaceable"><code>détail</code></em>]</code><br /></span><span class="term"><code class="option">--compress=<em class="replaceable"><code>niveau</code></em></code><br /></span><span class="term"><code class="option">--compress=<em class="replaceable"><code>méthode</code></em>[:<em class="replaceable"><code>détail</code></em>]</code></span></dt><dd><p>
+      Active la compression des journaux de transactions.
+     </p><p>
+      La méthode de compression peut être configurée à <code class="literal">gzip</code>,
+      <code class="literal">lz4</code> (si <span class="productname">PostgreSQL</span> a été
+      configuré avec <code class="option">--with-lz4</code>) ou <code class="literal">none</code>
+      pour aucune compression. Une chaîne de détails sur la compression peut
+      être indiquée en option. Si la chaîne est un entier, elle précise le
+      niveau de compression. Sinon, cela pourrait être une liste d'éléments
+      séparés par des virgules, chaque élément devant être de la forme
+      <em class="replaceable"><code>motclé</code></em> ou <em class="replaceable"><code>motclé=valeur</code></em>.
+      Actuellement, le seul mot clé supporté est <code class="literal">level</code>.
+     </p><p>
+      Si aucun niveau de compression n'est indiqué, le niveau de compression par
+      défaut sera utilisé. Si seul un niveau est indiqué sans mention d'un
+      algorithme, la compression <code class="literal">gzip</code> sera utilisée si le
+      niveau est supérieur à 0, et aucune compression ne sera utilisée si le
+      niveau vaut 0.
+     </p><p>
+      Le suffixe <code class="filename">.gz</code> sera automatiquement ajouté à tous les
+      noms de fichier lors de l'utilisation de <code class="literal">gzip</code>, et le
+      suffixe <code class="filename">.lz4</code> sera ajouté lors de l'utilisation de
+      <code class="literal">lz4</code>.
+     </p></dd></dl></div><p>
+   Les options en ligne de commande qui suivent permettent de paramétrer la
+   connexion à la base de données.
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-d <em class="replaceable"><code>connstr</code></em></code><br /></span><span class="term"><code class="option">--dbname=<em class="replaceable"><code>connstr</code></em></code></span></dt><dd><p>
+       Spécifie les paramètres utilisés pour se connecter au serveur, sous la
+       forme d'une <a class="link" href="libpq-connect.html#LIBPQ-CONNSTRING" title="32.1.1. Chaînes de connexion">chaîne de
+        connexion</a>. Elles surchargent toutes les options en ligne de
+       commande conflictuelles.
+      </p><p>
+       Cette option est nommée <code class="literal">--dbname</code> par cohérence avec
+       les autres applications clients mais, comme
+       <span class="application">pg_receivewal</span> ne se connecte à aucune base
+       de données en particulier dans l'instance, tout nom de la base dans la
+       chaîne de connexion sera ignoré by
+       <span class="productname">PostgreSQL</span>. Néanmoins, un nom de base
+       fourni de cette façon surcharge le nom de base par défaut
+       (<code class="literal">replication</code>) pour rechercher le mot de passe de la
+       connexion de réplication dans <code class="filename">~/.pgpass</code>. De façon
+       similaire, les logiciels tiers et proxies utilisés dans la connexion à
+       <span class="productname">PostgreSQL</span> pourraient utiliser le nom pour
+       le routage de connexion.
+      </p></dd><dt><span class="term"><code class="option">-h <em class="replaceable"><code>hôte</code></em></code><br /></span><span class="term"><code class="option">--host=<em class="replaceable"><code>hôte</code></em></code></span></dt><dd><p>
+       Spécifie le nom de l'hôte de la machine sur lequel le serveur
+       s'exécute. Si la valeur commence par un slash, il est utilisé comme le
+       répertoire de la socket du domaine Unix (IPC). La valeur par défaut est
+       issue de la variable d'environnement <code class="envar">PGHOST</code>, si elle est
+       définie, sinon une connexion à une socket du domaine Unix est tentée.
+      </p></dd><dt><span class="term"><code class="option">-p <em class="replaceable"><code>port</code></em></code><br /></span><span class="term"><code class="option">--port=<em class="replaceable"><code>port</code></em></code></span></dt><dd><p>
+       Spécifie le port TCP ou l'extension du fichier de la socket du domaine
+       Unix sur lequel le serveur va écouter les connexions. La valeur par
+       défaut est issue de la variable d'environnement <code class="envar">PGPORT</code>,
+       si elle est définie, ou d'une valeur définie lors de la compilation.
+      </p></dd><dt><span class="term"><code class="option">-U <em class="replaceable"><code>nom_utilisateur</code></em></code><br /></span><span class="term"><code class="option">--username=<em class="replaceable"><code>nom_utilisateur</code></em></code></span></dt><dd><p>
+       L'utilisateur avec lequel se connecter.
+      </p></dd><dt><span class="term"><code class="option">-w</code><br /></span><span class="term"><code class="option">--no-password</code></span></dt><dd><p>
+       Ne demande pas la saisie d'un mot de passe. Si le serveur nécessite un
+       mot de passe d'authentification et qu'aucun mot de passe n'est
+       disponible par d'autre biais comme le fichier
+       <code class="filename">.pgpass</code>, la tentative de connexion échouera. Cette
+       option peut être utile dans des batchs où aucun utilisateur ne pourra
+       saisir un mot de passe.
+      </p></dd><dt><span class="term"><code class="option">-W</code><br /></span><span class="term"><code class="option">--password</code></span></dt><dd><p>
+       Oblige <span class="application">pg_receivewal</span> à demander un mot de
+       passe avant de se connecter à la base.
+      </p><p>
+       Cette option n'est pas indispensable car
+       <span class="application">pg_receivewal</span> demandera automatiquement un
+       mot de passe si le serveur nécessite une authentification par mot de
+       passe. Cependant, <span class="application">pg_receivewal</span> perdra une
+       tentative de connexion avant de savoir si le serveur nécessite un mot
+       de passe. Dans certain cas, il est possible d'ajouter l'option
+       <code class="option">-W</code> pour éviter une tentative de connexion superflue.
+      </p></dd></dl></div><p>
+  </p><p>
+   <span class="application">pg_receivewal</span> peut réaliser une des deux actions
+   suivantes pour contrôler les slots de réplication physiques :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">--create-slot</code></span></dt><dd><p>
+       Crée un slot de réplication physique avec le nom spécifié par l'option
+       <code class="option">--slot</code>, puis quitte.
+      </p></dd><dt><span class="term"><code class="option">--drop-slot</code></span></dt><dd><p>
+       Supprime le slot de réplication dont le nom est spécifié par l'option
+       <code class="option">--slot</code>, puis quitte.
+      </p></dd></dl></div><p>
+  </p><p>
+   D'autres options sont aussi disponibles :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-V</code><br /></span><span class="term"><code class="option">--version</code></span></dt><dd><p>
+       Affiche la version de <span class="application">pg_receivewal</span> et
+       quitte le programme.
+      </p></dd><dt><span class="term"><code class="option">-?</code><br /></span><span class="term"><code class="option">--help</code></span></dt><dd><p>
+       Affiche l'aide concernant les arguments en ligne de commande de
+       <span class="application">pg_receivewal</span>, et quitte le programme.
+      </p></dd></dl></div><p>
+  </p></div><div class="refsect1" id="id-1.9.4.17.7"><h2>Code de sortie</h2><p>
+   <span class="application">pg_receivewal</span> sortira avec un code 0 quand il
+   est terminé par le signal <span class="systemitem">SIGINT</span> ou
+   <span class="systemitem">SIGTERM</span>. (C'est la façon
+   normale de l'arrêter, d'où le fait qu'il ne s'agit pas d'une erreur.) Pour
+   les erreurs fatales ou pour tout autre signal, le code de sortie sera
+   différent de zéro.
+  </p></div><div class="refsect1" id="id-1.9.4.17.8"><h2>Environnement</h2><p>
+   Cet outil, comme la plupart des autres outils
+   <span class="productname">PostgreSQL</span>, utilise les variables
+   d'environnement supportées par <span class="application">libpq</span> (voir <a class="xref" href="libpq-envars.html" title="32.15. Variables d'environnement">Section 32.15</a>).
+  </p><p>
+   La variable d'environnement <code class="envar">PG_COLOR</code> indique s'il faut
+   utiliser les couleurs dans les messages de diagnostic. Les valeurs
+   possibles sont <code class="literal">always</code>, <code class="literal">auto</code>,
+   <code class="literal">never</code>.
+  </p></div><div class="refsect1" id="id-1.9.4.17.9"><h2>Notes</h2><p>
+   Lorsque vous utilisez <span class="application">pg_receivewal</span> à la place
+   de <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-COMMAND">archive_command</a> ou
+   <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-LIBRARY">archive_library</a> comme méthode principale de
+   sauvegarde des WAL, il est fortement recommandé d'utiliser les slots de
+   réplication. Dans le cas contraire, le serveur est libre de recycler ou
+   supprimer les fichiers des journaux de transactions avant qu'ils ne soient
+   sauvegardés car il n'a aucune information, provenant soit de <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-COMMAND">archive_command</a>, soit de <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-LIBRARY">archive_library</a> soit des slots de réplication, sur la
+   quantité de WAL déjà archivée. Néanmoins, notez qu'un slot de réplication
+   remplira l'espace disque du serveur si le receveur n'arrive pas à suivre le
+   rythme de récupération des données WAL.
+  </p><p>
+   <span class="application">pg_receivewal</span> conservera les droits sur le
+   groupe pour les fichiers WAL reçus si les droits du groupe sont activés sur
+   l'instance source.
+  </p></div><div class="refsect1" id="id-1.9.4.17.10"><h2>Exemples</h2><p>
+   Pour suivre le flux des journaux de transactions du serveur
+   <code class="literal">mon-serveur-de-donnees</code> et les stocker dans le répertoire
+   local <code class="filename">/usr/local/pgsql/archive</code> :
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>pg_receivewal -h mon-serveur-de-donnees -D /usr/local/pgsql/archive</code></strong>
+   </pre></div><div class="refsect1" id="id-1.9.4.17.11"><h2>Voir aussi</h2><span class="simplelist"><a class="xref" href="app-pgbasebackup.html" title="pg_basebackup"><span class="refentrytitle"><span class="application">pg_basebackup</span></span></a></span></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/app-pgreceivewal.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:06 GMT -->
+</html>

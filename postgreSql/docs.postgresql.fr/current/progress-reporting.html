@@ -1,0 +1,725 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/progress-reporting.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>27.4. Rapporter la progression</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="monitoring-locks.html" title="27.3. Visualiser les verrous" /><link rel="next" href="dynamic-trace.html" title="27.5. Traces dynamiques" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/progress-reporting.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/progress-reporting.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/progress-reporting.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/progress-reporting.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/progress-reporting.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/progress-reporting.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/progress-reporting.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/progress-reporting.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/progress-reporting.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/progress-reporting.html">9.6</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/progress-reporting.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="monitoring.html">Superviser l'activité de la base de données</a></span> » <span class="breadcrumb-node">Rapporter la progression</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="monitoring-locks.html" title="27.3. Visualiser les verrous">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="monitoring.html" title="Chapitre 27. Superviser l'activité de la base de données">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="dynamic-trace.html" title="27.5. Traces dynamiques">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">27.3. Visualiser les verrous </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 27.5. Traces dynamiques</td></tr></table></div><div class="sect1" id="PROGRESS-REPORTING"><div class="titlepage"><div><div><h2 class="title" style="clear: both">27.4. Rapporter la progression <a href="#PROGRESS-REPORTING" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="progress-reporting.html#ANALYZE-PROGRESS-REPORTING">27.4.1. Rapporter la progression d'ANALYZE</a></span></dt><dt><span class="sect2"><a href="progress-reporting.html#CLUSTER-PROGRESS-REPORTING">27.4.2. Rapporter la progression de CLUSTER</a></span></dt><dt><span class="sect2"><a href="progress-reporting.html#COPY-PROGRESS-REPORTING">27.4.3. Rapporter la progression de COPY</a></span></dt><dt><span class="sect2"><a href="progress-reporting.html#CREATE-INDEX-PROGRESS-REPORTING">27.4.4. Rapporter la progression du CREATE INDEX</a></span></dt><dt><span class="sect2"><a href="progress-reporting.html#VACUUM-PROGRESS-REPORTING">27.4.5. Rapporter la progression du VACUUM</a></span></dt><dt><span class="sect2"><a href="progress-reporting.html#BASEBACKUP-PROGRESS-REPORTING">27.4.6. Rapporter la progression de la sauvegarde de base</a></span></dt></dl></div><p>
+   <span class="productname">PostgreSQL</span> a la possibilité de rapporter la
+   progression de certaines commandes lors de leur exécution. Actuellement,
+   les seules commandes supportant un rapport de progression sont
+   <code class="command">ANALYZE</code>, <code class="command">CLUSTER</code>, <code class="command">CREATE
+    INDEX</code>, <code class="command">VACUUM</code>, <code class="command">COPY</code>, et <a class="xref" href="protocol-replication.html#PROTOCOL-REPLICATION-BASE-BACKUP">base_backup</a> (i.e., commande de réplication
+   que <a class="xref" href="app-pgbasebackup.html" title="pg_basebackup"><span class="refentrytitle"><span class="application">pg_basebackup</span></span></a> exécute pour réaliser une sauvegarde
+   de base). Ceci pourrait être étendu dans le futur.
+  </p><div class="sect2" id="ANALYZE-PROGRESS-REPORTING"><div class="titlepage"><div><div><h3 class="title">27.4.1. Rapporter la progression d'ANALYZE <a href="#ANALYZE-PROGRESS-REPORTING" class="id_link">#</a></h3></div></div></div><a id="id-1.6.14.9.3.2" class="indexterm"></a><p>
+    Quand <code class="command">ANALYZE</code> est en cours d'exécution, la vue
+    <code class="structname">pg_stat_progress_analyze</code> contiendra une ligne
+    pour chaque processus qui exécute actuellement cette commande. Les tables
+    ci-dessous décrivent les informations rapportées et fournissent des
+    informations sur leur interprétation.
+   </p><div class="table" id="PG-STAT-PROGRESS-ANALYZE-VIEW"><p class="title"><strong>Tableau 27.38. Vue <code class="structname">pg_stat_progress_analyze</code></strong></p><div class="table-contents"><table class="table" summary="Vue pg_stat_progress_analyze" border="1"><colgroup><col /></colgroup><thead><tr><th class="catalog_table_entry"><p class="column_definition">
+         Type
+        </p>
+        <p>
+         Description
+        </p></th></tr></thead><tbody><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">pid</code> <code class="type">integer</code>
+        </p>
+        <p>
+         Identifiant du processus serveur.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">datid</code> <code class="type">oid</code>
+        </p>
+        <p>
+         OID de la base de données où ce processus est connecté.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">datname</code> <code class="type">name</code>
+        </p>
+        <p>
+         Nom de la base de données où ce processus est connecté.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">relid</code> <code class="type">oid</code>
+        </p>
+        <p>
+         OID de la table en cours de traitement par ANALYZE.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">phase</code> <code class="type">text</code>
+        </p>
+        <p>
+         Phase de traitement courante. Voir <a class="xref" href="progress-reporting.html#ANALYZE-PHASES" title="Tableau 27.39. Phases ANALYZE">Tableau 27.39</a>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">sample_blks_total</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre total de blocs de la table à traiter.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">sample_blks_scanned</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de blocs parcourus.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">ext_stats_total</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de statistiques étendues.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">ext_stats_computed</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de statistiques étendues calculées. Ce compteur avance seulement
+         quand la phase est <code class="literal">computing extended statistics</code>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">child_tables_total</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de tables enfants.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">child_tables_done</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de tables enfants parcourues. Ce compteur avance seulement quand
+         la phase est <code class="literal">acquiring inherited sample rows</code>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">current_child_table_relid</code> <code class="type">oid</code>
+        </p>
+        <p>
+         OID de la table enfant en cours de traitement. Ce champ est seulement
+         valide quand la phase est <code class="literal">acquiring inherited sample
+          rows</code>.
+        </p></td></tr></tbody></table></div></div><br class="table-break" /><div class="table" id="ANALYZE-PHASES"><p class="title"><strong>Tableau 27.39. Phases ANALYZE</strong></p><div class="table-contents"><table class="table" summary="Phases ANALYZE" border="1"><colgroup><col class="col1" /><col class="col2" /></colgroup><thead><tr><th>Phase</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">initializing</code></td><td>
+        La commande prépare le début du traitement de la table. Cette phase
+        est normalement très brève.
+       </td></tr><tr><td><code class="literal">acquiring sample rows</code></td><td>
+        La command est en cours de parcours de la table indiquée par
+        <code class="structfield">relid</code> pour obtenir les lignes de
+        l'échantillon.
+       </td></tr><tr><td><code class="literal">acquiring inherited sample rows</code></td><td>
+        La command est en cours de parcours des tables enfants pour obtenir
+        les lignes de l'échantillon. Les colonnes
+        <code class="structfield">child_tables_total</code>,
+        <code class="structfield">child_tables_done</code> et
+        <code class="structfield">current_child_table_relid</code> contiennent les
+        informations de progression pour cette phase.
+       </td></tr><tr><td><code class="literal">computing statistics</code></td><td>
+        La command calcule les statistiques à partir des lignes de
+        l'échantillon obtenu lors du parcours de la table.
+       </td></tr><tr><td><code class="literal">computing extended statistics</code></td><td>
+        La commande calcule les statistiques étendues à partir des lignes de
+        l'échantillon obtenu lors du parcours de la table.
+       </td></tr><tr><td><code class="literal">finalizing analyze</code></td><td>
+        La commande met à jour <code class="structname">pg_class</code>. Quand cette
+        phase est terminée, <code class="command">ANALYZE</code> terminera.
+       </td></tr></tbody></table></div></div><br class="table-break" /><div class="note"><h3 class="title">Note</h3><p>
+     Notez que quand <code class="command">ANALYZE</code> est exécutée sur une table
+     partitionnée,toutes ces partitions sont traitées récursivement. Dans ce cas, la
+     progression d'<code class="command">ANALYZE</code> est rapportée tout d'abord pour
+     la table parent alors que les statistiques d'héritage sont récupérées,
+     suivies par celles de chaque partition.
+    </p></div></div><div class="sect2" id="CLUSTER-PROGRESS-REPORTING"><div class="titlepage"><div><div><h3 class="title">27.4.2. Rapporter la progression de CLUSTER <a href="#CLUSTER-PROGRESS-REPORTING" class="id_link">#</a></h3></div></div></div><a id="id-1.6.14.9.4.2" class="indexterm"></a><p>
+    Quand <code class="command">CLUSTER</code> ou <code class="command">VACUUM FULL</code> est en
+    cours d'exécution, la vue <code class="structname">pg_stat_progress_cluster</code>
+    contiendra une ligne pour chaque processus serveur en train d'exécuter une
+    de ces deux commandes. Les tables ci-dessous décrivent les informations
+    rapportées et fournissent des informations sur leur interprétation.
+   </p><div class="table" id="PG-STAT-PROGRESS-CLUSTER-VIEW"><p class="title"><strong>Tableau 27.40. Vue <code class="structname">pg_stat_progress_cluster</code></strong></p><div class="table-contents"><table class="table" summary="Vue pg_stat_progress_cluster" border="1"><colgroup><col /></colgroup><thead><tr><th class="catalog_table_entry"><p class="column_definition">
+         Type
+        </p>
+        <p>
+         Description
+        </p></th></tr></thead><tbody><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">pid</code> <code class="type">integer</code>
+        </p>
+        <p>
+         Identifiant du processus serveur.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">datid</code> <code class="type">oid</code>
+        </p>
+        <p>
+         OID de la base de données de connexion du processus.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">datname</code> <code class="type">name</code>
+        </p>
+        <p>
+         Nom de la base de données de connexion du processus.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">relid</code> <code class="type">oid</code>
+        </p>
+        <p>
+         OID de la table en cours de traitement.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">command</code> <code class="type">text</code>
+        </p>
+        <p>
+         La commande exécutée. Soit <code class="literal">CLUSTER</code> soit
+         <code class="literal">VACUUM FULL</code>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">phase</code> <code class="type">text</code>
+        </p>
+        <p>
+         Phase de traitement actuelle. Voir <a class="xref" href="progress-reporting.html#CLUSTER-PHASES" title="Tableau 27.41. Phases de CLUSTER et VACUUM FULL">Tableau 27.41</a>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">cluster_index_relid</code> <code class="type">oid</code>
+        </p>
+        <p>
+         Si la table est parcourue avec un index, OID de l'index utilisé. Sinon 0.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">heap_tuples_scanned</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de lignes parcourues. Ce compteur s'incrémente seulement quand
+         la phase est
+         <code class="literal">seq scanning heap</code>,
+         <code class="literal">index scanning heap</code>
+         ou <code class="literal">writing new heap</code>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">heap_tuples_written</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de lignes écrites. Ce compteur s'incrémente seulement quand la
+         phase est
+         <code class="literal">seq scanning heap</code>,
+         <code class="literal">index scanning heap</code>
+         ou <code class="literal">writing new heap</code>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">heap_blks_total</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre total de blocs dans la table. Ce nombre est rapporté au début de
+         <code class="literal">seq scanning heap</code>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">heap_blks_scanned</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de blocs parcourus. Ce compteur s'incrément seulement quand la
+         phase est <code class="literal">seq scanning heap</code>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">index_rebuild_count</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre d'index reconstruit. Ce compteur s'incrémente seulement quand la
+         phase est <code class="literal">rebuilding index</code>.
+        </p></td></tr></tbody></table></div></div><br class="table-break" /><div class="table" id="CLUSTER-PHASES"><p class="title"><strong>Tableau 27.41. Phases de CLUSTER et VACUUM FULL</strong></p><div class="table-contents"><table class="table" summary="Phases de CLUSTER et VACUUM FULL" border="1"><colgroup><col /><col /></colgroup><thead><tr><th>Phase</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">initializing</code></td><td>
+        La commande prépare le début du parcours de la table. Cette phase est
+        normalement très brève.
+       </td></tr><tr><td><code class="literal">seq scanning heap</code></td><td>
+        La commande parcourt la table en utilisant un parcours séquentiel.
+       </td></tr><tr><td><code class="literal">index scanning heap</code></td><td>
+        <code class="command">CLUSTER</code> parcourt la table en utilisant un parcours
+        d'index.
+       </td></tr><tr><td><code class="literal">sorting tuples</code></td><td>
+        <code class="command">CLUSTER</code> trie les lignes.
+       </td></tr><tr><td><code class="literal">writing new heap</code></td><td>
+        <code class="command">CLUSTER</code> est en cours d'écriture du nouveau fichier
+        de la table.
+       </td></tr><tr><td><code class="literal">swapping relation files</code></td><td>
+        La commande bascule les fichiers nouvellement construit en place.
+       </td></tr><tr><td><code class="literal">rebuilding index</code></td><td>
+        La commande reconstruit les index.
+       </td></tr><tr><td><code class="literal">performing final cleanup</code></td><td>
+        La commande réalise le nettoyage final. Quand cette phase est terminée,
+        <code class="command">CLUSTER</code> ou <code class="command">VACUUM FULL</code> terminera.
+       </td></tr></tbody></table></div></div><br class="table-break" /></div><div class="sect2" id="COPY-PROGRESS-REPORTING"><div class="titlepage"><div><div><h3 class="title">27.4.3. Rapporter la progression de COPY <a href="#COPY-PROGRESS-REPORTING" class="id_link">#</a></h3></div></div></div><a id="id-1.6.14.9.5.2" class="indexterm"></a><p>
+   Lorsque <code class="command">COPY</code> est en cours d'exécution, la vue
+   <code class="structname">pg_stat_progress_copy</code> contient alors une ligne
+   pour chaque processus serveur qui exécute à l'instant une commande <code class="command">COPY</code>.
+   La table ci-dessous décrit les informations qui sont affichées et fournit des informations
+   sur comment les interpréter.
+  </p><div class="table" id="PG-STAT-PROGRESS-COPY-VIEW"><p class="title"><strong>Tableau 27.42. Vue <code class="structname">pg_stat_progress_copy</code></strong></p><div class="table-contents"><table class="table" summary="Vue pg_stat_progress_copy" border="1"><colgroup><col /></colgroup><thead><tr><th class="catalog_table_entry"><p class="column_definition">
+       Type de la colonne
+      </p>
+      <p>
+       Description
+      </p></th></tr></thead><tbody><tr><td class="catalog_table_entry"><p class="column_definition">
+       <code class="structfield">pid</code> <code class="type">integer</code>
+      </p>
+      <p>
+       ID du processus serveur.
+      </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+       <code class="structfield">datid</code> <code class="type">oid</code>
+      </p>
+      <p>
+       OID de la base de données sur laquelle le processus serveur est connecté.
+      </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+       <code class="structfield">datname</code> <code class="type">name</code>
+      </p>
+      <p>
+       Nom de la base de données sur laquelle le processus serveur est connecté.
+      </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+       <code class="structfield">relid</code> <code class="type">oid</code>
+      </p>
+      <p>
+       OID de la table sur laquelle la commande <code class="command">COPY</code>
+       s'exécute. Cette valeur vaut <code class="literal">0</code> si la copie se fait depuis
+       une requête <code class="command">SELECT</code>.
+      </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+       <code class="structfield">command</code> <code class="type">text</code>
+      </p>
+      <p>
+       La commande qui est exécutée : <code class="literal">COPY FROM</code>, ou
+       <code class="literal">COPY TO</code>.
+      </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+       <code class="structfield">type</code> <code class="type">text</code>
+      </p>
+      <p>
+       Le type d'entrée/sortie à partir duquel les données sont lues ou
+       écrites : <code class="literal">FILE</code>, <code class="literal">PROGRAM</code>,
+       <code class="literal">PIPE</code> (pour <code class="command">COPY FROM STDIN</code> et
+       <code class="command">COPY TO STDOUT</code>), ou <code class="literal">CALLBACK</code>
+       (utilisée par exemple durant la synchronisation initiale de table dans
+       la réplication logique).
+      </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+       <code class="structfield">bytes_processed</code> <code class="type">bigint</code>
+      </p>
+      <p>
+       Nombre d'octets déjà traités par la commande <code class="command">COPY</code>.
+      </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+       <code class="structfield">bytes_total</code> <code class="type">bigint</code>
+      </p>
+      <p>
+       Taille du fichier source pour la commande <code class="command">COPY FROM</code>
+       en octets. La valeur vaut <code class="literal">0</code> si cette information
+       n'est pas disponible.
+      </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+       <code class="structfield">tuples_processed</code> <code class="type">bigint</code>
+      </p>
+      <p>
+       Nombre de lignes déjà traitées par la commande <code class="command">COPY</code>.
+      </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+       <code class="structfield">tuples_skipped</code> <code class="type">bigint</code>
+      </p>
+      <p>
+       Nombre de lignes ignorées parce qu'elles contiennent des données
+       malformées. Ce compteur avance seulement quand une valeur autre que
+       <code class="literal">stop</code> est indiqué pour l'option
+       <code class="literal">ON_ERROR</code>.
+      </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+       <code class="structfield">tuples_excluded</code> <code class="type">bigint</code>
+      </p>
+      <p>
+       Nombre de lignes non traitées car exclues par la clause
+       <code class="command">WHERE</code> de la commande <code class="command">COPY</code>.
+      </p></td></tr></tbody></table></div></div><br class="table-break" /></div><div class="sect2" id="CREATE-INDEX-PROGRESS-REPORTING"><div class="titlepage"><div><div><h3 class="title">27.4.4. Rapporter la progression du CREATE INDEX <a href="#CREATE-INDEX-PROGRESS-REPORTING" class="id_link">#</a></h3></div></div></div><a id="id-1.6.14.9.6.2" class="indexterm"></a><p>
+    Quand un <code class="command">CREATE INDEX</code> ou un <code class="command">REINDEX</code>
+    est en cours d'exécution, la vue
+    <code class="structname">pg_stat_progress_create_index</code> contient une ligne
+    pour chaque processus serveur en train de créer des index. Les tables
+    ci-dessous décrivent les informations rapportées et fournissent des
+    informations sur leur interprétation.
+   </p><div class="table" id="PG-STAT-PROGRESS-CREATE-INDEX-VIEW"><p class="title"><strong>Tableau 27.43. Vue <code class="structname">pg_stat_progress_create_index</code></strong></p><div class="table-contents"><table class="table" summary="Vue pg_stat_progress_create_index" border="1"><colgroup><col /></colgroup><thead><tr><th class="catalog_table_entry"><p class="column_definition">
+         Type
+        </p>
+        <p>
+         Description
+        </p></th></tr></thead><tbody><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">pid</code> <code class="type">integer</code>
+        </p>
+        <p>
+         Identifiant du processus serveur.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">datid</code> <code class="type">oid</code>
+        </p>
+        <p>
+         OID de la base de données de connexion du processus.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">datname</code> <code class="type">name</code>
+        </p>
+        <p>
+         Nom de la base de données de connexion du processus.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">relid</code> <code class="type">oid</code>
+        </p>
+        <p>
+         OID de la table liée à l'index en cours de création.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">index_relid</code> <code class="type">oid</code>
+        </p>
+        <p>
+         OID de l'index en cours de création ou de réindexation. Lors d'un
+         <code class="command">CREATE INDEX</code> non concurrent, cette colonne vaut 0.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">command</code> <code class="type">text</code>
+        </p>
+        <p>
+         La commande en cours d'exécution : <code class="literal">CREATE INDEX</code>,
+         <code class="literal">CREATE INDEX CONCURRENTLY</code>,
+         <code class="literal">REINDEX</code> ou <code class="literal">REINDEX CONCURRENTLY</code>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">phase</code> <code class="type">text</code>
+        </p>
+        <p>
+         Phase en cours de traitement pour la création de l'index. Voir <a class="xref" href="progress-reporting.html#CREATE-INDEX-PHASES" title="Tableau 27.44. Phases du CREATE INDEX">Tableau 27.44</a>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">lockers_total</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre total de processus bloquant à attendre, si applicable.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">lockers_done</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de processus bloquant déjà attendus.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">current_locker_pid</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Identifiant du processus bloquant actuellement.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">blocks_total</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre total de blocs à traiter dans la phase en cours.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">blocks_done</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de blocs déjà traités dans la phase en cours.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">tuples_total</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre total de lignes à traiter dans la phase en cours.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">tuples_done</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de lignes déjà traitées dans la phase en cours.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">partitions_total</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Lors de la création d'un index sur une table partitionnée, cette colonne
+         est configurée au nombre total de partitions sur lesquels l'index est
+         créé.
+         Ce champs vaut <code class="literal">0</code> lors d'un <code class="literal">REINDEX</code>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">partitions_done</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Lors de la création d'un index sur une table partitionnée, cette colonne
+         est configurée au nombre total de partitions sur lesquels l'index a déjà
+         été créé.
+        </p></td></tr></tbody></table></div></div><br class="table-break" /><div class="table" id="CREATE-INDEX-PHASES"><p class="title"><strong>Tableau 27.44. Phases du CREATE INDEX</strong></p><div class="table-contents"><table class="table" summary="Phases du CREATE INDEX" border="1"><colgroup><col /><col /></colgroup><thead><tr><th>Phase</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">initializing</code></td><td>
+        <code class="command">CREATE INDEX</code> ou <code class="command">REINDEX</code> prépare
+        la création de l'index. Cette phase est normalement très brève.
+       </td></tr><tr><td><code class="literal">waiting for writers before build</code></td><td>
+        <code class="command">CREATE INDEX CONCURRENTLY</code> ou <code class="command">REINDEX
+         CONCURRENTLY</code> attend que les transactions avec des verrous en
+        écriture qui peuvent voir la table se finissent Cette phase est ignorée
+        quand elle n'est pas en mode concurrent. Les colonnes
+        <code class="structname">lockers_total</code>,
+        <code class="structname">lockers_done</code> et
+        <code class="structname">current_locker_pid</code> contiennent les
+        informations de progression sur cette phase.
+       </td></tr><tr><td><code class="literal">building index</code></td><td>
+        L'index est en cours de construction par le code spécifique de la
+        méthode d'accès. Dans cette phase, les méthodes d'accès qui supportent
+        les rapports de progression remplissent eux-même les données de
+        progression, et la sous-phase est indiquée dans cette colonne.
+        Typiquement, <code class="structname">blocks_total</code> et
+        <code class="structname">blocks_done</code> contiendront les données de
+        progression, ainsi que <code class="structname">tuples_total</code> et
+        <code class="structname">tuples_done</code> potentiellement.
+       </td></tr><tr><td><code class="literal">waiting for writers before validation</code></td><td>
+        <code class="command">CREATE INDEX CONCURRENTLY</code> ou <code class="command">REINDEX
+         CONCURRENTLY</code> est en attente de la fin des transactions avec
+        verrous en écriture pouvant potentiellement écrire dans la table. Cette
+        phase est ignorée quand elle n'est pas en mode concurrent. Les colonnes
+        <code class="structname">lockers_total</code>,
+        <code class="structname">lockers_done</code> et
+        <code class="structname">current_locker_pid</code> contiennent les
+        informations de progression pour cette phase.
+       </td></tr><tr><td><code class="literal">index validation: scanning index</code></td><td>
+        <code class="command">CREATE INDEX CONCURRENTLY</code> parcourt l'index pour
+        trouver les lignes qui ont besoin d'être validées. Cette phase est
+        ignorée quand elle n'est pas en mode concurrent. Les colonnes
+        <code class="structname">blocks_total</code> (configurée à la taille totale de
+        l'index) et <code class="structname">blocks_done</code> contiennent les
+        informations de progression pour cette phase.
+       </td></tr><tr><td><code class="literal">index validation: sorting tuples</code></td><td>
+        <code class="command">CREATE INDEX CONCURRENTLY</code> trie la sortie de la phase
+        de parcours de l'index.
+       </td></tr><tr><td><code class="literal">index validation: scanning table</code></td><td>
+        <code class="command">CREATE INDEX CONCURRENTLY</code> parcourt la table pour
+        valider les enregistrements d'index collectés dans les deux phases
+        précédentes. Cette phase est ignorée quand elle n'est pas en mode
+        concurrent. Les colonnes <code class="structname">blocks_total</code>
+        (configurée à la taille totale de la table) et
+        <code class="structname">blocks_done</code> contiennent les informations de
+        progression pour cette phase.
+       </td></tr><tr><td><code class="literal">waiting for old snapshots</code></td><td>
+        <code class="command">CREATE INDEX CONCURRENTLY</code> ou <code class="command">REINDEX
+         CONCURRENTLY</code> est en attente que les transactions pouvant
+        potentiellement voir la table relâchent leur snapshot. Cette phase est
+        ignorée quand elle n'est pas en mode concurrent. Les colonnes
+        <code class="structname">lockers_total</code>,
+        <code class="structname">lockers_done</code> et
+        <code class="structname">current_locker_pid</code> contiennent les
+        informations de progression pour cette phase.
+       </td></tr><tr><td><code class="literal">waiting for readers before marking dead</code></td><td>
+        <code class="command">REINDEX CONCURRENTLY</code> est en attente de la fin des
+        transactions avec verrous en lecture sur la table, avant de marquer
+        l'ancien index comme mort. Cette phase est ignorée quand elle n'est pas
+        en mode concurrent. Les colonnes
+        <code class="structname">lockers_total</code>,
+        <code class="structname">lockers_done</code> et
+        <code class="structname">current_locker_pid</code> contiennent les
+        informations de progression pour cette phase.
+       </td></tr><tr><td><code class="literal">waiting for readers before dropping</code></td><td>
+        <code class="command">REINDEX CONCURRENTLY</code> est en attente de la fin des
+        transactions avec verrous en lecture sur la table, avant de supprimer
+        l'ancien index. Cette phase est ignorée quand elle n'est pas en mode
+        concurrent. Les colonnes <code class="structname">lockers_total</code>,
+        <code class="structname">lockers_done</code> et
+        <code class="structname">current_locker_pid</code> contiennent les
+        informations de progression pour cette phase.
+       </td></tr></tbody></table></div></div><br class="table-break" /></div><div class="sect2" id="VACUUM-PROGRESS-REPORTING"><div class="titlepage"><div><div><h3 class="title">27.4.5. Rapporter la progression du VACUUM <a href="#VACUUM-PROGRESS-REPORTING" class="id_link">#</a></h3></div></div></div><a id="id-1.6.14.9.7.2" class="indexterm"></a><p>
+    La vue <code class="structname">pg_stat_progress_vacuum</code> contient une ligne
+    pour chaque processus serveur (incluant les processus autovacuum worker) en
+    train d'exécuter un <code class="command">VACUUM</code>. Les tableaux ci-dessous
+    décrivent les informations rapportées et fournissent des informations sur
+    leur interprétation. La progression des commandes <code class="command">VACUUM FULL</code>
+    est rapportée par <code class="structname">pg_stat_progress_cluster</code> parce
+    que le <code class="command">VACUUM FULL</code> comme le <code class="command">CLUSTER</code>
+    réécrivent la table, alors qu'un <code class="command">VACUUM</code> simple la modifie
+    directement. Voir <a class="xref" href="progress-reporting.html#CLUSTER-PROGRESS-REPORTING" title="27.4.2. Rapporter la progression de CLUSTER">Section 27.4.2</a>.
+   </p><div class="table" id="PG-STAT-PROGRESS-VACUUM-VIEW"><p class="title"><strong>Tableau 27.45. Vue <code class="structname">pg_stat_progress_vacuum</code></strong></p><div class="table-contents"><table class="table" summary="Vue pg_stat_progress_vacuum" border="1"><colgroup><col /></colgroup><thead><tr><th class="catalog_table_entry"><p class="column_definition">
+         Type
+        </p>
+        <p>
+         Description
+        </p></th></tr></thead><tbody><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">pid</code> <code class="type">integer</code>
+        </p>
+        <p>
+         Identifiant (PID) du processus serveur.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">datid</code> <code class="type">oid</code>
+        </p>
+        <p>
+         OID de la base de données où est connecté ce processus
+         serveur.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">datname</code> <code class="type">name</code>
+        </p>
+        <p>
+         Nom de la base de données où est connecté ce processus
+         serveur.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">relid</code> <code class="type">oid</code>
+        </p>
+        <p>
+         OID de la table nettoyée par le VACUUM.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">phase</code> <code class="type">text</code>
+        </p>
+        <p>
+         Phase actuelle du vacuum. Voir <a class="xref" href="progress-reporting.html#VACUUM-PHASES" title="Tableau 27.46. Phases du VACUUM">Tableau 27.46</a>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">heap_blks_total</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre total de blocs de la table. Ce nombre est récupéré au début du
+         parcours. Des blocs peuvent être ajoutés par la suite, mais ne seront
+         pas (et n'ont pas besoin d'être) visités par ce
+         <code class="command">VACUUM</code>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">heap_blks_scanned</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de blocs parcourus dans la table. Comme la <a class="link" href="storage-vm.html" title="65.4. Carte de visibilité">carte de visibilité</a> est utilisée pour
+         optimiser les parcours, certains blocs seront ignorés sans
+         inspection ; les blocs ignorés sont inclus dans ce total, pour que
+         ce nombre puisse devenir égal à
+         <code class="structfield">heap_blks_total</code> quand le nettoyage se
+         termine. Ce compteur avance seulement quand la phase est
+         <code class="literal">scanning heap</code>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">heap_blks_vacuumed</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de blocs nettoyés dans la table. Sauf si la table n'a pas
+         d'index, ce compteur avance seulement quand la phase est
+         <code class="literal">vacuuming heap</code>. Les blocs qui ne contiennent aucune
+         ligne morte sont ignorés, donc le compteur pourrait parfois avancer par
+         de larges incréments.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">index_vacuum_count</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de cycles de nettoyage d'index réalisés.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">max_dead_tuple_bytes</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Quantité de lignes mortes que nous pouvons stocker avant d'avoir besoin de
+         réaliser un cycle de nettoyage d'index, basé sur <a class="xref" href="runtime-config-resource.html#GUC-MAINTENANCE-WORK-MEM">maintenance_work_mem</a>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">dead_tuple_bytes</code> <code class="type">bigint</code>
+       </p>
+       <p>
+        Volumétrie des lignes mortes collectées depuis le dernier cycle de
+        nettoyage des index.
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+       <code class="structfield">num_dead_item_ids</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre d'éléments morts récupérés depuis le dernier cycle de nettoyage
+         d'index.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">indexes_total</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre total d'index à nettoyer. Ce nombre est indiqué au début de la
+         phase <code class="literal">vacuuming indexes</code> ou de la phase
+         <code class="literal">cleaning up indexes</code>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">indexes_processed</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre d'index traités. Ce nombre avance seulement quand la phase est
+         <code class="literal">vacuuming indexes</code> ou <code class="literal">cleaning up
+         indexes</code>.
+        </p></td></tr></tbody></table></div></div><br class="table-break" /><div class="table" id="VACUUM-PHASES"><p class="title"><strong>Tableau 27.46. Phases du VACUUM</strong></p><div class="table-contents"><table class="table" summary="Phases du VACUUM" border="1"><colgroup><col /><col /></colgroup><thead><tr><th>Phase</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">initializing</code></td><td>
+        <code class="command">VACUUM</code> se prépare à commencer le parcours de la
+        table. Cette phase est habituellement très rapide.
+       </td></tr><tr><td><code class="literal">scanning heap</code></td><td>
+        <code class="command">VACUUM</code> parcourt la table. Il va défragmenter chaque
+        bloc si nécessaire et potentiellement réaliser un gel des lignes. La
+        colonne <code class="structfield">heap_blks_scanned</code> peut être utilisée
+        pour surveiller la progression du parcours.
+       </td></tr><tr><td><code class="literal">vacuuming indexes</code></td><td>
+        <code class="command">VACUUM</code> est en train de nettoyer les index. Si une
+        table a des index, ceci surviendra au moins une fois par vacuum,
+        après le parcours complet de la table. Cela pourrait arriver
+        plusieurs fois par vacuum si <a class="xref" href="runtime-config-resource.html#GUC-MAINTENANCE-WORK-MEM">maintenance_work_mem</a>  (ou, dans le cas de
+        l'autovacuum, <a class="xref" href="runtime-config-resource.html#GUC-AUTOVACUUM-WORK-MEM">autovacuum_work_mem</a> s'il est
+        configuré) n'est pas suffisamment important pour y enregistrer le
+        nombre de lignes mortes trouvées.
+       </td></tr><tr><td><code class="literal">vacuuming heap</code></td><td>
+        <code class="command">VACUUM</code> est en train de nettoyer la table. Nettoyer
+        la table est différent du parcours de la table, et survient après
+        chaque phase de nettoyage d'index. Si
+        <code class="structfield">heap_blks_scanned</code> est inférieur à
+        <code class="structfield">heap_blks_total</code>, le système retournera à
+        parcourir la table après la fin de cette phase. Sinon, il commencera le
+        nettoyage des index une fois cette phase terminée.
+       </td></tr><tr><td><code class="literal">cleaning up indexes</code></td><td>
+        <code class="command">VACUUM</code> est en train de nettoyer les index. Ceci
+        survient après que la table ait été entièrement parcourue et que le vacuum
+        des index et de la table soit terminé.
+       </td></tr><tr><td><code class="literal">truncating heap</code></td><td>
+        <code class="command">VACUUM</code> est en cours de troncage de la table pour
+        pouvoir redonner au système d'exploitation les pages vides en fin de
+        relation. Ceci survient après le nettoyage des index.
+       </td></tr><tr><td><code class="literal">performing final cleanup</code></td><td>
+        <code class="command">VACUUM</code> réalise le nettoyage final. Durant cette
+        phase, <code class="command">VACUUM</code> nettoiera la carte des espaces libres,
+        mettra à jour les statistiques dans <code class="literal">pg_class</code>, et
+        rapportera les statistiques au système de statistiques cumulatives. Une
+        fois cette phase terminée, <code class="command">VACUUM</code> se terminera.
+       </td></tr></tbody></table></div></div><br class="table-break" /></div><div class="sect2" id="BASEBACKUP-PROGRESS-REPORTING"><div class="titlepage"><div><div><h3 class="title">27.4.6. Rapporter la progression de la sauvegarde de base <a href="#BASEBACKUP-PROGRESS-REPORTING" class="id_link">#</a></h3></div></div></div><a id="id-1.6.14.9.8.2" class="indexterm"></a><p>
+    Quand une application comme <span class="application">pg_basebackup</span>
+    réalise une sauvegarde de base, la vue
+    <code class="structname">pg_stat_progress_basebackup</code> contiendra une ligne
+    pour chaque processus walsender en cours d'exécution de la commande de
+    réplication <code class="command">BASE_BACKUP</code> et d'envoi de la sauvegarde.
+    Les tables ci-dessous décrivent les informations qui seront rapportées et
+    fournissent des informations sur leur interprétation.
+   </p><div class="table" id="PG-STAT-PROGRESS-BASEBACKUP-VIEW"><p class="title"><strong>Tableau 27.47. Vue <code class="structname">pg_stat_progress_basebackup</code></strong></p><div class="table-contents"><table class="table" summary="Vue pg_stat_progress_basebackup" border="1"><colgroup><col /></colgroup><thead><tr><th class="catalog_table_entry"><p class="column_definition">
+         Type
+        </p>
+        <p>
+         Description
+        </p></th></tr></thead><tbody><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">pid</code> <code class="type">integer</code>
+        </p>
+        <p>
+         Identifiant du processus walsender.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">phase</code> <code class="type">text</code>
+        </p>
+        <p>
+         Phase en cours de traitement. Voir <a class="xref" href="progress-reporting.html#BASEBACKUP-PHASES" title="Tableau 27.48. Phases de la sauvegarde de base">Tableau 27.48</a>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">backup_total</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Quantité totale de données à envoyer. Ceci est estimé et rapporté au
+         début de la phase <code class="literal">streaming database files</code>. Notez
+         que c'est uniquement une approximation car la base de données pourrait
+         changer pendant la phase <code class="literal">streaming database files</code>
+         et les journaux de transactions pourraient être inclus dans la
+         sauvegarde après coup. C'est toujours la même valeur que
+         <code class="structfield">backup_streamed</code> une fois la quantité de
+         données envoyées dépasse la taille totale estimée. Si l'estimation est désactivée dans
+         <span class="application">pg_basebackup</span> (grâce à l'option
+         <code class="literal">--no-estimate-size</code>), cette colonne vaut
+         <code class="literal">NULL</code>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">backup_streamed</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Quantité de données envoyées. Ce compteur avance seulement quand la
+         phase est <code class="literal">streaming database files</code> ou
+         <code class="literal">transferring wal files</code>.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">tablespaces_total</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre total de tablespaces à envoyer.
+        </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+         <code class="structfield">tablespaces_streamed</code> <code class="type">bigint</code>
+        </p>
+        <p>
+         Nombre de tablespaces envoyées. Ce compteur avance seulement quand la
+         phase est <code class="literal">streaming database files</code>.
+        </p></td></tr></tbody></table></div></div><br class="table-break" /><div class="table" id="BASEBACKUP-PHASES"><p class="title"><strong>Tableau 27.48. Phases de la sauvegarde de base</strong></p><div class="table-contents"><table class="table" summary="Phases de la sauvegarde de base" border="1"><colgroup><col class="col1" /><col class="col2" /></colgroup><thead><tr><th>Phase</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">initializing</code></td><td>
+        Le processus walsender prépare le début de la sauvegarde. Cette phase
+        est normalement très brève.
+       </td></tr><tr><td><code class="literal">waiting for checkpoint to finish</code></td><td>
+        Le processus walsender est en cours d'exécution de
+        <code class="function">pg_backup_start</code> pour initialiser une sauvegarde
+        de base, et en attente que le checkpoint de début de sauvegarde se
+        finisse.
+       </td></tr><tr><td><code class="literal">estimating backup size</code></td><td>
+        Le processus walsender estime actuellement la quantité totale des
+        fichiers de la base à envoyer comme une sauvegarde de base.
+       </td></tr><tr><td><code class="literal">streaming database files</code></td><td>
+        Le processus walsender est en cours d'envoi les fichiers de la base
+        comme sauvegarde de base.
+       </td></tr><tr><td><code class="literal">waiting for wal archiving to finish</code></td><td>
+        Le processus walsender exécute actuellement le
+        <code class="function">pg_backup_stop</code> pour terminer la sauvegarde, et
+        est en attente de tous les journaux de transactions requis pour que
+        la sauvegarde de base soit correctement archivée.
+        Si l'option <code class="literal">--wal-method=none</code> ou l'option
+        <code class="literal">--wal-method=stream</code> est spécifié avec
+        <span class="application">pg_basebackup</span>, la sauvegarde se terminera
+        une fois cette phase terminée.
+       </td></tr><tr><td><code class="literal">transferring wal files</code></td><td>
+        Le processus walsender est en cours de transfert des journaux de
+        transactions générés lors de la sauvegarde. Cette phase survient après
+        la phase <code class="literal">waiting for wal archiving to finish</code> si
+        l'option <code class="literal">--wal-method=fetch</code> est indiquée à
+        <span class="application">pg_basebackup</span>. La sauvegarde se terminera
+        quand cette phase sera terminée.
+       </td></tr></tbody></table></div></div><br class="table-break" /></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/progress-reporting.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+</html>

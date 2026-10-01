@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/app-postgres.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:08 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>postgres</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="app-pgwalsummary.html" title="pg_walsummary" /><link rel="next" href="internals.html" title="Partie VII. Internes" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/app-postgres.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/app-postgres.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/app-postgres.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/app-postgres.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/app-postgres.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/app-postgres.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/app-postgres.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/app-postgres.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/app-postgres.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/app-postgres.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/app-postgres.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/app-postgres.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/app-postgres.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/app-postgres.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/app-postgres.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/app-postgres.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/app-postgres.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/app-postgres.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/app-postgres.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/app-postgres.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/app-postgres.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="reference.html">Référence</a></span> » <span class="breadcrumb-link"><a href="reference-server.html">Applications relatives au serveur PostgreSQL</a></span> » <span class="breadcrumb-node"><span class="application">postgres</span></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="app-pgwalsummary.html" title="pg_walsummary">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="reference-server.html" title="Applications relatives au serveur PostgreSQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="internals.html" title="Partie VII. Internes">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top"><span class="application">pg_walsummary</span> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Partie VII. Internes</td></tr></table></div><div class="refentry" id="APP-POSTGRES"><div class="titlepage"></div><a id="id-1.9.5.16.1" class="indexterm"></a><div class="refnamediv"><h2><span class="refentrytitle"><span class="application">postgres</span></span></h2><p>postgres — Serveur de bases de données <span class="productname">PostgreSQL</span></p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p id="id-1.9.5.16.4.1"><code class="command">postgres</code> [<em class="replaceable"><code>option</code></em>...]</p></div></div><div class="refsect1" id="id-1.9.5.16.5"><h2>Description</h2><p>
+   <code class="command">postgres</code> est le serveur de bases de données
+   <span class="productname">PostgreSQL</span>. Pour qu'une application cliente puisse
+   accéder à une base de données, elle se connecte (soit via le réseau soit
+   localement) à un processus <code class="command">postgres</code> en cours d'exécution.
+   L'instance <code class="command">postgres</code> démarre ensuite un processus serveur
+   séparé pour gérer la connexion.
+  </p><p>
+   Une instance <code class="command">postgres</code> gère toujours les données d'un
+   seul cluster. Un cluster est un ensemble de bases de données stocké à un même
+   emplacement dans le système de fichiers (le <span class="quote">« <span class="quote">répertoire des
+    données</span> »</span>).
+   Plus d'un processus <code class="command">postgres</code> peut être en cours
+   d'exécution sur un système à un moment donné, s'ils utilisent des répertoires
+   différents et des ports de communication différents (voir ci-dessous). Quand
+   <code class="command">postgres</code> se lance, il a besoin de connaître l'emplacement
+   du répertoire des données. Cet emplacement doit être indiquée par l'option
+   <code class="option">-D</code> ou par la variable d'environnement <code class="envar">PGDATA</code> ;
+   il n'y a pas de valeur par défaut. Typiquement, <code class="option">-D</code> ou
+   <code class="envar">PGDATA</code> pointe directement vers le répertoire des données créé
+   par <a class="xref" href="app-initdb.html" title="initdb"><span class="refentrytitle"><span class="application">initdb</span></span></a>. D'autres dispositions de fichiers
+   possibles sont discutés dans <a class="xref" href="runtime-config-file-locations.html" title="19.2. Emplacement des fichiers">Section 19.2</a>.
+   Un répertoire de données est créé avec <a class="xref" href="app-initdb.html" title="initdb"><span class="refentrytitle"><span class="application">initdb</span></span></a>.
+  </p><p>
+   Par défaut, <code class="command">postgres</code> s'exécute en avant-plan et affiche
+   ses messages dans le flux standard des erreurs. En pratique,
+   <code class="command">postgres</code> devrait être exécuté en tant que processus en
+   arrière-plan, par exemple au lancement.
+  </p><p>
+   La commande <code class="command">postgres</code> peut aussi être appelé en mode
+   mono-utilisateur. L'utilisation principal de ce mode est lors du
+   <span class="quote">« <span class="quote">bootstrap</span> »</span> utilisé par <a class="xref" href="app-initdb.html" title="initdb"><span class="refentrytitle"><span class="application">initdb</span></span></a>.
+   Quelque fois, il est utilisé pour du débogage et de la récupération suite à
+   un problème (mais noter qu'exécuter un serveur en mode mono-utilisateur
+   n'est pas vraiment convenable pour déboguer le serveur car aucune
+   communication inter-processus réaliste et aucun verrouillage n'interviennent.)
+   Quand il est appelé en mode interactif à partir du shell,
+   l'utilisateur peut saisir des requêtes et le résultat sera affiché à l'écran
+   mais dans une forme qui est plus utile aux développeurs qu'aux utilisateurs.
+   Dans le mode mono-utilisateur, la session ouverte par l'utilisateur sera
+   configurée avec l'utilisateur d'identifiant 1 et les droits
+   implicites du superutilisateur lui sont donnés. Cet utilisateur n'a pas besoin
+   d'exister, donc le mode mono-utilisateur peut être utilisé pour récupérer
+   manuellement après certains types de dommages accidentels dans les catalogues
+   systèmes.
+  </p></div><div class="refsect1" id="APP-POSTGRES-OPTIONS"><h2>Options</h2><p>
+   <code class="command">postgres</code> accepte les arguments suivants en ligne de
+   commande. Pour une discussion détaillée des options, consultez <a class="xref" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Chapitre 19</a>. Vous pouvez éviter de saisir la plupart
+   de ces options en les initialisant dans le fichier de configuration.
+   Certaines options (sûres) peuvent aussi être configurées à partir du
+   client en cours de connexion d'une façon dépendante de l'application,
+   configuration qui ne sera appliquée qu'à cette session. Par exemple
+   si la variable d'environnement <code class="envar">PGOPTIONS</code> est
+   configurée, alors les clients basés sur <span class="application">libpq</span>
+   passeront cette chaîne au serveur qui les interprétera comme les options
+   en ligne de commande de <code class="command">postgres</code>.
+  </p><div class="refsect2" id="id-1.9.5.16.6.3"><h3>Général</h3><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-B <em class="replaceable"><code>ntampons</code></em></code></span></dt><dd><p>
+       Configure le nombre de tampons partagés utilisés par les processus
+       serveur. La valeur par défaut de ce paramètre est choisi automatiquement
+       par <span class="application">initdb</span>. Indiquer cette option est
+       équivalent à configurer le paramètre <a class="xref" href="runtime-config-resource.html#GUC-SHARED-BUFFERS">shared_buffers</a>.
+      </p></dd><dt><span class="term"><code class="option">-c <em class="replaceable"><code>nom</code></em>=<em class="replaceable"><code>valeur</code></em></code></span></dt><dd><p>
+       Configure un parammètre d'exécution nommé. Les paramètres de configuration
+       supportés par <span class="productname">PostgreSQL</span> sont décrits dans
+       <a class="xref" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Chapitre 19</a>. La plupart des autres options en ligne
+       de commande sont en fait des formes courtes d'une affectation de
+       paramètres. <code class="option">-c</code> peut apparaître plusieurs fois pour
+       configurer différents paramètres.
+      </p></dd><dt><span class="term"><code class="option">-C <em class="replaceable"><code>nom</code></em></code></span></dt><dd><p>
+       Affiche la valeur d'un paramètre d'exécution nommé, ouis quitte.
+       (Voir l'option <code class="option">-c</code> ci-dessus pour les détails.) Cela
+       renvoie les
+       valeurs du <code class="filename">postgresql.conf</code>, modifiées par tout
+       paramètre fourni lors de cet appel. Cela ne reflète pas les paramètres
+       fournis lors de la création de l'instance.
+      </p><p>
+       Ceci peut être utilisé sur un serveur en cours d'exécutio pour la plupart des paramètres.
+       Néanmoins, le serveur doit être arrêté pour certains paramètres calculés à l'exécution
+       (par exemple <a class="xref" href="runtime-config-preset.html#GUC-SHARED-MEMORY-SIZE">shared_memory_size</a>,
+       <a class="xref" href="runtime-config-preset.html#GUC-SHARED-MEMORY-SIZE-IN-HUGE-PAGES">shared_memory_size_in_huge_pages</a> et
+       <a class="xref" href="runtime-config-preset.html#GUC-WAL-SEGMENT-SIZE">wal_segment_size</a>).
+      </p><p>
+       Cette option a pour but de permettre aux autres programmes d'interagir
+       avec un outil comme <a class="xref" href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><span class="application">pg_ctl</span></span></a> pour récupérer des
+       valeurs de configuration. Les applications utilisateurs devraient
+       plutôt utiliser la commande <a class="link" href="sql-show.html" title="SHOW"><code class="command">SHOW</code></a> ou la vue
+       <code class="structname">pg_settings</code>.
+      </p></dd><dt><span class="term"><code class="option">-d <em class="replaceable"><code>niveau-débogage</code></em></code></span></dt><dd><p>
+       Configure le niveau de débogage. Plus haute est sa valeur, plus importante
+       seront les traces écrites dans les journaux. Les valeurs vont de 1 à 5.
+       Il est aussi possible de passer <code class="literal">-d 0</code> pour une session
+       spécifique qui empêchera le niveau des traces serveur du processus
+       <code class="command">postgres</code> parent d'être propagé jusqu'à cette session.
+      </p></dd><dt><span class="term"><code class="option">-D <em class="replaceable"><code>repdonnées</code></em></code></span></dt><dd><p>
+       Indique le répertoire des fichier(s) de configuration. Voir <a class="xref" href="runtime-config-file-locations.html" title="19.2. Emplacement des fichiers">Section 19.2</a> pour les détails.
+      </p></dd><dt><span class="term"><code class="option">-e</code></span></dt><dd><p>
+       Configure le style de date par défaut à <span class="quote">« <span class="quote">European</span> »</span>,
+       c'est-à-dire l'ordre <code class="literal">DMY</code> pour les champs en entrée.
+       Ceci cause aussi l'affichage de la date avant le mois dans certains
+       formats de sortie de date. Voir <a class="xref" href="datatype-datetime.html" title="8.5. Types date/heure">Section 8.5</a> pour
+       plus d'informations.
+      </p></dd><dt><span class="term"><code class="option">-F</code></span></dt><dd><p>
+       Désactive les appels <code class="function">fsync</code> pour améliorer les
+       performances au risque de corrompre des données dans l'idée d'un
+       arrêt brutal du système. Spécifier cette option est équivalent à
+       désactiver le paramètre de configuration <a class="xref" href="runtime-config-wal.html#GUC-FSYNC">fsync</a>. Lisez la documentation détaillée avant d'utiliser
+       ceci !
+      </p></dd><dt><span class="term"><code class="option">-h <em class="replaceable"><code>hôte</code></em></code></span></dt><dd><p>
+       Indique le nom d'hôte ou l'adresse IP sur lequel
+       <code class="command">postgres</code> attend les connexions TCP/IP d'applications
+       clientes. La valeur peut aussi être une liste d'adresses séparées par
+       des virgules ou <code class="literal">*</code> pour indiquer l'attente sur toutes
+       les interfaces disponibles. Une valeur vide indique qu'il n'attend
+       sur aucune adresse IP, auquel cas seuls les sockets de domaine Unix
+       peuvent être utilisés pour se connecter au serveur.
+       Par défaut, attend les connexions seulement
+       sur <span class="systemitem">localhost</span>. Spécifier
+       cette option est équivalent à la configurer dans le paramètre <a class="xref" href="runtime-config-connection.html#GUC-LISTEN-ADDRESSES">listen_addresses</a>.
+      </p></dd><dt><span class="term"><code class="option">-i</code></span></dt><dd><p>
+       Autorise les clients distants à se connecter via TCP/IP (domaine
+       Internet). Sans cette option, seules les connexions locales sont
+       autorisées. Cette option est équivalent à la configuration du
+       paramètre <code class="varname">listen_addresses</code> à <code class="literal">*</code>
+       dans <code class="filename">postgresql.conf</code> ou via <code class="option">-h</code>.
+      </p><p>
+       Cette option est obsolète car il ne permet plus l'accès à toutes les
+       fonctionnalités de <a class="xref" href="runtime-config-connection.html#GUC-LISTEN-ADDRESSES">listen_addresses</a>. Il est
+       généralement mieux de configurer directement
+       <code class="varname">listen_addresses</code>.
+      </p></dd><dt><span class="term"><code class="option">-k <em class="replaceable"><code>directory</code></em></code></span></dt><dd><p>
+       Indique le répertoire de la socket de domaine Unix sur laquelle
+       <code class="command">postgres</code> est en attente des connexions des
+       applications clients. Ce paramètre peut aussi contenir une liste
+       de répertoires séparés par des virgules. Une valeur vide précise
+       que le serveur ne doit pas écouter à des sockets de domaine Unix,
+       auquel cas seul les sockets TCP/IP pourront être utilisés pour se
+       connecter. La valeur par défaut est habituellement
+       <code class="filename">/tmp</code>, mais cela peut être changé au moment de
+       la compilation. Spécifier cette option est équivalent à configurer
+       le paramètre <a class="xref" href="runtime-config-connection.html#GUC-UNIX-SOCKET-DIRECTORIES">unix_socket_directories</a>.
+      </p></dd><dt><span class="term"><code class="option">-l</code></span></dt><dd><p>
+       Active les connexions sécurisées utilisant <acronym class="acronym">SSL</acronym>.
+       <span class="productname">PostgreSQL</span> doit avoir été compilé avec
+       <acronym class="acronym">SSL</acronym> pour que cette option soit disponible.
+       Pour plus d'informations sur <acronym class="acronym">SSL</acronym>, référez-vous à
+       <a class="xref" href="ssl-tcp.html" title="18.9. Connexions TCP/IP sécurisées avec SSL">Section 18.9</a>.
+      </p></dd><dt><span class="term"><code class="option">-N <em class="replaceable"><code>max-connections</code></em></code></span></dt><dd><p>
+       Initialise le nombre maximum de connexions clientes que le serveur
+       acceptera. La valeur par défaut de ce paramètre est choisi
+       automatiquement par <span class="application">initdb</span>. Indiquer
+       cette option est équivalent à configurer le paramètre
+       <a class="xref" href="runtime-config-connection.html#GUC-MAX-CONNECTIONS">max_connections</a>.
+      </p></dd><dt><span class="term"><code class="option">-p <em class="replaceable"><code>port</code></em></code></span></dt><dd><p>
+       Indique le port TCP/IP ou l'extension du fichier socket de domaine Unix
+       sur lequel <code class="command">postgres</code> attend les connexions des
+       applications clientes. Par défaut, la valeur de la variable
+       d'environnement <code class="envar">PGPORT</code> environment ou, si cette variable
+       n'est pas configurer, la valeur connue à la compilation (habituellement
+       5432). Si vous indiquez un port autre que celui par défaut, alors toutes
+       les applications clientes doivent indiquer le même numéro de port soit
+       dans les options en ligne de commande soit avec <code class="envar">PGPORT</code>.
+      </p></dd><dt><span class="term"><code class="option">-s</code></span></dt><dd><p>
+       Affiche une information de temps et d'autres statistiques à la fin de
+       chaque commande. Ceci est utile pour créer des rapports de performance
+       ou pour configurer finement le nombre de tampons.
+      </p></dd><dt><span class="term"><code class="option">-S</code> <em class="replaceable"><code>work-mem</code></em></span></dt><dd><p>
+       Indique la quantité de mémoire à utiliser par les tris internes et par
+       les hachages avant d'utiliser des fichiers disque temporaires. Voir la
+       description du paramètre <code class="varname">work_mem</code> dans <a class="xref" href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-MEMORY" title="19.4.1. Mémoire">Section 19.4.1</a>.
+      </p></dd><dt><span class="term"><code class="option">-V</code><br /></span><span class="term"><code class="option">--version</code></span></dt><dd><p>
+       Affiche la version de <span class="application">postgres</span>, puis quitte.
+      </p></dd><dt><span class="term"><code class="option">--<em class="replaceable"><code>nom</code></em>=<em class="replaceable"><code>valeur</code></em></code></span></dt><dd><p>
+       Configure un paramètre à l'exécution ; c'est une version courte de
+       <code class="option">-c</code>.
+      </p></dd><dt><span class="term"><code class="option">--describe-config</code></span></dt><dd><p>
+       Cette option affiche les variables de configuration internes du serveur,
+       leurs descriptions et leurs valeurs par défaut dans un format
+       <code class="command">COPY</code> délimité par des tabulations. Elle est conçue
+       principalement pour les outils d'administration.
+      </p></dd><dt><span class="term"><code class="option">-?</code><br /></span><span class="term"><code class="option">--help</code></span></dt><dd><p>
+       Affiche l'aide des arguments en ligne de commande sur
+       <span class="application">postgres</span>, puis quitte.
+      </p></dd></dl></div></div><div class="refsect2" id="id-1.9.5.16.6.4"><h3>Options semi-internes</h3><p>
+    Les options décrites ici sont utilisées principalement dans un but
+    de débogage et pouvant quelque fois aider à la récupération de bases de
+    données très endommagées/ Il n'y a aucune raison pour les utiliser dans
+    la configuration d'un système en production. Elles sont listées ici à
+    l'intention des développeurs <span class="productname">PostgreSQL</span>. De
+    plus, une de ces options pourrait disparaître ou changer dans le futur
+    sans avertissement.
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-f</code> <code class="literal">{ s | i | o | b | t | n | m | h }</code></span></dt><dd><p>
+       Interdit l'utilisation de parcours et de méthode de jointure
+       particulières. <code class="literal">s</code> et <code class="literal">i</code>
+       désactivent respectivement les parcours séquentiels et d'index,
+       <code class="literal">o</code>, <code class="literal">b</code> et <code class="literal">t</code>
+       désactivent respectivement les parcours d'index seul, les parcours
+       d'index bitmap et les parcours de TID alors que <code class="literal">n</code>,
+       <code class="literal">m</code> et <code class="literal">h</code> désactivent respectivement
+       les jointures de boucles imbriquées, jointures de fusion et de hachage.
+      </p><p>
+       Ni les parcours séquentiels ni les jointures de boucles imbriquées ne
+       peuvent être désactivés complètement ; les options
+       <code class="literal">-fs</code> et <code class="literal">-fn</code> ne font que décourager
+       l'optimiseur d'utiliser ce type de plans.
+      </p></dd><dt><span class="term"><code class="option">-O</code></span></dt><dd><p>
+       Autorise la modification de la structure des tables système. C'est
+       utilisé par <code class="command">initdb</code>.
+      </p></dd><dt><span class="term"><code class="option">-P</code></span></dt><dd><p>
+       Ignore les index système lors de la lecture des tables système (mais
+       les met à jour lors de la modification des tables). Ceci est utile
+       lors de la récupération d'index système endommagés.
+      </p></dd><dt><span class="term"><code class="option">-t</code> <code class="literal">pa[rser] | pl[anner] | e[xecutor]</code></span></dt><dd><p>
+       Affiche les statistiques en temps pour chaque requête en relation avec
+       un des modules majeurs du système. Cette option ne peut pas être utilisée
+       avec l'option <code class="option">-s</code>.
+      </p></dd><dt><span class="term"><code class="option">-T</code></span></dt><dd><p>
+       Cette option est présente pour les problèmes de débogage du genre
+       mort brutal d'un processus serveur. La stratégie habituelle dans cette
+       situation est de notifier tous les autres processus serveur qu'ils
+       doivent se terminer, en leur envoyant des signaux
+       <span class="systemitem">SIGQUIT</span>. Avec cette option,
+       <span class="systemitem">SIGABRT</span> sera envoyé à la place, ce qui aura
+       pour conséquence la génération de fichiers <span class="foreignphrase"><em class="foreignphrase">core
+       dump</em></span>.
+      </p></dd><dt><span class="term"><code class="option">-v</code> <em class="replaceable"><code>protocole</code></em></span></dt><dd><p>
+       Indique le numéro de version utilisé par le protocole interface/moteur
+       pour une session particulière. Cette option est uniquement utilisée en
+       interne.
+      </p></dd><dt><span class="term"><code class="option">-W</code> <em class="replaceable"><code>secondes</code></em></span></dt><dd><p>
+       Un délai de ce nombre de secondes survient quand un nouveau processus
+       serveur est lancé, une fois la procédure d'authentification terminée.
+       Ceci a pour but de permettre au développeur d'attacher un débogueur au
+       processus serveur.
+      </p></dd></dl></div></div><div class="refsect2" id="id-1.9.5.16.6.5"><h3>Options en mode mono-utilisateur</h3><a id="id-1.9.5.16.6.5.2" class="indexterm"></a><p>
+    Les options suivantes s'appliquent uniquement en mode mono-utilisateur
+    (voir <a class="xref" href="app-postgres.html#APP-POSTGRES-SINGLE-USER" title="Mode simple utilisateur">Mode simple utilisateur</a> ci-dessous).
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">--single</code></span></dt><dd><p>
+       Sélectionne le mode mono-utilisateur. Cette option doit être la première
+       sur la ligne de commande.
+      </p></dd><dt><span class="term"><em class="replaceable"><code>base</code></em></span></dt><dd><p>
+       Indique le nom de la base à accèder. Il doit être le dernier argument.
+       Si elle est omise, le nom de l'utilisateur est utilisé par défaut.
+      </p></dd><dt><span class="term"><code class="option">-E</code></span></dt><dd><p>
+       Affiche toutes les commandes sur la sortie standard avant de les
+       exécuter.
+      </p></dd><dt><span class="term"><code class="option">-j</code></span></dt><dd><p>
+       Utilise un point-virgule suivi par deux retours à la ligne, plutôt qu'une
+       seule comme marqueur de fin de commande.
+      </p></dd><dt><span class="term"><code class="option">-r</code> <em class="replaceable"><code>fichier</code></em></span></dt><dd><p>
+       Envoie toute la sortie des traces du serveur dans <em class="replaceable"><code>fichier</code></em>. Cette option est seulement
+       honorée quand elle est fournie en tant qu'option de ligne de
+       commande.
+      </p></dd></dl></div></div></div><div class="refsect1" id="id-1.9.5.16.7"><h2>Environnement</h2><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">PGCLIENTENCODING</code></span></dt><dd><p>
+      Jeu de caractères utilisé par défaut par tous les clients. (Les clients
+      peuvent surcharger ce paramètre individuellement.) Cette valeur est aussi
+      configurable dans le fichier de configuration.
+     </p></dd><dt><span class="term"><code class="envar">PGDATA</code></span></dt><dd><p>
+      Emplacement du répertoire des données par défaut
+     </p></dd><dt><span class="term"><code class="envar">PGDATESTYLE</code></span></dt><dd><p>
+      Valeur par défaut du paramètre en exécution <a class="xref" href="runtime-config-client.html#GUC-DATESTYLE">datestyle</a>.
+      (Cette variable d'environnement est obsolète.)
+     </p></dd><dt><span class="term"><code class="envar">PGPORT</code></span></dt><dd><p>
+      Numéro de port par défaut (à configurer de préférence dans le fichier de configuration)
+     </p></dd></dl></div></div><div class="refsect1" id="id-1.9.5.16.8"><h2>Diagnostics</h2><p>
+   Un message d'erreur mentionnant <code class="literal">semget</code> ou
+   <code class="literal">shmget</code> indique probablement que vous devez configurer
+   votre noyau pour fournir la mémoire partagée et les sémaphores adéquates.
+   Pour plus de discussion, voir <a class="xref" href="kernel-resources.html" title="18.4. Gérer les ressources du noyau">Section 18.4</a>. Vous
+   pouvez aussi repousser la configuration du noyau en diminuant <a class="xref" href="runtime-config-resource.html#GUC-SHARED-BUFFERS">shared_buffers</a> pour réduire la consommation de la
+   mémoire partagée utilisée par <span class="productname">PostgreSQL</span>, et/ou
+   en diminuant <a class="xref" href="runtime-config-connection.html#GUC-MAX-CONNECTIONS">max_connections</a> pour réduire la
+   consommation de sémaphores.
+  </p><p>
+   Un message d'erreur suggérant qu'un autre serveur est déjà en cours
+   d'exécution devra vous demander une vérification attentive, par
+   exemple en utilisant ls commandes
+   </p><pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>ps ax | grep postgres</code></strong>
+   </pre><p>
+   ou
+   </p><pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>ps -ef | grep postgres</code></strong>
+   </pre><p>
+   suivant votre système. Si vous êtes certain qu'il n'y a aucun serveur
+   en conflit, vous pouvez supprimer le fichier verrou mentionné dans le
+   message et tenter de nouveau.
+  </p><p>
+   Un message d'erreur indiquant une incapacité à se lier à un port indique
+   que ce port est déjà utilisé par des processus autres que
+   <span class="productname">PostgreSQL</span>. Vous pouvez aussi obtenir cette
+   erreur si vous quittez <code class="command">postgres</code> et le relancez
+   immédiatement en utilisant le même port ; dans ce cas, vous
+   devez tout simplement attendre quelques secondes pour que le système
+   d'exploitation ferme bien le port avant de tenter de nouveau. Enfin,
+   vous pouvez obtenir cette erreur si vous indiquez un numéro de port
+   que le système considère comme réservé. Par exemple, beaucoup de
+   versions d'Unix considèrent les numéros de port sous 1024 comme
+   de <span class="quote">« <span class="quote">confiance</span> »</span> et permettent seulement leur accès par le
+   superutilisateur Unix.
+  </p></div><div class="refsect1" id="id-1.9.5.16.9"><h2>Notes</h2><p>
+   L'outil <a class="xref" href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><span class="application">pg_ctl</span></span></a> est utilisable pour lancer et
+   arrêter le serveur <code class="command">postgres</code> de façon sûre et confortable.
+  </p><p>
+   Si possible, <span class="emphasis"><em>ne pas</em></span> utiliser
+   <code class="literal">SIGKILL</code> pour tuer le serveur
+   <code class="command">postgres</code> principal. Le fait empêchera
+   <code class="command">postgres</code> de libérer les ressources système
+   (c'est-à-dire mémoire partagée et sémaphores) qu'il détient avant de
+   s'arrêter. Ceci peut poser problèmes lors du lancement d'un
+   <code class="command">postgres</code> frais.
+  </p><p>
+   Pour terminer le serveur <code class="command">postgres</code> normalement, les signaux
+   <code class="literal">SIGTERM</code>, <code class="literal">SIGINT</code> ou
+   <code class="literal">SIGQUIT</code> peuvent être utilisés. Le premier attendra que
+   tous les clients terminent avant de quitter, le second forcera la déconnexion
+   de tous les clients et le troisième quittera immédiatement sans arrêt propre.
+   Ce dernier amènera une récupération lors du redémarrage.
+  </p><p>
+   Le signal <code class="literal">SIGHUP</code> rechargera les fichiers de configuration
+   du serveur. Il est aussi possible d'envoyer <code class="literal">SIGHUP</code> à un
+   processus serveur individuel mais ce n'est pas perceptible.
+  </p><p>
+   Pour annuler une requête en cours d'exécution, envoyez le signal
+   <code class="literal">SIGINT</code> au processus exécutant cette commande. Pour
+   tuer un processus serveur de façon propre, envoyez le signal
+   <code class="literal">SIGTERM</code> à ce processus. Voir aussi
+   <code class="function">pg_cancel_backend</code> et <code class="function">pg_terminate_backend</code>
+   dans <a class="xref" href="functions-admin.html#FUNCTIONS-ADMIN-SIGNAL" title="9.28.2. Fonctions d'envoi de signaux">Section 9.28.2</a> pour leur équivalents appelables
+   avec une requête SQL.
+  </p><p>
+   Le serveur <code class="command">postgres</code> utilise aussi <code class="literal">SIGQUIT</code>
+   pour dire à ses processus-fils de terminer sans le nettoyage habituel.
+   Ce signal <span class="emphasis"><em>ne doit pas</em></span> être envoyé par les utilisateurs.
+   Il est aussi déconseillé d'envoyer <code class="literal">SIGKILL</code>
+   à un processus serveur  --  le serveur <code class="command">postgres</code>
+   principal interprétera ceci comme un arrêt brutal et forcera tous les
+   autres processus serveur à quitter dans le cas d'une procédure standard
+   de récupération après arrêt brutal.
+  </p></div><div class="refsect1" id="APP-POSTGRES-BUGS"><h2>Bogues</h2><p>
+   Les options <code class="option">--</code> ne fonctionneront pas sous <span class="systemitem">FreeBSD</span> et <span class="systemitem">OpenBSD</span>.
+   Utilisez <code class="option">-c</code> à la place. C'est un bogue dans les systèmes
+   d'exploitation affectés ; une prochaine version de
+   <span class="productname">PostgreSQL</span> fournira un contournement si ce n'est
+   pas corrigé.
+  </p></div><div class="refsect1" id="APP-POSTGRES-SINGLE-USER"><h2>Mode simple utilisateur</h2><p>
+   Pour démarrer un serveur en mode mono-utilisateur, utilisez une commande
+   comme
+   </p><pre class="screen"><strong class="userinput"><code>postgres --single -D /usr/local/pgsql/data <em class="replaceable"><code>autres-options</code></em> ma_base</code></strong>
+   </pre><p>
+   Fournissez le bon chemin vers le répertoire des bases avec l'option
+   <code class="option">-D</code> ou assurez-vous que la variable d'environnement
+   <code class="envar">PGDATA</code> est configurée. De plus, spécifiez le nom de la base
+   particulière avec laquelle vous souhaitez travailler.
+  </p><p>
+   Habituellement, le serveur en mode mono-utilisateur traite le retour chariot
+   comme le terminateur d'une saisie ; il n'y a pas le concept du
+   point-virgule contraitement à <span class="application">psql</span>. Pour saisir
+   une commande sur plusieurs lignes, vous devez saisir un antislash juste avant
+   un retour chariot, sauf pour le dernier. L'antislash et le retour à la ligne
+   qui suit sont supprimés de la saisie en entrée. Notez que ceci survient
+   même à l'intérieur d'un chaîne litérale ou d'un commentaire.
+  </p><p>
+   Si vous utilisez l'option en ligne de commande <code class="option">-j</code>, un seul
+   retour à la ligne ne suffira pas à terminer la saisie. Dans
+   ce cas, il faut utiliser la séquence point-virgule - retour à la ligne -
+   retour à la ligne. Autrement dit, saisir un point-virgule suivi d'une ligne
+   entièrement vide. La séquence antislash - retour à la ligne n'est pas traitée
+   spécialement dans ce mode. Encore une fois, il n'y a aucune intelligence sur
+   une séquence apparaissant à l'intérieur d'une chaîne litérale ou d'un
+   commentaire.
+  </p><p>
+   Dans les modes de saisie, si vous saisissez un point-virgule qui ne se trouve
+   ni avant ni partie prenant d'une fin de saisie, il est considéré comme un
+   séparateur de commande. Quand vous saisissez une fin de commande, les différentes
+   requêtes saisies seront exécutées dans la même transaction.
+  </p><p>
+   Pour quitter la session, saisissez <acronym class="acronym">EOF</acronym>
+   (habituellement, <span class="keycap"><strong>Control</strong></span>+<span class="keycap"><strong>D</strong></span>).
+   Si vous avez saisi du texte depuis la fin de la commande précédente,
+   alors <acronym class="acronym">EOF</acronym> sera pris comme une fin de commande et un autre
+   <acronym class="acronym">EOF</acronym> sera nécessaire pour quitter.
+  </p><p>
+   Notez que le serveur en mode mono-utilisateur ne fournit pas de fonctionnalités
+   avancées sur l'édition de lignes (par exemple, pas d'historique des commandes).
+   De plus, le mode mono-utilisateur ne lance pas de processus en tâche de
+   fond, comme par exemple les checkpoints automatiques ou la réplication.
+  </p></div><div class="refsect1" id="APP-POSTGRES-EXAMPLES"><h2>Exemples</h2><p>
+   Pour lancer <code class="command">postgres</code> en tâche de fond avec les valeurs
+   par défaut, saisissez :
+
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>nohup postgres &gt;logfile 2&gt;&amp;1 &lt;/dev/null &amp;</code></strong>
+   </pre><p>
+  </p><p>
+   Pour lancer <code class="command">postgres</code> avec un port spécifique, e.g. 1234 :
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>postgres -p 1234</code></strong>
+   </pre><p>
+   Pour se connecter à ce serveur avec <span class="application">psql</span>,
+   indiquez le numéro de port avec l'option -p :
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>psql -p 1234</code></strong>
+   </pre><p>
+   ou de configurer la variable d'environnement <code class="envar">PGPORT</code> :
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>export PGPORT=1234</code></strong>
+<code class="prompt">$</code> <strong class="userinput"><code>psql</code></strong>
+   </pre><p>
+  </p><p>
+   Les paramètres nommés peuvent être configurés suivant deux façons :
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>postgres -c work_mem=1234</code></strong>
+<code class="prompt">$</code> <strong class="userinput"><code>postgres --work-mem=1234</code></strong>
+   </pre><p>
+   Ces deux formes surchargent le paramétrage qui pourrait exister pour
+   <code class="varname">work_mem</code> dans <code class="filename">postgresql.conf</code>. Notez
+   que les tirets bas dans les noms de paramètres sont écrits avec soir des
+   tirets bas soit des tirets sur la ligne de commande. Sauf pour les expériences
+   à court terme, il est probablement mieux de modifier le paramétrage dans
+   <code class="filename">postgresql.conf</code> que de se baser sur une option en ligne
+   de commande.
+  </p></div><div class="refsect1" id="id-1.9.5.16.13"><h2>Voir aussi</h2><p>
+   <a class="xref" href="app-initdb.html" title="initdb"><span class="refentrytitle"><span class="application">initdb</span></span></a>,
+   <a class="xref" href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><span class="application">pg_ctl</span></span></a>
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/app-postgres.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:08 GMT -->
+</html>

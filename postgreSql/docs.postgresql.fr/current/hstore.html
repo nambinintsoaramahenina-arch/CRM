@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/hstore.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:20 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.17. hstore -- type de données clé/valeur hstore</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="fuzzystrmatch.html" title="F.16. fuzzystrmatch -- déterminer les similarités et les distances sur des chaînes de caractères" /><link rel="next" href="intagg.html" title="F.18. intagg -- agrégateur et énumérateur d'entiers" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/hstore.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/hstore.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/hstore.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/hstore.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/hstore.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/hstore.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/hstore.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/hstore.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/hstore.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/hstore.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/hstore.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/hstore.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/hstore.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/hstore.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/hstore.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/hstore.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/hstore.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/hstore.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/hstore.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="appendixes.html">Annexes</a></span> » <span class="breadcrumb-link"><a href="contrib.html">Modules et extensions supplémentaires fournis</a></span> » <span class="breadcrumb-node">hstore  --  type de données clé/valeur hstore</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="fuzzystrmatch.html" title="F.16. fuzzystrmatch  --  déterminer les similarités et les distances&#10; sur des chaînes de caractères">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="intagg.html" title="F.18. intagg  --  agrégateur et énumérateur d'entiers">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">F.16. fuzzystrmatch  --  déterminer les similarités et les distances
+ sur des chaînes de caractères </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> F.18. intagg  --  agrégateur et énumérateur d'entiers</td></tr></table></div><div class="sect1" id="HSTORE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.17. hstore  --  type de données clé/valeur hstore <a href="#HSTORE" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="hstore.html#HSTORE-EXTERNAL-REP">F.17.1. Représentation externe de <code class="type">hstore</code></a></span></dt><dt><span class="sect2"><a href="hstore.html#HSTORE-OPS-FUNCS">F.17.2. Opérateurs et fonctions <code class="type">hstore</code></a></span></dt><dt><span class="sect2"><a href="hstore.html#HSTORE-INDEXES">F.17.3. Index</a></span></dt><dt><span class="sect2"><a href="hstore.html#HSTORE-EXAMPLES">F.17.4. Exemples</a></span></dt><dt><span class="sect2"><a href="hstore.html#HSTORE-STATISTICS">F.17.5. Statistiques</a></span></dt><dt><span class="sect2"><a href="hstore.html#HSTORE-COMPATIBILITY">F.17.6. Compatibilité</a></span></dt><dt><span class="sect2"><a href="hstore.html#HSTORE-TRANSFORMS">F.17.7. Transformations</a></span></dt><dt><span class="sect2"><a href="hstore.html#HSTORE-AUTHORS">F.17.8. Auteurs</a></span></dt></dl></div><a id="id-1.11.7.28.2" class="indexterm"></a><p>
+  Ce module code le type de données <code class="type">hstore</code>, qui permet de stocker
+  des ensembles de paires clé/valeur dans une simple valeur
+  <span class="productname">PostgreSQL</span>. Ce peut être utile dans divers
+  cas, comme des lignes avec de nombreux attributs rarement examinés ou des données
+  semi-structurées. Les clés et les valeurs sont de simples chaînes de texte.
+ </p><p>
+  Ce module est considéré comme <span class="quote">« <span class="quote">trusted</span> »</span>, c'est-à-dire qu'il peut
+  être installé par des utilisateurs simples (sans attribut
+  <code class="literal">SUPERUSER</code>) ayant le droit <code class="literal">CREATE</code> sur la
+  base de données courante.
+ </p><div class="sect2" id="HSTORE-EXTERNAL-REP"><div class="titlepage"><div><div><h3 class="title">F.17.1. Représentation externe de <code class="type">hstore</code> <a href="#HSTORE-EXTERNAL-REP" class="id_link">#</a></h3></div></div></div><p>
+   La représentation textuelle d'une valeur <code class="type">hstore</code>, utilisée en
+   entrée et en sortie, inclut zéro ou plusieurs paires
+   <em class="replaceable"><code>clé</code></em>
+   <code class="literal">=&gt;</code> <em class="replaceable"><code>valeur</code></em> séparées par
+   des virgules. Par exemple :
+
+   </p><pre class="synopsis">
+    k =&gt; v
+    foo =&gt; bar, baz =&gt; whatever
+    "1-a" =&gt; "anything at all"
+   </pre><p>
+
+   L'ordre des paires n'est pas significatif (et peut ne pas être reproduit
+   en sortie). Les espaces blancs entre les paires ou autour des signes
+   <code class="literal">=&gt;</code> sont ignorés. Ajoutez des guillemets
+   pour les clés et valeurs contenant des espaces, virgules, <code class="literal">=</code> ou
+   <code class="literal">&gt;</code>. Pour inclure un guillemet double ou un antislash
+   dans une clé ou une valeur, échappez-le avec un antislash.
+  </p><p>
+   Chaque clé dans un <code class="type">hstore</code> est unique. Si vous déclarez un
+   <code class="type">hstore</code> avec des clés dupliquées, seule une sera stockée dans
+   <code class="type">hstore</code> et il n'y a pas de garantie sur celle qui sera
+   conservée :
+
+   </p><pre class="programlisting">
+SELECT 'a=&gt;1,a=&gt;2'::hstore;
+  hstore
+----------
+ "a"=&gt;"1"
+   </pre><p>
+  </p><p>
+   Une valeur, mais pas une clé, peut être un <code class="literal">NULL</code> SQL. Par
+   exemple :
+
+   </p><pre class="programlisting">
+    key =&gt; NULL
+   </pre><p>
+
+   Le mot-clé <code class="literal">NULL</code> est insensible à la casse.
+   Ajoutez des guillemets autour du <code class="literal">NULL</code> pour qu'il soit
+   traité comme toute autre chaîne.
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    Gardez en tête que le format texte <code class="type">hstore</code>, lorsqu'il est
+    utilisé en entrée, s'applique <span class="emphasis"><em>avant</em></span> tout guillemet ou
+    échappement nécessaire. Si vous passez une valeur littérale de type
+    <code class="type">hstore</code> via un paramètre, aucun traitement supplémentaire n'est
+    nécessaire. Par contre, si vous la passez comme constante littérale entre
+    guillemets, alors les guillemets simples et, suivant la configuration du
+    paramètre <code class="varname">standard_conforming_strings</code>, les caractères
+    antislash doivent être échappés correctement. Voir <a class="xref" href="sql-syntax-lexical.html#SQL-SYNTAX-STRINGS" title="4.1.2.1. Constantes de chaînes">Section 4.1.2.1</a> pour plus d'informations sur la gestion des
+    chaînes constantes.
+   </p></div><p>
+   En sortie, mettez toujours des guillemets doubles autour des clés et valeurs,
+   même quand cela n'est pas strictement nécessaire.
+  </p></div><div class="sect2" id="HSTORE-OPS-FUNCS"><div class="titlepage"><div><div><h3 class="title">F.17.2. Opérateurs et fonctions <code class="type">hstore</code> <a href="#HSTORE-OPS-FUNCS" class="id_link">#</a></h3></div></div></div><p>
+   Les opérateurs fournis par le module <code class="literal">hstore</code> sont
+   montrés dans <a class="xref" href="hstore.html#HSTORE-OP-TABLE" title="Tableau F.6. Opérateurshstore">Tableau F.6</a> et les fonctions
+   dans <a class="xref" href="hstore.html#HSTORE-FUNC-TABLE" title="Tableau F.7. hstore Functions">Tableau F.7</a>.
+  </p><div class="table" id="HSTORE-OP-TABLE"><p class="title"><strong>Tableau F.6. Opérateurs<code class="type">hstore</code></strong></p><div class="table-contents"><table class="table" summary="Opérateurshstore" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+        Operator
+       </p>
+       <p>
+        Description
+       </p>
+       <p>
+        Exemple(s)
+       </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">hstore</code> <code class="literal">-&gt;</code> <code class="type">text</code>
+        → <code class="returnvalue">text</code>
+       </p>
+       <p>
+        Renvoie la valeur associée à une clé donnée
+        (<code class="literal">NULL</code> si inexistante).
+       </p>
+       <p>
+        <code class="literal">'a=&gt;x, b=&gt;y'::hstore -&gt; 'a'</code>
+        → <code class="returnvalue">x</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">hstore</code> <code class="literal">-&gt;</code> <code class="type">text[]</code>
+        → <code class="returnvalue">text[]</code>
+       </p>
+       <p>
+        Retourne la valeur associée à des clés
+        (<code class="literal">NULL</code> si inexistantes).
+       </p>
+       <p>
+        <code class="literal">'a=&gt;x, b=&gt;y, c=&gt;z'::hstore -&gt; ARRAY['c','a']</code>
+        → <code class="returnvalue">{"z","x"}</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">hstore</code> <code class="literal">||</code> <code class="type">hstore</code>
+        → <code class="returnvalue">hstore</code>
+       </p>
+       <p>
+        Concatène deux <code class="type">hstore</code>s.
+       </p>
+       <p>
+        <code class="literal">'a=&gt;b, c=&gt;d'::hstore || 'c=&gt;x, d=&gt;q'::hstore</code>
+        → <code class="returnvalue">"a"=&gt;"b", "c"=&gt;"x", "d"=&gt;"q"</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">hstore</code> <code class="literal">?</code> <code class="type">text</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Ce <code class="type">hstore</code> contient-il une clé donnée ?
+       </p>
+       <p>
+        <code class="literal">'a=&gt;1'::hstore ? 'a'</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">hstore</code> <code class="literal">?&amp;</code> <code class="type">text[]</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Ce <code class="type">hstore</code> contient-il toutes les clés indiquées ?
+       </p>
+       <p>
+        <code class="literal">'a=&gt;1,b=&gt;2'::hstore ?&amp; ARRAY['a','b']</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">hstore</code> <code class="literal">?|</code> <code class="type">text[]</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Ce <code class="type">hstore</code> contient-il une des clés indiquées ?
+       </p>
+       <p>
+        <code class="literal">'a=&gt;1,b=&gt;2'::hstore ?| ARRAY['b','c']</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">hstore</code> <code class="literal">@&gt;</code> <code class="type">hstore</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        L'opérande gauche contient-il le droit ?
+       </p>
+       <p>
+        <code class="literal">'a=&gt;b, b=&gt;1, c=&gt;NULL'::hstore @&gt; 'b=&gt;1'</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">hstore</code> <code class="literal">&lt;@</code> <code class="type">hstore</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        L'opérande gauche est-il contenu dans le droit ?
+       </p>
+       <p>
+        <code class="literal">'a=&gt;c'::hstore &lt;@ 'a=&gt;b, b=&gt;1, c=&gt;NULL'</code>
+        → <code class="returnvalue">f</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">hstore</code> <code class="literal">-</code> <code class="type">text</code>
+        → <code class="returnvalue">hstore</code>
+       </p>
+       <p>
+        Supprime la clé dans l'opérande gauche.
+       </p>
+       <p>
+        <code class="literal">'a=&gt;1, b=&gt;2, c=&gt;3'::hstore - 'b'::text</code>
+        → <code class="returnvalue">"a"=&gt;"1", "c"=&gt;"3"</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">hstore</code> <code class="literal">-</code> <code class="type">text[]</code>
+        → <code class="returnvalue">hstore</code>
+       </p>
+       <p>
+        Supprime les clés dans l'opérande gauche.
+       </p>
+       <p>
+        <code class="literal">'a=&gt;1, b=&gt;2, c=&gt;3'::hstore - ARRAY['a','b']</code>
+        → <code class="returnvalue">"c"=&gt;"3"</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">hstore</code> <code class="literal">-</code> <code class="type">hstore</code>
+        → <code class="returnvalue">hstore</code>
+       </p>
+       <p>
+        Supprime les clés de l'opérande gauche qui correspondent à des paires
+        de l'opérande droit.
+       </p>
+       <p>
+        <code class="literal">'a=&gt;1, b=&gt;2, c=&gt;3'::hstore - 'a=&gt;4, b=&gt;2'::hstore</code>
+        → <code class="returnvalue">"a"=&gt;"1", "c"=&gt;"3"</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyelement</code> <code class="literal">#=</code> <code class="type">hstore</code>
+        → <code class="returnvalue">anyelement</code>
+       </p>
+       <p>
+        Remplace les champs de l'opérande gauche (qui doit être un type composite)
+        avec les valeurs correspondantes du <code class="type">hstore</code>.
+       </p>
+       <p>
+        <code class="literal">ROW(1,3) #= 'f1=&gt;11'::hstore</code>
+        → <code class="returnvalue">(11,3)</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="literal">%%</code> <code class="type">hstore</code>
+        → <code class="returnvalue">text[]</code>
+       </p>
+       <p>
+        Convertit un <code class="type">hstore</code> en tableau
+        alternant les clés et les valeurs.
+       </p>
+       <p>
+        <code class="literal">%% 'a=&gt;foo, b=&gt;bar'::hstore</code>
+        → <code class="returnvalue">{a,foo,b,bar}</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="literal">%#</code> <code class="type">hstore</code>
+        → <code class="returnvalue">text[]</code>
+       </p>
+       <p>
+        Convertit <code class="type">hstore</code> en un tableau
+        à deux dimensions clé/valeur.
+       </p>
+       <p>
+        <code class="literal">%# 'a=&gt;foo, b=&gt;bar'::hstore</code>
+        → <code class="returnvalue">{{a,foo},{b,bar}}</code>
+       </p></td></tr></tbody></table></div></div><br class="table-break" /><div class="table" id="HSTORE-FUNC-TABLE"><p class="title"><strong>Tableau F.7. <code class="type">hstore</code> Functions</strong></p><div class="table-contents"><table class="table" summary="hstore Functions" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+        Fonction
+       </p>
+       <p>
+        Description
+       </p>
+       <p>
+        Exemple(s)
+       </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.1.1.1.1" class="indexterm"></a>
+        <code class="function">hstore</code> ( <code class="type">record</code> )
+        → <code class="returnvalue">hstore</code>
+       </p>
+       <p>
+        Construit un <code class="type">hstore</code> à partir d'un enregistrement
+        ou d'une ligne.
+       </p>
+       <p>
+        <code class="literal">hstore(ROW(1,2))</code>
+        → <code class="returnvalue">"f1"=&gt;"1", "f2"=&gt;"2"</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">hstore</code> ( <code class="type">text[]</code> )
+        → <code class="returnvalue">hstore</code>
+       </p>
+       <p>
+        Construit un <code class="type">hstore</code> à partir d'un tableau, qui peut
+        être soit un tableau clé/valeur, soit un tableau à deux dimensions.
+       </p>
+       <p>
+        <code class="literal">hstore(ARRAY['a','1','b','2'])</code>
+        → <code class="returnvalue">"a"=&gt;"1", "b"=&gt;"2"</code>
+       </p>
+       <p>
+        <code class="literal">hstore(ARRAY[['c','3'],['d','4']])</code>
+        → <code class="returnvalue">"c"=&gt;"3", "d"=&gt;"4"</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">hstore</code> ( <code class="type">text[]</code>, <code class="type">text[]</code> )
+        → <code class="returnvalue">hstore</code>
+       </p>
+       <p>
+        Construit un <code class="type">hstore</code> à partir de tableaux séparés
+        pour les clés et les valeurs.
+       </p>
+       <p>
+        <code class="literal">hstore(ARRAY['a','b'], ARRAY['1','2'])</code>
+        → <code class="returnvalue">"a"=&gt;"1", "b"=&gt;"2"</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">hstore</code> ( <code class="type">text</code>, <code class="type">text</code> )
+        → <code class="returnvalue">hstore</code>
+       </p>
+       <p>
+        Construit un <code class="type">hstore</code> à un seul élément.
+       </p>
+       <p>
+        <code class="literal">hstore('a', 'b')</code>
+        → <code class="returnvalue">"a"=&gt;"b"</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.5.1.1.1" class="indexterm"></a>
+        <code class="function">akeys</code> ( <code class="type">hstore</code> )
+        → <code class="returnvalue">text[]</code>
+       </p>
+       <p>
+        Extrait les clés du <code class="type">hstore</code> dans un tableau.
+       </p>
+       <p>
+        <code class="literal">akeys('a=&gt;1,b=&gt;2')</code>
+        → <code class="returnvalue">{a,b}</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.6.1.1.1" class="indexterm"></a>
+        <code class="function">skeys</code> ( <code class="type">hstore</code> )
+        → <code class="returnvalue">setof text</code>
+       </p>
+       <p>
+        Extrait les clés du <code class="type">hstore</code> dans un ensemble.
+       </p>
+       <p>
+        <code class="literal">skeys('a=&gt;1,b=&gt;2')</code>
+        → <code class="returnvalue"></code>
+        </p><pre class="programlisting">
+ a
+ b
+        </pre><p>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.7.1.1.1" class="indexterm"></a>
+        <code class="function">avals</code> ( <code class="type">hstore</code> )
+        → <code class="returnvalue">text[]</code>
+       </p>
+       <p>
+        Extrait les valeurs du <code class="type">hstore</code> dans un tableau.
+       </p>
+       <p>
+        <code class="literal">avals('a=&gt;1,b=&gt;2')</code>
+        → <code class="returnvalue">{1,2}</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.8.1.1.1" class="indexterm"></a>
+        <code class="function">svals</code> ( <code class="type">hstore</code> )
+        → <code class="returnvalue">setof text</code>
+       </p>
+       <p>
+        Extrait les valeurs du <code class="type">hstore</code> dans un ensemble.
+       </p>
+       <p>
+        <code class="literal">svals('a=&gt;1,b=&gt;2')</code>
+        → <code class="returnvalue"></code>
+        </p><pre class="programlisting">
+ 1
+ 2
+        </pre><p>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.9.1.1.1" class="indexterm"></a>
+        <code class="function">hstore_to_array</code> ( <code class="type">hstore</code> )
+        → <code class="returnvalue">text[]</code>
+       </p>
+       <p>
+        Extrait les clés et les valeurs du <code class="type">hstore</code> sous
+        la forme d'un tableau de clés et valeurs alternées.
+       </p>
+       <p>
+        <code class="literal">hstore_to_array('a=&gt;1,b=&gt;2')</code>
+        → <code class="returnvalue">{a,1,b,2}</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.10.1.1.1" class="indexterm"></a>
+        <code class="function">hstore_to_matrix</code> ( <code class="type">hstore</code> )
+        → <code class="returnvalue">text[]</code>
+       </p>
+       <p>
+        Extrait les clés et valeurs <code class="type">hstore</code> sous la forme
+        d'un tableau à deux dimensions.
+       </p>
+       <p>
+        <code class="literal">hstore_to_matrix('a=&gt;1,b=&gt;2')</code>
+        → <code class="returnvalue">{{a,1},{b,2}}</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.11.1.1.1" class="indexterm"></a>
+        <code class="function">hstore_to_json</code> ( <code class="type">hstore</code> )
+        → <code class="returnvalue">json</code>
+       </p>
+       <p>
+        Convertit une valeur <code class="type">hstore</code> en <code class="type">json</code>,
+        en convertissant toutes les valeurs non NULL en chaînes JSON.
+       </p>
+       <p>
+        Cette fonction est appelée implicitement
+        quand une valeur <code class="type">hstore</code>
+        est convertie vers du <code class="type">json</code>.
+       </p>
+       <p>
+        <code class="literal">hstore_to_json('"a key"=&gt;1, b=&gt;t, c=&gt;null, d=&gt;12345, e=&gt;012345, f=&gt;1.234, g=&gt;2.345e+4')</code>
+        → <code class="returnvalue">{"a key": "1", "b": "t", "c": null, "d": "12345", "e": "012345", "f": "1.234", "g": "2.345e+4"}</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.12.1.1.1" class="indexterm"></a>
+        <code class="function">hstore_to_jsonb</code> ( <code class="type">hstore</code> )
+        → <code class="returnvalue">jsonb</code>
+       </p>
+       <p>
+        Convertit une valeur <code class="type">hstore</code> en <code class="type">jsonb</code>,
+        en convertissant toutes les valeurs non NULL en chaînes JSON.
+       </p>
+       <p>
+        Cette fonction est appelée implicitement
+        quand une valeur <code class="type">hstore</code>
+        est convertie vers du <code class="type">jsonb</code>.
+       </p>
+       <p>
+        <code class="literal">hstore_to_jsonb('"a key"=&gt;1, b=&gt;t, c=&gt;null, d=&gt;12345, e=&gt;012345, f=&gt;1.234, g=&gt;2.345e+4')</code>
+        → <code class="returnvalue">{"a key": "1", "b": "t", "c": null, "d": "12345", "e": "012345", "f": "1.234", "g": "2.345e+4"}</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.13.1.1.1" class="indexterm"></a>
+        <code class="function">hstore_to_json_loose</code> ( <code class="type">hstore</code> )
+        → <code class="returnvalue">json</code>
+       </p>
+       <p>
+        Convertit un <code class="type">hstore</code> en une valeur <code class="type">json</code>, mais
+        en essayant de repérer les valeurs numériques et booléennes pour
+        qu'elles ne soient pas entre guillemets dans le JSON.
+       </p>
+       <p>
+        <code class="literal">hstore_to_json_loose('"a key"=&gt;1, b=&gt;t, c=&gt;null, d=&gt;12345, e=&gt;012345, f=&gt;1.234, g=&gt;2.345e+4')</code>
+        → <code class="returnvalue">{"a key": 1, "b": true, "c": null, "d": 12345, "e": "012345", "f": 1.234, "g": 2.345e+4}</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.14.1.1.1" class="indexterm"></a>
+        <code class="function">hstore_to_jsonb_loose</code> ( <code class="type">hstore</code> )
+        → <code class="returnvalue">jsonb</code>
+       </p>
+       <p>
+        Convertit un <code class="type">hstore</code> en une valeur <code class="type">jsonb</code>, mais
+        en essayant de repérer les valeurs numériques et booléennes pour
+        qu'elles ne soient pas entre guillemets dans le JSON.
+       </p>
+       <p>
+        <code class="literal">hstore_to_jsonb_loose('"a key"=&gt;1, b=&gt;t, c=&gt;null, d=&gt;12345, e=&gt;012345, f=&gt;1.234, g=&gt;2.345e+4')</code>
+        → <code class="returnvalue">{"a key": 1, "b": true, "c": null, "d": 12345, "e": "012345", "f": 1.234, "g": 2.345e+4}</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.15.1.1.1" class="indexterm"></a>
+        <code class="function">slice</code> ( <code class="type">hstore</code>, <code class="type">text[]</code> )
+        → <code class="returnvalue">hstore</code>
+       </p>
+       <p>
+        Extrait un sous-ensemble d'un <code class="type">hstore</code> contenant seulement
+        les clés indiquées.
+       </p>
+       <p>
+        <code class="literal">slice('a=&gt;1,b=&gt;2,c=&gt;3'::hstore, ARRAY['b','c','x'])</code>
+        → <code class="returnvalue">"b"=&gt;"2", "c"=&gt;"3"</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.16.1.1.1" class="indexterm"></a>
+        <code class="function">each</code> ( <code class="type">hstore</code> )
+        → <code class="returnvalue">setof record</code>
+        ( <em class="parameter"><code>key</code></em> <code class="type">text</code>,
+        <em class="parameter"><code>value</code></em> <code class="type">text</code> )
+       </p>
+       <p>
+        Extrait les clés et valeurs d'un <code class="type">hstore</code> sous la forme
+        d'un ensemble d'enregistrements.
+       </p>
+       <p>
+        <code class="literal">select * from each('a=&gt;1,b=&gt;2')</code>
+        → <code class="returnvalue"></code>
+        </p><pre class="programlisting">
+  key | value
+ -----+-------
+  a   | 1
+  b   | 2
+        </pre><p>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.17.1.1.1" class="indexterm"></a>
+        <code class="function">exist</code> ( <code class="type">hstore</code>, <code class="type">text</code> )
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Le <code class="type">hstore</code> contient-il une clé donnée ?
+       </p>
+       <p>
+        <code class="literal">exist('a=&gt;1', 'a')</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.18.1.1.1" class="indexterm"></a>
+        <code class="function">defined</code> ( <code class="type">hstore</code>, <code class="type">text</code> )
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Le <code class="type">hstore</code> contient-il une valeur non <code class="literal">NULL</code>
+        comme clé ?
+       </p>
+       <p>
+        <code class="literal">defined('a=&gt;NULL', 'a')</code>
+        → <code class="returnvalue">f</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.19.1.1.1" class="indexterm"></a>
+        <code class="function">delete</code> ( <code class="type">hstore</code>, <code class="type">text</code> )
+        → <code class="returnvalue">hstore</code>
+       </p>
+       <p>
+        Supprime la paire correspondant à une clé donnée.
+       </p>
+       <p>
+        <code class="literal">delete('a=&gt;1,b=&gt;2', 'b')</code>
+        → <code class="returnvalue">"a"=&gt;"1"</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">delete</code> ( <code class="type">hstore</code>, <code class="type">text[]</code> )
+        → <code class="returnvalue">hstore</code>
+       </p>
+       <p>
+        Supprime toutes les paires correspondant à ces clés.
+       </p>
+       <p>
+        <code class="literal">delete('a=&gt;1,b=&gt;2,c=&gt;3', ARRAY['a','b'])</code>
+        → <code class="returnvalue">"c"=&gt;"3"</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">delete</code> ( <code class="type">hstore</code>, <code class="type">hstore</code> )
+        → <code class="returnvalue">hstore</code>
+       </p>
+       <p>
+        Supprime les paires correspondant à celles du second argument.
+       </p>
+       <p>
+        <code class="literal">delete('a=&gt;1,b=&gt;2', 'a=&gt;4,b=&gt;2'::hstore)</code>
+        → <code class="returnvalue">"a"=&gt;"1"</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.28.6.4.2.2.22.1.1.1" class="indexterm"></a>
+        <code class="function">populate_record</code> ( <code class="type">anyelement</code>, <code class="type">hstore</code> )
+        → <code class="returnvalue">anyelement</code>
+       </p>
+       <p>
+        Remplacer tous les champs de l'opérande gauche (qui doit être un type composite)
+        avec les valeurs correspondantes du <code class="type">hstore</code>.
+       </p>
+       <p>
+        <code class="literal">populate_record(ROW(1,2), 'f1=&gt;42'::hstore)</code>
+        → <code class="returnvalue">(42,2)</code>
+       </p></td></tr></tbody></table></div></div><br class="table-break" /><p>
+   En plus de ces opérateurs et fonctions, les valeurs du type
+   <code class="type">hstore</code> peuvent utiliser des indices, leur permettant ainsi
+   d'agir comme des tableaux associatifs. Seul un indice simple de type
+   <code class="type">text</code> peut être indiqué ; il est interprété comme la clé,
+   et la valeur correspondante est récupérée ou stockée. Par exemple,
+
+</p><pre class="programlisting">
+CREATE TABLE mytable (h hstore);
+INSERT INTO mytable VALUES ('a=&gt;b, c=&gt;d');
+SELECT h['a'] FROM mytable;
+ h
+---
+ b
+(1 row)
+
+UPDATE mytable SET h['c'] = 'new';
+SELECT h FROM mytable;
+          h
+----------------------
+ "a"=&gt;"b", "c"=&gt;"new"
+(1 row)
+</pre><p>
+
+   Une lecture par indice renvoie <code class="literal">NULL</code> si l'indice est
+   <code class="literal">NULL</code> ou si la clé n'existe pas dans ce
+   <code class="type">hstore</code>. (De ce fait, une lecture par indice n'est pas
+   fortement différente de l'opérateur <code class="literal">-&gt;</code>.) Une mise à
+   jour par indice échoue si l'indice est <code class="literal">NULL</code> ;
+   sinon elle remplace la valeur pour cette clé, ajoutant une entrée au
+   <code class="type">hstore</code> si la clé n'existe pas déjà.
+  </p></div><div class="sect2" id="HSTORE-INDEXES"><div class="titlepage"><div><div><h3 class="title">F.17.3. Index <a href="#HSTORE-INDEXES" class="id_link">#</a></h3></div></div></div><p>
+   <code class="type">hstore</code> est supporté par les index GiST et GIN pour les
+   opérateurs <code class="literal">@&gt;</code>, <code class="literal">?</code>,
+   <code class="literal">?&amp;</code> et <code class="literal">?|</code>. Par exemple :
+  </p><pre class="programlisting">
+CREATE INDEX hidx ON testhstore USING GIST (h);
+
+CREATE INDEX hidx ON testhstore USING GIN (h);
+  </pre><p>
+   La classe d'opérateurs GiST <code class="literal">gist_hstore_ops</code>
+   opère une approximation d'un ensemble de clés/valeurs avec une signature bitmap.
+   Son paramètre optionnel entier, <code class="literal">siglen</code>,
+   détermine la longueur de la signature en octets.
+   La longueur par défaut est 16 octets.
+   Les valeurs valides de longueur de signature vont de 1 à 2024 octets.
+   Des signatures plus longues mènent à des recherches plus précises
+   (scannant une partie plus courte de l'index et moins de pages de la table),
+   au prix d'un index plus gros.
+  </p><p>
+   Exemple de création d'un tel index avec une longueur de signature
+   de 32 octets :
+   </p><pre class="programlisting">
+CREATE INDEX hidx ON testhstore USING GIST (h gist_hstore_ops(siglen=32));
+   </pre><p>
+  </p><p>
+   <code class="type">hstore</code> supporte aussi les index <code class="type">btree</code> ou
+   <code class="type">hash</code> pour l'opérateur <code class="literal">=</code>. Cela permet aux
+   colonnes <code class="type">hstore</code> d'être déclarées <code class="literal">UNIQUE</code> et
+   d'être utilisées dans des expressions <code class="literal">GROUP BY</code>,
+   <code class="literal">ORDER BY</code> et <code class="literal">DISTINCT</code>. L'ordre de tri
+   pour les valeurs <code class="type">hstore</code> n'est pas particulièrement utile mais
+   ces index peuvent servir à des recherches d'équivalence. Créez des
+   index de comparaisons <code class="literal">=</code> de la façon suivante :
+  </p><pre class="programlisting">
+CREATE INDEX hidx ON testhstore USING BTREE (h);
+
+CREATE INDEX hidx ON testhstore USING HASH (h);
+  </pre></div><div class="sect2" id="HSTORE-EXAMPLES"><div class="titlepage"><div><div><h3 class="title">F.17.4. Exemples <a href="#HSTORE-EXAMPLES" class="id_link">#</a></h3></div></div></div><p>
+   Ajouter une clé, ou mettre à jour une clé existante avec une nouvelle
+   valeur :
+   </p><pre class="programlisting">
+UPDATE tab SET h['c'] = '3';</pre><p>
+   Voici une autre façon de faire la même chose :
+   </p><pre class="programlisting">
+UPDATE tab SET h = h || hstore('c', '3');</pre><p>
+   Si plusieurs clés doivent être ajoutées ou modifiées en une seule
+   opération, l'approche par concaténation est plus efficace que par
+   indice :
+   </p><pre class="programlisting">
+UPDATE tab SET h = h || hstore(array['q', 'w'], array['11', '12']);</pre><p>
+  </p><p>
+   Supprimer une clé :
+  </p><pre class="programlisting">
+UPDATE tab SET h = delete(h, 'k1');
+  </pre><p>
+   Convertir un enregistrement (<code class="type">record</code>) en un <code class="type">hstore</code> :
+  </p><pre class="programlisting">
+CREATE TABLE test (col1 integer, col2 text, col3 text);
+INSERT INTO test VALUES (123, 'foo', 'bar');
+
+SELECT hstore(t) FROM test AS t;
+                   hstore
+---------------------------------------------
+ "col1"=&gt;"123", "col2"=&gt;"foo", "col3"=&gt;"bar"
+(1 row)
+  </pre><p>
+   Convertir un type <code class="type">hstore</code> en un type <code class="type">record</code>
+   prédéfini :
+  </p><pre class="programlisting">
+CREATE TABLE test (col1 integer, col2 text, col3 text);
+
+SELECT * FROM populate_record(null::test,
+                              '"col1"=&gt;"456", "col2"=&gt;"zzz"');
+ col1 | col2 | col3
+------+------+------
+  456 | zzz  |
+(1 row)
+  </pre><p>
+   Modifier un enregistrement existant en utilisant les valeurs provenant
+   d'un <code class="type">hstore</code> :
+  </p><pre class="programlisting">
+CREATE TABLE test (col1 integer, col2 text, col3 text);
+INSERT INTO test VALUES (123, 'foo', 'bar');
+
+SELECT (r).* FROM (SELECT t #= '"col3"=&gt;"baz"' AS r FROM test t) s;
+ col1 | col2 | col3
+------+------+------
+  123 | foo  | baz
+(1 row)
+  </pre></div><div class="sect2" id="HSTORE-STATISTICS"><div class="titlepage"><div><div><h3 class="title">F.17.5. Statistiques <a href="#HSTORE-STATISTICS" class="id_link">#</a></h3></div></div></div><p>
+   Le type <code class="type">hstore</code>, du fait de sa libéralité intrinsèque, peut
+   contenir beaucoup de clés différentes. C'est à l'application de vérifier
+   la validité des clés. Les exemples ci-dessous présentent plusieurs
+   techniques pour vérifier les clés et obtenir des statistiques.
+  </p><p>
+   Exemple simple :
+  </p><pre class="programlisting">
+SELECT * FROM each('aaa=&gt;bq, b=&gt;NULL, ""=&gt;1');
+  </pre><p>
+   En utilisant une table :
+  </p><pre class="programlisting">
+CREATE TABLE stat AS SELECT (each(h)).key, (each(h)).value FROM testhstore;
+  </pre><p>
+   Statistiques en ligne :
+  </p><pre class="programlisting">
+SELECT key, count(*) FROM
+  (SELECT (each(h)).key FROM testhstore) AS stat
+  GROUP BY key
+  ORDER BY count DESC, key;
+    key    | count
+-----------+-------
+ line      |   883
+ query     |   207
+ pos       |   203
+ node      |   202
+ space     |   197
+ status    |   195
+ public    |   194
+ title     |   190
+ org       |   189
+...................
+  </pre></div><div class="sect2" id="HSTORE-COMPATIBILITY"><div class="titlepage"><div><div><h3 class="title">F.17.6. Compatibilité <a href="#HSTORE-COMPATIBILITY" class="id_link">#</a></h3></div></div></div><p>
+   À partir de PostgreSQL 9.0, <code class="type">hstore</code> utilise une représentation
+   interne différente des anciennes versions. Cela ne présente aucun obstacle
+   pour les mises à jour par sauvegarde/restauration car la représentation
+   textuelle utilisée dans la sauvegarde n'est pas changée.
+  </p><p>
+   Dans le cas d'une mise à jour binaire, la compatibilité ascendante est
+   maintenue en faisant en sorte que le nouveau code reconnaisse les données
+   dans l'ancien format. Ceci aura pour conséquence une légère pénalité au
+   niveau des performances lors du traitement de données qui n'auront pas été
+   modifiées par le nouveau code. Il est possible de forcer une mise à jour de
+   toutes les valeurs d'une colonne de la table en réalisant la requête
+   <code class="literal">UPDATE</code> suivante :
+  </p><pre class="programlisting">
+UPDATE nom_table SET col_hstore = col_hstore || '';
+  </pre><p>
+   Une autre façon de le faire :
+   </p><pre class="programlisting">
+ALTER TABLE nom_table ALTER col_hstore TYPE col_hstore USING hstorecol || '';
+   </pre><p>
+   La méthode <code class="command">ALTER TABLE</code> requiert un verrou de type
+   <code class="literal">ACCESS EXCLUSIVE</code> sur
+   la table, mais n'a pas pour résultat un gonflement de la table à cause
+   d'anciennes versions des lignes.
+  </p></div><div class="sect2" id="HSTORE-TRANSFORMS"><div class="titlepage"><div><div><h3 class="title">F.17.7. Transformations <a href="#HSTORE-TRANSFORMS" class="id_link">#</a></h3></div></div></div><p>
+   Des extensions supplémentaires sont disponibles, qui implémentent des
+   transformations pour le type <code class="type">hstore</code> pour les langages PL/Perl et
+   PL/Python. Les extensions pour PL/Perl sont appelées
+   <code class="literal">hstore_plperl</code> et <code class="literal">hstore_plperlu</code>, pour
+   les deux versions de PL/Perl. Si vous installez ces transformations et si
+   vous les spécifiez lors de la création d'une fonction, les valeurs
+   <code class="type">hstore</code> sont converties en hachage Perl. L'extension pour
+   PL/Python s'appelle <code class="literal">hstore_plpython3u</code>. Si vous l'utilisez,
+   les valeurs <code class="type">hstore</code> sont converties en dictionnaires Python.
+  </p><p>
+   De ces extensions additionnelles, <code class="literal">hstore_plperl</code> est
+   considéré <span class="quote">« <span class="quote">trusted</span> »</span> ; pas les autres.
+  </p><div class="caution"><h3 class="title">Attention</h3><p>
+    Il est fortement recommandé que les extensions de transformation soient
+    installées dans le même schéma que <code class="filename">hstore</code>. Sinon, il
+    existe un risque de sécurité si le schéma d'une extension de
+    transformation contient des objets définis par un utilisateur hostile.
+   </p></div></div><div class="sect2" id="HSTORE-AUTHORS"><div class="titlepage"><div><div><h3 class="title">F.17.8. Auteurs <a href="#HSTORE-AUTHORS" class="id_link">#</a></h3></div></div></div><p>
+   Oleg Bartunov <code class="email">&lt;<a class="email" href="mailto:oleg@sai.msu.su">oleg@sai.msu.su</a>&gt;</code>, Moscou, Université de Moscou,
+   Russie
+  </p><p>
+   Teodor Sigaev <code class="email">&lt;<a class="email" href="mailto:teodor@sigaev.ru">teodor@sigaev.ru</a>&gt;</code>, Moscou, Delta-Soft Ltd.,
+   Russie
+  </p><p>
+   Améliorations supplémentaires par Andrew Gierth <code class="email">&lt;<a class="email" href="mailto:andrew@tao11.riddles.org.uk">andrew@tao11.riddles.org.uk</a>&gt;</code>,
+   Royaume Uni
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/hstore.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:20 GMT -->
+</html>

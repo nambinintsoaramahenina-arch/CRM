@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/app-pgrewind.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:08 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>pg_rewind</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="app-pgresetwal.html" title="pg_resetwal" /><link rel="next" href="pgtestfsync.html" title="pg_test_fsync" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/app-pgrewind.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/app-pgrewind.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/app-pgrewind.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/app-pgrewind.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/app-pgrewind.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/app-pgrewind.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/app-pgrewind.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/app-pgrewind.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/app-pgrewind.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/app-pgrewind.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/app-pgrewind.html">9.5</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/app-pgrewind.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="reference.html">Référence</a></span> » <span class="breadcrumb-link"><a href="reference-server.html">Applications relatives au serveur PostgreSQL</a></span> » <span class="breadcrumb-node"><span class="application">pg_rewind</span></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="app-pgresetwal.html" title="pg_resetwal">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="reference-server.html" title="Applications relatives au serveur PostgreSQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="pgtestfsync.html" title="pg_test_fsync">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top"><span class="application">pg_resetwal</span> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> <span class="application">pg_test_fsync</span></td></tr></table></div><div class="refentry" id="APP-PGREWIND"><div class="titlepage"></div><a id="id-1.9.5.10.1" class="indexterm"></a><div class="refnamediv"><h2><span class="refentrytitle"><span class="application">pg_rewind</span></span></h2><p>pg_rewind — synchronise le répertoire des données de
+   <span class="productname">PostgreSQL</span> avec un autre répertoire de données
+  </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p id="id-1.9.5.10.4.1"><code class="command">pg_rewind</code> [<em class="replaceable"><code>option</code></em>...]  { <code class="option">-D</code>  |   <code class="option">--target-pgdata</code> }<em class="replaceable"><code> répertoire</code></em> { <code class="option">--source-pgdata=<em class="replaceable"><code>répertoire</code></em></code>  |   <code class="option">--source-server=<em class="replaceable"><code>chaine_de_connexion</code></em></code> } </p></div></div><div class="refsect1" id="id-1.9.5.10.5"><h2>Description</h2><p>
+   <span class="application">pg_rewind</span> est un outil qui permet de
+   synchroniser une instance PostgreSQL avec une copie de cette même instance,
+   a postériori de la séparation des timelines. Le scénario classique consiste
+   à réactiver un ancien serveur primaire, après une bascule, en tant que
+   serveur secondaire répliqué depuis le nouveau serveur primaire.
+  </p><p>
+   Après une synchronisation réussie, l'état du répertoire de données cible
+   est analogue à une sauvegarde de base du répertoire source de données.
+   Contrairement à l'exécution d'une sauvegarde de base ou l'utilisation d'un
+   outil comme <span class="application">rsync</span>,
+   <span class="application">pg_rewind</span> ne requiert pas de comparer ou copier
+   les blocs inchangés des relations dans l'instance. Seuls les blocs modifiés
+   de fichiers de relation existante sont copiés ; tous les autres
+   fichiers, incluant tout nouveau fichier de relation, fichier de
+   configuration, et segment WAL, sont copiés en totalité. Ainsi, l'opération
+   de synchronisation est significativement plus rapide que les autres
+   approches si la base de données est volumineuse et que seule une petite
+   fraction de blocs diffère entre les instances.
+  </p><p>
+   <span class="application">pg_rewind</span> inspecte l'historique de la timeline
+   de l'instance source et de l'instance cible pour déterminer à quel moment a
+   eu lieu la séparation, et s'attend à trouver tous les fichiers WAL jusqu'au
+   moment de la bascule dans le répertoire <code class="filename">pg_wal</code>. Le
+   point de divergence peut être trouvé soit sur la ligne de temps cible, soit
+   sur la ligne de temps source, soit sur leur ancêtre commun. Dans un
+   scénario de bascule classique, où l'instance cible a été arrêtée peu après
+   le changement, cela ne pose aucun problème. En revanche, si l'instance
+   cible a travaillé un certain temps après le changement, les anciens
+   fichiers WAL peuvent ne plus être présents dans le répertoire
+   <code class="filename">pg_wal</code>. Dans ce cas, ils peuvent être copiés à la main
+   depuis les fichiers WAL archivés vers le répertoire
+   <code class="filename">pg_wal</code> ou être réexécutés par
+   <span class="application">pg_rewind</span> avec l'option <code class="literal">-c</code>
+   pour automatiquement les récupérer de l'archive WAL. L'utilisation de
+   <span class="application">pg_rewind</span> n'est pas limitée au failover :
+   un serveur standby peut être promu, écrire quelques transactions, puis
+   transformé de nouveau en standby avec cet outil.
+  </p><p>
+   Après avoir exécuté <span class="application">pg_rewind</span>, il est nécessaire
+   que la réapplication des WAL se termine pour que le répertoire de données
+   soit dans un état cohérent. Quand le serveur cible est redémarré, il va
+   entrer en récupération d'archive et rejouer tous les WAL générés sur le
+   serveur source depuis le dernier checkpoint avant le point de divergence.
+   Si certains WAL ne sont plus disponibles sur le serveur source quand
+   <span class="application">pg_rewind</span> a été exécutée, et par conséquent ne
+   peuvent plus être copiés par la session
+   <span class="application">pg_rewind</span>, ils doivent être rendus disponible
+   quand le serveur cible est démarré. Ceci peut être effectué en créant un
+   fichier <code class="filename">recovery.signal</code> dans le répertoire de données
+   cible et en configurant un <a class="xref" href="runtime-config-wal.html#GUC-RESTORE-COMMAND">restore_command</a> approprié
+   dans <code class="filename">postgresql.conf</code>.
+  </p><p>
+   <span class="application">pg_rewind</span> nécessite que l'instance cible ait
+   l'option <a class="xref" href="runtime-config-wal.html#GUC-WAL-LOG-HINTS">wal_log_hints</a> activée dans le fichier de
+   configuration <code class="filename">postgresql.conf</code> ou que les sommes de
+   contrôle sur les données aient été activées lorsque l'instance a été
+   initialisée par la commande <span class="application">initdb</span>. Aucune de
+   ces options n'est active par défaut. Le paramètre <a class="xref" href="runtime-config-wal.html#GUC-FULL-PAGE-WRITES">full_page_writes</a> doit lui aussi être activé. Il l'est par
+   défaut.
+  </p><div class="warning"><h3 class="title">Attention : échecs lors du retour en arrière</h3><p>
+    Si <span class="application">pg_rewind</span> échoue lors du traitement, le
+    répertoire des données de la cible est très probablement dans un état
+    inutilisable. Dans ce cas, réaliser une nouvelle sauvegarde est
+    recommandé.
+   </p><p>
+    Comme <span class="application">pg_rewind</span> copie entièrement les fichiers
+    de configuration de la source, il peut être requis de corriger la
+    configuration employée pour la reprise avant de redémarrer le serveur
+    cible, particulièrement si la cible est réintroduite comme un standby de
+    la source. Si vous redémarrez le serveur après que l'opération de
+    synchronisation soit terminée mais sans reprendre la configuration, la
+    cible peut diverger du primaire.
+   </p><p>
+    <span class="application">pg_rewind</span> échouera immédiatement s'il trouve
+    des fichiers qu'il ne peut pas modifier. Ceci peut arriver quand les
+    serveurs source et cible utilisent les mêmes emplacements pour les clés et
+    les certificats SSL qui sont habituellement en lecture seule. Si de tels
+    fichiers sont présents sur le serveur cible, il est recommandé de les
+    supprimer avant d'exécuter <span class="application">pg_rewind</span>. Après
+    l'avoir exécuté, certains de ces fichiers devront peut-être être copiés de
+    la source, auquel cas il pourrait être nécessaire de supprimer les données
+    copiées et de restaurer l'ensemble des liens utilisés avant l'exécution de
+    l'outil.
+   </p></div></div><div class="refsect1" id="id-1.9.5.10.6"><h2>Options</h2><p>
+   <span class="application">pg_rewind</span> accepte les arguments suivants en
+   ligne de commande :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-D <em class="replaceable"><code>répertoire</code></em></code><br /></span><span class="term"><code class="option">--target-pgdata=<em class="replaceable"><code>répertoire</code></em></code></span></dt><dd><p>
+       Cette option définit le répertoire de données cible qui va être
+       synchronisé avec le répertoire source. Cette option requiert que le
+       serveur source ait été arrêté proprement.
+      </p></dd><dt><span class="term"><code class="option">--source-pgdata=<em class="replaceable"><code>répertoire</code></em></code></span></dt><dd><p>
+       Cette option définit le répertoire de données source qui va être
+       synchronisé avec le répertoire cible. Si cette option est utilisée,
+       l'instance source doit être arrêtée proprement.
+      </p></dd><dt><span class="term"><code class="option">--source-server=<em class="replaceable"><code>chaine de connexion</code></em></code></span></dt><dd><p>
+       Définit une chaine de connexion libpq permettant d'accéder à
+       l'instance <span class="productname">PostgreSQL</span> source de façon à
+       pouvoir la synchroniser avec la cible. Cette option requiert
+       l'utilisation d'une connexion standard avec un rôle ayant les droits
+       suffisants pour exécuter les fonctions utilisées par
+       <span class="application">pg_rewind</span> sur le serveur source (voir la
+       section Notes pour les détails) ou un rôle superutilisateur.
+      </p></dd><dt><span class="term"><code class="option">--no-ensure-shutdown</code></span></dt><dd><p>
+       <span class="application">pg_rewind</span> requiert que le serveur cible
+       soit proprement arrêté avant d'être synchronisé. Par défaut, si le
+       serveur cible n'est pas proprement arrêté,
+       <span class="application">pg_rewind</span> le démarre en mode
+       simple-utilisateur pour effectuer d'abord une récupération après
+       accident, et l'arrête. En utilisant cette option,
+       <span class="application">pg_rewind</span> ignore cela et tombe en erreur
+       immédiatement si le serveur n'est pas proprement stoppé. Les
+       utilisateurs doivent s'attendre à gérer la situation eux-même dans ce
+       cas.
+      </p></dd><dt><span class="term"><code class="option">-R</code><br /></span><span class="term"><code class="option">--write-recovery-conf</code></span></dt><dd><p>
+       Crée <code class="filename">standby.signal</code> et ajoute les paramètres de
+       connexion à <code class="filename">postgresql.auto.conf</code> dans le
+       répertoire de sortie. <code class="literal">--source-server</code> est
+       obligatoire avec cette option.
+      </p></dd><dt><span class="term"><code class="option">-n</code><br /></span><span class="term"><code class="option">--dry-run</code></span></dt><dd><p>
+       Réalise toutes les opérations sans modifier le répertoire cible.
+      </p></dd><dt><span class="term"><code class="option">-N</code><br /></span><span class="term"><code class="option">--no-sync</code></span></dt><dd><p>
+       Par défaut, <code class="command">pg_rewind</code> attendra l'écriture certaine
+       de tous les fichiers sur disque. Cette option permet de forcer le
+       retour de <code class="command">pg_rewind</code> sans attente, ce qui est plus
+       rapide, mais signifie qu'un crash ultérieur du système d'exploitation
+       pourrait laisser le répertoire des données dans un état
+       corrompu. En général, cette option est utile pour des tests, mais ne
+       devrait pas être utilisée pour créer un serveur en production.
+      </p></dd><dt><span class="term"><code class="option">-P</code><br /></span><span class="term"><code class="option">--progress</code></span></dt><dd><p>
+       Permet d'activer les traces. Activer cette option vous fournira les
+       informations au fil de l'eau sur l'avancée de la copie des données
+       depuis l'instance source.
+      </p></dd><dt><span class="term"><code class="option">-c</code><br /></span><span class="term"><code class="option">--restore-target-wal</code></span></dt><dd><p>
+       Utilise <code class="varname">restore_command</code> définie dans la
+       configuration de l'instance cible pour reprendre les fichiers WAL
+       depuis l'archive WAL si ces fichiers ne sont plus disponibles dans le
+       répertoire <code class="filename">pg_wal</code>.
+      </p></dd><dt><span class="term"><code class="option">--config-file=<em class="replaceable"><code>nom_fichier</code></em></code></span></dt><dd><p>
+       Utilise le fichier de configuration du serveur indiqué pour l'instance
+       cible. Ceci affecte <span class="application">pg_rewind</span> quand il utilise
+       en interne la commande <span class="application">postgres</span> pour
+       l'opération sur cette instance (lors de la récupération de
+       <code class="varname">restore_command</code> avec l'option
+       <code class="option">-c/--restore-target-wal</code> et quand il force la fin d'une
+       restauration après un crash).
+      </p></dd><dt><span class="term"><code class="option">--debug</code></span></dt><dd><p>
+       Affiche les détails de la sortie de débogage, ce qui est surtout utile
+       aux développeurs qui travaillent sur
+       <span class="application">pg_rewind</span>.
+      </p></dd><dt><span class="term"><code class="option">--sync-method=<em class="replaceable"><code>methode</code></em></code></span></dt><dd><p>
+       Quand il est initialisé à <code class="literal">fsync</code>, qui est la valeur
+       par défaut, <code class="command">pg_rewind</code> va ouvrir récursivement
+       tous les fichiers du répertoire de données et les synchroniser sur
+       disque. La recherche des fichiers suivra les liens symboliques pour
+       le répertoire des journaux de transactions et chaque tablespace
+       configuré.
+      </p><p>
+       Sur Linux, <code class="literal">syncfs</code> peut être utilisé à la place
+       pour demander au système d'exploitation de synchroniser les systèmes
+       de fichiers complets qui contiennent le répertoire des données, les
+       journaux de transactions et chaque tablespace. Voir
+       <a class="xref" href="runtime-config-error-handling.html#GUC-RECOVERY-INIT-SYNC-METHOD">recovery_init_sync_method</a> pour plus d'informations
+       sur les points importants à connaître lors de l'utilisation de
+       <code class="literal">syncfs</code>.
+      </p><p>
+       Cette option n'a aucun effet quand <code class="option">--no-sync</code> est
+       utilisé.
+      </p></dd><dt><span class="term"><code class="option">-V</code><br /></span><span class="term"><code class="option">--version</code></span></dt><dd><p>
+       Affiche les informations concernant la version, puis quitte.
+      </p></dd><dt><span class="term"><code class="option">-?</code><br /></span><span class="term"><code class="option">--help</code></span></dt><dd><p>
+       Affiche l'aide, puis quitte.
+      </p></dd></dl></div><p>
+  </p></div><div class="refsect1" id="id-1.9.5.10.7"><h2>Environnement</h2><p>
+   Lorsque l'option <code class="option">--source-server</code> est utilisée,
+   <span class="application">pg_rewind</span> utilise aussi les variables
+   d'environnement supportées par la bibliothèque
+   <span class="application">libpq</span> (voir <a class="xref" href="libpq-envars.html" title="32.15. Variables d'environnement">Section 32.15</a>).
+  </p><p>
+   La variable d'environnement <code class="envar">PG_COLOR</code> indique s'il faut
+   utiliser les couleurs dans les messages de diagnotiques. Les valeurs
+   possibles sont <code class="literal">always</code>, <code class="literal">auto</code>,
+   <code class="literal">never</code>.
+  </p></div><div class="refsect1" id="id-1.9.5.10.8"><h2>Notes</h2><p>
+   Lors de l'exécution de <span class="application">pg_rewind</span> sur une
+   instance en ligne comme source, un rôle doté des droits suffisants pour
+   exécuter les fonctions utilisées par <span class="application">pg_rewind</span>
+   sur l'instance source peut être utilisé à la place d'un superutilisateur.
+   Voici comment créer ce rôle, nommé ici
+   <code class="literal">rewind_user</code> :
+   </p><pre class="programlisting">
+CREATE USER rewind_user LOGIN;
+GRANT EXECUTE ON function pg_catalog.pg_ls_dir(text, boolean, boolean) TO rewind_user;
+GRANT EXECUTE ON function pg_catalog.pg_stat_file(text, boolean) TO rewind_user;
+GRANT EXECUTE ON function pg_catalog.pg_read_binary_file(text) TO rewind_user;
+GRANT EXECUTE ON function pg_catalog.pg_read_binary_file(text, bigint, bigint, boolean) TO rewind_user;
+   </pre><p>
+  </p><p>
+   Lors de l'exécution de <span class="application">pg_rewind</span> sur une
+   instance en ligne comme source récemment promue, il est nécessaire
+   d'exécuter un <code class="command">CHECKPOINT</code> après la promotion pour que son
+   fichier de contrôle reflète des informations de timeline à jour, qui est
+   utilisé par <span class="application">pg_rewind</span> pour vérifier si
+   l'instance cible peut être rembobiné en utilisant l'instance source
+   désignée.
+  </p><p>
+   Lors de l'exécution de <span class="application">pg_rewind</span> sur une instance
+   source en ligne qui a été récemment promue, il est nécessaire d'exécution un 
+   <code class="command">CHECKPOINT</code> après la promotion pour que le fichier contrôle
+   reflète des informations à jour sur la timeline, informations qui sont
+   utilisées par <span class="application">pg_rewind</span> pour vérifier si
+   l'instance cible peut être traitée en utilisant l'instance source désignée.
+  </p><div class="refsect2" id="id-1.9.5.10.8.5"><h3>Fonctionnement</h3><p>
+    L'idée de base est de copier toutes les modifications de fichiers au
+    niveau système de fichiers de l'instance source vers l'instance
+    cible :
+   </p><div class="procedure"><ol class="procedure" type="1"><li class="step"><p>
+      Parcourir les journaux de transactions de l'instance cible, en
+      commençant du dernier checkpoint avant le moment où l'historique de
+      timeline de l'instance source a dévié de celle de l'instance cible. Pour
+      chaque enregistrement dans les journaux de transactions, enregistrer
+      chaque bloc de données modifié. Ceci a pour résultat une liste de tous
+      les blocs de données modifiés dans l'instance cible, après la séparation
+      avec l'instance source. Si certains fichiers WAL ne sont plus
+      disponibles, essayez de ré-exécuter <span class="application">pg_rewind</span>
+      avec l'option <code class="option">-c</code> pour chercher les fichiers manquants
+      dans l'archive WAL.
+     </p></li><li class="step"><p>
+      Copier tous les blocs modifiés de l'instance source vers l'instance
+      cible, soit en utilisant un accès direct au système de fichiers
+      (<code class="option">--source-pgdata</code>) soit en SQL
+      (<code class="option">--source-server</code>). Les fichiers de relations sont
+      maintenant dans un état équivalent au moment du dernier checkpoint
+      effectué avant le point où les timelines WAL de la source et de la cible
+      divergent, plus l'état actuel sur la source où il existe des blocs
+      modifiés sur la cible après divergence.
+     </p></li><li class="step"><p>
+      Copier tous les autres fichiers, incluant les nouveaux fichiers de
+      relation, les segments WAL, <code class="filename">pg_xact</code>, et les
+      fichiers de configuration de l'instance source sur l'instance cible. De
+      manière similaire, les sauvegardes de base, le contenu des répertoires
+      <code class="filename">pg_dynshmem/</code>, <code class="filename">pg_notify/</code>,
+      <code class="filename">pg_replslot/</code>, <code class="filename">pg_serial/</code>,
+      <code class="filename">pg_snapshots/</code>, <code class="filename">pg_stat_tmp/</code> et
+      <code class="filename">pg_subtrans/</code> sont omis des données copiées depuis
+      le serveur source. Les fichiers <code class="filename">backup_label</code>,
+      <code class="filename">tablespace_map</code>,
+      <code class="filename">pg_internal.init</code>,
+      <code class="filename">postmaster.opts</code>, et
+      <code class="filename">postmaster.pid</code> et
+      <code class="filename">.DS_Store</code>, aussi bien que tous fichiers ou
+      répertoires commençant par <code class="filename">pgsql_tmp</code>, sont omis.
+     </p></li><li class="step"><p>
+      Crée un ficher <code class="filename">backup_label</code> pour débuter la reprise
+      des WAL au checkpoint créé lors de la bascule et configure le fichier
+      <code class="filename">pg_control</code> avec une cohérence minimale du LSN
+      définie comme le résultat de
+      <code class="literal">pg_current_wal_insert_lsn()</code> lorsque la
+      synchronisation s'effectue depuis une source activée ou le dernier
+      checkpoint LSN quand la synchronisation s'effectue depuis une source
+      stoppée.
+     </p></li><li class="step"><p>
+      Quand la cible est démarrée, <span class="productname">PostgreSQL</span>
+      reprend tous les WAL nécessaires, donnant ainsi un répertoire de données
+      à un état cohérent.
+     </p></li></ol></div></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/app-pgrewind.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:08 GMT -->
+</html>

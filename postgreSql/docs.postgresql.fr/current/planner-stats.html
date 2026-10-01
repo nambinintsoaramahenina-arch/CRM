@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/planner-stats.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>14.2. Statistiques utilisées par le planificateur</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="using-explain.html" title="14.1. Utiliser EXPLAIN" /><link rel="next" href="explicit-joins.html" title="14.3. Contrôler le planificateur avec des clauses JOIN explicites" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/planner-stats.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/planner-stats.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/planner-stats.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/planner-stats.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/planner-stats.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/planner-stats.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/planner-stats.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/planner-stats.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/planner-stats.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/planner-stats.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/planner-stats.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/planner-stats.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/planner-stats.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/planner-stats.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/planner-stats.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/planner-stats.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/planner-stats.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/planner-stats.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/planner-stats.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/planner-stats.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/planner-stats.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="performance-tips.html">Conseils sur les performances</a></span> » <span class="breadcrumb-node">Statistiques utilisées par le planificateur</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="using-explain.html" title="14.1. Utiliser EXPLAIN">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="performance-tips.html" title="Chapitre 14. Conseils sur les performances">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="explicit-joins.html" title="14.3. Contrôler le planificateur avec des clauses JOIN&#10;   explicites">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">14.1. Utiliser <code class="command">EXPLAIN</code> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 14.3. Contrôler le planificateur avec des clauses <code class="literal">JOIN</code>
+   explicites</td></tr></table></div><div class="sect1" id="PLANNER-STATS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">14.2. Statistiques utilisées par le planificateur <a href="#PLANNER-STATS" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="planner-stats.html#PLANNER-STATS-SINGLE-COLUMN">14.2.1. Statistiques mono-colonne</a></span></dt><dt><span class="sect2"><a href="planner-stats.html#PLANNER-STATS-EXTENDED">14.2.2. Statistiques étendues</a></span></dt></dl></div><a id="id-1.5.13.5.2" class="indexterm"></a><div class="sect2" id="PLANNER-STATS-SINGLE-COLUMN"><div class="titlepage"><div><div><h3 class="title">14.2.1. Statistiques mono-colonne <a href="#PLANNER-STATS-SINGLE-COLUMN" class="id_link">#</a></h3></div></div></div><p>
+    Comme nous l'avons vu dans la section précédente, le planificateur de
+    requêtes a besoin d'estimer le nombre de lignes récupérées par une
+    requête pour faire les bons choix dans ses plans de requêtes. Cette
+    section fournit un aperçu sur les statistiques que le système utilise
+    pour ces estimations.
+   </p><p>
+
+    Un élément des statistiques est le nombre total d'entrées dans chaque
+    table et index, ainsi que le nombre de blocs disque occupés par chaque
+    table et index. Cette information est conservée dans la table <a class="link" href="catalog-pg-class.html" title="51.11. pg_class"><code class="structname">pg_class</code></a> sur
+    les colonnes <code class="structfield">reltuples</code> et
+    <code class="structfield">relpages</code>. Nous pouvons la regarder avec des
+    requêtes comme celle-ci :
+
+    </p><pre class="screen">SELECT relname, relkind, reltuples, relpages
+FROM pg_class
+WHERE relname LIKE 'tenk1%';
+
+       relname        | relkind | reltuples | relpages
+----------------------+---------+-----------+----------
+ tenk1                | r       |     10000 |      345
+ tenk1_hundred        | i       |     10000 |       11
+ tenk1_thous_tenthous | i       |     10000 |       30
+ tenk1_unique1        | i       |     10000 |       30
+ tenk1_unique2        | i       |     10000 |       30
+(5 rows)</pre><p>
+
+    Ici, nous pouvons voir que <code class="structname">tenk1</code> contient 10000
+    lignes, comme pour ses index, mais que les index sont bien plus petits
+    que la table (ce qui n'est pas surprenant).
+   </p><p>
+    Pour des raisons d'efficacité, les valeurs des colonnes
+    <code class="structfield">reltuples</code> et
+    <code class="structfield">relpages</code> ne sont pas mises à jour en temps
+    réel, et contiennent alors souvent des valeurs un peu obsolètes. Elles
+    sont mises à jour par les commandes <code class="command">VACUUM</code>,
+    <code class="command">ANALYZE</code> et quelques commandes DDL comme
+    <code class="command">CREATE INDEX</code>. Une opération <code class="command">VACUUM</code>
+    ou <code class="command">ANALYZE</code> qui ne parcourt pas la table entièrement
+    (ce qui est le cas le plus fréquent) augmentera de façon incrémentale la
+    valeur de <code class="structfield">reltuples</code> sur la base de la partie
+    de la table qu'elle a parcourue, résultant en une valeur approximative.
+    Dans tous les cas, le planificateur mettra à l'échelle les valeurs qu'il
+    aura trouvées dans <code class="structname">pg_class</code> pour correspondre à
+    la taille physique de la table, obtenant ainsi une approximation plus
+    proche de la réalité.
+   </p><a id="id-1.5.13.5.3.5" class="indexterm"></a><p>
+    La plupart des requêtes ne récupèrent qu'une fraction des lignes dans une
+    table à cause de clauses <code class="literal">WHERE</code> qui restreignent les
+    lignes à examiner. Du coup, le planificateur a besoin d'une estimation de
+    la <em class="firstterm">sélectivité</em> des clauses
+    <code class="literal">WHERE</code>, c'est-à-dire la fraction des lignes qui
+    correspondent à chaque condition de la clause <code class="literal">WHERE</code>.
+    L'information utilisée pour cette tâche est stockée dans le catalogue
+    système <a class="link" href="catalog-pg-statistic.html" title="51.51. pg_statistic"><code class="structname">pg_statistic</code></a>.
+    Les entrées de <code class="structname">pg_statistic</code> sont mises à jour
+    par les commandes <code class="command">ANALYZE</code> et <code class="command">VACUUM
+    ANALYZE</code> et sont toujours approximatives même si elles ont été
+    mises à jour récemment.
+   </p><a id="id-1.5.13.5.3.7" class="indexterm"></a><p>
+    Plutôt que de regarder directement dans
+    <code class="structname">pg_statistic</code>, il vaut mieux voir sa vue <a class="link" href="view-pg-stats.html" title="52.27. pg_stats"><code class="structname">pg_stats</code></a> lors
+    d'un examen manuel des statistiques. La vue
+    <code class="structname">pg_stats</code> est conçue pour être plus facilement
+    lisible. De plus, <code class="structname">pg_stats</code> est lisible par tous
+    alors que <code class="structname">pg_statistic</code> n'est lisible que par un
+    superutilisateur (ceci empêche les utilisateurs sans droits d'apprendre
+    certaines choses sur le contenu des tables appartenant à d'autres
+    personnes à partir des statistiques. La vue
+    <code class="structname">pg_stats</code> est restreinte pour n'afficher que les
+    lignes des tables lisibles par l'utilisateur courant). Par exemple, nous
+    pourrions lancer :
+
+    </p><pre class="screen">SELECT attname, inherited, n_distinct,
+       array_to_string(most_common_vals, E'\n') as most_common_vals
+FROM pg_stats
+WHERE tablename = 'road';
+
+ attname | inherited | n_distinct |          most_common_vals
+---------+-----------+------------+------------------------------------
+ name    | f         | -0.5681108 | I- 580                        Ramp+
+         |           |            | I- 880                        Ramp+
+         |           |            | Sp Railroad                       +
+         |           |            | I- 580                            +
+         |           |            | I- 680                        Ramp+
+         |           |            | I- 80                         Ramp+
+         |           |            | 14th                          St  +
+         |           |            | I- 880                            +
+         |           |            | Mac Arthur                    Blvd+
+         |           |            | Mission                       Blvd+
+...
+ name    | t         |    -0.5125 | I- 580                        Ramp+
+         |           |            | I- 880                        Ramp+
+         |           |            | I- 580                            +
+         |           |            | I- 680                        Ramp+
+         |           |            | I- 80                         Ramp+
+         |           |            | Sp Railroad                       +
+         |           |            | I- 880                            +
+         |           |            | State Hwy 13                  Ramp+
+         |           |            | I- 80                             +
+         |           |            | State Hwy 24                  Ramp+
+...
+ thepath | f         |          0 |
+ thepath | t         |          0 |
+(4 rows)</pre><p>
+
+    Notez que deux lignes sont affichées pour la même colonne, une
+    correspondant à la hiérarchie d'héritage complète commençant à la table
+    <code class="literal">road</code>
+    (<code class="literal">inherited</code>=<code class="literal">t</code>), et une autre
+    incluant seulement la table <code class="literal">road</code> elle-même
+    (<code class="literal">inherited</code>=<code class="literal">f</code>).
+    (Par soucis de concision, nous avons seulement affiché les dix premières
+    valeurs les plus communes pour la colonne <code class="literal">name</code>.)
+   </p><p>
+    Les informations stockées dans <code class="structname">pg_statistic</code> par
+    <code class="command">ANALYZE</code>, en particulier le nombre maximum d'éléments
+    dans les tableaux <code class="structfield">most_common_vals</code> et
+    <code class="structfield">histogram_bounds</code> pour chaque colonne, peuvent
+    être définies colonne par colonne en utilisant la commande <code class="command">ALTER
+    TABLE SET STATISTICS</code> ou globalement en initialisant la variable
+    de configuration <a class="xref" href="runtime-config-query.html#GUC-DEFAULT-STATISTICS-TARGET">default_statistics_target</a>. La
+    limite par défaut est actuellement de 100 entrées. Augmenter la limite
+    pourrait résulter en des estimations plus précises du planificateur, en
+    particulier pour les colonnes ayant des distributions de données
+    irrégulières, au prix d'un plus grand espace consommé dans
+    <code class="structname">pg_statistic</code> et d'un temps plus long pour
+    calculer les estimations. En revanche, une limite plus basse pourrait
+    être suffisante pour des colonnes avec des distributions de données
+    simples.
+   </p><p>
+    Le <a class="xref" href="planner-stats-details.html" title="Chapitre 68. Comment le planificateur utilise les statistiques">Chapitre 68</a> donne plus de détails sur
+    l'utilisation des statistiques par le planificateur.
+   </p></div><div class="sect2" id="PLANNER-STATS-EXTENDED"><div class="titlepage"><div><div><h3 class="title">14.2.2. Statistiques étendues <a href="#PLANNER-STATS-EXTENDED" class="id_link">#</a></h3></div></div></div><a id="id-1.5.13.5.4.2" class="indexterm"></a><a id="id-1.5.13.5.4.3" class="indexterm"></a><a id="id-1.5.13.5.4.4" class="indexterm"></a><a id="id-1.5.13.5.4.5" class="indexterm"></a><p>
+    Il est habituel de voir des requêtes lentes tourner avec de mauvais plans
+    d'exécution, car plusieurs colonnes utilisées dans les clauses de la
+    requête sont corrélées. L'optimiseur part normalement du principe que
+    toutes les conditions sont indépendantes les unes des autres, ce qui est
+    faux quand les valeurs des colonnes sont corrélées. Les statistiques
+    classiques, du fait qu'il s'agit par nature de statistiques sur une seule
+    colonne, ne peuvent pas capturer d'information sur la corrélation entre
+    colonnes. Toutefois, <span class="productname">PostgreSQL</span> a la
+    possibilité de calculer des <em class="firstterm">statistiques
+    multivariées</em>, qui peuvent capturer une telle information.
+   </p><p>
+    Comme le nombre de combinaisons de colonnes est très important, il n'est
+    pas possible de calculer les statistiques multivariées automatiquement. À
+    la place, des <em class="firstterm">objets statistiques étendus</em>, plus
+    souvent appelés simplement <em class="firstterm">objets statistiques</em>,
+    peuvent être créés pour indiquer au serveur qu'il faut obtenir des
+    statistiques sur un ensemble intéressant de colonnes.
+   </p><p>
+    Les objets statistiques sont créés en utilisant la commande <a class="link" href="sql-createstatistics.html" title="CREATE STATISTICS"><code class="command">CREATE
+    STATISTICS</code></a>. La création de tels objets crée seulement
+    une entrée dans le catalogue pour exprimer l'intérêt dans cette
+    statistique. La vraie récupération de données est effectuée par
+    <code class="command">ANALYZE</code> (soit une commande manuelle, soit une analyse
+    automatique en tâche de fond). Les valeurs collectées peuvent être
+    examinées dans le catalogue <a class="link" href="catalog-pg-statistic-ext-data.html" title="51.53. pg_statistic_ext_data"><code class="structname">pg_statistic_ext_data</code></a>.
+   </p><p>
+    <code class="command">ANALYZE</code> calcule des statistiques étendues basées sur le
+    même ensemble de lignes de la table qu'il utilise pour calculer les
+    statistiques standard sur une seule colonne. Puisque la taille
+    d'échantillon peut être augmentée en augmentant la cible de statistiques
+    de la table ou de n'importe laquelle de ses colonnes (comme décrit dans
+    la section précédente), une plus grande cible de statistiques donnera
+    normalement des statistiques étendues plus précises, mais nécessitera
+    également plus de temps pour les calculer.
+   </p><p>
+    La section suivante décrit les types de statistiques étendues qui sont
+    actuellement supportées.
+   </p><div class="sect3" id="PLANNER-STATS-EXTENDED-FUNCTIONAL-DEPS"><div class="titlepage"><div><div><h4 class="title">14.2.2.1. Dépendances fonctionnelles <a href="#PLANNER-STATS-EXTENDED-FUNCTIONAL-DEPS" class="id_link">#</a></h4></div></div></div><p>
+     Le type le plus simple de statistiques étendues trace les
+     <em class="firstterm">dépendances fonctionnelles </em>, un concept utilisé
+     dans les définitions des formes normales des bases de données. On dit
+     qu'une colonne <code class="structfield">b</code> est fonctionnellement
+     dépendante d'une colonne <code class="structfield">a</code> si la connaissance
+     de la valeur de <code class="structfield">a</code> est suffisante pour
+     déterminer la valeur de <code class="structfield">b</code>, et donc qu'il
+     n'existe pas deux lignes ayant la même valeur de
+     <code class="structfield">a</code> avec des valeurs différentes de
+     <code class="structfield">b</code>. Dans une base de données complètement
+     normalisée, les dépendances fonctionnelles ne devraient exister que sur
+     la clé primaire et les superclés. Toutefois, dans la pratique, beaucoup
+     d'ensembles de données ne sont pas totalement normalisés pour de
+     nombreuses raisons ; une dénormalisation intentionnelle pour des
+     raisons de performances est un exemple courant. Même dans une base de
+     données totalement normalisée, il peut y avoir une corrélation partielle
+     entre des colonnes, qui peuvent être exprimées comme une dépendance
+     fonctionnelle partielle.
+    </p><p>
+     L'existence de dépendances fonctionnelles a un impact direct sur la
+     précision de l'estimation pour certaines requêtes. Si une requête
+     contient des conditions à la fois sur des colonnes indépendantes et sur
+     des colonnes dépendantes, les conditions sur les colonnes dépendantes ne
+     réduisent plus la taille du résultat ; mais sans la connaissance de
+     cette dépendance fonctionnelle, l'optimiseur de requêtes supposera que
+     les conditions sont indépendantes, avec pour résultat une taille de
+     résultat sous-estimée.
+    </p><p>
+     Pour informer l'optimiseur des dépendances fonctionnelles,
+     <code class="command">ANALYZE</code> peut collecter des mesures sur des
+     dépendances entre colonnes. Évaluer le degré de dépendance entre tous
+     les ensembles de colonnes aurait un coût prohibitif, c'est pourquoi la
+     collecte de données est limitée aux groupes de colonnes apparaissant
+     ensemble dans un objet statistique défini avec l'option
+     <code class="literal">dependencies</code>. Il est conseillé de ne créer des
+     <code class="literal">dépendences</code> statistiques que pour des groupes de
+     colonnes fortement corrélées, pour éviter un surcoût à la fois dans
+     <code class="command">ANALYZE</code> et plus tard lors de la planification de
+     requête.
+    </p><p>
+     Voici un exemple de collecte de statistiques fonctionnellement
+     dépendantes :
+
+     </p><pre class="programlisting">CREATE STATISTICS stts (dependencies) ON city, zip FROM zipcodes;
+
+ANALYZE zipcodes;
+
+SELECT stxname, stxkeys, stxddependencies
+  FROM pg_statistic_ext join pg_statistic_ext_data on (oid = stxoid)
+  WHERE stxname = 'stts';
+ stxname | stxkeys |             stxddependencies
+---------+---------+------------------------------------------
+ stts    | 1 5     | {"1 =&gt; 5": 1.000000, "5 =&gt; 1": 0.423130}
+(1 row)</pre><p>
+
+     On peut voir ici que la colonne 1 (zip code) détermine complètement la
+     colonne 5 (city) et que donc le coefficient est 1.0, alors que la ville
+     ne détermine le code postal qu'environ 42% du temps, ce qui veut dire
+     qu'il y a beaucoup de villes (58%) qui sont représentées par plus d'un
+     seul code postal.
+    </p><p>
+     Lors du calcul de la sélectivité d'une requête impliquant des colonnes
+     fonctionnellement dépendantes, le planificateur ajoute l'estimation de
+     sélectivité par condition en utilisant les cœfficients de dépendance
+     afin de ne pas produire de résultats sous-estimés.
+    </p><div class="sect4" id="PLANNER-STATS-EXTENDED-FUNCTIONAL-DEPS-LIMITS"><div class="titlepage"><div><div><h5 class="title">14.2.2.1.1. Limites des dépendances fonctionnelles <a href="#PLANNER-STATS-EXTENDED-FUNCTIONAL-DEPS-LIMITS" class="id_link">#</a></h5></div></div></div><p>
+      Les dépendances fonctionnelles sont pour le moment uniquement appliquées
+      pour les conditions sur une simple égalité entre une colonne et une
+      valeur constante et des clauses <code class="literal">IN</code> contenant des
+      valeurs constantes. Elles ne sont pas utilisées pour améliorer
+      l'estimation sur les conditions d'égalité entre deux colonnes ou la
+      comparaison d'une colonne avec une expression ni pour les clauses
+      d'intervalle, <code class="literal">LIKE</code> ou tout autre type de condition.
+     </p><p>
+      Lors d'une estimation avec des dépendances fonctionnelles, l'optimiseur
+      part du principe que les conditions sur les colonnes impliquées sont
+      compatibles et donc redondantes. Si elles sont incompatibles,
+      l'estimation correcte devrait être zéro ligne, mais cette possibilité
+      n'est pas envisagée. Par exemple, dans une requête telle que
+
+      </p><pre class="programlisting">SELECT * FROM zipcodes WHERE city = 'San Francisco' AND zip = '94105';</pre><p>
+
+      l'optimiseur négligera la clause <code class="structfield">city</code>
+      puisqu'elle ne changera pas la sélectivité, ce qui est correct. Par
+      contre, il fera la même supposition pour
+
+      </p><pre class="programlisting">SELECT * FROM zipcodes WHERE city = 'San Francisco' AND zip = '90210';</pre><p>
+
+      bien qu'il n'y ait en réalité aucune ligne satisfaisant cette requête.
+      Toutefois, les statistiques de dépendances fonctionnelles ne
+      fournissent pas suffisamment d'information pour en arriver à cette
+      conclusion.
+     </p><p>
+      Pour beaucoup de situations pratiques, cette supposition est
+      généralement correcte ; par exemple, l'application pourrait
+      contenir une interface graphique qui n'autorise que la sélection de
+      villes et codes postaux compatibles pour l'utilisation dans une
+      requête. Mais si ce n'est pas le cas, les dépendances fonctionnelles
+      pourraient ne pas être une solution viable.
+     </p></div></div><div class="sect3" id="PLANNER-STATS-EXTENDED-N-DISTINCT-COUNTS"><div class="titlepage"><div><div><h4 class="title">14.2.2.2. Nombre N-Distinct multivarié <a href="#PLANNER-STATS-EXTENDED-N-DISTINCT-COUNTS" class="id_link">#</a></h4></div></div></div><p>
+     Les statistiques sur une seule colonne stockent le nombre de valeurs
+     distinctes pour chaque colonne. Les estimations du nombre de valeurs
+     distinctes combinant plus d'une colonne (par exemple, pour
+     <code class="literal">GROUP BY a, b</code>) sont souvent fausses quand
+     l'optimiseur ne dispose que de données statistiques par colonne, avec
+     pour conséquence le choix de mauvais plans.
+    </p><p>
+     Afin d'améliorer de telles estimations, <code class="command">ANALYZE</code> peut
+     collecter des statistiques n-distinct pour des groupes de colonne. Comme
+     précédemment, il n'est pas envisageable de le faire pour tous les
+     regroupements possibles, ainsi les données ne sont collectées que pour
+     ceux apparaissant ensemble dans un objet statistique défini avec
+     l'option <code class="literal">ndistinct</code>. Des données seront collectées
+     pour chaque combinaison possible de deux colonnes ou plus dans
+     l'ensemble de colonnes listées.
+    </p><p>
+     En continuant avec l'exemple précédent, le nombre n-distinct dans une
+     table de code postaux pourrait ressembler à ceci :
+
+     </p><pre class="programlisting">CREATE STATISTICS stts2 (ndistinct) ON city, state, zip FROM zipcodes;
+
+ANALYZE zipcodes;
+
+SELECT stxkeys AS k, stxdndistinct AS nd
+  FROM pg_statistic_ext join pg_statistic_ext_data on (oid = stxoid)
+  WHERE stxname = 'stts2';
+-[ RECORD 1 ]--------------------------------------------------------
+k  | 1 2 5
+nd | {"1, 2": 33178, "1, 5": 33178, "2, 5": 27435, "1, 2, 5": 33178}
+(1 row)</pre><p>
+
+     Cela indique qu'il y a trois combinaisons de colonnes qui ont 33178
+     valeurs distinctes : le code postal et l'état ; le code postal
+     et la ville ; et le code postal, la ville et l'état (le fait qu'ils
+     soient tous égaux est attendu puisque le code postal seul est unique
+     dans cette table). D'un autre côté, la combinaison de la ville et de
+     l'état n'a que 27435 valeurs distinctes.
+    </p><p>
+     Il est conseillé de créer des objets statistiques
+     <code class="literal">ndistinct</code> uniquement sur les combinaisons de colonnes
+     réellement utilisées pour des regroupements, et pour lesquelles les
+     mauvaises estimations du nombre de groupe a pour conséquence de mauvais
+     plans. Sinon le temps consommé par <code class="command">ANALYZE</code> serait
+     gaspillé.
+    </p></div><div class="sect3" id="PLANNER-STATS-EXTENDED-MCV-LISTS"><div class="titlepage"><div><div><h4 class="title">14.2.2.3. Listes multivariées MCV <a href="#PLANNER-STATS-EXTENDED-MCV-LISTS" class="id_link">#</a></h4></div></div></div><p>
+     Un autre type de statistiques enregistrées pour chaque colonne est les
+     listes des valeurs les plus communes. Ceci permet des estimations très
+     précises pour les colonnes individuelles, mais pourrait résulter en des
+     estimations significativement mauvaises pour les requêtes ayant des
+     filtres sur plusieurs colonnes.
+    </p><p>
+     Pour améliorer ces estimations, <code class="command">ANALYZE</code> peut récupérer
+     des listes MCV sur des combinaisons de colonnes. De façon similaire aux
+     dépendances fonctionnelles et coefficients de valeurs distinctes, il
+     n'est pas possible de le faire pour chaque regroupement de colonnes.
+     Ceci est encore plus vrai dans ce cas, car la liste MCV
+     (contrairement aux dépendances fonctionnelles et coefficients de valeurs
+     distinctes), enregistre les valeurs les plus communes. Donc les données
+     ne sont récupérées que pour les groupes de colonnes apparaissant dans un
+     objet statistique défini avec l'option <code class="literal">mcv</code>.
+    </p><p>
+     En continuant sur l'exemple précédent, la liste MCV pour une table de
+     codes ZIP pourrait ressembler à ce qui suit (contrairement aux types
+     plus simples de statistiques, une fonction est requise pour inspecter le
+     contenu du MCV) :
+
+     </p><pre class="programlisting">CREATE STATISTICS stts3 (mcv) ON city, state FROM zipcodes;
+
+ANALYZE zipcodes;
+
+SELECT m.* FROM pg_statistic_ext join pg_statistic_ext_data on (oid = stxoid),
+                pg_mcv_list_items(stxdmcv) m WHERE stxname = 'stts3';
+
+ index |         values         | nulls | frequency | base_frequency
+-------+------------------------+-------+-----------+----------------
+     0 | {Washington, DC}       | {f,f} |  0.003467 |        2.7e-05
+     1 | {Apo, AE}              | {f,f} |  0.003067 |        1.9e-05
+     2 | {Houston, TX}          | {f,f} |  0.002167 |       0.000133
+     3 | {El Paso, TX}          | {f,f} |     0.002 |       0.000113
+     4 | {New York, NY}         | {f,f} |  0.001967 |       0.000114
+     5 | {Atlanta, GA}          | {f,f} |  0.001633 |        3.3e-05
+     6 | {Sacramento, CA}       | {f,f} |  0.001433 |        7.8e-05
+     7 | {Miami, FL}            | {f,f} |    0.0014 |          6e-05
+     8 | {Dallas, TX}           | {f,f} |  0.001367 |        8.8e-05
+     9 | {Chicago, IL}          | {f,f} |  0.001333 |        5.1e-05
+   ...
+(99 rows)</pre><p>
+
+     Ceci indique que la combinaison la plus commune des colonnes city et
+     state est Washington DC, avec la fréquence réelle (dans cet exemple) de
+     0,35 %. La fréquence de base de la combinaison (telle qu'elle est
+     calculée par les fréquences par mono colonne) est seulement de
+     0,0027 %, résultant en une sous-estimation très forte.
+    </p><p>
+     Il est préférable de créer des objets statistiques <acronym class="acronym">MCV</acronym>
+     uniquement sur les combinaisons de colonnes réellement utilisées
+     ensemble dans des filtres et pour lesquelles la mauvaise estimation du
+     nombre de groupes a pour conséquence de mauvais plans. Dans le cas
+     contraire, le <code class="command">ANALYZE</code> et le temps de planification
+     sont juste gâchés.
+    </p></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/planner-stats.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+</html>

@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/libpq-pipeline-mode.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:36 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>32.5. Mode pipeline</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="libpq-async.html" title="32.4. Traitement des commandes asynchrones" /><link rel="next" href="libpq-single-row-mode.html" title="32.6. Récupérer le résultats des requêtes par morceau" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/libpq-pipeline-mode.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/libpq-pipeline-mode.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/libpq-pipeline-mode.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/libpq-pipeline-mode.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/libpq-pipeline-mode.html">14</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/libpq-pipeline-mode.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="client-interfaces.html">Interfaces client</a></span> » <span class="breadcrumb-link"><a href="libpq.html"><span class="application">libpq</span>  --  Bibliothèque C</a></span> » <span class="breadcrumb-node">Mode pipeline</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="libpq-async.html" title="32.4. Traitement des commandes asynchrones">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="libpq.html" title="Chapitre 32. libpq  --  Bibliothèque C">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="libpq-single-row-mode.html" title="32.6. Récupérer le résultats des requêtes par morceau">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">32.4. Traitement des commandes asynchrones </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 32.6. Récupérer le résultats des requêtes par morceau</td></tr></table></div><div class="sect1" id="LIBPQ-PIPELINE-MODE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">32.5. Mode pipeline <a href="#LIBPQ-PIPELINE-MODE" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="libpq-pipeline-mode.html#LIBPQ-PIPELINE-USING">32.5.1. Utiliser le mode pipeline</a></span></dt><dt><span class="sect2"><a href="libpq-pipeline-mode.html#LIBPQ-PIPELINE-FUNCTIONS">32.5.2. Fonctions associées avec le mode pipeline</a></span></dt><dt><span class="sect2"><a href="libpq-pipeline-mode.html#LIBPQ-PIPELINE-TIPS">32.5.3. Quand utiliser le mode pipeline</a></span></dt></dl></div><a id="id-1.7.3.12.2" class="indexterm"></a><a id="id-1.7.3.12.3" class="indexterm"></a><a id="id-1.7.3.12.4" class="indexterm"></a><p>
+   Le mode pipeline de <span class="application">libpq</span> permet aux applications
+   d'envoyer une requête sans avoir à lire le résultat de la requête
+   précédemment envoyée. En utilisant le mode pipeline, un client attendra
+   moins le serveur car plusieurs requêtes/résultats peuvent être envoyés/reçus
+   dans une seule transaction réseau.
+  </p><p>
+   Alors que le mode pipeline offre une amélioration significative des
+   performances, les clients en écriture utilisant le mode pipeline sont plus
+   complexes car cela implique de gérer une queue de requêtes en cours et de
+   trouver quel résultat correspond à quelle requête dans la queue.
+  </p><p>
+   Le mode pipeline consomme généralement aussi plus de mémoire sur le client
+   et le serveur, bien qu'une gestion attentionnée et agressive de la queue
+   d'envoi/réception peut mitiger cela. Ceci s'applique que la connexion soit
+   ou non en mode blocage ou non blocage.
+  </p><p>
+   Alors que l'API de pipeline de <span class="application">libpq</span> a été introduite dans
+   <span class="productname">PostgreSQL</span> 14, c'est une fonctionnalité du côté
+   client qui ne requiert pas de support spécial côté serveur, et fonctionne
+   avec tout serveur qui supporte le protocole de requêtes étendu v3. Pour
+   plus d'informations, voir <a class="xref" href="protocol-flow.html#PROTOCOL-FLOW-PIPELINING" title="53.2.4. Pipelines">Section 53.2.4</a>.
+  </p><div class="sect2" id="LIBPQ-PIPELINE-USING"><div class="titlepage"><div><div><h3 class="title">32.5.1. Utiliser le mode pipeline <a href="#LIBPQ-PIPELINE-USING" class="id_link">#</a></h3></div></div></div><p>
+    Pour exécuter des pipelines, l'application doit basculer la connexion en
+    mode pipeline, ce qui se fait avec <a class="xref" href="libpq-pipeline-mode.html#LIBPQ-PQENTERPIPELINEMODE"><code class="function">PQenterPipelineMode</code></a>.
+    <a class="xref" href="libpq-pipeline-mode.html#LIBPQ-PQPIPELINESTATUS"><code class="function">PQpipelineStatus</code></a> peut être utilisé pour tester si
+    le mode pipeline est actif. Dans le mode pipeline, seules les <a class="link" href="libpq-async.html" title="32.4. Traitement des commandes asynchrones">opérations asynchrones</a> qui utilisent le protocole
+    de requête étendue sont autorisées, les
+    chaînes de commandes contenant plusieurs commandes SQL et
+    <code class="literal">COPY</code> sont interdits. Utiliser les fonctions d'exécution
+    de commandes synchrones telles que
+    <code class="function">PQfn</code>,
+    <code class="function">PQexec</code>,
+    <code class="function">PQexecParams</code>,
+    <code class="function">PQprepare</code>,
+    <code class="function">PQexecPrepared</code>,
+    <code class="function">PQdescribePrepared</code>,
+    <code class="function">PQdescribePortal</code>,
+    <code class="function">PQclosePrepared</code>,
+    <code class="function">PQclosePortal</code>,
+    renvoie une erreur. <code class="function">PQsendQuery</code> est aussi interdite
+    parce qu'elle utilise le protocole de requête simple. Une fois que toutes
+    les commandes envoyées ont eu leurs résultats traités, l'application peut
+    retourner dans le mode sans pipeline avec <a class="xref" href="libpq-pipeline-mode.html#LIBPQ-PQEXITPIPELINEMODE"><code class="function">PQexitPipelineMode</code></a>.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Il est préférable d'utiliser le mode pipeline avec <span class="application">libpq</span> dans
+     le <a class="link" href="libpq-async.html#LIBPQ-PQSETNONBLOCKING">mode sans blocage</a>. Si utilisé en mode
+     blocage, il est possible qu'un deadlock client/serveur survienne.
+      <a href="#ftn.id-1.7.3.12.9.3.1.3" class="footnote"><sup class="footnote" id="id-1.7.3.12.9.3.1.3">[15]</sup></a>
+    </p></div><div class="sect3" id="LIBPQ-PIPELINE-SENDING"><div class="titlepage"><div><div><h4 class="title">32.5.1.1. Exécuter des requêtes <a href="#LIBPQ-PIPELINE-SENDING" class="id_link">#</a></h4></div></div></div><p>
+
+     Après être entré en mode pipeline, l'application envoie les requêtes en
+     utilisant
+     <a class="xref" href="libpq-async.html#LIBPQ-PQSENDQUERYPARAMS"><code class="function">PQsendQueryParams</code></a> ou un des équivalents pour
+     requêtes préparées <a class="xref" href="libpq-async.html#LIBPQ-PQSENDQUERYPREPARED"><code class="function">PQsendQueryPrepared</code></a>. Ces
+     requêtes sont mises en queue côté client jusqu'au vidage du serveur ;
+     ceci survient quand <a class="xref" href="libpq-pipeline-mode.html#LIBPQ-PQPIPELINESYNC"><code class="function">PQpipelineSync</code></a> est utilisé
+     pour établir un point de synchronisation dans le pipeline ou quand <a class="xref" href="libpq-async.html#LIBPQ-PQFLUSH"><code class="function">PQflush</code></a> est appelé. Les fonctions
+     <a class="xref" href="libpq-async.html#LIBPQ-PQSENDPREPARE"><code class="function">PQsendPrepare</code></a>,
+     <a class="xref" href="libpq-async.html#LIBPQ-PQSENDDESCRIBEPREPARED"><code class="function">PQsendDescribePrepared</code></a>,
+     <a class="xref" href="libpq-async.html#LIBPQ-PQSENDDESCRIBEPORTAL"><code class="function">PQsendDescribePortal</code></a>,
+     <a class="xref" href="libpq-async.html#LIBPQ-PQSENDCLOSEPREPARED"><code class="function">PQsendClosePrepared</code></a> et
+     <a class="xref" href="libpq-async.html#LIBPQ-PQSENDCLOSEPORTAL"><code class="function">PQsendClosePortal</code></a> fonctionnent aussi en mode
+     pipeline. Le traitement des résultats est décrit ci-dessous.
+    </p><p>
+     Le serveur exécute les requêtes et envoie les résultats dans l'ordre dans
+     lequel le client les a envoyé. Le serveur commencera immédiatement
+     l'exécution des commandes dans le pipeline. Notez que les résultats sont
+     mis en tampon du côté du serveur ; le serveur vide ce tampon quand un
+     point de synchronisation est établi avec soit
+     <code class="function">PQpipelineSync</code> soit <code class="function">PQsendPipelineSync</code>,
+     ou quand
+     <code class="function">PQsendFlushRequest</code> est appelé. Si l'exécution d'une
+     requête rencontre une erreur, le serveur annule la transaction en cours
+     et n'exécute pas toute autre commande dans la queue jusqu'au prochain
+     point de synchronisation ; un résultat
+     <code class="literal">PGRES_PIPELINE_ABORTED</code> est produit pour chacune de ces
+     commandes. (Ceci reste vrai même si les commandes dans le pipeline vont
+     annuler la transaction.) Le traitement des requêtes continue après le
+     point de synchronisation.
+    </p><p>
+     Il est possible qu'une opération dépende des résultats d'une opération
+     précédente ; par exemple, une requête pourrait définir une table
+     que la prochaine requête du même pipeline utilise. De façon similaire, une
+     application pourrait créer une requête préparée nommée et l'exécuter dans
+     les requêtes suivantes du même pipeline.
+    </p></div><div class="sect3" id="LIBPQ-PIPELINE-RESULTS"><div class="titlepage"><div><div><h4 class="title">32.5.1.2. Traitement des résultats <a href="#LIBPQ-PIPELINE-RESULTS" class="id_link">#</a></h4></div></div></div><p>
+     Pour traiter le résultat d'une requête dans un pipeline, l'application
+     appelle <code class="function">PQgetResult</code> de façon répété et gère chaque
+     résultat jusqu'à ce que <code class="function">PQgetResult</code> renvoie null.
+     Le résultat de la prochaine requête dans le pipeline sera alors récupéré
+     en utilisant de nouveau <code class="function">PQgetResult</code> et le cycle
+     sera répété. L'application gère les résultats de requête individuelle
+     comme d'habitude. Quand les résultats de toutes les requêtes du pipeline
+     ont été renvoyés, <code class="function">PQgetResult</code> renvoie un résultat
+     contenant la valeur de statut <code class="literal">PGRES_PIPELINE_SYNC</code>
+    </p><p>
+     Le client peut choisir de différer le traitement des résultats jusqu'à ce
+     que le pipeline complet ait été envoyé ou de continuer en envoyant
+     d'autres requêtes dans le pipeline ; voir <a class="xref" href="libpq-pipeline-mode.html#LIBPQ-PIPELINE-INTERLEAVE" title="32.5.1.4. Interleaving Result Processing and Query Dispatch">Section 32.5.1.4</a>.
+    </p><p>
+     <code class="function">PQgetResult</code> se comporte comme pour le traitement
+     asynchrone normal, sauf qu'il peut contenir les nouveaux types
+     <code class="type">PGresult</code>, à savoir <code class="literal">PGRES_PIPELINE_SYNC</code>
+     et <code class="literal">PGRES_PIPELINE_ABORTED</code>.
+     <code class="literal">PGRES_PIPELINE_SYNC</code> est indiqué exactement une fois
+     pour chaque <code class="function">PQpipelineSync</code> ou
+     <code class="function">PQsendPipelineSync</code> au point correspondant
+     dans le pipeline.
+     <code class="literal">PGRES_PIPELINE_ABORTED</code> est émis à la place d'un
+     résultat de requête normal pour la première erreur et tous les résultats
+     suivants jusqu'au prochain <code class="literal">PGRES_PIPELINE_SYNC</code> ;
+     voir <a class="xref" href="libpq-pipeline-mode.html#LIBPQ-PIPELINE-ERRORS" title="32.5.1.3. Gestion des erreurs">Section 32.5.1.3</a>.
+    </p><p>
+     <code class="function">PQisBusy</code>, <code class="function">PQconsumeInput</code>, etc
+     opèrent normalement lors du traitement ds résultats du pipeline. En
+     particulier, un appel à <code class="function">PQisBusy</code> au milieu d'un
+     pipeline renvoie 0 si les résultats de toutes les requêtes lancées
+     jusqu'à maintenant ont été consommés.
+    </p><p>
+     <span class="application">libpq</span> ne fournit pas d'informations à
+     l'application quant à la requête en cours de traitement (sauf que
+     <code class="function">PQgetResult</code> renvoie null pour indiquer que nous
+     commençons l'envoi des résultats de la requête suivante). L'application
+     doit garder la trace de l'ordre dans lequel elle a envoyé les requête,
+     pour les associer avec les résultats correspondants. Les applications
+     utiliseront typiquement une machine à état ou une queue FIFO pur ça.
+    </p></div><div class="sect3" id="LIBPQ-PIPELINE-ERRORS"><div class="titlepage"><div><div><h4 class="title">32.5.1.3. Gestion des erreurs <a href="#LIBPQ-PIPELINE-ERRORS" class="id_link">#</a></h4></div></div></div><p>
+     Du point de vue du client, après que <code class="function">PQresultStatus</code>
+     renvoie <code class="literal">PGRES_FATAL_ERROR</code>, le pipeline est considéré
+     comme annulé. <code class="function">PQresultStatus</code> renverra un résultat
+     <code class="literal">PGRES_PIPELINE_ABORTED</code> pour chaque opération restant
+     en queue dans un pipeline annulé. Le résultat pour
+     <code class="function">PQpipelineSync</code> ou
+     <code class="function">PQsendPipelineSync</code> est rapporté comme
+     <code class="literal">PGRES_PIPELINE_SYNC</code> pour signaler la fin du pipeline
+     annulé et le retour au traitement normal des résultats.
+    </p><p>
+     Le client <span class="emphasis"><em>doit</em></span> traiterles résultats avec
+     <code class="function">PQgetResult</code> lors de la récupération après erreur.
+    </p><p>
+     Si le pipeline utilisait une transaction implicite, alors les opérations
+     qui se sont déjà exécutées sont annulées et les opérations en queue
+     après l'opération annulée sont complètement ignorées. Le même
+     comportement reste si le pipeline commence et valide une seule
+     transaction explicite (la première requête est <code class="literal">BEGIN</code>
+     et la dernière est <code class="literal">COMMIT</code>) sauf que la session reste
+     dans un état de transaction annulée à la fin du pipeline. Si un pipeline
+     contient <span class="emphasis"><em>plusieurs transactions explicites</em></span>, toutes
+     les transactions validées avant l'erreur restent validées, la
+     transaction actuellement en cours est annulée, et toutes les opérations
+     suivantes sont complètement ignorées, ceci incluant les transactions
+     suivantes. Si unpoint de synchronisation du pipeline survient avec un
+     bloc de transaction explicite dans un état annulé, le pipeline suivant
+     deviendra immédiatement annulé sauf si la commande suivante place la
+     transaction en mode normal avec <code class="command">ROLLBACK</code>.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Le client ne doit pas supposer que le travail est validé quand il
+      <span class="emphasis"><em>envoie</em></span> un <code class="literal">COMMIT</code>  -- 
+      seulment quand le résultat correspondant est reçu pour confirmer que la
+      validation est terminée. Comme des erreurs arrivent en asynchrone,
+      l'application a besoin d'être capable de recommencer depuis le dernier
+      changement validé <span class="emphasis"><em>reçu</em></span> et renvoie le travail
+      effectué après ce point si quelque chose ne s'est pas bien passé.
+     </p></div></div><div class="sect3" id="LIBPQ-PIPELINE-INTERLEAVE"><div class="titlepage"><div><div><h4 class="title">32.5.1.4. Interleaving Result Processing and Query Dispatch <a href="#LIBPQ-PIPELINE-INTERLEAVE" class="id_link">#</a></h4></div></div></div><p>
+     Pour éviter des verrous sur des pipelines importants, le client devrait
+     être structuré autour d'une boucle d'événements non bloquante en
+     utilisant les possibilités du système d'exploitation, tel que
+     <code class="function">select</code>, <code class="function">poll</code>,
+     <code class="function">WaitForMultipleObjectEx</code>, etc.
+    </p><p>
+     L'application doit généralement maintenir une queue de travail restant à
+     déployer et une queue de travail qui a déjà été déployée mais dont les
+     résultats n'ont pas encore été traités. Quand le socket est accessible
+     en écriture, il pourrait déployer plus de travail. Quand le socket est
+     lisible, il pourrait lire les résultats et les traiter, les faisant
+     correspondre à la prochaine entrée dans la queue de résultats
+     correspondante. Suivant la mémoire disponible, les résultats provenant
+     du socket doivent être lus fréquemment : il n'est pas nécessaire
+     d'attendre la fin du pipeline pour lire les résultats. Les pipelines
+     doivent être placés en unités logiquesde travail, habituellement
+     (mais pas nécessairement) une transaction par pipeline. Il n'est pas
+     besoin de quitter le mode pipeline et de ré-entrer dans ce mode entre
+     les pipelines ou d'autre la fin d'un pipeline avant d'envoyer le
+     suivant.
+    </p><p>
+     Un exemple utilisant <code class="function">select()</code> et une simple machine
+     à état pour trace le travail envoyé et reçu se trouve dans
+     <code class="filename">src/test/modules/libpq_pipeline/libpq_pipeline.c</code> à
+     partir de la distribution des sources de PostgreSQL.
+    </p></div></div><div class="sect2" id="LIBPQ-PIPELINE-FUNCTIONS"><div class="titlepage"><div><div><h3 class="title">32.5.2. Fonctions associées avec le mode pipeline <a href="#LIBPQ-PIPELINE-FUNCTIONS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQPIPELINESTATUS"><span class="term"><code class="function">PQpipelineStatus</code><a id="id-1.7.3.12.10.2.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQPIPELINESTATUS" class="id_link">#</a></dt><dd><p>
+       Renvoie le statut actuel du mode pipeline de la connexion
+      <span class="application">libpq</span>.
+</p><pre class="synopsis">
+PGpipelineStatus PQpipelineStatus(const PGconn *conn);
+</pre><p>
+      </p><p>
+       <code class="function">PQpipelineStatus</code> peut renvoyer une des valeurs
+       suivantes :
+
+       </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">
+          <code class="literal">PQ_PIPELINE_ON</code>
+         </span></dt><dd><p>
+           La connexion <span class="application">libpq</span> est en mode
+           pipeline.
+          </p></dd><dt><span class="term">
+          <code class="literal">PQ_PIPELINE_OFF</code>
+         </span></dt><dd><p>
+           La connexion <span class="application">libpq</span> n'est
+           <span class="emphasis"><em>pas</em></span> en mode pipeline.
+          </p></dd><dt><span class="term">
+          <code class="literal">PQ_PIPELINE_ABORTED</code>
+         </span></dt><dd><p>
+           La connexion <span class="application">libpq</span> est en mode pipeline
+           et une erreur est survenue lors du traitement du pipeline actuel.
+           Le drapeau d'annulation est effacé quand <code class="function">PQgetResult</code>
+           renvoie un résultat de type <code class="literal">PGRES_PIPELINE_SYNC</code>.
+          </p></dd></dl></div><p>
+      </p></dd><dt id="LIBPQ-PQENTERPIPELINEMODE"><span class="term"><code class="function">PQenterPipelineMode</code><a id="id-1.7.3.12.10.2.2.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQENTERPIPELINEMODE" class="id_link">#</a></dt><dd><p>
+      Cause l'entrée en mode pipeline de la connexion si elle est actuellement
+      inactive ou déjà en mode pipeline.
+
+</p><pre class="synopsis">
+int PQenterPipelineMode(PGconn *conn);
+</pre><p>
+
+      </p><p>
+       Renvoie 1 en cas de succès.
+       Renvoie 0 et n'a pas d'effet si la connection est actuellement active,
+       par exemple elle a un résultat prêt ou elle est en attente d'entrée du
+       serveur, etc. Cette fonction n'envoie rien au serveur, elle modifie
+       juste l'état de la connexion <span class="application">libpq</span>.
+      </p></dd><dt id="LIBPQ-PQEXITPIPELINEMODE"><span class="term"><code class="function">PQexitPipelineMode</code><a id="id-1.7.3.12.10.2.3.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQEXITPIPELINEMODE" class="id_link">#</a></dt><dd><p>
+       Cause la sortie du mode pipeline pour la connexion si elle est en mode
+       pipeline avec une queue vide et aucun résultat en attente.
+</p><pre class="synopsis">
+int PQexitPipelineMode(PGconn *conn);
+</pre><p>
+      </p><p>
+       Renvoie 1 en cas de succès. Renvoie 1 et ne fait aucune action si la
+       connexion n'est pas en mode pipeline. Si l'instruction en cours n'a
+       pas terminé son traitement ou si <code class="function">PQgetResult</code>
+       n'a pas été appelé pour récupérer les résultats de toutes les
+       requêtes envoyées précédemment, renvoie 0 (auquel cas, utilisez
+       <a class="xref" href="libpq-status.html#LIBPQ-PQERRORMESSAGE">
+      <code class="function">PQerrorMessage</code>
+      
+     </a> pour obtenir plus d'informations
+       sur l'échec).
+      </p></dd><dt id="LIBPQ-PQPIPELINESYNC"><span class="term"><code class="function">PQpipelineSync</code><a id="id-1.7.3.12.10.2.4.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQPIPELINESYNC" class="id_link">#</a></dt><dd><p>
+       Marque un point de synchronisation dans un pipeline en envoyant un
+       <a class="link" href="protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY" title="53.2.3. Requête étendue">message sync</a> et en vidant
+       le tampon d'envoi. Ceci sert comme délimiteur d'une transaction implicite
+       et d'un point de restauration après erreur ;voir <a class="xref" href="libpq-pipeline-mode.html#LIBPQ-PIPELINE-ERRORS" title="32.5.1.3. Gestion des erreurs">Section 32.5.1.3</a>.
+
+</p><pre class="synopsis">
+int PQpipelineSync(PGconn *conn);
+</pre><p>
+      </p><p>
+       Renvoie 1 en cas de succès. Renvoie 0 si la connexion n'est pas
+       dans le mode pipeline ou est en cours d'envoi d'un
+       <a class="link" href="protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY" title="53.2.3. Requête étendue">message sync</a> en
+       échec.
+      </p></dd><dt id="LIBPQ-PQSENDPIPELINESYNC"><span class="term"><code class="function">PQsendPipelineSync</code><a id="id-1.7.3.12.10.2.5.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQSENDPIPELINESYNC" class="id_link">#</a></dt><dd><p>
+       Marque un point de synchronisation dans un pipeline en envoyant un
+       <a class="link" href="protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY" title="53.2.3. Requête étendue">message sync</a> sans vider
+       le tampon d'envoi. Cela sert comme délimiteur d'une transaction
+       implicite et comme point de récupération d'erreur ; voir
+       <a class="xref" href="libpq-pipeline-mode.html#LIBPQ-PIPELINE-ERRORS" title="32.5.1.3. Gestion des erreurs">Section 32.5.1.3</a>.
+
+</p><pre class="synopsis">
+int PQsendPipelineSync(PGconn *conn);
+</pre><p>
+      </p><p>
+       Renvoie 1 en cas de succès. Renvoie 0 si la connexion n'est pas en mode
+       pipeline ou si l'envoi du <a class="link" href="protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY" title="53.2.3. Requête étendue">message sync</a> a échoué. Notez que
+       le message n'est pas lui-même vidé automatiquement du serveur ;
+       utilisez <code class="function">PQflush</code> si nécessaire.
+      </p></dd><dt id="LIBPQ-PQSENDFLUSHREQUEST"><span class="term"><code class="function">PQsendFlushRequest</code><a id="id-1.7.3.12.10.2.6.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQSENDFLUSHREQUEST" class="id_link">#</a></dt><dd><p>
+        Envoie une requête au serveur pour vider son tampon en sortie.
+</p><pre class="synopsis">
+int PQsendFlushRequest(PGconn *conn);
+</pre><p>
+       </p><p>
+        Renvoie 1 en cas de succès. Renvoie 0 en cas d'échec.
+       </p><p>
+        Le serveur vide son tampon en sortie automatiquement comme conséquence
+        de l'appel à <code class="function">PQpipelineSync</code> ou pour toute requête
+        quand la connexion n'utilise pas le mode pipeline ; cette fonction
+        est utile pour forcer le serveur à vider son tampon en sortie dans le
+        mode pipeline sans établir de point de synchronisation. Notez que la
+        requête n'est pas elle-même vidée du serveur automatiquement ;
+        utilisez <code class="function">PQflush</code> si nécessaire.
+       </p></dd></dl></div></div><div class="sect2" id="LIBPQ-PIPELINE-TIPS"><div class="titlepage"><div><div><h3 class="title">32.5.3. Quand utiliser le mode pipeline <a href="#LIBPQ-PIPELINE-TIPS" class="id_link">#</a></h3></div></div></div><p>
+    Tout comme le mode de requête asynchrone, il n'y a pas de surcharge
+    significative pour les performances lors de l'utilisation du mode pipeline.
+    Il augmente la complexité de l'application cliente, et une grande attention
+    est requise pour éviter les deadlocks client/serveur, mais le mode pipeline
+    peut offrir des améliorations considérables des performances, en échange
+    d'une utilisation mémoire accrue.
+   </p><p>
+    Le mode pipeline est plus utile quand le serveur est distant, autrement dit
+    quand la latence réseau (<span class="quote">« <span class="quote">durée du ping</span> »</span>) est importante, et
+    aussi quand plusieurs petites opérations sont en cours d'exécution en
+    succession rapide. Il y a moins d'intérêt à utiliser les commandes en
+    pipeline quand chaque requête prend plusieurs fois le temps des
+    aller/retours client/serveur pour s'exécuter. Une exécution d'une opération
+    de 100 instructions sur un serveur avec des aller/retour à 300 ms va
+    prendre 30 secondes de latence réseau sans pipeline. Avec le pipeline,
+    celle pourrait prendre 0,3 seconde à attendre les résultats du serveur.
+   </p><p>
+    Utilisez les commandes de pipeline quand votre application fait plein de
+    petites opérations <code class="literal">INSERT</code>, <code class="literal">UPDATE</code> et
+    <code class="literal">DELETE</code> qui ne peuvent pas facilement être transformées
+    en opérations sur des ensembles ou en une opération <code class="literal">COPY</code>.
+   </p><p>
+    Le mode pipeline n'est pas utile quand l'information d'une opération est
+    requise par le client pour produire la prochaine opération. Dans de tels
+    cas, le client devra introduire un point de synchronisation et attendre
+    un aller/retour complet client/serveur pour obtenir le résultat nécessaire.
+    Néanmoins, il est souvent possible d'ajuster la conception du client pour
+    échanger les informations requises côté serveur. Les cycles
+    lecture/modification/écriture sont tout spécialement de bon candidat ;
+    par exemple :
+</p><pre class="programlisting">
+BEGIN;
+SELECT x FROM mytable WHERE id = 42 FOR UPDATE;
+-- result: x=2
+-- client adds 1 to x:
+UPDATE mytable SET x = 3 WHERE id = 42;
+COMMIT;
+</pre><p>
+    pourrait être réalisé plus efficacement avec :
+</p><pre class="programlisting">
+UPDATE mytable SET x = x + 1 WHERE id = 42;
+</pre><p>
+   </p><p>
+    Envoyer dans un pipeline est moins utile et plus complexe quand un seul
+    pipeline contient plusieurs transactions (voir <a class="xref" href="libpq-pipeline-mode.html#LIBPQ-PIPELINE-ERRORS" title="32.5.1.3. Gestion des erreurs">Section 32.5.1.3</a>).
+   </p></div><div class="footnotes"><br /><hr style="width:100; text-align:left;margin-left: 0" /><div id="ftn.id-1.7.3.12.9.3.1.3" class="footnote"><p><a href="#id-1.7.3.12.9.3.1.3" class="para"><sup class="para">[15] </sup></a>
+        Le client bloquera les tentatives d'envoyer des requêtes au serveur,
+        mais le serveur bloquera en essayant d'envoyer les résultats au client
+        des requêtes qu'il a déjà traité. Ceci survient seulement quand le
+        client envoie suffisamment de requêtes pour remplir  à la fois son
+        tampon en sortie et le tampon de réception du serveur avant qu'il
+        bascule pour traiter les entrées du serveur, mais il est difficile
+        de prédire exactement quand cela arrivera.
+       </p></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/libpq-pipeline-mode.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:36 GMT -->
+</html>

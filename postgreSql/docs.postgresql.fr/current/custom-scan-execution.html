@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/custom-scan-execution.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:15 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>59.3. Exécution de parcours personnalisés</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="custom-scan-plan.html" title="59.2. Créer des parcours de plans personnalisés" /><link rel="next" href="geqo.html" title="Chapitre 60. Optimiseur génétique de requêtes (Genetic Query Optimizer)" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/custom-scan-execution.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/custom-scan-execution.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/custom-scan-execution.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/custom-scan-execution.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/custom-scan-execution.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/custom-scan-execution.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/custom-scan-execution.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/custom-scan-execution.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/custom-scan-execution.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/custom-scan-execution.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/custom-scan-execution.html">9.5</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/custom-scan-execution.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="custom-scan.html">Écrire un module de parcours personnalisé</a></span> » <span class="breadcrumb-node">Exécution de parcours personnalisés</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="custom-scan-plan.html" title="59.2. Créer des parcours de plans personnalisés">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="custom-scan.html" title="Chapitre 59. Écrire un module de parcours personnalisé">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="geqo.html" title="Chapitre 60. Optimiseur génétique de requêtes&#10;  (Genetic Query Optimizer)">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">59.2. Créer des parcours de plans personnalisés </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 60. Optimiseur génétique de requêtes
+  (<span class="foreignphrase"><em class="foreignphrase">Genetic Query Optimizer</em></span>)</td></tr></table></div><div class="sect1" id="CUSTOM-SCAN-EXECUTION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">59.3. Exécution de parcours personnalisés <a href="#CUSTOM-SCAN-EXECUTION" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="custom-scan-execution.html#CUSTOM-SCAN-EXECUTION-CALLBACKS">59.3.1. Fonction callbacks d'exécution d'un parcours personnalisé</a></span></dt></dl></div><p>
+   Lorsqu'un <code class="structfield">CustomScan</code> est
+   exécuté, l'état de son exécution est représenté par un
+   <code class="structfield">CustomScanState</code>, qui est déclaré comme
+   suit :
+   </p><pre class="programlisting">
+typedef struct CustomScanState
+{
+    ScanState ss;
+    uint32    flags;
+    const CustomExecMethods *methods;
+} CustomScanState;
+   </pre><p>
+  </p><p>
+   <code class="structfield">ss</code> est initialisé comme
+   tous les autres états de parcours, sauf que si le
+   parcours est pour une jointure plutôt qu'une relation,
+   <code class="literal">ss.ss_currentRelation</code> est laissé à
+   NULL. <code class="structfield">flags</code> est un masque de bits avec la
+   même signification que dans <code class="structname">CustomPath</code> et
+   <code class="structname">CustomScan</code>. <code class="structfield">methods</code>
+   doit pointer vers un objet (généralement alloué statiquement)
+   implémentant les méthodes requises d'un état de parcours
+   personnalisé, qui sont détaillées ci-dessous. Typiquement, une
+   structure <code class="structname">CustomScanState</code>, qui n'a pas
+   besoin de supporter la fonction <code class="function">copyObject</code>,
+   sera actuellement une structure plus grande incorporant la structure
+   ci-dessus comme premier membre.
+  </p><div class="sect2" id="CUSTOM-SCAN-EXECUTION-CALLBACKS"><div class="titlepage"><div><div><h3 class="title">59.3.1. Fonction callbacks d'exécution d'un parcours personnalisé <a href="#CUSTOM-SCAN-EXECUTION-CALLBACKS" class="id_link">#</a></h3></div></div></div><p>
+    </p><pre class="programlisting">
+void (*BeginCustomScan) (CustomScanState *node,
+                         EState *estate,
+                         int eflags);
+    </pre><p>
+    Complète l'initialisation de la structure
+    <code class="structname">CustomScanState</code>. Les champs standards ont été
+    initialisés par la fonction <code class="function">ExecInitCustomScan</code>,
+    mais tous les champs privés devraient être initialisés ici.
+   </p><p>
+    </p><pre class="programlisting">
+TupleTableSlot *(*ExecCustomScan) (CustomScanState *node);
+    </pre><p>
+    Récupère la ligne suivante du parcours. Si il
+    existe des lignes restantes, la fonction devrait remplir
+    <code class="literal">pg_ResultTupleSlot</code> avec la ligne suivante dans
+    le sens actuel du parcours, puis renvoyer le slot de la ligne. Dans
+    le cas contraire, <code class="literal">NULL</code> ou un slot vide devrait
+    être renvoyé.
+   </p><p>
+    </p><pre class="programlisting">
+void (*EndCustomScan) (CustomScanState *node);
+    </pre><p>
+    Nettoie les données privées associées avec le
+    <code class="literal">CustomScanState</code>. Cette méthode est obligatoire,
+    mais elle n'a pas besoin de faire quoi que ce soit si il n'y a
+    pas de données associées ou des données qui seront nettoyées
+    automatiquement.
+   </p><p>
+    </p><pre class="programlisting">
+void (*ReScanCustomScan) (CustomScanState *node);
+    </pre><p>
+    Repositionne au début le parcours en cours et prépare à parcourir
+    de nouveau la relation.
+   </p><p>
+    </p><pre class="programlisting">
+void (*MarkPosCustomScan) (CustomScanState *node);
+    </pre><p>
+    Enregistre la position du parcours courant de telle manière
+    qu'elle puisse être restaurée par la fonction callback
+    <code class="function">RestrPosCustomScan</code>. Cette fonction callback
+    est facultative, et n'a besoin d'être fournie que si le drapeau
+    <code class="literal">CUSTOMPATH_SUPPORT_MARK_RESTORE</code> est positionné.
+   </p><p>
+    </p><pre class="programlisting">
+void (*RestrPosCustomScan) (CustomScanState *node);
+    </pre><p>
+    Restaure la position précédente du parcours telle que sauvegardée
+    par la fonction <code class="function">MarkPosCustomScan</code>. Cette
+    fonction callback est facultative, et n'a besoin d'être fournie
+    que si le drapeau <code class="literal">CUSTOMPATH_SUPPORT_MARK_RESTORE</code>
+    est positionné.
+   </p><p>
+    </p><pre class="programlisting">
+Size (*EstimateDSMCustomScan) (CustomScanState *node,
+                               ParallelContext *pcxt);
+    </pre><p>
+    Estime la quantité de mémoire partagée dynamique qui sera requise pour
+    l'opération parallèlisée. Elle pourrait être plus importante que la
+    quantité réellement utilisée, mais elle ne doit pas être moindre. La
+    valeur en retour est en octets. Cette fonction est optionnelle. Elle
+    n'est nécessaire que si ce type de parcours supporte une exécution
+    parallélisée.
+   </p><p>
+    </p><pre class="programlisting">
+void (*InitializeDSMCustomScan) (CustomScanState *node,
+                                 ParallelContext *pcxt,
+                                 void *coordinate);
+    </pre><p>
+    Initialise la mémoire partagée dynamique requise pour une opération
+    parallélisée. L'argument <code class="literal">coordinate</code> pointe vers une
+    partie de la mémoire partagée de taille identique à la valeur en retour de
+    <code class="function">EstimateDSMCustomScan</code>. Cette fonction est
+    optionnelle. Elle n'est nécessaire que si ce type de parcours supporte une
+    exécution parallélisée.
+   </p><p>
+    </p><pre class="programlisting">
+void (*ReInitializeDSMCustomScan) (CustomScanState *node,
+                                   ParallelContext *pcxt,
+                                   void *coordinate);
+    </pre><p>
+    Ré-initialise la mémoire partagée dynamique requise pour des opérations
+    parallélisées lorsque le nœud du plan pour le parcours personnalisé doit
+    être réalisé de nouveau. Cette fonction est optionnelle et doit seulement
+    être fournie si le fournisseur de ce parcours personnalisé supporte les
+    exécutions parallélisées. La pratique recommandée est que cette fonction
+    réinitialise seulement l'état partagé alors que la fonction
+    <code class="function">ReScanCustomScan</code> réinitialise seulement l'état local.
+    Actuellement, cette fonction sera appelée avant
+    <code class="function">ReScanCustomScan</code> mais il est préférable de ne pas se
+    fier à l'ordre des opérations.
+   </p><p>
+    </p><pre class="programlisting">
+void (*InitializeWorkerCustomScan) (CustomScanState *node,
+                                    shm_toc *toc,
+                                    void *coordinate);
+    </pre><p>
+    Initialise un état local d'un processus en parallèle basé sur la
+    configuration de l'état partagée dans le processus principal par
+    <code class="literal">InitializeDSMCustomScan</code>. Cette fonction est
+    optionnelle. Elle n'est nécessaire que si le fournisseur de ce parcours
+    personnalisé supporte une exécution parallélisée.
+   </p><p>
+    </p><pre class="programlisting">
+void (*ShutdownCustomScan) (CustomScanState *node);
+    </pre><p>
+    Libère les ressources quand il est anticipé que le nœud ne sera pas exécuté
+    entièrement.  Cette fonction ne sera pas appelée dans tous les cas;
+    parfois, <code class="literal">EndCustomScan</code> peut être appelée sans que cette
+    ait été appelée avant.  Puisque le segment DSM utilisé par les requêtes
+    parallèles est détruit juste après que ce callback soit appelé, les modules
+    de parcours personnalisés qui désirent effectuer des actions avant que le
+    segment DSM disparaissent devraient implémenter cette méthode.
+   </p><p>
+    </p><pre class="programlisting">
+void (*ExplainCustomScan) (CustomScanState *node,
+                           List *ancestors,
+                           ExplainState *es);
+    </pre><p>
+    Envoie sur la sortie des informations additionnelles pour la commande
+    <code class="command">EXPLAIN</code> d'un nœud du plan d'un parcours
+    personnalisé. Cette fonction est facultative. Les données communes
+    enregistrées dans la structure <code class="structname">ScanState</code>,
+    tel que la liste des cibles et la relation parcourue, seront
+    montrées même sans cette fonction callback, mais la fonction permet
+    l'affichage d'états additionnels, privés.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/custom-scan-execution.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:15 GMT -->
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de Bord - CRM</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f8fafc; color: #1e293b; }
+        .container { max-width: 900px; margin: 50px auto; padding: 30px; background: white; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+        h1 { color: #0f172a; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
+        .welcome-box { background-color: #eff6ff; border-left: 4px solid #3b82f6; padding: 16px 20px; border-radius: 0 8px 8px 0; margin-bottom: 25px; }
+        .btn { display: inline-block; padding: 10px 20px; font-weight: 600; text-decoration: none; border-radius: 6px; cursor: pointer; border: none; font-size: 0.95rem; }
+        .btn-primary { background-color: #2563eb; color: white; }
+        .btn-primary:hover { background-color: #1d4ed8; }
+        .btn-danger { background-color: #ef4444; color: white; }
+        .btn-danger:hover { background-color: #dc2626; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px; }
+        .card { padding: 20px; border: 1px solid #e2e8f0; border-radius: 8px; text-align: center; background: #fafafa; }
+        .card a { color: #2563eb; font-weight: 600; text-decoration: none; }
+        .card a:hover { text-decoration: underline; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; background: #dbeafe; color: #1e40af; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tableau de Bord CRM</h1>
+
+        <!-- Utilisateur NON connecté -->
+        <div th:if="${!isAuthenticated}" class="welcome-box">
+            <p>Bienvenue sur l'application CRM. Veuillez vous identifier pour accéder à vos fonctionnalités.</p>
+            <div style="margin-top: 15px;">
+                <a th:href="@{/login}" class="btn btn-primary">Se connecter</a>
+            </div>
+        </div>
+
+        <!-- Utilisateur CONNECTÉ -->
+        <div th:if="${isAuthenticated}">
+            <div class="welcome-box">
+                <p>Bienvenue, <strong th:text="${username}">Utilisateur</strong> ! <span th:if="${isAdmin}" class="badge">ADMIN</span><span th:if="${isManager}" class="badge">MANAGER</span><span th:if="${isClient}" class="badge">CLIENT</span></p>
+            </div>
+
+            <section>
+                <h2>Mes Fonctionnalités</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>Tâches</h3>
+                        <p>Gérer et suivre vos tâches quotidiennes</p>
+                        <a th:href="@{/tasks}">Consulter les tâches &rarr;</a>
+                    </div>
+                    <div class="card">
+                        <h3>Contacts</h3>
+                        <p>Base de données des clients et prospects</p>
+                        <a th:href="@{/contacts}">Consulter les contacts &rarr;</a>
+                    </div>
+                    <div th:if="${isAdmin}" class="card">
+                        <h3>Utilisateurs</h3>
+                        <p>Gestion des comptes et des permissions</p>
+                        <a th:href="@{/swagger-ui/index.html}">API & Utilisateurs (Swagger) &rarr;</a>
+                    </div>
+                </div>
+            </section>
+
+            <div style="margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                <button type="button" onclick="logout()" class="btn btn-danger">Se déconnecter</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function logout() {
+            // Efface le token JWT stocké dans le navigateur (localStorage + cookie)
+            localStorage.removeItem('jwt_token');
+            sessionStorage.clear();
+            document.cookie = "jwt_token=; path=/; max-age=0; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            
+            // Redirige vers la page de connexion
+            window.location.href = '/login';
+        }
+    </script>
+</body>
+</html>

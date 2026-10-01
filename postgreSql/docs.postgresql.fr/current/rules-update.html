@@ -1,0 +1,748 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/rules-update.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>39.4. Règles sur insert, update et delete</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="rules-materializedviews.html" title="39.3. Vues matérialisées" /><link rel="next" href="rules-privileges.html" title="39.5. Règles et droits" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/rules-update.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/rules-update.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/rules-update.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/rules-update.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/rules-update.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/rules-update.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/rules-update.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/rules-update.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/rules-update.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/rules-update.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/rules-update.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/rules-update.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/rules-update.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/rules-update.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/rules-update.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/rules-update.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/rules-update.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/rules-update.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/rules-update.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/rules-update.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/rules-update.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="rules.html">Système de règles</a></span> » <span class="breadcrumb-node">Règles sur <code class="command">insert</code>, <code class="command">update</code> et
+   <code class="command">delete</code></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="rules-materializedviews.html" title="39.3. Vues matérialisées">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="rules.html" title="Chapitre 39. Système de règles">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="rules-privileges.html" title="39.5. Règles et droits">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">39.3. Vues matérialisées </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 39.5. Règles et droits</td></tr></table></div><div class="sect1" id="RULES-UPDATE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">39.4. Règles sur <code class="command">insert</code>, <code class="command">update</code> et
+   <code class="command">delete</code> <a href="#RULES-UPDATE" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="rules-update.html#RULES-UPDATE-HOW">39.4.1. Fonctionnement des règles de mise à jour</a></span></dt><dt><span class="sect2"><a href="rules-update.html#RULES-UPDATE-VIEWS">39.4.2. Coopération avec les vues</a></span></dt></dl></div><a id="id-1.8.6.9.2" class="indexterm"></a><a id="id-1.8.6.9.3" class="indexterm"></a><a id="id-1.8.6.9.4" class="indexterm"></a><p>
+   Les règles définies sur <code class="command">insert</code>, <code class="command">update</code>
+   et <code class="command">delete</code> sont significativement différentes des règles de
+   vue décrites dans les sections précédentes. Tout d'abord, leur commande
+   <code class="command">create rule</code> permet plus de choses :
+
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Elles peuvent n'avoir aucune action.
+     </p></li><li class="listitem"><p>
+      Elles peuvent avoir plusieurs actions.
+     </p></li><li class="listitem"><p>
+      Elles peuvent être de type <code class="literal">instead</code> ou <code class="literal">also</code>
+      (valeur par défaut).
+     </p></li><li class="listitem"><p>
+      Les pseudo relations <code class="literal">new</code> et <code class="literal">old</code> deviennent
+      utiles.
+     </p></li><li class="listitem"><p>
+      Elles peuvent avoir des qualifications de règles.
+     </p></li></ul></div><p>
+
+   Ensuite, elles ne modifient pas l'arbre de requête en place. À la place,
+   elles créent de nouveaux arbres de requêtes et peuvent abandonner
+   l'original.
+  </p><div class="caution"><h3 class="title">Attention</h3><p>
+    Dans de nombreux cas, les tâches réalisables par des règles sur des
+    <code class="command">INSERT</code>/<code class="command">UPDATE</code>/<code class="command">DELETE</code>
+    sont mieux réalisés avec des triggers. Les triggers ont une notation un
+    peu plus complexe mais leur sémantique est plus simple à comprendre. Les
+    règles peuvent avoir des résultats surprenants quand la requête originale
+    contient des fonctions volatiles : les fonctions volatiles pourraient
+    être exécutées plus de fois qu'escompté lors du traitement de la règle.
+   </p><p>
+    De plus, il existe aussi certains cas non supportés par ces types de
+    règles, ceci incluant notamment les clauses <code class="literal">WITH</code> dans
+    la requête originale et les sous-requêtes (sous <code class="literal">SELECT</code>)
+    dans la liste <code class="literal">SET</code> de requêtes
+    <code class="command">UPDATE</code>. Ceci est dû au fait que la copie de ces
+    constructions dans la requête d'une règle pourrait résulter en des
+    évaluations multiples de la sous-requête, contrairement à l'intention
+    réelle de l'auteur de la requête.
+   </p></div><div class="sect2" id="RULES-UPDATE-HOW"><div class="titlepage"><div><div><h3 class="title">39.4.1. Fonctionnement des règles de mise à jour <a href="#RULES-UPDATE-HOW" class="id_link">#</a></h3></div></div></div><p>
+    Gardez en tête la syntaxe :
+
+    </p><pre class="programlisting">CREATE [ OR REPLACE ] RULE <em class="replaceable"><code>nom</code></em> as on <em class="replaceable"><code>evenement</code></em>
+    TO <em class="replaceable"><code>table</code></em> [ where <em class="replaceable"><code>condition</code></em> ]
+    DO [ ALSO | INSTEAD ] { NOTHING | <em class="replaceable"><code>commande</code></em> | ( <em class="replaceable"><code>commande</code></em> ; <em class="replaceable"><code>commande</code></em> ... ) }
+    </pre><p>
+
+    Dans la suite, <em class="firstterm">règles de mise à jour</em> signifie les règles qui
+    sont définies sur <code class="command">insert</code>, <code class="command">update</code> ou
+    <code class="command">delete</code>.
+   </p><p>
+    Les règles de mise à jour sont appliquées par le système de règles lorsque
+    la relation résultante et le type de commande d'un arbre de requête sont
+    égaux pour l'objet et l'événement donné dans la commande <code class="command">create
+     RULE</code>. Pour les règles de mise à jour, le système de règles crée
+    une liste d'arbres de requêtes. Initialement, la liste d'arbres de requêtes
+    est vide. Il peut y avoir aucune (mot clé <code class="literal">nothing</code>), une ou
+    plusieurs actions. Pour simplifier, nous verrons une règle avec une action.
+    Cette règle peut avoir une qualification et peut être de type
+    <code class="literal">instead</code> ou <code class="literal">also</code> (valeur par défaut).
+   </p><p>
+    Qu'est-ce qu'une qualification de règle ? C'est une restriction
+    indiquant le moment où doivent être réalisés les actions de la règle. Cette
+    qualification peut seulement référencer les pseudo relations <code class="literal">new</code>
+    et/ou <code class="literal">old</code>, qui représentent basiquement la relation qui a été
+    donné comme objet (mais avec une signification spéciale).
+   </p><p>
+    Donc, nous avons trois cas qui produisent les arbres de requêtes suivants
+    pour une règle à une seule action.
+
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">sans qualification avec soit <code class="literal">ALSO</code> soit <code class="literal">INSTEAD</code></span></dt><dd><p>
+        l'arbre de requête à partir de l'action de la règle avec l'ajout de la
+        qualification de l'arbre de requête original
+       </p></dd><dt><span class="term">qualification donnée et <code class="literal">also</code></span></dt><dd><p>
+        l'arbre de requête à partir de l'action de la règle avec l'ajout de la
+        qualification de la règle et de la qualification de l'arbre de requête
+        original
+       </p></dd><dt><span class="term">qualification donnée avec <code class="literal">instead</code></span></dt><dd><p>
+        l'arbre de requête à partir de l'action de la règle avec la
+        qualification de la requête et la qualification de l'arbre de requête
+        original ; et l'ajout de l'arbre de requête original avec la
+        qualification inverse de la règle
+       </p></dd></dl></div><p>
+
+    Enfin, si la règle est <code class="literal">also</code>, l'arbre de requête
+    original est ajouté à la liste. Comme seules les règles qualifiées
+    <code class="literal">instead</code> ont déjà ajouté l'arbre de requête original, nous
+    finissons avec un ou deux arbres de requête en sortie pour une règle avec
+    une action.
+   </p><p>
+    Pour les règles <code class="literal">on insert</code>, la requête originale (si elle n'est
+    pas supprimée par <code class="literal">instead</code>) est réalisée avant toute action
+    ajoutée par les règles. Ceci permet aux actions de voir les lignes insérées.
+    Mais pour les règles <code class="literal">on update</code> et <code class="literal">on delete</code>, la
+    requête originale est réalisée après les actions ajoutées par les règles.
+    Ceci nous assure que les actions pourront voir les lignes à mettre à jour ou
+    à supprimer ; sinon, les actions pourraient ne rien faire parce
+    qu'elles ne trouvent aucune ligne correspondant à leurs qualifications.
+   </p><p>
+    Les arbres de requêtes générés à partir des actions de règles sont
+    envoyés de nouveau dans le système de réécriture et peut-être que d'autres
+    règles seront appliquées résultant en plus ou moins d'arbres de requêtes.
+    Donc, les actions d'une règle doivent avoir soit un type de commande
+    différent soit une relation résultante différente de celle où la règle
+    elle-même est active, sinon ce processus récursif se terminera dans une
+    boucle infinie. (L'expansion récursive d'une règle sera détectée et
+    rapportée comme une erreur.)
+   </p><p>
+    Les arbres de requête trouvés dans les actions du catalogue système
+    <code class="structname">pg_rewrite</code> sont seulement des modèles. Comme ils
+    peuvent référencer les entrées de la table d'échelles pour <code class="literal">new</code> et
+    <code class="literal">old</code>, quelques substitutions ont dû être faites avant qu'elles ne
+    puissent être utilisées. Pour toute référence de <code class="literal">new</code>, une entrée
+    correspondante est recherchée dans la liste cible de la requête originale.
+    Si elle est trouvée, cette expression de l'entrée remplace la référence.
+    Sinon, <code class="literal">new</code> signifie la même chose que <code class="literal">old</code> (pour un
+    <code class="command">update</code>) où est remplacé par une valeur null (pour un
+    <code class="command">insert</code>). Toute référence à <code class="literal">old</code> est remplacée
+    par une référence à l'entrée de la table d'échelles qui est la relation
+    résultante.
+   </p><p>
+    Après que le système a terminé d'appliquer des règles de mise à jour, il
+    applique les règles de vues pour le(s) arbre(s) de requête produit(s). Les
+    vues ne peuvent pas insérer de nouvelles actions de mise à jour, donc il
+    n'est pas nécessaire d'appliquer les règles de mise à jour à la sortie d'une
+    réécriture de vue.
+   </p><div class="sect3" id="RULES-UPDATE-HOW-FIRST"><div class="titlepage"><div><div><h4 class="title">39.4.1.1. Une première requête étape par étape <a href="#RULES-UPDATE-HOW-FIRST" class="id_link">#</a></h4></div></div></div><p>
+     Disons que nous voulons tracer les modifications dans la colonne
+     <code class="literal">dispo_lacet</code> de la relation <code class="literal">donnees_lacet</code>. donc,
+     nous allons configurer une table de traces et une règle qui va écrire une
+     entrée lorsqu'un <code class="command">update</code> est lancé sur
+     <code class="literal">donnees_lacet</code>.
+
+     </p><pre class="programlisting">CREATE TABLE lacet_log (
+    nom_lacet    text,          -- modification de lacet
+    dispo_lacet   integer,       -- nouvelle valeur disponible
+    log_who    text,          -- qui l'a modifié
+    log_when   timestamp      -- quand
+);
+
+CREATE RULE log_lacet AS ON UPDATE TO donnees_lacet
+    WHERE NEW.dispo_lacet &lt;&gt; OLD.dispo_lacet
+    DO INSERT INTO lacet_log VALUES (
+                                    NEW.nom_lacet,
+                                    NEW.dispo_lacet,
+                                    current_user,
+                                    current_timestamp
+                                );
+     </pre><p>
+    </p><p>
+     Maintenant, quelqu'un exécute :
+
+     </p><pre class="programlisting">UPDATE donnees_lacet SET dispo_lacet = 6 WHERE nom_lacet = 'sl7';
+     </pre><p>
+
+     et voici le contenu de la table des traces :
+
+     </p><pre class="programlisting">SELECT * FROM lacet_log;
+
+ nom_lacet | dispo_lacet | log_who | log_when
+-----------+-------------+---------+----------------------------------
+ sl7       |           6 | Al      | Tue Oct 20 16:14:45 1998 MET DST
+(1 row)
+     </pre><p>
+    </p><p>
+     C'est ce à quoi nous nous attendions. Voici ce qui s'est passé en tâche
+     de fond. L'analyseur a créé l'arbre de requête :
+
+     </p><pre class="programlisting">UPDATE donnees_lacet SET dispo_lacet = 6
+  FROM donnees_lacet donnees_lacet
+ WHERE donnees_lacet.nom_lacet = 'sl7';
+     </pre><p>
+
+     Il existe une règle <code class="literal">log_lacet</code> qui est <code class="literal">on
+      UPDATE</code> avec l'expression de qualification de la règle :
+
+     </p><pre class="programlisting">NEW.dispo_lacet &lt;&gt; OLD.dispo_lacet
+     </pre><p>
+
+     et l'action :
+
+     </p><pre class="programlisting">INSERT INTO lacet_log VALUES (
+       new.nom_lacet, new.dispo_lacet,
+       current_user, current_timestamp )
+  FROM donnees_lacet new, donnees_lacet old;
+     </pre><p>
+
+     (ceci semble un peu étrange car, normalement, vous ne pouvez pas écrire
+     <code class="literal">insert … values … from</code>. Ici, la clause <code class="literal">from</code>
+     indique seulement qu'il existe des entrées de la table d'échelles dans
+     l'arbre de requête pour <code class="literal">new</code> et <code class="literal">old</code>. Elles sont
+     nécessaires pour qu'elles puissent être référencées par des variables dans
+     l'arbre de requête de la commande <code class="command">insert</code>).
+    </p><p>
+     La règle est une règle qualifiée <code class="literal">also</code> de façon à ce que
+     le système de règles doit renvoyer deux arbres de requêtes : l'action
+     de la règle modifiée et l'arbre de requête original. Dans la première
+     étape, la table d'échelles de la requête originale est incorporée dans l'arbre
+     de requête d'action de la règle. Ceci a pour résultat :
+
+     </p><pre class="programlisting">INSERT INTO lacet_log VALUES (
+       new.nom_lacet, new.dispo_lacet,
+       current_user, current_timestamp )
+  FROM donnees_lacet new, donnees_lacet old,
+       <span class="emphasis"><strong>donnees_lacet donnees_lacet</strong></span>;
+     </pre><p>
+
+     Pour la deuxième étape, la qualification de la règle lui est ajoutée, donc
+     l'ensemble de résultat est restreint aux lignes où <code class="literal">dispo_lacet</code> a
+     changé :
+
+     </p><pre class="programlisting">INSERT INTO lacet_log VALUES (
+       new.nom_lacet, new.dispo_lacet,
+       current_user, current_timestamp )
+  FROM donnees_lacet new, donnees_lacet old,
+       donnees_lacet donnees_lacet
+ <span class="emphasis"><strong>where new.dispo_lacet &lt;&gt; old.dispo_lacet</strong></span>;
+     </pre><p>
+
+     (Ceci semble encore plus étrange car <code class="literal">insert ... values</code> n'a pas
+     non plus une clause <code class="literal">where</code> mais le planificateur et l'exécuteur
+     n'auront pas de difficultés avec ça. Ils ont besoin de supporter cette même
+     fonctionnalité pour <code class="literal">insert ... select</code>.)
+    </p><p>
+     À l'étape 3, la qualification de l'arbre de requête original est ajoutée,
+     restreignant encore plus l'ensemble de résultats pour les seules lignes qui
+     auront été modifiées par la requête originale :
+
+     </p><pre class="programlisting">INSERT INTO lacet_log VALUES (
+       new.nom_lacet, new.dispo_lacet,
+       current_user, current_timestamp )
+  FROM donnees_lacet new, donnees_lacet old,
+       donnees_lacet donnees_lacet
+ WHERE new.dispo_lacet &lt;&gt; old.dispo_lacet
+   <span class="emphasis"><strong>and donnees_lacet.nom_lacet = 'sl7'</strong></span>;
+     </pre><p>
+    </p><p>
+     La quatrième étape remplace les références à <code class="literal">new</code> par les
+     entrées de la liste cible à partir de l'arbre de requête original ou par les
+     références de la variable correspondante à partir de la relation
+     résultat :
+
+     </p><pre class="programlisting">INSERT INTO lacet_log VALUES (
+       <span class="emphasis"><strong>donnees_lacet.nom_lacet</strong></span>, <span class="emphasis"><strong>6</strong></span>,
+       current_user, current_timestamp )
+  FROM donnees_lacet new, donnees_lacet old,
+       donnees_lacet donnees_lacet
+ WHERE <span class="emphasis"><strong>6</strong></span> &lt;&gt; old.dispo_lacet
+   AND donnees_lacet.nom_lacet = 'sl7';
+     </pre><p>
+
+    </p><p>
+     L'étape 5 modifie les références <code class="literal">old</code> en référence de la
+     relation résultat :
+
+     </p><pre class="programlisting">INSERT INTO lacet_log VALUES (
+       donnees_lacet.nom_lacet, 6,
+       current_user, current_timestamp )
+  FROM donnees_lacet new, donnees_lacet old,
+       donnees_lacet donnees_lacet
+ WHERE 6 &lt;&gt; <span class="emphasis"><strong>donnees_lacet.dispo_lacet</strong></span>
+   AND donnees_lacet.nom_lacet = 'sl7';
+     </pre><p>
+    </p><p>
+     C'est tout. Comme la règle est de type <code class="literal">also</code>, nous
+     affichons aussi l'arbre de requêtes original. En bref, l'affichage à partir
+     du système de règles est une liste de deux arbres de requêtes est une liste
+     de deux arbres de requêtes correspondant à ces instructions :
+
+     </p><pre class="programlisting">INSERT INTO lacet_log VALUES (
+       donnees_lacet.nom_lacet, 6,
+       current_user, current_timestamp )
+  FROM donnees_lacet
+ WHERE 6 &lt;&gt; donnees_lacet.dispo_lacet
+   AND donnees_lacet.nom_lacet = 'sl7';
+
+UPDATE donnees_lacet SET dispo_lacet = 6
+ WHERE nom_lacet = 'sl7';
+     </pre><p>
+
+     Elles sont exécutées dans cet ordre et c'est exactement le but de la règle.
+    </p><p>
+     Les substitutions et les qualifications ajoutées nous assurent que, si la
+     requête originale était :
+
+     </p><pre class="programlisting">UPDATE donnees_lacet SET couleur_lacet = 'green'
+ WHERE nom_lacet = 'sl7';
+     </pre><p>
+
+     aucune trace ne serait écrite. Dans ce cas, l'arbre de requête original ne
+     contient pas une entrée dans la liste cible pour <code class="literal">dispo_lacet</code>, donc
+     <code class="literal">new.dispo_lacet</code> sera remplacé par <code class="literal">donnees_lacet.dispo_lacet</code>.
+     Du coup, la commande supplémentaire générée par la règle est :
+
+     </p><pre class="programlisting">INSERT INTO lacet_log VALUES (
+       donnees_lacet.nom_lacet, <span class="emphasis"><strong>donnees_lacet.dispo_lacet</strong></span>,
+       current_user, current_timestamp )
+  FROM donnees_lacet
+ WHERE <span class="emphasis"><strong>donnees_lacet.dispo_lacet</strong></span> &lt;&gt; donnees_lacet.dispo_lacet
+   AND donnees_lacet.nom_lacet = 'sl7';
+     </pre><p>
+
+     et la qualification ne sera jamais vraie.
+    </p><p>
+     Si la requête originale modifie plusieurs lignes, cela fonctionne aussi.
+     Donc, si quelqu'un a lancé la commande :
+
+     </p><pre class="programlisting">UPDATE donnees_lacet SET dispo_lacet = 0
+ WHERE couleur_lacet = 'black';
+     </pre><p>
+
+     en fait, quatre lignes sont modifiées (<code class="literal">sl1</code>, <code class="literal">sl2</code>,
+     <code class="literal">sl3</code> et <code class="literal">sl4</code>). Mais <code class="literal">sl3</code> a déjà
+     <code class="literal">dispo_lacet = 0</code>. dans ce cas, la qualification des arbres de
+     requêtes originaux sont différents et cela produit un arbre de requête
+     supplémentaire :
+
+     </p><pre class="programlisting">INSERT INTO lacet_log
+SELECT donnees_lacet.nom_lacet, 0,
+       current_user, current_timestamp
+  FROM donnees_lacet
+ WHERE 0 &lt;&gt; donnees_lacet.dispo_lacet
+   AND <span class="emphasis"><strong>donnees_lacet.couleur_lacet = 'black'</strong></span>;
+     </pre><p>
+
+     à générer par la règle. Cet arbre de requête aura sûrement inséré trois
+     nouvelles lignes de traces. Et c'est tout à fait correct.
+    </p><p>
+     Ici, nous avons vu pourquoi il est important que l'arbre de requête
+     original soit exécuté en premier. Si l'<code class="command">update</code> a été
+     exécuté avant, toutes les lignes pourraient aussi être initialisées à zéro,
+     donc le <code class="command">insert</code> tracé ne trouvera aucune ligne à
+     <code class="literal">0 &lt;&gt; donnees_lacet.dispo_lacet</code>.
+    </p></div></div><div class="sect2" id="RULES-UPDATE-VIEWS"><div class="titlepage"><div><div><h3 class="title">39.4.2. Coopération avec les vues <a href="#RULES-UPDATE-VIEWS" class="id_link">#</a></h3></div></div></div><a id="id-1.8.6.9.8.2" class="indexterm"></a><p>
+    Une façon simple de protéger les vues d'une exécution
+    d'<code class="command">insert</code>, d'<code class="command">update</code> ou de
+    <code class="command">delete</code> sur elles est de
+    laisser s'abandonner ces arbres de requête. Donc, nous pourrions créer les
+    règles :
+
+    </p><pre class="programlisting">CREATE RULE chaussure_ins_protect AS ON INSERT TO chaussure
+    DO INSTEAD NOTHING;
+CREATE RULE chaussure_upd_protect AS ON UPDATE TO chaussure
+    DO INSTEAD NOTHING;
+CREATE RULE chaussure_del_protect AS ON DELETE TO chaussure
+    DO INSTEAD NOTHING;
+    </pre><p>
+
+    Maintenant, si quelqu'un essaie de faire une de ces opérations sur la
+    vue <code class="literal">chaussure</code>, le système de règles appliquera ces règles.
+    Comme les règles n'ont pas d'action et sont de type <code class="literal">instead</code>, la
+    liste résultante des arbres de requêtes sera vide et la requête entière
+    deviendra vide car il ne reste rien à optimiser ou exécuter après que le
+    système de règles en ait terminé avec elle.
+   </p><p>
+    Une façon plus sophistiquée d'utiliser le système de règles est de créer
+    les règles qui réécrivent l'arbre de requête en un arbre faisant la bonne
+    opération sur les vraies tables. Pour réaliser cela sur la vue
+    <code class="literal">lacet</code>, nous créons les règles suivantes :
+
+    </p><pre class="programlisting">CREATE RULE lacet_ins AS ON INSERT TO lacet
+    DO INSTEAD
+    INSERT INTO donnees_lacet VALUES (
+           NEW.nom_lacet,
+           NEW.dispo_lacet,
+           NEW.couleur_lacet,
+           NEW.longueur_lacet,
+           NEW.unite_lacet
+    );
+
+CREATE RULE lacet_upd AS ON UPDATE TO lacet
+    DO INSTEAD
+    UPDATE donnees_lacet
+       SET nom_lacet = NEW.nom_lacet,
+           dispo_lacet = NEW.dispo_lacet,
+           couleur_lacet = NEW.couleur_lacet,
+           longueur_lacet = NEW.longueur_lacet,
+           unite_lacet = NEW.unite_lacet
+     WHERE nom_lacet = OLD.nom_lacet;
+
+CREATE RULE lacet_del AS ON DELETE TO lacet
+    DO INSTEAD
+    DELETE FROM donnees_lacet
+     WHERE nom_lacet = OLD.nom_lacet;
+    </pre><p>
+   </p><p>
+    Si vous voulez supporter les requêtes <code class="literal">RETURNING</code> sur la vue,
+    vous devrez faire en sorte que les règles incluent les clauses
+    <code class="literal">RETURNING</code> qui calcule les lignes de la vue. Ceci est assez
+    simple pour des vues sur une seule table mais cela devient rapidement complexe
+    pour des vues de jointure comme <code class="literal">lacet</code>. Voici un exemple
+    pour le cas d'un INSERT :
+
+    </p><pre class="programlisting">CREATE RULE lacet_ins AS ON INSERT TO lacet
+    DO INSTEAD
+    INSERT INTO donnees_lacet VALUES (
+           NEW.nom_lacet,
+	   NEW.dispo_lacet,
+	   NEW.couleur_lacet,
+	   NEW.longueur_lacet,
+	   NEW.unite_lacet
+    )
+    RETURNING
+           donnees_lacet.*,
+	   (SELECT donnees_lacet.longueur_lacet * u.facteur_unite
+            FROM unite u WHERE donnees_lacet.unite_lacet = u.nom_unite);
+    </pre><p>
+
+    Notez que cette seule règle supporte à la fois les <code class="command">INSERT</code>
+    et les <code class="command">INSERT RETURNING</code> sur la vue  --  la clause
+    <code class="literal">RETURNING</code> est tout simplement ignoré pour un <code class="command">INSERT</code>.
+   </p><p>
+    Maintenant, supposons que, quelque fois, un paquet de lacets arrive au
+    magasin avec une grosse liste. Mais vous ne voulez pas mettre à jour
+    manuellement la vue <code class="literal">lacet</code> à chaque fois. à la place,
+    nous configurons deux petites tables, une où vous pouvez insérer les
+    éléments de la liste et une avec une astuce spéciale. Voici les commandes de
+    création :
+
+    </p><pre class="programlisting">CREATE TABLE lacet_arrive (
+    arr_name    text,
+    arr_quant   integer
+);
+
+CREATE TABLE lacet_ok (
+    ok_name     text,
+    ok_quant    integer
+);
+
+CREATE RULE lacet_ok_ins AS ON INSERT TO lacet_ok
+    DO INSTEAD
+    UPDATE lacet
+       SET dispo_lacet = dispo_lacet + NEW.ok_quant
+     WHERE nom_lacet = NEW.ok_name;
+    </pre><p>
+
+    Maintenant, vous pouvez remplir la table <code class="literal">lacet_arrive</code>
+    avec les données de la liste :
+
+    </p><pre class="programlisting">SELECT * FROM lacet_arrive;
+
+ arr_name | arr_quant
+----------+-----------
+ sl3      |        10
+ sl6      |        20
+ sl8      |        20
+(3 rows)
+    </pre><p>
+
+    Jetez un œil rapidement aux données actuelles :
+
+    </p><pre class="programlisting">SELECT * FROM lacet;
+
+ nom_lacet  | dispo_lacet | couleur_lacet | longueur_lacet | unite_lacet | longueur_lacet_cm
+------------+-------------+---------------+----------------+-------------+-------------------
+ sl1        |           5 | black         |             80 | cm          |                80
+ sl2        |           6 | black         |            100 | cm          |               100
+ sl7        |           6 | brown         |             60 | cm          |                60
+ sl3        |           0 | black         |             35 | inch        |              88.9
+ sl4        |           8 | black         |             40 | inch        |             101.6
+ sl8        |           1 | brown         |             40 | inch        |             101.6
+ sl5        |           4 | brown         |              1 | m           |               100
+ sl6        |           0 | brown         |            0.9 | m           |                90
+(8 rows)
+    </pre><p>
+
+    Maintenant, déplacez les lacets arrivés dans :
+
+    </p><pre class="programlisting">INSERT INTO lacet_ok SELECT * FROM lacet_arrive;
+    </pre><p>
+
+    et vérifiez le résultat :
+
+    </p><pre class="programlisting">SELECT * FROM lacet ORDER BY nom_lacet;
+
+ nom_lacet  | dispo_lacet | couleur_lacet | longueur_lacet | unite_lacet | longueur_lacet_cm
+------------+-------------+---------------+----------------+-------------+-------------------
+ sl1        |           5 | black         |             80 | cm          |                80
+ sl2        |           6 | black         |            100 | cm          |               100
+ sl7        |           6 | brown         |             60 | cm          |                60
+ sl4        |           8 | black         |             40 | inch        |             101.6
+ sl3        |          10 | black         |             35 | inch        |              88.9
+ sl8        |          21 | brown         |             40 | inch        |             101.6
+ sl5        |           4 | brown         |              1 | m           |               100
+ sl6        |          20 | brown         |            0.9 | m           |                90
+(8 rows)
+
+SELECT * FROM lacet_log;
+
+ nom_lacet | dispo_lacet | log_who| log_when
+-----------+-------------+--------+----------------------------------
+ sl7       |           6 | Al     | Tue Oct 20 19:14:45 1998 MET DST
+ sl3       |          10 | Al     | Tue Oct 20 19:25:16 1998 MET DST
+ sl6       |          20 | Al     | Tue Oct 20 19:25:16 1998 MET DST
+ sl8       |          21 | Al     | Tue Oct 20 19:25:16 1998 MET DST
+(4 rows)
+    </pre><p>
+   </p><p>
+    C'est un long chemin du <code class="literal">insert ... select</code> à ces
+    résultats. Et la description de la transformation de l'arbre de requêtes
+    sera la dernière dans ce chapitre. Tout d'abord, voici la sortie de
+    l'analyseur :
+
+    </p><pre class="programlisting">INSERT INTO lacet_ok
+SELECT lacet_arrive.arr_name, lacet_arrive.arr_quant
+  FROM lacet_arrive lacet_arrive, lacet_ok lacet_ok;
+    </pre><p>
+
+    Maintenant, la première règle <code class="literal">lacet_ok_ins</code> est
+    appliquée et transforme ceci en :
+
+    </p><pre class="programlisting">UPDATE lacet
+   SET dispo_lacet = lacet.dispo_lacet + lacet_arrive.arr_quant
+  FROM lacet_arrive lacet_arrive, lacet_ok lacet_ok,
+       lacet_ok old, lacet_ok new,
+       lacet lacet
+ WHERE lacet.nom_lacet = lacet_arrive.arr_name;
+    </pre><p>
+
+    et jette l'<code class="command">insert</code> actuel sur
+    <code class="literal">lacet_ok</code>. La requête réécrite est passée de nouveau
+    au système de règles et la seconde règle appliquée
+    <code class="literal">lacet_upd</code> produit :
+
+    </p><pre class="programlisting">UPDATE donnees_lacet
+   SET nom_lacet = lacet.nom_lacet,
+       dispo_lacet = lacet.dispo_lacet + lacet_arrive.arr_quant,
+       couleur_lacet = lacet.couleur_lacet,
+       longueur_lacet = lacet.longueur_lacet,
+       unite_lacet = lacet.unite_lacet
+  FROM lacet_arrive lacet_arrive, lacet_ok lacet_ok,
+       lacet_ok old, lacet_ok new,
+       lacet lacet, lacet old,
+       lacet new, donnees_lacet donnees_lacet
+ WHERE lacet.nom_lacet = lacet_arrive.arr_name
+   AND donnees_lacet.nom_lacet = lacet.nom_lacet;
+    </pre><p>
+
+    De nouveau, il s'agit d'une règle <code class="literal">instead</code> et l'arbre de
+    requête précédent est jeté. Notez que cette requête utilise toujours la vue
+    <code class="literal">lacet</code>. Mais le système de règles n'a pas fini cette
+    étape, donc il continue et lui applique la règle <code class="literal">_return</code>.
+    Nous obtenons :
+
+    </p><pre class="programlisting">UPDATE donnees_lacet
+   SET nom_lacet = s.nom_lacet,
+       dispo_lacet = s.dispo_lacet + lacet_arrive.arr_quant,
+       couleur_lacet = s.couleur_lacet,
+       longueur_lacet = s.longueur_lacet,
+       unite_lacet = s.unite_lacet
+  FROM lacet_arrive lacet_arrive, lacet_ok lacet_ok,
+       lacet_ok old, lacet_ok new,
+       lacet lacet, lacet old,
+       lacet new, donnees_lacet donnees_lacet,
+       lacet old, lacet new,
+       donnees_lacet s, unit u
+ WHERE s.nom_lacet = lacet_arrive.arr_name
+   AND donnees_lacet.nom_lacet = s.nom_lacet;
+    </pre><p>
+
+    Enfin, la règle <code class="literal">log_lacet</code> est appliquée, produisant
+    l'arbre de requête supplémentaire :
+
+    </p><pre class="programlisting">INSERT INTO lacet_log
+SELECT s.nom_lacet,
+       s.dispo_lacet + lacet_arrive.arr_quant,
+       current_user,
+       current_timestamp
+  FROM lacet_arrive lacet_arrive, lacet_ok lacet_ok,
+       lacet_ok old, lacet_ok new,
+       lacet lacet, lacet old,
+       lacet new, donnees_lacet donnees_lacet,
+       lacet old, lacet new,
+       donnees_lacet s, unit u,
+       donnees_lacet old, donnees_lacet new
+       lacet_log lacet_log
+ WHERE s.nom_lacet = lacet_arrive.arr_name
+   AND donnees_lacet.nom_lacet = s.nom_lacet
+   AND (s.dispo_lacet + lacet_arrive.arr_quant) &lt;&gt; s.dispo_lacet;
+    </pre><p>
+
+    une fois que le système de règles tombe en panne de règles et renvoie
+    les arbres de requêtes générés.
+   </p><p>
+    Donc, nous finissons avec deux arbres de requêtes finaux qui sont
+    équivalents aux instructions <acronym class="acronym">SQL</acronym> :
+
+    </p><pre class="programlisting">INSERT INTO lacet_log
+SELECT s.nom_lacet,
+       s.dispo_lacet + lacet_arrive.arr_quant,
+       current_user,
+       current_timestamp
+  FROM lacet_arrive lacet_arrive, donnees_lacet donnees_lacet,
+       donnees_lacet s
+ WHERE s.nom_lacet = lacet_arrive.arr_name
+   AND donnees_lacet.nom_lacet = s.nom_lacet
+   AND s.dispo_lacet + lacet_arrive.arr_quant &lt;&gt; s.dispo_lacet;
+
+UPDATE donnees_lacet
+   SET dispo_lacet = donnees_lacet.dispo_lacet + lacet_arrive.arr_quant
+  FROM lacet_arrive lacet_arrive,
+       donnees_lacet donnees_lacet,
+       donnees_lacet s
+ WHERE s.nom_lacet = lacet_arrive.nom_lacet
+   AND donnees_lacet.nom_lacet = s.nom_lacet;
+    </pre><p>
+
+    Le résultat est que la donnée provenant d'une relation insérée dans une
+    autre, modifiée en mise à jour dans une troisième, modifiée en mise
+    à jour dans une quatrième, cette dernière étant tracée dans une cinquième,
+    se voit réduite à deux requêtes.
+   </p><p>
+    Il y a un petit détail assez horrible. En regardant les deux requêtes, nous
+    nous apercevons que la relation <code class="literal">donnees_lacet</code> apparaît
+    deux fois dans la table d'échelles où cela pourrait être réduit à une seule
+    occurrence. Le planificateur ne gère pas ceci et, du coup, le plan
+    d'exécution de la sortie du système de règles pour <code class="command">insert</code>
+    sera :
+
+    </p><pre class="literallayout">Nested Loop
+     -&gt;  Merge Join
+     -&gt;  Seq Scan
+     -&gt;  Sort
+     -&gt;  Seq Scan on s
+     -&gt;  Seq Scan
+     -&gt;  Sort
+     -&gt;  Seq Scan on lacet_arrive
+     -&gt;  Seq Scan on donnees_lacet
+    </pre><p>
+
+    alors qu'omettre la table d'échelles supplémentaire résulterait en un :
+
+    </p><pre class="literallayout">Merge Join
+     -&gt;  Seq Scan
+     -&gt;  Sort
+     -&gt;  Seq Scan on s
+     -&gt;  Seq Scan
+     -&gt;  Sort
+     -&gt;  Seq Scan on lacet_arrive
+    </pre><p>
+
+    qui produit exactement les mêmes entrées dans la table des traces. Du
+    coup, le système de règles a causé un parcours supplémentaire dans la table
+    <code class="literal">donnees_lacet</code> qui n'est absolument pas nécessaire. Et le
+    même parcours redondant est fait une fois de plus dans
+    l'<code class="command">update</code>. Mais ce fut réellement un travail difficile de
+    rendre tout ceci possible.
+   </p><p>
+    Maintenant, nous faisons une démonstration finale du système de règles de
+    <span class="productname">PostgreSQL</span> et de sa puissance. disons que nous
+    ajoutons quelques lacets avec des couleurs extraordinaires à votre base de
+    données :
+
+    </p><pre class="programlisting">INSERT INTO lacet VALUES ('sl9', 0, 'pink', 35.0, 'inch', 0.0);
+INSERT INTO lacet VALUES ('sl10', 1000, 'magenta', 40.0, 'inch', 0.0);
+    </pre><p>
+
+    Nous voulons créer une vue vérifiant les entrées
+    <code class="literal">lacet</code> qui ne correspondent à aucune chaussure pour
+    la couleur. Voici la vue :
+
+    </p><pre class="programlisting">CREATE VIEW lacet_mismatch AS
+    SELECT * FROM lacet WHERE NOT EXISTS
+        (SELECT nom_chaussure FROM chaussure WHERE couleur = couleur_lacet);
+    </pre><p>
+
+    Sa sortie est :
+
+    </p><pre class="programlisting">SELECT * FROM lacet_mismatch;
+
+ nom_lacet | dispo_lacet | couleur_lacet | longueur_lacet | unite_lacet | longueur_lacet_cm
+-----------+-------------+---------------+----------------+-------------+-------------------
+ sl9       |           0 | pink          |             35 | inch        |              88.9
+ sl10      |        1000 | magenta       |             40 | inch        |             101.6
+    </pre><p>
+   </p><p>
+    Maintenant, nous voulons la configurer pour que les lacets qui ne
+    correspondent pas et qui ne sont pas en stock soient supprimés de la base de
+    données. Pour rendre la chose plus difficile à
+    <span class="productname">PostgreSQL</span>, nous ne les supprimons pas
+    directement. À la place, nous créons une vue supplémentaire :
+
+    </p><pre class="programlisting">CREATE VIEW lacet_can_delete AS
+    SELECT * FROM lacet_mismatch WHERE dispo_lacet = 0;
+    </pre><p>
+
+    et le faisons de cette façon :
+
+    </p><pre class="programlisting">DELETE FROM lacet WHERE EXISTS
+    (SELECT * FROM lacet_can_delete
+             WHERE nom_lacet = lacet.nom_lacet);
+    </pre><p>
+
+    Les résultats sont :
+
+    </p><pre class="programlisting">SELECT * FROM lacet;
+
+ nom_lacet | dispo_lacet | couleur_lacet | longueur_lacet | unite_lacet | longueur_lacet_cm
+-----------+-------------+---------------+----------------+-------------+-------------------
+ sl1       |           5 | black         |             80 | cm          |                80
+ sl2       |           6 | black         |            100 | cm          |               100
+ sl7       |           6 | brown         |             60 | cm          |                60
+ sl4       |           8 | black         |             40 | inch        |             101.6
+ sl3       |          10 | black         |             35 | inch        |              88.9
+ sl8       |          21 | brown         |             40 | inch        |             101.6
+ sl10      |        1000 | magenta       |             40 | inch        |             101.6
+ sl5       |           4 | brown         |              1 | m           |               100
+ sl6       |          20 | brown         |            0.9 | m           |                90
+(9 rows)
+    </pre><p>
+   </p><p>
+    Un <code class="command">delete</code> sur une vue, avec une qualification de
+    sous-requête qui utilise au total quatre vues imbriquées/jointes, où l'une
+    d'entre elles a une qualification de sous-requête contenant une vue et où
+    les colonnes des vues calculées sont utilisées, est réécrite en un seul
+    arbre de requête qui supprime les données demandées sur la vraie table.
+   </p><p>
+    Il existe probablement seulement quelques situations dans le vrai monde où
+    une telle construction est nécessaire. Mais, vous vous sentez mieux quand
+    cela fonctionne.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/rules-update.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:43 GMT -->
+</html>

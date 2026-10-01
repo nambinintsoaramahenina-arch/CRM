@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/plperl-funcs.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:45 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>43.1. Fonctions et arguments PL/Perl</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="plperl.html" title="Chapitre 43. PL/Perl -- Langage de procédures Perl" /><link rel="next" href="plperl-data.html" title="43.2. Valeurs en PL/Perl" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/plperl-funcs.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/plperl-funcs.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/plperl-funcs.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/plperl-funcs.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/plperl-funcs.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/plperl-funcs.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/plperl-funcs.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/plperl-funcs.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/plperl-funcs.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/plperl-funcs.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="plperl.html">PL/Perl  --  Langage de procédures Perl</a></span> » <span class="breadcrumb-node">Fonctions et arguments PL/Perl</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="plperl.html" title="Chapitre 43. PL/Perl  --  Langage de procédures Perl">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="plperl.html" title="Chapitre 43. PL/Perl  --  Langage de procédures Perl">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="plperl-data.html" title="43.2. Valeurs en PL/Perl">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Chapitre 43. PL/Perl  --  Langage de procédures Perl </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 43.2. Valeurs en PL/Perl</td></tr></table></div><div class="sect1" id="PLPERL-FUNCS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">43.1. Fonctions et arguments PL/Perl <a href="#PLPERL-FUNCS" class="id_link">#</a></h2></div></div></div><p>
+   Pour créer une fonction dans le langage PL/Perl, utilisez la syntaxe
+   standard <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle">CREATE FUNCTION</span></a> :
+   </p><pre class="programlisting">CREATE FUNCTION <em class="replaceable"><code>nom_fonction</code></em> (<em class="replaceable"><code>types-arguments</code></em>) RETURNS
+<em class="replaceable"><code>type-retour</code></em>
+-- attributs de fonction
+AS $$
+    # Corps de la fonction PL/Perl
+$$ LANGUAGE plperl;
+   </pre><p>
+   Le corps de la fonction est du code Perl normal. En fait, le code
+   supplémentaire PL/Perl l'emballe dans une sous-routine Perl. Une fonction
+   PL/Perl est appelée dans un contexte scalaire, il ne peut donc pas retourner
+   une liste. Vous pouvez retourner des valeurs non scalaire par référence comme
+   indiqué ci-dessous.
+  </p><p>
+   Dans une procédure PL/Perl, toute valeur de retour du code Perl est
+   ignorée.
+  </p><p>
+   PL/Perl peut aussi être utilisé au sein de blocs de procédures anonymes avec
+   l'ordre <a class="xref" href="sql-do.html" title="DO"><span class="refentrytitle">DO</span></a> :
+
+   </p><pre class="programlisting">
+DO $$
+    # PL/Perl code
+$$ LANGUAGE plperl;
+   </pre><p>
+
+   Un bloc de procédure anonyme ne prend pas d'arguments et toute valeur
+   retournée est ignorée. Ceci, mis à part, il se comporte comme une fonction
+   classique.
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    L'utilisation de sous-routines nommées est dangereux en Perl, spécialement
+    si elles font références à des variables lexicales dans la partie
+    englobante. Comme une fonction PL/Perl est englobée dans une sous-routine,
+    toute sous-routine nommée que vous y créez
+    sera englobée. En général, il est bien plus sûr de créer des sous-routines anonymes
+    que vous appellerez via un coderef. Pour de plus amples détails, voir
+    les entrées <code class="literal">Variable "%s" will not stay shared</code> et
+    <code class="literal">Variable "%s" is not available</code> dans le manuel
+    <span class="citerefentry"><span class="refentrytitle">perldiag</span></span>, ou
+    recherchez <span class="quote">« <span class="quote">perl nested named subroutine</span> »</span> sur internet.
+   </p></div><p>
+   La syntaxe de la commande <code class="command">CREATE FUNCTION</code> requiert que le
+   corps de la fonction soit écrit comme une constante de type chaîne. Il est
+   habituellement plus agréable d'utiliser les guillemets dollar (voir la <a class="xref" href="sql-syntax-lexical.html#SQL-SYNTAX-DOLLAR-QUOTING" title="4.1.2.4. Constantes de chaînes avec guillemet dollar">Section 4.1.2.4</a>) pour cette constante. Si vous
+   choisissez d'utiliser la syntaxe d'échappement des chaînes <code class="literal">E''</code>,
+   vous devez doubler les marques de guillemets simples (<code class="literal">'</code>)
+   et les antislashs (<code class="literal">\</code>) utilisés dans le corps de la
+   fonction (voir la <a class="xref" href="sql-syntax-lexical.html#SQL-SYNTAX-STRINGS" title="4.1.2.1. Constantes de chaînes">Section 4.1.2.1</a>).
+  </p><p>
+   Les arguments et les résultats sont manipulés comme dans n'importe quelle
+   routine Perl : les arguments sont passés au tableau
+   <code class="varname">@_</code> et une valeur de retour
+   est indiquée par <code class="literal">return</code> ou par la dernière expression
+   évaluée dans la fonction.
+  </p><p>
+   Par exemple, une fonction retournant le plus grand de deux entiers
+   peut être définie comme suit :
+
+   </p><pre class="programlisting">CREATE FUNCTION perl_max (integer, integer) RETURNS integer AS $$
+    if ($_[0] &gt; $_[1]) { return $_[0]; }
+    return $_[1];
+$$ LANGUAGE plperl;
+   </pre><p>
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    Les arguments seront convertis de l'encodage de la base de données en
+    UTF-8 pour être utilisé par PL/perl, puis converti de l'UTF-8 vers
+    l'encodage de la base.
+   </p></div><p>
+   Si une valeur NULL en SQL<a id="id-1.8.10.9.10.1" class="indexterm"></a> est passée à une fonction,
+   cet argument apparaîtra comme <span class="quote">« <span class="quote">undefined</span> »</span> en Perl. La
+   fonction définie ci-dessus ne se comportera pas correctement avec des
+   arguments NULL (en fait, tout se passera comme s'ils avaient été des zéros).
+   Nous aurions pu ajouter <code class="literal">STRICT</code> à la définition de la fonction
+   pour forcer <span class="productname">PostgreSQL</span> à faire quelque chose de
+   plus raisonnable : si une valeur NULL est passée en argument, la
+   fonction ne sera pas du tout appelée mais retournera automatiquement un
+   résultat NULL. D'une autre façon, nous aurions pu vérifier dans le corps de
+   la fonction la présence d'arguments NULL. Par exemple, supposons que nous
+   voulions que <code class="function">perl_max</code> avec un argument NULL et un autre
+   non NULL retourne une valeur non NULL plutôt qu'une valeur NULL, on aurait
+   écrit :
+
+   </p><pre class="programlisting">CREATE FUNCTION perl_max (integer, integer) RETURNS integer AS $$
+    my ($x, $y) = @_;
+    if (not defined $x) {
+        return undef if not defined $y;
+        return $y;
+    }
+    return $x if not defined $y;
+    return $x if $x &gt; $y;
+    return $y;
+$$ LANGUAGE plperl;
+   </pre><p>
+   Comme le montre l'exemple ci-dessus, passer une valeur NULL en SQL
+   à une fonction en PL/Perl retourne une valeur non définie. Et ceci,
+   que la fonction soit déclarée stricte ou non.
+  </p><p>
+   Dans un argument de fonction, tout ce qui n'est pas une référence est une
+   chaîne qui est dans la représentation texte externe standard de
+   <span class="productname">PostgreSQL</span> pour ce type de données. Dans le cas
+   de types numériques ou texte, Perl fera ce qu'il faut et le programmeur
+   n'aura pas à s'en soucier. Néanmoins, dans d'autres cas, l'argument aura
+   besoin d'être converti dans une forme qui est plus utilisable que Perl.
+   Par exemple, la fonction <code class="function">decode_bytea</code> peut-être utilisée
+   pour convertir un argument de type
+   <code class="type">bytea</code> en données binaires non échappées.
+  </p><p>
+   De façon similaire, les valeurs renvoyées à
+   <span class="productname">PostgreSQL</span> doivent être dans le format textuel.
+   Par exemple,
+   la fonction <code class="function">encode_bytea</code> peut être utilisée
+   pour échapper des données binaires en retournant une valeur de type <code class="type">bytea</code>.
+  </p><p>
+   Un cas particulièrement important concerne les valeurs booléennes. Comme
+   indiqué à l'instant, le comportement par défaut des valeurs de type
+   <code class="type">bool</code> est qu'elles sont passées en tant que text à
+   l'interpréteur Perl, donc soit <code class="literal">'t'</code> soit
+   <code class="literal">'f'</code>. Ceci est problématique parce que Perl ne traite pas
+   <code class="literal">'f'</code> comme un false ! Il est possible d'améliorer
+   les choses en utilisant une <span class="quote">« <span class="quote">transformation</span> »</span> (voir <a class="xref" href="sql-createtransform.html" title="CREATE TRANSFORM"><span class="refentrytitle">CREATE TRANSFORM</span></a>). Des transformations intéressantes sont
+   fournies par l'extension <code class="filename">bool_plperl</code>. Pour l'utiliser,
+   installez l'extension :
+   </p><pre class="programlisting">
+CREATE EXTENSION bool_plperl;  -- or bool_plperlu for PL/PerlU
+   </pre><p>
+   Puis utilisez l'attribut de fonction <code class="literal">TRANSFORM</code> pour une
+   fonction PL/Perl qui prend ou renvoie une donnée de type <code class="type">bool</code>,
+   par exemple :
+   </p><pre class="programlisting">
+CREATE FUNCTION perl_and(bool, bool) RETURNS bool
+TRANSFORM FOR TYPE bool
+AS $$
+  my ($a, $b) = @_;
+  return $a &amp;&amp; $b;
+$$ LANGUAGE plperl;
+   </pre><p>
+   Quand cette transformation est appliquée, les arguments <code class="type">bool</code>
+   seront vues par Perl comme valant <code class="literal">1</code> ou vide, soit des
+   valeurs true ou false propres. Si le résultat de la fonction renvoie le
+   type <code class="type">bool</code>, il sera true ou false suivant comment Perl évaluera
+   la valeur retournée. Des transformations similaires sont aussi réalisées
+   pour les arguments de requêtes de type booléen et les résultats des
+   requêtes SPI réalisées à l'intérieur de la fonction (<a class="xref" href="plperl-builtins.html#PLPERL-DATABASE" title="43.3.1. Accès à la base de données depuis PL/Perl">Section 43.3.1</a>).
+  </p><p>
+   Perl peut renvoyer des tableaux <span class="productname">PostgreSQL</span>
+   comme référence à des tableaux Perl. Voici un exemple :
+
+   </p><pre class="programlisting">CREATE OR REPLACE function renvoit_tableau()
+RETURNS text[][] AS $$
+    return [['a"b','c,d'],['e\\f','g']];
+$$ LANGUAGE plperl;
+
+select renvoit_tableau();
+   </pre><p>
+  </p><p>
+   Perl utilise les tableaux <span class="productname">PostgreSQL</span> comme des
+   objets <code class="type">PostgreSQL::InServer::ARRAY</code>. Cet objet sera traité comme une référence
+   de tableau ou comme une chaîne, permettant une compatibilité ascendante avec
+   le code Perl écrit pour les versions de <span class="productname">PostgreSQL</span>
+   antérieures à la 9.1. Par exemple :
+
+   </p><pre class="programlisting">
+CREATE OR REPLACE FUNCTION concat_array_elements(text[]) RETURNS TEXT AS $$
+    my $arg = shift;
+    my $result = "";
+    return undef if (!defined $arg);
+
+    # en tant que référence de tableau
+    for (@$arg) {
+        $result .= $_;
+    }
+
+    # en tant que chaîne
+    $result .= $arg;
+
+    return $result;
+$$ LANGUAGE plperl;
+
+SELECT concat_array_elements(ARRAY['PL','/','Perl']);
+   </pre><p>
+
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Les tableaux multi-dimensionnels sont représentés comme des références à
+     des tableaux de reférence et de moindre dimension, d'une façon connue de
+     chaque développeur Perl.
+    </p></div><p>
+  </p><p>
+   Les arguments de type composite sont passés à la fonction en tant que
+   références d'un tableau de découpage, les clés du tableau de découpage étant
+   les noms des attributs du type composé. Voici un exemple :
+
+   </p><pre class="programlisting">CREATE TABLE employe (
+    nom text,
+    basesalaire integer,
+    bonus integer
+);
+
+CREATE FUNCTION empcomp(employe) RETURNS integer AS $$
+    my ($emp) = @_;
+    return $emp-&gt;{basesalaire} + $emp-&gt;{bonus};
+$$ LANGUAGE plperl;
+
+SELECT nom, empcomp(employe.*) FROM employe;
+   </pre><p>
+  </p><p>
+   Une fonction PL/Perl peut renvoyer un résultat de type composite en utilisant
+   la même approche : renvoyer une référence à un hachage qui a les
+   attributs requis. Par exemple 
+
+   </p><pre class="programlisting">      CREATE TYPE testligneperl AS (f1 integer, f2 text, f3 text);
+
+      CREATE OR REPLACE FUNCTION perl_ligne() RETURNS test_ligne_perl AS $$
+      return {f2 =&gt; 'hello', f1 =&gt; 1, f3 =&gt; 'world'};
+      $$ LANGUAGE plperl;
+
+      SELECT * FROM perl_row();
+   </pre><p>
+
+   Toute colonne dans le type de données déclaré du résultat qui n'est pas
+   présente dans le hachage sera renvoyée NULL.
+  </p><p>
+   De façon similaire, les arguments en sortie des procédures peuvent être
+   renvoyés sous la format d'une référence hash :
+
+   </p><pre class="programlisting">
+CREATE PROCEDURE perl_triple(INOUT a integer, INOUT b integer) AS $$
+    my ($a, $b) = @_;
+    return {a =&gt; $a * 3, b =&gt; $b * 3};
+$$ LANGUAGE plperl;
+
+CALL perl_triple(5, 10);
+   </pre><p>
+  </p><p>
+   Les fonctions PL/Perl peuvent aussi renvoyer des ensembles de types
+   scalaires ou composites. Habituellement, vous voulez renvoyer une ligne à
+   la fois, à la fois pour améliorer le temps de démarrage et pour éviter
+   d'allonger la queue de l'ensemble des résultats en mémoire. Vous pouvez
+   faire ceci avec <code class="function">return_next</code> comme indiqué ci-dessous.
+   Notez qu'après le dernier <code class="function">return_next</code>, vous devez
+   placer soit <code class="literal">return</code> soit (encore mieux) <code class="literal">return
+    undef</code>.
+
+   </p><pre class="programlisting">CREATE OR REPLACE FUNCTION perl_set_int(int)
+RETURNS SETOF INTEGER AS $$
+    foreach (0..$_[0]) {
+        return_next($_);
+    }
+    return undef;
+$$ LANGUAGE plperl;
+
+SELECT * FROM perl_set_int(5);
+
+CREATE OR REPLACE FUNCTION perl_set()
+RETURNS SETOF test_ligne_perl AS $$
+    return_next({ f1 =&gt; 1, f2 =&gt; 'Hello', f3 =&gt; 'World' });
+    return_next({ f1 =&gt; 2, f2 =&gt; 'Hello', f3 =&gt; 'PostgreSQL' });
+    return_next({ f1 =&gt; 3, f2 =&gt; 'Hello', f3 =&gt; 'PL/Perl' });
+    return undef;
+$$ LANGUAGE plperl;
+   </pre><p>
+
+   Pour les petits ensembles de résultats, vous pouvez renvoyer une référence
+   à un tableau contenant soit des scalaires, soit des références à des
+   tableaux soit des références à des hachages de types simples, de types
+   tableaux ou de types composites. Voici quelques exemples simples pour
+   renvoyer l'ensemble complet du résultant en tant que référence de
+   tableau :
+
+   </p><pre class="programlisting">CREATE OR REPLACE FUNCTION perl_set_int(int) RETURNS SETOF INTEGER AS $$
+      return [0..$_[0]];
+$$ LANGUAGE plperl;
+
+SELECT * FROM perl_set_int(5);
+
+CREATE OR REPLACE FUNCTION perl_set() RETURNS SETOF testligneperl AS $$
+return [
+      { f1 =&gt; 1, f2 =&gt; 'Bonjour', f3 =&gt; 'Monde' },
+      { f1 =&gt; 2, f2 =&gt; 'Bonjour', f3 =&gt; 'PostgreSQL' },
+      { f1 =&gt; 3, f2 =&gt; 'Bonjour', f3 =&gt; 'PL/Perl' }
+      ];
+$$  LANGUAGE plperl;
+
+SELECT * FROM perl_set();</pre><p>
+
+  </p><p>
+   Si vous souhaitez utiliser le pragma <code class="literal">strict</code> dans votre code,
+   vous avez plusieurs options. Pour une utilisation temporaire globale vous pouvez positionner (<code class="command">SET</code>)
+   <code class="literal">plperl.use_strict</code> à « true ». Ce paramètre affectera les
+   compilations suivantes de fonctions <span class="application">PL/Perl</span>, mais
+   pas les fonctions déjà compilées dans la session en cours.
+   Pour une utilisation globale permanente, vous pouvez positionner <code class="literal">plperl.use_strict</code>
+   à « true » dans le fichier <code class="filename">postgresql.conf</code>.
+  </p><p>
+   Pour une utilisation permanente dans des fonctions spécifiques, vous pouvez simplement placer:
+</p><pre class="programlisting">use strict;
+   </pre><p>
+   en haut du corps de la fonction.
+  </p><p>
+   Le pragma <code class="literal">feature</code> est aussi disponible avec <code class="function">use</code> si votre version de Perl est 5.10.0 ou supérieur.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/plperl-funcs.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:45 GMT -->
+</html>

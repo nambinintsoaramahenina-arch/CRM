@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/parallel-plans.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>15.3. Plans parallélisés</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="when-can-parallel-query-be-used.html" title="15.2. Quand la parallélisation des requêtes peut-elle être utilisée ?" /><link rel="next" href="parallel-safety.html" title="15.4. Sécurité de la parallélisation" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/parallel-plans.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/parallel-plans.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/parallel-plans.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/parallel-plans.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/parallel-plans.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/parallel-plans.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/parallel-plans.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/parallel-plans.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/parallel-plans.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/parallel-plans.html">9.6</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/parallel-plans.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="parallel-query.html">Requêtes parallélisées</a></span> » <span class="breadcrumb-node">Plans parallélisés</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="when-can-parallel-query-be-used.html" title="15.2. Quand la parallélisation des requêtes peut-elle être utilisée ?">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="parallel-query.html" title="Chapitre 15. Requêtes parallélisées">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="parallel-safety.html" title="15.4. Sécurité de la parallélisation">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">15.2. Quand la parallélisation des requêtes peut-elle être utilisée ? </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 15.4. Sécurité de la parallélisation</td></tr></table></div><div class="sect1" id="PARALLEL-PLANS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">15.3. Plans parallélisés <a href="#PARALLEL-PLANS" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="parallel-plans.html#PARALLEL-SCANS">15.3.1. Parcours parallélisés</a></span></dt><dt><span class="sect2"><a href="parallel-plans.html#PARALLEL-JOINS">15.3.2. Jointures parallélisées</a></span></dt><dt><span class="sect2"><a href="parallel-plans.html#PARALLEL-AGGREGATION">15.3.3. Agrégations parallélisées</a></span></dt><dt><span class="sect2"><a href="parallel-plans.html#PARALLEL-APPEND">15.3.4. Parallel Append</a></span></dt><dt><span class="sect2"><a href="parallel-plans.html#PARALLEL-PLAN-TIPS">15.3.5. Conseils pour les plans parallélisés</a></span></dt></dl></div><p>
+   Comme chaque <span class="foreignphrase"><em class="foreignphrase">worker</em></span> exécute la portion
+   parallélisée du plan jusqu'à la fin, il n'est pas possible de prendre un
+   plan de requête ordinaire et de l'exécuter en utilisant plusieurs
+   <span class="foreignphrase"><em class="foreignphrase">workers</em></span>. Chaque
+   <span class="foreignphrase"><em class="foreignphrase">worker</em></span> produirait une copie complète du
+   jeu de résultats, donc la requête ne s'exécuterait pas
+   plus rapidement qu'à la normale, et produirait des résultats incorrects.
+   À la place, en interne, l'optimiseur considère la portion parallélisée du
+   plan comme un <em class="firstterm">plan partiel</em> ; c'est-à-dire
+   construit pour que chaque processus exécutant le plan ne génère qu'un
+   sous-ensemble des lignes en sortie, et que chacune ait la garantie d'être
+   générée par exactement un des processus participants. Habituellement, cela
+   signifie que le parcours de la table directrice de la requête sera un
+   parcours parallélisable (<span class="foreignphrase"><em class="foreignphrase">parallel-aware</em></span>).
+  </p><div class="sect2" id="PARALLEL-SCANS"><div class="titlepage"><div><div><h3 class="title">15.3.1. Parcours parallélisés <a href="#PARALLEL-SCANS" class="id_link">#</a></h3></div></div></div><p>
+    Les types suivants de parcours de table sont actuellement
+    parallélisables :
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Lors d'un <span class="emphasis"><em>parcours séquentiel parallèle</em></span>, les blocs
+       de la table seront divisés en groupe et partagés entre les processus
+       participant au parcours. Chaque processus terminera le parcours de son
+       groupe de blocs avant de demander un groupe supplémentaire.
+      </p></li><li class="listitem"><p>
+       Lors d'un <span class="emphasis"><em>parcours de bitmap parallèle</em></span>, un
+       processus est choisi pour être le dirigeant
+       (<span class="foreignphrase"><em class="foreignphrase">leader</em></span>). Ce processus effectue le
+       parcours d'un ou plusieurs index et construit un bitmap indiquant quels
+       blocs de la table doivent être visités. Ces blocs sont alors divisés entre
+       les processus participants comme lors d'un parcours d'accès séquentiel.
+       En d'autres termes, le parcours de la table est effectué
+       en parallèle, mais le parcours d'index associé ne l'est pas.
+      </p></li><li class="listitem"><p>
+       Lors d'un <span class="emphasis"><em>parcours d'index parallèle</em></span> ou d'un
+       <span class="emphasis"><em>parcours d'index seul parallèle</em></span>, les processus
+       participants lisent les données depuis l'index chacun à leur tour.
+       Actuellement, les parcours d'index parallèles ne sont
+       supportés que pour les index B-tree. Chaque processus réclamera un seul
+       bloc de l'index, et scannera et retournera toutes les lignes référencées
+       par ce bloc ; les autres processus peuvent être en train de retourner
+       des lignes d'un bloc différent de l'index au même moment. Les
+       résultats d'un parcours d'index parallèle sont retournés triés au sein
+       de chaque worker parallèle.
+      </p></li></ul></div><p>
+
+    Dans le futur, d'autres types de parcours pourraient supporter la
+    parallélisation, comme les parcours d'index autres que B-tree.
+   </p></div><div class="sect2" id="PARALLEL-JOINS"><div class="titlepage"><div><div><h3 class="title">15.3.2. Jointures parallélisées <a href="#PARALLEL-JOINS" class="id_link">#</a></h3></div></div></div><p>
+    Tout comme dans les plans non parallélisés, la table conductrice peut être
+    jointe à une ou plusieurs autres tables en utilisant une boucle imbriquée,
+    une jointure par hachage ou une jointure par tri-fusion. Le côté interne de
+    la jointure peut être n'importe quel type de plan non parallélisé par
+    ailleurs supporté par l'optimiseur, pourvu qu'il soit sans danger de le
+    lancer au sein d'un worker parallèle. Suivant le type de jointure,
+    la relation interne peut aussi être un plan parallélisé.
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Dans une <span class="emphasis"><em>boucle imbriquée</em></span>, le côté
+      interne n'est jamais parallèle. Bien qu'il soit exécuté intégralement,
+      c'est efficace si le côté interne est un parcours d'index, car les
+      enregistrements extérieurs sont partagés entre les processus d'aide,
+      et donc aussi les boucles qui recherchent les valeurs dans l'index.
+     </p></li><li class="listitem"><p>
+      Dans une <span class="emphasis"><em>jointure par tri-fusion</em></span>, le côté intérieur
+      n'est jamais parallélisé et donc toujours exécuté intégralement. Ce peut
+      être inefficace, surtout s'il faut faire un tri, car le travail et les
+      résultats sont dupliqués dans tous les processus participants.
+     </p></li><li class="listitem"><p>
+      Dans une <span class="emphasis"><em>jointure par hachage</em></span> (sans l'adjectif
+      « parallélisée »), le côté intérieur est exécuté intégralement
+      par chaque processus participant pour fabriquer des copies identiques
+      de la table de hachage. Cela peut être inefficace si cette table est
+      grande ou le plan coûteux. Dans une <span class="emphasis"><em>jointure par hachage
+       parallélisée</em></span>, le côté interne est un <span class="emphasis"><em>hachage
+       parallèle</em></span> qui divise le travail sur une table de hachage
+      partagée entre les processus participants.
+     </p></li></ul></div></div><div class="sect2" id="PARALLEL-AGGREGATION"><div class="titlepage"><div><div><h3 class="title">15.3.3. Agrégations parallélisées <a href="#PARALLEL-AGGREGATION" class="id_link">#</a></h3></div></div></div><p>
+    <span class="productname">PostgreSQL</span> procède à l'agrégation parallélisée
+    en deux étapes. Tout d'abord, chaque processus de la
+    partie parallélisée de la requête réalise une étape d'agrégation,
+    produisant un résultat partiel pour chaque regroupement qu'il
+    connaît. Ceci se reflète dans le plan par le nœud
+    <code class="literal">PartialAggregate</code>. Puis les résultats partiels sont
+    transférés au <span class="foreignphrase"><em class="foreignphrase">leader</em></span> via le nœud
+    <code class="literal">Gather</code> ou <code class="literal">Gather Merge</code>. Enfin, le
+    <span class="foreignphrase"><em class="foreignphrase">leader</em></span> réagrège les résultats partiels de
+    tous les
+    <span class="foreignphrase"><em class="foreignphrase">workers</em></span> pour produire le résultat final.
+    Ceci apparaît dans le plan sous la forme d'un nœud
+    <code class="literal">Finalize Aggregate</code>.
+   </p><p>
+    Comme le nœud <code class="literal">Finalize Aggregate</code> s'exécute sur le
+    processus leader, les requêtes produisant un nombre relativement important
+    de groupes en comparaison du nombre de lignes en entrée apparaîtront comme
+    moins favorables au planificateur de requêtes. Par exemple, dans le pire
+    scénario, le nombre de groupes vus par le nœud <code class="literal">Finalize
+     Aggregate</code> pourrait être aussi grand que le nombre de lignes en
+    entrée traitées par les processus workers à l'étape
+    <code class="literal">Partial Aggregate</code>. Dans de tels cas, au niveau des
+    performances il n'y a clairement aucun intérêt à utiliser
+    l'agrégation parallélisée. Le planificateur de requêtes prend cela en
+    compte lors du processus de planification et a peu de chances de choisir un
+    agrégat parallélisé sur ce scénario.
+   </p><p>
+    L'agrégation parallélisée n'est pas supportée dans toutes les situations.
+    Chaque agrégat doit être <a class="link" href="parallel-safety.html" title="15.4. Sécurité de la parallélisation">à parallélisation
+     sûre</a> et doit avoir une fonction de combinaison. Si
+    l'agrégat a un état de transition de type <code class="literal">internal</code>, il
+    doit avoir des fonctions de sérialisation et de désérialisation. Voir
+    <a class="xref" href="sql-createaggregate.html" title="CREATE AGGREGATE"><span class="refentrytitle">CREATE AGGREGATE</span></a> pour plus de détails. L'agrégation
+    parallélisée n'est pas supportée si un appel à la fonction d'agrégat
+    contient une clause <code class="literal">DISTINCT</code> ou <code class="literal">ORDER
+     BY</code> ainsi que pour les agrégats d'ensembles triés ou quand la
+    requête contient une clause <code class="literal">GROUPING SETS</code>. Elle ne peut
+    être utilisée que si toutes les jointures impliquées dans la requête sont
+    dans la partie parallélisée du plan.
+   </p></div><div class="sect2" id="PARALLEL-APPEND"><div class="titlepage"><div><div><h3 class="title">15.3.4. Parallel Append <a href="#PARALLEL-APPEND" class="id_link">#</a></h3></div></div></div><p>
+    Quand <span class="productname">PostgreSQL</span> a besoin de combiner des
+    lignes de plusieurs sources dans un seul ensemble de résultats, il
+    utilise un nœud <code class="literal">Append</code> ou <code class="literal">MergeAppend</code>.
+    Cela arrive souvent en implémentant un <code class="literal">UNION ALL</code> ou en
+    parcourant une table partitionnée. Ces nœuds peuvent être utilisés dans des
+    plans parallélisés aussi bien que dans n'importe quel autre plan.
+    Cependant, dans un plan parallélisé, le planificateur peut utiliser un
+    nœud <code class="literal">Parallel Append</code> à la place.
+   </p><p>
+    Quand un nœud <code class="literal">Append</code> est utilisé au sein d'un plan
+    parallélisé, chaque processus exécutera les plans enfants dans l'ordre où
+    ils apparaissent, de manière à ce que tous les processus participants
+    coopèrent pour exécuter le premier plan enfant jusqu'à la fin, et passent
+    au plan suivant à peu près au même moment. Quand un
+    <code class="literal">Parallel Append</code> est utilisé à la place, l'exécuteur va
+    par contre répartir les processus participants aussi uniformément que
+    possible entre ses plans enfants, pour que les multiples plans enfants
+    soient exécutés simultanément. Cela évite la contention, et évite aussi de
+    payer le coût de démarrage d'un plan enfant dans les processus qui ne
+    l'exécutent jamais.
+   </p><p>
+    À l'inverse d'un nœud <code class="literal">Append</code> habituel, qui ne peut
+    avoir des enfants partiels que s'il est utilisé dans un plan parallélisé,
+    un nœud <code class="literal">Parallel Append</code> peut avoir à la fois des plans
+    enfants partiels et non partiels. Les enfants non partiels seront parcourus
+    par un seul processus, puisque les parcourir plus d'une fois provoquerait
+    une duplication des résultats. Les plans qui impliquent l'ajout de
+    plusieurs ensembles de résultat peuvent alors parvenir à un
+    parallélisme « à gros grains » même si des plans partiels
+    efficaces ne sont pas possibles. Par exemple, soit une requête sur une
+    table partitionnée, qui ne peut être implémentée efficacement qu'en
+    utilisant un index qui ne supporte pas les parcours parallélisés. Le
+    planificateur peut choisir un <code class="literal">Parallel Append</code> de
+    l'<code class="literal">Index Scan</code> habituel  chaque parcours séparé
+    de l'index devra être exécuté jusqu'à la fin par un seul processus, mais
+    des parcours différents peuvent être exécutés au même moment par des
+    processus différents.
+   </p><p>
+    <a class="xref" href="runtime-config-query.html#GUC-ENABLE-PARALLEL-APPEND">enable_parallel_append</a> peut être utilisé pour
+    désactiver cette fonctionnalité.
+   </p></div><div class="sect2" id="PARALLEL-PLAN-TIPS"><div class="titlepage"><div><div><h3 class="title">15.3.5. Conseils pour les plans parallélisés <a href="#PARALLEL-PLAN-TIPS" class="id_link">#</a></h3></div></div></div><p>
+    Si une requête ne produit pas un plan parallélisé comme attendu,
+    vous pouvez tenter de réduire <a class="xref" href="runtime-config-query.html#GUC-PARALLEL-SETUP-COST">parallel_setup_cost</a>
+    ou <a class="xref" href="runtime-config-query.html#GUC-PARALLEL-TUPLE-COST">parallel_tuple_cost</a>.
+    Bien sûr, ce plan pourrait bien se révéler plus lent que le plan sériel
+    préféré par le planificateur, mais ce ne sera pas toujours le cas. Si
+    vous n'obtenez pas un plan parallélisé même pour de très petites valeurs
+    de ces paramètres (par exemple après les avoir définis tous les deux
+    à zéro), le planificateur a peut-être une bonne raison pour ne pas le faire
+    pour votre requête. Voir <a class="xref" href="when-can-parallel-query-be-used.html" title="15.2. Quand la parallélisation des requêtes peut-elle être utilisée ?">Section 15.2</a>
+    et <a class="xref" href="parallel-safety.html" title="15.4. Sécurité de la parallélisation">Section 15.4</a> pour
+    des explications sur les causes possibles.
+   </p><p>
+    Lors de l'exécution d'un plan parallélisé, vous pouvez utiliser
+    <code class="literal">EXPLAIN (ANALYZE, VERBOSE)</code> qui affichera des
+    statistiques par <span class="foreignphrase"><em class="foreignphrase">worker</em></span> pour chaque
+    nœud du plan. Ce peut être utile pour déterminer si le travail
+    est correctement distribué entre les nœuds du plan et plus
+    généralement pour comprendre les caractéristiques de performance du plan.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/parallel-plans.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+</html>

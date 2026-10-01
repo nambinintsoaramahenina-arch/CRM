@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/pltcl-dbaccess.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>42.5. Accès à la base de données depuis PL/Tcl</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="pltcl-global.html" title="42.4. Données globales avec PL/Tcl" /><link rel="next" href="pltcl-trigger.html" title="42.6. Fonctions triggers en PL/Tcl" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/pltcl-dbaccess.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/pltcl-dbaccess.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/pltcl-dbaccess.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/pltcl-dbaccess.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/pltcl-dbaccess.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/pltcl-dbaccess.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/pltcl-dbaccess.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/pltcl-dbaccess.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/pltcl-dbaccess.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/pltcl-dbaccess.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/pltcl-dbaccess.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/pltcl-dbaccess.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/pltcl-dbaccess.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/pltcl-dbaccess.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/pltcl-dbaccess.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/pltcl-dbaccess.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/pltcl-dbaccess.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/pltcl-dbaccess.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/pltcl-dbaccess.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/pltcl-dbaccess.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/pltcl-dbaccess.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="pltcl.html">PL/Tcl  --  Langage de procédures Tcl</a></span> » <span class="breadcrumb-node">Accès à la base de données depuis PL/Tcl</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pltcl-global.html" title="42.4. Données globales avec PL/Tcl">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="pltcl.html" title="Chapitre 42. PL/Tcl  --  Langage de procédures Tcl">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="pltcl-trigger.html" title="42.6. Fonctions triggers en PL/Tcl">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">42.4. Données globales avec PL/Tcl </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 42.6. Fonctions triggers en PL/Tcl</td></tr></table></div><div class="sect1" id="PLTCL-DBACCESS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">42.5. Accès à la base de données depuis PL/Tcl <a href="#PLTCL-DBACCESS" class="id_link">#</a></h2></div></div></div><p>
+   Dans cette section, nous suivons la convention Tcl habituelle pour
+   l'utilisation des points d'interrogation, plutôt que les crochets, pour
+   indiquer un élément optionnel dans un synopsis de syntaxe.  Les commandes
+   suivantes sont disponibles pour accéder à la base de données depuis le corps
+   d'une fonction PL/Tcl :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal"><code class="function">spi_exec</code> ?<span class="optional">-count <em class="replaceable"><code>n</code></em></span>? ?<span class="optional">-array <em class="replaceable"><code>name</code></em></span>? <em class="replaceable"><code>command</code></em> ?<span class="optional"><em class="replaceable"><code>loop-body</code></em></span>?</code></span></dt><dd><p>
+       Exécute une commande SQL donnée en tant que chaîne. Une erreur dans la
+       commande lève une erreur. Sinon, la valeur de retour de
+       <code class="function">spi_exec</code> est le nombre de lignes intéressées dans
+       le processus (sélection, insertion, mise à jour ou suppression) par la
+       commande ou zéro si la commande est une instruction utilitaire. De plus,
+       si la commande est une instruction <code class="command">SELECT</code>, les valeurs des
+       données sélectionnées sont placées dans des variables Tcl décrites
+       ci-dessous.
+      </p><p>
+       La valeur optionnelle <code class="literal">-count</code> indique à
+       <code class="function">spi_exec</code> d'arrêter une fois que
+       <em class="replaceable"><code>n</code></em> lignes ont été récupérées, tout comme si la
+       requête incluait une clause <code class="literal">LIMIT</code>. Si
+       <em class="replaceable"><code>n</code></em> vaut zéro, la requête est exécutée jusqu'à
+       sa fin, tout comme si <code class="literal">-count</code> était omis.
+      </p><p>
+       Si la commande est une instruction <code class="command">SELECT</code>, les
+       valeurs des colonnes de résultat sont placées dans les variables Tcl
+       nommées d'après les colonnes. Si l'option <code class="literal">-array</code>
+       est donnée, les valeurs de colonnes sont stockées à la place dans les
+       éléments d'un tableau associatif nommé, les noms des colonnes étant
+       utilisés comme index du tableau. De plus, le numéro de ligne courant
+       dans le résultat (en commençant par zéro) est enregistré dans
+       l'élément de tableau nommé <span class="quote">« <span class="quote"><code class="literal">.tupno</code></span> »</span>,
+       sauf si ce nom est utilisé comme nom de colonne dans le résultat.
+      </p><p>
+       Si la commande est une instruction <code class="command">SELECT</code> et
+       qu'aucun script <em class="replaceable"><code>loop-body</code></em> n'est donné,
+       alors seule la première ligne de résultats est stockée dans des
+       variables Tcl ou des éléments de tableau ; les lignes suivantes
+       sont ignorées. Aucun stockage n'intervient si la requête ne renvoie
+       pas de ligne (ce cas est détectable avec le résultat de la fonction
+       <code class="function">spi_exec</code>). Par exemple :
+
+       </p><pre class="programlisting">spi_exec "SELECT count(*) AS cnt FROM pg_proc"
+       </pre><p>
+
+       initialisera la variable Tcl <code class="literal">$cnt</code> avec le nombre de
+       lignes dans le catalogue système <code class="structname">pg_proc</code>.
+      </p><p>
+       Si l'argument <em class="replaceable"><code>loop-body</code></em> optionnel est donné, il existe un
+       morceau de script Tcl qui est exécuté une fois pour chaque ligne du
+       résultat de la requête (<em class="replaceable"><code>loop-body</code></em> est ignoré si la
+       commande donnée n'est pas un <code class="command">SELECT</code>). Les valeurs des
+       colonnes de la ligne actuelle sont stockées dans des variables Tcl avant
+       chaque itération. Par exemple :
+
+       </p><pre class="programlisting">spi_exec -array C "SELECT * FROM pg_class" {
+    elog DEBUG "have table $C(relname)"
+}
+       </pre><p>
+
+       affichera un message de trace pour chaque ligne de <code class="literal">pg_class</code>.
+       Cette fonctionnalité travaille de façon similaire aux autres
+       constructions de boucles de Tcl ; en particulier,
+       <code class="literal">continue</code> et <code class="literal">break</code> fonctionnent de la même façon
+       à l'intérieur de <em class="replaceable"><code>loop-body</code></em>.
+      </p><p>
+       Si une colonne d'un résultat de la requête est NULL, la variable cible
+       est <span class="quote">« <span class="quote">dés-initialisée</span> »</span> plutôt qu'initialisée.
+      </p></dd><dt><span class="term"><code class="function">spi_prepare</code> <em class="replaceable"><code>query</code></em> <em class="replaceable"><code>typelist</code></em></span></dt><dd><p>
+       Prépare et sauvegarde un plan de requête pour une exécution future. Le
+       plan sauvegardé sera conservé pour la durée de la session
+       actuelle.<a id="id-1.8.9.9.2.1.2.2.1.1" class="indexterm"></a>
+      </p><p>
+       La requête peut utiliser des paramètres, c'est-à-dire des emplacements
+       pour des valeurs à fournir lorsque le plan sera réellement exécuté. Dans
+       la chaîne de requête, faites référence aux paramètres avec les symboles
+       <code class="literal">$1</code> ...
+       <code class="literal">$<em class="replaceable"><code>n</code></em></code>. Si la requête utilise
+       les paramètres, les noms des types de paramètre doivent être donnés dans
+       une liste Tcl (écrivez une liste vide pour
+       <em class="replaceable"><code>typelist</code></em> si aucun paramètre n'est utilisé).
+      </p><p>
+       La valeur de retour de <code class="function">spi_prepare</code> est
+       l'identifiant de la requête à utiliser dans les appels suivants à
+       <code class="function">spi_execp</code>. Voir <code class="function">spi_execp</code> pour
+       un exemple.
+      </p></dd><dt><span class="term"><code class="literal"><code class="function">spi_execp</code> ?<span class="optional">-count <em class="replaceable"><code>n</code></em></span>? ?<span class="optional">-array <em class="replaceable"><code>name</code></em></span>? ?<span class="optional">-nulls <em class="replaceable"><code>string</code></em></span>? <em class="replaceable"><code>queryid</code></em> ?<span class="optional"><em class="replaceable"><code>value-list</code></em></span>? ?<span class="optional"><em class="replaceable"><code>loop-body</code></em></span>?</code></span></dt><dd><p>
+       Exécute une requête préparée précédemment avec <code class="function">spi_prepare</code>.
+       <em class="replaceable"><code>queryid</code></em> est l'identifiant renvoyé par
+       <code class="function">spi_prepare</code>. Si la requête fait référence à des
+       paramètres, une liste de valeurs (<em class="replaceable"><code>value-list</code></em>)
+       doit être fournie. C'est une liste Tcl des valeurs réelles des
+       paramètres. La liste doit être de la même longueur que la liste de types
+       de paramètres donnée précédemment lors de l'appel à
+       <code class="function">spi_prepare</code>. Oubliez-la si la requête n'a pas de
+       paramètres.
+      </p><p>
+       La valeur optionnelle pour <code class="literal">-nulls</code> est une chaîne d'espaces
+       et de caractères <code class="literal">'n'</code> indiquant à
+       <code class="function">spi_execp</code> les paramètres nuls. Si indiqué, elle doit
+       avoir exactement la même longueur que
+       <em class="replaceable"><code>value-list</code></em>. Si elle est omise, toutes les
+       valeurs de paramètres sont non NULL.
+      </p><p>
+       Sauf si la requête et ses paramètres sont spécifiés,
+       <code class="function">spi_execp</code> fonctionne de la même façon que
+       <code class="function">spi_exec</code>. Les options <code class="literal">-count</code>,
+       <code class="literal">-array</code> et <em class="replaceable"><code>loop-body</code></em> sont
+       identiques. Du coup, la valeur du résultat l'est aussi.
+      </p><p>
+       Voici un exemple d'une fonction PL/Tcl utilisant un plan préparé :
+
+       </p><pre class="programlisting">CREATE FUNCTION t1_count(integer, integer) RETURNS integer AS $$
+    if {![ info exists GD(plan) ]} {
+        # prépare le plan sauvegardé au premier appel
+        set GD(plan) [ spi_prepare \
+                "SELECT count(*) AS cnt FROM t1 WHERE num &gt;= \$1 AND num &lt;= \$2" \
+                [ list int4 int4 ] ]
+    }
+    spi_execp -count 1 $GD(plan) [ list $1 $2 ]
+    return $cnt
+$$ LANGUAGE pltcl;
+       </pre><p>
+
+       Nous avons besoin des antislashs à l'intérieur de la chaîne de la
+       requête passée à <code class="function">spi_prepare</code> pour s'assurer que les
+       marqueurs <code class="literal">$<em class="replaceable"><code>n</code></em></code> sont passés
+       au travers de <code class="function">spi_prepare</code> sans transformation et ne sont
+       pas remplacés avec la substitution de variables de Tcl.
+      </p></dd><dt><span class="term"><code class="function">subtransaction</code> <em class="replaceable"><code>command</code></em></span></dt><dd><p>
+       Le script Tcl contenu dans <em class="replaceable"><code>command</code></em> est
+       exécuté à l'intérieur d'une sous-transaction SQL. Si le script renvoie
+       une erreur, la sous-transaction entière est annulée avant de renvoyer
+       une erreur au code Tcl appelant. Voir <a class="xref" href="pltcl-subtransactions.html" title="42.9. Sous-transactions explicites dans PL/Tcl">Section 42.9</a> pour plus de détails et un exemple.
+      </p></dd><dt><span class="term"><code class="function">quote</code> <em class="replaceable"><code>string</code></em></span></dt><dd><p>
+       Double toutes les occurrences de guillemet simple et d'antislash
+       dans la chaîne donnée. Ceci peut être utilisé pour mettre entre
+       guillemets des chaînes de façon sûr et pour qu'elles puissent être
+       insérées dans des commandes SQL passées à <code class="function">spi_exec</code>
+       ou <code class="function">spi_prepare</code>. Par exemple, pensez à une
+       chaîne de commande SQL comme :
+
+       </p><pre class="programlisting">"SELECT '$val' AS ret"
+       </pre><p>
+
+       où la variable Tcl <code class="literal">val</code> contient actuellement le mot
+       <code class="literal">doesn't</code>. Ceci finirait avec la chaîne de
+       commande :
+
+       </p><pre class="programlisting">SELECT 'doesn't' AS ret
+       </pre><p>
+
+       qui va causer une erreur d'analyse lors de
+       <code class="function">spi_exec</code> ou de
+       <code class="function">spi_prepare</code>. Pour fonctionner correctement, la
+       commande soumise devrait contenir :
+
+       </p><pre class="programlisting">SELECT 'doesn''t' AS ret
+       </pre><p>
+
+       qui peut-être créé avec PL/Tcl en utilisant :
+
+       </p><pre class="programlisting">"SELECT '[ quote $val ]' AS ret"
+       </pre><p>
+
+       Un avantage de <code class="function">spi_execp</code> est que vous n'avez pas à
+       mettre entre guillemets des valeurs de paramètres comme ceux-ci car les
+       paramètres ne sont jamais analysés comme faisant partie de la chaîne de
+       la commande SQL.
+      </p></dd><dt><span class="term">
+      <code class="function">elog</code> <em class="replaceable"><code>level</code></em> <em class="replaceable"><code>msg</code></em>
+      <a id="id-1.8.9.9.2.1.6.1.4" class="indexterm"></a>
+     </span></dt><dd><p>
+       Émet une trace ou un message d'erreur. Les niveaux possibles sont
+       <code class="literal">DEBUG</code>, <code class="literal">LOG</code>, <code class="literal">INFO</code>,
+       <code class="literal">NOTICE</code>, <code class="literal">WARNING</code>, <code class="literal">ERROR</code> et
+       <code class="literal">FATAL</code>. <code class="literal">ERROR</code> élève
+       une condition d'erreur ; si elle n'est pas récupérée par le code
+       Tcl, l'erreur est propagée à la requête appelante, causant l'annulation
+       de la transaction ou sous-transaction en cours. Ceci est en fait
+       identique à la commande <code class="literal">error</code>. <code class="literal">FATAL</code>
+       annule la transaction et fait que la session courante s'arrête (il
+       n'existe probablement aucune raison d'utiliser ce niveau d'erreur dans
+       les fonctions PL/Tcl mais il est fourni pour que tous les messages
+       soient tout de même disponibles). Les autres niveaux génèrent seulement
+       des messages de niveaux de priorité différent. Le fait que les
+       messages d'un niveau de priorité particulier sont reportés au client,
+       écrit dans les journaux du serveur ou les deux à la fois, est contrôlé
+       par les variables de configuration <a class="xref" href="runtime-config-logging.html#GUC-LOG-MIN-MESSAGES">log_min_messages</a>
+       et <a class="xref" href="runtime-config-client.html#GUC-CLIENT-MIN-MESSAGES">client_min_messages</a>. Voir le <a class="xref" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Chapitre 19</a> et <a class="xref" href="pltcl-error-handling.html" title="42.8. Gestion des erreurs avec PL/Tcl">Section 42.8</a>
+       pour plus d'informations.
+      </p></dd></dl></div><p>
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/pltcl-dbaccess.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:44 GMT -->
+</html>

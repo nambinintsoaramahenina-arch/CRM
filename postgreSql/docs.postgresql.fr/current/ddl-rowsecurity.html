@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/ddl-rowsecurity.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:24 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.9. Politiques de sécurité niveau ligne</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="ddl-priv.html" title="5.8. Droits" /><link rel="next" href="ddl-schemas.html" title="5.10. Schémas" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/ddl-rowsecurity.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/ddl-rowsecurity.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/ddl-rowsecurity.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/ddl-rowsecurity.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/ddl-rowsecurity.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/ddl-rowsecurity.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/ddl-rowsecurity.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/ddl-rowsecurity.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/ddl-rowsecurity.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/ddl-rowsecurity.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/ddl-rowsecurity.html">9.5</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/ddl-rowsecurity.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="ddl.html">Définition des données</a></span> » <span class="breadcrumb-node">Politiques de sécurité niveau ligne</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ddl-priv.html" title="5.8. Droits">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="ddl.html" title="Chapitre 5. Définition des données">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="ddl-schemas.html" title="5.10. Schémas">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">5.8. Droits </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 5.10. Schémas</td></tr></table></div><div class="sect1" id="DDL-ROWSECURITY"><div class="titlepage"><div><div><h2 class="title" style="clear: both">5.9. Politiques de sécurité niveau ligne <a href="#DDL-ROWSECURITY" class="id_link">#</a></h2></div></div></div><a id="id-1.5.4.11.2" class="indexterm"></a><a id="id-1.5.4.11.3" class="indexterm"></a><p>
+   En plus des <a class="link" href="ddl-priv.html" title="5.8. Droits">systèmes de droits</a> du standard
+   SQL disponibles via <a class="xref" href="sql-grant.html" title="GRANT"><span class="refentrytitle" id="SQL-GRANT-TITLE">GRANT</span></a>, les tables peuvent avoir
+   des <em class="firstterm">politiques de sécurité pour l'accès aux lignes</em>
+   qui restreignent, utilisateur par utilisateur, les lignes qui peuvent être
+   renvoyées par les requêtes d'extraction ou les commandes d'insertions, de
+   mises à jour ou de suppressions. Cette fonctionnalité est aussi connue
+   sous le nom <em class="firstterm">Row-Level Security</em>. Par défaut, les
+   tables n'ont aucune politique de ce type pour que, si un utilisateur a
+   accès à une table selon les droits du standard SQL, toutes les lignes de
+   la table soient accessibles aux requêtes de lecture ou d'écriture.
+  </p><p>
+   Lorsque la protection des lignes est activée sur une table
+   (avec l'instruction <a class="link" href="sql-altertable.html" title="ALTER TABLE">ALTER TABLE ... ENABLE
+   ROW LEVEL SECURITY</a>), tous les accès classiques à la table pour
+   sélectionner ou modifier des lignes doivent être autorisés par une
+   politique de sécurité. Cependant, le propriétaire de la table n'est
+   typiquement pas soumis aux politiques de sécurité. Si aucune politique
+   n'existe pour la table, une politique de rejet est utilisée par défaut, ce
+   qui signifie qu'aucune ligne n'est visible ou ne peut être modifiée. Les
+   opérations qui s'appliquent pour la table dans sa globalité, comme
+   <code class="command">TRUNCATE</code> et <code class="literal">REFERENCES</code>, ne sont pas
+   soumises à ces restrictions de niveau ligne.
+  </p><p>
+   Les politiques de sécurité niveau ligne peuvent s'appliquer en particulier
+   soit à des commandes, soit à des rôles, soit aux deux. Une politique est
+   indiquée comme s'appliquant à toutes les commandes par
+   <code class="literal">ALL</code>, ou seulement à <code class="literal">SELECT</code>,
+   <code class="literal">INSERT</code>, <code class="literal">UPDATE</code> ou
+   <code class="literal">DELETE</code>. Plusieurs rôles peuvent être affectés à une
+   politique donnée, et les règles normales d'appartenance et d'héritage
+   s'appliquent.
+  </p><p>
+   Pour indiquer les lignes visibles ou modifiables pour une politique, une
+   expression renvoyant un booléen est requise. Cette expression sera évaluée
+   pour chaque ligne avant toutes conditions ou fonctions qui seraient
+   indiquées dans les requêtes de l'utilisateur. (La seule exception à cette
+   règle concerne les fonctions marquées <code class="literal">leakproof</code>, qui
+   annoncent ne pas dévoiler d'information ; l'optimiseur peut choisir
+   d'appliquer de telles fonctions avant les vérifications de sécurité niveau
+   ligne). Les lignes pour lesquelles l'expression ne renvoie pas
+   <code class="literal">true</code> ne sont pas traitées. Des expressions différentes
+   peuvent être indiquées pour fournir des contrôles indépendants pour les
+   lignes qui sont visibles et pour celles qui sont modifiées. Les
+   expressions attachées à la politique sont exécutées dans le cours de la
+   requête et avec les droits de l'utilisateur qui exécute la commande, bien
+   que les fonctions définies avec l'attribut <code class="literal">SECURITY
+   DEFINER</code> puissent être utilisées pour accéder à des données qui
+   ne seraient pas disponibles à l'utilisateur effectuant la requête.
+  </p><p>
+   Les superutilisateurs et les rôles avec l'attribut
+   <code class="literal">BYPASSRLS</code> ne sont pas soumis au système de sécurité
+   niveau ligne lorsqu'ils accèdent une table. Il en est de même par défaut
+   du propriétaire d'une table, bien qu'il puisse choisir de se soumettre à
+   ces contrôles avec <a class="link" href="sql-altertable.html" title="ALTER TABLE">ALTER TABLE ... FORCE
+   ROW LEVEL SECURITY</a>.
+  </p><p>
+   L'activation ou la désactivation de la sécurité niveau ligne, comme l'ajout
+   des politiques à une table, est toujours le privilège du seul propriétaire
+   de la table.
+  </p><p>
+   Les politiques sont créées en utilisant l'instruction <a class="xref" href="sql-createpolicy.html" title="CREATE POLICY"><span class="refentrytitle">CREATE POLICY</span></a>, modifiées avec la commande <a class="xref" href="sql-alterpolicy.html" title="ALTER POLICY"><span class="refentrytitle">ALTER POLICY</span></a> et supprimées avec la commande <a class="xref" href="sql-droppolicy.html" title="DROP POLICY"><span class="refentrytitle">DROP POLICY</span></a>. Pour activer et désactiver la sécurité niveau
+   ligne pour une table donnée, utilisez la commande <a class="xref" href="sql-altertable.html" title="ALTER TABLE"><span class="refentrytitle">ALTER TABLE</span></a>.
+  </p><p>
+   Chaque politique possède un nom et de multiples politiques peuvent être
+   définies pour une table. Comme les politiques sont spécifiques à une
+   table, chaque politique pour une même table doit avoir un nom différent.
+   Différentes tables peuvent avoir des noms de politique de même nom.
+  </p><p>
+   Lorsque plusieurs politiques sont applicables pour une même requête, elles
+   sont combinées en utilisant <code class="literal">OR</code> (pour les politiques
+   permissives, ce qui est le comportement par défaut) ou en utilisant
+   <code class="literal">AND</code> (pour les politiques restrictives).  C'est
+   similaire à la règle qu'un rôle donné a les droits de tous les rôles dont
+   il est membre.  Les politiques permissives et restrictives sont discutées
+   plus en détail ci-dessous.
+  </p><p>
+   À titre de simple exemple, nous allons ici créer une politique sur la
+   relation <code class="literal">comptes</code> pour autoriser seulement les membres
+   du rôle <code class="literal">admins</code> à accéder seulement aux lignes de leurs
+   propres comptes :
+  </p><pre class="programlisting">CREATE TABLE comptes (admin text, societe text, contact_email text);
+ALTER TABLE comptes ENABLE ROW LEVEL SECURITY;
+CREATE POLICY compte_admins ON comptes TO admins
+    USING (admin = current_user);</pre><p>
+   La politique ci-dessus prévoit implicitement une clause <code class="literal">WITH
+   CHECK</code> identique à sa clause <code class="literal">USING</code>, de sorte
+   que la contrainte s'applique à la fois aux lignes sélectionnées par une
+   commande (un gestionnaire ne peut donc pas utiliser
+   <code class="command">SELECT</code>, <code class="command">UPDATE</code>, ou
+   <code class="command">DELETE</code> sur des lignes existantes appartenant à un
+   gestionnaire différent) et aux lignes modifiées par une commande
+   (les lignes appartenant à un gestionnaire différent ne peuvent donc être
+   créées avec <code class="command">INSERT</code> ou <code class="command">UPDATE</code>).
+  </p><p>
+   Si aucun rôle n'est indiqué ou si le nom de pseudo rôle
+   <code class="literal">PUBLIC</code> est utilisé, alors la politique s'applique à
+   tous les utilisateurs du système. Pour autoriser tous les utilisateurs à
+   accéder à leurs propres lignes dans une table
+   <code class="literal">utilisateurs</code>, une politique simple peut être
+   utilisée :
+  </p><pre class="programlisting">CREATE POLICY police_utilisateur ON utilisateurs
+    USING (user_name = current_user);</pre><p>
+   Cela fonctionne de la même manière que dans l'exemple précédent.
+  </p><p>
+   Pour utiliser une politique différente pour les lignes ajoutées à la table
+   de celle appliquée pour les lignes visibles, plusieurs politiques peuvent
+   être combinées. Cette paire de politiques autorisera tous les utilisateurs
+   à voir toutes les lignes de la table <code class="literal">utilisateurs</code>, mais
+   seulement à modifier les leurs :
+  </p><pre class="programlisting">CREATE POLICY user_sel_policy ON users
+    FOR SELECT
+    USING (true);
+CREATE POLICY user_mod_policy ON users
+    USING (user_name = current_user);</pre><p>
+   Pour une commande <code class="command">SELECT</code>, ces deux politique sont
+   combinées à l'aide de <code class="literal">OR</code>, ayant pour effet que toutes
+   les lignes peuvent être sélectionnées. Pour les autres types de commandes,
+   seule la deuxième politique s'applique, de sorte que les effets sont les
+   mêmes qu'auparavant.
+  </p><p>
+   La sécurité niveau ligne peut également être désactivée avec la commande
+   <code class="command">ALTER TABLE</code>. La désactivation de la sécurité niveau
+   ligne ne supprime pas les polices qui sont définies pour la table ;
+   elles sont simplement ignorées. L'ensemble des lignes sont alors visibles
+   et modifiables, selon le système standard des droits SQL.
+  </p><p>
+   Ci-dessous se trouve un exemple plus important de la manière dont cette
+   fonctionnalité peut être utilisée en production. La table
+   <code class="literal">passwd</code> simule le fichier des mots de passe d'un système
+   Unix.
+  </p><pre class="programlisting">-- Simple exemple basé sur le fichier passwd
+CREATE TABLE passwd (
+  user_name             text UNIQUE NOT NULL,
+  pwhash                text,
+  uid                   int  PRIMARY KEY,
+  gid                   int  NOT NULL,
+  real_name             text NOT NULL,
+  home_phone            text,
+  extra_info            text,
+  home_dir              text NOT NULL,
+  shell                 text NOT NULL
+);
+
+CREATE ROLE admin;  -- Administrateur
+CREATE ROLE bob;    -- Utilisateur normal
+CREATE ROLE alice;  -- Utilisateur normal
+
+-- Chargement de la table
+INSERT INTO passwd VALUES
+  ('admin','xxx',0,0,'Admin','111-222-3333',null,'/root','/bin/dash');
+INSERT INTO passwd VALUES
+  ('bob','xxx',1,1,'Bob','123-456-7890',null,'/home/bob','/bin/zsh');
+INSERT INTO passwd VALUES
+  ('alice','xxx',2,1,'Alice','098-765-4321',null,'/home/alice','/bin/zsh');
+
+-- Assurez-vous d'activer le row level security pour la table
+ALTER TABLE passwd ENABLE ROW LEVEL SECURITY;
+
+-- Créer les polices
+-- L'administrateur peut voir toutes les lignes et en ajouter comme il le souhaite
+CREATE POLICY admin_all ON passwd TO admin USING (true) WITH CHECK (true);
+-- Les utilisateurs normaux peuvent voir toutes les lignes
+CREATE POLICY all_view ON passwd FOR SELECT USING (true);
+-- Les utilisateurs normaux peuvent mettre à jour leurs propres lignes,
+-- tout en limitant les shells qu'ils peuvent choisir
+CREATE POLICY user_mod ON passwd FOR UPDATE
+  USING (current_user = user_name)
+  WITH CHECK (
+    current_user = user_name AND
+    shell IN ('/bin/bash','/bin/sh','/bin/dash','/bin/zsh','/bin/tcsh')
+  );
+
+-- Donner à admin tous les droits normaux
+GRANT SELECT, INSERT, UPDATE, DELETE ON passwd TO admin;
+-- Les utilisateurs ne peuvent que sélectionner des colonnes publiques
+GRANT SELECT
+  (user_name, uid, gid, real_name, home_phone, extra_info, home_dir, shell)
+  ON passwd TO public;
+-- Autoriser les utilisateurs à mettre à jour certaines colonnes
+GRANT UPDATE
+  (pwhash, real_name, home_phone, extra_info, shell)
+  ON passwd TO public;</pre><p>
+   Comme avec tous les réglages de sécurité, il est important de tester et de
+   s'assurer que le système se comporte comme attendu. En utilisant l'exemple
+   ci-dessus, les manipulations ci-dessous montrent que le système des droits
+   fonctionne correctement.
+  </p><pre class="programlisting">-- admin peut voir toutes les lignes et les colonnes
+postgres=&gt; set role admin;
+SET
+postgres=&gt; table passwd;
+ user_name | pwhash | uid | gid | real_name |  home_phone  | extra_info | home_dir    |   shell
+-----------+--------+-----+-----+-----------+--------------+------------+-------------+-----------
+ admin     | xxx    |   0 |   0 | Admin     | 111-222-3333 |            | /root       | /bin/dash
+ bob       | xxx    |   1 |   1 | Bob       | 123-456-7890 |            | /home/bob   | /bin/zsh
+ alice     | xxx    |   2 |   1 | Alice     | 098-765-4321 |            | /home/alice | /bin/zsh
+(3 rows)
+
+-- Tester ce que Alice est capable de faire:
+postgres=&gt; set role alice;
+SET
+postgres=&gt; table passwd;
+ERROR:  permission denied for table passwd
+postgres=&gt; select user_name,real_name,home_phone,extra_info,home_dir,shell from passwd;
+ user_name | real_name |  home_phone  | extra_info | home_dir    |   shell
+-----------+-----------+--------------+------------+-------------+-----------
+ admin     | Admin     | 111-222-3333 |            | /root       | /bin/dash
+ bob       | Bob       | 123-456-7890 |            | /home/bob   | /bin/zsh
+ alice     | Alice     | 098-765-4321 |            | /home/alice | /bin/zsh
+(3 rows)
+
+postgres=&gt; update passwd set user_name = 'joe';
+ERROR:  permission denied for table passwd
+-- Alice est autorisée à modifier son propre nom (real_name), mais pas celui des autres
+postgres=&gt; update passwd set real_name = 'Alice Doe';
+UPDATE 1
+postgres=&gt; update passwd set real_name = 'John Doe' where user_name = 'admin';
+UPDATE 0
+postgres=&gt; update passwd set shell = '/bin/xx';
+ERROR:  new row violates WITH CHECK OPTION for "passwd"
+postgres=&gt; delete from passwd;
+ERROR:  permission denied for table passwd
+postgres=&gt; insert into passwd (user_name) values ('xxx');
+ERROR:  permission denied for table passwd
+-- Alice peut modifier son propre mot de passe; RLS empêche silencieusement la mise à jour d'autres lignes
+postgres=&gt; update passwd set pwhash = 'abc';
+UPDATE 1</pre><p>
+   Toutes les politiques construites jusqu'à maintenant étaient des politiques
+   permissives, ce qui veut dire que quand plusieurs politiques sont
+   appliquées, elles sont combinées en utilisant l'opérateur booléen
+   <span class="quote">« <span class="quote">OR</span> »</span>. Bien que les politiques permissives puissent être
+   construites pour autoriser l'accès à des lignes dans les cas attendus, il
+   peut être plus simple de combiner des politiques permissives avec des
+   politiques restrictives (que l'enregistrement doit passer et qui sont
+   combinées en utilisant l'opérateur booléen <span class="quote">« <span class="quote">AND</span> »</span>). En
+   continuant sur l'exemple ci-dessus, nous ajoutons une politique
+   restrictive pour exiger que l'administrateur soit connecté via un socket
+   unix local pour accéder aux enregistrements de la table
+   <code class="literal">passwd</code> :
+  </p><pre class="programlisting">CREATE POLICY admin_local_only ON passwd AS RESTRICTIVE TO admin
+    USING (pg_catalog.inet_client_addr() IS NULL);</pre><p>
+   Nous pouvons alors voir qu'un administrateur se connectant depuis le réseau
+   ne verra aucun enregistrement, du fait de la politique restrictive :
+  </p><pre class="programlisting">=&gt; SELECT current_user;
+ current_user
+--------------
+ admin
+(1 row)
+
+=&gt; select inet_client_addr();
+ inet_client_addr
+------------------
+ 127.0.0.1
+(1 row)
+
+=&gt; TABLE passwd;
+ user_name | pwhash | uid | gid | real_name | home_phone | extra_info | home_dir | shell
+-----------+--------+-----+-----+-----------+------------+------------+----------+-------
+(0 rows)
+
+=&gt; UPDATE passwd set pwhash = NULL;
+UPDATE 0</pre><p>
+   Les vérifications d'intégrité référentielle, telles que les contraintes
+   d'unicité ou de clefs primaires et les références de clefs étrangères,
+   passent toujours outre la sécurité niveau ligne pour s'assurer que
+   l'intégrité des données est maintenue. Une attention particulière doit
+   être prise lors de la mise en place des schémas et des politiques de
+   sécurité de niveau ligne pour éviter qu'un canal caché
+   (<code class="literal">covert channel</code>) ne dévoile des informations au travers
+   de telles vérifications d'intégrité référentielle.
+  </p><p>
+   Dans certains contextes, il est important de s'assurer que la sécurité
+   niveau ligne n'est pas appliquée. Par exemple, lors d'une sauvegarde, il
+   serait désastreux si la sécurité niveau ligne avait pour conséquence de
+   soustraire silencieusement certaines lignes de la sauvegarde. Dans une
+   telle situation, vous pouvez positionner le paramètre de configuration
+   <a class="xref" href="runtime-config-client.html#GUC-ROW-SECURITY">row_security</a> à <code class="literal">off</code>. En lui-même,
+   ce paramètre ne contourne pas la sécurité niveau ligne ; ce qu'il
+   fait, c'est qu'il lève une erreur si le résultat d'une des requêtes venait
+   à être filtrée par une politique. La raison de l'erreur peut alors être
+   recherchée et résolue.
+  </p><p>
+   Dans les exemples ci-dessus, les expressions attachées aux politiques
+   considèrent uniquement les valeurs de la ligne courante accédée ou
+   modifiée. C'est le cas le plus simple et le plus performant ; lorsque
+   c'est possible, il est préférable de concevoir les applications qui
+   utilisent cette fonctionnalité de la sorte. S'il est nécessaire de
+   consulter d'autres lignes ou tables pour que la politique puisse prendre
+   une décision, ceci peut être réalisé en utilisant dans les expressions des
+   politiques des sous-requêtes <code class="command">SELECT</code> ou des fonctions
+   qui contiennent des commandes <code class="command">SELECT</code>. Cependant, faites
+   attention que de tels accès ne créent pas des accès concurrents qui
+   pourraient permettre une fuite d'informations si aucune précaution n'est
+   prise. À titre d'exemple, considérez la création de la table
+   suivante :
+  </p><pre class="programlisting">-- définition des droits de groupes
+CREATE TABLE groupes (groupe_id int PRIMARY KEY,
+                     nom_groupe text NOT NULL);
+
+INSERT INTO groupes VALUES
+  (1, 'bas'),
+  (2, 'moyen'),
+  (5, 'haut');
+
+GRANT ALL ON groupes TO alice;  -- alice est l'administratrice
+GRANT SELECT ON groupes TO public;
+
+-- définition des niveaux de droits utilisateurs
+CREATE TABLE utilisateurs (nom_utilisateur text PRIMARY KEY,
+                    groupe_id int NOT NULL REFERENCES groupes);
+
+INSERT INTO utilisateurs VALUES
+  ('alice', 5),
+  ('bob', 2),
+  ('mallory', 2);
+
+GRANT ALL ON utilisateurs TO alice;
+GRANT SELECT ON utilisateurs TO public;
+
+-- table contenant l'information à protéger
+CREATE TABLE information (info text,
+                          groupe_id int NOT NULL REFERENCES groupes);
+
+INSERT INTO information VALUES
+  ('peu secret', 1),
+  ('légèrement secret', 2),
+  ('très secret', 5);
+
+ALTER TABLE information ENABLE ROW LEVEL SECURITY;
+
+-- une ligne devrait être visible et modifiable pour les utilisateurs
+-- dont le groupe_id est égal ou plus grand au groupe_id de la ligne
+CREATE POLICY fp_s ON information FOR SELECT
+  USING (groupe_id &lt;= (SELECT groupe_id FROM utilisateurs WHERE nom_utilisateur = current_user));
+CREATE POLICY fp_u ON information FOR UPDATE
+  USING (groupe_id &lt;= (SELECT groupe_id FROM utilisateurs WHERE nom_utilisateur = current_user));
+
+-- nous comptons sur les RLS pour protéger la table information
+GRANT ALL ON information TO public;</pre><p>
+   Maintenant, supposez qu'<code class="literal">alice</code> souhaite modifier
+   l'information <span class="quote">« <span class="quote">légèrement secrète</span> »</span>, mais décide que
+   <code class="literal">mallory</code> ne devrait pas pouvoir obtenir ce nouveau
+   contenu, elle le fait ainsi :
+  </p><pre class="programlisting">BEGIN;
+UPDATE utilisateurs SET groupe_id = 1 WHERE nom_utilisateur = 'mallory';
+UPDATE information SET info = 'caché à mallory' WHERE groupe_id = 2;
+COMMIT;</pre><p>
+   Ceci semble correct, il n'y a pas de fenêtre pendant laquelle
+   <code class="literal">mallory</code> devrait pouvoir accéder à la chaîne
+   <span class="quote">« <span class="quote">caché à mallory</span> »</span>. Cependant, il y a une situation de
+   compétition ici. Si <code class="literal">mallory</code> fait en parallèle,
+   disons :
+
+   </p><pre class="programlisting">SELECT * FROM information WHERE groupe_id = 2 FOR UPDATE;</pre><p>
+
+   et sa transaction est en mode <code class="literal">READ COMMITED</code>, il est
+   possible qu'elle voit <span class="quote">« <span class="quote">caché à mallory</span> »</span>. C'est possible si sa
+   transaction accède la ligne <code class="structname">information</code> juste
+   après qu'<code class="literal">alice</code> l'ait fait. Elle est bloquée en
+   attendant que la transaction d'<code class="literal">alice</code> valide, puis
+   récupère la ligne mise à jour grâce à la clause <code class="literal">FOR
+   UPDATE</code>. Cependant, elle ne récupère <span class="emphasis"><em>pas</em></span> une
+   ligne mise à jour pour la commande implicite <code class="command">SELECT</code> sur
+   la table utilisateurs parce que cette sous-commande n'a pas la clause
+   <code class="literal">FOR UPDATE</code> ; à la place, la ligne
+   <code class="structname">utilisateurs</code> est lue avec une image de la base de
+   données prise au début de la requête. Ainsi, l'expression de la politique
+   teste l'ancienne valeur du niveau de droit de <code class="literal">mallory</code>
+   et l'autorise à voir la valeur mise à jour.
+  </p><p>
+   Il y a plusieurs solutions à ce problème. Une simple réponse est d'utiliser
+   <code class="literal">SELECT ... FOR SHARE</code> dans la sous-commande
+   <code class="command">SELECT</code> de la politique de sécurité niveau ligne.
+   Cependant, ceci demande de donner le droit <code class="literal">UPDATE</code> sur
+   la table référencée (ici <code class="structname">utilisateurs</code>) aux
+   utilisateurs concernés, ce qui peut ne pas être souhaité. (Une autre
+   politique de sécurité niveau ligne pourrait être mise en place pour les
+   empêcher d'exercer ce droit ; ou la sous-commande
+   <code class="command">SELECT</code> pourrait être incluse dans une fonction marquée
+   <code class="literal">security definer</code>.) De plus, l'utilisation intensive et
+   concurrente de verrous partagés sur les lignes de la table référencée
+   pourrait poser un problème de performance, tout spécialement si des mises
+   à jour de cette table sont fréquentes. Une autre solution envisageable, si
+   les mises à jour de la table référencée ne sont pas fréquentes, est de
+   prendre un verrou de type <code class="literal">ACCESS EXCLUSIVE</code> sur la table
+   référencée lors des mises à jour, de telle manière qu'aucune autre
+   transaction concurrente ne pourrait consulter d'anciennes valeurs. Ou une
+   transaction pourrait attendre que toutes les transactions se terminent
+   après avoir validé une mise à jour de la table référencée et avant de
+   faire des modifications qui reposent sur la nouvelle politique de
+   sécurité.
+  </p><p>
+   Pour plus de détails, voir <a class="xref" href="sql-createpolicy.html" title="CREATE POLICY"><span class="refentrytitle">CREATE POLICY</span></a> et <a class="xref" href="sql-altertable.html" title="ALTER TABLE"><span class="refentrytitle">ALTER TABLE</span></a>.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/ddl-rowsecurity.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:24 GMT -->
+</html>

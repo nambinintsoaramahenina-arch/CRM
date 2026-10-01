@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/xoper-optimization.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:42 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>36.15. Informations sur l'optimisation d'un opérateur</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="xoper.html" title="36.14. Opérateurs définis par l'utilisateur" /><link rel="next" href="xindex.html" title="36.16. Interfacer des extensions d'index" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/xoper-optimization.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/xoper-optimization.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/xoper-optimization.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/xoper-optimization.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/xoper-optimization.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/xoper-optimization.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/xoper-optimization.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/xoper-optimization.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/xoper-optimization.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/xoper-optimization.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/xoper-optimization.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/xoper-optimization.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/xoper-optimization.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/xoper-optimization.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/xoper-optimization.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/xoper-optimization.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/xoper-optimization.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/xoper-optimization.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/xoper-optimization.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/xoper-optimization.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/xoper-optimization.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="extend.html">Étendre <acronym class="acronym">SQL</acronym></a></span> » <span class="breadcrumb-node">Informations sur l'optimisation d'un opérateur</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="xoper.html" title="36.14. Opérateurs définis par l'utilisateur">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="extend.html" title="Chapitre 36. Étendre SQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="xindex.html" title="36.16. Interfacer des extensions d'index">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">36.14. Opérateurs définis par l'utilisateur </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 36.16. Interfacer des extensions d'index</td></tr></table></div><div class="sect1" id="XOPER-OPTIMIZATION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">36.15. Informations sur l'optimisation d'un opérateur <a href="#XOPER-OPTIMIZATION" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="xoper-optimization.html#XOPER-COMMUTATOR">36.15.1. <code class="literal">COMMUTATOR</code></a></span></dt><dt><span class="sect2"><a href="xoper-optimization.html#XOPER-NEGATOR">36.15.2. <code class="literal">NEGATOR</code></a></span></dt><dt><span class="sect2"><a href="xoper-optimization.html#XOPER-RESTRICT">36.15.3. <code class="literal">RESTRICT</code></a></span></dt><dt><span class="sect2"><a href="xoper-optimization.html#XOPER-JOIN">36.15.4. <code class="literal">JOIN</code></a></span></dt><dt><span class="sect2"><a href="xoper-optimization.html#XOPER-HASHES">36.15.5. <code class="literal">HASHES</code></a></span></dt><dt><span class="sect2"><a href="xoper-optimization.html#XOPER-MERGES">36.15.6. <code class="literal">MERGES</code></a></span></dt></dl></div><a id="id-1.8.3.18.2" class="indexterm"></a><p>
+  Une définition d'opérateur <span class="productname">PostgreSQL</span> peut
+  inclure plusieurs clauses optionnelles qui donnent au système des
+  informations utiles sur le comportement de l'opérateur. Ces clauses
+  devraient être fournies chaque fois que c'est utile car elles peuvent
+  considérablement accélérer l'exécution des requêtes utilisant cet opérateur.
+  Mais si vous le faites, vous devez être sûr de leur justesse ! L'usage
+  incorrect d'une clause d'optimisation peut être la cause de requêtes
+  lentes, des sorties subtilement fausses ou d'autres effets
+  pervers. Vous pouvez toujours abandonner une clause d'optimisation si vous
+  n'êtes pas sûr d'elle ; la seule conséquence est un possible
+  ralentissement des requêtes.
+ </p><p>
+  Des clauses additionnelles d'optimisation pourront être ajoutées dans les
+  futures versions de <span class="productname">postgresql</span>. celles décrites
+  ici sont toutes celles que cette version comprend.
+ </p><p>
+  Il est aussi possible d'attacher une fonction de support pour l'optimiseur
+  à la fonction sous-jacente d'un opérateur, fournissant une autre façon de
+  dire au système la façon dont se comporte l'opérateur.
+  Voir <a class="xref" href="xfunc-optimization.html" title="36.11. Informations d'optimisation de fonction">Section 36.11</a> pour plus d'informations.
+ </p><div class="sect2" id="XOPER-COMMUTATOR"><div class="titlepage"><div><div><h3 class="title">36.15.1. <code class="literal">COMMUTATOR</code> <a href="#XOPER-COMMUTATOR" class="id_link">#</a></h3></div></div></div><p>
+   La clause <code class="literal">COMMUTATOR</code>, lorsqu'elle est fournie, nomme
+   l'opérateur qui est le commutateur de l'opérateur en cours de définition.
+   Nous disons que l'opérateur A est le commutateur de l'opérateur B si
+   (x A y) est équivalent à (y B x) pour toutes les valeurs x et y possibles
+   en entrée. Notez que B est aussi le commutateur de A. Par exemple, les
+   opérateurs <code class="literal">&lt;</code> et <code class="literal">&gt;</code> pour un type
+   de données particulier sont habituellement des commutateurs entre eux, et
+   l'opérateur <code class="literal">+</code> est habituellement commutatif avec
+   lui-même. Mais l'opérateur <code class="literal">-</code> n'est habituellement pas
+   commutatif avec quoi que ce soit.
+  </p><p>
+   Le type de l'opérande gauche d'un opérateur commutable est le même que le
+   type de l'opérande droit de son commutateur, et vice versa. Donc le nom de
+   l'opérateur commutateur est tout ce dont
+   <span class="productname">PostgreSQL</span> a besoin pour rechercher le commutateur,
+   et c'est tout ce qui est nécessaire à fournir à la clause
+   <code class="literal">COMMUTATOR</code>.
+  </p><p>
+   Fournir l'information du commutateur pour les opérateurs est critique pour
+   leur utilisation dans les index et les clauses de jointure parce que cela
+   permet à l'optimiseur de requête de <span class="quote">« <span class="quote">retourner</span> »</span> une telle
+   clause en des formes nécessaires pour différentes types de plan. Par
+   exemple, regardez la requête avec une clause WHERE comme <code class="literal">tab1.x =
+   tab2.y</code>, où <code class="literal">tab1.x</code> et
+   <code class="literal">tab2.y</code> sont d'un type défini par l'utilisateur et
+   supposez que <code class="literal">tab2.y</code> est indexé. L'optimiseur ne peut
+   pas générer un parcours d'index sauf s'il détermine comment retourner la
+   clause en <code class="literal">tab2.y = tab1.x</code>, car le parcours d'index
+   s'attend à voir la colonne indexée sur la gauche de l'opérateur.
+   <span class="productname">PostgreSQL</span> ne pensera <span class="emphasis"><em>pas</em></span>
+   qu'il s'agit d'une transformation valide  --  le créateur de
+   l'opérateur <code class="literal">=</code> doit préciser que c'est valide en
+   marquant l'opérateur avec l'information du commutateur.
+  </p></div><div class="sect2" id="XOPER-NEGATOR"><div class="titlepage"><div><div><h3 class="title">36.15.2. <code class="literal">NEGATOR</code> <a href="#XOPER-NEGATOR" class="id_link">#</a></h3></div></div></div><p>
+   La clause <code class="literal">negator</code> dénomme un opérateur qui est l'opérateur de
+   négation de l'opérateur en cours de définition. Nous disons qu'un opérateur
+   A est l'opérateur de négation de l'opérateur B si tous les deux renvoient
+   des résultats booléens et si (x A y) est égal à NOT (x B y) pour toutes les
+   entrées possible x, y. Notez que B est aussi l'opérateur de négation de A.
+   Par exemple, <code class="literal">&lt;</code> et <code class="literal">&gt;=</code> forment une paire
+   d'opérateurs de négation pour la plupart des types de données. Un opérateur
+   ne peut jamais être validé comme son propre opérateur de négation .
+  </p><p>
+   Au contraire des commutateurs, une paire d'opérateurs unaires peut être
+   validée comme une paire d'opérateurs de négation réciproques ; ce qui
+   signifie que (A x) est égal à NOT (B x) pour tout x.
+  </p><p>
+   L'opérateur de négation d'un opérateur doit avoir les mêmes types
+   d'opérandes gauche et/ou droit que l'opérateur à définir comme
+   avec <code class="literal">commutator</code>. seul le nom de l'opérateur doit être donné
+   dans la clause <code class="literal">negator</code>.
+  </p><p>
+   Définir un opérateur de négation est très utile pour l'optimiseur de
+   requêtes car il permet de simplifier des expressions telles que <code class="literal">not
+    (x = y)</code> en <code class="literal">x &lt;&gt; y</code>. ceci arrive souvent parce que les
+   opérations <code class="literal">not</code> peuvent être insérées à la suite d'autres
+   réarrangements.
+  </p></div><div class="sect2" id="XOPER-RESTRICT"><div class="titlepage"><div><div><h3 class="title">36.15.3. <code class="literal">RESTRICT</code> <a href="#XOPER-RESTRICT" class="id_link">#</a></h3></div></div></div><p>
+   La clause <code class="literal">restrict</code>, si elle est invoquée, nomme une fonction
+   d'estimation de sélectivité de restriction pour cet opérateur (notez que
+   c'est un nom de fonction, et non pas un nom d'opérateur). Les clauses
+   <code class="literal">restrict</code> n'ont de sens que pour les opérateurs binaires qui
+   renvoient un type <code class="type">boolean</code>. un estimateur de sélectivité de
+   restriction repose sur l'idée de prévoir quelle fraction des lignes dans une
+   table satisfera une condition de clause <code class="literal">where</code> de la forme :
+   </p><pre class="programlisting">colonne OP constante
+   </pre><p>
+   pour l'opérateur courant et une valeur constante particulière. Ceci aide
+   l'optimiseur en lui donnant une idée du nombre de lignes qui sera éliminé
+   par les clauses <code class="literal">where</code> qui ont cette forme (vous pouvez vous
+   demander, qu'arrivera-t-il si la constante est à gauche ? hé bien,
+   c'est une des choses à laquelle sert le <code class="literal">commutator</code>...).
+  </p><p>
+   L'écriture de nouvelles fonctions d'estimation de restriction de sélectivité
+   est éloignée des objectifs de ce chapitre mais, heureusement, vous pouvez
+   habituellement utiliser un des estimateurs standards du système pour
+   beaucoup de vos propres opérateurs. Voici les estimateurs standards de
+   restriction :
+   </p><table border="0" summary="Simple list" class="simplelist"><tr><td><code class="function">eqsel</code> pour <code class="literal">=</code></td></tr><tr><td><code class="function">neqsel</code> pour <code class="literal">&lt;&gt;</code></td></tr><tr><td><code class="function">scalarltsel</code> pour <code class="literal">&lt;</code></td></tr><tr><td><code class="function">scalarlesel</code> pour <code class="literal">&lt;=</code></td></tr><tr><td><code class="function">scalargtsel</code> pour <code class="literal">&gt;</code></td></tr><tr><td><code class="function">scalargesel</code> pour <code class="literal">&gt;=</code></td></tr></table><p>
+  </p><p>
+   Vous pouvez fréquemment vous en sortir à bon compte en utilisant soit
+   <code class="function">eqsel</code> ou <code class="function">neqsel</code> pour des
+   opérateurs qui ont une très grande ou une très faible sélectivité, même
+   s'ils ne sont pas réellement égalité ou inégalité. Par exemple, les
+   opérateurs géométriques d'égalité approchée utilisent
+   <code class="function">eqsel</code> en supposant habituellement qu'ils ne
+   correspondent qu'à une petite fraction des entrées dans une table.
+  </p><p>
+   Vous pouvez utiliser <code class="function">scalarltsel</code>, <code class="function">scalarlesel</code>,
+   <code class="function">scalargtsel</code> et <code class="function">scalargesel</code>
+   pour des comparaisons de types de données qui possèdent un moyen de
+   conversion en scalaires numériques pour les comparaisons de rang. Si
+   possible, ajoutez le type de données à ceux acceptés par la fonction
+   <code class="function">convert_to_scalar()</code> dans
+   <code class="filename">src/backend/utils/adt/selfuncs.c</code> (finalement, cette
+   fonction devrait être remplacée par des fonctions pour chaque type de
+   données identifié grâce à une colonne du catalogue système
+   <code class="classname">pg_type</code> ; mais cela n'a pas encore été fait). si vous
+   ne faites pas ceci, les choses fonctionneront mais les estimations de
+   l'optimiseur ne seront pas aussi bonnes qu'elles pourraient l'être.
+  </p><p>
+   Une autre fonction native d'estimation de sélectivité est
+   <code class="function">matchingsel</code>, qui fonctionnera pour pratiquement tous
+   les opérateurs binaires, si les statistiques MCV ou histogramme sont
+   calculées pour ce type de données en entrée. Son estimation par défaut est
+   configurée à deux fois l'estimation par défaut utilisé dans
+   <code class="function">eqsel</code>, le rendant convenable pour les opérateurs de
+   comparaison qui sont un peu moins strictque l'égalité. (Vous pouvez appeler
+   la fonction sous-jacente
+   <code class="function">generic_restriction_selectivity</code> en fournissant une
+   estimation par défaut différente.)
+  </p><p>
+   D'autres fonctions d'estimation de sélectivité conçues pour les opérateurs
+   géométriques sont placées dans
+   <code class="filename">src/backend/utils/adt/geo_selfuncs.c</code> :
+   <code class="function">areasel</code>, <code class="function">positionsel</code> et
+   <code class="function">contsel</code>. lors de cette rédaction, ce sont seulement
+   des fragments mais vous pouvez vouloir les utiliser (ou mieux les
+   améliorer).
+  </p></div><div class="sect2" id="XOPER-JOIN"><div class="titlepage"><div><div><h3 class="title">36.15.4. <code class="literal">JOIN</code> <a href="#XOPER-JOIN" class="id_link">#</a></h3></div></div></div><p>
+   La clause <code class="literal">join</code>, si elle est invoquée, nomme une fonction
+   d'estimation de sélectivité de jointure pour l'opérateur (notez que c'est
+   un nom de fonction, et non pas un nom d'opérateur). Les clauses
+   <code class="literal">join</code> n'ont de sens que pour les opérateurs binaires qui
+   renvoient un type <code class="type">boolean</code>. un estimateur de sélectivité de
+   jointure repose sur l'idée de prévoir quelle fraction des lignes dans une
+   paire de tables satisfera une condition de clause
+   <code class="literal">where</code> de la forme :
+   </p><pre class="programlisting">table1.colonne1 OP table2.colonne2
+   </pre><p>
+   pour l'opérateur courant. Comme pour la clause <code class="literal">restrict</code>,
+   ceci aide considérablement l'optimiseur en lui indiquant parmi plusieurs
+   séquences de jointure possibles laquelle prendra vraisemblablement le moins
+   de travail.
+  </p><p>
+   Comme précédemment, ce chapitre n'essaiera pas d'expliquer comment écrire
+   une fonction d'estimation de sélectivité de jointure mais suggérera
+   simplement d'utiliser un des estimateurs standard s'il est
+   applicable :
+   </p><table border="0" summary="Simple list" class="simplelist"><tr><td><code class="function">eqjoinsel</code> pour <code class="literal">=</code></td></tr><tr><td><code class="function">neqjoinsel</code> pour <code class="literal">&lt;&gt;</code></td></tr><tr><td><code class="function">scalarltjoinsel</code> pour <code class="literal">&lt;</code></td></tr><tr><td><code class="function">scalarlejoinsel</code> pour <code class="literal">&lt;=</code></td></tr><tr><td><code class="function">scalargtjoinsel</code> pour <code class="literal">&gt;</code></td></tr><tr><td><code class="function">scalargejoinsel</code> pour <code class="literal">&gt;=</code></td></tr><tr><td><code class="function">matchingjoinsel</code> for generic matching operators</td></tr><tr><td><code class="function">areajoinsel</code> pour des comparaisons basées sur une aire 2D</td></tr><tr><td><code class="function">positionjoinsel</code> pour des comparaisons basées sur des positions 2D</td></tr><tr><td><code class="function">contjoinsel</code> pour des comparaisons basées sur un appartenance 2D</td></tr></table><p>
+  </p></div><div class="sect2" id="XOPER-HASHES"><div class="titlepage"><div><div><h3 class="title">36.15.5. <code class="literal">HASHES</code> <a href="#XOPER-HASHES" class="id_link">#</a></h3></div></div></div><p>
+   La clause <code class="literal">hashes</code> indique au système qu'il est permis
+   d'utiliser la méthode de jointure-découpage pour une jointure basée sur cet
+   opérateur. <code class="literal">hashes</code> n'a de sens que pour un opérateur binaire qui
+   renvoie un <code class="literal">boolean</code> et en pratique l'opérateur égalité doit
+   représenter l'égalité pour certains types de données ou paire de type de données.
+  </p><p>
+   La jointure-découpage repose sur l'hypothèse que l'opérateur de jointure
+   peut seulement renvoyer la valeur vrai pour des paires de valeurs droite et
+   gauche qui correspondent au même code de découpage. Si deux valeurs sont
+   placées dans deux différents paquets (<span class="quote">« <span class="quote">buckets</span> »</span>), la jointure
+   ne pourra jamais les comparer avec la supposition implicite que le
+   résultat de l'opérateur de jointure doit être faux. Ainsi, il n'y a aucun
+   sens à spécifier <code class="literal">hashes</code> pour des opérateurs qui ne
+   représentent pas une certaine forme d'égalité. Dans la plupart des cas, il
+   est seulement pratique de supporter le hachage pour les opérateurs qui
+   prennent le même type de données sur chaque côté. Néanmoins, quelque
+   fois, il est possible de concevoir des fonctions de hachage compatibles
+   pour deux type de données, voire plus ; c'est-à-dire pour les
+   fonctions qui généreront les mêmes codes de hachage pour des valeurs
+   égales même si elles ont des représentations différentes. Par exemple,
+   il est assez simple d'arranger cette propriété lors du hachage d'entiers
+   de largeurs différentes.
+  </p><p>
+   Pour être marqué <code class="literal">hashes</code>, l'opérateur de jointure doit
+   apparaître dans une famille d'opérateurs d'index de découpage. Ceci n'est
+   pas rendu obligatoire quand vous créez l'opérateur, puisque évidemment la
+   classe référençant l'opérateur peut ne pas encore exister. Mais les
+   tentatives d'utilisation de l'opérateur dans les jointure-découpage
+   échoueront à l'exécution si une telle famille d'opérateur n'existe pas. Le
+   système a besoin de la famille d'opérateur pour définir la fonction de
+   découpage spécifique au type de données d'entrée de l'opérateur. Bien sûr,
+   vous devez également créer des fonctions de découpage appropriées avant de
+   pouvoir créer la famille d'opérateur.
+  </p><p>
+   On doit apporter une grande attention à la préparation des fonctions de
+   découpage parce qu'il y a des processus dépendants de la machine qui
+   peuvent ne pas faire les choses correctement. Par exemple, si votre type de
+   données est une structure dans laquelle peuvent se trouver des bits de
+   remplissage sans intérêt, vous ne pouvez pas simplement passer la structure
+   complète à la fonction <code class="function">hash_any</code> (à moins d'écrire vos autres
+   opérateurs et fonctions de façon à s'assurer que les bits inutilisés sont
+   toujours zéro, ce qui est la stratégie recommandée). Un autre exemple est
+   fourni sur les machines qui respectent le standard de virgule-flottante
+   <acronym class="acronym">ieee</acronym>, le zéro négatif et le zéro positif sont des valeurs
+   différentes (les motifs de bit sont différents) mais ils sont définis pour
+   être égaux. Si une valeur flottante peut contenir un zéro négatif, alors
+   une étape supplémentaire est nécessaire pour s'assurer qu'elle génère la
+   même valeur de découpage qu'un zéro positif.
+  </p><p>
+   Un opérateur joignable par hachage doit avoir un commutateur (lui-même
+   si les types de données des deux opérandes sont identiques, ou un
+   opérateur d'égalité relatif dans le cas contraire) qui apparaît dans la
+   même famille d'opérateur. Si ce n'est pas le cas, des erreurs du
+   planificateur pourraient apparaître quand l'opérateur est utilisé. De plus,
+   une bonne idée (mais pas obligatoire) est qu'une famille d'opérateur de
+   hachage supporte les tupes de données multiples pour fournir des
+   opérateurs d'égalité pour chaque combinaison des types de données ;
+   cela permet une meilleure optimisation.
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    La fonction sous-jacente à un opérateur de jointure-découpage doit être
+    marquée immuable ou stable. Si elle est volatile, le système n'essaiera
+    jamais d'utiliser l'opérateur pour une jointure hachage.
+   </p></div><div class="note"><h3 class="title">Note</h3><p>
+    Si un opérateur de jointure-hachage a une fonction sous-jacente marquée
+    stricte, la fonction doit également être complète : cela signifie
+    qu'elle doit renvoyer TRUE ou FALSE, jamais NULL, pour n'importe quelle
+    double entrée non NULL. Si cette règle n'est pas respectée, l'optimisation
+    de découpage des opérations <code class="literal">in</code> peut générer des résultats
+    faux (spécifiquement, <code class="literal">in</code> devrait renvoyer false quand la
+    réponse correcte devrait être NULL ; ou bien il devrait renvoyer une
+    erreur indiquant qu'il ne s'attendait pas à un résultat NULL).
+   </p></div></div><div class="sect2" id="XOPER-MERGES"><div class="titlepage"><div><div><h3 class="title">36.15.6. <code class="literal">MERGES</code> <a href="#XOPER-MERGES" class="id_link">#</a></h3></div></div></div><p> La clause <code class="literal">merges</code>, si elle est présente, indique au
+   système qu'il est permis d'utiliser la méthode de jointure-union pour une
+   jointure basée sur cet opérateur. <code class="literal">merges</code> n'a de sens que pour un
+   opérateur binaire qui renvoie un <code class="literal">boolean</code> et, en pratique, cet
+   opérateur doit représenter l'égalité pour des types de données ou des paires
+   de types de données. </p><p> La jointure-union est fondée sur le principe d'ordonner les tables
+   gauche et droite et ensuite de les comparer en parallèle. Ainsi, les deux
+   types de données doivent être capable d'être pleinement ordonnées, et
+   l'opérateur de jointure doit pouvoir réussir seulement pour des paires de
+   valeurs tombant à la <span class="quote">« <span class="quote">même place</span> »</span> dans l'ordre de tri. En pratique,
+   cela signifie que l'opérateur de jointure doit se comporter comme
+   l'opérateur égalité. Mais il est possible de faire une jointure-union sur
+   deux types de données distincts tant qu'ils sont logiquement compatibles.
+   Par exemple, l'opérateur d'égalité
+   <code class="type">smallint</code>-contre-<code class="type">integer</code> est susceptible d'opérer
+   une jointure-union. Nous avons seulement besoin d'opérateurs de tri qui
+   organisent les deux types de données en séquences logiquement comparables.
+  </p><p>
+   Pour être marqué <code class="literal">MERGES</code>, l'opérateur de jointure doit
+   apparaître en tant que membre d'égalité d'une famille opérateur d'index
+   <code class="literal">btree</code>. Ceci n'est pas forcé quand vous créez l'opérateur puisque, bien
+   sûr, la famille d'opérateur référente n'existe pas encore. Mais
+   l'opérateur ne sera pas utilisé pour les jointures de fusion sauf si
+   une famille d'opérateur correspondante est trouvée. L'option
+   <code class="literal">MERGES</code> agit en fait comme une aide pour le planificateur
+   lui indiquant qu'il est intéressant de chercher une famille d'opérateur
+   correspondant.
+  </p><p>
+   Un opérateur joignable par fusion doit avoir un commutateur
+   (lui-même si les types de données des deux opérateurs sont identiques,
+   ou un opérateur d'égalité en relation dans le cas contraire) qui
+   apparaît dans la même famille d'opérateur.  Si ce n'est pas le cas, des
+   erreurs du
+   planificateur pourraient apparaître quand l'opérateur est utilisé. De plus,
+   une bonne idée (mais pas obligatoire) est qu'une famille d'opérateur de
+   hachage supporte les tupes de données multiples pour fournir des
+   opérateurs d'égalité pour chaque combinaison des types de données ;
+   cela permet une meilleure optimisation.
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    La fonction sous-jacente à un opérateur de jointure-union doit être marquée
+    immuable ou stable. Si elle est volatile, le système n'essaiera jamais
+    d'utiliser l'opérateur pour une jointure union.
+   </p></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/xoper-optimization.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:42 GMT -->
+</html>

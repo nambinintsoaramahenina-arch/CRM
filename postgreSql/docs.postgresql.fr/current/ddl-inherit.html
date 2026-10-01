@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/ddl-inherit.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:25 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.11. L'héritage</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="ddl-schemas.html" title="5.10. Schémas" /><link rel="next" href="ddl-partitioning.html" title="5.12. Partitionnement de tables" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/ddl-inherit.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/ddl-inherit.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/ddl-inherit.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/ddl-inherit.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/ddl-inherit.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/ddl-inherit.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/ddl-inherit.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/ddl-inherit.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/ddl-inherit.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/ddl-inherit.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/ddl-inherit.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/ddl-inherit.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/ddl-inherit.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/ddl-inherit.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/ddl-inherit.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/ddl-inherit.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/ddl-inherit.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/ddl-inherit.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/ddl-inherit.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/ddl-inherit.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/ddl-inherit.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="ddl.html">Définition des données</a></span> » <span class="breadcrumb-node">L'héritage</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ddl-schemas.html" title="5.10. Schémas">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="ddl.html" title="Chapitre 5. Définition des données">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="ddl-partitioning.html" title="5.12. Partitionnement de tables">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">5.10. Schémas </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 5.12. Partitionnement de tables</td></tr></table></div><div class="sect1" id="DDL-INHERIT"><div class="titlepage"><div><div><h2 class="title" style="clear: both">5.11. L'héritage <a href="#DDL-INHERIT" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="ddl-inherit.html#DDL-INHERIT-CAVEATS">5.11.1. Restrictions</a></span></dt></dl></div><a id="id-1.5.4.13.2" class="indexterm"></a><a id="id-1.5.4.13.3" class="indexterm"></a><p>
+   <span class="productname">PostgreSQL</span> implante l'héritage des tables, qui
+   peut s'avérer très utile pour les concepteurs de bases de données.
+   (SQL:1999 et les versions suivantes définissent une fonctionnalité
+   d'héritage de type qui diffère par de nombreux aspects des fonctionnalités
+   décrites ici.)
+  </p><p>
+   Soit l'exemple d'un modèle de données de villes. Chaque état comporte
+   plusieurs villes, mais une seule capitale. Pour récupérer rapidement la
+   ville capitale d'un état donné, on peut créer deux tables, une pour les
+   capitales et une pour les villes qui ne sont pas des capitales. Mais, que
+   se passe-t-il dans le cas où toutes les données d'une ville doivent être
+   récupérées, qu'elle soit une capitale ou non ? L'héritage peut aider
+   à résoudre ce problème. La table <code class="structname">capitales</code> est
+   définie pour hériter de <code class="structname">villes</code> :
+
+   </p><pre class="programlisting">CREATE TABLE villes (
+    nom             text,
+    population      float,
+    elevation        int     -- (en pied)
+);
+
+CREATE TABLE capitales (
+    etat           char(2)
+) INHERITS (villes);</pre><p>
+
+   Dans ce cas, la table <code class="structname">capitales</code>
+   <em class="firstterm">hérite</em> de toutes les colonnes de sa table parente,
+   <code class="structname">villes</code>. Les capitales ont aussi une colonne
+   supplémentaire, <code class="structfield">etat</code>, qui indique l'état dont
+   elles sont capitales.
+  </p><p>
+   Dans <span class="productname">PostgreSQL</span>, une table peut hériter de zéro
+   à plusieurs autres tables et une requête faire référence aux lignes d'une
+   table ou à celles d'une table et de ses descendantes. Ce dernier
+   comportement est celui par défaut.
+  </p><p>
+   Par exemple, la requête suivante retourne les noms et élévations de toutes
+   les villes, y compris les capitales, situées à une élévation supérieure à
+   500 pieds :
+
+</p><pre class="programlisting">SELECT nom, elevation
+FROM villes
+WHERE elevation &gt; 500;</pre><p>
+
+   Avec les données du tutoriel de <span class="productname">PostgreSQL</span>
+   (voir <a class="xref" href="tutorial-sql-intro.html" title="2.1. Introduction">Section 2.1</a>), ceci renvoie :
+
+   </p><pre class="programlisting">   nom     | elevation
+-----------+-----------
+ Las Vegas |      2174
+ Mariposa  |      1953
+ Madison   |       845</pre><p>
+  </p><p>
+
+   D'un autre côté, la requête suivante retourne les noms et élévations de
+   toutes les villes, qui ne sont pas des capitales, situées à une élévation
+   supérieure à 500 pieds :
+
+   </p><pre class="programlisting">SELECT nom, elevation
+FROM ONLY villes
+WHERE elevation &gt; 500;
+
+   nom     | elevation
+-----------+-----------
+ Las Vegas |      2174
+ Mariposa  |      1953</pre><p>
+  </p><p>
+   Le mot-clé <code class="literal">ONLY</code> indique que la requête s'applique
+   uniquement aux <code class="structname">villes</code>, et non pas à toutes les
+   tables en dessous de <code class="structname">villes</code> dans la hiérarchie de
+   l'héritage. Un grand nombre des commandes déjà évoquées  -- 
+   <code class="command">SELECT</code>, <code class="command">UPDATE</code> et
+   <code class="command">DELETE</code>  --  supportent le mot-clé
+   <code class="literal">ONLY</code>.
+  </p><p>
+   Vous pouvez aussi écrire le nom de la table avec un astérisque
+   (<code class="literal">*</code>) à la fin pour indiquer spécifiquement que les
+   tables filles sont incluses :
+
+   </p><pre class="programlisting">SELECT name, elevation
+FROM cities*
+WHERE elevation &gt; 500;</pre><p>
+
+   Écrire l'astérisque (<code class="literal">*</code>) n'est pas nécessaire, puisque ce
+   comportement est toujours le comportement par défaut. Toutefois, cette
+   syntaxe est toujours supportée pour raison de compatibilité avec les
+   anciennes versions où le comportement par défaut pouvait être changé.
+  </p><p>
+
+   Dans certains cas, il peut être intéressant de savoir de quelle table
+   provient une ligne donnée. Une colonne système appelée
+   <code class="structfield">TABLEOID</code>, présente dans chaque table, donne la
+   table d'origine :
+
+   </p><pre class="programlisting">SELECT v.tableoid, v.nom, v.elevation
+FROM villes v
+WHERE v.elevation &gt; 500;</pre><p>
+
+   qui renvoie :
+
+   </p><pre class="programlisting"> tableoid |   nom     | elevation
+----------+-----------+-----------
+   139793 | Las Vegas |      2174
+   139793 | Mariposa  |      1953
+   139798 | Madison   |       845</pre><p>
+
+   (Reproduire cet exemple conduit probablement à des OID numériques
+   différents). Une jointure avec <code class="structname">pg_class</code>, permet
+   d'obtenir les noms réels des tables :
+
+   </p><pre class="programlisting">SELECT p.relname, v.nom, v.elevation
+FROM villes v, pg_class p
+WHERE v.elevation &gt; 500 AND v.tableoid = p.oid;</pre><p>
+
+   ce qui retourne :
+
+   </p><pre class="programlisting"> relname   |   nom     | elevation
+-----------+-----------+-----------
+ villes    | Las Vegas |      2174
+ villes    | Mariposa  |      1953
+ capitales | Madison   |       845</pre><p>
+  </p><p>
+   Une autre manière d'obtenir le même effet est d'utiliser le pseudo-type
+   <code class="type">regclass</code> qui affichera l'OID de la table de façon
+   symbolique :
+
+   </p><pre class="programlisting">SELECT v.tableoid::regclass, v.nom, v.elevation
+FROM villes v
+WHERE v.elevation &gt; 500;</pre><p>
+  </p><p>
+   L'héritage ne propage pas automatiquement les données des commandes
+   <code class="command">INSERT</code> ou <code class="command">COPY</code> aux autres tables de
+   la hiérarchie de l'héritage. Dans l'exemple considéré, l'instruction
+   <code class="command">INSERT</code> suivante échoue :
+
+   </p><pre class="programlisting">INSERT INTO villes (nom, population, elevation, etat)
+VALUES ('Albany', NULL, NULL, 'NY');</pre><p>
+
+   On pourrait espérer que les données soient d'une manière ou d'une autre
+   acheminées vers la table <code class="structname">capitales</code>, mais ce n'est
+   pas le cas : <code class="command">INSERT</code> insère toujours dans la table
+   indiquée. Dans certains cas, il est possible de rediriger l'insertion en
+   utilisant une règle (voir <a class="xref" href="rules.html" title="Chapitre 39. Système de règles">Chapitre 39</a>). Néanmoins, cela n'est
+   d'aucune aide dans le cas ci-dessus, car la table
+   <code class="structname">villes</code> ne contient pas la colonne
+   <code class="structfield">etat</code>. La commande est donc rejetée avant que la
+   règle ne puisse être appliquée.
+  </p><p>
+   Toutes les contraintes de vérification et toutes les contraintes
+   <code class="literal">NOT NULL</code> sur une table parent sont automatiquement
+   héritées par les tables enfants, sauf si elles sont spécifiées
+   explicitement avec des clauses <code class="literal">NO INHERIT</code>. Les autres
+   types de contraintes (unicité, clé primaire, clé étrangère) ne sont pas
+   hérités.
+  </p><p>
+   Une table peut hériter de plusieurs tables, auquel cas elle possède l'union
+   des colonnes définies par les tables mères. Toute colonne déclarée dans la
+   définition de la table enfant est ajoutée à cette dernière. Si le même nom
+   de colonne apparaît dans plusieurs tables mères, ou à la fois dans une
+   table mère et dans la définition de la table enfant, alors ces colonnes
+   sont <span class="quote">« <span class="quote">assemblées</span> »</span> pour qu'il n'en existe qu'une dans la table
+   enfant. Pour être assemblées, les colonnes doivent avoir le même type de
+   données, sinon une erreur est levée. Les contraintes de vérification et
+   les contraintes non NULL héritables sont assemblées de façon similaire. De
+   ce fait, par exemple, une colonne assemblée sera marquée non NULL si une
+   des définitions de colonne d'où elle provient est marquée non NULL. Les
+   contraintes de vérification sont assemblées si elles ont le même nom, et
+   l'assemblage échouera si leurs conditions sont différentes.
+  </p><p>
+   L'héritage de table est établi à la création de la table enfant, à l'aide
+   de la clause <code class="literal">INHERITS</code> de l'instruction <a class="link" href="sql-createtable.html" title="CREATE TABLE"><code class="command">CREATE TABLE</code></a>.
+   Alternativement, il est possible d'ajouter à une table, définie de façon
+   compatible, une nouvelle relation de parenté à l'aide de la clause
+   <code class="literal">INHERIT</code> de <a class="link" href="sql-altertable.html" title="ALTER TABLE"><code class="command">ALTER TABLE</code></a>. Pour cela,
+   la nouvelle table enfant doit déjà inclure des colonnes de mêmes nom et de
+   même type que les colonnes de la table parent. Elle doit aussi contenir
+   des contraintes de vérification de mêmes nom et expression que celles de
+   la table parent.
+  </p><p>
+   De la même façon, un lien d'héritage peut être supprimé d'un enfant à
+   l'aide de la variante <code class="literal">NO INHERIT</code> d'<code class="command">ALTER
+   TABLE</code>. Ajouter et supprimer dynamiquement des liens d'héritage
+   de cette façon est utile quand cette relation d'héritage est utilisée pour
+   le partitionnement des tables (voir <a class="xref" href="ddl-partitioning.html" title="5.12. Partitionnement de tables">Section 5.12</a>).
+  </p><p>
+   Un moyen pratique de créer une table compatible en vue d'en faire
+   ultérieurement une table enfant est d'utiliser la clause
+   <code class="literal">LIKE</code> dans <code class="command">CREATE TABLE</code>. Ceci crée
+   une nouvelle table avec les mêmes colonnes que la table source. S'il
+   existe des contraintes <code class="literal">CHECK</code> définies sur la table
+   source, l'option <code class="literal">INCLUDING CONSTRAINTS</code> de
+   <code class="literal">LIKE</code> doit être indiquée, car le nouvel enfant doit
+   avoir des contraintes qui correspondent à celles du parent pour être
+   considéré compatible.
+  </p><p>
+   Une table mère ne peut pas être supprimée tant qu'elle a des enfants. De
+   même, les colonnes ou les contraintes de vérification des tables enfants
+   ne peuvent être supprimées ou modifiées si elles sont héritées. La
+   suppression d'une table et de tous ses descendants peut être aisément
+   obtenue en supprimant la table mère avec l'option
+   <code class="literal">CASCADE</code> (voir <a class="xref" href="ddl-depend.html" title="5.15. Gestion des dépendances">Section 5.15</a>).
+  </p><p>
+   <code class="command">ALTER TABLE</code> propage toute modification dans les
+   définitions des colonnes et contraintes de vérification à travers la
+   hiérarchie d'héritage. Là encore, supprimer des colonnes qui dépendent
+   d'autres tables mères n'est possible qu'avec l'option
+   <code class="literal">CASCADE</code>. <code class="command">ALTER TABLE</code> suit les mêmes
+   règles d'assemblage de colonnes dupliquées et de rejet que l'instruction
+   <code class="command">CREATE TABLE</code>.
+  </p><p>
+   Les requêtes sur tables héritées réalisent des vérifications de droit sur
+   la table parent seulement. De ce fait, par exemple, donner le droit
+   <code class="literal">UPDATE</code> sur la table <code class="structname">villes</code>
+   implique que les droits de mise à jour des lignes dans la table
+   <code class="structname">capitales</code> soient elles aussi vérifiées quand
+   elles sont accédées via la table <code class="structname">villes</code>. Ceci
+   préserve l'apparence que les données proviennent (aussi) de la table
+   parent. Mais la table <code class="structname">capitales</code> ne pouvait pas
+   être mise à jour directement sans droit supplémentaire. De façon
+   similaire, les politiques de sécurité au niveau ligne de la table parent
+   (voir <a class="xref" href="ddl-rowsecurity.html" title="5.9. Politiques de sécurité niveau ligne">Section 5.9</a>) sont appliquées aux lignes
+   provenant des tables filles avec une requête héritée. Les politiques de
+   tables enfant sont appliquées seulement quand la table enfant est
+   explicitement nommée dans la requête. Dans ce cas, toute politique
+   attachée à ses parents est ignorée.
+  </p><p>
+   Les tables distantes (voir <a class="xref" href="ddl-foreign-data.html" title="5.13. Données distantes">Section 5.13</a>) peuvent
+   aussi participer aux hiérarchies d'héritage, soit comme table parent, soit
+   comme table enfant, comme les tables standards peuvent l'être. Si une
+   table distante fait partie d'une hiérarchie d'héritage, toutes les
+   opérations non supportées par la table étrangère ne sont pas non plus
+   supportées sur l'ensemble de la hiérarchie.
+  </p><div class="sect2" id="DDL-INHERIT-CAVEATS"><div class="titlepage"><div><div><h3 class="title">5.11.1. Restrictions <a href="#DDL-INHERIT-CAVEATS" class="id_link">#</a></h3></div></div></div><p>
+    Notez que toutes les commandes SQL fonctionnent avec les héritages. Les
+    commandes utilisées pour récupérer des données, pour modifier des données
+    ou pour modifier le schéma (autrement dit <code class="literal">SELECT</code>,
+    <code class="literal">UPDATE</code>, <code class="literal">DELETE</code>, la plupart des
+    variantes de <code class="literal">ALTER TABLE</code>, mais pas
+    <code class="literal">INSERT</code> ou <code class="literal">ALTER TABLE ... RENAME</code>)
+    incluent par défaut les tables filles et supportent la notation
+    <code class="literal">ONLY</code> pour les exclure. Les commandes qui font de la
+    maintenance de bases de données et de la configuration (par exemple
+    <code class="literal">REINDEX</code>, <code class="literal">VACUUM</code>) fonctionnent
+    typiquement uniquement sur les tables physiques, individuelles et ne
+    supportent pas la récursion sur les tables de l'héritage. Le comportement
+    respectif de chaque commande individuelle est documenté dans la référence
+    (<a class="xref" href="sql-commands.html" title="Commandes SQL">Commandes SQL</a>).
+   </p><p>
+    Il existe une réelle limitation à la fonctionnalité d'héritage : les
+    index (dont les contraintes d'unicité) et les contraintes de clés
+    étrangères ne s'appliquent qu'aux tables mères, pas à leurs héritiers.
+    Cela est valable pour le côté référençant et le côté référencé d'une
+    contrainte de clé étrangère. Ce qui donne, dans les termes de l'exemple
+    ci-dessus :
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       si <code class="structname">villes</code>.<code class="structfield">nom</code> est
+       déclarée <code class="literal">UNIQUE</code> ou clé primaire
+       (<code class="literal">PRIMARY KEY</code>), cela n'empêche pas la table
+       <code class="structname">capitales</code> de posséder des lignes avec des
+       noms dupliqués dans <code class="structname">villes</code>. Et ces lignes
+       dupliquées s'affichent par défaut dans les requêtes sur
+       <code class="structname">villes</code>. En fait, par défaut,
+       <code class="structname">capitales</code> n'a pas de contrainte d'unicité du
+       tout et, du coup, peut contenir plusieurs lignes avec le même nom. Une
+       contrainte d'unicité peut être ajoutée à
+       <code class="structname">capitales</code>, mais cela n'empêche pas la
+       duplication avec <code class="structname">villes</code> ;
+      </p></li><li class="listitem"><p>
+       de façon similaire, si
+       <code class="structname">villes</code>.<code class="structfield">nom</code> fait
+       référence (<code class="literal">REFERENCES</code>) à une autre table, cette
+       contrainte n'est pas automatiquement propagée à
+       <code class="structname">capitales</code>. Il est facile de contourner ce cas
+       de figure en ajoutant manuellement la même contrainte
+       <code class="literal">REFERENCES</code> à
+       <code class="structname">capitales</code> ;
+      </p></li><li class="listitem"><p>
+       si une autre table indique <code class="literal">REFERENCES villes
+       (nom)</code>, cela l'autorise à contenir les noms des villes, mais
+       pas les noms des capitales. Il n'existe pas de contournement efficace
+       de ce cas.
+      </p></li></ul></div><p>
+
+    Certaines fonctionnalité non implémentées pour l'héritage le sont pour le
+    partitionnement déclaratif. Réfléchissez soigneusement avant de décider
+    de l'utilité de l'ancien partitionnement par héritage pour votre
+    application.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/ddl-inherit.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:25 GMT -->
+</html>

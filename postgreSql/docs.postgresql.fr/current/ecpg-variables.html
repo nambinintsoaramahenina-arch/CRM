@@ -1,0 +1,933 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/ecpg-variables.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:37 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>34.4. Utiliser des Variables Hôtes</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="ecpg-commands.html" title="34.3. Exécuter des Commandes SQL" /><link rel="next" href="ecpg-dynamic.html" title="34.5. SQL Dynamique" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/ecpg-variables.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/ecpg-variables.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/ecpg-variables.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/ecpg-variables.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/ecpg-variables.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/ecpg-variables.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/ecpg-variables.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/ecpg-variables.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/ecpg-variables.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/ecpg-variables.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/ecpg-variables.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/ecpg-variables.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/ecpg-variables.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/ecpg-variables.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/ecpg-variables.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/ecpg-variables.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/ecpg-variables.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/ecpg-variables.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/ecpg-variables.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/ecpg-variables.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/ecpg-variables.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="client-interfaces.html">Interfaces client</a></span> » <span class="breadcrumb-link"><a href="ecpg.html"><span class="application">ECPG</span>  --  <acronym class="acronym">SQL</acronym> embarqué en C</a></span> » <span class="breadcrumb-node">Utiliser des Variables Hôtes</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ecpg-commands.html" title="34.3. Exécuter des Commandes SQL">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="ecpg.html" title="Chapitre 34. ECPG  --  SQL embarqué en C">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="ecpg-dynamic.html" title="34.5. SQL Dynamique">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">34.3. Exécuter des Commandes SQL </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 34.5. SQL Dynamique</td></tr></table></div><div class="sect1" id="ECPG-VARIABLES"><div class="titlepage"><div><div><h2 class="title" style="clear: both">34.4. Utiliser des Variables Hôtes <a href="#ECPG-VARIABLES" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="ecpg-variables.html#ECPG-VARIABLES-OVERVIEW">34.4.1. Aperçu</a></span></dt><dt><span class="sect2"><a href="ecpg-variables.html#ECPG-DECLARE-SECTIONS">34.4.2. Sections Declare</a></span></dt><dt><span class="sect2"><a href="ecpg-variables.html#ECPG-RETRIEVING">34.4.3. Récupérer des Résultats de Requêtes</a></span></dt><dt><span class="sect2"><a href="ecpg-variables.html#ECPG-VARIABLES-TYPE-MAPPING">34.4.4. Correspondance de Type</a></span></dt><dt><span class="sect2"><a href="ecpg-variables.html#ECPG-VARIABLES-NONPRIMITIVE-SQL">34.4.5. Manipuler des Types de Données SQL Non-Primitives</a></span></dt><dt><span class="sect2"><a href="ecpg-variables.html#ECPG-INDICATORS">34.4.6. Indicateurs</a></span></dt></dl></div><p>
+   Dans <a class="xref" href="ecpg-commands.html" title="34.3. Exécuter des Commandes SQL">Section 34.3</a> vous avez vu comment exécuter
+   des ordres SQL dans un programme SQL embarqué. Certains de ces ordres
+   n'ont utilisé que des valeurs constantes et ne fournissaient pas
+   de moyen pour insérer des valeurs fournies par l'utilisateur dans
+   des ordres ou pour permettre au programme de traiter les valeurs
+   retournées par la requête. Ces types d'ordres ne sont pas très utiles
+   dans des applications réelles. Cette section explique en détail comment
+   faire passer des données entre votre programme en C et les ordres SQL embarqués
+   en utilisant un simple mécanisme appelé <em class="firstterm">variables hôtes</em>.
+   Dans un programme SQL embarqué nous considérons que les ordres SQL
+   sont des <em class="firstterm">invités</em> dans le code du programme C qui
+   est le <em class="firstterm">langage hôte</em>. Par conséquent, les variables du
+   programme C sont appelées <em class="firstterm">variables hôtes</em>.
+  </p><p>
+   Une autre façon d'échanger des valeurs entre les serveurs PostgreSQL
+   et les applications ECPG est l'utilisation de descripteurs SQL, décrits
+   dans <a class="xref" href="ecpg-descriptors.html" title="34.7. Utiliser les Zones de Descripteur">Section 34.7</a>.
+  </p><div class="sect2" id="ECPG-VARIABLES-OVERVIEW"><div class="titlepage"><div><div><h3 class="title">34.4.1. Aperçu <a href="#ECPG-VARIABLES-OVERVIEW" class="id_link">#</a></h3></div></div></div><p>
+    Passer des données entre le programme en C et les ordres SQL est
+    particulièrement simple en SQL embarqué. Plutôt que d'avoir
+    un programme qui donne des données dans un ordre SQL, ce qui
+    entraîne des complications variées, comme protéger correctement la
+    valeur, vous pouvez simplement écrire le nom d'une variable C
+    dans un ordre SQL, préfixée par un deux-points. Par exemple :
+    </p><pre class="programlisting">
+EXEC SQL INSERT INTO unetable VALUES (:v1, 'foo', :v2);
+    </pre><p>
+    Cet ordre fait référence à deux variables C appelées
+    <code class="varname">v1</code> et <code class="varname">v2</code> et utilise aussi
+    une chaîne SQL classique, pour montrer que vous n'êtes pas obligé
+    de vous cantonner à un type de données ou à l'autre.
+   </p><p>
+    Cette façon d'insérer des variables C dans des ordres SQL fonctionne
+    partout où une expression de valeur est attendue dans un ordre SQL.
+   </p></div><div class="sect2" id="ECPG-DECLARE-SECTIONS"><div class="titlepage"><div><div><h3 class="title">34.4.2. Sections Declare <a href="#ECPG-DECLARE-SECTIONS" class="id_link">#</a></h3></div></div></div><p>
+    Pour passer des données du programme à la base, par exemple comme
+    paramètres d'une requête, ou pour passer des données de la base vers
+    le programme, les variables C qui sont prévues pour contenir ces données
+    doivent être déclarées dans des sections spécialement identifiées, afin
+    que le préprocesseur SQL embarqué puisse s'en rendre compte.
+   </p><p>
+    Cette section commence par :
+    </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+    </pre><p>
+    et se termine par:
+    </p><pre class="programlisting">
+EXEC SQL END DECLARE SECTION;
+    </pre><p>
+    Entre ces lignes, il doit y avoir des déclarations de variables C normales,
+    comme :
+    </p><pre class="programlisting">
+int   x = 4;
+char  foo[16], bar[16];
+    </pre><p>
+    Comme vous pouvez le voir, vous pouvez optionnellement assigner une valeur
+    initiale à une variable. La portée de la variable est déterminée par
+    l'endroit où se trouve la section de déclaration dans le programme.
+    Vous pouvez aussi déclarer des variables avec la syntaxe suivante, qui crée
+    une section declare implicite :
+    </p><pre class="programlisting">
+EXEC SQL int i = 4;
+    </pre><p>
+    Vous pouvez avoir autant de sections de déclaration que vous voulez
+    dans un programme.
+   </p><p>
+    Ces déclarations sont aussi envoyées dans le fichier produit comme
+    des variables C normales, il n'est donc pas nécessaire de les déclarer
+    une seconde fois. Les variables qui n'ont pas besoin d'être utilisées dans
+    des commandes SQL peuvent être déclarées normalement à l'extérieur de
+    ces sections spéciales.
+   </p><p>
+    La définition d'une structure ou d'un union doit aussi être présente
+    dans une section <code class="literal">DECLARE</code>. Sinon, le préprocesseur ne
+    peut pas traiter ces types, puisuq'il n'en connait pas la définition.
+   </p></div><div class="sect2" id="ECPG-RETRIEVING"><div class="titlepage"><div><div><h3 class="title">34.4.3. Récupérer des Résultats de Requêtes <a href="#ECPG-RETRIEVING" class="id_link">#</a></h3></div></div></div><p>
+    Maintenant, vous devriez être capable de passer des données générées
+    par votre programme dans une commande SQL. Mais comment récupérer les
+    résultats d'une requête ?
+    À cet effet, le SQL embarqué fournit certaines variantes spéciales de
+    commandes <code class="command">SELECT</code> et <code class="command">FETCH</code> habituelles.
+    Ces commandes ont une clause spéciale <code class="literal">INTO</code> qui spécifie
+    dans quelles variables hôtes les valeurs récupérées doivent être stockées.
+    <code class="command">SELECT</code> est utilisé pour une requête qui ne retourne qu'un
+    seul enregistrement, et <code class="command">FETCH</code> est utilisé pour une
+    requête qui retourne plusieurs enregistrement, en utilisant un curseur.
+   </p><p>
+    Voici un exemple :
+    </p><pre class="programlisting">
+/*
+ * Avec cette table:
+ * CREATE TABLE test1 (a int, b varchar(50));
+ */
+
+EXEC SQL BEGIN DECLARE SECTION;
+int v1;
+VARCHAR v2;
+EXEC SQL END DECLARE SECTION;
+
+ ...
+
+EXEC SQL SELECT a, b INTO :v1, :v2 FROM test;
+    </pre><p>
+    La clause <code class="literal">INTO</code> apparaît entre la liste de sélection
+    et la clause <code class="literal">FROM</code>. Le nombre d'éléments dans la liste
+    SELECT et dans la liste après <code class="literal">INTO</code> (aussi appelée la liste
+    cible) doivent être égaux.
+   </p><p>
+    Voici un exemple utilisant la commande <code class="command">FETCH</code> :
+    </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+int v1;
+VARCHAR v2;
+EXEC SQL END DECLARE SECTION;
+
+ ...
+
+EXEC SQL DECLARE truc CURSOR FOR SELECT a, b FROM test;
+
+ ...
+
+do
+{
+    ...
+    EXEC SQL FETCH NEXT FROM truc INTO :v1, :v2;
+    ...
+} while (...);
+    </pre><p>
+    Ici, la clause <code class="literal">INTO</code> apparaît après toutes les
+    clauses normales.
+   </p></div><div class="sect2" id="ECPG-VARIABLES-TYPE-MAPPING"><div class="titlepage"><div><div><h3 class="title">34.4.4. Correspondance de Type <a href="#ECPG-VARIABLES-TYPE-MAPPING" class="id_link">#</a></h3></div></div></div><p>
+    Quand les applications ECPG échangent des valeurs entre le
+    serveur PostgreSQL et l'application C, comme quand elles
+    récupèrent des résultats de requête venant du serveur, ou
+    qu'elles exécutent des ordres SQL avec des paramètres d'entrée,
+    les valeurs doivent être converties entre les types de données
+    PostgreSQL et les types du language hôte (ceux du langage C).
+    Une des fonctionnalités les plus importantes d'ECPG est qu'il
+    s'occupe de cela automatiquement dans la plupart des cas.
+   </p><p>
+    De ce point de vue, il y a deux sortes de types de données : des types
+    de données PostgreSQL simples, comme des <code class="type">integer</code> et
+    <code class="type">text</code>, qui peuvent être lus et écrits directement par
+    l'application. Les autres types PostgreSQL, comme <code class="type">timestamp</code>
+    ou <code class="type">numeric</code> ne peuvent être accédés qu'à travers des fonctions
+    spéciales de librairie; voyez <a class="xref" href="ecpg-variables.html#ECPG-SPECIAL-TYPES" title="34.4.4.2. Accéder à des Types de Données Spéciaux">Section 34.4.4.2</a>.
+   </p><p>
+    <a class="xref" href="ecpg-variables.html#ECPG-DATATYPE-HOSTVARS-TABLE" title="Tableau 34.1. Correspondance Entre les Types PostgreSQL et les Types de Variables C">Tableau 34.1</a> montre quels types de
+    données de PostgreSQL correspondent à quels types C. Quand vous
+    voulez envoyer ou recevoir une valeur d'un type PostgreSQL donné,
+    vous devriez déclarer une variable C du type C correspondant dans la
+    section declare.
+   </p><div class="table" id="ECPG-DATATYPE-HOSTVARS-TABLE"><p class="title"><strong>Tableau 34.1. Correspondance Entre les Types PostgreSQL et les Types de Variables C</strong></p><div class="table-contents"><table class="table" summary="Correspondance Entre les Types PostgreSQL et les Types de Variables C" border="1"><colgroup><col /><col /></colgroup><thead><tr><th>type de données PostgreSQL</th><th>type de variable hôte</th></tr></thead><tbody><tr><td><code class="type">smallint</code></td><td><code class="type">short</code></td></tr><tr><td><code class="type">integer</code></td><td><code class="type">int</code></td></tr><tr><td><code class="type">bigint</code></td><td><code class="type">long long int</code></td></tr><tr><td><code class="type">decimal</code></td><td><code class="type">decimal</code><a href="#ftn.ECPG-DATATYPE-TABLE-FN1" class="footnote"><sup class="footnote" id="ECPG-DATATYPE-TABLE-FN1">[a]</sup></a></td></tr><tr><td><code class="type">numeric</code></td><td><code class="type">numeric</code><a href="#ftn.ECPG-DATATYPE-TABLE-FN2" class="footnote"><sup class="footnote" id="ECPG-DATATYPE-TABLE-FN2">[b]</sup></a></td></tr><tr><td><code class="type">real</code></td><td><code class="type">float</code></td></tr><tr><td><code class="type">double precision</code></td><td><code class="type">double</code></td></tr><tr><td><code class="type">smallserial</code></td><td><code class="type">short</code></td></tr><tr><td><code class="type">serial</code></td><td><code class="type">int</code></td></tr><tr><td><code class="type">bigserial</code></td><td><code class="type">long long int</code></td></tr><tr><td><code class="type">oid</code></td><td><code class="type">unsigned int</code></td></tr><tr><td><code class="type">character(<em class="replaceable"><code>n</code></em>)</code>, <code class="type">varchar(<em class="replaceable"><code>n</code></em>)</code>, <code class="type">text</code></td><td><code class="type">char[<em class="replaceable"><code>n</code></em>+1]</code>, <code class="type">VARCHAR[<em class="replaceable"><code>n</code></em>+1]</code></td></tr><tr><td><code class="type">name</code></td><td><code class="type">char[NAMEDATALEN]</code></td></tr><tr><td><code class="type">timestamp</code></td><td><code class="type">timestamp</code><a href="#ftn.ECPG-DATATYPE-TABLE-FN3" class="footnote"><sup class="footnote" id="ECPG-DATATYPE-TABLE-FN3">[c]</sup></a></td></tr><tr><td><code class="type">interval</code></td><td><code class="type">interval</code><a href="#ftn.ECPG-DATATYPE-TABLE-FN4" class="footnote"><sup class="footnote" id="ECPG-DATATYPE-TABLE-FN4">[d]</sup></a></td></tr><tr><td><code class="type">date</code></td><td><code class="type">date</code><a href="#ftn.ECPG-DATATYPE-TABLE-FN5" class="footnote"><sup class="footnote" id="ECPG-DATATYPE-TABLE-FN5">[e]</sup></a></td></tr><tr><td><code class="type">boolean</code></td><td><code class="type">bool</code><a href="#ftn.id-1.7.5.10.7.5.2.2.17.2.2" class="footnote"><sup class="footnote" id="id-1.7.5.10.7.5.2.2.17.2.2">[f]</sup></a></td></tr><tr><td><code class="type">bytea</code></td><td><code class="type">char *</code>, <code class="type">bytea[<em class="replaceable"><code>n</code></em>]</code></td></tr></tbody><tbody class="footnotes"><tr><td colspan="2"><div id="ftn.ECPG-DATATYPE-TABLE-FN1" class="footnote"><p><a href="#ECPG-DATATYPE-TABLE-FN1" class="para"><sup class="para">[a] </sup></a>Ce type ne peut être accédé qu'à travers des fonctions spéciales de librairie. Voyez <a class="xref" href="ecpg-variables.html#ECPG-SPECIAL-TYPES" title="34.4.4.2. Accéder à des Types de Données Spéciaux">Section 34.4.4.2</a>.</p></div><div id="ftn.ECPG-DATATYPE-TABLE-FN2" class="footnote"><p><a href="#ECPG-DATATYPE-TABLE-FN2" class="para"><sup class="para">[b] </sup></a>Ce type ne peut être accédé qu'à travers des fonctions spéciales de librairie. Voyez <a class="xref" href="ecpg-variables.html#ECPG-SPECIAL-TYPES" title="34.4.4.2. Accéder à des Types de Données Spéciaux">Section 34.4.4.2</a>.</p></div><div id="ftn.ECPG-DATATYPE-TABLE-FN3" class="footnote"><p><a href="#ECPG-DATATYPE-TABLE-FN3" class="para"><sup class="para">[c] </sup></a>Ce type ne peut être accédé qu'à travers des fonctions spéciales de librairie. Voyez <a class="xref" href="ecpg-variables.html#ECPG-SPECIAL-TYPES" title="34.4.4.2. Accéder à des Types de Données Spéciaux">Section 34.4.4.2</a>.</p></div><div id="ftn.ECPG-DATATYPE-TABLE-FN4" class="footnote"><p><a href="#ECPG-DATATYPE-TABLE-FN4" class="para"><sup class="para">[d] </sup></a>Ce type ne peut être accédé qu'à travers des fonctions spéciales de librairie. Voyez <a class="xref" href="ecpg-variables.html#ECPG-SPECIAL-TYPES" title="34.4.4.2. Accéder à des Types de Données Spéciaux">Section 34.4.4.2</a>.</p></div><div id="ftn.ECPG-DATATYPE-TABLE-FN5" class="footnote"><p><a href="#ECPG-DATATYPE-TABLE-FN5" class="para"><sup class="para">[e] </sup></a>Ce type ne peut être accédé qu'à travers des fonctions spéciales de librairie. Voyez <a class="xref" href="ecpg-variables.html#ECPG-SPECIAL-TYPES" title="34.4.4.2. Accéder à des Types de Données Spéciaux">Section 34.4.4.2</a>.</p></div><div id="ftn.id-1.7.5.10.7.5.2.2.17.2.2" class="footnote"><p><a href="#id-1.7.5.10.7.5.2.2.17.2.2" class="para"><sup class="para">[f] </sup></a>déclaré dans <code class="filename">ecpglib.h</code> si non natif</p></div></td></tr></tbody></table></div></div><br class="table-break" /><div class="sect3" id="ECPG-CHAR"><div class="titlepage"><div><div><h4 class="title">34.4.4.1. Manipuler des Chaînes de Caractères <a href="#ECPG-CHAR" class="id_link">#</a></h4></div></div></div><p>
+     Pour manipuler des types chaînes de caractères SQL, comme
+     <code class="type">varchar</code> et <code class="type">text</code>, il y a deux façons de
+     déclarer les variables hôtes.
+    </p><p>
+     Une façon est d'utiliser <code class="type">char[]</code>, un tableau de
+     <code class="type">char</code>, qui est la façon la plus habituelle de gérer des
+     données texte en C.
+     </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+    char str[50];
+EXEC SQL END DECLARE SECTION;
+     </pre><p>
+     Notez que vous devez gérer la longueur vous-même. Si vous utilisez
+     cette variable he comme variable cible d'une requête qui retourne
+     une chaîne de plus de 49 caractères, un débordement de tampon
+     se produira.
+    </p><p>
+     L'autre façon est d'utiliser le type <code class="type">VARCHAR</code>, qui
+     est un type spécial fourni par ECPG. La définition d'un tableau
+     de type <code class="type">VARCHAR</code> est convertie dans un <code class="type">struct</code>
+     nommé pour chaque variable. Une déclaration comme :
+     </p><pre class="programlisting">
+VARCHAR var[180];
+     </pre><p>
+     est convertie en:
+     </p><pre class="programlisting">
+struct varchar_var { int len; char arr[180]; } var;
+     </pre><p>
+     Le membre <code class="structfield">arr</code> contient la chaîne terminée
+     par un octet à zéro. Par conséquent, la variable hôte doit être
+     déclarée avec la longueur incluant le terminateur de chaîne. Le membre
+     <code class="structfield">len</code> stocke la longueur de la chaîne stockée
+     dans <code class="structfield">arr</code> sans l'octet zéro final. Quand
+     une variable hôte est utilisé comme entrée pour une requête, si
+     <code class="literal">strlen</code> et <code class="structfield">len</code> sont différents,
+     le plus petit est utilisé.
+    </p><p>
+     <code class="type">VARCHAR</code> peut être écrit en majuscule ou en minuscule, mais pas dans
+     un mélange des deux.
+    </p><p>
+     Les variables hôtes <code class="type">char</code> et <code class="type">VARCHAR</code> peuvent
+     aussi contenir des valeurs d'autres types SQL, qui seront stockés
+     dans leur forme chaîne.
+    </p></div><div class="sect3" id="ECPG-SPECIAL-TYPES"><div class="titlepage"><div><div><h4 class="title">34.4.4.2. Accéder à des Types de Données Spéciaux <a href="#ECPG-SPECIAL-TYPES" class="id_link">#</a></h4></div></div></div><p>
+     ECPG contient des types spéciaux qui vous aident  interagir facilement
+     avec des types de données spéciaux du serveur PostgreSQL. En particulier,
+     sont supportés les types <code class="type">numeric</code>, <code class="type">decimal</code>,
+     <code class="type">date</code>, <code class="type">timestamp</code>, et <code class="type">interval</code>.
+     Ces types de données ne peuvent pas être mis de façon utile en correspondance
+     avec des types primitifs du langage hôtes (tels que <code class="type">int</code>,
+     <code class="type">long long int</code>, ou <code class="type">char[]</code>), parce qu'ils ont
+     une structure interne complexe. Les applications manipulent ces types en
+     déclarant des variables hôtes dans des types spéciaux et en y accédant
+     avec des fonctions de la librairie pgtypes. La librairie pgtypes, décrite
+     en détail dans <a class="xref" href="ecpg-pgtypes.html" title="34.6. Librairie pgtypes">Section 34.6</a> contient des fonctions de
+     base pour traiter ces types, afin que vous n'ayez pas besoin d'envoyer une
+     requête au serveur SQL juste pour additionner un interval à un timestamp
+     par exemple.
+    </p><p>
+     Les sous-sections suivantes décrivent ces types de données spéciaux.
+     Pour plus de détails à propos des fonctions de librairie pgtype, voyez
+     <a class="xref" href="ecpg-pgtypes.html" title="34.6. Librairie pgtypes">Section 34.6</a>.
+    </p><div class="sect4" id="ECPG-SPECIAL-TYPES-TIMESTAMP-DATE"><div class="titlepage"><div><div><h5 class="title">34.4.4.2.1. timestamp, date <a href="#ECPG-SPECIAL-TYPES-TIMESTAMP-DATE" class="id_link">#</a></h5></div></div></div><p>
+      Voici une méthode pour manipuler des variables <code class="type">timestamp</code>
+      dans l'application hôte ECPG.
+     </p><p>
+      Tout d'abord, le programme doit inclure le fichier d'en-tête pour
+      le type <code class="type">timestamp</code> :
+      </p><pre class="programlisting">
+#include &lt;pgtypes_timestamp.h&gt;
+      </pre><p>
+     </p><p>
+      Puis, déclarez une variable hôte comme type <code class="type">timestamp</code>
+      dans la section declare :
+      </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+timestamp ts;
+EXEC SQL END DECLARE SECTION;
+      </pre><p>
+     </p><p>
+      Et après avoir lu une valeur dans la variable hôte, traitez la
+      en utilisant les fonctions de la librairie pgtypes. Dans l'exemple
+      qui suit, la valeur <code class="type">timestamp</code> est convertie sous forme texte
+      (ASCII) avec la fonction <code class="function">PGTYPEStimestamp_to_asc()</code> :
+      </p><pre class="programlisting">
+EXEC SQL SELECT now()::timestamp INTO :ts;
+
+printf("ts = %s\n", PGTYPEStimestamp_to_asc(ts));
+      </pre><p>
+      Cet exemple affichere des résultats de ce type:
+      </p><pre class="screen">
+ts = 2010-06-27 18:03:56.949343
+      </pre><p>
+     </p><p>
+      Par ailleurs, le type DATE peut être manipulé de la même façon.
+      Le programme doit inclure <code class="filename">pgtypes_date.h</code>, déclarer une variable
+      hôte comme étant du type date et convertir une valeur DATE dans
+      sa forme texte en utilisant la fonction <code class="function">PGTYPESdate_to_asc()</code>.
+      Pour plus de détails sur les fonctions de la librairie pgtypes,
+      voyez <a class="xref" href="ecpg-pgtypes.html" title="34.6. Librairie pgtypes">Section 34.6</a>.
+     </p></div><div class="sect4" id="ECPG-TYPE-INTERVAL"><div class="titlepage"><div><div><h5 class="title">34.4.4.2.2. interval <a href="#ECPG-TYPE-INTERVAL" class="id_link">#</a></h5></div></div></div><p>
+      La manipulation du type <code class="type">interval</code> est aussi similaire
+      aux types <code class="type">timestamp</code> et <code class="type">date</code>. Il est nécessaire,
+      par contre, d'allouer de la mémoire pour une valeur de type
+      <code class="type">interval</code> de façon explicite. Ou dit autrement, l'espace
+      mémoire pour la variable doit être allouée du tas, et non de la pile.
+     </p><p>
+      Voici un programme de démonstration :
+      </p><pre class="programlisting">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;pgtypes_interval.h&gt;
+
+int
+main(void)
+{
+EXEC SQL BEGIN DECLARE SECTION;
+    interval *in;
+EXEC SQL END DECLARE SECTION;
+
+    EXEC SQL CONNECT TO testdb;
+    EXEC SQL SELECT pg_catalog.set_config('search_path', '', false); EXEC SQL COMMIT;
+
+    in = PGTYPESinterval_new();
+    EXEC SQL SELECT '1 min'::interval INTO :in;
+    printf("interval = %s\n", PGTYPESinterval_to_asc(in));
+    PGTYPESinterval_free(in);
+
+    EXEC SQL COMMIT;
+    EXEC SQL DISCONNECT ALL;
+    return 0;
+}
+      </pre><p>
+     </p></div><div class="sect4" id="ECPG-TYPE-NUMERIC-DECIMAL"><div class="titlepage"><div><div><h5 class="title">34.4.4.2.3. numeric, decimal <a href="#ECPG-TYPE-NUMERIC-DECIMAL" class="id_link">#</a></h5></div></div></div><p>
+      La manipulation des types <code class="type">numeric</code> et
+      <code class="type">decimal</code> est similaire au type <code class="type">interval</code>:
+      elle requiert de définir d'un pointeur, d'allouer de la mémoire
+      sur le tas, et d'accéder la variable au mouyen des fonctions de
+      librairie pgtypes. Pour plus de détails sur les fonctions de la
+      librairie pgtypes, voyez <a class="xref" href="ecpg-pgtypes.html" title="34.6. Librairie pgtypes">Section 34.6</a>.
+     </p><p>
+      Aucune fonction n'est fournie spécifiquement pour le type
+      <code class="type">decimal</code>. Une application doit le convertir vers
+      une variable <code class="type">numeric</code> en utilisant une fonction de
+      la librairie pgtypes pour pouvoir le traiter.
+     </p><p>
+      Voici un programme montrant la manipulation des variables de type
+      <code class="type">numeric</code> et <code class="type">decimal</code>.
+      </p><pre class="programlisting">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;pgtypes_numeric.h&gt;
+
+EXEC SQL WHENEVER SQLERROR STOP;
+
+int
+main(void)
+{
+EXEC SQL BEGIN DECLARE SECTION;
+    numeric *num;
+    numeric *num2;
+    decimal *dec;
+EXEC SQL END DECLARE SECTION;
+
+    EXEC SQL CONNECT TO testdb;
+    EXEC SQL SELECT pg_catalog.set_config('search_path', '', false); EXEC SQL COMMIT;
+
+    num = PGTYPESnumeric_new();
+    dec = PGTYPESdecimal_new();
+
+    EXEC SQL SELECT 12.345::numeric(4,2), 23.456::decimal(4,2) INTO :num, :dec;
+
+    printf("numeric = %s\n", PGTYPESnumeric_to_asc(num, 0));
+    printf("numeric = %s\n", PGTYPESnumeric_to_asc(num, 1));
+    printf("numeric = %s\n", PGTYPESnumeric_to_asc(num, 2));
+
+    /* Convertir le decimal en numeric pour montrer une valeur décimale. */
+    num2 = PGTYPESnumeric_new();
+    PGTYPESnumeric_from_decimal(dec, num2);
+
+    printf("decimal = %s\n", PGTYPESnumeric_to_asc(num2, 0));
+    printf("decimal = %s\n", PGTYPESnumeric_to_asc(num2, 1));
+    printf("decimal = %s\n", PGTYPESnumeric_to_asc(num2, 2));
+
+    PGTYPESnumeric_free(num2);
+    PGTYPESdecimal_free(dec);
+    PGTYPESnumeric_free(num);
+
+    EXEC SQL COMMIT;
+    EXEC SQL DISCONNECT ALL;
+    return 0;
+}
+      </pre><p>
+     </p></div><div class="sect4" id="ECPG-SPECIAL-TYPES-BYTEA"><div class="titlepage"><div><div><h5 class="title">34.4.4.2.4. bytea <a href="#ECPG-SPECIAL-TYPES-BYTEA" class="id_link">#</a></h5></div></div></div><p>
+      La gestion du type <code class="type">bytea</code> est aussi similaire au type
+      <code class="type">VARCHAR</code>. La définition d'un tableau de type
+      <code class="type">bytea</code> est convertie en une structure nommée pour chaque
+      variable. Une déclaration comme :
+      </p><pre class="programlisting">
+bytea var[180];
+      </pre><p>
+      est traduit en :
+      </p><pre class="programlisting">
+struct bytea_var { int len; char arr[180]; } var;
+      </pre><p>
+      Le membre <code class="structfield">arr</code> accueille des données au format
+      binaire. Il peut même gérer <code class="literal">'\0'</code> comme faisant partie
+      des données, contrairement à <code class="type">VARCHAR</code>. La donnée est
+      converti de/vers le format hexadécimal et envoyé/reçu par ecpglib.
+     </p><div class="note"><h3 class="title">Note</h3><p>
+       Une variable <code class="type">bytea</code> peut être utilisé uniquement quand
+       <a class="xref" href="runtime-config-client.html#GUC-BYTEA-OUTPUT">bytea_output</a> est configuré à
+       <code class="literal">hex</code>.
+      </p></div></div></div><div class="sect3" id="ECPG-VARIABLES-NONPRIMITIVE-C"><div class="titlepage"><div><div><h4 class="title">34.4.4.3. Variables Hôtes avec des Types Non-Primitifs <a href="#ECPG-VARIABLES-NONPRIMITIVE-C" class="id_link">#</a></h4></div></div></div><p>
+     Vous pouvez aussi utiliser des tableaux, typedefs, structs et pointeurs
+     comme variables hôtes.
+    </p><div class="sect4" id="ECPG-VARIABLES-ARRAYS"><div class="titlepage"><div><div><h5 class="title">34.4.4.3.1. Arrays <a href="#ECPG-VARIABLES-ARRAYS" class="id_link">#</a></h5></div></div></div><p>
+      Il y a deux cas d'utilisations pour des tableaux comme variables hôtes.
+      Le premier est une façon de stocker des chaînes de texte dans des
+      <code class="type">char[]</code> ou <code class="type">VARCHAR[]</code>, comme expliqué
+      <a class="xref" href="ecpg-variables.html#ECPG-CHAR" title="34.4.4.1. Manipuler des Chaînes de Caractères">Section 34.4.4.1</a>. Le second cas d'utilisation est de
+      récupérer plusieurs enregistrements d'une requête sans utiliser de
+      curseur. Sans un tableau, pour traiter le résultat d'une requête
+      de plusieurs lignes, il est nécessaire d'utiliser un curseur et la
+      commande <code class="command">FETCH</code>. Mais avec une variable hôte de
+      type variable, plusieurs enregistrements peuvent être récupérés
+      en une seule fois. La longueur du tableau doit être définie pour
+      pouvoir recevoir tous les enregistrements d'un coup, sans quoi un
+      buffer overflow se produira probablement.
+     </p><p>
+      Les exemples suivants parcourent la table système
+      <code class="literal">pg_database</code> et montrent tous les OIDs et
+      noms des bases de données disponibles :
+      </p><pre class="programlisting">
+int
+main(void)
+{
+EXEC SQL BEGIN DECLARE SECTION;
+    int dbid[8];
+    char dbname[8][16];
+    int i;
+EXEC SQL END DECLARE SECTION;
+
+    memset(dbname, 0, sizeof(char)* 16 * 8);
+    memset(dbid, 0, sizeof(int) * 8);
+
+    EXEC SQL CONNECT TO testdb;
+    EXEC SQL SELECT pg_catalog.set_config('search_path', '', false); EXEC SQL COMMIT;
+
+    /* Récupérer plusieurs enregistrements dans des tableaux d'un coup. */
+    EXEC SQL SELECT oid,datname INTO :dbid, :dbname FROM pg_database;
+
+    for (i = 0; i &lt; 8; i++)
+        printf("oid=%d, dbname=%s\n", dbid[i], dbname[i]);
+
+    EXEC SQL COMMIT;
+    EXEC SQL DISCONNECT ALL;
+    return 0;
+}
+      </pre><p>
+
+      Cet exemple affiche le résultat suivant. (Les valeurs exactes dépendent
+      de votre environnement.)
+      </p><pre class="screen">
+oid=1, dbname=template1
+oid=11510, dbname=template0
+oid=11511, dbname=postgres
+oid=313780, dbname=testdb
+oid=0, dbname=
+oid=0, dbname=
+oid=0, dbname=
+      </pre><p>
+     </p></div><div class="sect4" id="ECPG-VARIABLES-STRUCT"><div class="titlepage"><div><div><h5 class="title">34.4.4.3.2. Structures <a href="#ECPG-VARIABLES-STRUCT" class="id_link">#</a></h5></div></div></div><p>
+      Une structure dont les noms des membres correspondent aux noms de
+      colonnes du résultat d'une requête peut être utilisée pour récupérer
+      plusieurs colonnes d'un coup. La structure permet de gérer plusieurs
+      valeurs de colonnes dans une seule variable hôte.
+     </p><p>
+      L'exemple suivant récupère les OIDs, noms, et tailles des bases
+      de données disponibles à partir de la table système
+      <code class="literal">pg_database</code>, et en utilisant la fonction
+      <code class="function">pg_database_size()</code>. Dans cet exemple,
+      une variable structure <code class="varname">dbinfo_t</code> avec des
+      membres dont les noms correspondent à chaque colonnes du résultat
+      du <code class="literal">SELECT</code> est utilisée pour récupérer une ligne
+      de résultat sans avoir besoin de mettre plusieurs variables hôtes
+      dans l'ordre <code class="literal">FETCH</code>.
+      </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+    typedef struct
+    {
+       int oid;
+       char datname[65];
+       long long int size;
+    } dbinfo_t;
+
+    dbinfo_t dbval;
+EXEC SQL END DECLARE SECTION;
+
+    memset(&amp;dbval, 0, sizeof(dbinfo_t));
+
+    EXEC SQL DECLARE cur1 CURSOR FOR SELECT oid, datname, pg_database_size(oid) AS size FROM pg_database;
+    EXEC SQL OPEN cur1;
+
+    /* quand la fin du jeu de données est atteint, sortir de la boucle while */
+    EXEC SQL WHENEVER NOT FOUND DO BREAK;
+
+    while (1)
+    {
+        /* Récupérer plusieurs colonnes dans une structure. */
+        EXEC SQL FETCH FROM cur1 INTO :dbval;
+
+        /* Afficher les membres de la structure. */
+        printf("oid=%d, datname=%s, size=%lld\n", dbval.oid, dbval.datname, dbval.size);
+    }
+
+    EXEC SQL CLOSE cur1;
+      </pre><p>
+     </p><p>
+      Cet exemple montre le résultat suivant. (Les valeurs exactes dépendent
+      du contexte.)
+      </p><pre class="screen">
+oid=1, datname=template1, size=4324580
+oid=11510, datname=template0, size=4243460
+oid=11511, datname=postgres, size=4324580
+oid=313780, datname=testdb, size=8183012
+      </pre><p>
+     </p><p>
+      Les variables hôtes structures <span class="quote">« <span class="quote">absorbent</span> »</span> autant
+      de colonnes que la structure a de champs. Des colonnes additionnelles
+      peuvent être assignées à d'autres variables hôtes. Par exemple, le
+      programme ci-dessus pourrait être restructuré comme ceci, avec
+      la variable <code class="varname">size</code> hors de la structure :
+      </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+    typedef struct
+    {
+       int oid;
+       char datname[65];
+    } dbinfo_t;
+
+    dbinfo_t dbval;
+    long long int size;
+EXEC SQL END DECLARE SECTION;
+
+    memset(&amp;dbval, 0, sizeof(dbinfo_t));
+
+    EXEC SQL DECLARE cur1 CURSOR FOR SELECT oid, datname, pg_database_size(oid) AS size FROM pg_database;
+    EXEC SQL OPEN cur1;
+
+    /* quand la fin du jeu de données est atteint, sortir de la boucle while */
+    EXEC SQL WHENEVER NOT FOUND DO BREAK;
+
+    while (1)
+    {
+        /* Récupérer plusieurs colonnes dans une structure. */
+        EXEC SQL FETCH FROM cur1 INTO :dbval, :size;
+
+        /* Afficher les membres de la structure. */
+        printf("oid=%d, datname=%s, size=%lld\n", dbval.oid, dbval.datname, size);
+    }
+
+    EXEC SQL CLOSE cur1;
+      </pre><p>
+     </p></div><div class="sect4" id="ECPG-VARIABLES-NONPRIMITIVE-C-TYPEDEFS"><div class="titlepage"><div><div><h5 class="title">34.4.4.3.3. Typedefs <a href="#ECPG-VARIABLES-NONPRIMITIVE-C-TYPEDEFS" class="id_link">#</a></h5></div></div></div><a id="id-1.7.5.10.7.8.5.2" class="indexterm"></a><p>
+      Utilisez le mot clé <code class="literal">typedef</code> pour faire correspondre de
+      nouveaux types aux types existants.
+      </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+    typedef char mychartype[40];
+    typedef long serial_t;
+EXEC SQL END DECLARE SECTION;
+      </pre><p>
+      Notez que vous pourriez aussi utiliser:
+      </p><pre class="programlisting">
+EXEC SQL TYPE serial_t IS long;
+      </pre><p>
+      Cette déclaration n'a pas besoin de faire partie d'une section
+      declare ; c'est-à-dire que vous pouvez aussi écrire les
+      typedefs comme des instructions C normales.
+     </p><p>
+      Tout mot que vous déclarez comme un <code class="literal">typedef</code> ne peut
+      pas être utilisé
+      comme un mot-clé SQL dans les commandes <code class="literal">EXEC SQL</code>
+      plus tard dans le même programme. Par exemple, ceci ne fonctionnera
+      pas :
+</p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+    typedef int start;
+EXEC SQL END DECLARE SECTION;
+...
+EXEC SQL START TRANSACTION;
+</pre><p>
+      ECPG renverra une erreur de syntaxe pour <code class="literal">START
+      TRANSACTION</code> car il ne reconnaît pas
+      <code class="literal">START</code> comme un mot-clé SQL, seulement comme un
+      typedef.
+      (Si vous avez un tel conflit et que renommer le typedef ne semble
+      pas pratique, vous pourriez écrire la commande SQL en utilisant le
+      <a class="link" href="ecpg-dynamic.html" title="34.5. SQL Dynamique">SQL dynamique</a>.)
+     </p><div class="note"><h3 class="title">Note</h3><p>
+       Pour les versions de <span class="productname">PostgreSQL</span> antérieures
+       à la 16, l'utilisation des mots-clés SQL comme noms de typedef allait
+       probablement résulter en des erreurs de syntaxe associées à l'utilisation
+       du typedef, plutôt que d'utiliser le nom d'un mot-clé SQL. Le nouveau
+       comportement devrait moins poser de problèmes quand une application
+       ECPG existante est recompilée pour une nouvelle version de
+       <span class="productname">PostgreSQL</span> avec de nouveaux mots-clés.
+      </p></div></div><div class="sect4" id="ECPG-VARIABLES-NONPRIMITIVE-C-POINTERS"><div class="titlepage"><div><div><h5 class="title">34.4.4.3.4. Pointeurs <a href="#ECPG-VARIABLES-NONPRIMITIVE-C-POINTERS" class="id_link">#</a></h5></div></div></div><p>
+      Vous pouvez déclarer des pointeurs vers les types les plus communs.
+      Notez toutefois que vous ne pouvez pas utiliser des pointeurs comme
+      variables cibles de requêtes sans auto-allocation. Voyez
+      <a class="xref" href="ecpg-descriptors.html" title="34.7. Utiliser les Zones de Descripteur">Section 34.7</a> pour plus d'information sur
+      l'auto-allocation.
+     </p><p>
+      </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+    int   *intp;
+    char **charp;
+EXEC SQL END DECLARE SECTION;
+      </pre><p>
+     </p></div></div></div><div class="sect2" id="ECPG-VARIABLES-NONPRIMITIVE-SQL"><div class="titlepage"><div><div><h3 class="title">34.4.5. Manipuler des Types de Données SQL Non-Primitives <a href="#ECPG-VARIABLES-NONPRIMITIVE-SQL" class="id_link">#</a></h3></div></div></div><p>
+    Cette section contient des informations sur comment manipuler des
+    types non-scalaires et des types de données définies au niveau SQL par
+    l'utilisateur dans des applications ECPG. Notez que c'est distinct de
+    la manipulation des variables hôtes des types non-primitifs, décrits
+    dans la section précédente.
+   </p><div class="sect3" id="ECPG-VARIABLES-NONPRIMITIVE-SQL-ARRAYS"><div class="titlepage"><div><div><h4 class="title">34.4.5.1. Tableaux <a href="#ECPG-VARIABLES-NONPRIMITIVE-SQL-ARRAYS" class="id_link">#</a></h4></div></div></div><p>
+     Les tableaux SQL multi-dimensionnels ne sont pas directement supportés
+     dans ECPG. Les tableaux SQL à une dimension peuvent être placés dans des
+     variables hôtes de type tableau C et vice-versa. Néanmoins, lors de la
+     création d'une instruction, ecpg ne connaît pas le type des colonnes, donc
+     il ne peut pas vérifier si un tableau C est à placer dans un tableau SQL
+     correspondant. Lors du traitement de la sortie d'une requête SQL, ecpg
+     a suffisamment d'informations et, de ce fait, vérifie si les deux sont
+     des tableaux.
+    </p><p>
+     Si une requête accède aux <span class="emphasis"><em>éléments</em></span> d'un tableau
+     séparément, cela évite l'utilisation des tableaux dans ECPG. Dans ce cas, une
+     variable hôte avec un type qui peut être mis en correspondance
+     avec le type de l'élément devrait être utilisé. Par exemple, si
+     le type d'une colonne est un tableau d'<code class="type">integer</code>, une
+     variable hôte de type <code class="type">int</code> peut être utilisée. Par ailleurs,
+     si le type de l'élément est <code class="type">varchar</code>, ou <code class="type">text</code>,
+     une variable hôte de type <code class="type">char[]</code> ou <code class="type">VARCHAR[]</code>
+     peut être utilisée.
+    </p><p>
+     Voici un exemple. Prenez la table suivante :
+     </p><pre class="programlisting">
+CREATE TABLE t3 (
+    ii integer[]
+);
+
+testdb=&gt; SELECT * FROM t3;
+     ii
+-------------
+ {1,2,3,4,5}
+(1 row)
+     </pre><p>
+
+     Le programme de démonstration suivant récupère le 4ème élément du
+     tableau et le stocke dans une variable hôte de type <code class="type">int</code> :
+     </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+int ii;
+EXEC SQL END DECLARE SECTION;
+
+EXEC SQL DECLARE cur1 CURSOR FOR SELECT ii[4] FROM t3;
+EXEC SQL OPEN cur1;
+
+EXEC SQL WHENEVER NOT FOUND DO BREAK;
+
+while (1)
+{
+    EXEC SQL FETCH FROM cur1 INTO :ii ;
+    printf("ii=%d\n", ii);
+}
+
+EXEC SQL CLOSE cur1;
+     </pre><p>
+
+     Cet exemple affiche le résultat suivant :
+     </p><pre class="screen">
+ii=4
+     </pre><p>
+    </p><p>
+     Pour mettre en correspondance de multiples éléments de tableaux
+     avec les multiples éléments d'une variable hôte tableau, chaque
+     élément du tableau doit être géré séparément, par exemple :
+     </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+int ii_a[8];
+EXEC SQL END DECLARE SECTION;
+
+EXEC SQL DECLARE cur1 CURSOR FOR SELECT ii[1], ii[2], ii[3], ii[4] FROM t3;
+EXEC SQL OPEN cur1;
+
+EXEC SQL WHENEVER NOT FOUND DO BREAK;
+
+while (1)
+{
+    EXEC SQL FETCH FROM cur1 INTO :ii_a[0], :ii_a[1], :ii_a[2], :ii_a[3];
+    ...
+}
+     </pre><p>
+    </p><p>
+     Notez à nouveau que
+     </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+int ii_a[8];
+EXEC SQL END DECLARE SECTION;
+
+EXEC SQL DECLARE cur1 CURSOR FOR SELECT ii FROM t3;
+EXEC SQL OPEN cur1;
+
+EXEC SQL WHENEVER NOT FOUND DO BREAK;
+
+while (1)
+{
+    /* FAUX */
+    EXEC SQL FETCH FROM cur1 INTO :ii_a;
+    ...
+}
+     </pre><p>
+     ne fonctionnerait pas correctement dans ce cas, parce que vous ne pouvez
+     pas mettre en correspondance une colonne de type tableau et une variable
+     hôte de type tableau directement.
+    </p><p>
+     Un autre contournement possible est de stocker les tableaux dans
+     leur forme de représentation texte dans des variables hôtes de type
+     <code class="type">char[]</code> ou <code class="type">VARCHAR[]</code>. Pour plus de détails sur
+     cette représentation, voyez <a class="xref" href="arrays.html#ARRAYS-INPUT" title="8.15.2. Saisie de valeurs de type tableau">Section 8.15.2</a>. Notez que
+     cela implique que le tableau ne peut pas être accédé naturellement
+     comme un tableau dans le programme hôte (sans traitement supplémentaire
+     qui transforme la représentation texte).
+    </p></div><div class="sect3" id="ECPG-VARIABLES-NONPRIMITIVE-SQL-COMPOSITE"><div class="titlepage"><div><div><h4 class="title">34.4.5.2. Types Composite <a href="#ECPG-VARIABLES-NONPRIMITIVE-SQL-COMPOSITE" class="id_link">#</a></h4></div></div></div><p>
+     Les types composite ne sont pas directement supportés dans ECPG, mais un contournement simple
+     est possible.
+     Les contournements disponibles sont similaires à ceux décrits pour les tableaux
+     ci-dessus: soit accéder à chaque attribut séparément, ou utiliser la représentation
+     externe en mode chaîne de caractères.
+    </p><p>
+     Pour les exemples suivants, soient les types et tables suivants :
+     </p><pre class="programlisting">
+CREATE TYPE comp_t AS (intval integer, textval varchar(32));
+CREATE TABLE t4 (compval comp_t);
+INSERT INTO t4 VALUES ( (256, 'PostgreSQL') );
+     </pre><p>
+
+     La solution la plus évidente est d'accéder à chaque attribut séparément.
+     Le programme suivant récupère les données de la table exemple en
+     sélectionnant chaque attribut du type <code class="type">comp_t</code> séparément :
+     </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+int intval;
+varchar textval[33];
+EXEC SQL END DECLARE SECTION;
+
+/* Mettre chaque élément de la colonne de type composite dans la liste SELECT. */
+EXEC SQL DECLARE cur1 CURSOR FOR SELECT (compval).intval, (compval).textval FROM t4;
+EXEC SQL OPEN cur1;
+
+EXEC SQL WHENEVER NOT FOUND DO BREAK;
+
+while (1)
+{
+    /* Récupérer chaque élément du type de colonne composite dans des variables hôtes. */
+    EXEC SQL FETCH FROM cur1 INTO :intval, :textval;
+
+    printf("intval=%d, textval=%s\n", intval, textval.arr);
+}
+
+EXEC SQL CLOSE cur1;
+     </pre><p>
+    </p><p>
+     Pour améliorer cet exemple, les variables hôtes qui vont stocker
+     les valeurs dans la commande <code class="command">FETCH</code> peuvent être
+     rassemblées sous forme de structure, voyez <a class="xref" href="ecpg-variables.html#ECPG-VARIABLES-STRUCT" title="34.4.4.3.2. Structures">Section 34.4.4.3.2</a>.
+     Pour passer à la structure, l'exemple peut-être modifié comme ci dessous.
+     Les deux variables hôtes, <code class="varname">intval</code> et
+     <code class="varname">textval</code>, deviennent membres de <code class="structname">comp_t</code>,
+     et la structure est spécifiée dans la commande <code class="command">FETCH</code>.
+     </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+typedef struct
+{
+    int intval;
+    varchar textval[33];
+} comp_t;
+
+comp_t compval;
+EXEC SQL END DECLARE SECTION;
+
+/* Mettre chaque élément de la colonne de type composite dans la liste SELECT. */
+EXEC SQL DECLARE cur1 CURSOR FOR SELECT (compval).intval, (compval).textval FROM t4;
+EXEC SQL OPEN cur1;
+
+EXEC SQL WHENEVER NOT FOUND DO BREAK;
+
+while (1)
+{
+    /* Mettre toutes les valeurs de la liste SELECT dans une structure. */
+    EXEC SQL FETCH FROM cur1 INTO :compval;
+
+    printf("intval=%d, textval=%s\n", compval.intval, compval.textval.arr);
+}
+
+EXEC SQL CLOSE cur1;
+     </pre><p>
+
+     Bien qu'une structure soit utilisée dans la commande
+     <code class="command">FETCH</code>, les noms d'attributs dans la clause
+     <code class="command">SELECT</code> sont spécifiés un par un. Cela peut être
+     amélioré en utilisant un <code class="literal">*</code> pour demander
+     tous les attributs de la valeur de type composite.
+     </p><pre class="programlisting">
+...
+EXEC SQL DECLARE cur1 CURSOR FOR SELECT (compval).* FROM t4;
+EXEC SQL OPEN cur1;
+
+EXEC SQL WHENEVER NOT FOUND DO BREAK;
+
+while (1)
+{
+    /* Mettre toutes les valeurs de la liste SELECT dans une structure. */
+    EXEC SQL FETCH FROM cur1 INTO :compval;
+
+    printf("intval=%d, textval=%s\n", compval.intval, compval.textval.arr);
+}
+...
+     </pre><p>
+     De cette façon, les types composites peuvent être mis en correspondance
+     avec des structures de façon quasi transparentes, alors qu'ECPG
+     ne comprend pas lui-même le type composite.
+    </p><p>
+     Et pour finir, il est aussi possible de stocker les valeurs de
+     type composite dans leur représentation externe de type chaîne
+     dans des variables hôtes de type <code class="type">char[]</code> ou
+     <code class="type">VARCHAR[]</code>. Mais de cette façon, il n'est pas facilement
+     possible d'accéder aux champs de la valeur dans le programme hôte.
+    </p></div><div class="sect3" id="ECPG-VARIABLES-NONPRIMITIVE-SQL-USER-DEFINED-BASE-TYPES"><div class="titlepage"><div><div><h4 class="title">34.4.5.3. Types de base définis par l'utilisateur <a href="#ECPG-VARIABLES-NONPRIMITIVE-SQL-USER-DEFINED-BASE-TYPES" class="id_link">#</a></h4></div></div></div><p>
+     Les nouveaux types de base définis par l'utilisateur ne sont pas
+     directement supportés par ECPG. Vous pouvez utiliser les représentations
+     externes de type chaîne et les variables hôtes de type <code class="type">char[]</code>
+     ou <code class="type">VARCHAR[]</code>, et cette solution est en fait
+     appropriée et suffisante pour de nombreux types.
+    </p><p>
+     Voici un exemple utilisant le type de données <code class="type">complex</code>
+     de l'exemple tiré de <a class="xref" href="xtypes.html" title="36.13. Types utilisateur">Section 36.13</a>. La représentation
+     externe sous forme de chaîne de ce type est
+     <code class="literal">(%lf,%lf)</code>, qui est définie dans les fonctions
+     <code class="function">complex_in()</code> et <code class="function">complex_out()</code>.
+     L'exemple suivant insère les valeurs de type complexe
+     <code class="literal">(1,1)</code> et <code class="literal">(3,3)</code> dans les colonnes
+     <code class="literal">a</code> et <code class="literal">b</code>, et les sélectionne à partir
+     de la table après cela.
+
+     </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+    varchar a[64];
+    varchar b[64];
+EXEC SQL END DECLARE SECTION;
+
+    EXEC SQL INSERT INTO test_complex VALUES ('(1,1)', '(3,3)');
+
+    EXEC SQL DECLARE cur1 CURSOR FOR SELECT a, b FROM test_complex;
+    EXEC SQL OPEN cur1;
+
+    EXEC SQL WHENEVER NOT FOUND DO BREAK;
+
+    while (1)
+    {
+        EXEC SQL FETCH FROM cur1 INTO :a, :b;
+        printf("a=%s, b=%s\n", a.arr, b.arr);
+    }
+
+    EXEC SQL CLOSE cur1;
+     </pre><p>
+
+     Cet exemple affiche le résultat suivant :
+     </p><pre class="screen">
+a=(1,1), b=(3,3)
+     </pre><p>
+    </p><p>
+     Un autre contournement est d'éviter l'utilisation directe des types
+     définis par l'utilisateur dans ECPG et à la place créer une fonction
+     ou un cast qui convertit entre le type défini par l'utilisateur et
+     un type primitif que ECPG peut traiter. Notez, toutefois, que les
+     conversions de types, particulièrement les implicites, ne devraient
+     être introduits dans le système de typage qu'avec la plus grande
+     prudence.
+    </p><p>
+     Par exemple,
+     </p><pre class="programlisting">
+CREATE FUNCTION create_complex(r double, i double) RETURNS complex
+LANGUAGE SQL
+IMMUTABLE
+AS $$ SELECT $1 * complex '(1,0')' + $2 * complex '(0,1)' $$;
+     </pre><p>
+     Après cette définition, ce qui suit
+     </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+double a, b, c, d;
+EXEC SQL END DECLARE SECTION;
+
+a = 1;
+b = 2;
+c = 3;
+d = 4;
+
+EXEC SQL INSERT INTO test_complex VALUES (create_complex(:a, :b), create_complex(:c, :d));
+     </pre><p>
+     a le même effet que
+     </p><pre class="programlisting">
+EXEC SQL INSERT INTO test_complex VALUES ('(1,2)', '(3,4)');
+     </pre><p>
+    </p></div></div><div class="sect2" id="ECPG-INDICATORS"><div class="titlepage"><div><div><h3 class="title">34.4.6. Indicateurs <a href="#ECPG-INDICATORS" class="id_link">#</a></h3></div></div></div><p>
+    Les exemples précédents ne gèrent pas les valeurs nulles. En fait,
+    les exemples de récupération de données remonteront une erreur si
+    ils récupèrent une valeur nulle de la base. Pour être capable de passer
+    des valeurs nulles à la base ou d'un récupérer, vous devez rajouter
+    une seconde spécification de variable hôte à chaque variable hôte
+    contenant des données. Cette seconde variable est appelée
+    l'<em class="firstterm">indicateur</em> et contient un drapeau qui indique
+    si le datum est null, dans quel cas la valeur de la vraie variable
+    hôte est ignorée. Voici un exemple qui gère la récupération de valeurs
+    nulles correctement :
+    </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+VARCHAR val;
+int val_ind;
+EXEC SQL END DECLARE SECTION:
+
+ ...
+
+EXEC SQL SELECT b INTO :val :val_ind FROM test1;
+    </pre><p>
+    La variable indicateur <code class="varname">val_ind</code> sera zéro si
+    la valeur n'était pas nulle, et sera négative si la valeur était nulle.
+    (Voir <a class="xref" href="ecpg-oracle-compat.html" title="34.16. Mode de compatibilité Oracle">Section 34.16</a> pour activer un comportement
+    spécifique à Oracle.)
+   </p><p>
+    L'indicateur a une autre fonction: si la valeur de l'indicateur est
+    positive, cela signifie que la valeur n'est pas nulle, mais qu'elle
+    a été tronquée quand elle a été stockée dans la variable hôte.
+   </p><p>
+    Si l'argument <code class="literal">-r no_indicator</code> est passée au
+    préprocesseur <code class="command">ecpg</code>, il fonction dans le mode
+    <span class="quote">« <span class="quote">no-indicator</span> »</span>. En mode no-indicator, si aucune variable
+    indicator n'est spécifiée, les valeurs nulles sont signalées (en
+    entrée et en sortie) pour les types chaînes de caractère comme
+    des chaînes vides et pour les types integer comme la plus petite valeur
+    possible pour le type (par exemple, <code class="symbol">INT_MIN</code> pour
+    <code class="type">int</code>).
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/ecpg-variables.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:37 GMT -->
+</html>

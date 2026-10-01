@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/view-pg-locks.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:12 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>52.12. pg_locks</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="view-pg-indexes.html" title="52.11. pg_indexes" /><link rel="next" href="view-pg-matviews.html" title="52.13. pg_matviews" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/view-pg-locks.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/view-pg-locks.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/view-pg-locks.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/view-pg-locks.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/view-pg-locks.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/view-pg-locks.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/view-pg-locks.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/view-pg-locks.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/view-pg-locks.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/view-pg-locks.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/view-pg-locks.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/view-pg-locks.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/view-pg-locks.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/view-pg-locks.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/view-pg-locks.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/view-pg-locks.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/view-pg-locks.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/view-pg-locks.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/view-pg-locks.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/view-pg-locks.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/view-pg-locks.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="views.html">Vues système</a></span> » <span class="breadcrumb-node"><code class="structname">pg_locks</code></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="view-pg-indexes.html" title="52.11. pg_indexes">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="views.html" title="Chapitre 52. Vues système">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="view-pg-matviews.html" title="52.13. pg_matviews">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">52.11. <code class="structname">pg_indexes</code> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 52.13. <code class="structname">pg_matviews</code></td></tr></table></div><div class="sect1" id="VIEW-PG-LOCKS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">52.12. <code class="structname">pg_locks</code> <a href="#VIEW-PG-LOCKS" class="id_link">#</a></h2></div></div></div><a id="id-1.10.5.16.2" class="indexterm"></a><p>
+   La vue <code class="structname">pg_locks</code> fournit un accès aux informations
+   concernant les verrous détenus par les transactions actives
+   sur le serveur de bases de données. Voir le <a class="xref" href="mvcc.html" title="Chapitre 13. Contrôle d'accès simultané">Chapitre 13</a>
+   pour une discussion plus importante sur les verrous.
+  </p><p>
+   <code class="structname">pg_locks</code> contient une ligne par objet verrouillable
+   actif, type de verrou demandé et processus associé. Un même
+   objet verrouillable peut apparaître plusieurs fois si plusieurs
+   processus ont posé ou attendent des verrous sur celui-ci. Toutefois, un
+   objet qui n'est pas actuellement verrouillé n'apparaît pas.
+  </p><p>
+   Il existe plusieurs types distincts d'objets verrouillables : les
+   relations complètes (tables, par exemple), les pages individuelles de
+   relations, des tuples individuels de relations, les identifiants de
+   transaction (virtuels et permanents) et les objets généraux de la base
+   de données (identifiés par l'OID de la classe et l'OID de l'objet, de la
+   même façon que dans
+   <a class="link" href="catalog-pg-description.html" title="51.19. pg_description"><code class="structname">pg_description</code></a> ou
+   <a class="link" href="catalog-pg-depend.html" title="51.18. pg_depend"><code class="structname">pg_depend</code></a>).
+   De plus, le droit d'étendre une
+   relation est représenté comme un objet verrouillable distinct, tout comme
+   l'est le droit de mettre à jour
+   <code class="structname">pg_database</code>.<code class="structfield">datfrozenxid</code>.
+   Et enfin, les verrous informatifs peuvent être pris sur les numéros qui ont
+   la signification définie par l'utilisateur.
+  </p><div class="table" id="id-1.10.5.16.6"><p class="title"><strong>Tableau 52.12. Colonnes de <code class="structname">pg_locks</code></strong></p><div class="table-contents"><table class="table" summary="Colonnes de pg_locks" border="1"><colgroup><col /></colgroup><thead><tr><th class="catalog_table_entry"><p class="column_definition">
+        Type
+       </p>
+       <p>
+        Description
+       </p></th></tr></thead><tbody><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">locktype</code> <code class="type">text</code>
+       </p>
+       <p>
+        Type de l'objet verrouillable :
+        <code class="literal">relation</code>,
+        <code class="literal">extend</code>,
+        <code class="literal">frozenid</code>,
+        <code class="literal">page</code>,
+        <code class="literal">tuple</code>,
+        <code class="literal">transactionid</code>,
+        <code class="literal">virtualxid</code>,
+        <code class="literal">spectoken</code>,
+        <code class="literal">object</code>,
+        <code class="literal">userlock</code>,
+        <code class="literal">advisory</code> ou
+        <code class="literal">applytransaction</code>.
+        (Voir aussi <a class="xref" href="monitoring-stats.html#WAIT-EVENT-LOCK-TABLE" title="Tableau 27.11. Points d'attente de type Lock">Tableau 27.11</a>.)
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">database</code> <code class="type">oid</code>
+        (référence <a class="link" href="catalog-pg-database.html" title="51.15. pg_database"><code class="structname">pg_database</code></a>.<code class="structfield">oid</code>)
+       </p>
+       <p>
+        L'OID de la base de données dans laquelle existe l'objet à verrouiller,
+        0 si la cible est un objet partagé ou NULL si l'objet est un identifiant de
+        transaction
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">relation</code> <code class="type">oid</code>
+        (référence <a class="link" href="catalog-pg-class.html" title="51.11. pg_class"><code class="structname">pg_class</code></a>.<code class="structfield">oid</code>)
+       </p>
+       <p>
+        L'OID de la relation visée par le verrouillage, ou NULL si la cible
+        n'est ni une relation ni une partie de relation
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">page</code> <code class="type">int4</code>
+       </p>
+       <p>
+        Le numéro de page visé par le verrouillage à l'intérieur de cette
+        relation ou NULL si la cible n'est pas un tuple ou une page de relation
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">tuple</code> <code class="type">int2</code>
+       </p>
+       <p>
+        Le numéro du tuple dans la page, ciblé par le verrouillage, ou NULL si la
+        cible n'est pas un tuple
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">virtualxid</code> <code class="type">text</code>
+       </p>
+       <p>
+        L'identifiant virtuel de transaction visé par le verrouillage, ou NULL
+        si la cible n'est pas un identifiant virtuel de transaction ; voir
+        <a class="xref" href="transactions.html" title="Chapitre 66. Traitement des transactions">Chapitre 66</a>
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">transactionid</code> <code class="type">xid</code>
+       </p>
+       <p>
+        L'identifiant de transaction ciblé par le verrouillage ou NULL si la
+        cible n'est pas un identifiant de transaction ;
+        voir <a class="xref" href="transactions.html" title="Chapitre 66. Traitement des transactions">Chapitre 66</a>
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">classid</code> <code class="type">oid</code>
+        (référence <a class="link" href="catalog-pg-class.html" title="51.11. pg_class"><code class="structname">pg_class</code></a>.<code class="structfield">oid</code>)
+       </p>
+       <p>
+        L'OID du catalogue système contenant la cible du verrouillage ou NULL si
+        la cible n'est pas un objet général de la base de données
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">objid</code> <code class="type">oid</code>
+        (référence toute colonne OID)
+       </p>
+       <p>
+        L'OID de la cible du verrouillage dans son catalogue système ou NULL si
+        la cible n'est pas un objet général de la base de données
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">objsubid</code> <code class="type">int2</code>
+       </p>
+       <p>
+        Numéro de la colonne ciblée par le verrou
+        (<code class="structfield">classid</code> et <code class="structfield">objid</code>
+        font référence à la table elle-même), ou 0 si la cible est un
+        autre objet de la base de données, ou NULL si l'objet n'est pas
+        un objet de la base de données.
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">virtualtransaction</code> <code class="type">text</code>
+       </p>
+       <p>
+        L'identifiant virtuel de la transaction qui détient ou attend le verrou.
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">pid</code> <code class="type">int4</code>
+       </p>
+       <p>
+        L'identifiant du processus serveur qui détient ou attend le verrou.
+        NULL si le verrou est possédé par une transaction préparée.
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">mode</code> <code class="type">text</code>
+       </p>
+       <p>
+        Nom du type de verrou détenu ou attendu par ce processus (voir la
+        <a class="xref" href="explicit-locking.html#LOCKING-TABLES" title="13.3.1. Verrous de niveau table">Section 13.3.1</a> et <a class="xref" href="transaction-iso.html#XACT-SERIALIZABLE" title="13.2.3. Niveau d'Isolation Serializable">Section 13.2.3</a>)
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">granted</code> <code class="type">bool</code>
+       </p>
+       <p>
+        <code class="literal">True</code> si le verrou est détenu,
+        <code class="literal">false</code> s'il est attendu
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+        <code class="structfield">fastpath</code> <code class="type">bool</code>
+       </p>
+       <p>
+        <code class="literal">True</code> si le verrou a été obtenu grâce au
+        raccourci, <code class="literal">false</code> s'il a été obtenu via la table
+        principale des verrous
+       </p></td></tr><tr><td class="catalog_table_entry"><p class="column_definition">
+       <code class="structfield">waitstart</code> <code class="type">timestamptz</code>
+      </p>
+      <p>
+       Horodatage du début de l'attente de ce processus pour ce verrou ou NULL
+       si le verrou est détenu. Notez que ce champ peut être NULL pendant une
+       période de temps très courte après que l'attente ait commencé même si
+       <code class="structfield">granted</code> vaut <code class="literal">false</code>.
+      </p></td></tr></tbody></table></div></div><br class="table-break" /><p>
+   <code class="structfield">granted</code> est <code class="literal">true</code> sur une ligne
+   représentant un verrou tenu par le processus indiqué. False indique que le
+   processus attend l'acquisition de ce verrou, ce qui implique qu'au moins un
+   autre processus détient ou est en attente d'un verrou en conflit sur le
+   même objet. Le processus en attente dormira jusqu'à ce que l'autre verrou
+   soit relâché (ou qu'une situation de deadlock soit détecté). Un processus
+   seul ne peut attendre qu'au plus un verrou à la fois.
+  </p><p>
+   Au cours de l'exécution d'une transaction, un processus serveur détient un
+   verrou exclusif sur l'identifiant virtuel de transaction. Si un identifiant
+   permanent est affecté à la transaction (ce qui arrive normalement seulement
+   si la transaction modifie l'état de la base), il détient aussi un verrou
+   exclusif sur l'identifiant permanent de transaction jusqu'à sa fin. Quand un
+   processus a besoin d'attendre la fin d'une autre transaction, il le fait en
+   tentant d'acquérir un verrou partagé sur l'identfiant virtuel ou permanent
+   de cette autre transaction . Ceci ne réussira que quand l'autre transaction
+   se termine et relâche son verrou.
+  </p><p>
+   Bien que les lignes constituent un type d'objet verrouillable, les informations sur
+   les verrous de niveau ligne sont stockées sur disque, et non en mémoire.
+   Ainsi, les verrous de niveau ligne n'apparaissent normalement pas dans cette
+   vue. Si un processus attend un verrou de niveau ligne, elle
+   apparaît sur la vue comme en attente de l'identifiant permanent de la transaction
+   actuellement détentrice de ce verrou de niveau ligne.
+  </p><p>
+   Un verrou d'insertion informatif consiste en un identifiant de transaction
+   et un jeton d'insertion informatif. Le jeton est affiché dans la colonne
+   <code class="structfield">objid</code>.
+  </p><p>
+   Les verrous consultatifs peuvent être acquis par des clés constituées soit
+   d'une seule valeur <code class="type">bigint</code>, soit de deux valeurs
+   <code class="type">integer</code>. Une clé <code class="type">bigint</code> est affichée avec
+   sa moitié haute dans la colonne <code class="structfield">classid</code>, sa
+   partie basse dans la colonne <code class="structfield">objid</code> et
+   <code class="structfield">objsubid</code> à 1. La valeur <code class="type">bigint</code> originale
+   peut être recréée avec l'expression <code class="literal">(classid::bigint &lt;&lt; 32) |
+    objid::bigint</code>.
+   Les clés <code class="type">integer</code> sont
+   affichées avec la première clé dans la colonne
+   <code class="structfield">classid</code>, la
+   deuxième clé dans la colonne <code class="structfield">objid</code> et
+   <code class="structfield">objsubid</code> à 2. La signification réelle des clés
+   est laissée à l'utilisateur. Les verrous consultatifs sont locaux à chaque base,
+   la colonne <code class="structfield">database</code> a donc un sens dans ce cas.
+  </p><p>
+   Bien qu'il soit possible d'obtenir des informations sur les processus
+   bloquant d'autres processus en joignant la vue
+   <code class="structname">pg_locks</code> avec elle-même, c'est très difficile à
+   réaliser correctement dans le détail. Une telle requête devrait intégrer
+   toutes les informations sur les conflits des modes de verrous. Pire, la vue
+   <code class="structname">pg_locks</code> n'expose pas d'informations sur les
+   processus en avance des autres dans les queues d'attente de verrous, pas
+   plus que des informations sur les processus exécutés en parallèle pour
+   d'autres sessions clientes. Il est préférable d'utiliser la fonction
+   <code class="function">pg_blocking_pids()</code> (voir <a class="xref" href="functions-info.html#FUNCTIONS-INFO-SESSION-TABLE" title="Tableau 9.69. Fonctions d'information sur la session">Tableau 9.69</a>) pour identifier les processus
+   bloqués par d'autres processus.
+  </p><p>
+   Les verrous des transactions d'application sont utilisés dans un mode
+   parallèle pour appliquer la transaction dans la réplication logique.
+   L'identifiant distant de transaction est affiché dans la colonne
+   <code class="structfield">transactionid</code>. <code class="structfield">objsubid</code>
+   affiche le sous-type du verrou qui est 0 pour le verrou utilisé pour
+   synchroniser l'ensemble des modifications et 1 pour le verrou utilisé pour
+   attendre la fin de la transaction qui assure l'ordre de validation.
+  </p><p>
+   <code class="structname">pg_locks</code> fournit une vue globale de tous les verrous
+   du cluster, pas seulement de ceux de la base en cours d'utilisation. Bien que
+   la colonne <code class="structfield">relation</code> puisse être jointe avec
+   <a class="link" href="catalog-pg-class.html" title="51.11. pg_class"><code class="structname">pg_class</code></a>.<code class="structfield">oid</code>
+   pour identifier
+   les relations verrouillées, ceci ne fonctionne correctement qu'avec les
+   relations de la base accédée (celles pour lesquelles la colonne
+   <code class="structfield">database</code> est l'OID de la base actuelle ou 0).
+  </p><p>
+   La vue <code class="structname">pg_locks</code> affiche des données provenant
+   du gestionnaire de verrous standards et du gestionnaire de verrous de
+   prédicats, qui sont des systèmes autrement séparés ;
+   de plus, le gestionnaire de verrous standards sous-divise ses verrous en
+   verrous réguliers et en verrous rapides (<em class="firstterm">fast-path</em>).
+   Cette donnée n'est pas garantie comme étant entièrement cohérente. Quand
+   la vue est exécutée, les données des verrous fast-path (avec
+   <code class="structfield">fastpath</code> = <code class="literal">true</code>) sont
+   récupérées à partir de chaque processus, un à la fois, sans geler
+   l'état du gestionnaire des verrous. Donc il est possible que des verrous
+   soient pris ou relachés pendant la récupération de l'information.
+   Néanmoins, notez que ces verrous sont connus pour ne pas entrer en conflit
+   avec les autres verrous déjà détenus. Après que tous les processus serveurs
+   a été interrogés pour connaître leurs verrous fast-path, le reste du
+   gestionnaire des verrous standards est verrouillé de manière unitaire et une
+   image cohérente de tous les verrous restants est collectée en une seule
+   opération atomique. Après avoir déverrouillé le gestionnaire de verrous
+   standards, le gestionnaire de verrous de prédicats est verrouillé de la
+   même manière et tous les verrous de prédicats sont récupérés en une action
+   atomique. Du coup, avec l'exception des verrous fast-path, chaque gestionnaire
+   de verrous délivrera un état cohérent des résultats mais, comme nous ne
+   verrouillons pas les deux gestionnaires de verrous simultanément, il est
+   possible que les verrous soient pris ou relachés après avoir interrogé du
+   gestionnaire de verrous standards et avant avoir interrogé le gestionnaire
+   des verrous de prédicats.
+  </p><p>
+   Verrouiller le gestionnaire de verrous standards ou de prédicats peut
+   avoir un impact sur les performances de la base de données si cette vue est
+   fréquemment interrogée. Les verrous sont bloqués le temps minimum nécessaire
+   pour obtenir les données des gestionnaires de verrous mais cela n'élimine
+   pas complètement la possibilité d'un impact sur les performances.
+  </p><p>
+   La colonne <code class="structfield">pid</code> peut être jointe à la colonne
+   <code class="structfield">pid</code> de la vue <a class="link" href="monitoring-stats.html#MONITORING-PG-STAT-ACTIVITY-VIEW" title="27.2.3. pg_stat_activity">
+    <code class="structname">pg_stat_activity</code></a> pour obtenir plus
+   d'informations sur la session qui détient ou attend un verrou, par
+   exemple :
+   </p><pre class="programlisting">
+SELECT * FROM pg_locks pl LEFT JOIN pg_stat_activity psa
+    ON pl.pid = psa.pid;
+   </pre><p>.
+   De plus, si des transactions préparées sont utilisées, la colonne
+   <code class="structfield">virtualtransaction</code> peut être jointe à la colonne
+   <code class="structfield">transaction</code> de la vue<a class="link" href="view-pg-prepared-xacts.html" title="52.16. pg_prepared_xacts"><code class="structname">pg_prepared_xacts</code></a>
+   pour obtenir plus d'informations
+   sur les transactions préparées qui détiennent des verrous. (Une
+   transaction préparée ne peut jamais être en attente d'un verrou mais elle
+   continue à détenir les verrous qu'elle a acquis pendant son exécution.)
+   Par exemple :
+   </p><pre class="programlisting">
+SELECT * FROM pg_locks pl LEFT JOIN pg_prepared_xacts ppx
+    ON pl.virtualtransaction = '-1/' || ppx.transaction;
+   </pre><p>
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/view-pg-locks.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:12 GMT -->
+</html>

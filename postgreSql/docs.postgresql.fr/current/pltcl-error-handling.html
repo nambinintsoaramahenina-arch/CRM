@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/pltcl-error-handling.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>42.8. Gestion des erreurs avec PL/Tcl</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="pltcl-event-trigger.html" title="42.7. Fonctions trigger sur événement en PL/Tcl" /><link rel="next" href="pltcl-subtransactions.html" title="42.9. Sous-transactions explicites dans PL/Tcl" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/pltcl-error-handling.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/pltcl-error-handling.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/pltcl-error-handling.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/pltcl-error-handling.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/pltcl-error-handling.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/pltcl-error-handling.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/pltcl-error-handling.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/pltcl-error-handling.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/pltcl-error-handling.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/pltcl-error-handling.html">9.6</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/pltcl-error-handling.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="pltcl.html">PL/Tcl  --  Langage de procédures Tcl</a></span> » <span class="breadcrumb-node">Gestion des erreurs avec PL/Tcl</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pltcl-event-trigger.html" title="42.7. Fonctions trigger sur événement en PL/Tcl">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="pltcl.html" title="Chapitre 42. PL/Tcl  --  Langage de procédures Tcl">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="pltcl-subtransactions.html" title="42.9. Sous-transactions explicites dans PL/Tcl">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">42.7. Fonctions trigger sur événement en PL/Tcl </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 42.9. Sous-transactions explicites dans PL/Tcl</td></tr></table></div><div class="sect1" id="PLTCL-ERROR-HANDLING"><div class="titlepage"><div><div><h2 class="title" style="clear: both">42.8. Gestion des erreurs avec PL/Tcl <a href="#PLTCL-ERROR-HANDLING" class="id_link">#</a></h2></div></div></div><a id="id-1.8.9.12.2" class="indexterm"></a><p>
+   Le code Tcl contenu ou appelé à partir d'une fonction PL/Tcl peut lever
+   une erreur, soit en exécutant des opérations invalides ou en générant
+   une erreur en utilisant la commande Tcl <code class="function">error</code> ou la
+   commande PL/Tcl <code class="function">elog</code>. Si une erreur n'est pas
+   rattrapée mais est autorisée à être propagée en dehors du niveau racine de
+   l'exécution de la fonction PL/Tcl, elle est rapportée comme une erreur SQL
+   dans la requête appelant la fonction.
+  </p><p>
+   Les erreurs SQL survenant dans les commandes PL/Tcl
+   <code class="function">spi_exec</code>, <code class="function">spi_prepare</code>
+   et <code class="function">spi_execp</code> sont rapportées comme des erreurs Tcl,
+   donc elles sont récupérables par la commande Tcl <code class="function">catch</code>.
+   (Chacune des ces commandes PL/Tcl exécutent leurs opérations SQL dans une
+   sous transaction, qui est annulée en cas d'erreur, si bien que n'importe
+   quelle opération partiellement terminée sera automatiquement nettoyée.)
+   De la même façon, si une erreur se propage en dehors du niveau racine sans
+   avoir été rattrapée, elle sera rapportée en erreur SQL.
+  </p><p>
+   Tcl fournit une variable <code class="varname">errorCode</code> pouvant représenter
+   des informations supplémentaires sur une erreur dans un format qui est
+   simple à interpréter pour les programmes Tcl. Le contenu est dans le format
+   liste Tcl, et le premier mot identifie le sous-système ou la bibliothèque
+   rapportant l'erreur ; au-delà, le contenu est laissé au sous-système
+   individuel ou à la bibliothèque. Pour les erreurs au niveau base rapportées
+   par les commandes PL/Tcl commands, le premier mot est
+   <code class="literal">POSTGRES</code>, le second est le numéro de version du serveur,
+   et les mots supplémentaires sont les paires nom/valeur des champs fournissant
+   des informations détaillées sur l'erreur.
+   Les champs <code class="varname">SQLSTATE</code>, <code class="varname">condition</code>
+   et <code class="varname">message</code> sont toujours fournies (les deux premiers
+   représentent le code d'erreur et le nom de la condition comme indiqués dans
+   <a class="xref" href="errcodes-appendix.html" title="Annexe A. Codes d'erreur de PostgreSQL">Annexe A</a>). Les champs potentiellement présents
+   incluent
+   <code class="varname">detail</code>, <code class="varname">hint</code>, <code class="varname">context</code>,
+   <code class="varname">schema</code>, <code class="varname">table</code>, <code class="varname">column</code>,
+   <code class="varname">datatype</code>, <code class="varname">constraint</code>,
+   <code class="varname">statement</code>, <code class="varname">cursor_position</code>,
+   <code class="varname">filename</code>, <code class="varname">lineno</code> et
+   <code class="varname">funcname</code>.
+  </p><p>
+   Une façon agréable de travailler avec l'information
+   <code class="varname">errorCode</code> de PL/Tcl est de la charger dans un tableau
+   pour que les noms du champ deviennent des indices du tableau. Un code
+   relatif ressemblerait à ceci :
+   </p><pre class="programlisting">
+if {[catch { spi_exec $sql_command }]} {
+    if {[lindex $::errorCode 0] == "POSTGRES"} {
+        array set errorArray $::errorCode
+        if {$errorArray(condition) == "undefined_table"} {
+            # gestion de la table manquante
+        } else {
+            # gestion des autres types d'erreur SQL
+        }
+    }
+}
+   </pre><p>
+   (Les symboles deux-points spécifient explicitement que
+   <code class="varname">errorCode</code> est une variable globale.)
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/pltcl-error-handling.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:44 GMT -->
+</html>

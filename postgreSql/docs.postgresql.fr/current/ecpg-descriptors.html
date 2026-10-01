@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/ecpg-descriptors.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:38 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>34.7. Utiliser les Zones de Descripteur</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="ecpg-pgtypes.html" title="34.6. Librairie pgtypes" /><link rel="next" href="ecpg-errors.html" title="34.8. Gestion des Erreurs" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/ecpg-descriptors.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/ecpg-descriptors.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/ecpg-descriptors.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/ecpg-descriptors.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/ecpg-descriptors.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/ecpg-descriptors.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/ecpg-descriptors.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/ecpg-descriptors.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/ecpg-descriptors.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/ecpg-descriptors.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/ecpg-descriptors.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/ecpg-descriptors.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/ecpg-descriptors.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/ecpg-descriptors.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/ecpg-descriptors.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/ecpg-descriptors.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/ecpg-descriptors.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/ecpg-descriptors.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/ecpg-descriptors.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/ecpg-descriptors.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/ecpg-descriptors.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="client-interfaces.html">Interfaces client</a></span> » <span class="breadcrumb-link"><a href="ecpg.html"><span class="application">ECPG</span>  --  <acronym class="acronym">SQL</acronym> embarqué en C</a></span> » <span class="breadcrumb-node">Utiliser les Zones de Descripteur</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ecpg-pgtypes.html" title="34.6. Librairie pgtypes">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="ecpg.html" title="Chapitre 34. ECPG  --  SQL embarqué en C">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="ecpg-errors.html" title="34.8. Gestion des Erreurs">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">34.6. Librairie pgtypes </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 34.8. Gestion des Erreurs</td></tr></table></div><div class="sect1" id="ECPG-DESCRIPTORS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">34.7. Utiliser les Zones de Descripteur <a href="#ECPG-DESCRIPTORS" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="ecpg-descriptors.html#ECPG-NAMED-DESCRIPTORS">34.7.1. Zones de Descripteur SQL nommées</a></span></dt><dt><span class="sect2"><a href="ecpg-descriptors.html#ECPG-SQLDA-DESCRIPTORS">34.7.2. Zones de Descripteurs SQLDA</a></span></dt></dl></div><p>
+   Une zone de descripteur SQL (SQL Descriptor Area ou SQLDA)
+   est une méthode plus sophistiquée pour traiter le
+   résultat d'un ordre <code class="command">SELECT</code>, <code class="command">FETCH</code> ou
+   <code class="command">DESCRIBE</code>. Une zone de descripteur SQL regroupe les données
+   d'un enregistrement avec ses métadonnées dans une seule structure. Ces
+   métadonnées sont particulièrement utiles quand on exécute des ordres SQL
+   dynamiques, où_la nature des colonnes résultat ne sont pas forcément
+   connues à l'avance. PostgreSQL fournit deux façons d'utiliser des Zones
+   de Descripteur: les Zones de Descripteur SQL nommée et les structures C SQLDA.
+  </p><div class="sect2" id="ECPG-NAMED-DESCRIPTORS"><div class="titlepage"><div><div><h3 class="title">34.7.1. Zones de Descripteur SQL nommées <a href="#ECPG-NAMED-DESCRIPTORS" class="id_link">#</a></h3></div></div></div><p>
+    Une zone descripteur SQL nommé est composée d'un entête, qui contient
+    des données concernant l'ensemble du descripteur, et une ou plusieurs
+    zones de descriptions d'objets, qui en fait décrivent chaque colonne
+    de l'enregistrement résultat.
+   </p><p>
+    Avant que vous puissiez utiliser une zone de descripteur SQL, vous devez
+    en allouer une :
+    </p><pre class="programlisting">
+EXEC SQL ALLOCATE DESCRIPTOR <em class="replaceable"><code>identifiant</code></em>;
+    </pre><p>
+    L'identifiant sert de <span class="quote">« <span class="quote">nom de variable</span> »</span> de la zone de
+    descripteur. 
+    Quand vous n'avez plus besoin du descripteur, vous devriez le désallouer:
+    </p><pre class="programlisting">
+EXEC SQL DEALLOCATE DESCRIPTOR <em class="replaceable"><code>identifiant</code></em>;
+    </pre><p>
+   </p><p>
+    Pour utiliser une zone de descripteur, spécifiez le comme cible de
+    stockage dans une clause <code class="literal">INTO</code>, à la place
+    d'une liste de variables hôtes :
+    </p><pre class="programlisting">
+EXEC SQL FETCH NEXT FROM mycursor INTO SQL DESCRIPTOR mydesc;
+    </pre><p>
+    Si le jeu de données retourné est vide, la zone de descripteur contiendra
+    tout de même les métadonnées de la requête, c'est à dire les noms des
+    champs.
+   </p><p>
+    Pour les requêtes préparées mais pas encore exécutées, l'ordre
+    <code class="command">DESCRIBE</code> peut être utilisé pour récupérer les
+    métadonnées du résultat :
+    </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+char *sql_stmt = "SELECT * FROM table1";
+EXEC SQL END DECLARE SECTION;
+
+EXEC SQL PREPARE stmt1 FROM :sql_stmt;
+EXEC SQL DESCRIBE stmt1 INTO SQL DESCRIPTOR mydesc;
+    </pre><p>
+   </p><p>
+    Avant PostgreSQL 9.0, le mot clé <code class="literal">SQL</code> était optionnel,
+    par conséquent utiliser <code class="literal">DESCRIPTOR</code> et
+    <code class="literal">SQL DESCRIPTOR</code> produisaent les mêmes zones de
+    descripteur SQL. C'est maintenant obligatoire, et oublier le mot clé
+    <code class="literal">SQL</code> produit des zones de descripteurs SQLDA,
+    voyez <a class="xref" href="ecpg-descriptors.html#ECPG-SQLDA-DESCRIPTORS" title="34.7.2. Zones de Descripteurs SQLDA">Section 34.7.2</a>.
+   </p><p>
+    Dans les ordres <code class="command">DESCRIBE</code> et <code class="command">FETCH</code>,
+    les mots-clés <code class="literal">INTO</code> et <code class="literal">USING</code> peuvent
+    être utilisés de façon similaire : ils produisent le jeu de données
+    et les métadonnées de la zone de descripteur.
+   </p><p>
+    Maintenant, comment récupérer les données de la zone de descripteur ?
+    Vous pouvez voir la zone de descripteur comme une structure avec des
+    champs nommés. Pour récupérer la valeur d'un champ à partir de l'entête
+    et le stocker dans une variable hôte, utilisez la commande suivante :
+    </p><pre class="programlisting">
+EXEC SQL GET DESCRIPTOR <em class="replaceable"><code>name</code></em> :<em class="replaceable"><code>hostvar</code></em> = <em class="replaceable"><code>field</code></em>;
+    </pre><p>
+    À l'heure actuelle, il n'y a qu'un seul champ d'entête défini:
+    <em class="replaceable"><code>COUNT</code></em>, qui dit combien il y a de zones
+    de descripteurs d'objets (c'est à dire, combien de colonnes il y a dans le résultat).
+    La variable hôte doit être de type integer. Pour récupérer un champ de la
+    zone de description d'objet, utilisez la commande suivante :
+    </p><pre class="programlisting">
+EXEC SQL GET DESCRIPTOR <em class="replaceable"><code>name</code></em> VALUE <em class="replaceable"><code>num</code></em> :<em class="replaceable"><code>hostvar</code></em> = <em class="replaceable"><code>field</code></em>;
+    </pre><p>
+    <em class="replaceable"><code>num</code></em> peut être un integer literal, ou une
+    variable hôte contenant un integer. Les champs possibles sont :
+
+    </p><div class="variablelist"><dl class="variablelist"><dt id="ECPG-NAMED-DESCRIPTORS-CARDINALITY"><span class="term"><code class="literal">CARDINALITY</code> (integer)</span> <a href="#ECPG-NAMED-DESCRIPTORS-CARDINALITY" class="id_link">#</a></dt><dd><p>
+        nombres d'enregistrements dans le résultat
+       </p></dd><dt id="ECPG-NAMED-DESCRIPTORS-DATA"><span class="term"><code class="literal">DATA</code></span> <a href="#ECPG-NAMED-DESCRIPTORS-DATA" class="id_link">#</a></dt><dd><p>
+        objet de donnée proprement dit (par conséquent, le type de données de
+        ce champ dépend de la requête)
+       </p></dd><dt id="ECPG-NAMED-DESCRIPTORS-DATETIME-INTERVAL-CODE"><span class="term"><code class="literal">DATETIME_INTERVAL_CODE</code> (integer)</span> <a href="#ECPG-NAMED-DESCRIPTORS-DATETIME-INTERVAL-CODE" class="id_link">#</a></dt><dd><p>
+        Quand <code class="literal">TYPE</code> est <code class="literal">9</code>,
+        <code class="literal">DATETIME_INTERVAL_CODE</code> aura une valeur de
+        <code class="literal">1</code> pour <code class="literal">DATE</code>,
+        <code class="literal">2</code> pour <code class="literal">TIME</code>,
+        <code class="literal">3</code> pour <code class="literal">TIMESTAMP</code>,
+        <code class="literal">4</code> pour <code class="literal">TIME WITH TIME ZONE</code>, or
+        <code class="literal">5</code> pour <code class="literal">TIMESTAMP WITH TIME ZONE</code>.
+       </p></dd><dt id="ECPG-NAMED-DESCRIPTORS-DATETIME-INTERVAL-PRECISION"><span class="term"><code class="literal">DATETIME_INTERVAL_PRECISION</code> (integer)</span> <a href="#ECPG-NAMED-DESCRIPTORS-DATETIME-INTERVAL-PRECISION" class="id_link">#</a></dt><dd><p>
+        non implémenté
+       </p></dd><dt id="ECPG-NAMED-DESCRIPTORS-INDICATOR"><span class="term"><code class="literal">INDICATOR</code> (integer)</span> <a href="#ECPG-NAMED-DESCRIPTORS-INDICATOR" class="id_link">#</a></dt><dd><p>
+        l'indicateur (indique une valeur null ou une troncature de valeur)
+       </p></dd><dt id="ECPG-NAMED-DESCRIPTORS-KEY-MEMBER"><span class="term"><code class="literal">KEY_MEMBER</code> (integer)</span> <a href="#ECPG-NAMED-DESCRIPTORS-KEY-MEMBER" class="id_link">#</a></dt><dd><p>
+        non implémenté
+       </p></dd><dt id="ECPG-NAMED-DESCRIPTORS-LENGTH"><span class="term"><code class="literal">LENGTH</code> (integer)</span> <a href="#ECPG-NAMED-DESCRIPTORS-LENGTH" class="id_link">#</a></dt><dd><p>
+        longueur de la donnée en caractères
+       </p></dd><dt id="ECPG-NAMED-DESCRIPTORS-NAME"><span class="term"><code class="literal">NAME</code> (string)</span> <a href="#ECPG-NAMED-DESCRIPTORS-NAME" class="id_link">#</a></dt><dd><p>
+        nom de la colonne
+       </p></dd><dt id="ECPG-NAMED-DESCRIPTORS-NULLABLE"><span class="term"><code class="literal">NULLABLE</code> (integer)</span> <a href="#ECPG-NAMED-DESCRIPTORS-NULLABLE" class="id_link">#</a></dt><dd><p>
+        non implémenté
+       </p></dd><dt id="ECPG-NAMED-DESCRIPTORS-OCTET-LENGTH"><span class="term"><code class="literal">OCTET_LENGTH</code> (integer)</span> <a href="#ECPG-NAMED-DESCRIPTORS-OCTET-LENGTH" class="id_link">#</a></dt><dd><p>
+        longueur de la représentation caractère de la donnée en octets
+       </p></dd><dt id="ECPG-NAMED-DESCRIPTORS-PRECISION"><span class="term"><code class="literal">PRECISION</code> (integer)</span> <a href="#ECPG-NAMED-DESCRIPTORS-PRECISION" class="id_link">#</a></dt><dd><p>
+        précision (pour les types <code class="type">numeric</code>)
+       </p></dd><dt id="ECPG-NAMED-DESCRIPTORS-RETURNED-LENGTH"><span class="term"><code class="literal">RETURNED_LENGTH</code> (integer)</span> <a href="#ECPG-NAMED-DESCRIPTORS-RETURNED-LENGTH" class="id_link">#</a></dt><dd><p>
+        longueur de la donnée en caractères
+       </p></dd><dt id="ECPG-NAMED-DESCRIPTORS-RETURNED-OCTET-LENGTH"><span class="term"><code class="literal">RETURNED_OCTET_LENGTH</code> (integer)</span> <a href="#ECPG-NAMED-DESCRIPTORS-RETURNED-OCTET-LENGTH" class="id_link">#</a></dt><dd><p>
+        longueur de la représentation caractère de la donnée en octets
+       </p></dd><dt id="ECPG-NAMED-DESCRIPTORS-SCALE"><span class="term"><code class="literal">SCALE</code> (integer)</span> <a href="#ECPG-NAMED-DESCRIPTORS-SCALE" class="id_link">#</a></dt><dd><p>
+        échelle (pour le type <code class="type">numeric</code>)
+       </p></dd><dt id="ECPG-NAMED-DESCRIPTORS-TYPE"><span class="term"><code class="literal">TYPE</code> (integer)</span> <a href="#ECPG-NAMED-DESCRIPTORS-TYPE" class="id_link">#</a></dt><dd><p>
+        code numérique du type de données de la colonne
+       </p></dd></dl></div><p>
+   </p><p>
+    Dans les ordres <code class="command">EXECUTE</code>, <code class="command">DECLARE</code>
+    and <code class="command">OPEN</code>, l'effet des mots clés
+    <code class="literal">INTO</code> and <code class="literal">USING</code>
+    est différent. Une zone de descripteur peut aussi être
+    construite manuellement pour fournir les paramètres d'entré
+    pour une requête ou un curseur et <code class="literal">USING SQL DESCRIPTOR
+     <em class="replaceable"><code>name</code></em></code> est la façon de passer
+    les paramètres d'entrée à une requête paramétrisée. L'ordre
+    pour construire une zone de descripteur SQL est ci-dessous:
+    </p><pre class="programlisting">
+EXEC SQL SET DESCRIPTOR <em class="replaceable"><code>name</code></em> VALUE <em class="replaceable"><code>num</code></em> <em class="replaceable"><code>field</code></em> = :<em class="replaceable"><code>hostvar</code></em>;
+    </pre><p>
+   </p><p>
+    PostgreSQL supporte la récupération de plus d'un enregistrement
+    dans un ordre <code class="command">FETCH</code> et les variables hôtes dans
+    ce cas doivent être des tableaux. Par exemple :
+    </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+int id[5];
+EXEC SQL END DECLARE SECTION;
+
+EXEC SQL FETCH 5 FROM mycursor INTO SQL DESCRIPTOR mydesc;
+
+EXEC SQL GET DESCRIPTOR mydesc VALUE 1 :id = DATA;
+    </pre><p>
+
+   </p></div><div class="sect2" id="ECPG-SQLDA-DESCRIPTORS"><div class="titlepage"><div><div><h3 class="title">34.7.2. Zones de Descripteurs SQLDA <a href="#ECPG-SQLDA-DESCRIPTORS" class="id_link">#</a></h3></div></div></div><p>
+    Une zone de descripteur SQLDA est une structure C qui peut aussi être utilisé
+    pour récupérer les résultats et les métadonnées d'une requête. Une structure
+    stocke un enregistrement du jeu de résultat.
+    </p><pre class="programlisting">
+EXEC SQL include sqlda.h;
+sqlda_t         *mysqlda;
+
+EXEC SQL FETCH 3 FROM mycursor INTO DESCRIPTOR mysqlda;
+    </pre><p>
+    Netez que le mot clé <code class="literal">SQL</code> est omis. Les paragraphes qui parlent
+    des cas d'utilisation de <code class="literal">INTO</code> and <code class="literal">USING</code>
+    dans <a class="xref" href="ecpg-descriptors.html#ECPG-NAMED-DESCRIPTORS" title="34.7.1. Zones de Descripteur SQL nommées">Section 34.7.1</a> s'appliquent aussi ici, avec un point
+    supplémentaire. Dans un ordre <code class="command">DESCRIBE</code> le mot clé
+    <code class="literal">DESCRIPTOR</code> peut être complètement omis si le mot clé
+    <code class="literal">INTO</code> est utilisé :
+    </p><pre class="programlisting">
+EXEC SQL DESCRIBE prepared_statement INTO mysqlda;
+    </pre><p>
+   </p><div class="procedure"><p>
+     Le déroulement général d'un programme qui utilise des SQLDA est:
+    </p><ol class="procedure" type="1"><li class="step"><p>Préparer une requête, et déclarer un curseur pour l'utiliser.</p></li><li class="step"><p>Déclarer une SQLDA pour les lignes de résultat.</p></li><li class="step"><p>Déclarer une SQLDA pour les paramètres d'entrées, et les initialiser (allocation mémoire, positionnement des paramètres).</p></li><li class="step"><p>Ouvrir un curseur avec la SQLDA d'entrée.</p></li><li class="step"><p>Récupérer les enregistrements du curseur, et les stocker dans une SQLDA de sortie.</p></li><li class="step"><p>Lire les valeurs de la SQLDA de sortie vers les variables hôtes (avec conversion si nécessaire).</p></li><li class="step"><p>Fermer le curseur.</p></li><li class="step"><p>Libérer la zone mémoire allouée pour la SQLDA d'entrée.</p></li></ol></div><div class="sect3" id="ECPG-SQLDA-DESCRIPTORS-SQLDA"><div class="titlepage"><div><div><h4 class="title">34.7.2.1. Structure de données SQLDA <a href="#ECPG-SQLDA-DESCRIPTORS-SQLDA" class="id_link">#</a></h4></div></div></div><p>
+     Les SQLDA utilisent 3 types de structures de données:
+     <code class="type">sqlda_t</code>, <code class="type">sqlvar_t</code>,
+     et <code class="type">struct sqlname</code>.
+    </p><div class="tip"><h3 class="title">Astuce</h3><p>
+      La structure de la SQLDA de PostgreSQL est similaire à celle
+      de DB2 Universal Database d'IBM, des informations techniques
+      sur la SQLDA de DB2 peuvent donc aider à mieux comprendre celle de
+      PostgreSQL.
+     </p></div><div class="sect4" id="ECPG-SQLDA-SQLDA"><div class="titlepage"><div><div><h5 class="title">34.7.2.1.1. Structure sqlda_t <a href="#ECPG-SQLDA-SQLDA" class="id_link">#</a></h5></div></div></div><p>
+      Le type de structure <code class="type">sqlda_t</code> est le type de la SQLDA
+      proprement dit. Il contient un enregistrement. Et deux ou plus
+      <code class="type">sqlda_t</code> peuvent être connectées par une liste
+      chaînée par le pointeur du champ <code class="structfield">desc_next</code>,
+      représentant par conséquent une collection ordonnée d'enregistrements.
+      Par conséquent, quand deux enregistrements ou plus sont récupérés,
+      l'application peut les lire en suivant le pointeur
+      <code class="structfield">desc_next</code> dans chaque nœud <code class="type">sqlda_t</code>.
+     </p><p>
+      La définition de <code class="type">sqlda_t</code> est :
+      </p><pre class="programlisting">
+struct sqlda_struct
+{
+    char            sqldaid[8];
+    long            sqldabc;
+    short           sqln;
+    short           sqld;
+    struct sqlda_struct *desc_next;
+    struct sqlvar_struct sqlvar[1];
+};
+
+typedef struct sqlda_struct sqlda_t;
+      </pre><p>
+
+      La signification des champs est :
+
+      </p><div class="variablelist"><dl class="variablelist"><dt id="ECPG-SQLDA-SQLDA-SQLDAID"><span class="term"><code class="literal">sqldaid</code></span> <a href="#ECPG-SQLDA-SQLDA-SQLDAID" class="id_link">#</a></dt><dd><p>
+          Elle contient la chaîne littérale <code class="literal">"SQLDA  "</code>.
+         </p></dd><dt id="ECPG-SQLDA-SQLDA-SQLDABC"><span class="term"><code class="literal">sqldabc</code></span> <a href="#ECPG-SQLDA-SQLDA-SQLDABC" class="id_link">#</a></dt><dd><p>
+          Il contient la taille de l'espace alloué en octets.
+         </p></dd><dt id="ECPG-SQLDA-SQLDA-SQLN"><span class="term"><code class="literal">sqln</code></span> <a href="#ECPG-SQLDA-SQLDA-SQLN" class="id_link">#</a></dt><dd><p>
+          Il content le nombre de paramètres d'entrée pour une requête paramétrique, dans
+          le cas où il est passé à un ordre <code class="command">OPEN</code>, <code class="command">DECLARE</code> ou
+          <code class="command">EXECUTE</code> utilisant le mot clé <code class="literal">USING</code>.
+          Dans le cas où il sert de sortie à un ordre <code class="command">SELECT</code>,
+          <code class="command">EXECUTE</code> ou <code class="command">FETCH</code> statements,
+          sa valeur est la même que celle du champ <code class="literal">sqld</code>.
+         </p></dd><dt id="ECPG-SQLDA-SQLDA-SQLD"><span class="term"><code class="literal">sqld</code></span> <a href="#ECPG-SQLDA-SQLDA-SQLD" class="id_link">#</a></dt><dd><p>
+          Il contient le nombre de champs du résultat.
+         </p></dd><dt id="ECPG-SQLDA-SQLDA-DESC-NEXT"><span class="term"><code class="literal">desc_next</code></span> <a href="#ECPG-SQLDA-SQLDA-DESC-NEXT" class="id_link">#</a></dt><dd><p>
+          Si la requête retourne plus d'un enregistrement, plusieurs structures
+          SQLDA chaînées sont retournées, et <code class="literal">desc_next</code> contient
+          un pointeur vers l'élément suivant (enregistrement) de la liste.
+         </p></dd><dt id="ECPG-SQLDA-SQLDA-SQLVAR"><span class="term"><code class="literal">sqlvar</code></span> <a href="#ECPG-SQLDA-SQLDA-SQLVAR" class="id_link">#</a></dt><dd><p>
+          C'est le tableau des colonnes du résultat.
+         </p></dd></dl></div><p>
+     </p></div><div class="sect4" id="ECPG-SQLDA-SQLVAR"><div class="titlepage"><div><div><h5 class="title">34.7.2.1.2. Structure de sqlvar_t <a href="#ECPG-SQLDA-SQLVAR" class="id_link">#</a></h5></div></div></div><p>
+      Le type structure <code class="type">sqlvar_t</code> contient la valeur
+      d'une colonne et les métadonnées telles que son type et sa longueur.
+      La définition du type est :
+
+      </p><pre class="programlisting">
+struct sqlvar_struct
+{
+    short          sqltype;
+    short          sqllen;
+    char          *sqldata;
+    short         *sqlind;
+    struct sqlname sqlname;
+};
+
+typedef struct sqlvar_struct sqlvar_t;
+      </pre><p>
+
+      La signification des champs est :
+
+      </p><div class="variablelist"><dl class="variablelist"><dt id="ECPG-SQLDA-SQLVAR-SQLTYPE"><span class="term"><code class="literal">sqltype</code></span> <a href="#ECPG-SQLDA-SQLVAR-SQLTYPE" class="id_link">#</a></dt><dd><p>
+          Contient l'identifiant de type du champ. Pour les valeurs,
+          voyez <code class="literal">enum ECPGttype</code> dans <code class="literal"> ecpgtype.h</code>.
+         </p></dd><dt id="ECPG-SQLDA-SQLVAR-SQLLEN"><span class="term"><code class="literal">sqllen</code></span> <a href="#ECPG-SQLDA-SQLVAR-SQLLEN" class="id_link">#</a></dt><dd><p>
+          Contient la longueur binaire du champ, par exemple 4 octets pour
+          <code class="type">ECPGt_int</code>.
+         </p></dd><dt id="ECPG-SQLDA-SQLVAR-SQLDATA"><span class="term"><code class="literal">sqldata</code></span> <a href="#ECPG-SQLDA-SQLVAR-SQLDATA" class="id_link">#</a></dt><dd><p>
+          Pointe vers la donnée. Le format de la donnée est décrit
+          dans <a class="xref" href="ecpg-variables.html#ECPG-VARIABLES-TYPE-MAPPING" title="34.4.4. Correspondance de Type">Section 34.4.4</a>.
+         </p></dd><dt id="ECPG-SQLDA-SQLVAR-SQLIND"><span class="term"><code class="literal">sqlind</code></span> <a href="#ECPG-SQLDA-SQLVAR-SQLIND" class="id_link">#</a></dt><dd><p>
+          Pointe vers l'indicateur de nullité. 0 signifie non nul,
+          -1 signifie nul.
+          null.
+         </p></dd><dt id="ECPG-SQLDA-SQLVAR-SQLNAME"><span class="term"><code class="literal">sqlname</code></span> <a href="#ECPG-SQLDA-SQLVAR-SQLNAME" class="id_link">#</a></dt><dd><p>
+          Le nom du champ.
+         </p></dd></dl></div><p>
+     </p></div><div class="sect4" id="ECPG-SQLDA-SQLNAME"><div class="titlepage"><div><div><h5 class="title">34.7.2.1.3. Structure struct sqlname <a href="#ECPG-SQLDA-SQLNAME" class="id_link">#</a></h5></div></div></div><p>
+      Une structure <code class="type">struct sqlname</code> contient un nom de colonne.
+      Il est utilisé comme membre de la structure <code class="type">sqlvar_t</code>.
+      La définition de la structure est :
+      </p><pre class="programlisting">
+#define NAMEDATALEN 64
+
+struct sqlname
+{
+        short           length;
+        char            data[NAMEDATALEN];
+};
+      </pre><p>
+      La signification des champs est :
+      </p><div class="variablelist"><dl class="variablelist"><dt id="ECPG-SQLDA-SQLNAME-LENGTH"><span class="term"><code class="literal">length</code></span> <a href="#ECPG-SQLDA-SQLNAME-LENGTH" class="id_link">#</a></dt><dd><p>
+          Contient la longueur du nom du champ.
+         </p></dd><dt id="ECPG-SQLDA-SQLNAME-DATA"><span class="term"><code class="literal">data</code></span> <a href="#ECPG-SQLDA-SQLNAME-DATA" class="id_link">#</a></dt><dd><p>
+          Contient le nom du champ proprement dit.
+         </p></dd></dl></div><p>
+     </p></div></div><div class="sect3" id="ECPG-SQLDA-OUTPUT"><div class="titlepage"><div><div><h4 class="title">34.7.2.2. Récupérer un jeu de données au moyen d'une SQLDA <a href="#ECPG-SQLDA-OUTPUT" class="id_link">#</a></h4></div></div></div><div class="procedure"><p>
+      Les étapes générales pour récupérer un jeu de données au moyen
+      d'une SQLDA sont :
+     </p><ol class="procedure" type="1"><li class="step"><p>Déclarer une structure <code class="type">sqlda_t</code> pour recevoir le jeu de données.</p></li><li class="step"><p>Exécuter des commandes <code class="command">FETCH</code>/<code class="command">EXECUTE</code>/<code class="command">DESCRIBE</code> pour traiter une requête en spécifiant la SQLDA déclarée.</p></li><li class="step"><p>Vérifier le nombre d'enregistrements dans le résultat en inspectant <code class="structfield">sqln</code>, un membre de la structure <code class="type">sqlda_t</code>.</p></li><li class="step"><p>Récupérer les valeurs de chaque colonne des membres <code class="literal">sqlvar[0]</code>, <code class="literal">sqlvar[1]</code>, etc., de la structure <code class="type">sqlda_t</code>.</p></li><li class="step"><p>Aller à l'enregistrement suivant (<code class="type">sqlda_t</code> structure) en suivant le pointeur <code class="structfield">desc_next</code>, un membre de la structure <code class="type">sqlda_t</code>.</p></li><li class="step"><p>Répéter l'étape ci-dessus au besoin.</p></li></ol></div><p>
+     Voici un exemple de récupération d'un jeu de résultats au moyen d'une SQLDA.
+    </p><p>
+     Tout d'abord, déclarer une structure <code class="type">sqlda_t</code> pour recevoir le jeu de résultats.
+     </p><pre class="programlisting">
+sqlda_t *sqlda1;
+     </pre><p>
+    </p><p>
+     Puis, spécifier la SQLDA dans une commande. Voici
+     un exemple avec une commande <code class="command">FETCH</code>.
+     </p><pre class="programlisting">
+EXEC SQL FETCH NEXT FROM cur1 INTO DESCRIPTOR sqlda1;
+     </pre><p>
+    </p><p>
+     Faire une boucle suivant la liste chaînée pour récupérer les
+     enregistrements.
+     </p><pre class="programlisting">
+sqlda_t *cur_sqlda;
+
+for (cur_sqlda = sqlda1;
+     cur_sqlda != NULL;
+     cur_sqlda = cur_sqlda-&gt;desc_next)
+{
+    ...
+}
+     </pre><p>
+    </p><p>
+     Dans la boucle, faire une autre boucle pour récupérer chaque colonne
+     de données (<code class="type">sqlvar_t</code>) de l'enregistrement.
+     </p><pre class="programlisting">
+for (i = 0; i &lt; cur_sqlda-&gt;sqld; i++)
+{
+    sqlvar_t v = cur_sqlda-&gt;sqlvar[i];
+    char *sqldata = v.sqldata;
+    short sqllen  = v.sqllen;
+    ...
+}
+     </pre><p>
+    </p><p>
+     Pour récupérer une valeur de colonne, vérifiez la valeur de
+     <code class="structfield">sqltype</code>. Puis, suivant le type de la colonne,
+     basculez sur une façon appropriée de copier les données du champ
+     <code class="structfield">sqlvar</code> vers une variable hôte.
+     </p><pre class="programlisting">
+char var_buf[1024];
+
+switch (v.sqltype)
+{
+    case ECPGt_char:
+        memset(&amp;var_buf, 0, sizeof(var_buf));
+        memcpy(&amp;var_buf, sqldata, (sizeof(var_buf) &lt;= sqllen ? sizeof(var_buf) - 1 : sqllen));
+        break;
+
+    case ECPGt_int: /* integer */
+        memcpy(&amp;intval, sqldata, sqllen);
+        snprintf(var_buf, sizeof(var_buf), "%d", intval);
+        break;
+
+    ...
+}
+</pre><p>
+    </p></div><div class="sect3" id="ECPG-SQLDA-INPUT"><div class="titlepage"><div><div><h4 class="title">34.7.2.3. Passer des Paramètres de Requête en Utilisant une SQLDA <a href="#ECPG-SQLDA-INPUT" class="id_link">#</a></h4></div></div></div><div class="procedure"><p>
+      La méthode générale pour utiliser une SQLDA pour passer des paramètres
+      d'entrée à une requête préparée sont :
+     </p><ol class="procedure" type="1"><li class="step"><p>Créer une requête préparée (prepared statement)</p></li><li class="step"><p>Déclarer une structure sqlda_t comme SQLDA d'entrée.</p></li><li class="step"><p>Allouer une zone mémorie (comme structure sqlda_t) pour la SQLDA d'entrée.</p></li><li class="step"><p>Positionner (copier) les valeurs d'entrée dans la mémoire allouée.</p></li><li class="step"><p>Ouvrir un curseur en spécifiant la SQLDA d'entrée.</p></li></ol></div><p>
+     Voici un exemple.
+    </p><p>
+     D'abord, créer une requête préparée.
+</p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+char query[1024] = "SELECT d.oid, * FROM pg_database d, pg_stat_database s WHERE d.oid = s.datid AND (d.datname = ? OR d.oid = ?)";
+EXEC SQL END DECLARE SECTION;
+
+EXEC SQL PREPARE stmt1 FROM :query;
+     </pre><p>
+    </p><p>
+     Puis, allouer de la mémoire pour une SQLDA, et positionner
+     le nombre de paramètres d'entrée dans <code class="structfield">sqln</code>,
+     une variable membre de la structure&lt;sqlda_t&gt;. Quand deux paramètres
+     d'entrée ou plus sont requis pour la requête préparée, l'application
+     doit allouer de la mémoire supplémentaire qui est calculée par
+     (nombre de paramètres -1) * sizeof&lt;sqlvar_t&gt;. Les exemples affichés
+     ici allouent de l'espace mémoire pour deux paramètres d'entrée.
+     </p><pre class="programlisting">
+sqlda_t *sqlda2;
+
+sqlda2 = (sqlda_t *) malloc(sizeof(sqlda_t) + sizeof(sqlvar_t));
+memset(sqlda2, 0, sizeof(sqlda_t) + sizeof(sqlvar_t));
+
+sqlda2-&gt;sqln = 2; /* nombre de variables d'entrée */
+     </pre><p>
+    </p><p>
+     Après l'allocation mémoire, stocker les valeurs des paramètres dans
+     le tableau<code class="literal">sqlvar[]</code>. (C'est le même tableau que
+     celui qui est utilisé quand la SQLDA reçoit un jeu de résultats.)
+     Dans cet exemple, les paramètres d'entrée sont
+     <code class="literal">"postgres"</code>, de type chaîne, et <code class="literal">1</code>,
+     de type integer.
+     </p><pre class="programlisting">
+sqlda2-&gt;sqlvar[0].sqltype = ECPGt_char;
+sqlda2-&gt;sqlvar[0].sqldata = "postgres";
+sqlda2-&gt;sqlvar[0].sqllen  = 8;
+
+int intval = 1;
+sqlda2-&gt;sqlvar[1].sqltype = ECPGt_int;
+sqlda2-&gt;sqlvar[1].sqldata = (char *) &amp;intval;
+sqlda2-&gt;sqlvar[1].sqllen  = sizeof(intval);
+     </pre><p>
+    </p><p>
+     En ouvrant un curseur et en spécifiant la SQLDA qui a été
+     positionné auparavant, les paramètres d'entrée sont passés
+     à la requête préparée.
+     </p><pre class="programlisting">
+EXEC SQL OPEN cur1 USING DESCRIPTOR sqlda2;
+     </pre><p>
+    </p><p>
+     Et pour finir, après avoir utilisé les SQLDAs d'entrée, la mémoire
+     allouée doit être libérée explicitement, contrairement aux SQLDAs
+     utilisé pour recevoir le résultat d'une requête.
+     </p><pre class="programlisting">
+free(sqlda2);
+     </pre><p>
+    </p></div><div class="sect3" id="ECPG-SQLDA-EXAMPLE"><div class="titlepage"><div><div><h4 class="title">34.7.2.4. Une application de Démonstration Utilisant SQLDA <a href="#ECPG-SQLDA-EXAMPLE" class="id_link">#</a></h4></div></div></div><p>
+     Voici un programme de démonstration, qui montre comment récupérer
+     des statistiques d'accès des bases, spécifiées par les paramètres
+     d'entrée, dans les catalogues systèmes.
+    </p><p>
+     Cette application joint deux tables systèmes, pg_database et
+     pg_stat_database sur l'oid de la base, et récupère et affiche
+     aussi les statistiques des bases qui sont spécifiées par
+     deux paramètres d'entrées (une base <code class="literal">postgres</code> et
+     un OID <code class="literal">1</code>).
+    </p><p>
+     Tout d'abord, déclarer une SQLDA pour l'entrée et une SQLDA pour la sortie.
+     </p><pre class="programlisting">
+EXEC SQL include sqlda.h;
+
+sqlda_t *sqlda1; /* un descripteur de sortie */
+sqlda_t *sqlda2; /* un descripteur d'entrée  */
+     </pre><p>
+    </p><p>
+     Puis, se connecter à la base, préparer une requête, et déclarer un
+     curseur pour la requête préparée.
+     </p><pre class="programlisting">
+int
+main(void)
+{
+    EXEC SQL BEGIN DECLARE SECTION;
+    char query[1024] = "SELECT d.oid,* FROM pg_database d, pg_stat_database s WHERE d.oid=s.datid AND ( d.datname=? OR d.oid=? )";
+    EXEC SQL END DECLARE SECTION;
+
+    EXEC SQL CONNECT TO testdb AS con1 USER testuser;
+    EXEC SQL SELECT pg_catalog.set_config('search_path', '', false); EXEC SQL COMMIT;
+
+    EXEC SQL PREPARE stmt1 FROM :query;
+    EXEC SQL DECLARE cur1 CURSOR FOR stmt1;
+     </pre><p>
+    </p><p>
+     Puis, mettre des valeurs dans la SQLDA d'entrée pour les
+     paramètres d'entrée. Allouer de la mémoire pour la SQL d'entrée,
+     et positionner le nombre de paramètres d'entrée dans
+     <code class="literal">sqln</code>. Stocker le type, la valeur et la longueur
+     de la valeur dans <code class="literal">sqltype</code>, <code class="literal">sqldata</code>
+     et <code class="literal">sqllen</code> dans la structure <code class="literal">sqlvar</code>.
+
+     </p><pre class="programlisting">
+    /* Créer une structure SQLDA pour les paramètres d'entrée. */
+    sqlda2 = (sqlda_t *) malloc(sizeof(sqlda_t) + sizeof(sqlvar_t));
+    memset(sqlda2, 0, sizeof(sqlda_t) + sizeof(sqlvar_t));
+    sqlda2-&gt;sqln = 2; /* number of input variables */
+
+    sqlda2-&gt;sqlvar[0].sqltype = ECPGt_char;
+    sqlda2-&gt;sqlvar[0].sqldata = "postgres";
+    sqlda2-&gt;sqlvar[0].sqllen  = 8;
+
+    intval = 1;
+    sqlda2-&gt;sqlvar[1].sqltype = ECPGt_int;
+    sqlda2-&gt;sqlvar[1].sqldata = (char *)&amp;intval;
+    sqlda2-&gt;sqlvar[1].sqllen  = sizeof(intval);
+     </pre><p>
+    </p><p>
+     Après avoir positionné la SQLDA d'entrée, ouvrir un curseur
+     avec la SQLDA d'entrée.
+
+     </p><pre class="programlisting">
+    /* Ouvrir un curseur avec les paramètres d'entrée. */
+    EXEC SQL OPEN cur1 USING DESCRIPTOR sqlda2;
+     </pre><p>
+    </p><p>
+     Récupérer les enregistrements dans la SQLDA de sortie à partir
+     du curseur ouvert. (En général, il faut appeler <code class="command">FETCH</code>
+     de façon répétée dans la boucle, pour récupérer tous les enregistrements
+     du jeu de données.)
+     </p><pre class="programlisting">
+    while (1)
+    {
+        sqlda_t *cur_sqlda;
+
+        /* Assigner le descripteur au curseur  */
+        EXEC SQL FETCH NEXT FROM cur1 INTO DESCRIPTOR sqlda1;
+     </pre><p>
+    </p><p>
+     Ensuite, récupérer les enregistrements du FETCH de la SQLDA,
+     en suivant la liste chaînée de la structure <code class="type">sqlda_t</code>.
+     </p><pre class="programlisting">
+    for (cur_sqlda = sqlda1 ;
+         cur_sqlda != NULL ;
+         cur_sqlda = cur_sqlda-&gt;desc_next)
+    {
+        ...
+     </pre><p>
+    </p><p>
+     Lire chaque colonne dans le premier enregistrement. Le nombre de colonnes
+     est stocké dans <code class="structfield">sqld</code>, les données réelles
+     de la première colonne sont stockées dans <code class="literal">sqlvar[0]</code>,
+     tous deux membres de la structure<code class="type">sqlda_t</code>.
+
+     </p><pre class="programlisting">
+        /* Afficher toutes les colonnes d'un enregistrement. */
+        for (i = 0; i &lt; sqlda1-&gt;sqld; i++)
+        {
+            sqlvar_t v = sqlda1-&gt;sqlvar[i];
+            char *sqldata = v.sqldata;
+            short sqllen  = v.sqllen;
+
+            strncpy(name_buf, v.sqlname.data, v.sqlname.length);
+            name_buf[v.sqlname.length] = '\0';
+     </pre><p>
+    </p><p>
+     Maintenant, la donnée de la colonne est stockée dans la variable
+     <code class="literal">v</code>.
+     Copier toutes les données dans les variables host, en inspectant
+     <code class="literal">v.sqltype</code> pour connaître le type de la colonne.
+     </p><pre class="programlisting">
+            switch (v.sqltype) {
+                int intval;
+                double doubleval;
+                unsigned long long int longlongval;
+
+                case ECPGt_char:
+                    memset(&amp;var_buf, 0, sizeof(var_buf));
+                    memcpy(&amp;var_buf, sqldata, (sizeof(var_buf) &lt;= sqllen ? sizeof(var_buf)-1 : sqllen));
+                    break;
+
+                case ECPGt_int: /* integer */
+                    memcpy(&amp;intval, sqldata, sqllen);
+                    snprintf(var_buf, sizeof(var_buf), "%d", intval);
+                    break;
+
+                ...
+
+                default:
+                    ...
+            }
+
+            printf("%s = %s (type: %d)\n", name_buf, var_buf, v.sqltype);
+        }
+</pre><p>
+    </p><p>
+     Fermer le curseur après avoir traité tous les enregistrements, et
+     se déconnecter de la base de données.
+</p><pre class="programlisting">
+    EXEC SQL CLOSE cur1;
+    EXEC SQL COMMIT;
+
+    EXEC SQL DISCONNECT ALL;
+     </pre><p>
+    </p><p>
+     Le programme dans son entier est visible dans
+     <a class="xref" href="ecpg-descriptors.html#ECPG-SQLDA-EXAMPLE-EXAMPLE" title="Exemple 34.1. Programme de Démonstration SQLDA">Exemple 34.1</a>.
+    </p><div class="example" id="ECPG-SQLDA-EXAMPLE-EXAMPLE"><p class="title"><strong>Exemple 34.1. Programme de Démonstration SQLDA</strong></p><div class="example-contents"><pre class="programlisting">
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+EXEC SQL include sqlda.h;
+
+sqlda_t *sqlda1; /* descripteur pour la sortie */
+sqlda_t *sqlda2; /* descripteur pour l'entrée */
+
+EXEC SQL WHENEVER NOT FOUND DO BREAK;
+EXEC SQL WHENEVER SQLERROR STOP;
+
+int
+main(void)
+{
+    EXEC SQL BEGIN DECLARE SECTION;
+    char query[1024] = "SELECT d.oid,* FROM pg_database d, pg_stat_database s WHERE d.oid=s.datid AND ( d.datname=? OR d.oid=? )";
+
+    int intval;
+    unsigned long long int longlongval;
+    EXEC SQL END DECLARE SECTION;
+
+    EXEC SQL CONNECT TO uptimedb AS con1 USER uptime;
+    EXEC SQL SELECT pg_catalog.set_config('search_path', '', false); EXEC SQL COMMIT;
+
+    EXEC SQL PREPARE stmt1 FROM :query;
+    EXEC SQL DECLARE cur1 CURSOR FOR stmt1;
+
+    /* Créer une structure SQLDB pour let paramètres d'entrée */
+    sqlda2 = (sqlda_t *)malloc(sizeof(sqlda_t) + sizeof(sqlvar_t));
+    memset(sqlda2, 0, sizeof(sqlda_t) + sizeof(sqlvar_t));
+    sqlda2-&gt;sqln = 2; /* a number of input variables */
+
+    sqlda2-&gt;sqlvar[0].sqltype = ECPGt_char;
+    sqlda2-&gt;sqlvar[0].sqldata = "postgres";
+    sqlda2-&gt;sqlvar[0].sqllen  = 8;
+
+    intval = 1;
+    sqlda2-&gt;sqlvar[1].sqltype = ECPGt_int;
+    sqlda2-&gt;sqlvar[1].sqldata = (char *) &amp;intval;
+    sqlda2-&gt;sqlvar[1].sqllen  = sizeof(intval);
+
+    /* Ouvrir un curseur avec les paramètres d'entrée. */
+    EXEC SQL OPEN cur1 USING DESCRIPTOR sqlda2;
+
+    while (1)
+    {
+        sqlda_t *cur_sqlda;
+
+        /* Assigner le descripteur au curseur  */
+        EXEC SQL FETCH NEXT FROM cur1 INTO DESCRIPTOR sqlda1;
+
+        for (cur_sqlda = sqlda1 ;
+             cur_sqlda != NULL ;
+             cur_sqlda = cur_sqlda-&gt;desc_next)
+        {
+            int i;
+            char name_buf[1024];
+            char var_buf[1024];
+
+            /* Afficher toutes les colonnes d'un enregistrement. */
+            for (i=0 ; i&lt;cur_sqlda-&gt;sqld ; i++)
+            {
+                sqlvar_t v = cur_sqlda-&gt;sqlvar[i];
+                char *sqldata = v.sqldata;
+                short sqllen  = v.sqllen;
+
+                strncpy(name_buf, v.sqlname.data, v.sqlname.length);
+                name_buf[v.sqlname.length] = '\0';
+
+                switch (v.sqltype)
+                {
+                    case ECPGt_char:
+                        memset(&amp;var_buf, 0, sizeof(var_buf));
+                        memcpy(&amp;var_buf, sqldata, (sizeof(var_buf)&lt;=sqllen ? sizeof(var_buf)-1 : sqllen) );
+                        break;
+
+                    case ECPGt_int: /* integer */
+                        memcpy(&amp;intval, sqldata, sqllen);
+                        snprintf(var_buf, sizeof(var_buf), "%d", intval);
+                        break;
+
+                    case ECPGt_long_long: /* bigint */
+                        memcpy(&amp;longlongval, sqldata, sqllen);
+                        snprintf(var_buf, sizeof(var_buf), "%lld", longlongval);
+                        break;
+
+                    default:
+                    {
+                        int i;
+                        memset(var_buf, 0, sizeof(var_buf));
+                        for (i = 0; i &lt; sqllen; i++)
+                        {
+                            char tmpbuf[16];
+                            snprintf(tmpbuf, sizeof(tmpbuf), "%02x ", (unsigned char) sqldata[i]);
+                            strncat(var_buf, tmpbuf, sizeof(var_buf));
+                        }
+                    }
+                        break;
+                }
+
+                printf("%s = %s (type: %d)\n", name_buf, var_buf, v.sqltype);
+            }
+
+            printf("\n");
+        }
+    }
+
+    EXEC SQL CLOSE cur1;
+    EXEC SQL COMMIT;
+
+    EXEC SQL DISCONNECT ALL;
+
+    return 0;
+}
+     </pre><p>
+      L'exemple suivant devrait ressembler à quelque chose comme
+      ce qui suit (des nombres seront différents).
+     </p><pre class="screen">
+oid = 1 (type: 1)
+datname = template1 (type: 1)
+datdba = 10 (type: 1)
+encoding = 0 (type: 5)
+datistemplate = t (type: 1)
+datallowconn = t (type: 1)
+dathasloginevt = f (type: 1)
+datconnlimit = -1 (type: 5)
+datfrozenxid = 379 (type: 1)
+dattablespace = 1663 (type: 1)
+datconfig =  (type: 1)
+datacl = {=c/uptime,uptime=CTc/uptime} (type: 1)
+datid = 1 (type: 1)
+datname = template1 (type: 1)
+numbackends = 0 (type: 5)
+xact_commit = 113606 (type: 9)
+xact_rollback = 0 (type: 9)
+blks_read = 130 (type: 9)
+blks_hit = 7341714 (type: 9)
+tup_returned = 38262679 (type: 9)
+tup_fetched = 1836281 (type: 9)
+tup_inserted = 0 (type: 9)
+tup_updated = 0 (type: 9)
+tup_deleted = 0 (type: 9)
+
+oid = 11511 (type: 1)
+datname = postgres (type: 1)
+datdba = 10 (type: 1)
+encoding = 0 (type: 5)
+datistemplate = f (type: 1)
+datallowconn = t (type: 1)
+dathasloginevt = f (type: 1)
+datconnlimit = -1 (type: 5)
+datfrozenxid = 379 (type: 1)
+dattablespace = 1663 (type: 1)
+datconfig =  (type: 1)
+datacl =  (type: 1)
+datid = 11511 (type: 1)
+datname = postgres (type: 1)
+numbackends = 0 (type: 5)
+xact_commit = 221069 (type: 9)
+xact_rollback = 18 (type: 9)
+blks_read = 1176 (type: 9)
+blks_hit = 13943750 (type: 9)
+tup_returned = 77410091 (type: 9)
+tup_fetched = 3253694 (type: 9)
+tup_inserted = 0 (type: 9)
+tup_updated = 0 (type: 9)
+tup_deleted = 0 (type: 9)
+     </pre></div></div><br class="example-break" /></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/ecpg-descriptors.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:38 GMT -->
+</html>

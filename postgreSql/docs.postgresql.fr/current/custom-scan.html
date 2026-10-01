@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/custom-scan.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:47:23 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapitre 59. Écrire un module de parcours personnalisé</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tablesample-support-functions.html" title="58.1. Fonctions de support d'une méthode d'échantillonnage" /><link rel="next" href="custom-scan-path.html" title="59.1. Créer des parcours de chemin personnalisés" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/custom-scan.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/custom-scan.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/custom-scan.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/custom-scan.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/custom-scan.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/custom-scan.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/custom-scan.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/custom-scan.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/custom-scan.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/custom-scan.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/custom-scan.html">9.5</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/custom-scan.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-node">Écrire un module de parcours personnalisé</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tablesample-support-functions.html" title="58.1. Fonctions de support d'une méthode d'échantillonnage">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="internals.html" title="Partie VII. Internes">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="custom-scan-path.html" title="59.1. Créer des parcours de chemin personnalisés">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">58.1. Fonctions de support d'une méthode d'échantillonnage </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 59.1. Créer des parcours de chemin personnalisés</td></tr></table></div><div class="chapter" id="CUSTOM-SCAN"><div class="titlepage"><div><div><h2 class="title">Chapitre 59. Écrire un module de parcours personnalisé</h2></div></div></div><div class="toc"><p><strong>Table des matières</strong></p><dl class="toc"><dt><span class="sect1"><a href="custom-scan-path.html">59.1. Créer des parcours de chemin personnalisés</a></span></dt><dd><dl><dt><span class="sect2"><a href="custom-scan-path.html#CUSTOM-SCAN-PATH-CALLBACKS">59.1.1. Fonctions callbacks d'un parcours de chemin personnalisé</a></span></dt></dl></dd><dt><span class="sect1"><a href="custom-scan-plan.html">59.2. Créer des parcours de plans personnalisés</a></span></dt><dd><dl><dt><span class="sect2"><a href="custom-scan-plan.html#CUSTOM-SCAN-PLAN-CALLBACKS">59.2.1. Fonctions callbacks d'un plan de parcours personnalisé</a></span></dt></dl></dd><dt><span class="sect1"><a href="custom-scan-execution.html">59.3. Exécution de parcours personnalisés</a></span></dt><dd><dl><dt><span class="sect2"><a href="custom-scan-execution.html#CUSTOM-SCAN-EXECUTION-CALLBACKS">59.3.1. Fonction callbacks d'exécution d'un parcours personnalisé</a></span></dt></dl></dd></dl></div><a id="id-1.10.12.2" class="indexterm"></a><p>
+  <span class="productname">PostgreSQL</span> supporte un ensemble de
+  fonctionnalités expérimentales destinées à permettre à
+  des modules d'extension d'ajouter de nouveaux types de parcours au
+  système. Contrairement aux <a class="link" href="fdwhandler.html" title="Chapitre 57. Écrire un wrapper de données distantes">wrapper de
+   données distantes</a>, qui sont seulement en charge de savoir
+  comment parcourir leurs propres tables distantes, un module de parcours
+  personnalisé peut fournir une méthode alternative de parcours de
+  n'importe quelle relation du système. Typiquement, la motivation pour
+  écrire un module de parcours personnalisé serait d'utiliser des
+  optimisations non supportées par le système de base, telles que la
+  mise en cache ou certaines formes d'accélération matérielles. Ce
+  chapitre décrit les grandes lignes de l'écriture d'un nouveau module
+  de parcours personnalisé.
+ </p><p>
+  Développer un nouveau type de parcours personnalisé est un
+  processus en trois étapes. Premièrement, lors de la planification,
+  il est nécessaire de générer des chemins d'accès représentant un
+  parcours utilisant la stratégie proposée. Deuxièmement, si l'un de
+  ces chemins d'accès est sélectionné par le planificateur comme
+  la stratégie optimale pour parcourir une relation particulière,
+  le chemin d'accès doit être converti en plan. Finalement, il doit
+  être possible d'exécuter le plan et de générer le même résultat
+  qui aurait été généré pour tous les autres chemins d'accès visant
+  la même relation.
+ </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/custom-scan.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:47:23 GMT -->
+</html>

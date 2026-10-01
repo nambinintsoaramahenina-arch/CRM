@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/tableam.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:47:23 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapitre 61. Définition de l'interface des méthodes d'accès aux tables</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="geqo-biblio.html" title="60.4. Lectures supplémentaires" /><link rel="next" href="indexam.html" title="Chapitre 62. Définition de l'interface des méthodes d'accès aux index" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/tableam.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/tableam.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/tableam.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/tableam.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/tableam.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/tableam.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/tableam.html">12</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/tableam.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-node">Définition de l'interface des méthodes d'accès aux tables</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="geqo-biblio.html" title="60.4. Lectures supplémentaires">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="internals.html" title="Partie VII. Internes">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="indexam.html" title="Chapitre 62. Définition de l'interface des méthodes d'accès aux index">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">60.4. Lectures supplémentaires </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 62. Définition de l'interface des méthodes d'accès aux index</td></tr></table></div><div class="chapter" id="TABLEAM"><div class="titlepage"><div><div><h2 class="title">Chapitre 61. Définition de l'interface des méthodes d'accès aux tables</h2></div></div></div><a id="id-1.10.14.2" class="indexterm"></a><a id="id-1.10.14.3" class="indexterm"></a><p>
+  Ce chapitre explique l'interface entre le système
+  <span class="productname">PostgreSQL</span> et les <em class="firstterm">méthodes d'accès aux
+   tables</em>, qui gèrent le stockage des tables. Le cœur du système
+  connaît très peu de choses sur ces méthodes d'accès en dehors de ce qui est
+  spécifié ici, donc il est possible de développer de nouvelles méthodes
+  d'accès en écrivant un code supplémentaire.
+ </p><p>
+  Chaque méthode d'accès aux tables est décrite par une ligne dans le
+  catalogue système <a class="link" href="catalog-pg-am.html" title="51.3. pg_am"><code class="structname">pg_am</code></a>.
+  L'enregistrement dans <code class="structname">pg_am</code> précise un nom et une
+  <em class="firstterm">fonction de gestion</em> pour la méthode d'accès à la
+  table. Ces enregistrements peuvent être créés et supprimés en utilisant les
+  commandes SQL <a class="xref" href="sql-create-access-method.html" title="CREATE ACCESS METHOD"><span class="refentrytitle">CREATE ACCESS METHOD</span></a> et <a class="xref" href="sql-drop-access-method.html" title="DROP ACCESS METHOD"><span class="refentrytitle">DROP ACCESS METHOD</span></a>.
+ </p><p>
+  Une fonction de gestion de la méthode d'accès aux tables doit être déclarée
+  comme acceptant un seul argument de type <code class="type">internal</code> et doit
+  renvoyer le pseudo-type <code class="type">table_am_handler</code>. L'argument est une
+  valeur bateau qui sert simplement à empêcher l'appel de fonctions de gestion
+  à partir de simples commandes SQL.
+
+  Le résultat de la fonction doit être un pointeur vers une structure de type
+  <code class="structname">TableAmRoutine</code>, qui contient tout ce que le cœur du
+  moteur a besoin de savoir pour utiliser la méthode d'accès aux tables. La
+  valeur de retour doit avoir une durée de vie valable pour toute la durée
+  d'exécution du serveur, ce qui se fait habituellement en la définissant
+  comme une variable de type <code class="literal">static const</code> de façon globale.
+  La structure <code class="structname">TableAmRoutine</code>, aussi appelée
+  <em class="firstterm">structure API</em> de la méthode d'accès, définit le
+  comportement de la méthode d'accès en utilisant des callbacks. Ces callbacks
+  sont des pointeurs vers des fonctions C et ne sont pas visibles ou
+  appelables au niveau du langage SQL. Tous les callbacks et leurs
+  comportements sont définis dans la structure
+  <code class="structname">TableAmRoutine</code> (avec des commentaires dans la
+  structure définissant les prérequis des callbacks). La plupart des callbacks
+  ont des fonctions wrapper, documentées du point de vue de l'utilisateur
+  (plutôt que de l'implémenter) de la méthode d'accès aux tables. Pour les
+  détails, voir le fichier <a class="ulink" href="https://git.postgresql.org/gitweb/?p=postgresql.git;a=blob;f=src/include/access/tableam.h;hb=head" target="_top">
+   <code class="filename">src/include/access/tableam.h</code></a>.
+ </p><p>
+  Pour implémenter une méthode d'accès, un implémenteur aura habituellement
+  besoin d'implémenter un type de ligne spécifique à une <acronym class="acronym">AM</acronym>
+  (voir <a class="ulink" href="https://git.postgresql.org/gitweb/?p=postgresql.git;a=blob;f=src/include/executor/tuptable.h;hb=head" target="_top">
+   <code class="filename">src/include/executor/tuptable.h</code></a>), qui permet à
+  du code en dehors de la méthode d'accès de détenir des références sur les
+  lignes de l'AM, et d'accéder aux colonnes de la ligne.
+ </p><p>
+  Actuellement, la façon dont un AM enregistre les données est très peu
+  contrainte. Par exemple, il est possible, mais non requis, d'utiliser le
+  cache disque de PostgreSQL. Au cas où il est utilisé, il est censé
+  utiliser la disposition standard d'une page de
+  <span class="productname">PostgreSQL</span> comme décrit dans <a class="xref" href="storage-page-layout.html" title="65.6. Emplacement des pages de la base de données">Section 65.6</a>.
+ </p><p>
+  Une importante contrainte de l'API de méthode d'accès aux tables est
+  qu'actuellement, si l'AM veut accepter les modifications et/ou les index, il
+  est nécessaire que chaque ligne ait un identifiant de ligne
+  (<acronym class="acronym">TID</acronym>) consistant en un numéro de bloc et un numéro
+  d'enregistrement (voir aussi <a class="xref" href="storage-page-layout.html" title="65.6. Emplacement des pages de la base de données">Section 65.6</a>). Il
+  n'est pas strictement nécessaire que les sous-parties des
+  <acronym class="acronym">TIDs</acronym> aient cette même signification, avoir un
+  <code class="literal">heap</code>, mais si le support de parcours de bitmap est
+  souhaité (c'est optionnel), le numéro de bloc doit fournir une localisation.
+ </p><p>
+  Pour la sécurité des données, un AM doit utiliser les <a class="link" href="wal.html" title="Chapitre 28. Fiabilité et journaux de transaction"><acronym class="acronym">WAL</acronym></a> de PostgreSQL ou une
+  implémentation personnalisée. Si les <acronym class="acronym">WAL</acronym> sont choisis, des
+  <a class="link" href="generic-wal.html" title="63.1. Enregistrements génériques des journaux de transactions">enregistrements génériques des WAL</a> peuvent
+  être utilisés. Vous pouvez aussi implémenter un nouveau type d'enregistrements
+  <acronym class="acronym">WAL</acronym> (voir <a class="link" href="custom-rmgr.html" title="63.2. Gestionnaires de ressources WAL personnalisées">Gestionnaire
+  personnalisé de ressources WAL</a>).
+ </p><p>
+  Pour implémenter le support transactionnel d'une façon qui permet à
+  différentes méthodes d'accès aux tables d'être accédées dans une seule
+  transaction, il est généralement nécessaire d'intégrer ce qui se trouve dans
+  <code class="filename">src/backend/access/transam/xlog.c</code>.
+ </p><p>
+  Tout développeur d'une nouvelle <code class="literal">méthode d'accès aux
+   tables</code> peut se référer à l'implémentation existante de
+  <code class="literal">heap</code> dans
+  <code class="filename">src/backend/access/heap/heapam_handler.c</code> pour les
+  détails de son implémentation.
+ </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/tableam.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:47:23 GMT -->
+</html>

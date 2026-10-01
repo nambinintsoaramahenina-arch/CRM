@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/wal-reliability.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>28.1. Fiabilité</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="wal.html" title="Chapitre 28. Fiabilité et journaux de transaction" /><link rel="next" href="checksums.html" title="28.2. Sommes de contrôle pour les données" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/wal-reliability.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/wal-reliability.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/wal-reliability.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/wal-reliability.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/wal-reliability.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/wal-reliability.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/wal-reliability.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/wal-reliability.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/wal-reliability.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/wal-reliability.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="wal.html">Fiabilité et journaux de transaction</a></span> » <span class="breadcrumb-node">Fiabilité</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="wal.html" title="Chapitre 28. Fiabilité et journaux de transaction">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="wal.html" title="Chapitre 28. Fiabilité et journaux de transaction">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="checksums.html" title="28.2. Sommes de contrôle pour les données">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Chapitre 28. Fiabilité et journaux de transaction </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 28.2. Sommes de contrôle pour les données</td></tr></table></div><div class="sect1" id="WAL-RELIABILITY"><div class="titlepage"><div><div><h2 class="title" style="clear: both">28.1. Fiabilité <a href="#WAL-RELIABILITY" class="id_link">#</a></h2></div></div></div><p>
+   La fiabilité est une propriété importante de tout système de base de
+   données sérieux. <span class="productname">PostgreSQL</span> fait tout
+   son possible pour garantir un fonctionnement fiable. Un des aspects
+   de la fiabilité est de stocker toutes les données validées par une
+   transaction dans un espace non volatil,
+   insensible aux coupures de courant, aux bogues du système d'exploitation
+   et aux problèmes matériels (sauf en cas de problème sur l'espace non
+   volatile, bien sûr).
+   Pour cela, il est habituellement suffisant d'écrire avec succès
+   les données sur le stockage permanent de l'ordinateur
+   (disque dur ou un équivalent).
+   En fait, même si un ordinateur est irrémédiablement hors d'usage,
+   si le disque dur survit, ces données peuvent être déplacées vers un autre
+   ordinateur au matériel similaire et toutes les transactions validées
+   resteront intactes.
+  </p><p>
+   Bien que forcer l'enregistrement des données périodiquement sur le disque
+   semble être une opération simple, ce n'est pas le cas. Comme les disques
+   durs sont beaucoup plus lents que la mémoire principale et les
+   processeurs, plusieurs niveaux de cache existent entre la mémoire principale
+   de l'ordinateur et les disques.
+   Tout d'abord, il y a le tampon cache du
+   système d'exploitation, qui met en cache les blocs disque fréquemment utilisés
+   et combine les écritures.
+   Heureusement, tous les systèmes
+   d'exploitation fournissent aux applications un moyen
+   de forcer les écritures du cache vers
+   le disque et <span class="productname">PostgreSQL</span> utilise ces fonctions
+   (voir le paramètre <a class="xref" href="runtime-config-wal.html#GUC-WAL-SYNC-METHOD">wal_sync_method</a>
+   pour en ajuster le fonctionnement).
+  </p><p>
+   Ensuite, il peut y avoir un cache dans le contrôleur du disque dur ;
+   ceci est assez courant sur les cartes contrôleur <acronym class="acronym">RAID</acronym>. Certains
+   de ces caches sont <em class="firstterm">write-through</em>, ce qui signifie
+   que les écritures sont envoyées au disque dès qu'elles arrivent.
+   D'autres sont  <em class="firstterm">write-back</em>, ce qui veut dire
+   que les données sont envoyées au lecteur un peu plus tard.
+   De tels caches peuvent être un danger car
+   la mémoire cache du contrôleur du disque est volatile 
+   elle perdra donc son contenu à la prochaine coupure de courant.
+   Des cartes contrôleur de meilleure qualité ont des
+   caches <em class="firstterm">avec batterie</em> (<acronym class="acronym">BBU</acronym>),
+   c'est-à-dire que la carte
+   dispose d'une batterie qui maintient l'alimentation du cache
+   en cas de coupure de courant.
+   Une fois celui-ci revenu, les données seront écrites sur les
+   disques durs.
+  </p><p>
+   Et enfin, la plupart des disques durs ont des caches. Certains sont
+   <span class="foreignphrase"><em class="foreignphrase">write-through</em></span> alors que d'autres sont
+   <span class="foreignphrase"><em class="foreignphrase">write-back</em></span>, et les mêmes problèmes se
+   posent pour les caches <span class="foreignphrase"><em class="foreignphrase">write-back</em></span> des
+   disques que pour ceux de contrôleurs.
+   Les disques IDE et SATA grand public en particulier sont susceptibles
+   d'avoir des caches <span class="quote">« <span class="quote">write-back</span> »</span> qui ne survivront pas
+   à une perte de courant. De nombreux SSD sont aussi dotés de caches
+   <span class="quote">« <span class="quote">write-back</span> »</span> volatiles.
+  </p><p>
+   Ces caches peuvent généralement être désactivés. Néanmoins, la méthode pour
+   le faire dépend du système d'exploitation et du type de disque :
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+     Sur <span class="productname">Linux</span>, on peut interroger les disques
+     IDE et SATA avec la commande <code class="command">hdparm -I</code> ; le
+     cache en écriture est activé si une étoile (<code class="literal">*</code>) se
+     trouve derrière le texte <code class="literal">Write cache</code>.
+     <code class="command">hdparm -W 0</code> peut être utilisé pour désactiver le
+     cache en écriture. Les disques SCSI peuvent être vérifiés en utilisant
+     <a class="ulink" href="http://sg.danny.cz/sg/sdparm.html" target="_top"><span class="application">sdparm</span></a>.
+     Utilisez <code class="command">sdparm --get=WCE</code> pour voir si le
+     cache en écriture est activé et <code class="command">sdparm --clear=WCE</code>
+     pour le désactiver.
+    </p></li><li class="listitem"><p>
+     Sur <span class="productname">FreeBSD</span>, les disques IDE peuvent être
+     interrogés avec <code class="command">camcontrol</code> et le cache en écriture
+     désactivé avec <code class="literal">hw.ata.wc=0</code> dans le fichier de
+     configuration <code class="filename">/boot/loader.conf</code> ; les disques
+     SCSI peuvent être interrogés avec <code class="command">camcontrol
+      identify</code>, et le cache en écriture peut être consulté et
+     modifié en utilisant <code class="command">sdparm</code> quand cette
+     commande est disponible.
+    </p></li><li class="listitem"><p>
+     Sur <span class="productname">Solaris</span>, le cache disque en écriture
+     est contrôlé par <code class="command">format -e</code>.
+     (Le système de fichiers Solaris <acronym class="acronym">ZFS</acronym> est sûr
+     même quand le cache disque en écriture est activé car il exécute
+     ses propres commandes de vidage du cache.)
+    </p></li><li class="listitem"><p>
+     Sur <span class="productname">Windows</span>, si
+     <code class="varname">wal_sync_method</code> vaut <code class="literal">open_datasync</code>
+     (la valeur par défaut), le cache en écriture peut être désactivé
+     en décochant <code class="literal">My Computer\Open\<em class="replaceable"><code>disk
+       drive</code></em>\Properties\Hardware\Properties\Policies\Enable
+      write caching on the disk</code>.
+     Ou bien configurez <code class="varname">wal_sync_method</code> à
+     <code class="literal">fdatasync</code> (NTFS seulement) ou <code class="literal">fsync</code>
+     pour désactiver le cache en écriture.
+    </p></li><li class="listitem"><p>
+     Sur <span class="productname">macOS</span>, le cache en écriture peut
+     être évité en configurant <code class="varname">wal_sync_method</code> à
+     <code class="literal">fsync_writethrough</code>.
+    </p></li></ul></div><p>
+   Les disques SATA récents (ceux compatibles <acronym class="acronym">ATAPI-6</acronym> ou
+   supérieurs) proposent une commande pour vider le cache sur le disque
+   (<code class="command">FLUSH CACHE EXT</code>) alors que les disques SCSI proposent
+   depuis longtemps une commande similaire, <code class="command">SYNCHRONIZE CACHE</code>.
+   Ces commandes ne sont pas directement accessibles à
+   <span class="productname">PostgreSQL</span>, mais certains systèmes de fichiers
+   (comme <acronym class="acronym">ZFS</acronym>, <acronym class="acronym">ext4</acronym>) peuvent les utiliser pour vider
+   les données sur disque pour les disques au cache en écriture activé.
+   Malheureusement,
+   ces systèmes de fichiers se comportent de façon non optimale avec des
+   contrôleurs disque équipés de batterie (<acronym class="acronym">BBU</acronym>, acronyme de
+   <span class="foreignphrase"><em class="foreignphrase">Battery-Backed Unit</em></span>). Dans ce type de
+   configuration, la commande de synchronisation force l'écriture de toutes
+   les données comprises dans le cache sur les disques, éliminant ainsi tout
+   l'intérêt d'un cache protégé par une batterie. Vous pouvez lancer l'outil
+   <a class="xref" href="pgtestfsync.html" title="pg_test_fsync"><span class="refentrytitle"><span class="application">pg_test_fsync</span></span></a>, disponible dans le code source de
+   PostgreSQL, pour vérifier si vous êtes affecté. Si vous l'êtes, les
+   améliorations de performance du cache BBU peuvent être de nouveaux obtenues
+   en désactivant les barrières d'écriture dans la configuration du système de
+   fichiers ou en reconfigurant le contrôleur de disque, si cela est possible.
+   Si les barrières d'écriture sont désactivées, assurez-vous que la batterie
+   reste active. Une batterie défectueuse peut être une cause de perte de
+   données. Il reste à espérer que les concepteurs de systèmes de fichiers et
+   de contrôleurs disque finissent par corriger ce comportement gênant.
+  </p><p>
+   Quand le système d'exploitation envoie une demande d'écriture au système de
+   stockage,
+   il ne peut pas faire grand-chose pour s'assurer que les données sont
+   arrivées dans un espace de stockage réellement non volatil.
+   C'est plutôt la responsabilité de l'administrateur de
+   s'assurer que tous les composants de
+   stockage garantissent l'intégrité des données et des métadonnées du système de
+   fichier. Évitez les contrôleurs disques
+   ne disposant pas de caches protégés par batterie. Au niveau du disque,
+   désactivez le cache <span class="quote">« <span class="quote">write-back</span> »</span> si le disque ne peut garantir
+   que les données seront écrites avant un arrêt. Si vous utilisez des disques
+   SSD, sachez que beaucoup n'honorent pas les commandes de vidage de cache
+   par défaut. Vous pouvez tester la fiabilité du comportement du système
+   disque en utilisant <a class="ulink" href="https://brad.livejournal.com/2116715.html" target="_top"><code class="filename">diskchecker.pl</code></a>.
+  </p><p>
+   Un autre risque de perte de données est dû aux opérations
+   d'écriture sur les plateaux du disque. Les plateaux sont divisés en
+   secteurs de 512 octets généralement. Chaque opération de lecture ou écriture
+   physique traite un secteur entier. Quand une demande d'écriture arrive au
+   lecteur, sa taille peut être un multiple de 512 octets
+   (<span class="productname">PostgreSQL</span> écrit généralement 8192 octets, soit
+   16 secteurs, à la fois) et le processus d'écriture peut échouer à cause
+   d'une coupure de courant à tout moment, ce qui implique que certains octets
+   peuvent être écrits et les autres perdus. Pour se prévenir contre ce
+   type d'échec, <span class="productname">PostgreSQL</span> écrit périodiquement
+   des pages complètes dans le stockage permanent des journaux de
+   transactions <span class="emphasis"><em>avant</em></span> de modifier la page réelle sur
+   disque. Ainsi, lors d'une récupération après un arrêt brutal,
+   <span class="productname">PostgreSQL</span> peut restaurer les pages écrites
+   partiellement à partir des journaux de transactions. Si vous avez un système
+   de fichiers qui vous protège contre les écritures de pages incomplètes (par
+   exemple ZFS), vous pouvez désactiver la création des images de page en
+   utilisant le paramètre <a class="xref" href="runtime-config-wal.html#GUC-FULL-PAGE-WRITES">full_page_writes</a>. Les
+   contrôleurs disques disposant d'une batterie (<acronym class="acronym">BBU</acronym> pour
+   <span class="foreignphrase"><em class="foreignphrase">Battery-Backed Unit</em></span>) n'empêchent pas les
+   écritures de pages partielles sauf s'ils garantissent que les données
+   sont écrites par pages complètes de 8 ko.
+  </p><p>
+   <span class="productname">PostgreSQL</span> protège aussi de certaines corruptions
+   de données au niveau du support de stockage qui peuvent se produire suite à des
+   erreurs au niveau matériel ou des problèmes d'usure au fil du temps,
+   comme la lecture ou l'écriture de données invalides.
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Dans un journal de transaction, chaque enregistrement est protégé
+      par une somme de contrôle CRC-32C (32 bits) qui nous dit si le
+      contenu de l'enregistrement est correct. La valeur CRC est définie à
+      l'écriture de chaque enregistrement dans le journal et
+      vérifiée durant une récupération après arrêt brutal, la récupération d'une
+      archive et la réplication.
+     </p></li><li class="listitem"><p>
+      Par défaut, les pages de données ne disposent pas de sommes de contrôle, mais
+      les images des pages complètes stockées dans les enregistrements des
+      journaux de transactions seront protégées. Voir <a class="link" href="app-initdb.html#APP-INITDB-DATA-CHECKSUMS"><span class="application">initdb</span></a>
+      pour les détails sur l'activation des sommes de contrôle sur les pages de
+      données.
+     </p></li><li class="listitem"><p>
+      Les structures de données internes comme
+      <code class="filename">pg_xact</code>, <code class="filename">pg_subtrans</code>,
+      <code class="filename">pg_multixact</code>, <code class="filename">pg_serial</code>,
+      <code class="filename">pg_notify</code>, <code class="filename">pg_stat</code>,
+      <code class="filename">pg_snapshots</code>
+      n'ont pas de sommes de contrôle, et leurs pages de données ne sont pas
+      protégées par les écritures de pages complètes.
+      Cependant, lorsque de telles structures
+      de données sont persistantes, les enregistrements des journaux de
+      transactions sont écrits de manière à ce que les modifications récentes
+      puissent être rapidement reconstruites lors d'une restauration après
+      incident, et ces enregistrements sont protégés comme décrit plus haut.
+     </p></li><li class="listitem"><p>
+      Les fichiers d'état de <code class="filename">pg_twophase</code> sont
+      protégés chacun par une somme de contrôle CRC-32C.
+     </p></li><li class="listitem"><p>
+      Les fichiers de données temporaires utilisés lors de grosses requêtes SQL
+      pour le tri, la matérialisation ou des résultats intermédiaires ne font
+      pas actuellement l'objet d'une somme de contrôle, et la
+      modification de ces fichiers n'est pas non plus consignée dans les
+      enregistrements des journaux de transactions.
+     </p></li></ul></div><p>
+  </p><p>
+   <span class="productname">PostgreSQL</span> ne protége pas contre les erreurs
+   mémoires et il est supposé que vous travaillez avec de la
+   RAM avec correction d'erreur (ECC) aux standards de l'industrie, ou une meilleure protection.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/wal-reliability.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+</html>

@@ -1,0 +1,932 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-client.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.11. Valeurs par défaut des connexions client</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-autovacuum.html" title="19.10. Nettoyage (vacuum) automatique" /><link rel="next" href="runtime-config-locks.html" title="19.12. Gestion des verrous" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/runtime-config-client.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/runtime-config-client.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/runtime-config-client.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/runtime-config-client.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/runtime-config-client.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/runtime-config-client.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/runtime-config-client.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/runtime-config-client.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/runtime-config-client.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/runtime-config-client.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/runtime-config-client.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/runtime-config-client.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/runtime-config-client.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/runtime-config-client.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/runtime-config-client.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/runtime-config-client.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/runtime-config-client.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/runtime-config-client.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/runtime-config-client.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/runtime-config-client.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/runtime-config-client.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="runtime-config.html">Configuration du serveur</a></span> » <span class="breadcrumb-node">Valeurs par défaut des connexions client</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-autovacuum.html" title="19.10. Nettoyage (vacuum) automatique">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-locks.html" title="19.12. Gestion des verrous">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">19.10. Nettoyage (<code class="command">vacuum</code>) automatique </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 19.12. Gestion des verrous</td></tr></table></div><div class="sect1" id="RUNTIME-CONFIG-CLIENT"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.11. Valeurs par défaut des connexions client <a href="#RUNTIME-CONFIG-CLIENT" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="runtime-config-client.html#RUNTIME-CONFIG-CLIENT-STATEMENT">19.11.1. Comportement des instructions</a></span></dt><dt><span class="sect2"><a href="runtime-config-client.html#RUNTIME-CONFIG-CLIENT-PRELOAD">19.11.2. Préchargement de bibliothèques partagées</a></span></dt><dt><span class="sect2"><a href="runtime-config-client.html#RUNTIME-CONFIG-CLIENT-FORMAT">19.11.3. Locale et formatage</a></span></dt><dt><span class="sect2"><a href="runtime-config-client.html#RUNTIME-CONFIG-CLIENT-OTHER">19.11.4. Autres valeurs par défaut</a></span></dt></dl></div><div class="sect2" id="RUNTIME-CONFIG-CLIENT-STATEMENT"><div class="titlepage"><div><div><h3 class="title">19.11.1. Comportement des instructions <a href="#RUNTIME-CONFIG-CLIENT-STATEMENT" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-CLIENT-MIN-MESSAGES"><span class="term"><code class="varname">client_min_messages</code> (<code class="type">enum</code>)</span> <a href="#GUC-CLIENT-MIN-MESSAGES" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.1.2.1" class="indexterm"></a><p>
+     Contrôle les <a class="link" href="runtime-config-logging.html#RUNTIME-CONFIG-SEVERITY-LEVELS" title="Tableau 19.2. Niveaux de sévérité des messages">niveaux de
+      message</a> envoyés au client. Les valeurs valides sont
+     <code class="literal">DEBUG5</code>, <code class="literal">DEBUG4</code>,
+     <code class="literal">DEBUG3</code>, <code class="literal">DEBUG2</code>,
+     <code class="literal">DEBUG1</code>, <code class="literal">LOG</code>,
+     <code class="literal">NOTICE</code>, <code class="literal">WARNING</code> et
+     <code class="literal">ERROR</code>. Chaque niveau inclut tous les
+     niveaux qui le suivent. Plus on progresse dans la liste,
+     plus le nombre de messages envoyés est faible. <code class="literal">NOTICE</code>
+     est la valeur par défaut. <code class="literal">LOG</code> a ici une portée
+     différente de celle de <code class="varname">log_min_messages</code>.
+    </p><p>
+     Les messages de niveau <code class="literal">INFO</code> sont toujours envoyés au
+     client.
+    </p></dd><dt id="GUC-SEARCH-PATH"><span class="term"><code class="varname">search_path</code> (<code class="type">string</code>)</span> <a href="#GUC-SEARCH-PATH" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.2.2.1" class="indexterm"></a><a id="id-1.6.6.14.2.2.2.2.2" class="indexterm"></a><p>
+     Cette variable précise l'ordre dans lequel les schémas sont parcourus
+     lorsqu'un objet (table, type de données, fonction, etc.) est référencé
+     par un simple nom sans précision du schéma. Lorsque des objets de
+     noms identiques existent dans plusieurs schémas, c'est le premier trouvé
+     dans le chemin de recherche qui est utilisé. Il ne peut être fait
+     référence à un objet qui ne fait partie d'aucun des schémas indiqués
+     dans le chemin de recherche qu'en précisant son schéma conteneur
+     avec un nom qualifié (avec un point).
+    </p><p>
+     <code class="varname">search_path</code> doit contenir une liste de noms
+     de schémas séparés par des virgules. Tout nom qui ne correspond pas à un
+     schéma existant ou qui correspond à un schéma pour lequel l'utilisateur
+     n'a pas le droit <code class="literal">USAGE</code>, est ignoré silencieusement.
+    </p><p>
+     Si un des éléments de la liste est le nom spécial <code class="literal">$user</code>,
+     alors le schéma dont le nom correspond à la valeur retournée par
+     <code class="function">CURRENT_USER</code> est substitué, s'il existe et que
+     l'utilisateur ait le droit <code class="literal">USAGE</code> sur ce schéma
+     (sinon <code class="literal">$user</code> est ignoré).
+    </p><p>
+     Le schéma du catalogue système, <code class="literal">pg_catalog</code>, est toujours
+     parcouru, qu'il soit ou non mentionné dans le chemin. Mentionné, il
+     est alors parcouru dans l'ordre indiqué. Dans le cas contraire, il
+     est parcouru <span class="emphasis"><em>avant</em></span> tout autre élément du chemin.
+    </p><p>
+     De même, le schéma des tables temporaires,
+     <code class="literal">pg_temp_<em class="replaceable"><code>nnn</code></em></code>, s'il existe,
+     est toujours parcouru. Il peut être explicitement ajouté au chemin
+     à l'aide de l'alias <code class="literal">pg_temp</code><a id="id-1.6.6.14.2.2.2.2.7.3" class="indexterm"></a>.
+     S'il n'en fait pas
+     partie, la recherche commence par lui (avant même
+     <code class="literal">pg_catalog</code>). Néanmoins, seuls les noms de relation
+     (table, vue, séquence, etc.) et de type de données sont recherchés dans
+     le schéma temporaire. Aucune fonction et aucun opérateur n'y est
+     jamais recherché.
+    </p><p>
+     Lorsque des objets sont créés sans précision de schéma cible
+     particulier, ils sont placés dans le premier schéma valide listé dans le chemin
+     de recherche. Une erreur est rapportée si le chemin de recherche est
+     vide.
+    </p><p>
+     La valeur par défaut de ce paramètre est
+     <code class="literal">"$user", public</code>. Elle permet l'utilisation
+     partagée d'une base de données (dans laquelle aucun utilisateur n'a de schéma
+     privé et tous partagent l'utilisation de <code class="literal">public</code>),
+     les schémas privés d'utilisateur ainsi qu'une combinaison de ces
+     deux modes. D'autres effets peuvent être obtenus en modifiant le chemin de
+     recherche par défaut, globalement ou par utilisateur.
+    </p><p>
+     La valeur courante réelle du chemin de recherche peut être examinée via
+     la fonction <acronym class="acronym">SQL</acronym> <code class="function">current_schemas()</code>
+     (voir <a class="xref" href="functions-info.html" title="9.27. Fonctions et opérateurs d'information sur le système">Section 9.27</a>). Elle n'est pas identique
+     à la valeur de <code class="varname">search_path</code>
+     car <code class="function">current_schemas</code> affiche la façon dont les
+     requêtes apparaissant dans <code class="varname">search_path</code> sont
+     résolues.
+    </p></dd><dt id="GUC-ROW-SECURITY"><span class="term"><code class="varname">row_security</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.14.2.2.3.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ROW-SECURITY" class="id_link">#</a></dt><dd><p>
+     Cette variable indique s'il convient de lever une erreur
+     au lieu d'appliquer la politique de sécurité au niveau
+     ligne. Lorsque positionnée à <code class="literal">on</code>, les
+     politiques s'appliquent normalement. Lorsque positionnée
+     à <code class="literal">off</code>, les requêtes qui remplissent les
+     conditions d'au moins une politique de sécurité échouent. La
+     valeur par défaut est <code class="literal">on</code>. Positionnez la
+     valeur sur <code class="literal">off</code> dans le cas où une visibilité
+     limitée des lignes pourrait causer des résultats incorrects ; par
+     exemple, <span class="application">pg_dump</span> effectue ce changement
+     par défaut. Cette variable n'a aucun effet sur les rôles qui
+     outrepassent toutes les politiques de sécurité niveau ligne, à
+     savoir, les superutilisateurs et les rôles qui possèdent l'attribut
+     <code class="literal">BYPASSRLS</code>.
+    </p><p>
+     Pour plus d'informations sur les politiques de sécurité niveau
+     ligne, voir <a class="xref" href="sql-createpolicy.html" title="CREATE POLICY"><span class="refentrytitle">CREATE POLICY</span></a>.
+    </p></dd><dt id="GUC-DEFAULT-TABLE-ACCESS-METHOD"><span class="term"><code class="varname">default_table_access_method</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.14.2.2.4.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-DEFAULT-TABLE-ACCESS-METHOD" class="id_link">#</a></dt><dd><p>
+     Ce paramètre spécifie la méthode d'accès par défaut aux tables. Ce
+     paramètre est utilisé lors de la création des tables ou des vues
+     matérialisées si la commande <code class="command">CREATE</code> n'indique pas
+     spécifiquement de méthode d'accès ou quand <code class="command">SELECT ...
+      INTO</code> est utilisé, ce qui ne permet pas de spécifier une méthode
+     d'accès à la table. La valeur par défaut est <code class="literal">heap</code>.
+    </p></dd><dt id="GUC-DEFAULT-TABLESPACE"><span class="term"><code class="varname">default_tablespace</code> (<code class="type">string</code>)</span> <a href="#GUC-DEFAULT-TABLESPACE" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.5.2.1" class="indexterm"></a><a id="id-1.6.6.14.2.2.5.2.2" class="indexterm"></a><p>
+     Cette variable indique le <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span> par
+     défaut dans lequel sont créés les objets (tables et index) quand une
+     commande <code class="command">CREATE</code> ne l'explicite pas.
+    </p><p>
+     La valeur est soit le nom d'un
+     <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span> soit une chaîne vide pour
+     indiquer l'utilisation du
+     <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span> par défaut de la base de
+     données courante. Si la valeur ne correspond pas au nom d'un tablespace
+     existant, <span class="productname">PostgreSQL</span> utilise automatiquement
+     le tablespace par défaut de la base de données courante. Si un
+     <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span> différent de celui par défaut
+     est indiqué, l'utilisateur doit avoir le droit <code class="literal">CREATE</code>.
+     Dans le cas contraire, la tentative de création échouera.
+    </p><p>
+     Cette variable n'est pas utilisée pour les tables temporaires ;
+     pour elles, <a class="xref" href="runtime-config-client.html#GUC-TEMP-TABLESPACES">temp_tablespaces</a> est consulté à la
+     place.
+    </p><p>
+     Cette variable n'est pas utilisée non plus lors de la création
+     de bases de données. Par défaut, une nouvelle base de données
+     hérite sa configuration de tablespace de la base de données
+     modèle qui sert de copie.
+    </p><p>
+     Si ce paramètre est configuré à une valeur autre que la chaîne vide quand
+     une table partitionnée est créée, le tablespace de la table partitionnée
+     sera configuré à cette valeur, qui sera utilisé comme tablespace par
+     défaut pour les partitions créées dans le futur, même si
+     <code class="varname">default_tablespace</code> a été modifié depuis.
+    </p><p>
+     Pour plus d'informations sur les tablespaces, voir <a class="xref" href="manage-ag-tablespaces.html" title="22.6. Tablespaces">Section 22.6</a>.
+    </p></dd><dt id="GUC-DEFAULT-TOAST-COMPRESSION"><span class="term"><code class="varname">default_toast_compression</code> (<code class="type">enum</code>)
+   <a id="id-1.6.6.14.2.2.6.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-DEFAULT-TOAST-COMPRESSION" class="id_link">#</a></dt><dd><p>
+     Ce paramètre configure la valeur par défaut pour la méthode de
+     compression des colonnes TOAST des nouvelles tables. La commande
+     <code class="command">CREATE TABLE</code> peut surcharger cette valeur par défaut
+     si la clause <code class="literal">COMPRESSION</code> est utilisée au niveau des
+     colonnes. Les méthodes de compression supportées sont
+     <code class="literal">pglz</code> et, si <span class="productname">PostgreSQL</span> a
+     été compilé avec l'option <code class="literal">--with-lz4</code>,
+     <code class="literal">lz4</code>. La valeur par défaut est
+     <code class="literal">pglz</code>.
+    </p></dd><dt id="GUC-TEMP-TABLESPACES"><span class="term"><code class="varname">temp_tablespaces</code> (<code class="type">string</code>)</span> <a href="#GUC-TEMP-TABLESPACES" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.7.2.1" class="indexterm"></a><a id="id-1.6.6.14.2.2.7.2.2" class="indexterm"></a><p>
+     Cette variable indique le (ou les)
+     <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span>(s) dans le(s)quel(s) créer
+     les objets temporaires (tables temporaires et index sur des tables
+     temporaires) quand une commande <code class="command">CREATE</code> n'en explicite
+     pas. Les fichiers temporaires créés par les tris de gros
+     ensembles de données sont aussi créés dans ce
+     <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span>.
+    </p><p>
+     Cette valeur est une liste de noms de
+     <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span>s. Quand cette liste
+     contient plus d'un nom, <span class="productname">PostgreSQL</span> choisit
+     un membre de la liste au hasard à chaque fois qu'un objet temporaire doit
+     être créé. En revanche, dans une transaction, les objets temporaires
+     créés successivement sont placés dans les
+     <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span>s successifs de la
+     liste. Si l'élément sélectionné de la liste est une chaîne vide,
+     <span class="productname">PostgreSQL</span> utilise automatiquement le
+     <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span> par défaut de la base en cours.
+    </p><p>
+     Si <code class="varname">temp_tablespaces</code> est configuré interactivement,
+     l'indication d'un <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span> inexistant
+     est une erreur. Il en est de même si l'utilisateur n'a pas le droit
+     <code class="literal">CREATE</code> sur le
+     <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span> indiqué. Néanmoins,
+     lors de l'utilisation d'une valeur précédemment configurée, les
+     <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span>s qui n'existent pas sont ignorés
+     comme le sont les <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span>s pour lesquels
+     l'utilisateur n'a pas le droit <code class="literal">CREATE</code>. Cette règle
+     s'applique, en particulier, lors de l'utilisation d'une valeur configurée dans le fichier
+     <code class="filename">postgresql.conf</code>.
+    </p><p>
+     La valeur par défaut est une chaîne vide. De ce fait,
+     tous les objets temporaires sont créés dans le
+     <span class="foreignphrase"><em class="foreignphrase">tablespace</em></span> par défaut de la base de
+     données courante.
+    </p><p>
+     Voir aussi <a class="xref" href="runtime-config-client.html#GUC-DEFAULT-TABLESPACE">default_tablespace</a>.
+    </p></dd><dt id="GUC-CHECK-FUNCTION-BODIES"><span class="term"><code class="varname">check_function_bodies</code> (<code class="type">boolean</code>)</span> <a href="#GUC-CHECK-FUNCTION-BODIES" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.8.2.1" class="indexterm"></a><p>
+     Ce paramètre est habituellement positionné à <code class="literal">on</code>.
+     Positionné à <code class="literal">off</code>, il désactive la validation du corps
+     de la routine lors de <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle">CREATE FUNCTION</span></a> et <a class="xref" href="sql-createprocedure.html" title="CREATE PROCEDURE"><span class="refentrytitle">CREATE PROCEDURE</span></a>. Désactiver la validation évite les
+     effets de bord du processus de validation, en particulier pour éviter
+     les faux positifs dûs à des problèmes tels que les références.
+     Configurer ce paramètre à <code class="literal">off</code> avant de charger les
+     fonctions à la place des autres utilisateurs ;
+     <span class="application">pg_dump</span> le fait automatiquement.
+    </p></dd><dt id="GUC-DEFAULT-TRANSACTION-ISOLATION"><span class="term"><code class="varname">default_transaction_isolation</code> (<code class="type">enum</code>)</span> <a href="#GUC-DEFAULT-TRANSACTION-ISOLATION" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.9.2.1" class="indexterm"></a><a id="id-1.6.6.14.2.2.9.2.2" class="indexterm"></a><p>
+     Chaque transaction SQL a un niveau d'isolation. Celui-ci peut être
+     <span class="quote">« <span class="quote">read uncommitted</span> »</span>, <span class="quote">« <span class="quote">read committed</span> »</span>,
+     <span class="quote">« <span class="quote">repeatable read</span> »</span> ou <span class="quote">« <span class="quote">serializable</span> »</span>.
+     Ce paramètre contrôle le niveau d'isolation par défaut de chaque
+     nouvelle transaction. La valeur par défaut est <span class="quote">« <span class="quote">read committed</span> »</span>.
+    </p><p>
+     Consulter le <a class="xref" href="mvcc.html" title="Chapitre 13. Contrôle d'accès simultané">Chapitre 13</a> et
+     <a class="xref" href="sql-set-transaction.html" title="SET TRANSACTION"><span class="refentrytitle">SET TRANSACTION</span></a>
+     pour plus d'informations.
+    </p></dd><dt id="GUC-DEFAULT-TRANSACTION-READ-ONLY"><span class="term"><code class="varname">default_transaction_read_only</code> (<code class="type">boolean</code>)</span> <a href="#GUC-DEFAULT-TRANSACTION-READ-ONLY" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.10.2.1" class="indexterm"></a><a id="id-1.6.6.14.2.2.10.2.2" class="indexterm"></a><p>
+     Une transaction SQL en lecture seule ne peut pas modifier les
+     tables permanentes. Ce paramètre contrôle le statut de lecture seule
+     par défaut de chaque nouvelle transaction. La valeur par défaut est
+     <code class="literal">off</code> (lecture/écriture).
+    </p><p>
+     Consulter
+     <a class="xref" href="sql-set-transaction.html" title="SET TRANSACTION"><span class="refentrytitle">SET TRANSACTION</span></a>
+     pour plus d'informations.
+    </p></dd><dt id="GUC-DEFAULT-TRANSACTION-DEFERRABLE"><span class="term"><code class="varname">default_transaction_deferrable</code> (<code class="type">boolean</code>)</span> <a href="#GUC-DEFAULT-TRANSACTION-DEFERRABLE" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.11.2.1" class="indexterm"></a><a id="id-1.6.6.14.2.2.11.2.2" class="indexterm"></a><p>
+     Lors du fonctionnement avec le niveau d'isolation
+     <code class="literal">serializable</code>, une transaction SQL en lecture
+     seule et différable peut subir un certain délai avant d'être
+     autorisée à continuer. Néanmoins, une fois qu'elle a commencé
+     son exécution, elle n'encourt aucun des frais habituels
+     nécessaires pour assurer sa sériabilité. Donc le code de
+     sérialisation n'a aucune raison de forcer son annulation à cause
+     de mises à jour concurrentes, ce qui rend cette option très
+     intéressante pour les longues transactions en lecture seule.
+    </p><p>
+     Ce paramètre contrôle le statut différable par défaut de chaque
+     nouvelle transaction. Il n'a actuellement aucun effet sur les
+     transactions en lecture/écriture ou celles opérant à des niveaux
+     d'isolation inférieurs à <code class="literal">serializable</code>. La
+     valeur par défaut est <code class="literal">off</code>.
+    </p><p>
+     Consultez <a class="xref" href="sql-set-transaction.html" title="SET TRANSACTION"><span class="refentrytitle">SET TRANSACTION</span></a> pour plus
+     d'informations.
+    </p></dd><dt id="GUC-TRANSACTION-ISOLATION"><span class="term"><code class="varname">transaction_isolation</code> (<code class="type">enum</code>)
+   <a id="id-1.6.6.14.2.2.12.1.3" class="indexterm"></a>
+   <a id="id-1.6.6.14.2.2.12.1.4" class="indexterm"></a>
+   </span> <a href="#GUC-TRANSACTION-ISOLATION" class="id_link">#</a></dt><dd><p>
+     Ce paramètre reflète le niveau d'isolation de la transaction. Au début de
+     chaque transaction, il est configuré à la valeur courante du paramètre
+     <a class="xref" href="runtime-config-client.html#GUC-DEFAULT-TRANSACTION-ISOLATION">default_transaction_isolation</a>. Toute tentative
+     ultérieure de modification est équivalente à une commande <a class="xref" href="sql-set-transaction.html" title="SET TRANSACTION"><span class="refentrytitle">SET TRANSACTION</span></a>.
+    </p></dd><dt id="GUC-TRANSACTION-READ-ONLY"><span class="term"><code class="varname">transaction_read_only</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.14.2.2.13.1.3" class="indexterm"></a>
+   <a id="id-1.6.6.14.2.2.13.1.4" class="indexterm"></a>
+   </span> <a href="#GUC-TRANSACTION-READ-ONLY" class="id_link">#</a></dt><dd><p>
+     Ce paramètre reflète le statut lecture-seule de la transaction
+     courante. Au début de chaque transaction, il est configuré à la
+     valeur courante du paramètre <a class="xref" href="runtime-config-client.html#GUC-DEFAULT-TRANSACTION-READ-ONLY">default_transaction_read_only</a>. Toute tentative de
+     modification ultérieure est équivalente à une commande <a class="xref" href="sql-set-transaction.html" title="SET TRANSACTION"><span class="refentrytitle">SET TRANSACTION</span></a>.
+    </p></dd><dt id="GUC-TRANSACTION-DEFERRABLE"><span class="term"><code class="varname">transaction_deferrable</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.14.2.2.14.1.3" class="indexterm"></a>
+   <a id="id-1.6.6.14.2.2.14.1.4" class="indexterm"></a>
+   </span> <a href="#GUC-TRANSACTION-DEFERRABLE" class="id_link">#</a></dt><dd><p>
+     Ce paramètre reflète le statut de reportabilité de la transaction
+     courante. Au début de chaque transaction, il est configuré à la valeur
+     courante du paramètre <a class="xref" href="runtime-config-client.html#GUC-DEFAULT-TRANSACTION-DEFERRABLE">default_transaction_deferrable</a>. Toute tentative de
+     modification ultérieure est équivalente à une commande <a class="xref" href="sql-set-transaction.html" title="SET TRANSACTION"><span class="refentrytitle">SET TRANSACTION</span></a>.
+    </p></dd><dt id="GUC-SESSION-REPLICATION-ROLE"><span class="term"><code class="varname">session_replication_role</code> (<code class="type">enum</code>)</span> <a href="#GUC-SESSION-REPLICATION-ROLE" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.15.2.1" class="indexterm"></a><p>
+     Contrôle l'exécution des triggers et règles relatifs à la réplication pour
+     la session en cours. Les valeurs possibles sont <code class="literal">origin</code>
+     (la valeur par défaut), <code class="literal">replica</code> et
+     <code class="literal">local</code>. Configurer ce paramètre résulte en l'annulation
+     de tout plan de requête précédemment mis en cache. Seuls les
+     superutilisateurs et les utilisateurs disposant des droits
+     <code class="literal">SET</code> adéquats peuvent modifier sa configuration.
+    </p><p>
+     L'utilisation prévue de ce paramètre est que les systèmes de réplication
+     logique le passent à <code class="literal">replica</code> quand ils répliquent des
+     changements. L'effet sera que les triggers et les règles (quand on n'a
+     pas modifié la configuration par défaut) ne se déclencheront pas sur
+     la réplique. Voir les clauses <a class="link" href="sql-altertable.html" title="ALTER TABLE"><code class="command">ALTER TABLE</code></a>
+     <code class="literal">ENABLE TRIGGER</code> et <code class="literal">ENABLE RULE</code>
+     pour plus d'informations.
+    </p><p>
+     En interne, PostgreSQL traite de la même manière les paramètres
+     <code class="literal">origin</code> et <code class="literal">local</code>. Les systèmes de
+     réplication tiers peuvent utiliser ces deux valeurs pour leurs besoins
+     internes, par exemple en utilisant <code class="literal">local</code> pour
+     désigner la session dont les changements ne seront pas répliqués.
+    </p><p>
+     Puisque les clés étrangères sont implémentées comme des triggers,
+     passer ce paramètre à <code class="literal">replica</code> désactive aussi toutes
+     les vérifications de clés étrangères, ce qui peut laisser les données
+     dans un état incohérent en cas d'utilisation inappropriée.
+    </p></dd><dt id="GUC-STATEMENT-TIMEOUT"><span class="term"><code class="varname">statement_timeout</code> (<code class="type">integer</code>)</span> <a href="#GUC-STATEMENT-TIMEOUT" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.16.2.1" class="indexterm"></a><p>
+     Interrompt toute instruction qui dure plus longtemps que cette durée. Si
+     <code class="varname">log_min_error_statement</code> est configuré à
+     <code class="literal">ERROR</code>, ou plus bas, l'instruction en cause est tracée.
+     Si cette valeur est indiquée sans unité, elle est comprise comme un nombre
+     de millisecondes. La valeur zéro (par défaut) désactive le décompte.
+    </p><p>
+     Le délai est mesuré à partir du moment où une commande arrive au serveur
+     jusqu'à sa fin par le serveur. Si plusieurs requêtes SQL apparaissent dans
+     un seul message simple-query, le délai est appliqué à chaque requête
+     séparément. (Les versions de <span class="productname">PostgreSQL</span>
+     antérieures à la 13 traitaient le délai pour la chaîne complète de
+     requêtes.) Dans le protocole de requête étendue, le délai commence lors du
+     début de l'exécution de tout message relatif à la requête (Parse, Bind,
+     Execute, Describe) et elle est annulée à la fin du message Execute ou
+     Sync.
+    </p><p>
+     Il n'est pas recommandé de configurer <code class="varname">statement_timeout</code>
+     dans <code class="filename">postgresql.conf</code> car cela affecte toutes les
+     sessions.
+    </p></dd><dt id="GUC-TRANSACTION-TIMEOUT"><span class="term"><code class="varname">transaction_timeout</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.14.2.2.17.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-TRANSACTION-TIMEOUT" class="id_link">#</a></dt><dd><p>
+     Termine toute session dont la transaction ouverte dure plus longtemps que
+     la durée. La limite s'applique aux transactions explicites
+     (commencées avec un <code class="command">BEGIN</code>) et à une transaction
+     implicite démarrée lors de l'exécution d'une requête. Si cette valeur
+     ne précise pas d'unité, l'unité considérée est la milliseconde. Une valeur
+     de zéro (valeur par défaut) désactive le délai.
+    </p><p>
+     Si <code class="varname">transaction_timeout</code> est inférieur ou égal à
+     <code class="varname">idle_in_transaction_session_timeout</code> ou
+     <code class="varname">statement_timeout</code>, alors le délai le plus long est
+     ignoré.
+    </p><p>
+     Configurer <code class="varname">transaction_timeout</code> dans
+     <code class="filename">postgresql.conf</code> n'est pas recommendé car cela affecte
+     toutes les sessions.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Les transactions préparées ne sont pas sujettes à ce délai.
+     </p></div></dd><dt id="GUC-LOCK-TIMEOUT"><span class="term"><code class="varname">lock_timeout</code> (<code class="type">integer</code>)</span> <a href="#GUC-LOCK-TIMEOUT" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.18.2.1" class="indexterm"></a><p>
+     Annule toute requête qui attend plus longtemps que la durée indiquée par
+     ce paramètre lors de la tentative d'acquisition d'un verrou sur une table,
+     un index, une ligne ou tout autre objet d'une base de données. La limite
+     de temps s'applique séparément pour chaque tentative d'acquisition d'un
+     verrou. La limite s'applique pour les demandes de verrous explicites
+     (comme <code class="command">LOCK TABLE</code>, ou <code class="command">SELECT FOR
+      UPDATE</code> sans <code class="literal">NOWAIT</code>) et pour ceux acquis
+     implicitement. Si cette valeur est indiquée sans unité, elle est comprise
+     comme un nombre de millisecondes. Une valeur de zéro (valeur par défaut)
+     désactive ce comportement.
+    </p><p>
+     Contrairement à <code class="varname">statement_timeout</code>, ce délai peut
+     seulement intervenir lors de l'attente de verrous. Notez que si
+     <code class="varname">statement_timeout</code> est différent de zéro, il est plutôt
+     inutile de configurer <code class="varname">lock_timeout</code> à la même valeur ou
+     à une valeur plus importante puisque le délai sur la requête se
+     déclenchera toujours avant. Si <code class="varname">log_min_error_statement</code>
+     est configuré à <code class="literal">ERROR</code> ou plus bas, l'instruction qui
+     dépasse ce délai sera tracé.
+    </p><p>
+     Configurer <code class="varname">lock_timeout</code> dans
+     <code class="filename">postgresql.conf</code> n'est pas recommandé car cela
+     affecterait toutes les sessions.
+    </p></dd><dt id="GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT"><span class="term"><code class="varname">idle_in_transaction_session_timeout</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.14.2.2.19.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT" class="id_link">#</a></dt><dd><p>
+     Termine toute session inactive (c'est-à-dire qui attend que le client
+     envoie une requête) alors qu'une transaction est en cours depuis plus
+     longtemps que le temps indiqué. Si cette valeur est fournie sans unité,
+     elle est comprise en millisecondes. Une valeur à zéro (qui est la valeur
+     par défaut) désactive ce délai.
+    </p><p>
+     Cette option peut être utilisée pour s'assurer que des sesions inactives
+     ne conservent pas des verrous sur une durée déraisonnable. Même
+     lorsqu'aucun verrou non important est réservé, une transaction ouverte
+     empêche de nettoyer correctement les lignes mortes les plus récentes qui
+     peuvent n'être plus visibles que par cette transaction. Conserver des
+     transactions inactives alors qu'une transaction est ouverte peut donc
+     ainsi augmenter la fragmentation des données. Voir <a class="xref" href="routine-vacuuming.html" title="24.1. Nettoyages réguliers">Section 24.1</a> pour plus d'information.
+    </p></dd><dt id="GUC-IDLE-SESSION-TIMEOUT"><span class="term"><code class="varname">idle_session_timeout</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.14.2.2.20.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-IDLE-SESSION-TIMEOUT" class="id_link">#</a></dt><dd><p>
+     Termine toute transaction inactive depuis plus longtemps que le temps
+     indiqué(c'est-à-dire qui attend que le client envoie une requête), mais
+     pour laquelle aucune transaction n'est en cours. Si cette valeur est
+     fournie sans unité, elle est comprise en millisecondes. Une valeur à
+     zéro (qui est la valeur par défaut) désactive ce délai.
+    </p><p>
+     Contrairement au cas des transactions en cours, une session inactive sans
+     transaction en cours ne prend pas beaucoup de ressources sur le serveur.
+     Il est donc moins nécessaire d'activer ce paramètre que
+     <code class="varname">idle_in_transaction_session_timeout</code>.
+    </p><p>
+     Attention à l'utilisation de ce paramètre avec certains logiciels comme
+     un pooler de connexions ou un autre logiciel tiers car ce type de
+     logiciels pourrait mal gérer la fermeture inopinée des connexions. Il
+     peut être intéressant de n'activer ce délai que pour les sessions
+     interactives, peut-être en appliquant ce paramètre qu'à certains
+     utilisateurs.
+    </p></dd><dt id="GUC-VACUUM-FREEZE-TABLE-AGE"><span class="term"><code class="varname">vacuum_freeze_table_age</code> (<code class="type">integer</code>)</span> <a href="#GUC-VACUUM-FREEZE-TABLE-AGE" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.21.2.1" class="indexterm"></a><p>
+     <code class="command">VACUUM</code> effectuera un parcours agressif de la table si
+     le champ <code class="structname">pg_class</code>.<code class="structfield">relfrozenxid</code>
+     de la table a atteint l'âge spécifié par ce paramètre. Un parcours agressif diffère
+     d'un <code class="command">VACUUM</code> standard dans le sens où il visite chaque bloc qui
+     pourrait contenir des XID ou MXID non gelés, pas seulement ceux qui pourraient
+     contenir des lignes mortes. La valeur par
+     défaut est 150 millions de transactions. Même si les utilisateurs peuvent
+     positionner cette valeur à n'importe quelle valeur comprise entre zéro et
+     2 milliards, <code class="command">VACUUM</code> limitera silencieusement la valeur
+     effective à 95% de <a class="xref" href="runtime-config-autovacuum.html#GUC-AUTOVACUUM-FREEZE-MAX-AGE">autovacuum_freeze_max_age</a>, afin
+     qu'un vacuum périodique manuel ait une chance de s'exécuter avant un
+     autovacuum anti-bouclage ne soit lancé pour la table. Pour plus d'informations
+     voir <a class="xref" href="routine-vacuuming.html#VACUUM-FOR-WRAPAROUND" title="24.1.5. Éviter les cycles des identifiants de transactions">Section 24.1.5</a>.
+    </p></dd><dt id="GUC-VACUUM-FREEZE-MIN-AGE"><span class="term"><code class="varname">vacuum_freeze_min_age</code> (<code class="type">integer</code>)</span> <a href="#GUC-VACUUM-FREEZE-MIN-AGE" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.22.2.1" class="indexterm"></a><p>
+     Indique l'âge limite (en transactions) que <code class="command">VACUUM</code>
+     doit utiliser pour décider de déclencher le gel des pages qui ont un XID
+     plus vieux. La valeur par défaut est 50 millions. Bien que les
+     utilisateurs puissent configurer une valeur quelconque comprise entre
+     zéro et 1 milliard, <code class="command">VACUUM</code> limite silencieusement la
+     valeur réelle à la moitié de la valeur de <a class="xref" href="runtime-config-autovacuum.html#GUC-AUTOVACUUM-FREEZE-MAX-AGE">autovacuum_freeze_max_age</a> afin que la valeur entre deux
+     autovacuums forcés ne soit pas déraisonnablement courte. Pour plus
+     d'informations, voir <a class="xref" href="routine-vacuuming.html#VACUUM-FOR-WRAPAROUND" title="24.1.5. Éviter les cycles des identifiants de transactions">Section 24.1.5</a>.
+    </p></dd><dt id="GUC-VACUUM-FAILSAFE-AGE"><span class="term"><code class="varname">vacuum_failsafe_age</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.14.2.2.23.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-VACUUM-FAILSAFE-AGE" class="id_link">#</a></dt><dd><p>
+     Spécifie l'âge maximum (en transactions) que le champ
+     <code class="structname">pg_class</code>.<code class="structfield">relfrozenxid</code>
+     d'une table peut atteindre avant qu'un <code class="command">VACUUM</code> ne
+     prenne des mesures exceptionnelles pour empêcher un arrêt du système lié
+     à un risque de bouclage des identifiants de transaction
+     (<span class="foreignphrase"><em class="foreignphrase">ID wraparound</em></span>). Il s'agit d'une
+     stratégie que le <code class="command">VACUUM</code> n'applique qu'en dernier
+     recours. Cette sécurité est déclenchée généralement quand un autovacuum
+     pour empêcher le bouclage des identifiants de transaction tourne depuis
+     quelque temps, même si rien n'empêche ce fonctionnement exceptionnel de
+     se déclencher pendant un <code class="command">VACUUM</code>.
+    </p><p>
+     Lorsque cette sécurité est déclenchée, tout délai basé sur les coûts est
+     ignoré, d'autres tâches de maintenance non essentielles (comme le
+     vacuum des index) sont reportées, and any
+     <a class="glossterm" href="glossary.html#GLOSSARY-BUFFER-ACCESS-STRATEGY"><em class="glossterm"><a class="glossterm" href="glossary.html#GLOSSARY-BUFFER-ACCESS-STRATEGY" title="Stratégie d'accès aux buffers (Buffer Access Strategy">Buffer Access Strategy</a></em></a>
+     in use will be disabled resulting in <code class="command">VACUUM</code> being
+     free to make use of all of
+     <a class="glossterm" href="glossary.html#GLOSSARY-SHARED-MEMORY"><em class="glossterm"><a class="glossterm" href="glossary.html#GLOSSARY-SHARED-MEMORY" title="Mémoire partagée">shared buffers</a></em></a>.
+    </p><p>
+     La valeur par défaut est 1,6 milliards de transactions. Même s'il est
+     possible de fournir une valeur entre 0 et 2,1 milliards,
+     <code class="command">VACUUM</code> ajustera cette valeur pour qu'elle ne dépasse
+     pas 105% de <a class="xref" href="runtime-config-autovacuum.html#GUC-AUTOVACUUM-FREEZE-MAX-AGE">autovacuum_freeze_max_age</a>.
+    </p></dd><dt id="GUC-VACUUM-MULTIXACT-FREEZE-TABLE-AGE"><span class="term"><code class="varname">vacuum_multixact_freeze_table_age</code> (<code class="type">integer</code>)</span> <a href="#GUC-VACUUM-MULTIXACT-FREEZE-TABLE-AGE" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.24.2.1" class="indexterm"></a><p>
+     <code class="command">VACUUM</code> réalise un parcours agressif de la table si le
+     champ <code class="structname">pg_class</code>.<code class="structfield">relminmxid</code>
+     de la table a atteint l'âge indiqué par ce paramètre. Un parcours agressif diffère
+     d'un <code class="command">VACUUM</code> standard dans le sens où il visite chaque bloc qui
+     pourrait contenir des XID ou MXID non gelés, pas seulement ceux qui pourraient
+     contenir des lignes mortes. La valeur par
+     défaut est de 150 millions de multixacts. Bien que les utilisateurs
+     peuvent configurer cette valeur entre zéro et deux milliards,
+     <code class="command">VACUUM</code> limitera silencieusement la valeur réelle à
+     95% de <a class="xref" href="runtime-config-autovacuum.html#GUC-AUTOVACUUM-MULTIXACT-FREEZE-MAX-AGE">autovacuum_multixact_freeze_max_age</a>, pour
+     qu'un <code class="command">VACUUM</code> manuel périodique ait une chance d'être
+     exécuté avant qu'une opération anti-réutilisation d'identifiants ne soit
+     exécutée sur la table. Pour plus d'informations, voir <a class="xref" href="routine-vacuuming.html#VACUUM-FOR-MULTIXACT-WRAPAROUND" title="24.1.5.1. Multixacts et cycle">Section 24.1.5.1</a>.
+    </p></dd><dt id="GUC-VACUUM-MULTIXACT-FREEZE-MIN-AGE"><span class="term"><code class="varname">vacuum_multixact_freeze_min_age</code> (<code class="type">integer</code>)</span> <a href="#GUC-VACUUM-MULTIXACT-FREEZE-MIN-AGE" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.25.2.1" class="indexterm"></a><p>
+     Précise l'âge limite (en multixacts) que <code class="command">VACUUM</code> doit
+     utiliser pour décider s'il doit trigger freezing of pages with
+     an older multixact ID. La valeur par défaut est de 5 millions de
+     multixacts. Bien que les utilisateurs peuvent configurer cette valeur
+     entre zéro et un milliard, <code class="command">VACUUM</code> limitera
+     silencieusement la valeur réelle à la moitié de la valeur de
+     <a class="xref" href="runtime-config-autovacuum.html#GUC-AUTOVACUUM-MULTIXACT-FREEZE-MAX-AGE">autovacuum_multixact_freeze_max_age</a>, pour qu'il y
+     ait un délai raisonnable entre deux autovacuums forcés. Pour plus
+     d'informations, voir <a class="xref" href="routine-vacuuming.html#VACUUM-FOR-MULTIXACT-WRAPAROUND" title="24.1.5.1. Multixacts et cycle">Section 24.1.5.1</a>.
+    </p></dd><dt id="GUC-VACUUM-MULTIXACT-FAILSAFE-AGE"><span class="term"><code class="varname">vacuum_multixact_failsafe_age</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.14.2.2.26.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-VACUUM-MULTIXACT-FAILSAFE-AGE" class="id_link">#</a></dt><dd><p>
+     Spécifie l'âge maximum (en transactions) que le champ
+     <code class="structname">pg_class</code>.<code class="structfield">relminxid</code>
+     d'une table peut atteindre avant qu'un <code class="command">VACUUM</code> ne
+     prenne des mesures exceptionnelles pour empêcher un arrêt du système lié
+     à un risque de bouclage des identifiants de transaction
+     (<span class="foreignphrase"><em class="foreignphrase">ID wraparound</em></span>). Il s'agit d'une
+     stratégie que le <code class="command">VACUUM</code> n'applique qu'en dernier
+     recours. Cette sécurité est déclenchée généralement quand un autovacuum
+     pour empêcher le bouclage des identifiants de transaction tourne depuis
+     quelque temps, même si rien n'empêche ce fonctionnement exceptionnel de
+     se déclencher pendant un <code class="command">VACUUM</code>.
+    </p><p>
+     Lorsque cette sécurité est déclenchée, tout délai basé sur les coûts est
+     ignoré et d'autres tâches de maintenance non essentielles (comme le
+     vacuum des index) sont reportées.
+    </p><p>
+     La valeur par défaut est 1,6 milliards de transactions. Même s'il est
+     possible de fournir une valeur entre 0 et 2,1 milliards,
+     <code class="command">VACUUM</code> ajustera cette valeur pour qu'elle ne dépasse
+     pas 105% de <a class="xref" href="runtime-config-autovacuum.html#GUC-AUTOVACUUM-MULTIXACT-FREEZE-MAX-AGE">autovacuum_multixact_freeze_max_age</a>.
+    </p></dd><dt id="GUC-BYTEA-OUTPUT"><span class="term"><code class="varname">bytea_output</code> (<code class="type">enum</code>)</span> <a href="#GUC-BYTEA-OUTPUT" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.27.2.1" class="indexterm"></a><p>
+     Configure le format de sortie pour les valeurs de type
+     <code class="type">bytea</code>. Les valeurs valides sont <code class="literal">hex</code>
+     (la valeur par défaut) et <code class="literal">escape</code> (le format
+     traditionnel de PostgreSQL). Voir <a class="xref" href="datatype-binary.html" title="8.4. Types de données binaires">Section 8.4</a>
+     pour plus d'informations. Le type <code class="type">bytea</code> accepte toujours
+     les deux formats en entrée, quelque soit la valeur de cette
+     configuration.
+    </p></dd><dt id="GUC-XMLBINARY"><span class="term"><code class="varname">xmlbinary</code> (<code class="type">enum</code>)</span> <a href="#GUC-XMLBINARY" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.28.2.1" class="indexterm"></a><p>
+     Définit la manière de coder les valeurs binaires en XML.
+     Ceci s'applique, par exemple, quand les valeurs <code class="type">bytea</code> sont
+     converties en XML par les fonctions <code class="function">xmlelement</code>
+     et <code class="function">xmlforest</code>. Les valeurs possibles sont
+     <code class="literal">base64</code> et <code class="literal">hex</code>, qui sont toutes
+     les deux définies dans le standard XML Schema. La valeur par défaut
+     est <code class="literal">base64</code>. Pour plus d'informations sur les
+     fonctions relatives à XML, voir <a class="xref" href="functions-xml.html" title="9.15. Fonctions XML">Section 9.15</a>.
+    </p><p>
+     Le choix effectif de cette valeur est une affaire de sensibilité, la
+     seule restriction provenant des applications clientes.
+     Les deux méthodes supportent toutes les
+     valeurs possibles, et ce bien que le codage hexadécimal soit un peu
+     plus grand que le codage en base64.
+    </p></dd><dt id="GUC-XMLOPTION"><span class="term"><code class="varname">xmloption</code> (<code class="type">enum</code>)</span> <a href="#GUC-XMLOPTION" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.2.2.29.2.1" class="indexterm"></a><a id="id-1.6.6.14.2.2.29.2.2" class="indexterm"></a><a id="id-1.6.6.14.2.2.29.2.3" class="indexterm"></a><p>
+     Définit si <code class="literal">DOCUMENT</code> ou
+     <code class="literal">CONTENT</code> est implicite lors de la conversion entre
+     XML et valeurs chaînes de caractères. Voir <a class="xref" href="datatype-xml.html" title="8.13. Type XML">Section 8.13</a> pour la description. Les valeurs
+     valides sont <code class="literal">DOCUMENT</code> et
+     <code class="literal">CONTENT</code>. La valeur par défaut est
+     <code class="literal">CONTENT</code>.
+    </p><p>
+     D'après le standard SQL, la commande pour configurer cette option
+     est :
+     </p><pre class="synopsis">
+SET XML OPTION { DOCUMENT | CONTENT };
+     </pre><p>
+     Cette syntaxe est aussi disponible dans PostgreSQL.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-CLIENT-PRELOAD"><div class="titlepage"><div><div><h3 class="title">19.11.2. Préchargement de bibliothèques partagées <a href="#RUNTIME-CONFIG-CLIENT-PRELOAD" class="id_link">#</a></h3></div></div></div><p>
+  Plusieurs paramètres sont disponibles pour le préchargement de
+  bibliothèques partagées sur le serveur. Ces bibliothèques peuvent servir
+  à ajouter des fonctionnalités supplémentaires ou à améliorer les
+  performances. Par exemple, une configuration à
+  <code class="literal">'$libdir/mabibliotheque'</code> force le chargement de la
+  bibliothèque <code class="literal">mabibliotheque.so</code> (ou sur certaines
+  plateformes de <code class="literal">mabibliotheque.sl</code>) à partir du répertoire
+  standard d'installation. Les différences entre les paramètres concernent
+  la prise d'effet et les droits requis pour les modifier.
+ </p><p>
+  Les bibliothèques de procédures stockées pour <span class="productname">PostgreSQL</span>
+  peuvent être préchargées de cette façon, habituellement en utilisant la syntaxe
+  <code class="literal">'$libdir/plXXX'</code> où <code class="literal">XXX</code> est
+  <code class="literal">pgsql</code>, <code class="literal">perl</code>,
+  <code class="literal">tcl</code> ou <code class="literal">python</code>.
+ </p><p>
+  Seules les bibliothèques partagées spécifiquement codées pour PostgreSQL
+  peuvent être chargées de cette façon. Chaque bibliothèque supportée par
+  PostgreSQL a un <span class="quote">« <span class="quote">bloc magique</span> »</span> qui est vérifié pour garantir
+  sa comptabilité. De ce fait, les bibliothèques non compatibles avec
+  PostgreSQL ne peuvent pas être gérées ainsi. Vous devriez pouvoir utiliser
+  les capacités du système pour cela, tel que la variable d'environnement
+  <code class="envar">LD_PRELOAD</code>.
+ </p><p>
+  En général, il est préférable de se référer à la documentation d'un module
+  spécifique pour trouver le bon moyen permettant de charger le module.
+ </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-LOCAL-PRELOAD-LIBRARIES"><span class="term"><code class="varname">local_preload_libraries</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.14.3.6.1.1.3" class="indexterm"></a>
+    <a id="id-1.6.6.14.3.6.1.1.4" class="indexterm"></a>
+   </span> <a href="#GUC-LOCAL-PRELOAD-LIBRARIES" class="id_link">#</a></dt><dd><p>
+     Cette variable indique une ou plusieurs bibliothèques partagées chargées
+     au début de la connexion. Elle contient une liste de noms de
+     bibliothèques, séparés par des virgules, où chaque nom est interprété
+     comme par la commande <a class="link" href="sql-load.html" title="LOAD"><code class="command">LOAD</code></a>.
+     Les espaces blancs entre
+     les entrées sont ignorés. Placer le nom d'une bibliothèque entre
+     guillemets doubles si vous avez besoin d'inclure des espaces blancs ou des
+     virgules dans le nom. La valeur de ce paramètre n'est pris en compte qu'au
+     début de la connexion. Les modifications ultérieures n'ont pas d'effet sur
+     les connexions déjà établies. Si une bibliothèque indiquée est
+     introuvable, la tentative de connexion échouera. Seuls les
+     superutilisateurs peuvent modifier cette configuration.
+    </p><p>
+     Cette option est configurable par tout utilisateur. De ce fait, les
+     bibliothèques pouvant être chargées sont restreintes à celles
+     disponibles dans le sous-répertoire <code class="filename">plugins</code> du
+     répertoire des bibliothèques de l'installation. C'est de la responsabilité
+     de l'administrateur de s'assurer que seules des bibliothèques
+     <span class="quote">« <span class="quote">sûres</span> »</span> y soient installées.) Les éléments de
+     <code class="varname">local_preload_libraries</code> peuvent indiquer ce répertoire
+     explicitement, par exemple
+     <code class="literal">$libdir/plugins/mabibliotheque</code>, ou indiquer seulement
+     le nom de la bibliothèque  --  <code class="literal">mabibliotheque</code>, ce
+     qui aurait le même effet que <code class="literal">$libdir/plugins/mabibliotheque</code>.
+    </p><p>
+     Le but de cette fonctionnalité est de permettre aux utilisateurs
+     non privilégiés de charger des bibliothèques de débuggage ou de
+     mesures de performances dans des sessions explicites sans avoir à
+     exécuter manuellement une commande <code class="command">LOAD</code>. À cette
+     fin, une configuration classique de ce paramètre serait d'utiliser
+     la variable d'environnement <code class="envar">PGOPTIONS</code> sur le client
+     ou d'utiliser la commande <code class="command">ALTER ROLE SET</code>.
+    </p><p>
+     Néanmoins, sauf si un module est conçu spécifiquement pour être utilisé de cette
+     façon par des utilisateurs non administrateurs, ceci n'est pas le bon
+     paramétrage pour vous. Regardez plutôt <a class="xref" href="runtime-config-client.html#GUC-SESSION-PRELOAD-LIBRARIES">session_preload_libraries</a>.
+    </p></dd><dt id="GUC-SESSION-PRELOAD-LIBRARIES"><span class="term"><code class="varname">session_preload_libraries</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.14.3.6.2.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SESSION-PRELOAD-LIBRARIES" class="id_link">#</a></dt><dd><p>
+     Cette variable indique une ou plusieurs bibliothèques partagées chargées
+     au début de la connexion. Elle contient une liste de noms de
+     bibliothèques, séparés par des virgules, où chaque nom est interprété
+     comme par la commande <a class="link" href="sql-load.html" title="LOAD"><code class="command">LOAD</code></a>.
+     Les espaces blancs entre
+     les entrées sont ignorés. Placer le nom d'une bibliothèque entre
+     guillemets doubles si vous avez besoin d'inclure des espaces blancs ou des
+     virgules dans le nom. La valeur de ce paramètre n'est pris en compte qu'au
+     début de la connexion. Les modifications ultérieures n'ont pas d'effet sur
+     les connexions déjà établies. Si une bibliothèque indiquée est
+     introuvable, la tentative de connexion échouera. Seuls les
+     superutilisateurs et les utilisateurs disposant des droits
+     <code class="literal">SET</code> adéquats peuvent modifier cette configuration.
+    </p><p>
+     Le but de cette fonctionnalité est de permettre le chargement de
+     bibliothèques de débuggage ou de mesure de performances dans des
+     sessions explicites sans avoir à exécuter manuellement une commande
+     <code class="command">LOAD</code>. Par exemple, <a class="xref" href="auto-explain.html" title="F.3. auto_explain">auto_explain</a>
+     pourrait être activé pour toutes les sessions si un certain utilisateur
+     se connecte, en configurant son compte avec la commande <code class="command">ALTER
+      ROLE SET</code>. De plus, ce paramètre peut être modifié sans avoir
+     à redémarrer le serveur (les changements ne prennent effet que pour les
+     connexions suivantes), donc il est plus facile d'ajouter de nouveaux
+     modules de cette façon, même s'ils s'appliquent à toutes les sessions.
+    </p><p>
+     Contrairement à <a class="xref" href="runtime-config-client.html#GUC-SHARED-PRELOAD-LIBRARIES">shared_preload_libraries</a>, il
+     n'y a pas vraiment un gros avantage en terme de performances à charger
+     une bibliothèque en début de session plutôt qu'à sa première utilisation.
+     Néanmoins, ceci n'est plus vrai si un système de pooling de connexions
+     est mis en place.
+    </p></dd><dt id="GUC-SHARED-PRELOAD-LIBRARIES"><span class="term"><code class="varname">shared_preload_libraries</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.14.3.6.3.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SHARED-PRELOAD-LIBRARIES" class="id_link">#</a></dt><dd><p>
+     Cette variable indique une ou plusieurs bibliothèques partagées chargées
+     au démarrage du serveur. Elle contient une liste de noms de bibliothèques,
+     séparés par des virgules, où chaque nom est interprété comme par la
+     commande <a class="link" href="sql-load.html" title="LOAD"><code class="command">LOAD</code></a>. Les
+     espaces blancs entre les entrées
+     sont ignorés. Placer le nom d'une bibliothèque entre guillemets doubles si
+     vous avez besoin d'inclure des espaces blancs ou des virgules dans le nom.
+     La valeur de ce paramètre n'est pris en compte qu'au démarrage du serveur.
+     Si une bibliothèque indiquée est introuvable, la tentative de démarrage
+     échouera. Seuls les superutilisateurs peuvent modifier cette
+     configuration.
+    </p><p>
+     Certaines bibliothèques ont besoin de réaliser certaines opérations qui
+     ne peuvent se faire qu'au démarrage du processus postmaster, comme allouer
+     de la mémoire partagée, réserver des verrous à faible poids, ou démarrer
+     des background workers. Ces bibliothèques doivent être chargées au
+     démarrage du serveur via ce paramètre. Voir la documentation de chaque
+     bibliothèque pour les détails.
+    </p><p>
+     Les autres bibliothèques peuvent aussi être préchargées. En préchargeant
+     une bibliothèque partagée, le temps de démarrage de la bibliothèque est
+     évité lorsque la bibliothèque est utilisée pour la première fois.
+     Néanmoins, le temps de démarrer chaque nouveau processus serveur pourrait
+     augmenter légèrement, même si le processus n'utilise jamais cette
+     bibliothèque. Donc ce paramètre est seulement recommandé pour les
+     bibliothèques qui seront utilisées par la majorité des sessions. De plus,
+     changer ce paramètre requiert un redémarrage du serveur, donc ce n'est
+     pas le bon paramètre pour les tâches de débuggage par exemple. Utilisez
+     <a class="xref" href="runtime-config-client.html#GUC-SESSION-PRELOAD-LIBRARIES">session_preload_libraries</a> pour cela.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Sur les hôtes Windows, précharger une bibliothèque au démarrage du serveur
+      ne réduira pas le temps nécessaire pour démarrer un nouveau processus
+      serveur. Chaque processus serveur rechargera toutes les bibliothèques
+      préchargées. Néanmoins, <code class="varname">shared_preload_libraries</code>
+      est toujous utile sur les hôtes Windows pour les bibliothèques qui ont
+      besoin de réaliser des opérations au démarrage du postmaster.
+     </p></div></dd><dt id="GUC-JIT-PROVIDER"><span class="term"><code class="varname">jit_provider</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.14.3.6.4.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-JIT-PROVIDER" class="id_link">#</a></dt><dd><p>
+     Cette variable contient le nom de la bibliothèque du fournisseur JIT à
+     utiliser (voir <a class="xref" href="jit-extensibility.html#JIT-PLUGGABLE" title="30.4.2. Fournisseur JIT interchangeable">Section 30.4.2</a>). La valeur par défaut
+     est <code class="literal">llvmjit</code>. Ce paramètre n'est configurable qu'au
+     démarrage du serveur.
+    </p><p>
+     Si ce paramètre pointe vers une bibliothèque inexistante,
+     <acronym class="acronym">JIT</acronym> ne sera pas disponible, mais aucune erreur ne
+     sera levée. Cela permet à l'infrastructure de JIT d'être installée
+     séparément de l'installation <span class="productname">PostgreSQL</span>
+     principale.
+    </p></dd><dt id="GUC-GIN-PENDING-LIST-LIMIT"><span class="term"><code class="varname">gin_pending_list_limit</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.14.3.6.5.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-GIN-PENDING-LIST-LIMIT" class="id_link">#</a></dt><dd><p>
+     Positionne la taille maximale de la liste d'attente GIN qui est
+     utilisée lorsque <code class="literal">fastupdate</code> est activé. Si
+     la liste dépasse cette taille maximale, elle est allégée en
+     déplaçant des entrées en masse vers la structure de données
+     principale GIN. Si cette valeur est indiquée sans unité, elle est
+     comprise comme un nombre de Ko. La valeur par défaut est quatre mégaoctets
+     (<code class="literal">4MB</code>). Ce paramètre peut être surchargé pour
+     chaque index GIN en modifiant les paramètres de stockage de l'index.
+     Voir <a class="xref" href="gin.html#GIN-FAST-UPDATE" title="64.4.4.1. Technique GIN de mise à jour rapide">Section 64.4.4.1</a> et <a class="xref" href="gin.html#GIN-TIPS" title="64.4.5. Conseils et astuces sur GIN">Section 64.4.5</a>
+     pour plus d'informations.
+    </p></dd><dt id="GUC-CREATEROLE-SELF-GRANT"><span class="term"><code class="varname">createrole_self_grant</code> (<code class="type">string</code>)
+   <a id="id-1.6.6.14.3.6.6.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-CREATEROLE-SELF-GRANT" class="id_link">#</a></dt><dd><p>
+     Si un utilisateur qui a <code class="literal">CREATEROLE</code> mais pas
+     <code class="literal">SUPERUSER</code> crée un rôle, et si cette valeur n'est pas
+     vide, le rôle nouvellement créé sera accordé à l'utilisateur créateur avec
+     les options spécifiées. La valeur doit être <code class="literal">set</code>,
+     <code class="literal">inherit</code> ou une liste de valeurs séparées par des
+     virgules. La valeur par défaut est une chaîne vide, qui désactive la
+     fonctionnalité.
+    </p><p>
+     Le but de cette option est de permettre à un utilisateur ayant
+     <code class="literal">CREATEROLE</code> qui n'est pas un superutilisateur, d'hériter
+     automatiquement, ou d'obtenir automatiquement, la capacité d'utiliser <code class="literal">SET
+     ROLE</code> pour tous les utilisateurs créés. Étant donné qu'un
+     utilisateur avec <code class="literal">CREATEROLE</code> se voit toujours accorder
+     implicitement <code class="literal">ADMIN OPTION</code> sur les rôles créés, cet
+     utilisateur peut toujours exécuter une instruction <code class="literal">GRANT</code>
+     qui aura le même effet que ce paramètre. Toutefois, il peut être pratique
+     que l'attribution se fasse automatiquement.
+     Un superutilisateur hérite automatiquement des droits de chaque rôle et
+     peut toujours utiliser <code class="literal">SET ROLE</code> sur n'importe quel rôle.
+     Ce paramètre peut être utilisé pour produire un comportement similaire
+     pour les rôles ayant <code class="literal">CET ROLE</code> à n'importe quel rôle.
+    </p></dd><dt id="GUC-EVENT-TRIGGERS"><span class="term"><code class="varname">event_triggers</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.14.3.6.7.1.3" class="indexterm"></a>
+  </span> <a href="#GUC-EVENT-TRIGGERS" class="id_link">#</a></dt><dd><p>
+    Permet de désactiver temporairement l'exécution des triggers sur événement
+    et de réparer des triggers en faute. Tous les triggers sur événement sont
+    désactivés en configurant ce paramètre à <code class="literal">false</code>. Configurer
+    sa valeur à <code class="literal">true</code> autorise l'exécution de tous les triggers
+    sur événement, c'est la valeur par défaut. Seuls les superutilisateurs et les
+    utilisateurs dotés du droit <code class="literal">SET</code> appropriés peuvent
+    modifier ce paramétrage.
+   </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-CLIENT-FORMAT"><div class="titlepage"><div><div><h3 class="title">19.11.3. Locale et formatage <a href="#RUNTIME-CONFIG-CLIENT-FORMAT" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-DATESTYLE"><span class="term"><code class="varname">datestyle</code> (<code class="type">string</code>)</span> <a href="#GUC-DATESTYLE" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.4.2.1.2.1" class="indexterm"></a><p>
+     Configure le format d'affichage des valeurs de type date et
+     heure, ainsi que les règles d'interprétation des valeurs ambiguës
+     de dates saisies. Pour des raisons historiques, cette variable
+     contient deux composantes indépendantes : la spécification du
+     format en sortie (<code class="literal">ISO</code>, <code class="literal">Postgres</code>,
+     <code class="literal">SQL</code> ou <code class="literal">German</code>) et la spécification en
+     entrée/sortie de l'ordre année/mois/jour (<code class="literal">DMY</code>,
+     <code class="literal">MDY</code> ou <code class="literal">YMD</code>). Elles peuvent être
+     configurées séparément ou ensemble. Les mots clés <code class="literal">Euro</code>
+     et <code class="literal">European</code> sont des synonymes de
+     <code class="literal">DMY</code> ; les mots clés <code class="literal">US</code>,
+     <code class="literal">NonEuro</code> et <code class="literal">NonEuropean</code> sont des synonymes
+     de <code class="literal">MDY</code>. Voir la <a class="xref" href="datatype-datetime.html" title="8.5. Types date/heure">Section 8.5</a> pour
+     plus d'informations. La valeur par défaut est <code class="literal">ISO, MDY</code>,
+     mais <span class="application">initdb</span> initialise le fichier de
+     configuration avec une valeur qui correspond au comportement de la locale
+     <code class="varname">lc_time</code> choisie.
+    </p></dd><dt id="GUC-INTERVALSTYLE"><span class="term"><code class="varname">IntervalStyle</code> (<code class="type">enum</code>)</span> <a href="#GUC-INTERVALSTYLE" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.4.2.2.2.1" class="indexterm"></a><p>
+     Positionne le format d'affichage pour les valeurs de type intervalle.
+     La valeur <code class="literal">sql_standard</code> produira une sortie correspondant
+     aux litéraux d'intervalles du standard <acronym class="acronym">SQL</acronym>.
+     La valeur <code class="literal">postgres</code> (qui est la valeur par défaut)
+     produira une sortie correspondant à celle des versions de <span class="productname">PostgreSQL</span>
+     antérieures à la 8.4 quand le paramètre <a class="xref" href="runtime-config-client.html#GUC-DATESTYLE">datestyle</a>
+     était positionné à <code class="literal">ISO</code>.
+     La valeur <code class="literal">postgres_verbose</code> produira une sortie correspondant
+     à celle des versions de <span class="productname">PostgreSQL</span>
+     antérieures à la 8.4 quand le paramètre <code class="varname">DateStyle</code>
+     était positionné à une valeur autre que <code class="literal">ISO</code>
+     La valeur <code class="literal">iso_8601</code> produira une sortie correspondant
+     au <span class="quote">« <span class="quote">format avec designateurs</span> »</span> d'intervalle de temps défini
+     dans le paragraphe 4.4.3.2 de l'ISO 8601.
+    </p><p>
+     Le paramètre <code class="varname">IntervalStyle</code> affecte aussi l'interprétation
+     des entrées ambigües d'intervalles. Voir <a class="xref" href="datatype-datetime.html#DATATYPE-INTERVAL-INPUT" title="8.5.4. Saisie d'intervalle">Section 8.5.4</a>
+     pour plus d'informations.
+    </p></dd><dt id="GUC-TIMEZONE"><span class="term"><code class="varname">TimeZone</code> (<code class="type">string</code>)</span> <a href="#GUC-TIMEZONE" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.4.2.3.2.1" class="indexterm"></a><a id="id-1.6.6.14.4.2.3.2.2" class="indexterm"></a><p>
+     Configure le fuseau horaire pour l'affichage et l'interprétation
+     de la date et de l'heure.
+     La valeur par défaut est <code class="literal">GMT</code>, mais elle est généralement surchargée
+     dans le fichier <code class="filename">postgresql.conf</code> ; <span class="application">initdb</span>
+     installera une configuration correspondant à l'environnement système.
+     Voir <a class="xref" href="datatype-datetime.html#DATATYPE-TIMEZONES" title="8.5.3. Fuseaux horaires">Section 8.5.3</a> pour plus d'informations.
+
+    </p></dd><dt id="GUC-TIMEZONE-ABBREVIATIONS"><span class="term"><code class="varname">timezone_abbreviations</code> (<code class="type">string</code>)</span> <a href="#GUC-TIMEZONE-ABBREVIATIONS" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.4.2.4.2.1" class="indexterm"></a><a id="id-1.6.6.14.4.2.4.2.2" class="indexterm"></a><p>
+     
+     Configure la liste des abréviations de fuseaux horaires
+     acceptés par le serveur pour la saisie de données de type
+     datetime. La valeur par défaut est <code class="literal">'Default'</code>,
+     qui est une liste qui fonctionne presque dans le monde
+     entier ; il y a aussi <code class="literal">'Australia'</code> et
+     <code class="literal">'India'</code>. D'autres listes peuvent être
+     définies pour une installation particulière. Voir <a class="xref" href="datetime-config-files.html" title="B.4. Fichiers de configuration date/heure">Section B.4</a> pour plus d'informations.
+    </p></dd><dt id="GUC-EXTRA-FLOAT-DIGITS"><span class="term"><code class="varname">extra_float_digits</code> (<code class="type">integer</code>)</span> <a href="#GUC-EXTRA-FLOAT-DIGITS" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.4.2.5.2.1" class="indexterm"></a><a id="id-1.6.6.14.4.2.5.2.2" class="indexterm"></a><a id="id-1.6.6.14.4.2.5.2.3" class="indexterm"></a><p>
+     Ce paramètre ajuste le nombre de chiffres utilisés par l'affichage textuel par les valeurs à
+     virgule flottante, ce qui inclut <code class="type">float4</code>, <code class="type">float8</code> et les
+     types de données géométriques.
+    </p><p>
+     Si la valeur est 1 (valeur par défaut) ou au-dessus, les valeurs à virgule
+     flottante sont renvoyées dans le format le plus court et le plus
+     précis ; voir <a class="xref" href="datatype-numeric.html#DATATYPE-FLOAT" title="8.1.3. Types à virgule flottante">Section 8.1.3</a>. Le nombre réel de
+     chiffres générés dépends seulement de la valeur en sortie, et non pas de
+     la valeur de ce paramètre. Au plus 17 chiffres sont requis pour les
+     valeurs <code class="type">float8</code> et 9 pour les valeurs <code class="type">float4</code>. Ce
+     format est à la fois rapide et précis, préservant exactement la valeur
+     flottante binaire originale lorsqu'elle est correctement lue. Pour la
+     compabilité historique, des valeurs jusqu'à 3 sont autorisées.
+    </p><p>
+     Si la valeur est zéro ou négative, alors la sortie est arrondie avec une
+     précision décimale donnée. La précision utilisée est le nombre standard de
+     chiffres pour le type (<code class="literal">FLT_DIG</code> ou
+     <code class="literal">DBL_DIG</code> comme approprié) réduit suivant la valeur de ce
+     paramètre. (Par exemple, indiquer -1 fera que les valeurs
+     <code class="literal">float4</code> soient arrondies en sortie à 5 chiffres
+     significatifs et les valeurs <code class="literal">float8</code> à 14 chiffres.) Ce
+     format est plus lent et ne préserve pas tous les buts de la valeur
+     flottante binaire, mais pourrait être plus facile à lire.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      La signification de ce paramètre, et de sa valeur par défaut, a changé avec
+      <span class="productname">PostgreSQL</span> 12 ;
+      voir <a class="xref" href="datatype-numeric.html#DATATYPE-FLOAT" title="8.1.3. Types à virgule flottante">Section 8.1.3</a> pour plus de discussions.
+     </p></div></dd><dt id="GUC-CLIENT-ENCODING"><span class="term"><code class="varname">client_encoding</code> (<code class="type">string</code>)</span> <a href="#GUC-CLIENT-ENCODING" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.4.2.6.2.1" class="indexterm"></a><a id="id-1.6.6.14.4.2.6.2.2" class="indexterm"></a><p>
+     Initialise l'encodage client (jeu de caractères). Par défaut,
+     il s'agit de celui de la base de données.
+     Les ensembles de caractères supportés par <span class="productname">PostgreSQL</span>
+     sont décrits dans <a class="xref" href="multibyte.html#MULTIBYTE-CHARSET-SUPPORTED" title="23.3.1. Jeux de caractères supportés">Section 23.3.1</a>.
+    </p></dd><dt id="GUC-LC-MESSAGES"><span class="term"><code class="varname">lc_messages</code> (<code class="type">string</code>)</span> <a href="#GUC-LC-MESSAGES" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.4.2.7.2.1" class="indexterm"></a><p>
+     Initialise la langue d'affichage des messages. Les
+     valeurs acceptables dépendent du système ; voir
+     <a class="xref" href="locale.html" title="23.1. Support des locales">Section 23.1</a> pour plus d'informations. Si cette variable est
+     initialisée à une chaîne vide (valeur par défaut),
+     alors la valeur est héritée de l'environnement d'exécution du serveur.
+    </p><p>
+     Avec certains systèmes, cette catégorie de locale n'existe pas.
+     Initialiser cette variable fonctionne toujours mais n'a aucun
+     effet. De même, il est possible qu'il n'existe pas de traduction des
+     messages dans la langue sélectionnée. Dans ce cas, les messages sont
+     affichés en anglais.
+    </p><p>
+     Seuls les superutilisateurs et les utilisateurs disposant des droits
+     <code class="literal">SET</code> adéquats peuvent modifier ce paramètre.
+    </p></dd><dt id="GUC-LC-MONETARY"><span class="term"><code class="varname">lc_monetary</code> (<code class="type">string</code>)</span> <a href="#GUC-LC-MONETARY" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.4.2.8.2.1" class="indexterm"></a><p>
+     Initialise la locale à utiliser pour le formatage des montants monétaires (pour la
+     famille de fonctions <code class="function">to_char</code>, par exemple).
+     Les valeurs acceptables dépendent du système ; voir la
+     <a class="xref" href="locale.html" title="23.1. Support des locales">Section 23.1</a> pour plus d'informations. Si cette variable
+     est initialisée à une chaîne vide (valeur par défaut), alors la valeur
+     est héritée de l'environnement d'exécution du serveur, et une valeur
+     incorrecte pourrait dégrader la lisibilité des traces du serveur.
+    </p></dd><dt id="GUC-LC-NUMERIC"><span class="term"><code class="varname">lc_numeric</code> (<code class="type">string</code>)</span> <a href="#GUC-LC-NUMERIC" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.4.2.9.2.1" class="indexterm"></a><p>
+     Initialise la locale à utiliser pour le formatage des nombres (pour la famille de
+     fonctions <code class="function">to_char</code>, par exemple). Les valeurs
+     acceptables dépendent du système ; voir la <a class="xref" href="locale.html" title="23.1. Support des locales">Section 23.1</a>
+     pour plus d'informations. Si cette variable est initialisée à une chaîne
+     vide (valeur par défaut), alors la valeur est héritée de l'environnement
+     d'exécution du serveur.
+    </p></dd><dt id="GUC-LC-TIME"><span class="term"><code class="varname">lc_time</code> (<code class="type">string</code>)</span> <a href="#GUC-LC-TIME" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.4.2.10.2.1" class="indexterm"></a><p>
+     Initialise la locale à utiliser pour le formatage des valeurs de date et
+     d'heure, par exemple avec la famille de fonctions
+     <code class="function">to_char</code>. Les valeurs acceptables dépendent du
+     système ; voir
+     la <a class="xref" href="locale.html" title="23.1. Support des locales">Section 23.1</a> pour plus d'informations. Si cette variable est
+     initialisée à une chaîne vide (valeur par défaut), alors la valeur est héritée de
+     l'environnement d'exécution du serveur.
+    </p></dd><dt id="GUC-ICU-VALIDATION-LEVEL"><span class="term"><code class="varname">icu_validation_level</code> (<code class="type">enum</code>)
+    <a id="id-1.6.6.14.4.2.11.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ICU-VALIDATION-LEVEL" class="id_link">#</a></dt><dd><p>
+     Quand des problèmes de validations de locale sont rencontrés, contrôler
+     quel <a class="link" href="runtime-config-logging.html#RUNTIME-CONFIG-SEVERITY-LEVELS" title="Tableau 19.2. Niveaux de sévérité des messages">niveau de message</a>
+     est utilisé pour rapporter le problème. Les valeurs valides sont
+     <code class="literal">DISABLED</code>, <code class="literal">DEBUG5</code>,
+     <code class="literal">DEBUG4</code>, <code class="literal">DEBUG3</code>,
+     <code class="literal">DEBUG2</code>, <code class="literal">DEBUG1</code>,
+     <code class="literal">INFO</code>, <code class="literal">NOTICE</code>,
+     <code class="literal">WARNING</code>, <code class="literal">ERROR</code>, et
+     <code class="literal">LOG</code>.
+    </p><p>
+     Si positionné à <code class="literal">DISABLED</code>, aucun problème de validation
+     n'est reporté. Autrement, les problèmes sont rapportés avec le niveau de
+     message indiqué. La valeur par défaut est <code class="literal">WARNING</code>.
+    </p></dd><dt id="GUC-DEFAULT-TEXT-SEARCH-CONFIG"><span class="term"><code class="varname">default_text_search_config</code> (<code class="type">string</code>)</span> <a href="#GUC-DEFAULT-TEXT-SEARCH-CONFIG" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.4.2.12.2.1" class="indexterm"></a><p>
+     Sélectionne la configuration de recherche plein texte utilisée
+     par les variantes des fonctions de recherche plein texte qui n'ont pas
+     d'argument explicite pour préciser la configuration.
+     Voir <a class="xref" href="textsearch.html" title="Chapitre 12. Recherche plein texte">Chapitre 12</a> pour plus d'informations.
+     La valeur par défaut est <code class="literal">pg_catalog.simple</code> mais
+     <span class="application">initdb</span> initialise le fichier de
+     configuration avec une valeur qui correspond à la locale choisie pour
+     <code class="varname">lc_ctype</code> s'il est possible d'identifier une configuration
+     correspondant à la locale.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-CLIENT-OTHER"><div class="titlepage"><div><div><h3 class="title">19.11.4. Autres valeurs par défaut <a href="#RUNTIME-CONFIG-CLIENT-OTHER" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-DYNAMIC-LIBRARY-PATH"><span class="term"><code class="varname">dynamic_library_path</code> (<code class="type">string</code>)</span> <a href="#GUC-DYNAMIC-LIBRARY-PATH" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.5.2.1.2.1" class="indexterm"></a><a id="id-1.6.6.14.5.2.1.2.2" class="indexterm"></a><p>
+     Chemin de recherche utilisé lorsqu'un module chargeable
+     dynamiquement doit être ouvert et
+     que le nom de fichier indiqué dans la commande
+     <code class="command">CREATE FUNCTION</code> ou <code class="command">LOAD</code>
+     ne contient pas d'indication de répertoire (c'est-à-dire que
+     le nom ne contient pas de slash).
+    </p><p>
+     La valeur de <code class="varname">dynamic_library_path</code> doit être
+     une liste de chemins absolus séparés par des virgules (ou des
+     points virgules sous Windows).  Si un élément de la liste débute
+     par la chaîne spéciale <code class="literal">$libdir</code>, le répertoire
+     des bibliothèques internes du paquetage
+     <span class="productname">PostgreSQL</span> est substitué à
+     <code class="literal">$libdir</code>. C'est l'emplacement où sont installés
+     les modules fournis par la distribution
+     <span class="productname">PostgreSQL</span> standard. (La commande
+     <code class="literal">pg_config --pkglibdir</code> permet de connaître le nom de
+     ce répertoire.) Par exemple :
+     </p><pre class="programlisting">dynamic_library_path = '/usr/local/lib/postgresql:/home/my_project/lib:$libdir'</pre><p>
+     ou dans un environnement Windows :
+     </p><pre class="programlisting">dynamic_library_path = 'C:\tools\postgresql;H:\my_project\lib;$libdir'</pre><p>
+    </p><p>
+     Pour plus d'informations sur la gestion des schémas, voir <a class="xref" href="ddl-schemas.html" title="5.10. Schémas">Section 5.10</a>. En particulier, la configuration par défaut
+     est seulement convenable quand la base de données a un seul
+     utilisateur ou quelques utilisateurs qui se font confiance
+     mutuellement.
+    </p><p>
+     La valeur par défaut de ce paramètre est <code class="literal">'$libdir'</code>.
+     Si la valeur est une chaîne vide, la recherche automatique du chemin est
+     désactivée.
+    </p><p>
+     Ce paramètre peut être modifié à l'exécution par les
+     superutilisateurs et les utilisateurs disposant des droits
+     <code class="literal">SET</code> adéquats, mais un tel paramétrage ne persiste que pour la
+     durée de la connexion du client. Il est donc préférable de ne
+     réserver cette méthode qu'à des fins de développement. Il est
+     recommandé d'initialiser ce paramètre dans le fichier de configuration
+     <code class="filename">postgresql.conf</code>.
+    </p></dd><dt id="GUC-GIN-FUZZY-SEARCH-LIMIT"><span class="term"><code class="varname">gin_fuzzy_search_limit</code> (<code class="type">integer</code>)</span> <a href="#GUC-GIN-FUZZY-SEARCH-LIMIT" class="id_link">#</a></dt><dd><a id="id-1.6.6.14.5.2.2.2.1" class="indexterm"></a><p>
+        Limite souple haute de la taille de l'ensemble renvoyé par un index GIN.
+        Pour plus d'informations, voir <a class="xref" href="gin.html#GIN-TIPS" title="64.4.5. Conseils et astuces sur GIN">Section 64.4.5</a>.
+       </p></dd></dl></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-client.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+</html>

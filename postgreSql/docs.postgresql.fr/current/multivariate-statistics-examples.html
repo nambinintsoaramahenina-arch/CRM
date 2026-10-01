@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/multivariate-statistics-examples.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:19 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>68.2. Exemples de statistiques multivariées</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="row-estimation-examples.html" title="68.1. Exemples d'estimation des lignes" /><link rel="next" href="planner-stats-security.html" title="68.3. Statistiques de l'optimiseur et sécurité" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/multivariate-statistics-examples.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/multivariate-statistics-examples.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/multivariate-statistics-examples.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/multivariate-statistics-examples.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/multivariate-statistics-examples.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/multivariate-statistics-examples.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/multivariate-statistics-examples.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/multivariate-statistics-examples.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/multivariate-statistics-examples.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/multivariate-statistics-examples.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="planner-stats-details.html">Comment le planificateur utilise les statistiques</a></span> » <span class="breadcrumb-node">Exemples de statistiques multivariées</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="row-estimation-examples.html" title="68.1. Exemples d'estimation des lignes">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="planner-stats-details.html" title="Chapitre 68. Comment le planificateur utilise les statistiques">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="planner-stats-security.html" title="68.3. Statistiques de l'optimiseur et sécurité">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">68.1. Exemples d'estimation des lignes </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 68.3. Statistiques de l'optimiseur et sécurité</td></tr></table></div><div class="sect1" id="MULTIVARIATE-STATISTICS-EXAMPLES"><div class="titlepage"><div><div><h2 class="title" style="clear: both">68.2. Exemples de statistiques multivariées <a href="#MULTIVARIATE-STATISTICS-EXAMPLES" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="multivariate-statistics-examples.html#FUNCTIONAL-DEPENDENCIES">68.2.1. Dépendances fonctionnelles</a></span></dt><dt><span class="sect2"><a href="multivariate-statistics-examples.html#MULTIVARIATE-NDISTINCT-COUNTS">68.2.2. Nombre N-Distinct Multivarié</a></span></dt><dt><span class="sect2"><a href="multivariate-statistics-examples.html#MCV-LISTS">68.2.3. Listes MCV</a></span></dt></dl></div><a id="id-1.10.21.5.2" class="indexterm"></a><div class="sect2" id="FUNCTIONAL-DEPENDENCIES"><div class="titlepage"><div><div><h3 class="title">68.2.1. Dépendances fonctionnelles <a href="#FUNCTIONAL-DEPENDENCIES" class="id_link">#</a></h3></div></div></div><p>
+    La corrélation multivariée peut être démontrée avec un jeu de test très
+    simple  --  une table avec deux colonnes, chacune contenant les mêmes
+    valeurs :
+
+    </p><pre class="programlisting">
+CREATE TABLE t (a INT, b INT);
+INSERT INTO t SELECT i % 100, i % 100 FROM generate_series(1, 10000) s(i);
+ANALYZE t;
+    </pre><p>
+
+    Comme expliqué dans <a class="xref" href="planner-stats.html" title="14.2. Statistiques utilisées par le planificateur">Section 14.2</a>, l'optimiseur peut
+    déterminer la cardinalité de <code class="structname">t</code> en utilisant le
+    nombre de pages et de lignes obtenues dans
+    <code class="structname">pg_class</code> :
+
+    </p><pre class="programlisting">
+SELECT relpages, reltuples FROM pg_class WHERE relname = 't';
+
+ relpages | reltuples
+----------+-----------
+       45 |     10000
+    </pre><p>
+
+    La distribution des données est très simple; il n'y a que 100 valeurs
+    différentes dans chaque colonne, distribuées de manière uniforme.
+   </p><p>
+    L'exemple suivant montre le résultat de l'estimation d'une condition
+    <code class="literal">WHERE</code> sur la colonne <code class="structfield">a</code> :
+
+    </p><pre class="programlisting">
+EXPLAIN (ANALYZE, TIMING OFF) SELECT * FROM t WHERE a = 1;
+                                 QUERY PLAN
+-------------------------------------------------------------------------------
+ Seq Scan on t  (cost=0.00..170.00 rows=100 width=8) (actual rows=100 loops=1)
+   Filter: (a = 1)
+   Rows Removed by Filter: 9900
+    </pre><p>
+
+    L'optimiseur examine la condition et détermine que la sélectivité de cette
+    clause est de 1%.  En comparant cette estimation avec le nombre de lignes
+    réel, on voit que l'estimation est très précise (elle est en fait exacte
+    car la table est très petite).  En changeant la clause
+    <code class="literal">WHERE</code> pour utiliser la colonne
+    <code class="structfield">b</code>, un plan identique est généré.  Mais observons
+    ce qui arrive si nous appliquons la même condition sur chacune des
+    colonnes, en les combinant avec <code class="literal">AND</code> :
+
+    </p><pre class="programlisting">
+EXPLAIN (ANALYZE, TIMING OFF) SELECT * FROM t WHERE a = 1 AND b = 1;
+                                 QUERY PLAN
+-----------------------------------------------------------------------------
+ Seq Scan on t  (cost=0.00..195.00 rows=1 width=8) (actual rows=100 loops=1)
+   Filter: ((a = 1) AND (b = 1))
+   Rows Removed by Filter: 9900
+    </pre><p>
+
+    L'optimiseur estime la sélectivité pour chaque condition individuellement,
+    en arrivant à la même estimation d'1% comme au dessus.  Puis il part du
+    principe que les conditions sont indépendantes, et multiplie donc leurs
+    sélectivité, produisant une estimation de sélectivité finale d'uniquement
+    0.01%.  C'est une sous estimation importante, puisque le nombre réel de
+    lignes correspondant aux conditions (100) est d'un ordre de grandeur deux
+    fois plus haut.
+   </p><p>
+    Ce problème peut être corrigé en créant un objet statistiques qui demandera
+    à <code class="command">ANALYZE</code> de calculer des statistiques multivariées de
+    dépendances fonctionnelles sur les deux colonnes :
+
+    </p><pre class="programlisting">
+CREATE STATISTICS stts (dependencies) ON a, b FROM t;
+ANALYZE t;
+EXPLAIN (ANALYZE, TIMING OFF) SELECT * FROM t WHERE a = 1 AND b = 1;
+                                  QUERY PLAN
+-------------------------------------------------------------------------------
+ Seq Scan on t  (cost=0.00..195.00 rows=100 width=8) (actual rows=100 loops=1)
+   Filter: ((a = 1) AND (b = 1))
+   Rows Removed by Filter: 9900
+    </pre><p>
+   </p></div><div class="sect2" id="MULTIVARIATE-NDISTINCT-COUNTS"><div class="titlepage"><div><div><h3 class="title">68.2.2. Nombre N-Distinct Multivarié <a href="#MULTIVARIATE-NDISTINCT-COUNTS" class="id_link">#</a></h3></div></div></div><p>
+    Un problème similaire apparaît avec l'estimation de la cardinalité d'un
+    ensemble de plusieurs colonnes, tel que le nombre de groupes qu'une clause
+    <code class="command">GROUP BY</code> générerait.  Quand <code class="command">GROUP BY</code>
+    liste une seule colonne, l'estimation n-distinct (qui est visible comme le
+    nombre de lignes estimé par le nœud HashAggregate) est très précis :
+    </p><pre class="programlisting">
+EXPLAIN (ANALYZE, TIMING OFF) SELECT COUNT(*) FROM t GROUP BY a;
+                                       QUERY PLAN
+-----------------------------------------------------------------------------------------
+ HashAggregate  (cost=195.00..196.00 rows=100 width=12) (actual rows=100 loops=1)
+   Group Key: a
+   -&gt;  Seq Scan on t  (cost=0.00..145.00 rows=10000 width=4) (actual rows=10000 loops=1)
+    </pre><p>
+    Mais sans statistiques multivariées, l'estimation du nombre de groupe dans
+    une requête ayant deux colonnes dans le <code class="command">GROUP BY</code>, comme
+    dans l'exemple suivant, est faux d'un ordre de grandeur :
+    </p><pre class="programlisting">
+EXPLAIN (ANALYZE, TIMING OFF) SELECT COUNT(*) FROM t GROUP BY a, b;
+                                       QUERY PLAN
+--------------------------------------------------------------------------------------------
+ HashAggregate  (cost=220.00..230.00 rows=1000 width=16) (actual rows=100 loops=1)
+   Group Key: a, b
+   -&gt;  Seq Scan on t  (cost=0.00..145.00 rows=10000 width=8) (actual rows=10000 loops=1)
+    </pre><p>
+    En redéfinissant l'objet statistiques pour inclure un nombre n-distinct
+    pour les deux colonnes, l'estimation est bien améliorée :
+    </p><pre class="programlisting">
+DROP STATISTICS stts;
+CREATE STATISTICS stts (dependencies, ndistinct) ON a, b FROM t;
+ANALYZE t;
+EXPLAIN (ANALYZE, TIMING OFF) SELECT COUNT(*) FROM t GROUP BY a, b;
+                                       QUERY PLAN
+--------------------------------------------------------------------------------------------
+ HashAggregate  (cost=220.00..221.00 rows=100 width=16) (actual rows=100 loops=1)
+   Group Key: a, b
+   -&gt;  Seq Scan on t  (cost=0.00..145.00 rows=10000 width=8) (actual rows=10000 loops=1)
+    </pre><p>
+   </p></div><div class="sect2" id="MCV-LISTS"><div class="titlepage"><div><div><h3 class="title">68.2.3. Listes MCV <a href="#MCV-LISTS" class="id_link">#</a></h3></div></div></div><p>
+    Comme expliqué dans <a class="xref" href="multivariate-statistics-examples.html#FUNCTIONAL-DEPENDENCIES" title="68.2.1. Dépendances fonctionnelles">Section 68.2.1</a>, les
+    dépendances fonctionnelles sont un type de statistiques peu coûteux et
+    très efficace, mais leur limitation principale est leur nature globale
+    (traquer les dépendances uniquement au niveau de la colonne, pas entre les
+    valeurs des colonnes individuelles).
+   </p><p>
+    Cette section introduit la variante des listes <acronym class="acronym">MCV</acronym>
+    (valeurs les plus communes), une extension directe de la statistique par
+    colonne décrite dans <a class="xref" href="row-estimation-examples.html" title="68.1. Exemples d'estimation des lignes">Section 68.1</a>. Ces
+    statistiques adressent la limitation du stockage de valeurs individuelles
+    mais elles sont naturellement plus coûteuses, à la fois pour la
+    construction des statistiques lors du <code class="command">ANALYZE</code>, pour le
+    stockage et pour le temps de planification.
+   </p><p>
+    Étudions cette requête à partir de <a class="xref" href="multivariate-statistics-examples.html#FUNCTIONAL-DEPENDENCIES" title="68.2.1. Dépendances fonctionnelles">Section 68.2.1</a>, mais cette fois avec une liste
+    <acronym class="acronym">MCV</acronym> crée à partir du même ensemble de colonnes
+    (assurez-vous de supprimer les dépendances fonctionnelles, pour s'assurer
+    que le planificateur utilise les statistiques nouvellement créées).
+
+    </p><pre class="programlisting">
+DROP STATISTICS stts;
+CREATE STATISTICS stts2 (mcv) ON a, b FROM t;
+ANALYZE t;
+EXPLAIN (ANALYZE, TIMING OFF) SELECT * FROM t WHERE a = 1 AND b = 1;
+                                   QUERY PLAN
+-------------------------------------------------------------------------------
+ Seq Scan on t  (cost=0.00..195.00 rows=100 width=8) (actual rows=100 loops=1)
+   Filter: ((a = 1) AND (b = 1))
+   Rows Removed by Filter: 9900
+    </pre><p>
+
+    L'estimation est aussi précise qu'avec les dépendances fonctionnelles
+    grâce à la petite volumétrie de la table et à une distribution simple avec
+    un petit nombre de valeurs distinctes. Avant de regarder les deuxième
+    requête, qui n'était pas géré particulièrement bien par les dépendances
+    fonctionnelles, inspectons un peu la liste <acronym class="acronym">MCV</acronym>.
+   </p><p>
+    Inspecter la liste <acronym class="acronym">MCV</acronym> est possible en utilisant la
+    fonction <code class="function">pg_mcv_list_items</code>.
+
+    </p><pre class="programlisting">
+SELECT m.* FROM pg_statistic_ext join pg_statistic_ext_data on (oid = stxoid),
+                pg_mcv_list_items(stxdmcv) m WHERE stxname = 'stts2';
+ index |  values  | nulls | frequency | base_frequency
+-------+----------+-------+-----------+----------------
+     0 | {0, 0}   | {f,f} |      0.01 |         0.0001
+     1 | {1, 1}   | {f,f} |      0.01 |         0.0001
+   ...
+    49 | {49, 49} | {f,f} |      0.01 |         0.0001
+    50 | {50, 50} | {f,f} |      0.01 |         0.0001
+   ...
+    97 | {97, 97} | {f,f} |      0.01 |         0.0001
+    98 | {98, 98} | {f,f} |      0.01 |         0.0001
+    99 | {99, 99} | {f,f} |      0.01 |         0.0001
+(100 rows)
+    </pre><p>
+
+    Ceci confirme qu'il y a 100 combinaisons distinctes dans les deux
+    colonnes, et que leur fréquence est pratiquement identique (fréquence de
+    1% frequency pour les deux). La fréquence de base est la fréquence
+    calculée par les statistiques par colonne, comme si il n'y avait pas de
+    statistiques multi-colonnes. S'il y avait des valeurs NULL dans une des
+    colonnes, cela se serait vu dans la colonne
+    <code class="structfield">nulls</code>.
+   </p><p>
+    Lors de l'estimation de la sélectivité, le planificateur applique toutes
+    les conditions sur les éléments de la liste <acronym class="acronym">MCV</acronym>, puis
+    additionne les fréquences de celles qui correspondent. Voir
+    <code class="function">mcv_clauselist_selectivity</code> dans
+    <code class="filename">src/backend/statistics/mcv.c</code> pour les détails.
+   </p><p>
+    Comparé aux dépendances fonctionnelles, les listes <acronym class="acronym">MCV</acronym>
+    ont deux avantages majeurs. Tout d'abord, la liste enregistre les valeurs
+    réelles, rendant possible la décision des combinaisons compatibles.
+
+    </p><pre class="programlisting">
+EXPLAIN (ANALYZE, TIMING OFF) SELECT * FROM t WHERE a = 1 AND b = 10;
+                                 QUERY PLAN
+---------------------------------------------------------------------------
+ Seq Scan on t  (cost=0.00..195.00 rows=1 width=8) (actual rows=0 loops=1)
+   Filter: ((a = 1) AND (b = 10))
+   Rows Removed by Filter: 10000
+    </pre><p>
+
+    Ensuite, les listes <acronym class="acronym">MCV</acronym> gèrent un plus grand nombre de
+    types de clause, pas uniquement les clauses d'égalité comme les
+    dépendances fonctionnelles. Voir par exemple la requête d'intervalle,
+    présentée précédemment :
+
+    </p><pre class="programlisting">
+EXPLAIN (ANALYZE, TIMING OFF) SELECT * FROM t WHERE a &lt;= 49 AND b &gt; 49;
+                                QUERY PLAN
+---------------------------------------------------------------------------
+ Seq Scan on t  (cost=0.00..195.00 rows=1 width=8) (actual rows=0 loops=1)
+   Filter: ((a &lt;= 49) AND (b &gt; 49))
+   Rows Removed by Filter: 10000
+    </pre><p>
+
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/multivariate-statistics-examples.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:19 GMT -->
+</html>

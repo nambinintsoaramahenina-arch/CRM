@@ -1,0 +1,689 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/protocol-message-formats.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:14 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>53.7. Formats de message</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="protocol-message-types.html" title="53.6. Types de données des messages" /><link rel="next" href="protocol-error-fields.html" title="53.8. Champs des messages d'erreur et de notification" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/protocol-message-formats.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/protocol-message-formats.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/protocol-message-formats.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/protocol-message-formats.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/protocol-message-formats.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/protocol-message-formats.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/protocol-message-formats.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/protocol-message-formats.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/protocol-message-formats.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/protocol-message-formats.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/protocol-message-formats.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/protocol-message-formats.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/protocol-message-formats.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/protocol-message-formats.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/protocol-message-formats.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/protocol-message-formats.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/protocol-message-formats.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/protocol-message-formats.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/protocol-message-formats.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/protocol-message-formats.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/protocol-message-formats.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="protocol.html">Protocole Frontend/Backend</a></span> » <span class="breadcrumb-node">Formats de message</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="protocol-message-types.html" title="53.6. Types de données des messages">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="protocol.html" title="Chapitre 53. Protocole Frontend/Backend">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="protocol-error-fields.html" title="53.8. Champs des messages d'erreur et de notification">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">53.6. Types de données des messages </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 53.8. Champs des messages d'erreur et de notification</td></tr></table></div><div class="sect1" id="PROTOCOL-MESSAGE-FORMATS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">53.7. Formats de message <a href="#PROTOCOL-MESSAGE-FORMATS" class="id_link">#</a></h2></div></div></div><p>
+   Cette section décrit le format détaillé de chaque message. Tous sont
+   marqués pour indiquer qu'ils peuvent être envoyés par un client
+   (F, pour <span class="foreignphrase"><em class="foreignphrase">frontend</em></span> en anglais), par un
+   backend (B) ou les deux (F &amp; B).
+   Notez que, bien que chaque message inclut un décompte d'octets au début,
+   le format de message est défini pour que la fin du message puisse être
+   trouvée sans faire référence au nombre d'octets. Ceci aide à vérifier
+   la validité du message. (Le message CopyData est une exception car
+   il fait partie d'un flux de données ; le contenu de tout message
+   CopyData individuel ne peut pas être interprété indépendamment.)
+  </p><div class="variablelist"><dl class="variablelist"><dt id="PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONOK"><span class="term">AuthenticationOk (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONOK" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('R')</span></dt><dd><p>
+         Identifie le message comme une demande d'authentification.
+        </p></dd><dt><span class="term">Int32(8)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32(0)</span></dt><dd><p>
+         Indique que l'authentification est réussie.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONKERBEROSV5"><span class="term">AuthenticationKerberosV5 (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONKERBEROSV5" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('R')</span></dt><dd><p>
+         Identifie le message comme une demande d'authentification.
+        </p></dd><dt><span class="term">Int32(8)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32(2)</span></dt><dd><p>
+         Indique que l'authentification Kerberos V5 est requise.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONCLEARTEXTPASSWORD"><span class="term">AuthenticationCleartextPassword (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONCLEARTEXTPASSWORD" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('R')</span></dt><dd><p>
+         Identifie le message comme une demande d'authentification.
+        </p></dd><dt><span class="term">Int32(8)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32(3)</span></dt><dd><p>
+         Indique que l'authentification par mot de passe en clair en requise.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONMD5PASSWORD"><span class="term">AuthenticationMD5Password (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONMD5PASSWORD" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('R')</span></dt><dd><p>
+         Identifie le message comme une demande d'authentification.
+        </p></dd><dt><span class="term">Int32(12)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32(5)</span></dt><dd><p>
+         Indique que le mot de passe chiffré avec MD5 est requis.
+        </p></dd><dt><span class="term">Byte4</span></dt><dd><p>
+         Le sel à utiliser lors du chiffrement du mot de passe.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONGSS"><span class="term">AuthenticationGSS (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONGSS" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('R')</span></dt><dd><p>
+         Identifie le message comme une demande d'authentification.
+        </p></dd><dt><span class="term">Int32(8)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32(7)</span></dt><dd><p>
+         Indique qu'une authentification GSSAPI est requise.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONGSSCONTINUE"><span class="term">AuthenticationGSSContinue (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONGSSCONTINUE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('R')</span></dt><dd><p>
+         Identifie le message comme une demande d'authentification.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32(8)</span></dt><dd><p>
+         Indique que ce message contient des données GSSAPI ou SSPI.
+        </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+         Données d'authentification GSSAPI ou SSPI.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONSSPI"><span class="term">AuthenticationSSPI (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONSSPI" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('R')</span></dt><dd><p>
+         Identifie le message comme une demande d'authentification.
+        </p></dd><dt><span class="term">Int32(8)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32(9)</span></dt><dd><p>
+         Indique que l'authentification SSPI est requise.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONSASL"><span class="term">AuthenticationSASL (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONSASL" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('R')</span></dt><dd><p>
+         Identifie le message comme une demande d'authentification.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32(10)</span></dt><dd><p>
+         Indique que l'authentification SASL est requise.
+        </p></dd></dl></div><p>
+      Le corps du message est une liste de mécanismes d'authentification SASL,
+      dans l'ordre de préférence du serveur. Un octet zéro est requis en fin
+      après le nom du dernier mécanisme d'authentification. Pour chaque
+      mécanisme, il y a ce qui suit :
+
+      </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">String</span></dt><dd><p>
+          Nom d'un mécanisme d'authentification SASL.
+         </p></dd></dl></div><p>
+     </p></dd><dt id="PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONSASLCONTINUE"><span class="term">AuthenticationSASLContinue (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONSASLCONTINUE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('R')</span></dt><dd><p>
+         Identifie le message comme une demande d'authentification.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32(11)</span></dt><dd><p>
+         Indique que ce message contient un challenge SASL.
+        </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+         Données SASL, spécifiques au mécanisme SASL utilisé.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONSASLFINAL"><span class="term">AuthenticationSASLFinal (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-AUTHENTICATIONSASLFINAL" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('R')</span></dt><dd><p>
+         Identifie le message comme une demande d'authentification.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32(12)</span></dt><dd><p>
+         Indique que l'authentification SASL s'est terminée.
+        </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+         Données supplémentaires SASL, spécifiques au mécanisme SASL
+         utilisé.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-BACKENDKEYDATA"><span class="term">BackendKeyData (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-BACKENDKEYDATA" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('K')</span></dt><dd><p>
+         Identifie le message comme une donnée clé d'annulation. Le client
+         doit conserver ces valeurs s'il souhaite être capable d'exécuter
+         ultérieurement des messages CancelRequest.
+        </p></dd><dt><span class="term">Int32(12)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Identifiant du processus de ce backend.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Clé secrète de ce backend.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-BIND"><span class="term">Bind (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-BIND" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('B')</span></dt><dd><p>
+         Identifie le message comme une commande Bind.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le nom du portail de destination
+         (une chaîne vide sélectionne le portail non nommé).
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le nom de la requête préparée source
+         (une chaîne vide sélectionne la requête préparée non nommée).
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         Le nombre de codes formats des paramètres
+         (dénoté <em class="replaceable"><code>C</code></em> ci-dessous).
+         Il peut valoir zéro pour indiquer qu'il n'y a pas de paramètres ou
+         que les paramètres peuvent tous utiliser le format par défaut
+         (text) ; ou un, auquel cas le code format spécifié est appliqué
+         à tous les paramètres ; ou il peut être égal au nombre réel
+         de paramètres.
+        </p></dd><dt><span class="term">Int16[<em class="replaceable"><code>C</code></em>]</span></dt><dd><p>
+         Les codes format des paramètres. Il n'y a que deux valeurs
+         possibles : zéro pour texte, un pour binaire.
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         Le nombre de valeurs de paramètres (potentiellement zéro).
+         Ce nombre doit correspondre au nombre de paramètres nécessaires
+         pour la requête.
+        </p></dd></dl></div><p>
+      Ensuite, la paire suivante de champs apparaît pour chaque paramètre :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Int32</span></dt><dd><p>
+         La longueur de la valeur du paramètre en octets (ce nombre ne s'inclut
+         pas). Peut valoir zéro. En cas particulier, -1 indique une valeur NULL
+         du paramètre.
+        </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+         La valeur du paramètre, dans le format indiqué par le code format
+         associé.
+         <em class="replaceable"><code>n</code></em> est la longueur ci-dessus.
+        </p></dd></dl></div><p>
+      Après le dernier paramètre, les champs suivants apparaissent :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Int16</span></dt><dd><p>
+         Le nombre de codes formats des colonnes de résultat
+         (dénoté par <em class="replaceable"><code>R</code></em> ci-dessous).
+         Ce nombre peut valoir zéro pour indiquer qu'il n'y a pas de colonnes
+         de résultats ou que les colonnes de résultats devraient toutes utiliser
+         le format par défaut (texte) ; ou un, auquel cas le code format
+         spécifié est appliqué à toutes les colonnes du résultat (s'il y en
+         a) ; ou il peut être égal au nombre réel de colonnes résultats
+         de la requête.
+        </p></dd><dt><span class="term">Int16[<em class="replaceable"><code>R</code></em>]</span></dt><dd><p>
+         Les codes format des colonnes du résultat. Il n'existe que deux
+         possibilités : zéro pour texte, un pour binaire.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-BINDCOMPLETE"><span class="term">BindComplete (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-BINDCOMPLETE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('2')</span></dt><dd><p>
+         Identifie le message comme un indicateur de fin de Bind.
+        </p></dd><dt><span class="term">Int32(4)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-CANCELREQUEST"><span class="term">CancelRequest (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-CANCELREQUEST" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Int32(16)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32(80877102)</span></dt><dd><p>
+         Le code de demande d'annulation. La valeur est choisie pour contenir
+         <code class="literal">1234</code> sur les 16 bits les plus significatifs, et
+         <code class="literal">5678</code> sur les 16 bits les moins significatifs.
+         (Pour éviter toute confusion, ce code ne doit pas être le même que tout
+         numéro de version de protocole.)
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         L'identifiant de processus du backend cible.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         La clé secrète du backend cible.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-CLOSE"><span class="term">Close (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-CLOSE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('C')</span></dt><dd><p>
+         Identifie le message comme une commande Close.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Byte1</span></dt><dd><p>
+         '<code class="literal">S</code>' pour fermer une requête préparée ; ou
+         '<code class="literal">P</code>' pour fermer un portail.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le nom de la requête préparée ou du portail à fermer (une chaîne vide
+         sélectionne la requête préparée ou le portail non nommé).
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-CLOSECOMPLETE"><span class="term">CloseComplete (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-CLOSECOMPLETE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('3')</span></dt><dd><p>
+         Identifie le message comme un indicateur de fin de Close.
+        </p></dd><dt><span class="term">Int32(4)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-COMMANDCOMPLETE"><span class="term">CommandComplete (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-COMMANDCOMPLETE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('C')</span></dt><dd><p>
+         Identifie le message comme une réponse de fin de commande.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+        La balise de la commande. C'est habituellement un mot simple qui
+        identifie la commande SQL terminée.
+       </p><p>
+        Pour une commande <code class="command">INSERT</code>, la balise est
+        <code class="literal">INSERT <em class="replaceable"><code>oid</code></em>
+        <em class="replaceable"><code>lignes</code></em></code>, où
+        <em class="replaceable"><code>lignes</code></em> correspond au nombre de lignes
+        insérées. <em class="replaceable"><code>oid</code></em> était l'identifiant d'objet
+        de la ligne insérée si <em class="replaceable"><code>lignes</code></em> valait 1
+        et que la table cible avait des OID, mais les colonnes systèmes OID
+        ne sont plus supportées ; de ce fait,
+        <em class="replaceable"><code>oid</code></em> est toujours à 0.
+       </p><p>
+        Pour une commande <code class="command">DELETE</code>, la balise est
+        <code class="literal">DELETE <em class="replaceable"><code>lignes</code></em></code> où
+        <em class="replaceable"><code>lignes</code></em> correspond au nombre de lignes
+        supprimées.
+       </p><p>
+        Pour une commande <code class="command">UPDATE</code>, la balise est
+        <code class="literal">UPDATE <em class="replaceable"><code>lignes</code></em></code> où
+        <em class="replaceable"><code>lignes</code></em> correspond au nombre de lignes mises
+        à jour.
+       </p><p>
+        Pour une commande <code class="command">MERGE</code>, la balise est
+        <code class="literal">MERGE <em class="replaceable"><code>lignes</code></em></code> où
+        <em class="replaceable"><code>lignes</code></em> correspond au nombre de lignes insérées,
+        mises à jour ou supprimées.
+       </p><p>
+        Pour une commande <code class="command">SELECT</code> ou <code class="command">CREATE TABLE
+        AS</code>, la balise est <code class="literal">SELECT <em class="replaceable"><code>lignes</code></em></code>
+        où <em class="replaceable"><code>lignes</code></em> correspond au nombre de lignes
+        récupérées.
+       </p><p>
+        Pour une commande <code class="command">MOVE</code>, la balise est
+        <code class="literal">MOVE <em class="replaceable"><code>lignes</code></em></code> où
+        <em class="replaceable"><code>lignes</code></em> correspond au nombre de lignes de
+        déplacement du curseur.
+       </p><p>
+        Pour une commande <code class="command">FETCH</code>, la balise est
+        <code class="literal">FETCH <em class="replaceable"><code>lignes</code></em></code> où
+        <em class="replaceable"><code>lignes</code></em> est le nombre de lignes qui ont été
+        récupérées du curseur.
+       </p><p>
+        Pour une commande <code class="command">COPY</code>, la balise est
+        <code class="literal">COPY <em class="replaceable"><code>lignes</code></em></code> où
+        <em class="replaceable"><code>lignes</code></em> est le nombre de lignes copiées.
+        (Note : le nombre de lignes apparaît seulement dans
+        <span class="productname">PostgreSQL</span> 8.2 et les versions ultérieures.)
+       </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-COPYDATA"><span class="term">CopyData (F &amp; B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-COPYDATA" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('d')</span></dt><dd><p>
+         Identifie le message comme des données <code class="command">COPY</code>.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+         Données qui forment une partie d'un flux de données
+         <code class="command">COPY</code>. Les messages envoyés à partir du backend
+         correspondront toujours à des lignes de données simples, mais les
+         messages envoyés par les clients pourraient diviser le flux de
+         données de façon arbitraire.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-COPYDONE"><span class="term">CopyDone (F &amp; B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-COPYDONE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('c')</span></dt><dd><p>
+         Identifie le message comme un indicateur de fin de
+         <code class="command">COPY</code>.
+        </p></dd><dt><span class="term">Int32(4)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-COPYFAIL"><span class="term">CopyFail (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-COPYFAIL" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('f')</span></dt><dd><p>
+         Identifie le message comme un indicateur d'échec de
+         <code class="command">COPY</code>.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Un message d'erreur à rapporter comme cause de l'échec.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-COPYINRESPONSE"><span class="term">CopyInResponse (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-COPYINRESPONSE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('G')</span></dt><dd><p>
+         Identifie le message comme une réponse Start Copy In. Le client doit
+         maintenant envoyer des données <code class="literal">copy-in</code> (s'il n'est
+         pas préparé à le faire, il envoie un message CopyFail).
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int8</span></dt><dd><p>
+         0 indique que le format global de <code class="command">COPY</code> est du
+         texte (lignes séparées par des retours à la ligne, colonnes séparées
+         par des caractères séparateurs, etc.).
+         1 indique que le format global de copie est binaire (similaire au
+         format DataRow).
+         Voir <a class="xref" href="sql-copy.html" title="COPY"><span class="refentrytitle">COPY</span></a> pour plus d'informations.
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         Le nombre de colonnes dans les données à copier
+         (dénoté <em class="replaceable"><code>N</code></em> ci-dessous).
+        </p></dd><dt><span class="term">Int16[<em class="replaceable"><code>N</code></em>]</span></dt><dd><p>
+         Les codes format à utiliser pour chaque colonne. Il n'y a que deux
+         possibilités : zéro pour texte, un pour binaire. Tous doivent
+         être à zéro pour que le format de copie global soit du texte.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-COPYOUTRESPONSE"><span class="term">CopyOutResponse (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-COPYOUTRESPONSE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('H')</span></dt><dd><p>
+         Identifie le message comme une réponse Start Copy Out.
+         Ce message sera suivi par les données <code class="literal">copy-out</code>.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int8</span></dt><dd><p>
+         0 indique que le format global de <code class="command">COPY</code> est du texte
+         (lignes séparées par des retours à la ligne, colonnes séparées par
+         des caractères séparateurs, etc.). 1 indique que le format global de
+         copie est binaire (similaire au format DataRow). Voir
+         <a class="xref" href="sql-copy.html" title="COPY"><span class="refentrytitle">COPY</span></a> pour plus d'informations.
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         Le nombre de colonnes des données à copier
+         (dénoté <em class="replaceable"><code>N</code></em> ci-dessous).
+        </p></dd><dt><span class="term">Int16[<em class="replaceable"><code>N</code></em>]</span></dt><dd><p>
+         Les codes format à utiliser pour chaque colonne. Il n'y a que deux
+         possibilités : zéro pour texte, un pour binaire. Ils doivent
+         être tous à zéro pour que le format global de copie soit du texte.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-COPYBOTHRESPONSE"><span class="term">CopyBothResponse (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-COPYBOTHRESPONSE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('W')</span></dt><dd><p>
+         Identifie le message comme une réponse Start Copy Both.
+         Ce message est utilisé uniquement pour la réplication en flux.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int8</span></dt><dd><p>
+         0 indique que le format global de <code class="command">COPY</code> est du texte
+         (lignes séparées par des retours à la ligne, colonnes séparées par
+         des caractères séparateurs, etc.). 1 indique que le format global de
+         copie est binaire (similaire au format DataRow). Voir
+         <a class="xref" href="sql-copy.html" title="COPY"><span class="refentrytitle">COPY</span></a> pour plus d'informations.
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         Le nombre de colonnes dans les données à copier
+         (dénoté <em class="replaceable"><code>N</code></em> ci-dessous).
+        </p></dd><dt><span class="term">Int16[<em class="replaceable"><code>N</code></em>]</span></dt><dd><p>
+         Les codes format à utiliser pour chaque colonne. Il n'y a que deux
+         possibilités : zéro pour texte, un pour binaire. Ils doivent
+         être tous à zéro pour que le format global de copie soit du texte.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-DATAROW"><span class="term">DataRow (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-DATAROW" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('D')</span></dt><dd><p>
+         Identifie le message comme une ligne de données.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         Le nombre de valeurs de colonnes (potentiellement zéro).
+        </p></dd></dl></div><p>
+      Ensuite, la paire de champs suivants apparaît pour chaque colonne :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Int32</span></dt><dd><p>
+         La longueur de la valeur de la colonne, en octets (ce décompte ne
+         s'inclue pas lui-même). Peut valoir zéro. Cas particulier, -1 indique
+         une valeur de colonne NULL.
+        </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+         La valeur de la colonne, dans le format indiqué par le code format
+         associé. <em class="replaceable"><code>n</code></em> est la longueur ci-dessus.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-DESCRIBE"><span class="term">Describe (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-DESCRIBE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('D')</span></dt><dd><p>
+         Identifie le message comme une commande Describe.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Byte1</span></dt><dd><p>
+         '<code class="literal">S</code>' pour décrire une requête préparée ; ou
+         '<code class="literal">P</code>' pour décrire un portail.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le nom de la requête préparée ou du portail à décrire (une chaîne vide
+         sélectionne la requête préparée ou le portail non nommé).
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-EMPTYQUERYRESPONSE"><span class="term">EmptyQueryResponse (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-EMPTYQUERYRESPONSE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('I')</span></dt><dd><p>
+         Identifie le message comme une réponse à une chaîne vide de requête.
+         (Cela se substitue à CommandComplete.)
+        </p></dd><dt><span class="term">Int32(4)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-ERRORRESPONSE"><span class="term">ErrorResponse (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-ERRORRESPONSE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('E')</span></dt><dd><p>
+         Identifie le message comme une erreur.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd></dl></div><p>
+      Le corps du message consiste en un ou plusieurs champs identifiés, suivi
+      par un octet zéro comme terminaison. Les champs peuvent apparaître dans
+      n'importe quel ordre. Pour chaque champ, il existe ce qui suit :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1</span></dt><dd><p>
+         Un code identifiant le type de champ ; si zéro, c'est le message
+         de terminaison, et aucune chaîne ne suit. Les types de champs
+         actuellement définis sont listés dans <a class="xref" href="protocol-error-fields.html" title="53.8. Champs des messages d'erreur et de notification">Section 53.8</a>. Comme plus de types de champs
+         pourraient être ajoutés dans le futur, les clients devraient ignorer
+         silencieusement les champs dont le type n'est pas reconnu.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         La valeur du champ.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-EXECUTE"><span class="term">Execute (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-EXECUTE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('E')</span></dt><dd><p>
+         Identifie le message comme une commande Execute.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le nom du portail à exécuter (une chaîne vide sélectionne le portail
+         non nommé).
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Nombre maximum de lignes à renvoyer si le portail contient une requête
+         qui renvoie des lignes (ignoré sinon). Zéro indique <span class="quote">« <span class="quote">pas de
+         limite</span> »</span>.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-FLUSH"><span class="term">Flush (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-FLUSH" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('H')</span></dt><dd><p>
+         Identifie le message comme une commande Flush.
+        </p></dd><dt><span class="term">Int32(4)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-FUNCTIONCALL"><span class="term">FunctionCall (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-FUNCTIONCALL" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('F')</span></dt><dd><p>
+         Identifie le message comme un appel de fonction.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Indique l'identifiant d'objet de la fonction à appeler.
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         Le nombre de codes formats des arguments
+         (dénoté <em class="replaceable"><code>C</code></em> ci-dessous).
+         Ce nombre peut valoir zéro pour indiquer qu'il n'y a pas d'arguments
+         ou que tous les arguments utilisent le format par défaut (texte) ;
+         ou un, auquel cas le code format spécifié est appliqué à tous les
+         arguments ; ou être égal au nombre réel d'arguments.
+        </p></dd><dt><span class="term">Int16[<em class="replaceable"><code>C</code></em>]</span></dt><dd><p>
+         Les codes formats des arguments. Il n'existe que deux
+         possibilités : zéro pour texte, un pour binaire.
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         Indique le nombre d'arguments à fournir à la fonction.
+        </p></dd></dl></div><p>
+      Ensuite, la paire suivant de champs apparaît pour chaque argument :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Int32</span></dt><dd><p>
+         La longueur de la valeur de l'argument, en octets (ce décompte ne
+         s'inclue pas lui-même). Peut valoir zéro. Cas particulier, -1 indique
+         une valeur de colonne NULL.
+        </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+         La valeur de l'argument, dans le format indiqué par le code format
+         associé.
+         <em class="replaceable"><code>n</code></em> est la longueur ci-dessus.
+        </p></dd></dl></div><p>
+      Après le dernier argument, le champ suivant apparaît :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Int16</span></dt><dd><p>
+         Le code format pour le résultat de la fonction. Il n'existe que deux
+         possibilités : 0 pour texte, 1 pour binaire.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-FUNCTIONCALLRESPONSE"><span class="term">FunctionCallResponse (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-FUNCTIONCALLRESPONSE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('V')</span></dt><dd><p>
+         Identifie le message comme un résultat d'appel de fonction.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         La longueur du résultat de la fonction, en octets (ce décompte ne
+         s'inclue pas lui-même). Peut valoir zéro. Cas particulier, -1 indique
+         une valeur de colonne NULL.
+        </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+         La valeur du résultat de la fonction, dans le format indiqué par le
+         code format associé.
+         <em class="replaceable"><code>n</code></em> est la longueur ci-dessus.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-GSSENCREQUEST"><span class="term">GSSENCRequest (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-GSSENCREQUEST" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Int32(8)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32(80877104)</span></dt><dd><p>
+         Le code de demande de chiffrement <acronym class="acronym">GSSAPI</acronym>. La valeur
+         est choisie pour contenir <code class="literal">1234</code> sur les 16 bits les
+         plus significatifs, et <code class="literal">5680</code> sur les 16 bits les
+         moins significatifs.  (Pour éviter toute confusion, ce code ne doit pas
+         être le même que le numéro de version du protocole.)
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-GSSRESPONSE"><span class="term">GSSResponse (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-GSSRESPONSE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('p')</span></dt><dd><p>
+         Identifie le message comme une réponse GSSAPI ou SSPI. Notez que ceci
+         est aussi utilisé pour les messages de réponse SASL et mot de passe.
+         Le type exact du message peut être déduit du contexte.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+         Données spécifiques du message GSSAPI/SSPI.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-NEGOTIATEPROTOCOLVERSION"><span class="term">NegotiateProtocolVersion (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-NEGOTIATEPROTOCOLVERSION" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('v')</span></dt><dd><p>
+         Identifie le message comme un message de négociation de version
+         du protocole.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Version mineure la plus récente supportée par le serveur pour la
+         version majeure réclamée par le client.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Nombre d'options du protocole non reconnues par le serveur.
+        </p></dd></dl></div><p>
+      Puis, pour l'option de protocole non reconnue par le serveur, il y a ce
+      qui suit :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">String</span></dt><dd><p>
+         Le nom de l'option.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-NODATA"><span class="term">NoData (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-NODATA" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('n')</span></dt><dd><p>
+         Identifie le message comme un indicateur d'absence de données.
+        </p></dd><dt><span class="term">Int32(4)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-NOTICERESPONSE"><span class="term">NoticeResponse (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-NOTICERESPONSE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('N')</span></dt><dd><p>
+         Identifie le message comme une information.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd></dl></div><p>
+      Le corps du message consiste en un ou plusieurs champs identifiés, suivi
+      par un octet zéro comme terminaison. Les champs peuvent apparaître dans
+      n'importe quel ordre. Pour chaque champ, il existe ce qui suit :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1</span></dt><dd><p>
+         Un code identifiant le type de champs ; si zéro, ceci est le
+         message de terminaison et aucune chaîne de caractères ne suit. Les
+         types de champs actuellement définis sont listés dans
+         <a class="xref" href="protocol-error-fields.html" title="53.8. Champs des messages d'erreur et de notification">Section 53.8</a>.
+         Comme plus de types de champs pourraient être ajoutés dans le futur,
+         les clients devraient ignorer silencieusement les champs dont le type
+         leur est inconnu.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         La valeur du champ.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-NOTIFICATIONRESPONSE"><span class="term">NotificationResponse (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-NOTIFICATIONRESPONSE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('A')</span></dt><dd><p>
+         Identifie le message comme une réponse à une notification.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         L'identifiant du processus backend notifiant.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le nom du canal où la notification a été levée.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         La <span class="quote">« <span class="quote">charge</span> »</span> passée par le processus notifiant.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-PARAMETERDESCRIPTION"><span class="term">ParameterDescription (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-PARAMETERDESCRIPTION" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('t')</span></dt><dd><p>
+         Identifie le message comme une description de paramètre.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         Le nombre de paramètres utilisés par la requête (peut valoir zéro).
+        </p></dd></dl></div><p>
+      Ensuite, pour chaque paramètre, il y a ce qui suit :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Int32</span></dt><dd><p>
+         Indique l'identifiant d'objet du type de données du paramètre.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-PARAMETERSTATUS"><span class="term">ParameterStatus (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-PARAMETERSTATUS" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('S')</span></dt><dd><p>
+         Identifie le message comme un rapport de statut d'un paramètre.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le nom du paramètre.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         La valeur actuelle de ce paramètre.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-PARSE"><span class="term">Parse (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-PARSE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('P')</span></dt><dd><p>
+         Identifie le message comme une commande Parse.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le nom de la requête préparée de destination (une chaîne vide
+         sélectionne la requête préparée non nommée).
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         La chaîne de requête à analyser.
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         Le nombre de types de données des paramètres (peut valoir zéro).
+         Notez que cela n'est pas une indication du nombre de paramètres qui
+         pourraient apparaître dans la requête de chaîne, seulement le nombre
+         de types que le client souhaite pré-déclarer.
+        </p></dd></dl></div><p>
+      Ensuite, pour chaque paramètre, il y a ce qui suit :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Int32</span></dt><dd><p>
+         Indique l'identifiant d'objet du type de données du paramètre. Placer
+         un zéro ici est équivalent à laisser le type sans spécification.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-PARSECOMPLETE"><span class="term">ParseComplete (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-PARSECOMPLETE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('1')</span></dt><dd><p>
+         Identifie le message comme un indicateur de fin de Parse.
+        </p></dd><dt><span class="term">Int32(4)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-PASSWORDMESSAGE"><span class="term">PasswordMessage (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-PASSWORDMESSAGE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('p')</span></dt><dd><p>
+         Identifie le message comme une réponse de mot de passe. Notez que c'est
+         aussi utilisé pour les messages de réponse pour GSSAPI, SSPI et SASL.
+         Le type exact de message peut être déduit du contexte.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le mot de passe (chiffré si demandé).
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-PORTALSUSPENDED"><span class="term">PortalSuspended (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-PORTALSUSPENDED" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('s')</span></dt><dd><p>
+         Identifie le message comme un indicateur de portal-suspended.
+         Notez que ceci survient uniquement si la limite de lignes a été atteint
+         pour un message Execute.
+        </p></dd><dt><span class="term">Int32(4)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-QUERY"><span class="term">Query (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-QUERY" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('Q')</span></dt><dd><p>
+         Identifie le message comme une simple requête.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         La requête elle-même.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-READYFORQUERY"><span class="term">ReadyForQuery (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-READYFORQUERY" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('Z')</span></dt><dd><p>
+         Identifie le type de message. ReadyForQuery est envoyé quand le
+         backend est prêt pour un nouveau cycle de requête.
+        </p></dd><dt><span class="term">Int32(5)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Byte1</span></dt><dd><p>
+         Indicateur du statut de transaction du backend.  Les valeurs possibles
+         sont '<code class="literal">I</code>' si inactif (et pas dans un bloc de
+         transaction) ; '<code class="literal">T</code>' si dans un bloc de
+         transaction ; ou '<code class="literal">E</code>' si dans un bloc de
+         transaction en échec (les requêtes seront rejetées jusqu'à la fin du
+         bloc).
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-ROWDESCRIPTION"><span class="term">RowDescription (B)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-ROWDESCRIPTION" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('T')</span></dt><dd><p>
+         Identifie le message comme une description de ligne.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         Indique le nombre de champs dans une ligne (peut valoir zéro).
+        </p></dd></dl></div><p>
+      Ensuite, pour chaque champ, il y a ce qui suit :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">String</span></dt><dd><p>
+         Le nom du champ.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Si le champ peut être identifié comme une colonne d'une table précise,
+         l'identifiant d'objet de la table ; sinon zéro.
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         Si le champ peut être identifié comme une colonne d'une table précise,
+         le numéro de la colonne ; sinon zéro.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         L'identifiant d'objet du type de données du champ.
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         La taille du type de données (voir <code class="varname">pg_type.typlen</code>).
+         Notez que les valeurs négatives désignent des types à taille variable.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Le modifieur du type (voir <code class="varname">pg_attribute.atttypmod</code>).
+         La signification du modifieur dépend du type.
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         Le code format en cours d'utilisation pour le champ. Actuellement, ce
+         sera soit zéro (texte) soit un (binaire). Dans un RowDescription
+         renvoyé à partir de la variante requête de Describe, le code format
+         n'est pas encore connu et sera toujours zéro.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-SASLINITIALRESPONSE"><span class="term">SASLInitialResponse (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-SASLINITIALRESPONSE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('p')</span></dt><dd><p>
+         Identifie le message comme une réponse SASL initiale. Notez que ce
+         message est aussi utilisé pour les messages de réponse de GSSAPI, SSPI
+         et mot de passe. Le type exact de message est déduit du contexte.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Nom du mécanisme d'authentification SASL que le client a sélectionné.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du "Initial Client Response" spécifique au mécanisme SASL,
+         ou -1 en cas d'absence de <code class="literal">Initial Response</code>.
+        </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+         "Initial Response" spécifique au mécanisme SASL.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-SASLRESPONSE"><span class="term">SASLResponse (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-SASLRESPONSE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('p')</span></dt><dd><p>
+         Identifie le message comme une réponse SASL. Notez que ce message est
+         aussi utilisé par les messages réponses de GSSAPI, SSPI et mot de
+         passe. Le type exact de message peut être déduit du contexte.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+         Données du message spécifique au mécanisme SASL.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-SSLREQUEST"><span class="term">SSLRequest (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-SSLREQUEST" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Int32(8)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32(80877103)</span></dt><dd><p>
+         Le code de demande de chiffrement <acronym class="acronym">SSL</acronym>. La valeur
+         est choisie pour contenir <code class="literal">1234</code> sur les 16 bits les
+         plus significatifs, et <code class="literal">5679</code> sur les 16 bits les
+         moins significatifs. (Pour éviter toute confusion, ce code ne doit pas
+         être le même que le numéro de version du protocole.)
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-STARTUPMESSAGE"><span class="term">StartupMessage (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-STARTUPMESSAGE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd><dt><span class="term">Int32(196608)</span></dt><dd><p>
+         Le numéro de version du protocole. Les 16 bits les plus significatifs
+         sont le numéro de version majeure (3 pour le protocole décrit ici).
+         Les 16 bits les moins significatifs sont le numéro de version mineure
+         (0 pour le protocole décrit ici).
+        </p></dd></dl></div><p>
+      Le numéro de version du protocole est suivi par une ou plusieurs paires de
+      nom/valeur de paramètre. Un octet zéro est requis comme terminaison après
+      la dernière paire nom/valeur. Les paramètres peuvent apparaître dans
+      n'importe quel ordre.  <code class="literal">user</code> est requis, les autres sont
+      optionnels. Chaque paramètre est spécifié ainsi :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">String</span></dt><dd><p>
+         Le nom du paramètre. Actuellement, les noms reconnus sont :
+
+         </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">user</code></span></dt><dd><p>
+             Le nom de l'utilisateur pour la connexion à la base. Requis, pas
+             de valeur par défaut.
+            </p></dd><dt><span class="term"><code class="literal">database</code></span></dt><dd><p>
+             La base de données où se connecter. Par défaut, le nom de
+             l'utilisateur.
+            </p></dd><dt><span class="term"><code class="literal">options</code></span></dt><dd><p>
+             Arguments de la ligne de commande pour le backend. (C'est abandonné
+             au profit de la configuration de paramètres individuels.) Les
+             espaces dans cette chaîne permettent de séparer les arguments,
+             à moins qu'ils ne soient échappés avec un caractère antislash
+             (<code class="literal">\</code>) ; écrire <code class="literal">\\</code> pour
+             représenter un antislash litéral.
+            </p></dd><dt><span class="term"><code class="literal">replication</code></span></dt><dd><p>
+             Utilisé pour se connecter en mode de réplication en flux, où un petit
+             ensemble de commandes de réplication peuvent être exécutées au lieu
+             de requêtes SQL. Les valeurs peuvent être <code class="literal">true</code>,
+             <code class="literal">false</code> ou <code class="literal">database</code>, et la
+             valeur par défaut est <code class="literal">false</code>. Voir <a class="xref" href="protocol-replication.html" title="53.4. Protocole de réplication en flux">Section 53.4</a> pour plus de détails.
+            </p></dd></dl></div><p>
+
+         En plus de tout cela, d'autres paramètres pourraient être listés. Les
+         noms de paramètre commençant avec <code class="literal">_pq_.</code> sont
+         réservés pour une utilisation en tant qu'extensions du protocole,
+         alors que les autres sont traités comme des paramètres d'exécution
+         à configurer au démarrage du backend. De telles configurations seront
+         appliquées au démarrage du serveur (après analyse des arguments en
+         ligne de commande s'il y en a) et agiront comme valeurs par défaut
+         de la session.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         La valeur du paramètre.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-SYNC"><span class="term">Sync (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-SYNC" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('S')</span></dt><dd><p>
+         Identifie le message comme une commande Sync.
+        </p></dd><dt><span class="term">Int32(4)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-MESSAGE-FORMATS-TERMINATE"><span class="term">Terminate (F)</span> <a href="#PROTOCOL-MESSAGE-FORMATS-TERMINATE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('X')</span></dt><dd><p>
+         Identifie le message comme une fin de session.
+        </p></dd><dt><span class="term">Int32(4)</span></dt><dd><p>
+         Longueur du contenu du message en octets, longueur incluse.
+        </p></dd></dl></div></dd></dl></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/protocol-message-formats.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:14 GMT -->
+</html>

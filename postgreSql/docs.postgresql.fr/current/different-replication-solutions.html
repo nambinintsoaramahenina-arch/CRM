@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/different-replication-solutions.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>26.1. Comparaison de différentes solutions</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="high-availability.html" title="Chapitre 26. Haute disponibilité, répartition de charge et réplication" /><link rel="next" href="warm-standby.html" title="26.2. Serveurs secondaires par transfert de journaux" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/different-replication-solutions.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/different-replication-solutions.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/different-replication-solutions.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/different-replication-solutions.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/different-replication-solutions.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/different-replication-solutions.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/different-replication-solutions.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/different-replication-solutions.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/different-replication-solutions.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/different-replication-solutions.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="high-availability.html">Haute disponibilité, répartition de charge et réplication</a></span> » <span class="breadcrumb-node">Comparaison de différentes solutions</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="high-availability.html" title="Chapitre 26. Haute disponibilité, répartition de charge et réplication">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="high-availability.html" title="Chapitre 26. Haute disponibilité, répartition de charge et réplication">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="warm-standby.html" title="26.2. Serveurs secondaires par transfert de journaux">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Chapitre 26. Haute disponibilité, répartition de charge et réplication </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 26.2. Serveurs secondaires par transfert de journaux</td></tr></table></div><div class="sect1" id="DIFFERENT-REPLICATION-SOLUTIONS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">26.1. Comparaison de différentes solutions <a href="#DIFFERENT-REPLICATION-SOLUTIONS" class="id_link">#</a></h2></div></div></div><div class="variablelist"><dl class="variablelist"><dt><span class="term"><span class="foreignphrase"><em class="foreignphrase">Failover</em></span> sur disque partagé</span></dt><dd><p>
+      Le <span class="foreignphrase"><em class="foreignphrase">failover</em></span> (ou bascule sur incident)
+      sur disque partagé élimine la surcharge de synchronisation par
+      l'existence d'une seule copie de la base de données. Il utilise un
+      seul ensemble de disques partagé par plusieurs serveurs. Si le serveur
+      principal échoue, le serveur en attente
+      est capable de monter et démarrer la base comme s'il récupérait d'un
+      arrêt brutal. Cela permet un <span class="foreignphrase"><em class="foreignphrase">failover</em></span>
+      rapide sans perte de données.
+     </p><p>
+      La fonctionnalité de matériel partagé est commune aux périphériques de
+      stockage en réseau. Il est également possible d'utiliser un système de
+      fichiers réseau bien qu'il faille porter une grande attention au système de
+      fichiers pour s'assurer qu'il a un comportement <acronym class="acronym">POSIX</acronym>
+      complet (voir <a class="xref" href="creating-cluster.html#CREATING-CLUSTER-NFS" title="18.2.2.1. NFS">Section 18.2.2.1</a>). Cette méthode
+      comporte une limitation significative : si les disques ont un
+      problème ou sont corrompus, le serveur primaire et le serveur en attente sont tous
+      les deux non fonctionnels. Un autre problème est que le serveur en attente
+      ne devra jamais accéder au stockage partagé tant que le serveur principal
+      est en cours d'exécution.
+     </p></dd><dt><span class="term">Réplication de système de fichiers (périphérique bloc)</span></dt><dd><p>
+      Il est aussi possible d'utiliser cette fonctionnalité d'une autre façon
+      avec une réplication du système de fichiers, où toutes les modifications
+      d'un système de fichiers sont renvoyées sur un système de fichiers situé
+      sur un autre ordinateur. La seule restriction est que ce miroir doit être
+      construit de telle sorte que le serveur en attente dispose d'une
+      version cohérente du système de fichiers  --  spécifiquement, les
+      écritures sur le serveur en attente doivent être réalisées dans le même
+      ordre que celles sur le primaire. <span class="productname">DRBD</span> est une
+      solution populaire de réplication de systèmes de fichiers pour Linux.
+     </p></dd><dt><span class="term">Envoi des journaux de transactions</span></dt><dd><p>
+      Les serveurs secondaires, <span class="foreignphrase"><em class="foreignphrase">warm et hot
+      standby</em></span>, (voir <a class="xref" href="warm-standby.html" title="26.2. Serveurs secondaires par transfert de journaux">Section 26.2</a>) peuvent
+      conserver leur cohérence en lisant un flux d'enregistrements de
+      <acronym class="acronym">WAL</acronym>. Si le serveur principal échoue, le serveur
+      secondaire contient pratiquement toutes les données du serveur
+      principal et peut rapidement devenir le nouveau serveur primaire. Ça
+      peut être synchrone mais ça ne peut se faire que pour le serveur de
+      bases complet.
+     </p><p>
+      Un serveur secondaire peut être implémenté en utilisant la recopie de
+      journaux par fichier(<a class="xref" href="warm-standby.html" title="26.2. Serveurs secondaires par transfert de journaux">Section 26.2</a>)  ou la
+      <span class="foreignphrase"><em class="foreignphrase">streaming replication</em></span> (réplication en
+      continu ou en flux, voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION" title="26.2.5. Réplication en flux">Section 26.2.5</a>), ou
+      une combinaison des deux. Pour des informations sur le <em class="firstterm">hot
+      standby</em>, voyez <a class="xref" href="hot-standby.html" title="26.4. Hot Standby">Section 26.4</a>.
+     </p></dd><dt><span class="term">Réplication logique</span></dt><dd><p>
+      La réplication logique autorise un serveur de bases de données à envoyer
+      un flux de modifications de données à un autre serveur. La réplication
+      logique de <span class="productname">PostgreSQL</span> construit un flux de
+      modifications logiques de données à partir des journaux de transactions.
+      La réplication logique permet la réplication des modifications de
+      données de tables individuelles. La réplication logique ne requiert pas
+      qu'un serveur particulier soit désigné comme serveur primaire ou
+      secondaire, mais autorise le flux de données dans plusieurs directions.
+      Pour plus d'informations sur la réplication logique, voir <a class="xref" href="logical-replication.html" title="Chapitre 29. Réplication logique">Chapitre 29</a>. Au travers de l'interface de décodage
+      logique (<a class="xref" href="logicaldecoding.html" title="Chapitre 47. Décodage logique (Logical Decoding)">Chapitre 47</a>), les extensions tierces
+      peuvent aussi fournir des fonctionnalités similaires.
+     </p></dd><dt><span class="term">Réplication primaire/secondaire basé sur des triggers</span></dt><dd><p>
+      Une architecture de réplication basée sur des triggers canalise
+      habituellement les requêtes de modification de données vers un serveur
+      primaire précis. Opérant table par table, le serveur primaire envoie alors
+      les données modifiées (généralement) de façon asynchrone vers les serveurs
+      secondaires. Les serveurs secondaires peuvent répondre aux requêtes qu'ils
+      reçoivent alors que le serveur primaire est fonctionnel. Ils peuvent
+      parfois permettre quelques modifications de données localement ou même une
+      activité en écriture. Cette forme de réplication est souvent utilisée pour
+      gérer de grosses requêtes analytiques ou de type
+      <span class="foreignphrase"><em class="foreignphrase">Data Warehouse</em></span>.
+     </p><p>
+      <span class="productname">Slony-I</span> est un exemple de ce type de
+      réplication, avec une granularité par
+      table et un support des secondaires multiples. Comme il met à jour le serveur
+      secondaire de façon asynchrone (par lots), il existe une possibilité de perte
+      de données pendant un <span class="foreignphrase"><em class="foreignphrase">failover</em></span>.
+     </p></dd><dt><span class="term"><span class="foreignphrase"><em class="foreignphrase">Middleware</em></span> de réplication basé sur le
+     SQL</span></dt><dd><p>
+      Avec les <span class="foreignphrase"><em class="foreignphrase">middleware</em></span> de réplication basés
+      sur le SQL, un programme intercepte chaque requête SQL et
+      l'envoie à un ou tous les serveurs. Chaque serveur opère indépendamment.
+      Les requêtes en lecture/écriture doivent être envoyées à tous les
+      serveurs pour que chaque serveur reçoive les modifications. Les
+      requêtes en lecture seule ne peuvent être envoyées qu'à un seul
+      serveur, ce qui permet de distribuer la charge de lecture.
+     </p><p>
+      Si les requêtes sont envoyées sans modification, les fonctions comme
+      <code class="function">random()</code>, <code class="function">CURRENT_TIMESTAMP</code> ainsi
+      que les séquences ont des valeurs différentes sur les différents serveurs.
+      Cela survient parce que chaque serveur opère indépendamment alors que
+      les requêtes SQL sont diffusées (et non les données
+      modifiées). Si cette solution est inacceptable, le
+      <span class="foreignphrase"><em class="foreignphrase">middleware</em></span> ou l'application doivent
+      déterminer ces valeurs à partir d'une seule source, et les utiliser dans
+      les requêtes d'écriture. Il est impératif que
+      toute transaction soit validée ou annulée sur tous les serveurs,
+      éventuellement par validation en deux phases (<a class="xref" href="sql-prepare-transaction.html" title="PREPARE TRANSACTION"><span class="refentrytitle">PREPARE TRANSACTION</span></a> et <a class="xref" href="sql-commit-prepared.html" title="COMMIT PREPARED"><span class="refentrytitle">COMMIT PREPARED</span></a>).
+      <span class="productname">Pgpool-II</span> et <span class="productname">Continuent
+      Tungsten</span> sont des exemples de ce type de réplication.
+     </p></dd><dt><span class="term">Réplication asynchrone multi-primaires</span></dt><dd><p>
+      Pour les serveurs qui ne sont pas connectés en permanence ou qui ont des
+      liens de communication lents, comme les ordinateurs portables ou les
+      serveurs distants, conserver la cohérence des données
+      entre les serveurs est un challenge. L'utilisation de la réplication asynchrone
+      multi-primaires permet à chaque serveur de fonctionner indépendamment. Il
+      communique alors périodiquement avec les autres serveurs pour identifier les transactions
+      conflictuelles. La gestion des conflits est alors confiée aux utilisateurs
+      ou à un système de règles de résolution.
+      Bucardo est un exemple de ce type de réplication.
+     </p></dd><dt><span class="term">Réplication synchrone multi-primaires</span></dt><dd><p>
+      Dans les réplications synchrones multi-primaires, tous les serveurs acceptent
+      les requêtes en écriture. Les données modifiées sont transmises
+      du serveur d'origine à tous les autres serveurs avant toute validation de
+      transaction.
+     </p><p>
+      Une activité importante en écriture peut être la cause d'un verrouillage
+      excessif et de délai dans la validation des transactions, ce qui peut
+      conduire à un effondrement des performances. Dans les faits, les
+      performances en écriture sont souvent pis que celles d'un simple
+      serveur.
+     </p><p>
+      Tous les serveurs acceptent les requêtes en lecture.
+     </p><p>
+      Certaines implantations utilisent les disques partagés pour réduire la surcharge
+      de communication.
+     </p><p>
+      Les performances de la réplication synchrone multi-primaires sont meilleures lorsque
+      les opérations de lecture représentent l'essentiel de la charge, alors que
+      son gros avantage est l'acceptation des requêtes d'écriture par tous les
+      serveurs  -- 
+      il n'est pas nécessaire de répartir la charge entre les serveurs
+      primaires et secondaires et, parce que les modifications de données sont envoyées
+      d'un serveur à l'autre, les fonctions non déterministes, comme
+      <code class="function">random()</code>, ne posent aucun problème.
+     </p><p>
+      <span class="productname">PostgreSQL</span> n'offre pas ce type de réplication,
+      mais la validation en deux phases de <span class="productname">PostgreSQL</span>
+      (<a class="xref" href="sql-prepare-transaction.html" title="PREPARE TRANSACTION"><span class="refentrytitle">PREPARE TRANSACTION</span></a> et <a class="xref" href="sql-commit-prepared.html" title="COMMIT PREPARED"><span class="refentrytitle">COMMIT PREPARED</span></a>)
+      autorise son intégration dans une application ou un
+      <span class="foreignphrase"><em class="foreignphrase">middleware</em></span>.
+     </p></dd></dl></div><p>
+   La <a class="xref" href="different-replication-solutions.html#HIGH-AVAILABILITY-MATRIX" title="Tableau 26.1. Matrice de fonctionnalités : haute disponibilité, répartition de charge et réplication">Tableau 26.1</a> résume les
+   possibilités des différentes solutions listées plus-haut.
+  </p><div class="table" id="HIGH-AVAILABILITY-MATRIX"><p class="title"><strong>Tableau 26.1. Matrice de fonctionnalités : haute disponibilité, répartition de
+    charge et réplication</strong></p><div class="table-contents"><table class="table" summary="Matrice de fonctionnalités : haute disponibilité, répartition de&#10;    charge et réplication" border="1"><colgroup><col class="col1" /><col class="col2" /><col class="col3" /><col class="col4" /><col class="col5" /><col class="col6" /><col class="col7" /><col class="col8" /><col class="col9" /></colgroup><thead><tr><th>Fonctionnalité</th><th>Disques partagés</th><th>Répl. par système de fichiers</th><th>Envoi des journaux de transactions</th><th>Répl. logique</th><th>Répl. par triggers</th><th><span class="foreignphrase"><em class="foreignphrase">Middleware</em></span> de Répl. SQL</th><th>Répl. asynch. MM</th><th>Répl. synch. MM</th></tr></thead><tbody><tr><td>Exemple populaires</td><td align="center">NAS</td><td align="center">DRBD</td><td align="center">répl. en flux interne</td><td align="center">répl. logique interne, pglogical</td><td align="center">Londiste, Slony</td><td align="center">pgpool-II</td><td align="center">Bucardo</td><td align="center"> </td></tr><tr><td>Méthode de comm.</td><td align="center">Disque partagé</td><td align="center">Blocs disque</td><td align="center">WAL</td><td align="center">décodage logique</td><td align="center">Lignes de tables</td><td align="center">SQL</td><td align="center">Lignes de tables</td><td align="center">Lignes de tables et verrous de ligne</td></tr><tr><td>Ne requiert aucun matériel spécial</td><td align="center"> </td><td align="center">•</td><td align="center">•</td><td align="center">•</td><td align="center">•</td><td align="center">•</td><td align="center">•</td><td align="center">•</td></tr><tr><td>Autorise plusieurs serveurs primaires</td><td align="center"> </td><td align="center"> </td><td align="center"> </td><td align="center">•</td><td align="center"> </td><td align="center">•</td><td align="center">•</td><td align="center">•</td></tr><tr><td>Pas de surcharge sur le serveur primaire</td><td align="center">•</td><td align="center"> </td><td align="center">•</td><td align="center">•</td><td align="center"> </td><td align="center">•</td><td align="center"> </td><td align="center"> </td></tr><tr><td>Pas d'attente entre serveurs</td><td align="center">•</td><td align="center"> </td><td align="center">with sync off</td><td align="center">with sync off</td><td align="center">•</td><td align="center"> </td><td align="center">•</td><td align="center"> </td></tr><tr><td>Pas de perte de données en cas de panne du primaire</td><td align="center">•</td><td align="center">•</td><td align="center">with sync on</td><td align="center">with sync on</td><td align="center"> </td><td align="center">•</td><td align="center"> </td><td align="center">•</td></tr><tr><td>Les secondaires acceptent les requêtes en lecture seule</td><td align="center"> </td><td align="center"> </td><td align="center">avec un hot standby</td><td align="center">•</td><td align="center">•</td><td align="center">•</td><td align="center">•</td><td align="center">•</td></tr><tr><td>Granularité de niveau table</td><td align="center"> </td><td align="center"> </td><td align="center"> </td><td align="center">•</td><td align="center">•</td><td align="center"> </td><td align="center">•</td><td align="center">•</td></tr><tr><td>Ne nécessite pas de résolution de conflit</td><td align="center">•</td><td align="center">•</td><td align="center">•</td><td align="center"> </td><td align="center">•</td><td align="center">•</td><td align="center"> </td><td align="center">•</td></tr></tbody></table></div></div><br class="table-break" /><p>
+   Certaines solutions n'entrent pas dans les catégories ci-dessus :
+  </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Partitionnement de données</span></dt><dd><p>
+      Le partitionnement des données divise les tables en ensembles de données.
+      Chaque ensemble ne peut être modifié que par un seul serveur. Les
+      données peuvent ainsi être partitionnées par bureau, Londres et
+      Paris, par exemple, avec un serveur dans chaque bureau. Si certaines
+      requêtes doivent combiner des données de Londres et Paris, il est possible
+      d'utiliser une application qui requête les deux serveurs ou d'implanter une
+      réplication primaire/secondaire pour conserver sur chaque serveur une
+      copie en lecture seule des données de l'autre bureau.
+     </p></dd><dt><span class="term">Exécution de requêtes en parallèle sur plusieurs serveurs</span></dt><dd><p>
+      La plupart des solutions ci-dessus permettent à plusieurs serveurs de
+      répondre à des requêtes multiples, mais aucune ne permet à une seule requête
+      d'être exécutée sur plusieurs serveurs pour se terminer plus rapidement.
+      Cette solution autorisent plusieurs serveurs à travailler ensemble sur une
+      seule requête. Ceci s'accomplit habituellement en répartissant les données
+      entre les serveurs, chaque serveur exécutant une partie de la
+      requête pour renvoyer les résultats à un serveur central qui les combine
+      et les renvoie à l'utilisateur. Cela peut également se faire en utilisant
+      <span class="productname">PL/Proxy</span>.
+     </p></dd></dl></div><p>
+   Il faut aussi noter que puisque <span class="productname">PostgreSQL</span>
+   est un outil libre et facilement extensible, un certain nombre de sociétés
+   se sont basées sur <span class="productname">PostgreSQL</span> pour créer leurs
+   solutions propriétaires avec des possibilités spécifiques de
+   <span class="foreignphrase"><em class="foreignphrase">failover</em></span>, réplication ou répartition de charge.
+   Cela ne sera toutefois pas abordé ici.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/different-replication-solutions.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+</html>

@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/plpgsql-cursors.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>41.7. Curseurs</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="plpgsql-control-structures.html" title="41.6. Structures de contrôle" /><link rel="next" href="plpgsql-transactions.html" title="41.8. Gestion des transactions" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/plpgsql-cursors.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/plpgsql-cursors.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/plpgsql-cursors.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/plpgsql-cursors.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/plpgsql-cursors.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/plpgsql-cursors.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/plpgsql-cursors.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/plpgsql-cursors.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/plpgsql-cursors.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/plpgsql-cursors.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/plpgsql-cursors.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/plpgsql-cursors.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/plpgsql-cursors.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/plpgsql-cursors.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/plpgsql-cursors.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/plpgsql-cursors.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/plpgsql-cursors.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/plpgsql-cursors.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/plpgsql-cursors.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/plpgsql-cursors.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/plpgsql-cursors.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="plpgsql.html"><span class="application">PL/pgSQL</span>  --  Langage de procédures <acronym class="acronym">SQL</acronym></a></span> » <span class="breadcrumb-node">Curseurs</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="plpgsql-control-structures.html" title="41.6. Structures de contrôle">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="plpgsql.html" title="Chapitre 41. PL/pgSQL  --  Langage de procédures SQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="plpgsql-transactions.html" title="41.8. Gestion des transactions">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">41.6. Structures de contrôle </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 41.8. Gestion des transactions</td></tr></table></div><div class="sect1" id="PLPGSQL-CURSORS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">41.7. Curseurs <a href="#PLPGSQL-CURSORS" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="plpgsql-cursors.html#PLPGSQL-CURSOR-DECLARATIONS">41.7.1. Déclaration de variables curseur</a></span></dt><dt><span class="sect2"><a href="plpgsql-cursors.html#PLPGSQL-CURSOR-OPENING">41.7.2. Ouverture de curseurs</a></span></dt><dt><span class="sect2"><a href="plpgsql-cursors.html#PLPGSQL-CURSOR-USING">41.7.3. Utilisation des curseurs</a></span></dt><dt><span class="sect2"><a href="plpgsql-cursors.html#PLPGSQL-CURSOR-FOR-LOOP">41.7.4. Boucler dans les résultats d'un curseur</a></span></dt></dl></div><a id="id-1.8.8.9.2" class="indexterm"></a><p>
+   Plutôt que d'exécuter la totalité d'une requête à la fois, il est possible de
+   créer un <em class="firstterm">curseur</em> qui encapsule la requête, puis en lit le résultat
+   quelques lignes à la fois. Une des raisons pour faire de la sorte est d'éviter les
+   surcharges de mémoire quand le résultat contient un grand nombre de lignes (cependant,
+   les utilisateurs <span class="application">PL/pgSQL</span> n'ont généralement pas besoin de se
+   préoccuper de cela puisque les boucles <code class="literal">FOR</code> utilisent automatiquement un
+   curseur en interne pour éviter les problèmes de mémoire). Un usage plus intéressant est
+   de renvoyer une référence à un curseur qu'une fonction a créé, permettant à l'appelant de
+   lire les lignes. C'est un moyen efficace de renvoyer de grands ensembles de
+   lignes à partir des fonctions.
+  </p><div class="sect2" id="PLPGSQL-CURSOR-DECLARATIONS"><div class="titlepage"><div><div><h3 class="title">41.7.1. Déclaration de variables curseur <a href="#PLPGSQL-CURSOR-DECLARATIONS" class="id_link">#</a></h3></div></div></div><p>
+    Tous les accès aux curseurs dans <span class="application">PL/pgSQL</span> se font par les variables
+    curseur, qui sont toujours du type de données spécial <code class="type">refcursor</code>. Un des
+    moyens de créer une variable curseur est de simplement la déclarer comme une variable
+    de type <code class="type">refcursor</code>. Un autre moyen est d'utiliser la syntaxe de déclaration
+    de curseur qui est en général :
+
+    </p><pre class="synopsis"><em class="replaceable"><code>nom</code></em> [<span class="optional"> [<span class="optional"> NO </span>] SCROLL </span>] CURSOR [<span class="optional"> ( <em class="replaceable"><code>arguments</code></em> ) </span>] FOR <em class="replaceable"><code>requête</code></em>;
+    </pre><p>
+    (<code class="literal">FOR</code> peut être remplacé par <code class="literal">IS</code> pour la compatibilité avec
+    <span class="productname">Oracle</span>).
+    Si <code class="literal">SCROLL</code> est spécifié, le curseur sera capable d'aller
+    en sens inverse ; si <code class="literal">NO SCROLL</code> est indiqué, les
+    récupérations en sens inverses seront rejetées ; si rien n'est
+    indiqué, cela dépend de la requête.
+    <em class="replaceable"><code>arguments</code></em> est une liste de paires de
+    <code class="literal"><em class="replaceable"><code>nom</code></em> <em class="replaceable"><code>type-de-donnée</code></em></code>
+    qui définit les noms devant être remplacés par les valeurs des paramètres dans la requête donnée.
+    La valeur effective à substituer pour ces noms sera indiquée plus tard lors de
+    l'ouverture du curseur.
+   </p><p>
+    Quelques exemples :
+    </p><pre class="programlisting">DECLARE
+    curs1 refcursor;
+    curs2 CURSOR FOR SELECT * FROM tenk1;
+    curs3 CURSOR (cle integer) FOR SELECT * FROM tenk1 WHERE unique1 = cle;
+    </pre><p>
+    Ces variables sont toutes trois du type de données <code class="type">refcursor</code>
+    mais la première peut être utilisée avec n'importe quelle requête alors que
+    la seconde a une requête complètement spécifiée qui lui est déjà
+    <em class="firstterm">liée</em>, et la dernière est liée à une requête paramétrée
+    (<code class="literal">cle</code> sera remplacée par un paramètre de valeur entière lors de
+    l'ouverture du curseur).
+    La variable <code class="literal">curs1</code> est dite <em class="firstterm">non liée</em> puisqu'elle
+    n'est pas liée à une requête particulière.
+   </p><p>
+     L'option <code class="literal">SCROLL</code> ne peut pas être utilisée quand la
+     requête du curseur utilise <code class="literal">FOR UPDATE/SHARE</code>. De plus,
+     il est préférable d'utiliser <code class="literal">NO SCROLL</code> avec une
+     requête qui implique des fonctions volatiles. L'implémentation de
+     <code class="literal">SCROLL</code> suppose que relire la sortie de la requête
+     donnera des résultats cohérents, ce qu'une fonction volatile ne peut pas
+     faire.
+    </p></div><div class="sect2" id="PLPGSQL-CURSOR-OPENING"><div class="titlepage"><div><div><h3 class="title">41.7.2. Ouverture de curseurs <a href="#PLPGSQL-CURSOR-OPENING" class="id_link">#</a></h3></div></div></div><p>
+    Avant qu'un curseur puisse être utilisé pour rapatrier des lignes, il doit
+    être <em class="firstterm">ouvert</em> (c'est l'action équivalente de la
+    commande SQL <a class="link" href="sql-declare.html" title="DECLARE"><code class="command">DECLARE
+    CURSOR</code></a>). <span class="application">PL/pgSQL</span> dispose de
+    trois formes pour l'instruction <code class="command">OPEN</code>, dont deux
+    utilisent des variables curseur non liées et la dernière une variable
+    curseur liée.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Les variables des curseurs liés peuvent aussi être utilisés sans les ouvrir
+     explicitement, via l'instruction <code class="command">FOR</code> décrite dans
+     <a class="xref" href="plpgsql-cursors.html#PLPGSQL-CURSOR-FOR-LOOP" title="41.7.4. Boucler dans les résultats d'un curseur">Section 41.7.4</a>.
+     Une boucle <code class="command">FOR</code> ouvrira le curseur puis le fermera de
+     nouveau quand la boucle se terminera.
+    </p></div><a id="id-1.8.8.9.5.4" class="indexterm"></a><p>
+    Ouvrir un curseur implique de créer une structure de données interne
+    appelée <em class="firstterm">portail</em>, qui contient l'état d'exécution
+    de la requête du curseur. Un portail a un nom, qui doit être unique dans
+    la session pour la durée de l'existence du portail. Par défaut,
+    <span class="application">PL/pgSQL</span> affectera un nom unique chaque portail
+    qu'il crée. Néanmoins, si vous affectez une chaîne de caractères non NULL
+    à une variable curseur, cette chaîne sera utilisée comme nom de portail.
+    Cette fonctionnalité peut être utilisée comme décrit dans <a class="xref" href="plpgsql-cursors.html#PLPGSQL-CURSOR-RETURNING" title="41.7.3.5. Renvoi de curseurs">Section 41.7.3.5</a>.
+   </p><div class="sect3" id="PLPGSQL-CURSOR-OPENING-OPEN-FOR-QUERY"><div class="titlepage"><div><div><h4 class="title">41.7.2.1. <code class="command">OPEN FOR</code> <em class="replaceable"><code>requête</code></em> <a href="#PLPGSQL-CURSOR-OPENING-OPEN-FOR-QUERY" class="id_link">#</a></h4></div></div></div><pre class="synopsis">OPEN <em class="replaceable"><code>var_curseur_nonlie</code></em> [<span class="optional"> [<span class="optional"> NO </span>] SCROLL </span>] FOR <em class="replaceable"><code>requete</code></em>;
+    </pre><p>
+     La variable curseur est ouverte et reçoit la requête spécifiée à
+     exécuter. Le curseur ne peut pas être déjà ouvert, et il doit avoir
+     été déclaré comme une variable de curseur non lié (c'est-à-dire comme
+     une simple variable <code class="type">refcursor</code>). La requête doit être un
+     <code class="command">SELECT</code> ou quelque chose d'autre qui renvoie des
+     lignes (comme <code class="command">EXPLAIN</code>). La requête est traitée de la même
+     façon que les autres commandes SQL dans <span class="application">PL/pgSQL</span> :
+     les noms de variables <span class="application">PL/pgSQL</span> sont substitués et
+     le plan de requête est mis en cache pour une possible ré-utilisation.
+     Quand une variable <span class="application">PL/pgSQL</span> est substituée
+     dans une requête de type curseur, la valeur qui est substituée est celle
+     qu'elle avait au moment du <code class="command">OPEN</code> ; les modifications
+     ultérieures n'auront pas affectées le comportement du curseur.
+     Les options <code class="literal">SCROLL</code> et <code class="literal">NO SCROLL</code>
+     ont la même signification que pour un curseur lié.
+    </p><p>
+     Exemple :
+     </p><pre class="programlisting">OPEN curs1 FOR SELECT * FROM foo WHERE cle = ma_cle;
+     </pre><p>
+    </p></div><div class="sect3" id="PLPGSQL-CURSOR-OPENING-OPEN-FOR-EXECUTE"><div class="titlepage"><div><div><h4 class="title">41.7.2.2. <code class="command">OPEN FOR EXECUTE</code> <a href="#PLPGSQL-CURSOR-OPENING-OPEN-FOR-EXECUTE" class="id_link">#</a></h4></div></div></div><pre class="synopsis">OPEN <em class="replaceable"><code>var_curseur_nonlie</code></em> [<span class="optional"> [<span class="optional"> NO </span>] SCROLL </span>] FOR EXECUTE <em class="replaceable"><code>requete</code></em>
+                                     [<span class="optional"> USING <em class="replaceable"><code>expression</code></em> [<span class="optional">, ... </span>] </span>];
+    </pre><p>
+     La variable curseur est ouverte et reçoit la requête spécifiée à exécuter.
+     Le curseur ne peut pas être déjà ouvert et il doit avoir été déclaré comme
+     une variable de
+     curseur non lié (c'est-à-dire comme une simple variable <code class="type">refcursor</code>).
+     La requête est spécifiée comme une expression chaîne de la même façon que
+     dans une commande <code class="command">EXECUTE</code>. Comme d'habitude, ceci donne
+     assez de flexibilité pour que le plan de la requête puisse changer d'une
+     exécution à l'autre (voir la <a class="xref" href="plpgsql-implementation.html#PLPGSQL-PLAN-CACHING" title="41.11.2. Mise en cache du plan">Section 41.11.2</a>),
+     et cela signifie aussi que la substitution de variable n'est pas faite
+     sur la chaîne de commande. Comme avec la commande <code class="command">EXECUTE</code>,
+     les valeurs de paramètre peuvent être insérées dans la commande dynamique avec
+     <code class="literal">format()</code> ou <code class="literal">USING</code>. Les options <code class="literal">SCROLL</code> et
+     <code class="literal">NO SCROLL</code> ont la même signification que pour un
+     curseur lié.
+    </p><p>
+     Exemple :
+     </p><pre class="programlisting">OPEN curs1 FOR EXECUTE format('SELECT * FROM %I WHERE nom_colonne = $1', ma_table) USING valeur_clef;
+     </pre><p>
+     Dans cet exemple, le nom de la table est inséré dans la requête
+     via la fonction <code class="function">format()</code>. La valeur de la colonne
+     <code class="literal">nom_colonne</code> utilisée pour la comparaison est
+     insérée via le paramètre <code class="literal">USING</code>, c'est la raison
+     pour laquelle elle n'a pas besoin d'être échappée.
+    </p></div><div class="sect3" id="PLPGSQL-OPEN-BOUND-CURSOR"><div class="titlepage"><div><div><h4 class="title">41.7.2.3. Ouverture d'un curseur lié <a href="#PLPGSQL-OPEN-BOUND-CURSOR" class="id_link">#</a></h4></div></div></div><pre class="synopsis">OPEN <em class="replaceable"><code>var_curseur_lié</code></em> [<span class="optional"> ( [<span class="optional"> <em class="replaceable"><code>nom_argument</code></em> := </span>] <em class="replaceable"><code>valeur_argument</code></em> [<span class="optional">, ...</span>] ) </span>];
+    </pre><p>
+     Cette forme d'<code class="command">OPEN</code> est utilisée pour ouvrir une variable
+     curseur à laquelle la requête est liée au moment de la déclaration.
+     Le curseur ne peut pas être déjà ouvert. Une liste des expressions arguments
+     doit apparaître si et seulement si le curseur a été déclaré comme acceptant
+     des arguments. Ces valeurs seront remplacées dans la requête.
+    </p><p>
+     Le plan de
+     requête pour un curseur lié est toujours considéré comme pouvant être mis
+     en cache ; il n'y a pas d'équivalent de la commande
+     <code class="command">EXECUTE</code> dans ce cas. Notez que
+     <code class="literal">SCROLL</code> et <code class="literal">NO SCROLL</code> ne peuvent
+     pas être indiqués dans <code class="command">OPEN</code> car le comportement du curseur était déjà déterminé.
+    </p><p>
+     Les valeurs des arguments peuvent être passées en utilisant soit la
+     notation <em class="firstterm">en position</em> soit la notation
+     <em class="firstterm">nommée</em>. Dans la première, tous les arguments sont
+     indiqués dans l'ordre. Dans la seconde, chaque nom d'argument est
+     indiqué en utilisant <code class="literal">:=</code> pour la séparer de
+     l'expression de l'argument. De façon similaire à l'appel de fonctions,
+     décrit dans <a class="xref" href="sql-syntax-calling-funcs.html" title="4.3. Fonctions appelantes">Section 4.3</a>, il est aussi
+     autorisé de mixer notation en position et notation nommée.
+    </p><p>
+     Voici quelques exemples (ils utilisent les exemples de déclaration
+     de curseur ci-dessus) :
+     </p><pre class="programlisting">
+OPEN curs2;
+OPEN curs3(42);
+OPEN curs3(key := 42);
+     </pre><p>
+    </p><p>
+     Comme la substitution de variable est faite sur la requête d'un curseur
+     lié, il existe en fait deux façons de passer les valeurs au curseur :
+     soit avec un argument explicite pour <code class="command">OPEN</code> soit en
+     référençant implicitement une variable <span class="application">PL/pgSQL</span>
+     dans la requête. Néanmoins, seules les variables déclarées avant que
+     le curseur lié ne soit déclaré lui seront substituées. Dans tous les
+     cas, la valeur passée est déterminée au moment de l'exécution de la
+     commande <code class="command">OPEN</code>. Par exemple, une autre façon d'obtenir
+     le même effet que l'exemple <code class="literal">curs3</code> ci-dessus est la
+     suivante :
+     </p><pre class="programlisting">
+DECLARE
+    key integer;
+    curs4 CURSOR FOR SELECT * FROM tenk1 WHERE unique1 = key;
+BEGIN
+    key := 42;
+    OPEN curs4;
+     </pre><p>
+    </p></div></div><div class="sect2" id="PLPGSQL-CURSOR-USING"><div class="titlepage"><div><div><h3 class="title">41.7.3. Utilisation des curseurs <a href="#PLPGSQL-CURSOR-USING" class="id_link">#</a></h3></div></div></div><p>
+    Une fois qu'un curseur a été ouvert, il peut être manipulé grâce aux instructions
+    décrites ci-dessous.
+   </p><p>
+    Ces manipulations n'ont pas besoin de se dérouler dans la même fonction que celle
+    qui a ouvert le curseur. Vous pouvez renvoyer une valeur <code class="type">refcursor</code>
+    à partir d'une fonction et laisser l'appelant opérer sur le curseur
+    (d'un point de vue interne, une valeur <code class="type">refcursor</code> est simplement
+    la chaîne de caractères du nom d'un portail contenant la requête active
+    pour le curseur. Ce nom peut être passé à d'autres, affecté à d'autres variables
+    <code class="type">refcursor</code> et ainsi de suite, sans déranger le portail).
+   </p><p>
+    Tous les portails sont implicitement fermés à la fin de la transaction. C'est pourquoi
+    une valeur <code class="type">refcursor</code> est utilisable pour référencer un curseur ouvert
+    seulement jusqu'à la fin de la transaction.
+   </p><div class="sect3" id="PLPGSQL-CURSOR-USING-FETCH"><div class="titlepage"><div><div><h4 class="title">41.7.3.1. <code class="literal">FETCH</code> <a href="#PLPGSQL-CURSOR-USING-FETCH" class="id_link">#</a></h4></div></div></div><pre class="synopsis">FETCH [<span class="optional"> <em class="replaceable"><code>direction</code></em> { FROM | IN } </span>] <em class="replaceable"><code>curseur</code></em> INTO <em class="replaceable"><code>cible</code></em>;
+    </pre><p>
+     <code class="command">FETCH</code> récupère la prochaine ligne (dans la direction
+     indiquée) à partir d'un curseur
+     et la place dans une cible, qui peut être une variable ligne, une variable
+     record ou une liste de variables simples séparées par des virgules,
+     comme dans un <code class="command">SELECT INTO</code>. S'il n'y a pas de ligne
+     convenable, la cible est mise à NULL. Comme avec <code class="command">SELECT
+     INTO</code>, la variable spéciale <code class="literal">FOUND</code> peut
+     être lue pour voir si une ligne a été récupérée. Si aucune ligne n'est
+     obtenue, le curseur est positionné après la dernière ligne ou avant la
+     première ligne, suivant la direction du mouvement.
+    </p><p>
+     La clause <em class="replaceable"><code>direction</code></em> peut être une des
+     variantes suivantes autorisées pour la commande SQL <a class="xref" href="sql-fetch.html" title="FETCH"><span class="refentrytitle">FETCH</span></a> sauf celles qui peuvent récupérer plus
+     d'une ligne ; nommément, cela peut être
+     <code class="literal">NEXT</code>,
+     <code class="literal">PRIOR</code>,
+     <code class="literal">FIRST</code>,
+     <code class="literal">LAST</code>,
+     <code class="literal">ABSOLUTE</code> <em class="replaceable"><code>nombre</code></em>,
+     <code class="literal">RELATIVE</code> <em class="replaceable"><code>nombre</code></em>,
+     <code class="literal">FORWARD</code> ou
+     <code class="literal">BACKWARD</code>.
+     Omettre <em class="replaceable"><code>direction</code></em> est identique à spécifier
+     <code class="literal">NEXT</code>. Quand la syntaxe utilise un
+     <em class="replaceable"><code>count</code></em>, le <em class="replaceable"><code>count</code></em> peut
+     être une expression de type integer (contrairement à la commande SQL
+     <code class="command">FETCH</code>, qui autorise seulement une constante de type
+     integer). Les valeurs <em class="replaceable"><code>direction</code></em> qui nécessitent
+     d'aller en sens inverse risquent d'échouer sauf si le curseur a été
+     déclaré ou ouvert avec l'option <code class="literal">SCROLL</code>.
+    </p><p>
+     <em class="replaceable"><code>curseur</code></em> doit être le nom d'une variable
+     <code class="type">refcursor</code> qui référence un portail de curseur ouvert.
+    </p><p>
+     Exemples :
+     </p><pre class="programlisting">
+FETCH curs1 INTO rowvar;
+FETCH curs2 INTO foo, bar, baz;
+FETCH LAST FROM curs3 INTO x, y;
+FETCH RELATIVE -2 FROM curs4 INTO x;
+     </pre><p>
+    </p></div><div class="sect3" id="PLPGSQL-CURSOR-USING-MOVE"><div class="titlepage"><div><div><h4 class="title">41.7.3.2. <code class="literal">MOVE</code> <a href="#PLPGSQL-CURSOR-USING-MOVE" class="id_link">#</a></h4></div></div></div><pre class="synopsis">
+MOVE [<span class="optional"> <em class="replaceable"><code>direction</code></em> { FROM | IN } </span>] <em class="replaceable"><code>curseur</code></em>;
+    </pre><p>
+     <code class="command">MOVE</code> repositionne un curseur sans récupérer de
+     données. <code class="command">MOVE</code> fonctionne comme la commande
+     <code class="command">FETCH</code> sauf qu'elle ne fait que repositionner le
+     curseur et ne renvoie donc pas les lignes du déplacement. La clause
+     <em class="replaceable"><code>direction</code></em> peut valoir toute variante
+     autorisée dans la commande SQL <a class="xref" href="sql-fetch.html" title="FETCH"><span class="refentrytitle">FETCH</span></a>, incluant
+     celles qui récupèrent plus d'une ligne ; le curseur est positionné
+     sur la dernière ligne. (Néanmoins, le cas où la clause
+     <em class="replaceable"><code>direction</code></em> est simplement une expression
+     <em class="replaceable"><code>count</code></em> sans mot clé est maintenant obsolète
+     dans <span class="application">PL/pgSQL</span>. La syntaxe est ambigu dans le
+     cas où la clause <em class="replaceable"><code>direction</code></em> est omise et donc
+     cela pourrait échouer si <em class="replaceable"><code>count</code></em> n'est pas une
+     constante.) Comme avec <code class="command">SELECT INTO</code>, la variable
+     spéciale <code class="literal">FOUND</code> peut être lue pour vérifier s'il y
+     avait bien les lignes correspondant au déplacement. Si aucune ligne
+     n'est obtenue, le curseur est positionné après la dernière ligne ou
+     avant la première ligne, suivant la direction du mouvement.
+    </p><p>
+     Exemples :
+     </p><pre class="programlisting">
+MOVE curs1;
+MOVE LAST FROM curs3;
+MOVE RELATIVE -2 FROM curs4;
+MOVE FORWARD 2 FROM curs4;
+     </pre><p>
+    </p></div><div class="sect3" id="PLPGSQL-CURSOR-USING-UPDATE-DELETE"><div class="titlepage"><div><div><h4 class="title">41.7.3.3. <code class="literal">UPDATE/DELETE WHERE CURRENT OF</code> <a href="#PLPGSQL-CURSOR-USING-UPDATE-DELETE" class="id_link">#</a></h4></div></div></div><pre class="synopsis">
+UPDATE <em class="replaceable"><code>table</code></em> SET ... WHERE CURRENT OF <em class="replaceable"><code>curseur</code></em>;
+DELETE FROM <em class="replaceable"><code>table</code></em> WHERE CURRENT OF <em class="replaceable"><code>curseur</code></em>;
+    </pre><p>
+     Quand un curseur est positionné sur une ligne d'une table, cette ligne
+     peut être mise à jour ou supprimée en utilisant le curseur qui identifie
+     la ligne. Il existe des restrictions sur ce que peut être la requête
+     du curseur (en particulier, pas de regroupement) et il est mieux
+     d'utiliser <code class="literal">FOR UPDATE</code> dans le curseur. Pour des
+     informations supplémentaires, voir la page de référence <a class="xref" href="sql-declare.html" title="DECLARE"><span class="refentrytitle">DECLARE</span></a>.
+    </p><p>
+     Un exemple :
+     </p><pre class="programlisting">
+UPDATE foo SET valdonnee = mavaleur WHERE CURRENT OF curs1;
+     </pre><p>
+    </p></div><div class="sect3" id="PLPGSQL-CURSOR-USING-CLOSE"><div class="titlepage"><div><div><h4 class="title">41.7.3.4. <code class="literal">CLOSE</code> <a href="#PLPGSQL-CURSOR-USING-CLOSE" class="id_link">#</a></h4></div></div></div><pre class="synopsis">CLOSE <em class="replaceable"><code>curseur</code></em>;
+    </pre><p>
+     <code class="command">CLOSE</code> ferme le portail sous-tendant un curseur ouvert. Ceci peut
+     être utilisé pour libérer des ressources avant la fin de la transaction ou pour
+     libérer la variable curseur pour pouvoir la rouvrir.
+    </p><p>
+     Exemple :
+     </p><pre class="programlisting">CLOSE curs1;
+     </pre><p>
+    </p></div><div class="sect3" id="PLPGSQL-CURSOR-RETURNING"><div class="titlepage"><div><div><h4 class="title">41.7.3.5. Renvoi de curseurs <a href="#PLPGSQL-CURSOR-RETURNING" class="id_link">#</a></h4></div></div></div><p>
+     Les fonctions <span class="application">PL/pgSQL</span> peuvent renvoyer des curseurs
+     à l'appelant. Ceci est utile pour renvoyer plusieurs lignes ou
+     colonnes, spécialement avec des ensembles de résultats très grands.
+     Pour cela, la fonction ouvre le curseur et renvoie le nom du curseur
+     à l'appelant (ou simplement ouvre le curseur en utilisant un nom de
+     portail spécifié par ou autrement connu par l'appelant). L'appelant
+     peut alors récupérer les lignes à partir du curseur. Le curseur
+     peut être fermé par l'appelant ou il sera fermé automatiquement à la
+     fin de la transaction.
+    </p><p>
+     Le nom du portail utilisé pour un curseur peut être spécifié par le
+     développeur ou peut être généré automatiquement. Pour spécifier un
+     nom de portail, affectez simplement une chaîne à la variable
+     <code class="type">refcursor</code> avant de l'ouvrir. La valeur de la
+     variable <code class="type">refcursor</code> sera utilisée par <code class="command">OPEN</code>
+     comme nom du portail sous-jacent. Néanmoins, si la valeur de la variable
+     <code class="type">refcursor</code> est NULL (c'est le cas par défaut),
+     <code class="command">OPEN</code> génère automatiquement
+     un nom qui n'entre pas en conflit avec tout portail existant et
+     l'affecte à la variable <code class="type">refcursor</code>.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Avant <span class="productname">PostgreSQL</span> 16, les variables de curseurs
+      liés étaient initialisées pour contenir leurs propres noms, plutôt que
+      d'être laisséses à NULL, pour que le nom du portail sous-jacent soit
+      le même que le nom de la variable curseur par défaut. Ceci a été changé
+      parce que cela créait trop de risques de conflits entre des curseurs
+      nommés de façon similaire dans des fonctions différentes.
+     </p></div><p>
+     L'exemple suivant montre une façon de fournir un nom de curseur par
+     l'appelant :
+
+     </p><pre class="programlisting">CREATE TABLE test (col text);
+INSERT INTO test VALUES ('123');
+
+CREATE FUNCTION fonction_reference(refcursor) RETURNS refcursor AS $$
+BEGIN
+    OPEN $1 FOR SELECT col FROM test;
+    RETURN $1;
+END;
+$$ LANGUAGE plpgsql;
+
+BEGIN;
+SELECT fonction_reference('curseur_fonction');
+FETCH ALL IN curseur_fonction;
+COMMIT;
+     </pre><p>
+    </p><p>
+     L'exemple suivant utilise la génération automatique du nom du
+     curseur :
+
+     </p><pre class="programlisting">CREATE FUNCTION fonction_reference2() RETURNS refcursor AS $$
+DECLARE
+    ref refcursor;
+BEGIN
+    OPEN ref FOR SELECT col FROM test;
+    RETURN ref;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Il faut être dans une transaction pour utiliser les curseurs.
+BEGIN;
+SELECT fonction_reference2();
+
+   fonction_reference2
+--------------------------
+ &lt;unnamed cursor 1&gt;
+(1 row)
+
+FETCH ALL IN "&lt;unnamed cursor 1&gt;";
+COMMIT;
+     </pre><p>
+    </p><p>
+     L'exemple suivant montre une façon de renvoyer plusieurs curseurs à une
+     seule fonction :
+
+     </p><pre class="programlisting">CREATE FUNCTION ma_fonction(refcursor, refcursor) RETURNS SETOF refcursor AS $$
+BEGIN
+    OPEN $1 FOR SELECT * FROM table_1;
+    RETURN NEXT $1;
+    OPEN $2 FOR SELECT * FROM table_2;
+    RETURN NEXT $2;
+END;
+$$ LANGUAGE plpgsql;
+
+-- doit être dans une transaction pour utiliser les curseurs.
+BEGIN;
+
+SELECT * FROM ma_fonction('a', 'b');
+
+FETCH ALL FROM a;
+FETCH ALL FROM b;
+COMMIT;
+     </pre><p>
+    </p></div></div><div class="sect2" id="PLPGSQL-CURSOR-FOR-LOOP"><div class="titlepage"><div><div><h3 class="title">41.7.4. Boucler dans les résultats d'un curseur <a href="#PLPGSQL-CURSOR-FOR-LOOP" class="id_link">#</a></h3></div></div></div><p>
+    C'est une variante de l'instruction <code class="command">FOR</code> qui permet
+    l'itération sur les lignes renvoyées par un curseur. La syntaxe est :
+
+    </p><pre class="synopsis">
+[<span class="optional"> &lt;&lt;<em class="replaceable"><code>label</code></em>&gt;&gt; </span>]
+FOR <em class="replaceable"><code>var_record</code></em> IN <em class="replaceable"><code>var_curseur_lié</code></em> [<span class="optional"> ( [<span class="optional"> <em class="replaceable"><code>nom_argument</code></em> := </span>] <em class="replaceable"><code>valeur_argument</code></em> [<span class="optional">, ...</span>] ) </span>] LOOP
+    <em class="replaceable"><code>instructions</code></em>
+END LOOP [<span class="optional"> <em class="replaceable"><code>label</code></em> </span>];
+    </pre><p>
+
+    La variable curseur doit avoir été liée à une requête lors de sa déclaration
+    et il <span class="emphasis"><em>ne peut pas</em></span> être déjà ouvert. L'instruction
+    <code class="command">FOR</code> ouvre automatiquement le curseur, et il ferme
+    le curseur en sortie de la boucle. Une liste des expressions de valeurs
+    des arguments doit apparaître si et seulement si le curseur a été déclaré
+    prendre des arguments. Ces valeurs seront substituées dans la requête,
+    de la même façon que lors d'un <code class="command">OPEN</code> (voir <a class="xref" href="plpgsql-cursors.html#PLPGSQL-OPEN-BOUND-CURSOR" title="41.7.2.3. Ouverture d'un curseur lié">Section 41.7.2.3</a>).
+   </p><p>
+    La variable <em class="replaceable"><code>var_record</code></em> est définie automatiquement
+    avec le type <code class="type">record</code> et existe seulement dans la boucle (toute
+    définition existante d'un nom de variable est ignorée dans la boucle).
+    Chaque ligne renvoyée par le curseur est successivement affectée à la variable
+    d'enregistrement et le corps de la boucle est exécuté.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/plpgsql-cursors.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:44 GMT -->
+</html>

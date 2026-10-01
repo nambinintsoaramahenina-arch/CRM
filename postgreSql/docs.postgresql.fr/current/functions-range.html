@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/functions-range.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:28 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>9.20. Fonctions et opérateurs sur les intervalles simple/multiple</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="functions-array.html" title="9.19. Fonctions et opérateurs tableau" /><link rel="next" href="functions-aggregate.html" title="9.21. Fonctions d'agrégat" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/functions-range.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/functions-range.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/functions-range.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/functions-range.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/functions-range.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/functions-range.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/functions-range.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/functions-range.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/functions-range.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/functions-range.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/functions-range.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/functions-range.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/functions-range.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/functions-range.html">9.2</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/functions-range.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="functions.html">Fonctions et opérateurs</a></span> » <span class="breadcrumb-node">Fonctions et opérateurs sur les intervalles simple/multiple</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="functions-array.html" title="9.19. Fonctions et opérateurs tableau">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="functions.html" title="Chapitre 9. Fonctions et opérateurs">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="functions-aggregate.html" title="9.21. Fonctions d'agrégat">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">9.19. Fonctions et opérateurs tableau </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 9.21. Fonctions d'agrégat</td></tr></table></div><div class="sect1" id="FUNCTIONS-RANGE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">9.20. Fonctions et opérateurs sur les intervalles simple/multiple <a href="#FUNCTIONS-RANGE" class="id_link">#</a></h2></div></div></div><p>
+ Voir <a class="xref" href="rangetypes.html" title="8.17. Types intervalle de valeurs">Section 8.17</a> pour un aperçu les types d'intervalle.
+</p><p>
+ <a class="xref" href="functions-range.html#RANGE-OPERATORS-TABLE" title="Tableau 9.56. Opérateurs sur les intervalles simples">Tableau 9.56</a> montre les opérateurs spécialisés
+ disponibles pour les types d'intervalle simple. <a class="xref" href="functions-range.html#MULTIRANGE-OPERATORS-TABLE" title="Tableau 9.57. Opérateurs sur les intervalles multiples">Tableau 9.57</a> montre les opérateurs spécialisés
+ disponibles pour les types d'intervalle multiple. En plus de ces derniers, les opérateurs de
+ comparaison habituels montrés dans <a class="xref" href="functions-comparison.html#FUNCTIONS-COMPARISON-OP-TABLE" title="Tableau 9.1. Opérateurs de comparaison">Tableau 9.1</a> sont disponibles pour les types
+ d'intervalle simple et multiple. Les opérateurs de comparaison trient
+ d'abord par les limites basses de l'intervalle simple et seulement si ces dernières
+ sont identiques, par les limites hautes. Les opérateurs de comparaison multiple
+ comparent chaque intervalle jusqu'à ce qu'au moins un ne corresponde pas.
+ Ceci ne donne généralement pas de résultat
+ utile pour un tri, mais les opérateurs sont fournis pour autoriser la
+ création d'index d'unicité sur des intervalles.
+</p><div class="table" id="RANGE-OPERATORS-TABLE"><p class="title"><strong>Tableau 9.56. Opérateurs sur les intervalles simples</strong></p><div class="table-contents"><table class="table" summary="Opérateurs sur les intervalles simples" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+      Opérateur
+     </p>
+     <p>
+      Description
+     </p>
+     <p>
+      Exemple(s)
+     </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+      <code class="type">anyrange</code> <code class="literal">@&gt;</code> <code class="type">anyrange</code>
+      → <code class="returnvalue">boolean</code>
+     </p>
+     <p>
+      Est-ce que le premier intervalle contient le second ?
+     </p>
+     <p>
+      <code class="literal">int4range(2,4) @&gt; int4range(2,3)</code>
+      → <code class="returnvalue">t</code>
+     </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <code class="type">anyrange</code> <code class="literal">@&gt;</code> <code class="type">anyelement</code>
+      → <code class="returnvalue">boolean</code>
+     </p>
+     <p>
+      Est-ce que l'intervalle contient l'élément ?
+     </p>
+     <p>
+      <code class="literal">'[2011-01-01,2011-03-01)'::tsrange @&gt; '2011-01-10'::timestamp</code>
+      → <code class="returnvalue">t</code>
+     </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <code class="type">anyrange</code> <code class="literal">&lt;@</code> <code class="type">anyrange</code>
+      → <code class="returnvalue">boolean</code>
+     </p>
+     <p>
+      Est-ce que le premier intervalle est contenu par le second ?
+     </p>
+     <p>
+      <code class="literal">int4range(2,4) &lt;@ int4range(1,7)</code>
+      → <code class="returnvalue">t</code>
+     </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <code class="type">anyelement</code> <code class="literal">&lt;@</code> <code class="type">anyrange</code>
+      → <code class="returnvalue">boolean</code>
+     </p>
+     <p>
+      Est-ce que l'élément est contenu dans l'intervalle ?
+     </p>
+     <p>
+      <code class="literal">42 &lt;@ int4range(1,7)</code>
+      → <code class="returnvalue">f</code>
+     </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <code class="type">anyrange</code> <code class="literal">&amp;&amp;</code> <code class="type">anyrange</code>
+      → <code class="returnvalue">boolean</code>
+     </p>
+     <p>
+      Est-ce que les intervalles se surchargent, c'est-à-dire ont-ils des
+      éléments en commun ?
+     </p>
+     <p>
+      <code class="literal">int8range(3,7) &amp;&amp; int8range(4,12)</code>
+      → <code class="returnvalue">t</code>
+     </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <code class="type">anyrange</code> <code class="literal">&lt;&lt;</code> <code class="type">anyrange</code>
+      → <code class="returnvalue">boolean</code>
+     </p>
+     <p>
+      Est-ce que le premier intervalle se trouve strictement à gauche du
+      second ?
+       </p>
+       <p>
+        <code class="literal">int8range(1,10) &lt;&lt; int8range(100,110)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">&gt;&gt;</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier intervalle est strictement à droite du second ?
+       </p>
+       <p>
+        <code class="literal">int8range(50,60) &gt;&gt; int8range(20,30)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">&amp;&lt;</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier intervalle ne s'étend pas à droite du second ?
+       </p>
+       <p>
+        <code class="literal">int8range(1,20) &amp;&lt; int8range(18,20)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">&amp;&gt;</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier intervalle ne s'étend pas à gauche du second ?
+       </p>
+       <p>
+        <code class="literal">int8range(7,20) &amp;&gt; int8range(5,10)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">-|-</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que les intervalles sont adjacents ?
+       </p>
+       <p>
+        <code class="literal">numrange(1.1,2.2) -|- numrange(2.2,3.3)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">+</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">anyrange</code>
+       </p>
+       <p>
+        Calcule l'union des intervalles. Les intervalles doivent se superposer
+        ou être adjacents, pour que l'union résultante soit un intervalle simple
+        (mais voir <code class="function">range_merge()</code>).
+       </p>
+       <p>
+        <code class="literal">numrange(5,15) + numrange(10,20)</code>
+        → <code class="returnvalue">[5,20)</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">*</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">anyrange</code>
+       </p>
+       <p>
+        Calcule l'intersection des intervalles.
+       </p>
+       <p>
+        <code class="literal">int8range(5,15) * int8range(10,20)</code>
+        → <code class="returnvalue">[10,15)</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">-</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">anyrange</code>
+       </p>
+       <p>
+        Calcule la différence des intervalles. Le deuxième intervalle ne doit pas
+        être contenu dans le premier de façon à ce que la différence ne soit pas
+        un intervalle simple.
+       </p>
+       <p>
+        <code class="literal">int8range(5,15) - int8range(10,20)</code>
+        → <code class="returnvalue">[5,10)</code>
+       </p></td></tr></tbody></table></div></div><br class="table-break" /><div class="table" id="MULTIRANGE-OPERATORS-TABLE"><p class="title"><strong>Tableau 9.57. Opérateurs sur les intervalles multiples</strong></p><div class="table-contents"><table class="table" summary="Opérateurs sur les intervalles multiples" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+        Opérateur
+       </p>
+       <p>
+        Description
+       </p>
+       <p>
+        Exemple(s)
+       </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">@&gt;</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier intervalle multiple contient le second ?
+       </p>
+       <p>
+        <code class="literal">'{[2,4)}'::int4multirange @&gt; '{[2,3)}'::int4multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">@&gt;</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle multiple contient l'intervalle simple ?
+       </p>
+       <p>
+        <code class="literal">'{[2,4)}'::int4multirange @&gt; int4range(2,3)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">@&gt;</code> <code class="type">anyelement</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle multiple contient l'élément ?
+       </p>
+       <p>
+        <code class="literal">'{[2011-01-01,2011-03-01)}'::tsmultirange @&gt; '2011-01-10'::timestamp</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">@&gt;</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle simple contient l'intervalle multiple ?
+       </p>
+       <p>
+        <code class="literal">'[2,4)'::int4range @&gt; '{[2,3)}'::int4multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">&lt;@</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier intervalle multiple est contenu par le second ?
+       </p>
+       <p>
+        <code class="literal">'{[2,4)}'::int4multirange &lt;@ '{[1,7)}'::int4multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">&lt;@</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle multiple est contenu par l'intervalle simple ?
+       </p>
+       <p>
+        <code class="literal">'{[2,4)}'::int4multirange &lt;@ int4range(1,7)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">&lt;@</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle simple est contenu par l'intervalle multiple ?
+       </p>
+       <p>
+        <code class="literal">int4range(2,4) &lt;@ '{[1,7)}'::int4multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyelement</code> <code class="literal">&lt;@</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'élément est contenu dans l'intervalle multiple ?
+       </p>
+       <p>
+        <code class="literal">4 &lt;@ '{[1,7)}'::int4multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">&amp;&amp;</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que les intervalles multiples se recouvrent, c'est-à-dire, contiennent des éléments communs ?
+       </p>
+       <p>
+        <code class="literal">'{[3,7)}'::int8multirange &amp;&amp; '{[4,12)}'::int8multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">&amp;&amp;</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle multiple recouvre l'intervalle simple ?
+       </p>
+       <p>
+        <code class="literal">'{[3,7)}'::int8multirange &amp;&amp; int8range(4,12)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">&amp;&amp;</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle simple recouvre l'intervalle multiple ?
+       </p>
+       <p>
+        <code class="literal">int8range(3,7) &amp;&amp; '{[4,12)}'::int8multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">&lt;&lt;</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier intervalle multiple est strictement à gauche du second ?
+       </p>
+       <p>
+        <code class="literal">'{[1,10)}'::int8multirange &lt;&lt; '{[100,110)}'::int8multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">&lt;&lt;</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle multiple est strictement à gauche de l'intervalle simple ?
+       </p>
+       <p>
+        <code class="literal">'{[1,10)}'::int8multirange &lt;&lt; int8range(100,110)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">&lt;&lt;</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle simple est strictement à gauche de l'intervalle multiple ?
+       </p>
+       <p>
+        <code class="literal">int8range(1,10) &lt;&lt; '{[100,110)}'::int8multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">&gt;&gt;</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier intervalle multiple est strictement à droite du second ?
+        Is the first multirange strictly right of the second?
+       </p>
+       <p>
+        <code class="literal">'{[50,60)}'::int8multirange &gt;&gt; '{[20,30)}'::int8multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">&gt;&gt;</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle multiple est strictement à droite de l'intervalle simple ?
+       </p>
+       <p>
+        <code class="literal">'{[50,60)}'::int8multirange &gt;&gt; int8range(20,30)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">&gt;&gt;</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+         Est-ce que l'intervalle simple est strictement à droite de l'intervalle multiple ?
+       </p>
+       <p>
+        <code class="literal">int8range(50,60) &gt;&gt; '{[20,30)}'::int8multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">&amp;&lt;</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier intervalle multiple ne s'étend pas à droite du second ?
+       </p>
+       <p>
+        <code class="literal">'{[1,20)}'::int8multirange &amp;&lt; '{[18,20)}'::int8multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">&amp;&lt;</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle multiple ne s'étend pas à droite de l'intervalle simple ?
+       </p>
+       <p>
+        <code class="literal">'{[1,20)}'::int8multirange &amp;&lt; int8range(18,20)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">&amp;&lt;</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle simple ne s'étend pas à droite de l'intervalle multiple ?
+       </p>
+       <p>
+        <code class="literal">int8range(1,20) &amp;&lt; '{[18,20)}'::int8multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">&amp;&gt;</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle multiple ne s'étend pas à gauche du second ?
+       </p>
+       <p>
+        <code class="literal">'{[7,20)}'::int8multirange &amp;&gt; '{[5,10)}'::int8multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">&amp;&gt;</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle multiple ne s'étend pas à gauche de l'intervalle simple ?
+       </p>
+       <p>
+        <code class="literal">'{[7,20)}'::int8multirange &amp;&gt; int8range(5,10)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">&amp;&gt;</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle simple ne s'étend pas à gauche de l'intervalle multiple ?
+       </p>
+       <p>
+        <code class="literal">int8range(7,20) &amp;&gt; '{[5,10)}'::int8multirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">-|-</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que les intervalles multiples sont adjacents ?
+       </p>
+       <p>
+        <code class="literal">'{[1.1,2.2)}'::nummultirange -|- '{[2.2,3.3)}'::nummultirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">-|-</code> <code class="type">anyrange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle multiple est adjacent à l'intervalle simple ?
+       </p>
+       <p>
+        <code class="literal">'{[1.1,2.2)}'::nummultirange -|- numrange(2.2,3.3)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anyrange</code> <code class="literal">-|-</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle simple est adjacent à l'intervalle multiple ?
+       </p>
+       <p>
+        <code class="literal">numrange(1.1,2.2) -|- '{[2.2,3.3)}'::nummultirange</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">+</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">anymultirange</code>
+       </p>
+       <p>
+        Calcule l'union des intervalles multiples. Les intervalles multiples ne doivent pas
+        se recouvrir, ni être adjacents.
+       </p>
+       <p>
+        <code class="literal">'{[5,10)}'::nummultirange + '{[15,20)}'::nummultirange</code>
+        → <code class="returnvalue">{[5,10), [15,20)}</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">*</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">anymultirange</code>
+       </p>
+       <p>
+        Calcule l'intersection des intervalles multiples.
+       </p>
+       <p>
+        <code class="literal">'{[5,15)}'::int8multirange * '{[10,20)}'::int8multirange</code>
+        → <code class="returnvalue">{[10,15)}</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">anymultirange</code> <code class="literal">-</code> <code class="type">anymultirange</code>
+        → <code class="returnvalue">anymultirange</code>
+       </p>
+       <p>
+        Calcule la différence des intervalles multiples.
+       </p>
+       <p>
+        <code class="literal">'{[5,20)}'::int8multirange - '{[10,15)}'::int8multirange</code>
+        → <code class="returnvalue">{[5,10), [15,20)}</code>
+       </p></td></tr></tbody></table></div></div><br class="table-break" /><p>
+   Les opérateurs à gauche/à droite/adjacent retournent toujours false quand un intervalle vide
+   simple ou multiple est impliqué ; c'est-à-dire qu'un intervalle vide n'est pas considéré
+   comme étant avant ou après n'importe quel autre intervalle.
+  </p><p>
+   D'autre part, les intervalles vides simples et multiples sont traités comme l’identité additive :
+   tout ce qui est uni à une valeur vide reste identique. Tout ce à quoi est soustrait une valeur vide
+   reste identique. Un intervalle multiple vide a exactement les mêmes effets qu'un intervalle simple
+   vide. Tout intervalle simple contient l'intervalle vide. Tout intervalle multiple contient autant
+   d'intervalles vides que souhaité.
+  </p><p>
+   Les opérateurs d'union et de différence d'intervalle échoueront si la plage résultante
+   doit contenir deux sous-plages disjointes, car un tel intervalle ne peut pas être
+   représenté. Il y a des opérateurs séparés pour union et différence qui prennent
+   des paramètres intervalles multiples et retournent un intervalle multiple, et qui n’échouent pas même si
+   leurs arguments sont disjoints. Donc, si vous avez besoin d’une opération d’union ou de différence
+   pour des intervalles qui peuvent être disjoints, vous pouvez éviter les erreurs en
+   transformant d’abord vos intervalles simples en multiples.
+  </p><p>
+   <a class="xref" href="functions-range.html#RANGE-FUNCTIONS-TABLE" title="Tableau 9.58. Fonctions sur intervalles simples">Tableau 9.58</a> montre les fonctions
+   utilisables avec des intervalles simples.
+   <a class="xref" href="functions-range.html#MULTIRANGE-FUNCTIONS-TABLE" title="Tableau 9.59. Fonctions sur intervalles multiples">Tableau 9.59</a> montre les fonctions
+   utilisables avec des intervalles multiples.
+  </p><div class="table" id="RANGE-FUNCTIONS-TABLE"><p class="title"><strong>Tableau 9.58. Fonctions sur intervalles simples</strong></p><div class="table-contents"><table class="table" summary="Fonctions sur intervalles simples" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+        Fonction
+       </p>
+       <p>
+        Description
+       </p>
+       <p>
+        Exemple(s)
+       </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.10.2.2.1.1.1.1" class="indexterm"></a>
+        <code class="function">lower</code> ( <code class="type">anyrange</code> )
+        → <code class="returnvalue">anyelement</code>
+       </p>
+       <p>
+        Extrait la limite inférieure de l'intervalle (<code class="literal">NULL</code> si
+        l'intervalle est vide ou qu'il n'y a pas de limite inférieure).
+     </p>
+     <p>
+      <code class="literal">lower(numrange(1.1,2.2))</code>
+      → <code class="returnvalue">1.1</code>
+     </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.26.10.2.2.2.1.1.1" class="indexterm"></a>
+     <code class="function">upper</code> ( <code class="type">anyrange</code> )
+     → <code class="returnvalue">anyelement</code>
+     </p>
+     <p>
+      Extrait la limite supérieure de l'intervalle (<code class="literal">NULL</code> si
+      l'intervalle est vide ou qu'il n'y a pas de limite supérieure).
+     </p>
+     <p>
+      <code class="literal">upper(numrange(1.1,2.2))</code>
+      → <code class="returnvalue">2.2</code>
+     </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.26.10.2.2.3.1.1.1" class="indexterm"></a>
+      <code class="function">isempty</code> ( <code class="type">anyrange</code> )
+      → <code class="returnvalue">boolean</code>
+     </p>
+     <p>
+      Est-ce que l'intervalle est vide ?
+     </p>
+     <p>
+      <code class="literal">isempty(numrange(1.1,2.2))</code>
+      → <code class="returnvalue">f</code>
+     </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.26.10.2.2.4.1.1.1" class="indexterm"></a>
+      <code class="function">lower_inc</code> ( <code class="type">anyrange</code> )
+      → <code class="returnvalue">boolean</code>
+     </p>
+     <p>
+      Est-ce que la limite inférieure de l'intervalle est inclusive ?
+     </p>
+     <p>
+      <code class="literal">lower_inc(numrange(1.1,2.2))</code>
+      → <code class="returnvalue">t</code>
+     </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.10.2.2.5.1.1.1" class="indexterm"></a>
+        <code class="function">upper_inc</code> ( <code class="type">anyrange</code> )
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que la limite supérieure de l'intervalle est inclusive ?
+       </p>
+       <p>
+        <code class="literal">upper_inc(numrange(1.1,2.2))</code>
+        → <code class="returnvalue">f</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.10.2.2.6.1.1.1" class="indexterm"></a>
+        <code class="function">lower_inf</code> ( <code class="type">anyrange</code> )
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle n'a pas de limite inférieure ? (Une
+        limite inférieure de <code class="literal">-Infinity</code> renvoie false.)
+       </p>
+       <p>
+        <code class="literal">lower_inf('(,)'::daterange)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.10.2.2.7.1.1.1" class="indexterm"></a>
+        <code class="function">upper_inf</code> ( <code class="type">anyrange</code> )
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle n'a pas de limite supérieure ? (Une
+        limite supérieure de <code class="literal">Infinity</code> renvoie false.)
+       </p>
+       <p>
+        <code class="literal">upper_inf('(,)'::daterange)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.10.2.2.8.1.1.1" class="indexterm"></a>
+        <code class="function">range_merge</code> ( <code class="type">anyrange</code>, <code class="type">anyrange</code> )
+        → <code class="returnvalue">anyrange</code>
+       </p>
+       <p>
+        Calcule le plus petit intervalle qui inclut les deux intervalles fournis.
+       </p>
+       <p>
+        <code class="literal">range_merge('[1,2)'::int4range, '[3,4)'::int4range)</code>
+        → <code class="returnvalue">[1,4)</code>
+       </p></td></tr></tbody></table></div></div><br class="table-break" /><div class="table" id="MULTIRANGE-FUNCTIONS-TABLE"><p class="title"><strong>Tableau 9.59. Fonctions sur intervalles multiples</strong></p><div class="table-contents"><table class="table" summary="Fonctions sur intervalles multiples" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+        Fonction
+       </p>
+       <p>
+        Description
+       </p>
+       <p>
+        Exemple(s)
+       </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.11.2.2.1.1.1.1" class="indexterm"></a>
+        <code class="function">lower</code> ( <code class="type">anymultirange</code> )
+        → <code class="returnvalue">anyelement</code>
+       </p>
+       <p>
+        Extrait la limite inférieure de l'intervalle multiple (<code class="literal">NULL</code> si
+        l'intervalle multiple est vide ou n'a pas de limite inférieure).
+       </p>
+       <p>
+        <code class="literal">lower('{[1.1,2.2)}'::nummultirange)</code>
+        → <code class="returnvalue">1.1</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.11.2.2.2.1.1.1" class="indexterm"></a>
+        <code class="function">upper</code> ( <code class="type">anymultirange</code> )
+        → <code class="returnvalue">anyelement</code>
+       </p>
+       <p>
+        Extrait la limite supérieur de l'intervalle multiple (<code class="literal">NULL</code> si
+        l'intervalle multiple est vide ou n'a pas de limite supérieure).
+       </p>
+       <p>
+        <code class="literal">upper('{[1.1,2.2)}'::nummultirange)</code>
+        → <code class="returnvalue">2.2</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.11.2.2.3.1.1.1" class="indexterm"></a>
+        <code class="function">isempty</code> ( <code class="type">anymultirange</code> )
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle multiple est vide ?
+       </p>
+       <p>
+        <code class="literal">isempty('{[1.1,2.2)}'::nummultirange)</code>
+        → <code class="returnvalue">f</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.11.2.2.4.1.1.1" class="indexterm"></a>
+        <code class="function">lower_inc</code> ( <code class="type">anymultirange</code> )
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que la limite inférieure de l'intervalle multiple est inclusive ?
+       </p>
+       <p>
+        <code class="literal">lower_inc('{[1.1,2.2)}'::nummultirange)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.11.2.2.5.1.1.1" class="indexterm"></a>
+        <code class="function">upper_inc</code> ( <code class="type">anymultirange</code> )
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que la limite supérieure de l'intervalle multiple est inclusive ?
+       </p>
+       <p>
+        <code class="literal">upper_inc('{[1.1,2.2)}'::nummultirange)</code>
+        → <code class="returnvalue">f</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.11.2.2.6.1.1.1" class="indexterm"></a>
+        <code class="function">lower_inf</code> ( <code class="type">anymultirange</code> )
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle n'a pas de limite inférieure ? (Une limite
+        inférieure de <code class="literal">-Infinity</code> renvoie false.)
+       </p>
+       <p>
+        <code class="literal">lower_inf('{(,)}'::datemultirange)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.11.2.2.7.1.1.1" class="indexterm"></a>
+        <code class="function">upper_inf</code> ( <code class="type">anymultirange</code> )
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que l'intervalle n'a pas de limite supérieure ? (Une limite
+        supérieure de <code class="literal">Infinity</code> renvoie false.)
+       </p>
+       <p>
+        <code class="literal">upper_inf('{(,)}'::datemultirange)</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.11.2.2.8.1.1.1" class="indexterm"></a>
+        <code class="function">range_merge</code> ( <code class="type">anymultirange</code> )
+        → <code class="returnvalue">anyrange</code>
+       </p>
+       <p>
+        Calcule le plus petit intervalle simple qui inclut entièrement l'intervalle multiple.
+       </p>
+       <p>
+        <code class="literal">range_merge('{[1,2), [3,4)}'::int4multirange)</code>
+        → <code class="returnvalue">[1,4)</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.11.2.2.9.1.1.1" class="indexterm"></a>
+        <code class="function">multirange</code> ( <code class="type">anyrange</code> )
+        → <code class="returnvalue">anymultirange</code>
+       </p>
+       <p>
+        Retourne un intervalle multiple contenant seulement l'intervalle simple fourni.
+       </p>
+       <p>
+        <code class="literal">multirange('[1,2)'::int4range)</code>
+        → <code class="returnvalue">{[1,2)}</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.5.8.26.11.2.2.10.1.1.1" class="indexterm"></a>
+        <code class="function">unnest</code> ( <code class="type">anymultirange</code> )
+        → <code class="returnvalue">setof anyrange</code>
+       </p>
+       <p>
+        Étend un intervalle multiple en un ensemble d'intervalles simples
+        en ordre croissant.
+       </p>
+       <p>
+        <code class="literal">unnest('{[1,2), [3,4)}'::int4multirange)</code>
+        → <code class="returnvalue"></code>
+</p><pre class="programlisting">
+ [1,2)
+ [3,4)
+</pre><p>
+       </p></td></tr></tbody></table></div></div><br class="table-break" /><p>
+   Les fonctions <code class="function">lower_inc</code>, <code class="function">upper_inc</code>,
+   <code class="function">lower_inf</code> et <code class="function">upper_inf</code>
+   renvoient toutes false pour un intervalle simple ou multiple vide.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/functions-range.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:28 GMT -->
+</html>

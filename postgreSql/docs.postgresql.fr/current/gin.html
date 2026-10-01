@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/gin.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:17 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>64.4. Index GIN</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="spgist.html" title="64.3. Index SP-GiST" /><link rel="next" href="brin.html" title="64.5. Index BRIN" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/gin.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/gin.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/gin.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/gin.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/gin.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/gin.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/gin.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/gin.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/gin.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/gin.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/gin.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/gin.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/gin.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/gin.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/gin.html">9.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/gin.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="indextypes.html">Méthodes d'accès natives des index</a></span> » <span class="breadcrumb-node">Index GIN</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="spgist.html" title="64.3. Index SP-GiST">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="indextypes.html" title="Chapitre 64. Méthodes d'accès natives des index">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="brin.html" title="64.5. Index BRIN">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">64.3. Index SP-GiST </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 64.5. Index BRIN</td></tr></table></div><div class="sect1" id="GIN"><div class="titlepage"><div><div><h2 class="title" style="clear: both">64.4. Index GIN <a href="#GIN" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="gin.html#GIN-INTRO">64.4.1. Introduction</a></span></dt><dt><span class="sect2"><a href="gin.html#GIN-BUILTIN-OPCLASSES">64.4.2. Classes d'opérateurs natives</a></span></dt><dt><span class="sect2"><a href="gin.html#GIN-EXTENSIBILITY">64.4.3. Extensibilité</a></span></dt><dt><span class="sect2"><a href="gin.html#GIN-IMPLEMENTATION">64.4.4. Implantation</a></span></dt><dt><span class="sect2"><a href="gin.html#GIN-TIPS">64.4.5. Conseils et astuces sur GIN</a></span></dt><dt><span class="sect2"><a href="gin.html#GIN-LIMIT">64.4.6. Limitations</a></span></dt><dt><span class="sect2"><a href="gin.html#GIN-EXAMPLES">64.4.7. Exemples</a></span></dt></dl></div><a id="id-1.10.17.5.2" class="indexterm"></a><div class="sect2" id="GIN-INTRO"><div class="titlepage"><div><div><h3 class="title">64.4.1. Introduction <a href="#GIN-INTRO" class="id_link">#</a></h3></div></div></div><p>
+   <acronym class="acronym">GIN</acronym> est l'acronyme de <span class="foreignphrase"><em class="foreignphrase">Generalized
+   Inverted Index</em></span> (ou index générique inversé).
+   <acronym class="acronym">GIN</acronym> est prévu pour traiter les cas où les éléments à
+   indexer sont des valeurs composites, et où les requêtes devant utiliser
+   l'index doivent rechercher des valeurs d'éléments apparaissant dans ces
+   éléments composites. Par exemple, les éléments pourraient être des
+   documents, et les requêtes pourraient être des recherches de documents
+   contenant des mots spécifiques.
+  </p><p>
+   Nous utilisons le mot <em class="firstterm">élément</em>
+   (<span class="foreignphrase"><em class="foreignphrase">item</em></span> en version originale) pour désigner
+   une valeur composite qui doit être indexée, et le mot
+   <em class="firstterm">clé</em> (<span class="foreignphrase"><em class="foreignphrase">clé</em></span> en version originale) pour
+   désigner une des valeurs d'un élément. <acronym class="acronym">GIN</acronym> stocke et
+   recherche toujours des clés, jamais des éléments eux-mêmes.
+  </p><p>
+   Un index <acronym class="acronym">GIN</acronym> stocke un jeu de paires de (clé, liste), où
+   <em class="firstterm">liste</em> (<span class="foreignphrase"><em class="foreignphrase">posting list</em></span>
+   en version originale) est un ensemble d'identifiants de ligne
+   (<span class="foreignphrase"><em class="foreignphrase">row ID</em></span> en version originale) où la clé
+   existe. Le même identifiant peut apparaître dans plusieurs listes,
+   puisqu'un élément peut contenir plus d'une clé. Chaque clé est stockée une
+   seule fois, ce qui fait qu'un index <acronym class="acronym">GIN</acronym> est très
+   compact dans le cas où une clé apparaît de nombreuses fois.
+  </p><p>
+   <acronym class="acronym">GIN</acronym> est générique dans le sens où la méthode d'accès
+   <acronym class="acronym">GIN</acronym> n'a pas besoin de connaître les opérations
+   spécifiques qu'elle accélère. À la place, elle utilise les stratégies
+   spécifiques définies pour des types de données. La stratégie définit
+   comment extraire les clés des éléments à indexer et des conditions des
+   requêtes, et comment déterminer si une ligne qui contient des valeurs de
+   clés d'une requête répond réellement à la requête.
+  </p><p>
+   Un des avantages de <acronym class="acronym">GIN</acronym> est la possibilité qu'il offre
+   que des types de données personnalisés avec des méthodes d'accès
+   appropriées soient développés par un expert du domaine du type de données,
+   plutôt que par un expert en bases de données. La méthode
+   <acronym class="acronym">GiST</acronym> offre le même avantage.
+  </p><p>
+   L'implantation de <acronym class="acronym">GIN</acronym> dans
+   <span class="productname">PostgreSQL</span> est principalement l'œuvre de Teodor
+   Sigaev et Oleg Bartunov. Plus d'informations sur <acronym class="acronym">GIN</acronym>
+   sont disponibles sur leur <a class="ulink" href="http://www.sai.msu.su/~megera/wiki/Gin" target="_top">site web</a>.
+  </p></div><div class="sect2" id="GIN-BUILTIN-OPCLASSES"><div class="titlepage"><div><div><h3 class="title">64.4.2. Classes d'opérateurs natives <a href="#GIN-BUILTIN-OPCLASSES" class="id_link">#</a></h3></div></div></div><p>
+   La distribution <span class="productname">PostgreSQL</span> inclut les classes
+   d'opérateur <acronym class="acronym">GIN</acronym> affichées dans <a class="xref" href="gin.html#GIN-BUILTIN-OPCLASSES-TABLE" title="Tableau 64.3. Classes d'opérateurs GIN natives">Tableau 64.3</a>. (Certains des modules optionnels
+   décrits dans <a class="xref" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Annexe F</a> fournissent des classes
+   d'opérateurs <acronym class="acronym">GIN</acronym> supplémentaires.)
+  </p><div class="table" id="GIN-BUILTIN-OPCLASSES-TABLE"><p class="title"><strong>Tableau 64.3. Classes d'opérateurs <acronym class="acronym">GIN</acronym> natives</strong></p><div class="table-contents"><table class="table" summary="Classes d'opérateurs GIN natives" border="1"><colgroup><col /><col /></colgroup><thead><tr><th>Nom</th><th>Opérateurs indexables</th></tr></thead><tbody><tr><td rowspan="4" valign="middle"><code class="literal">array_ops</code></td><td><code class="literal">&amp;&amp; (anyarray,anyarray)</code></td></tr><tr><td><code class="literal">@&gt; (anyarray,anyarray)</code></td></tr><tr><td><code class="literal">&lt;@ (anyarray,anyarray)</code></td></tr><tr><td><code class="literal">= (anyarray,anyarray)</code></td></tr><tr><td rowspan="6" valign="middle"><code class="literal">jsonb_ops</code></td><td><code class="literal">@&gt; (jsonb,jsonb)</code></td></tr><tr><td><code class="literal">@? (jsonb,jsonpath)</code></td></tr><tr><td><code class="literal">@@ (jsonb,jsonpath)</code></td></tr><tr><td><code class="literal">? (jsonb,text)</code></td></tr><tr><td><code class="literal">?| (jsonb,text[])</code></td></tr><tr><td><code class="literal">?&amp; (jsonb,text[])</code></td></tr><tr><td rowspan="3" valign="middle"><code class="literal">jsonb_path_ops</code></td><td><code class="literal">@&gt; (jsonb,jsonb)</code></td></tr><tr><td><code class="literal">@? (jsonb,jsonpath)</code></td></tr><tr><td><code class="literal">@@ (jsonb,jsonpath)</code></td></tr><tr><td valign="middle"><code class="literal">tsvector_ops</code></td><td><code class="literal">@@ (tsvector,tsquery)</code></td></tr></tbody></table></div></div><br class="table-break" /><p>
+   Des deux classes d'opérateurs pour le type <code class="type">jsonb</code>,
+   <code class="literal">jsonb_ops</code> est l'opérateur par défaut.
+   <code class="literal">jsonb_path_ops</code> supporte moins d'opérateurs mais offre
+   de meilleures performances pour ces opérateurs. Voir <a class="xref" href="datatype-json.html#JSON-INDEXING" title="8.14.4. Indexation jsonb">Section 8.14.4</a> pour plus de détails.
+  </p></div><div class="sect2" id="GIN-EXTENSIBILITY"><div class="titlepage"><div><div><h3 class="title">64.4.3. Extensibilité <a href="#GIN-EXTENSIBILITY" class="id_link">#</a></h3></div></div></div><p>
+   L'interface <acronym class="acronym">GIN</acronym> a un haut niveau d'abstraction. De ce
+   fait, la personne qui code la méthode d'accès n'a besoin d'implanter que
+   les sémantiques du type de données accédé. La couche
+   <acronym class="acronym">GIN</acronym> prend en charge la gestion de la concurrence, des
+   traces et des recherches dans la structure de l'arbre.
+  </p><p>
+   Pour développer une méthode d'accès <acronym class="acronym">GIN</acronym> fonctionnelle,
+   il suffit d'implanter quelques méthodes utilisateur. Celles-ci définissent
+   le comportement des clés dans l'arbre et les relations entre clés, valeurs
+   d'éléments indexées et requêtes indexables. En résumé,
+   <acronym class="acronym">GIN</acronym> combine extensibilité, généricité, réutilisation
+   du code, et une interface claire.
+  </p><p>
+   Voici les deux méthodes qu'une classe d'opérateurs <acronym class="acronym">GIN</acronym>
+   doit fournir sont :
+  </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="function">Datum *extractValue(Datum inputValue, int32 *nkeys,
+      bool **nullFlags)</code></span></dt><dd><p>
+      Retourne un tableau de clés alloué par palloc en fonction d'un élément à
+      indexer. Le nombre de clés renvoyées doit être stocké dans
+      <code class="literal">*nkeys</code>. Si une des clés peut être nulle, allouez
+      aussi par palloc un tableau de <code class="literal">*nkeys</code> champs de type
+      <code class="type">bool</code>, stockez son adresse dans
+      <code class="literal">*nullFlags</code>, et positionnez les drapeaux null où ils
+      doivent l'être. <code class="literal">*nullFlags</code> peut être laissé à
+      <code class="symbol">NULL</code> (sa valeur initiale) si aucune clé n'est nulle.
+      La valeur retournée peut être <code class="symbol">NULL</code> si l'élément ne
+      contient aucune clé.
+     </p></dd><dt><span class="term"><code class="function">Datum *extractQuery(Datum query, int32 *nkeys,
+      StrategyNumber n, bool **pmatch, Pointer **extra_data,
+      bool **nullFlags, int32 *searchMode)</code></span></dt><dd><p>
+      Renvoie un tableau de clés en fonction de la valeur à rechercher ;
+      c'est-à-dire que <code class="literal">query</code> est la valeur du côté droit
+      d'un opérateur indexable dont le côté gauche est la colonne indexée.
+      <code class="literal">n</code> est le numéro de stratégie de l'opérateur dans la
+      classe d'opérateurs (voir <a class="xref" href="xindex.html#XINDEX-STRATEGIES" title="36.16.2. Stratégies des méthodes d'indexation">Section 36.16.2</a>). Souvent,
+      <code class="function">extractQuery</code> doit consulter <code class="literal">n</code>
+      pour déterminer le type de données de <code class="literal">query</code> et la
+      méthode à utiliser pour extraire les valeurs des clés. Le nombre de
+      clés renvoyées doit être stocké dans <code class="literal">*nkeys</code>. Si une
+      des clés peut être nulle, allouez aussi par palloc un tableau de
+      <code class="literal">*nkeys</code> champs de type <code class="type">bool</code>, stockez son
+      adresse dans <code class="literal">*nullFlags</code>, et positionnez les drapeaux
+      <code class="symbol">NULL</code> où ils doivent l'être.
+      <code class="literal">*nullFlags</code> peut être laissé à NULL (sa valeur
+      initiale) si aucune clé n'est nulle. La valeur de retour peut être
+      <code class="symbol">NULL</code> si <code class="literal">query</code> ne contient aucune
+      clé.
+     </p><p>
+      <code class="literal">searchMode</code> est un argument de sortie qui permet à
+      <code class="function">extractQuery</code> de spécifier des détails sur comment
+      la recherche sera effectuée. Si <code class="literal">*searchMode</code> est
+      positionné à <code class="literal">GIN_SEARCH_MODE_DEFAULT</code> (qui est la
+      valeur à laquelle il est initialisé avant l'appel), seuls les éléments
+      qui correspondent à au moins une des clés retournées sont considérés
+      comme des candidats de correspondance. Si
+      <code class="literal">*searchMode</code> est positionné à
+      <code class="literal">GIN_SEARCH_MODE_INCLUDE_EMPTY</code>, alors en plus des
+      éléments qui contiennent au moins une clé correspondante, les éléments
+      qui ne contiennent aucune clé sont aussi considérées comme des
+      candidats de correspondance. (Ce mode est utile pour implémenter un
+      opérateur « est le sous-ensemble de », par exemple.) Si
+      <code class="literal">*searchMode</code> est positionné à
+      <code class="literal">GIN_SEARCH_MODE_ALL</code>, alors tous les éléments non
+      nuls de l'index sont candidats de correspondance, qu'ils aient une clé
+      qui corresponde à celles retournées ou non. (Ce mode est beaucoup plus
+      lent que les deux autres, mais il peut être nécessaire pour implanter
+      des cas exceptionnels correctement. Un opérateur qui a besoin de ce
+      mode dans la plupart des cas n'est probablement pas un bon candidat
+      pour une classe d'opérateurs GIN.) Les symboles à utiliser pour
+      configurer ce mode sont définis dans
+      <code class="filename">access/gin.h</code>.
+     </p><p>
+      <code class="literal">pmatch</code> est un argument de sortie à utiliser quand une
+      correspondance partielle est permise. Pour l'utiliser,
+      <code class="function">extractQuery</code> doit allouer un tableau de booléens
+      <code class="literal">*nkeys</code> et stocker son adresse dans
+      <code class="literal">*pmatch</code>. Chaque élément du tableau devrait être
+      positionné à true si la clé correspondante  nécessite une
+      correspondance partielle, et à false sinon. Si
+      <code class="literal">*pmatch</code> est configuré à <code class="symbol">NULL</code>, alors
+      GIN suppose qu'une correspondance partielle n'est pas nécessaire. La
+      variable est initialisée à <code class="symbol">NULL</code> avant l'appel, et peut
+      donc être simplement ignorée par les classes d'opérateurs qui ne gèrent
+      pas les correspondances partielles.
+     </p><p>
+      <code class="literal">extra_data</code> est un argument de sortie qui autorise
+      <code class="function">extractQuery</code> à passer des données supplémentaires
+      aux méthodes <code class="function">consistent</code> et
+      <code class="function">comparePartial</code>. Pour l'utiliser,
+      <code class="function">extractQuery</code> doit allouer un tableau de pointeurs
+      <code class="literal">*nkeys</code> et stocker son adresse dans
+      <code class="literal">*extra_data</code>, puis stocker ce qu'il souhaite dans les
+      pointeurs individuels. La variable est initialisée à
+      <code class="symbol">NULL</code> avant l'appel, afin que ce paramètre soit
+      simplement ignoré par une classe d'opérateurs qui n'a pas besoin de
+      données supplémentaires. Si <code class="literal">*extra_data</code> est
+      positionné, le tableau dans son ensemble est passé à la méthode
+      <code class="function">consistent</code>, et l'élément approprié à la méthode
+      <code class="function">comparePartial</code>.
+     </p></dd></dl></div><p>
+   Une classe d'opérateurs doit aussi fournir une fonction pour vérifier si un
+   élément indexé correspond à la requête. Elle vient en deux versions, une
+   fonction booléenne <code class="function">consistent</code> et une fonction
+   ternaire <code class="function">triConsistent</code>. Cette dernière couvre les
+   fonctionnalités des deux, donc fournir uniquement
+   <code class="function">triConsistent</code> est suffisant. Cependant, si la
+   variante booléenne est bien moins coûteuse à calculer, il peut être
+   avantageux de fournir les deux. Si seule la variante booléenne est
+   fournie, certaines optimisations dépendant de la réfutation d'éléments
+   d'index avant de récupérer toutes les clés sont désactivées.
+  </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="function">bool consistent(bool check[], StrategyNumber n, Datum query,
+      int32 nkeys, Pointer extra_data[], bool *recheck,
+      Datum queryKeys[], bool nullFlags[])</code></span></dt><dd><p>
+      Retourne true si un élément indexé répond à l'opérateur de requête
+      possédant le numéro de stratégie <code class="literal">n</code> (ou pourrait le
+      satisfaire si l'indication recheck est retournée). Cette fonction n'a
+      pas d'accès direct aux valeurs des éléments indexés. Au lieu de cela,
+      ce qui est disponible, c'est la connaissance de quelles valeurs de clés
+      extraites de la requête apparaissent dans un élément indexé donné. Le
+      tableau <code class="literal">check</code> a une longueur de
+      <code class="literal">nkeys</code>, qui est identique au nombre de clés retourné
+      précédemment par <code class="function">extractQuery</code> pour cette donnée
+      <code class="literal">query</code>. Chaque élément du tableau
+      <code class="literal">check</code> est true si l'élément indexé contient la clé
+      de requête correspondante, c'est à dire, si (check[i] == true), la
+      i-ème clé du tableau résultat de <code class="function">extractQuery</code> est
+      présente dans l'élément indexé. La donnée <code class="literal">query</code>
+      originale est passée au cas où la méthode
+      <code class="function">consistent</code> aurait besoin de le consulter, de même
+      que les tableaux <code class="literal">queryKeys[]</code> et <code class="literal">nullFlags
+      []</code> retournés précédemment par
+      <code class="function">extractQuery</code>. <code class="literal">extra_data</code> est le
+      tableau de données supplémentaires renvoyé par
+      <code class="function">extractQuery</code>, ou <code class="symbol">NULL</code> si aucun.
+     </p><p>
+      Quand <code class="function">extractQuery</code> renvoie une clé nulle dans
+      <code class="literal">queryKeys[]</code>, l'élément correspondant de
+      <code class="literal">check[]</code> est true si l'élément indexé contient une
+      clé nulle ; c'est-à-dire que la sémantique de <code class="literal">check
+      []</code> est comme celle de <code class="literal">IS NOT DISTINCT
+      FROM</code>. La fonction <code class="function">consistent</code> peut
+      examiner l'élément correspondant de <code class="literal">nullFlags[]</code> si
+      elle a besoin de faire la différence entre une correspondance de
+      valeur « normale » et une correspondance nulle.
+     </p><p>
+      En cas de réussite, <code class="literal">*recheck</code> devrait être positionné
+      à true si les enregistrements de la table doivent être revérifiées par
+      rapport à l'opérateur de la requête, ou à false si le test d'index est
+      exact. Autrement dit, une valeur de retour à false garantit que
+      l'enregistrement de la table ne correspond pas ; une valeur de
+      retour à true avec <code class="literal">*recheck</code> à false garantit que
+      l'enregistrement de la table correspond à la requête ; et une
+      valeur de retour à true avec <code class="literal">*recheck</code> à true
+      signifie que l'enregistrement de la table pourrait correspondre à la
+      requête, et qu'il doit être récupéré et re-vérifié en évaluant
+      l'opérateur de la requête directement sur l'élément initialement
+      indexé.
+     </p></dd><dt><span class="term"><code class="function">GinTernaryValue triConsistent(GinTernaryValue check[], StrategyNumber n, Datum query,
+      int32 nkeys, Pointer extra_data[],
+      Datum queryKeys[], bool nullFlags[])</code></span></dt><dd><p>
+      <code class="function">triConsistent</code> est similaire à
+      <code class="function">consistent</code>, mais en lieu de booléens dans le
+      vecteur <code class="literal">check</code>, il y a trois valeurs possibles pour
+      chaque clé : <code class="literal">GIN_TRUE</code>,
+      <code class="literal">GIN_FALSE</code> et <code class="literal">GIN_MAYBE</code>.
+      <code class="literal">GIN_FALSE</code> et <code class="literal">GIN_TRUE</code> ont la même
+      signification que des valeurs booléennes standards alors que
+      <code class="literal">GIN_MAYBE</code> signifie que la présence de cette clé est
+      inconnue. Quand des valeurs <code class="literal">GIN_MAYBE</code> sont
+      présentes, la fonction devrait seulement renvoyer
+      <code class="literal">GIN_TRUE</code> si l'élément correspond à coup sûr que
+      l'élément de l'index contient ou non les clés de la requête
+      correspondante. De la même façon, la fonction doit renvoyer
+      <code class="literal">GIN_FALSE</code> seulement si l'élément ne correspond pas,
+      qu'il contienne ou non des clés <code class="literal">GIN_MAYBE</code>. Si le
+      résultat dépend des entrées <code class="literal">GIN_MAYBE</code>, autrement dit
+      si la correspondance ne peut pas être confirmée ou réfutée en se basant
+      sur les clés connues de la requête, la fonction doit renvoyer
+      <code class="literal">GIN_MAYBE</code>.
+     </p><p>
+      Quand il n'y a pas de valeurs <code class="literal">GIN_MAYBE</code> dans le
+      vecteur <code class="literal">check</code>, la valeur de retour
+      <code class="literal">GIN_MAYBE</code> est équivalent à configurer l'indicateur
+      <code class="literal">recheck</code> dans la fonction booléenne
+      <code class="function">consistent</code>.
+     </p></dd></dl></div><p>
+   De plus, GIN doit avoir un moyen de trier les valeurs des clés stockées
+   dans l'index. La classe d'opérateurs peut définir l'ordre de tri en
+   spécifiant une méthode de comparaison :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="function">int compare(Datum a, Datum b)</code></span></dt><dd><p>
+       Compare deux clés (pas des éléments indexés) et renvoie un entier
+       inférieur à zéro, égal à zéro ou supérieur à zéro, indiquant si la
+       première clé est inférieure à, égale à ou supérieure à la seconde. Les
+       clés nulles ne sont jamais fournies en argument à cette fonction.
+      </p></dd></dl></div><p>
+
+   Sinon, si la classe d'opérateurs ne fournit pas de méthode
+   <code class="function">compare</code>, GIN cherchera la classe d'opérateurs B-Tree
+   par défaut pour le type de donnée de la clé d'index, et utilisera sa
+   fonction de comparaison. Il est recommandé de spécifier la fonction de
+   comparaison dans une classe d'opérateurs GIN destinée à un seul type de
+   donnée, car rechercher la classe d'opérateurs B-Tree coûte quelques cycles
+   CPU. Cependant, les classes d'opérateurs GIN polymorphiques (telle que
+   <code class="literal">array_ops</code>) ne peuvent typiquement pas spécifier une
+   seule fonction de comparaison.
+  </p><p>
+   Une classe d'opérateurs pour <acronym class="acronym">GIN</acronym> peut fournir en option
+   les méthodes suivantes :
+  </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="function">int comparePartial(Datum partial_key, Datum key, StrategyNumber n,
+      Pointer extra_data)</code></span></dt><dd><p>
+      Compare une clé d'une requête de correspondance partielle à une clé
+      d'index. Renvoie un entier dont le signe indique le résultat :
+      inférieur à zéro signifie que la clé d'index ne correspond pas à la
+      requête mais que le parcours d'index va continuer ; zéro signifie
+      que la clé d'index ne correspond pas à la requête ; supérieur à
+      zéro indique que le parcours d'index doit s'arrêter car il n'existe pas
+      d'autres correspondances. Le numéro de stratégie <code class="literal">n</code>
+      de l'opérateur qui a engendré la requête de correspondance partielle
+      est fourni au cas où sa sémantique serait nécessaire pour déterminer la
+      fin du parcours. De plus, <code class="literal">extra_data</code> est l'élément
+      correspondant du tableau renvoyé par <code class="function">extractQuery</code>
+      (<code class="symbol">NULL</code> sinon). Les clés nulles ne sont jamais passées à
+      cette fonction.
+     </p></dd><dt><span class="term"><code class="function">void options(local_relopts *relopts)</code></span></dt><dd><p>
+      Définit un ensemble de paramètres visibles aux utilisateurs qui contrôle
+      le comportement d'une classe d'opérateurs.
+     </p><p>
+      La fonction <code class="function">options</code> se voit donner un pointeur vers
+      une structure <code class="structname">local_relopts</code> qui doit être
+      remplie avec un ensemble d'options spécifiques à la classe d'opérateurs.
+      Les options peuvent être accédées à partir des autres fonctions de
+      support en utilisant les macros <code class="literal">PG_HAS_OPCLASS_OPTIONS
+      ()</code> et <code class="literal">PG_GET_OPCLASS_OPTIONS()</code>.
+     </p><p>
+      Étant donné que l'extraction des clés des valeurs indexées et la
+      représentation de la clé dans <acronym class="acronym">GIN</acronym> sont flexibles,
+      elles peuvent dépendre de paramètres spécifiés par l'utilisateur.
+     </p></dd></dl></div><p>
+   Pour supporter des requêtes à <span class="quote">« <span class="quote">correspondance partielle</span> »</span>, une
+   classe d'opérateurs doit fournir la méthode
+   <code class="function">comparePartial</code>, et sa méthode
+   <code class="function">extractQuery</code> doit positionner le paramètre
+   <code class="literal">pmatch</code> quand une requête à correspondance partielle est
+   rencontrée. Voir <a class="xref" href="gin.html#GIN-PARTIAL-MATCH" title="64.4.4.2. Algorithme de mise en correspondance partielle">Section 64.4.4.2</a> pour les détails.
+  </p><p>
+   Le type de données réel des différentes valeurs <code class="literal">Datum</code>
+   mentionnées ci-dessus varient en fonction de la classe d'opérateurs. Les
+   valeurs d'élément passées à <code class="function">extractValue</code> sont
+   toujours du type en entrée de la classe d'opérateurs, et toutes les valeurs
+   de clé doivent être du type <code class="literal">STORAGE</code> de la classe. Le
+   type de l'argument <code class="literal">query</code> passé aux fonctions
+   <code class="function">extractQuery</code>, <code class="function">consistent</code> et
+   <code class="function">triConsistent</code> est le type de l'argument côté droit de
+   l'opérateur du membre de la classe identifié par le numéro de stratégie.
+   Ce n'est pas nécessairement le même que l'élément indexé, tant que des
+   valeurs de clés d'un type correct peuvent en être extraites. Néanmoins, il
+   est recommandé que les déclarations SQL de ces trois fonctions de support
+   utilisent le type de données indexé de la classe d'opérateurs pour
+   l'argument <code class="literal">query</code>, même si le type réel pourrait être
+   différent suivant l'opérateur.
+  </p></div><div class="sect2" id="GIN-IMPLEMENTATION"><div class="titlepage"><div><div><h3 class="title">64.4.4. Implantation <a href="#GIN-IMPLEMENTATION" class="id_link">#</a></h3></div></div></div><p>
+   En interne, un index <acronym class="acronym">GIN</acronym> contient un index B-tree
+   construit sur des clés, où chaque clé est une partie d'un ou plusieurs
+   éléments indexé (un membre d'un tableau, par exemple) et où chaque
+   enregistrement d'une page feuille contient soit un pointeur vers un B-tree
+   de pointeurs vers la table (un <span class="quote">« <span class="quote">posting tree</span> »</span>), ou une liste
+   simple de pointeurs vers les enregistrements (une <span class="quote">« <span class="quote">posting
+   list</span> »</span>) quand la liste est suffisamment courte pour tenir dans un
+   seul enregistrement d'index avec la valeur de la clé. <a class="xref" href="gin.html#GIN-INTERNALS-FIGURE" title="Figure 64.1. Cœur de GIN">Figure 64.1</a> illustre ces composants d'un index GIN.
+  </p><p>
+   À partir de <span class="productname">PostgreSQL</span> 9.1, des valeurs NULL de
+   clé peuvent être incluses dans l'index. Par ailleurs, des NULLs fictifs
+   sont inclus dans l'index pour des éléments indexés qui sont NULL ou ne
+   contiennent aucune clé d'après <code class="function">extractValue</code>. Cela
+   permet des recherches retournant des éléments vides.
+  </p><p>
+   Les index multi-colonnes <acronym class="acronym">GIN</acronym> sont implantés en
+   construisant un seul B-tree sur des valeurs composites (numéro de colonne,
+   valeur de clé). Les valeurs de clés pour les différentes colonnes peuvent
+   être de types différents.
+  </p><div class="figure" id="GIN-INTERNALS-FIGURE"><p class="title"><strong>Figure 64.1. Cœur de GIN</strong></p><div class="figure-contents"><div class="mediaobject"><object type="image/svg+xml" data="gin.svg" width="100%"></object></div></div></div><br class="figure-break" /><div class="sect3" id="GIN-FAST-UPDATE"><div class="titlepage"><div><div><h4 class="title">64.4.4.1. Technique GIN de mise à jour rapide <a href="#GIN-FAST-UPDATE" class="id_link">#</a></h4></div></div></div><p>
+    Mettre à jour un index <acronym class="acronym">GIN</acronym> a tendance à être lent en
+    raison de la nature intrinsèque des index inversés : insérer ou
+    mettre à jour un ligne de la table peut causer de nombreuses insertions
+    dans l'index(une pour chaque clé extraite de l'élément indexé).
+    <acronym class="acronym">GIN</acronym> est capable de reporter à plus tard la plupart de
+    ce travail en insérant les nouveaux enregistrements dans une liste
+    temporaire et non triée des entrées en attente. Quand un vacuum ou
+    autoanalyze est déclenché sur la table, ou quand la fonction
+    <code class="function">gin_clean_pending_list</code> est appelée, ou si la liste
+    en attente devient plus importante que <a class="xref" href="runtime-config-client.html#GUC-GIN-PENDING-LIST-LIMIT">gin_pending_list_limit</a>, les entrées sont déplacées vers
+    la structure de données <acronym class="acronym">GIN</acronym> principale en utilisant la
+    même technique d'insertion de masse que durant la création de l'index.
+    Ceci améliore grandement la vitesse de mise à jour de l'index
+    <acronym class="acronym">GIN</acronym>, même en prenant en compte le surcoût engendré au
+    niveau du vacuum. De plus, ce travail supplémentaire peut être attribué à
+    un processus d'arrière-plan plutôt qu'à la requête en avant-plan.
+   </p><p>
+    Le principal défaut de cette approche est que les recherches doivent
+    parcourir la liste d'entrées en attente en plus de l'index habituel, et
+    que, par conséquent, une grande liste d'entrées en attente ralentira les
+    recherches de manière significative. Un autre défaut est que, bien que la
+    majorité des mises à jour sont rapides, une mise à jour qui rend la liste
+    d'attente <span class="quote">« <span class="quote">trop grande</span> »</span> déclenchera un cycle de nettoyage
+    immédiat et sera donc bien plus lente que les autres mises à jour. Une
+    utilisation appropriée d'autovacuum peut minimiser ces deux problèmes.
+   </p><p>
+    Si la cohérence des temps de réponse est plus importante que la vitesse de
+    mise à jour, l'utilisation de liste d'entrées en attente peut être
+    désactivée en désactivant le paramètre de stockage
+    <code class="literal">fastupdate</code> pour un index GIN. Voir <a class="xref" href="sql-createindex.html" title="CREATE INDEX"><span class="refentrytitle">CREATE INDEX</span></a> pour plus de détails.
+   </p></div><div class="sect3" id="GIN-PARTIAL-MATCH"><div class="titlepage"><div><div><h4 class="title">64.4.4.2. Algorithme de mise en correspondance partielle <a href="#GIN-PARTIAL-MATCH" class="id_link">#</a></h4></div></div></div><p>
+    GIN peut accepter des requêtes de <span class="quote">« <span class="quote">correspondances
+    partielles</span> »</span>, dans lesquelles la requête ne détermine pas une
+    correspondance parfaite pour une ou plusieurs clés, mais que la
+    correspondance tombe à une distance suffisamment proche des valeurs de
+    clé (dans l'ordre de tri des clés déterminé par la méthode d'appui
+    <code class="function">compare</code>). Au lieu de retourner une valeur de clé à
+    mettre en correspondance de façon exacte, la méthode
+    <code class="function">extractQuery</code> retourne une valeur de clé qui est la
+    limite inférieure de la plage à rechercher, et retourne l'indicateur
+    <code class="literal">pmatch</code> positionné à true. La plage de clé est alors
+    parcourue en utilisant la méthode <code class="function">comparePartial</code>.
+    <code class="function">comparePartial</code> doit renvoyer 0 pour une clé d'index
+    correspondante, une valeur négative pour une non-correspondance qui est
+    toujours dans la plage de recherche, et une valeur positive si la clé
+    d'index est en dehors de la plage de correspondance.
+   </p></div></div><div class="sect2" id="GIN-TIPS"><div class="titlepage"><div><div><h3 class="title">64.4.5. Conseils et astuces sur GIN <a href="#GIN-TIPS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt><span class="term">Création vs insertion</span></dt><dd><p>
+      L'insertion dans un index <acronym class="acronym">GIN</acronym> peut être lente du fait
+      de la probabilité d'insertion de nombreuses clés pour chaque élément.
+      C'est pourquoi, pour les chargements massifs dans une table, il est
+      conseillé de supprimer l'index GIN et de le re-créer après le
+      chargement.
+     </p><p>
+      Quand <code class="literal">fastupdate</code> est activé pour
+      <acronym class="acronym">GIN</acronym>(voir <a class="xref" href="gin.html#GIN-FAST-UPDATE" title="64.4.4.1. Technique GIN de mise à jour rapide">Section 64.4.4.1</a> pour les
+      détails), la pénalité est moindre que quand il n'est pas activé. Mais
+      pour les très grosses mises à jour, il peut toujours être plus efficace
+      de détruire et recréer l'index.
+     </p></dd><dt><span class="term"><a class="xref" href="runtime-config-resource.html#GUC-MAINTENANCE-WORK-MEM">maintenance_work_mem</a></span></dt><dd><p>
+      Le temps de construction d'un index <acronym class="acronym">GIN</acronym> dépend
+      grandement du paramètre <code class="varname">maintenance_work_mem</code> ;
+      il est contre-productif de limiter la mémoire de travail lors de la
+      création d'un index.
+     </p></dd><dt><span class="term"><a class="xref" href="runtime-config-client.html#GUC-GIN-PENDING-LIST-LIMIT">gin_pending_list_limit</a></span></dt><dd><p>
+      Durant une série d'insertions dans un index <acronym class="acronym">GIN</acronym>
+      existant pour lequel l'option <code class="literal">fastupdate</code> est activé,
+      le système nettoiera la liste d'entrées en attente dès qu'elle
+      deviendra plus grosse que la limite indiquée par
+      <code class="varname">gin_pending_list_limit</code>. Afin d'éviter des
+      fluctuations mesurables de temps de réponse, il est souhaitable d'avoir
+      un nettoyage de la liste d'attente en arrière-plan (c'est-à-dire via
+      autovacuum). Les opérations de nettoyage en avant-plan peuvent être
+      évitées en augmentant <code class="varname">gin_pending_list_limit</code> ou en
+      rendant le processus autovacuum plus aggressif. Toutefois, augmenter la
+      limite de l'opération de nettoyage implique que si un nettoyage en
+      avant-plan se produit, il prendra encore plus de temps.
+     </p><p>
+      <code class="varname">gin_pending_list_limit</code> peut être surchargé sur
+      certains index en modifiant les paramètres de stockage, ce qui permet à
+      chaque index d'avoir sa propre limite de nettoyage. Par exemple, il est
+      possible d'augmenter la limite uniquement pour un index GIN fortement
+      mis à jour ou de la diminuer dans le cas contraire.
+     </p></dd><dt><span class="term"><a class="xref" href="runtime-config-client.html#GUC-GIN-FUZZY-SEARCH-LIMIT">gin_fuzzy_search_limit</a></span></dt><dd><p>
+      La raison principale qui a poussé le développement des index
+      <acronym class="acronym">GIN</acronym> a été la volonté d'ajouter les recherches plein
+      texte dans <span class="productname">PostgreSQL</span> et il arrive
+      fréquemment qu'une recherche de ce type renvoie un ensemble volumineux
+      de résultats. Cela arrive d'autant plus fréquemment que la requête
+      contient des mots très fréquents, auquel cas l'ensemble de résultats
+      n'est même pas utile. Puisque la lecture des lignes sur disque et leur
+      tri prend beaucoup de temps, cette situation est inacceptable en
+      production. (La recherche dans l'index est, elle, très rapide.)
+     </p><p>
+      Pour faciliter l'exécution contrôlée de telles requêtes,
+      <acronym class="acronym">GIN</acronym> dispose d'une limite supérieure souple
+      configurable du nombre de lignes renvoyées, le paramètre de
+      configuration <code class="varname">gin_fuzzy_search_limit</code>. Par défaut, il
+      est positionné à 0 (c'est-à-dire sans limite). Si une limite différente
+      de 0 est choisie, alors l'ensemble renvoyé est un sous-ensemble du
+      résultat complet, choisi aléatoirement.
+     </p><p>
+      <span class="quote">« <span class="quote">Souple</span> »</span> signifie que le nombre réel de résultats renvoyés
+      peut différer légèrement de la limite indiquée, en fonction de la
+      requête et de la qualité du générateur de nombres aléatoires du
+      système.
+     </p><p>
+      D'expérience, des valeurs de l'ordre de quelques milliers
+      (5000  --  20000) fonctionnent bien.
+     </p></dd></dl></div></div><div class="sect2" id="GIN-LIMIT"><div class="titlepage"><div><div><h3 class="title">64.4.6. Limitations <a href="#GIN-LIMIT" class="id_link">#</a></h3></div></div></div><p>
+   <acronym class="acronym">GIN</acronym> part de l'hypothèse que les opérateurs indexables
+   sont stricts. Cela signifie que la fonction
+   <code class="function">extractValue</code> ne sera pas appelée du tout sur une
+   valeur d'élément nul (à la place, une entrée d'index factice sera créée
+   automatiquement), et que la fonction <code class="function">extractQuery</code> ne
+   sera pas appelée non plus pour une valeur de requête nulle (à la place, la
+   requête est considérée comme impossible à satisfaire). Notez toutefois que
+   des valeurs de clé nulles contenues dans un élément composite ou une
+   valeur de requête non nul sont supportées.
+  </p></div><div class="sect2" id="GIN-EXAMPLES"><div class="titlepage"><div><div><h3 class="title">64.4.7. Exemples <a href="#GIN-EXAMPLES" class="id_link">#</a></h3></div></div></div><p>
+   Le noyau de la distribution <span class="productname">PostgreSQL</span> inclut la
+   classe d'opérateurs <acronym class="acronym">GIN</acronym> précédemment montrée dans <a class="xref" href="gin.html#GIN-BUILTIN-OPCLASSES-TABLE" title="Tableau 64.3. Classes d'opérateurs GIN natives">Tableau 64.3</a>. Les modules
+   <code class="filename">contrib</code> suivants contiennent aussi des classes
+   d'opérateurs <acronym class="acronym">GIN</acronym> :
+  </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="filename">btree-gin</code></span></dt><dd><p>Fonctionnalité équivalente à B-Tree pour plusieurs types de données</p></dd><dt><span class="term"><code class="filename">hstore</code></span></dt><dd><p>Module pour le stockage des paires (clé, valeur)</p></dd><dt><span class="term">intarray</span></dt><dd><p>Support amélioré pour le type <code class="type">int[]</code></p></dd><dt><span class="term"><code class="filename">pg_trgm</code></span></dt><dd><p>Similarité de texte par correspondance de trigramme</p></dd></dl></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/gin.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:17 GMT -->
+</html>

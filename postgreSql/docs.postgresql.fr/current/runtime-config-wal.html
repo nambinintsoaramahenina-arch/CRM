@@ -1,0 +1,934 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-wal.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.5. Write Ahead Log</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-resource.html" title="19.4. Consommation des ressources" /><link rel="next" href="runtime-config-replication.html" title="19.6. Réplication" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/runtime-config-wal.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/runtime-config-wal.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/runtime-config-wal.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/runtime-config-wal.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/runtime-config-wal.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/runtime-config-wal.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/runtime-config-wal.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/runtime-config-wal.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/runtime-config-wal.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/runtime-config-wal.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/runtime-config-wal.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/runtime-config-wal.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/runtime-config-wal.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/runtime-config-wal.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/runtime-config-wal.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/runtime-config-wal.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/runtime-config-wal.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/runtime-config-wal.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/runtime-config-wal.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/runtime-config-wal.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/runtime-config-wal.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="runtime-config.html">Configuration du serveur</a></span> » <span class="breadcrumb-node">Write Ahead Log</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-resource.html" title="19.4. Consommation des ressources">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-replication.html" title="19.6. Réplication">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">19.4. Consommation des ressources </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 19.6. Réplication</td></tr></table></div><div class="sect1" id="RUNTIME-CONFIG-WAL"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.5. Write Ahead Log <a href="#RUNTIME-CONFIG-WAL" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="runtime-config-wal.html#RUNTIME-CONFIG-WAL-SETTINGS">19.5.1. Paramètres</a></span></dt><dt><span class="sect2"><a href="runtime-config-wal.html#RUNTIME-CONFIG-WAL-CHECKPOINTS">19.5.2. Points de vérification</a></span></dt><dt><span class="sect2"><a href="runtime-config-wal.html#RUNTIME-CONFIG-WAL-ARCHIVING">19.5.3. Archivage</a></span></dt><dt><span class="sect2"><a href="runtime-config-wal.html#RUNTIME-CONFIG-WAL-RECOVERY">19.5.4. Restauration</a></span></dt><dt><span class="sect2"><a href="runtime-config-wal.html#RUNTIME-CONFIG-WAL-ARCHIVE-RECOVERY">19.5.5. Restauration des archives</a></span></dt><dt><span class="sect2"><a href="runtime-config-wal.html#RUNTIME-CONFIG-WAL-RECOVERY-TARGET">19.5.6. Cible de restauration</a></span></dt><dt><span class="sect2"><a href="runtime-config-wal.html#RUNTIME-CONFIG-WAL-SUMMARIZATION">19.5.7. Résumé de WAL</a></span></dt></dl></div><p>
+ Voir aussi la <a class="xref" href="wal-configuration.html" title="28.5. Configuration des journaux de transaction">Section 28.5</a> pour plus d'informations
+ sur la configuration de ces paramètres.
+</p><div class="sect2" id="RUNTIME-CONFIG-WAL-SETTINGS"><div class="titlepage"><div><div><h3 class="title">19.5.1. Paramètres <a href="#RUNTIME-CONFIG-WAL-SETTINGS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-WAL-LEVEL"><span class="term"><code class="varname">wal_level</code> (<code class="type">enum</code>)</span> <a href="#GUC-WAL-LEVEL" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.3.2.1.2.1" class="indexterm"></a><p>
+     <code class="varname">wal_level</code> détermine la quantité d'informations
+     écrite dans les journaux de transactions.
+     <code class="varname">wal_level</code> détermine la quantité d'informations qui sera
+     écrite dans les WAL.  La valeur par défaut est <code class="literal">replica</code>,
+     qui écrit suffisamment de données pour pouvoir utiliser l'archivage des
+     WAL ainsi que la réplication, y compris exécuter des requêtes en lecture
+     seule sur un serveur secondaire. <code class="literal">minimal</code> supprime toute
+     la journalisation à l'exception des informations nécessaire pour pouvoir
+     effectuer une récupération suite à un arrêt brutal ou un arrêt immédiat.
+     Enfin, <code class="literal">logical</code> ajoute les informations
+     nécessaires au support du décodage logique. Chaque niveau inclut les
+     informations tracées dans les niveaux inférieurs.
+     Ce paramètre peut seulement être configuré au lancement du
+     serveur.
+    </p><p>
+     Le niveau <code class="literal">minimal</code> génère le moins de volume WAL. Il ne
+     trace aucune ligne pour les relations permanentes dans des transactions qui
+     les ont créées ou réécrites.  Ceci peut rendre certaines opérations bien
+     plus rapides (voir <a class="xref" href="populate.html#POPULATE-PITR" title="14.4.7. Désactiver l'archivage des journaux de transactions et la réplication en flux">Section 14.4.7</a>). Les opérations qui
+     initient cette optimisation incluent :
+     </p><table border="0" summary="Simple list" class="simplelist"><tr><td><code class="command">CREATE TABLE AS</code></td></tr><tr><td><code class="command">CREATE INDEX</code></td></tr><tr><td><code class="command">ALTER ... SET TABLESPACE</code></td></tr><tr><td><code class="command">CLUSTER</code></td></tr><tr><td><code class="command">COPY</code> dans des tables qui ont été créées ou
+       tronquées dans la même transaction</td></tr><tr><td><code class="command">CREATE TABLE</code></td></tr><tr><td><code class="command">REFRESH MATERIALIZED VIEW</code>
+       (without <code class="option">CONCURRENTLY</code>)</td></tr><tr><td><code class="command">REINDEX</code></td></tr><tr><td><code class="command">TRUNCATE</code></td></tr></table><p>
+     Mais, du coup, les journaux au niveau minimal ne contiennent pas suffisamment
+     d'informations pour reconstruire les données à partir d'une sauvegarde
+     de base et des journaux de transactions. Donc, les niveaux
+     <code class="literal">replica</code> ou supérieurs doivent
+     être utilisés pour activer l'archivage continue des journaux de transactions
+     (<a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-MODE">archive_mode</a>) et la réplication binaire en flux.
+     En fait, le serveur ne démarrera pas dans ce mode si
+     <code class="literal">max_wal_senders</code> est différent de zéro.
+     Notez que changer <code class="varname">wal_level</code> à la valeur
+     <code class="literal">minimal</code> rend les sauvegardes de base précédentes inutilisables
+     pour une restauration PITR et pour des serveurs secondaires.
+    </p><p>
+     Dans le niveau <code class="literal">logical</code>, les mêmes informations sont
+     enregistrées que pour le mode <code class="literal">replica</code>. Des
+     informations supplémentaires sont ajoutées pour extraire les
+     modifications logiques depuis les journaux de transactions. En utilisant
+     le niveau <code class="literal">logical</code>, le volume des journaux de
+     transactions va augmenter, tout particulièrement si plusieurs tables
+     sont configurées pour  <code class="literal">REPLICA IDENTITY FULL</code> et que
+     de nombreux <code class="command">UPDATE</code> et <code class="command">DELETE</code> sont
+     exécutés.
+    </p><p>
+     Dans les versions antérieures à la 9.6, ce paramètre autorise aussi les
+     valeurs <code class="literal">archive</code> et <code class="literal">hot_standby</code>. Elles
+     sont toujours acceptées mais sont converties silencieusement en
+     <code class="literal">replica</code>.
+    </p></dd><dt id="GUC-FSYNC"><span class="term"><code class="varname">fsync</code> (<code class="type">boolean</code>)</span> <a href="#GUC-FSYNC" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.3.2.2.2.1" class="indexterm"></a><p>
+     Si ce paramètre est activé, le serveur <span class="productname">PostgreSQL</span>
+     tente de s'assurer que les mises à jour sont écrites physiquement
+     sur le disque à l'aide d'appels système <code class="function">fsync()</code>
+     ou de méthodes équivalentes (voir <a class="xref" href="runtime-config-wal.html#GUC-WAL-SYNC-METHOD">wal_sync_method</a>).
+     Cela permet de s'assurer que le cluster de bases de données peut revenir
+     à un état cohérent après une panne matérielle ou du système d'exploitation.
+    </p><p>
+     Bien que désactiver <code class="varname">fsync</code> améliore fréquemment les
+     performances, cela peut avoir pour conséquence une corruption des
+     données non récupérables dans le cas d'une perte de courant ou d'un
+     crash du système. Donc, il est seulement conseillé de désactiver
+     <code class="varname">fsync</code> si vous pouvez facilement recréer la base de
+     données complète à partir de données externes.
+    </p><p>
+     Quelques exemples de circonstances permettant de désactiver
+     <code class="varname">fsync</code> : le chargement initial d'une nouvelle
+     instance à partir d'une sauvegarde, l'utilisation de l'instance pour
+     traiter un flot de données après quoi la base sera supprimée puis recréée,
+     la création d'un clone d'une base en lecture seule, clone qui serait
+     recréé fréquemment et n'est pas utilisé pour du failover. La haute
+     qualité du matériel n'est pas une justification suffisante pour
+     désactiver <code class="varname">fsync</code>.
+    </p><p>
+     Pour une restauration fiable lors de la modification de
+     <code class="varname">fsync</code> de off à on, il est nécessaire de forcer tous
+     les tampons modifiés disponibles dans le cache du noyau à être écrits
+     sur un stockage durable. Ceci peut se faire alors que l'instance est
+     arrêtée ou lorsque <code class="function">fsync</code> est activé en exécutant <code class="command">initdb
+      --sync-only</code>, en exécutant <code class="command">sync</code>, en démontant
+     le système de fichiers ou en redémarrant le serveur.
+    </p><p>
+     Dans de nombreuses situations, désactiver <a class="xref" href="runtime-config-wal.html#GUC-SYNCHRONOUS-COMMIT">synchronous_commit</a> pour les transactions non critiques
+     peut fournir une grande partie des performances de la désactivation de
+     <code class="varname">fsync</code>, sans les risques associés de corruption de
+     données.
+    </p><p>
+     <code class="varname">fsync</code> ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+     Si ce paramètre est désactivé (<code class="literal">off</code>), il est
+     intéressant de désactiver aussi <a class="xref" href="runtime-config-wal.html#GUC-FULL-PAGE-WRITES">full_page_writes</a>.
+    </p></dd><dt id="GUC-SYNCHRONOUS-COMMIT"><span class="term"><code class="varname">synchronous_commit</code> (<code class="type">enum</code>)</span> <a href="#GUC-SYNCHRONOUS-COMMIT" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.3.2.3.2.1" class="indexterm"></a><p>
+     Indique quel traitement des WAL doit se faire avant que le serveur de
+     bases de données ne renvoie une indication de <span class="quote">« <span class="quote">succès</span> »</span> au
+     client. Les valeurs valides sont <code class="literal">remote_apply</code>,
+     <code class="literal">on</code> (par défaut), <code class="literal">remote_write</code>,
+     <code class="literal">local</code> et <code class="literal">off</code>.
+    </p><p>
+     Si <code class="varname">synchronous_standby_names</code> est vide, les seules
+     valeurs sensées sont <code class="literal">on</code> et
+     <code class="literal">off</code> ;  <code class="literal">remote_apply</code>,
+     <code class="literal">remote_write</code> et <code class="literal">local</code> fournissent
+     toutes le même niveau de synchronisation locale que
+     <code class="literal">on</code>. Le comportement local de tous les modes différents
+     de <code class="literal">off</code> est d'attendre le vidage local sur disque des
+     WAL. Dans le mode <code class="literal">off</code>, il n'y a pas d'attente, donc il
+     peut y avoir un délai entre le retour du succès au client et le fait que
+     la transaction est garantie d'être sécurisée contre un crash du serveur.
+     (Le délai maximum est de trois fois <a class="xref" href="runtime-config-wal.html#GUC-WAL-WRITER-DELAY">wal_writer_delay</a>.)
+     Contrairement à <a class="xref" href="runtime-config-wal.html#GUC-FSYNC">fsync</a>, la configuration de ce
+     paramètre à <code class="literal">off</code> n'implique aucun risque
+     d'incohérence dans la base de données : un arrêt brutal du système
+     d'exploitation ou d'une base de données peut résulter en quelques
+     transactions récentes prétendument validées perdues malgré tout.
+     Cependant, l'état de la base de données est identique à celui obtenu
+     si les transactions avaient été correctement annulées. C'est pourquoi
+     la désactivation de <code class="varname">synchronous_commit</code> est une
+     alternative utile quand la performance est plus importante que la
+     sûreté de la transaction. Pour plus de discussion, voir <a class="xref" href="wal-async-commit.html" title="28.4. Validation asynchrone (Asynchronous Commit)">Section 28.4</a>.
+    </p><p>
+     Si <a class="xref" href="runtime-config-replication.html#GUC-SYNCHRONOUS-STANDBY-NAMES">synchronous_standby_names</a> n'est pas vide,
+     <code class="varname">synchronous_commit</code> contrôle aussi si les validations
+     de transactions attendront que leurs enregistrements WAL soient traités
+     sur le serveur secondaire.
+    </p><p>
+     Quand il est configuré à <code class="literal">remote_apply</code>, les validations
+     attendront la réponse des serveurs secondaires synchrones indiquant
+     qu'ils ont bien reçu l'enregistrement de validation de la transaction et
+     qu'ils l'ont bien appliqués, pour qu'elle devienne visible aux requêtes
+     sur les serveurs secondaires, et aussi écrites sur un stockage durable.
+     Ceci causera les plus gros délais de validation par rapport aux
+     configurations précédentes car il faut attendre le rejeu des WAL. Quand
+     il est configuré à <code class="literal">on</code>, les validations attendent que
+     les réponses des serveurs secondaires synchrones indiquent qu'ils ont
+     reçu l'enregistrement de validation de la transaction et qu'ils l'ont
+     écrit sur un stockage durable. Ceci assure que la transaction ne sera pas
+     perdu sauf si le primaire et les secondaires synchrones souffrent de
+     corruption au niveau disque. Quand il est configuré à
+     <code class="literal">remote_write</code>, les validations attendront que les
+     réponses des serveurs secondaires synchrones indiquent avoir reçu
+     l'enregistrement de validation de la transaction et l'avoir écrit sur
+     disque. Ce paramétrage assure de la préservation des données si une
+     instance secondaire de <span class="productname">PostgreSQL</span> s'arrête
+     brutalement, mais pas si le serveur secondaire souffre d'un crash au
+     niveau du système d'exploitation parce que les données n'ont pas
+     nécessairement atteint un stockage durable sur le secondaire. Le
+     paramétrage <code class="literal">local</code> fait que les validations attendent
+     uniquement le vidage local sur disque, mais n'attendent pas le retour des
+     serveurs secondaires synchrones. Ceci n'est généralement pas souhaité
+     quand la réplication synchrone est utilisée mais est fourni pour être
+     complet.
+    </p><p>
+     Ce paramètre peut être changé à tout moment ; le comportement
+     pour toute transaction est déterminé par la configuration en cours
+     lors de la validation. Il est donc possible et utile d'avoir certaines
+     validations validées en synchrone et d'autres en asynchrone.
+     Par exemple, pour réaliser une validation asynchrone de transaction
+     à plusieurs instructions avec une valeur par défaut inverse, on exécute
+     l'instruction <code class="command">SET LOCAL synchronous_commit TO OFF</code>
+     dans la transaction.
+    </p><p>
+     <a class="xref" href="runtime-config-wal.html#SYNCHRONOUS-COMMIT-MATRIX" title="Tableau 19.1. Modes pour synchronous_commit">Tableau 19.1</a> résume les possibilités
+     de configuration de <code class="varname">synchronous_commit</code>.
+    </p><div class="table" id="SYNCHRONOUS-COMMIT-MATRIX"><p class="title"><strong>Tableau 19.1. Modes pour synchronous_commit</strong></p><div class="table-contents"><table class="table" summary="Modes pour synchronous_commit" border="1"><colgroup><col class="col1" /><col class="col2" /><col class="col3" /><col class="col4" /><col class="col5" /></colgroup><thead><tr><th>synchronous_commit</th><th>validation locale durable</th><th>valide durable du standby après un crash de PG</th><th>valide durable du standby après un crash de l'OS</th><th>cohérence des requêtes sur le standby</th></tr></thead><tbody><tr><td>remote_apply</td><td align="center">•</td><td align="center">•</td><td align="center">•</td><td align="center">•</td></tr><tr><td>on</td><td align="center">•</td><td align="center">•</td><td align="center">•</td><td align="center"> </td></tr><tr><td>remote_write</td><td align="center">•</td><td align="center">•</td><td align="center"> </td><td align="center"> </td></tr><tr><td>local</td><td align="center">•</td><td align="center"> </td><td align="center"> </td><td align="center"> </td></tr><tr><td>off</td><td align="center"> </td><td align="center"> </td><td align="center"> </td><td align="center"> </td></tr></tbody></table></div></div><br class="table-break" /></dd><dt id="GUC-WAL-SYNC-METHOD"><span class="term"><code class="varname">wal_sync_method</code> (<code class="type">enum</code>)</span> <a href="#GUC-WAL-SYNC-METHOD" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.3.2.4.2.1" class="indexterm"></a><p>
+     Méthode utilisée pour forcer les mises à jour des WAL sur le disque.
+     Si <code class="varname">fsync</code> est désactivé, alors ce paramètre est
+     inapplicable, car les mises à jour des journaux de transactions ne sont pas du tout forcées. Les
+     valeurs possibles sont :
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       <code class="literal">open_datasync</code> (écrit les fichiers WAL avec l'option
+       <code class="symbol">O_DSYNC</code> de <code class="function">open()</code>)
+      </p></li><li class="listitem"><p>
+       <code class="literal">fdatasync</code> (appelle <code class="function">fdatasync()</code> à chaque
+       validation)
+      </p></li><li class="listitem"><p>
+       <code class="literal">fsync_writethrough</code> (appelle <code class="function">fsync()</code> à chaque
+       validation, forçant le mode <span class="foreignphrase"><em class="foreignphrase">write-through</em></span> de tous les caches disque en
+       écriture)
+      </p></li><li class="listitem"><p>
+       <code class="literal">fsync</code> (appelle <code class="function">fsync()</code> à chaque validation)
+      </p></li><li class="listitem"><p>
+       <code class="literal">open_sync</code> (écrit les fichiers WAL avec l'option
+       <code class="symbol">O_SYNC</code> de <code class="function">open()</code>)
+      </p></li></ul></div><p>
+     Toutes les possibilités ne sont pas disponibles sur toutes les plateformes.
+     La valeur par défaut est la première méthode de cette liste supportée par la
+     plateforme, à l'exception de <code class="literal">fdatasync</code> qui est la valeur
+     par défaut de Linux et FreeBSD.
+     La valeur par défaut n'est pas nécessairement la meilleure, il est possible
+     de devoir changer celle-ci ou tout autre aspect de votre configuration
+     système pour s'assurer d'une configuration résistante aux crashs ou
+     pour atteindre des performances optimales. Ces aspects sont discutées sur
+     <a class="xref" href="wal-reliability.html" title="28.1. Fiabilité">Section 28.1</a>. Ce paramètre ne peut être modifié que
+     dans le fichier <code class="filename">postgresql.conf</code> ou dans la ligne de commande.
+    </p></dd><dt id="GUC-FULL-PAGE-WRITES"><span class="term"><code class="varname">full_page_writes</code> (<code class="type">boolean</code>)</span> <a href="#GUC-FULL-PAGE-WRITES" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.3.2.5.2.1" class="indexterm"></a><p>
+     Quand ce paramètre est activé, le serveur
+     écrit l'intégralité du contenu de chaque page disque dans les WAL lors de la
+     première modification de cette page qui intervient après un point de
+     vérification. C'est nécessaire car l'écriture d'une page lors
+     d'un plantage du système d'exploitation peut n'être
+     que partielle, ce qui conduit à une page sur disque
+     qui contient un mélange d'anciennes et de nouvelles données.
+     Les données de modification de niveau ligne stockées
+     habituellement dans les WAL ne sont pas suffisantes pour restaurer
+     complètement une telle page lors de la récupération qui suit la panne.
+     Le stockage de l'image de la page complète garantit une restauration
+     correcte de la page, mais au prix d'un accroissement de la quantité
+     de données à écrire dans les WAL. (Parce que la relecture des WAL
+     démarre toujours à un point de vérification, il suffit de
+     faire cela lors de la première modification de chaque page survenant
+     après un point de vérification. De ce fait, une façon de réduire le
+     coût d'écriture de pages complètes consiste à augmenter le paramètre
+     réglant les intervalles entre points de vérification.)
+    </p><p>
+     La désactivation de ce paramètre accélère les opérations normales, mais
+     peut aboutir soit à une corruption impossible à corriger soit à une
+     corruption silencieuse, après un échec système. Les risques sont
+     similaires à la désactivation de <code class="varname">fsync</code>, bien que
+     moindres. Sa désactivation devrait se faire en se basant sur les mêmes
+     recommandations que cet autre paramètre.
+    </p><p>
+     La désactivation de ce paramètre n'affecte pas l'utilisation de l'archivage des
+     WAL pour la récupération d'un instantané, aussi appelé <acronym class="acronym">PITR</acronym>
+     (voir <a class="xref" href="continuous-archiving.html" title="25.3. Archivage continu et récupération d'un instantané (PITR)">Section 25.3</a>).
+    </p><p>
+     Ce paramètre ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+     Activé par défaut (<code class="literal">on</code>).
+    </p></dd><dt id="GUC-WAL-LOG-HINTS"><span class="term"><code class="varname">wal_log_hints</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.8.3.2.6.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-WAL-LOG-HINTS" class="id_link">#</a></dt><dd><p>
+     Quand ce paramètre a la valeur <code class="literal">on</code>, le serveur
+     <span class="productname">PostgreSQL</span> écrit le contenu entier de chaque
+     page disque dans les journaux de transactions lors de la première
+     modification de cette page après un checkpoint, même pour des
+     modifications non critiques comme les hint bits.
+    </p><p>
+     Si les sommes de contrôle sont activées, la mise à jour des hint bits
+     est toujours enregistrée dans les journaux et ce paramètre est ignoré.
+     Vous pouvez utiliser ce paramètre pour tester le volume supplémentaire
+     de journaux induit par l'activiation des sommes de contrôle sur les
+     fichiers de données.
+    </p><p>
+     Ce paramètre n'est configurable qu'au démarrage du serveur. La valeur
+     par défaut vaut <code class="literal">off</code>.
+    </p></dd><dt id="GUC-WAL-COMPRESSION"><span class="term"><code class="varname">wal_compression</code> (<code class="type">enum</code>)
+    <a id="id-1.6.6.8.3.2.7.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-WAL-COMPRESSION" class="id_link">#</a></dt><dd><p>
+     Ce paramètre active la compression des journaux de transactions en
+     utilisant la méthode de compression indiquée.  Lorsque la compression est
+     activée, le serveur <span class="productname">PostgreSQL</span> compresse une
+     image d'une page complète écrite dans les WAL (par exemple lorsque <a class="xref" href="runtime-config-wal.html#GUC-FULL-PAGE-WRITES">full_page_writes</a> est à on, durant une sauvegarde de base, etc.).
+     Une image compressée d'une page sera décompressée durant le rejeu des WAL.
+     Les méthodes acceptées sont <code class="literal">pglz</code>, <code class="literal">lz4</code>
+     (si <span class="productname">PostgreSQL</span> a été compilé avec
+     <code class="option">--with-lz4</code>) et <code class="literal">zstd</code> (si
+     <span class="productname">PostgreSQL</span> a été compilé avec
+     <code class="option">--with-zstd</code>). La valeur par défaut est à
+     <code class="literal">off</code>. Seuls les superutilisateurs et les utilisateurs
+     disposant des droits <code class="literal">SET</code> appropriés peuvent modifier ce
+     paramètre.
+    </p><p>
+     Activer la compression peut réduire le volume des WAL sans augmenter
+     le risque de données corrompues irrécupérables, mais avec l'effet
+     d'avoir un coût supplémentaire en terme de puissance CPU sur la
+     compression durant l'écriture des WAL et sur la décompression lors
+     du rejeu des WAL.
+    </p></dd><dt id="GUC-WAL-INIT-ZERO"><span class="term"><code class="varname">wal_init_zero</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.8.3.2.8.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-WAL-INIT-ZERO" class="id_link">#</a></dt><dd><p>
+     Si configuré à <code class="literal">on</code> (la valeur par défaut), cette option
+     fait que les nouveaux journaux de transactions sont remplis de zéro. Sur
+     certains systèmes de fichiers, ceci assure que la place est allouée avant
+     qu'il ne soit nécessaire d'écrire les enregistrements WAL. Néanmoins, les
+     systèmes de fichiers <em class="firstterm">Copy-On-Write</em> (COW)
+     pourraient ne pas bénéficier de cette technique, donc l'option est donnée
+     pour éviter ce travail inutile. Si configuré à <code class="literal">off</code>,
+     seul l'octet final est écrit quand le fichier est créé pour qu'il ait la
+     taille attendue.
+    </p></dd><dt id="GUC-WAL-RECYCLE"><span class="term"><code class="varname">wal_recycle</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.8.3.2.9.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-WAL-RECYCLE" class="id_link">#</a></dt><dd><p>
+     Si configuré à <code class="literal">on</code> (la valeur par défaut), cette option
+     fait que les fichiers WAL sont recyclés en les renommant, pour éviter
+     d'avoir à créer de nouveaux fichiers. Sur les systèmes de fichiers COW,
+     il pourrait être plus rapide d'en créer de nouveaux, donc l'option est
+     donnée pour désactiver ce comportement.
+    </p></dd><dt id="GUC-WAL-BUFFERS"><span class="term"><code class="varname">wal_buffers</code> (<code class="type">integer</code>)</span> <a href="#GUC-WAL-BUFFERS" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.3.2.10.2.1" class="indexterm"></a><p>
+     La quantité de mémoire partagée utilisée pour les données des
+     journaux de transactions qui n'ont pas encore été écrites sur
+     disque. La configuration par défaut de -1 sélectionne une taille
+     égale à 1/32 (environ 3%) de <a class="xref" href="runtime-config-resource.html#GUC-SHARED-BUFFERS">shared_buffers</a>, mais pas moins de
+     <code class="literal">64kB</code>, et pas plus que la taille d'un journal
+     de transactions, soit généralement <code class="literal">16MB</code>. Cette
+     valeur peut être configurée manuellement si le choix automatique
+     est trop élevé ou trop faible, mais tout valeur positive inférieure
+     à <code class="literal">32kB</code> sera traitée comme étant exactement
+     <code class="literal">32kB</code>.
+     Si cette valeur est spécifiée sans unité, elle est prise en tant que
+     nombre de blocs de journaux de transactions, autrement dit
+     <code class="symbol">XLOG_BLCKSZ</code> octets, typiquement 8 Ko. Ce paramètre ne
+     peut être configuré qu'au démarrage du serveur.
+    </p><p>
+     Le contenu du cache des journaux de transactions est écrit sur
+     le disque à chaque validation d'une transaction, donc des valeurs
+     très importantes ont peu de chance d'apporter un gain
+     significatif. Néanmoins, configurer cette valeur à au moins
+     quelques mégaoctets peut améliorer les performances en écriture
+     sur un serveur chargé quand plusieurs clients valident en même
+     temps. La configuration automatique sélectionnée par défaut avec
+     la valeur -1 devrait être convenable.
+    </p></dd><dt id="GUC-WAL-WRITER-DELAY"><span class="term"><code class="varname">wal_writer_delay</code> (<code class="type">integer</code>)</span> <a href="#GUC-WAL-WRITER-DELAY" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.3.2.11.2.1" class="indexterm"></a><p>
+     Indique à quelle fréquence (une durée) le walwriter vide les journaux sur disque. Après
+     avoir vidé les journaux sur disque, ce processus s'endort pour la durée
+     indiquée par le paramètre <code class="varname">wal_writer_delay</code> sauf s'il est réveillé
+     par une transaction validée en asynchrone. Dans le cas où le dernier
+     vidage est survenu il y a moins de <code class="varname">wal_writer_delay</code>
+     millisecondes et que moins de <code class="varname">wal_writer_flush_after</code>
+     octets ont été produits dans les WAL depuis, le WAL est seulement écrit via le
+     système d'exploitation mais pas forcément écrit sur disque.
+     Si cette valeur est spécifiée sans unité, elle est considérée être en millisecondes. La valeur par
+     défaut est 200 millisecondes (<code class="literal">200ms</code>). Notez que sur
+     certains systèmes, la résolution réelle du délai d'endormissement est de
+     10 millisecondes ; configurer <code class="varname">wal_writer_delay</code> à
+     une valeur qui n'est pas un multiple de 10 pourrait avoir le même
+     résultat que de le configurer au prochain multiple de 10. Ce paramètre
+     est seulement configurable dans le fichier
+     <code class="filename">postgresql.conf</code> ainsi que sur la ligne de commande
+     du serveur.
+    </p></dd><dt id="GUC-WAL-WRITER-FLUSH-AFTER"><span class="term"><code class="varname">wal_writer_flush_after</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.8.3.2.12.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-WAL-WRITER-FLUSH-AFTER" class="id_link">#</a></dt><dd><p>
+     Indique à quelle fréquence (une quantité) le walwriter vide les journaux
+     sur disque. Dans le cas où le dernier vidage est arrivé il y a moins de
+     <code class="varname">wal_writer_delay</code> millisecondes et que moins de
+     <code class="varname">wal_writer_flush_after</code> octets de WAL ont été produits
+     depuis, les WAL sont seulement écrit via le système d'exploitation, et
+     pas forcé sur disque. Si <code class="varname">wal_writer_flush_after</code> est
+     configuré à <code class="literal">0</code>, le WAL est écrit et vidé à chaque fois
+     que le walwriter doit écrire dans un WAL. Si cette valeur est indiquée
+     sans unité, est est considérée comme un nombre de blocs dans les journaux
+     de transactions, autrement dit <code class="symbol">XLOG_BLCKSZ</code> octets,
+     typiquement 8 Ko. La valeur par défaut est <code class="literal">1MB</code>. Ce
+     paramètre est seulement configurable dans le fichier
+     <code class="filename">postgresql.conf</code> ainsi que sur la ligne de commande
+     du serveur.
+    </p></dd><dt id="GUC-WAL-SKIP-THRESHOLD"><span class="term"><code class="varname">wal_skip_threshold</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.8.3.2.13.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-WAL-SKIP-THRESHOLD" class="id_link">#</a></dt><dd><p>
+     Quand <code class="varname">wal_level</code> vaut <code class="literal">minimal</code> et une
+     transaction valide après création et réécriture une table permanente, ce
+     paramètre détermine comment les nouvelles données persistent. Si la
+     donnée est plus petit que ce paramétrage, l'écrire dans les journaux de
+     transactions ; sinon, utiliser une demande de synchronisation
+     (fsync) des fichiers affectés. Suivant les propriétés de votre stockage,
+     augmenter ou abaisser cette valeur pourrait aider si de telles
+     validations de données ralentissent les transactions en cours. Si cette
+     valeur est indiquée sans unité, elle est considérée être un nombre de Ko.
+     La valeur par défaut est de deux mégaoctets (<code class="literal">2MB</code>).
+    </p></dd><dt id="GUC-COMMIT-DELAY"><span class="term"><code class="varname">commit_delay</code> (<code class="type">integer</code>)</span> <a href="#GUC-COMMIT-DELAY" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.3.2.14.2.1" class="indexterm"></a><p>
+     Configurer <code class="varname">commit_delay</code> ajoute un délai
+     avant qu'un vidage du journal de transactions ne soit effectué. Ceci
+     peut améliorer les performances de la validation en groupe en permettant
+     la validation d'un grand nombre transactions en un seul vidage des
+     journaux, si la charge système est suffisamment importante pour que
+     des transactions supplémentaires soient prêt ç être valider dans le
+     même intervalle. Néanmoins, cela augmente aussi la latence jusqu'à
+     la valeur de <code class="varname">commit_delay</code> pour chaque vidage de
+     journaux. Comme le délai est perdu si aucune autre transaction n'est
+     prête à être validée, un délai n'est respecté que si au moins
+     <code class="varname">commit_siblings</code> autres transactions sont actives
+     quand un vidage doit être initié. De plus, aucun délai ne sera pris
+     en compte si <code class="varname">fsync</code> est désactivé. Si cette valeur
+     est indiquée sans unité, elle est considérée comme un nombre de
+     microsecondes. La valeur par défaut de <code class="varname">commit_delay</code>
+     est zéro (aucun délai). Seuls les superutilisateurs et les utilisateurs
+     disposant des droits <code class="literal">SET</code> appropriés peuvent modifier
+     cette configuration.
+    </p><p>
+     Dans les versions de <span class="productname">PostgreSQL</span> antérieures
+     à la 9.3, <code class="varname">commit_delay</code> se comportait différemment
+     et était bien moins efficace : il n'affectait que les validations
+     plutôt que les vidages de journaux et attendait que le délai complet
+     soit passé même si le vidage du journal était terminé avant. À partir
+     de <span class="productname">PostgreSQL</span> 9.3, le premier processus prêt
+     à vider le journal attend pendant l'intervalle configuré alors que les
+     autres processus attendent que le premier termine l'opération de vidage.
+    </p></dd><dt id="GUC-COMMIT-SIBLINGS"><span class="term"><code class="varname">commit_siblings</code> (<code class="type">integer</code>)</span> <a href="#GUC-COMMIT-SIBLINGS" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.3.2.15.2.1" class="indexterm"></a><p>
+     Nombre minimum de transactions concurrentes ouvertes en même
+     temps nécessaires avant
+     d'attendre le délai <code class="varname">commit_delay</code>. Une valeur plus
+     importante rend plus probable le fait qu'au moins une autre
+     transaction soit prête à valider pendant le délai. La
+     valeur par défaut est de cinq transactions.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-WAL-CHECKPOINTS"><div class="titlepage"><div><div><h3 class="title">19.5.2. Points de vérification <a href="#RUNTIME-CONFIG-WAL-CHECKPOINTS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-CHECKPOINT-TIMEOUT"><span class="term"><code class="varname">checkpoint_timeout</code> (<code class="type">integer</code>)</span> <a href="#GUC-CHECKPOINT-TIMEOUT" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.4.2.1.2.1" class="indexterm"></a><p>
+     Temps maximum entre deux points de vérification automatique des WAL.
+     Si cette valeur est indiquée sans unité, elle est considérée comme un nombre
+     de secondes. L'intervalle valide se situe entre 30 secondes et un jour. La
+     valeur par défaut est de cinq minutes. Augmenter ce paramètre peut
+     accroitre le temps nécessaire à une récupération après un arrêt brutal.
+     Ce paramètre ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+    </p></dd><dt id="GUC-CHECKPOINT-COMPLETION-TARGET"><span class="term"><code class="varname">checkpoint_completion_target</code> (<code class="type">floating point</code>)</span> <a href="#GUC-CHECKPOINT-COMPLETION-TARGET" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.4.2.2.2.1" class="indexterm"></a><p>
+     Précise la cible pour la fin du CHECKPOINT, sous le format d'une fraction
+     de temps entre deux CHECKPOINT. La valeur par défaut est 0,9, ce qui
+     répartit le checkpoint sur presque tout l'interval de temps entre deux
+     checkpoints, permettant ainsi d'absorber la charge d'écriture de manière
+     régulière tout en laissant un peu de temps pour absorber la charge
+     suppplémentaire induite par le checkpoint. Réduire la valeur de ce
+     paramètre n'est pas recommendé car cela engendrera des checkpoints se
+     finissant plus tôt, ce qui entraînera un pic dans les I/O alors que la
+     fin du checkpoint entraînera un creux dans les I/O entre la fin du
+     checkpoint courant et le début du prochain checkpoint. Ce paramètre ne
+     peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de
+     commande.
+    </p></dd><dt id="GUC-CHECKPOINT-FLUSH-AFTER"><span class="term"><code class="varname">checkpoint_flush_after</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.8.4.2.3.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-CHECKPOINT-FLUSH-AFTER" class="id_link">#</a></dt><dd><p>
+     Quand plus que cette quantité de données ont été
+     écrites par le processus d'écriture en tâche de fond (bgwriter), tente de
+     forcer le système d'exploitation à écrire les données sur disque. Faire
+     cela limite la quantité de données modifiées dans le cache disque du
+     noyau, réduisant le risque de petites pauses dues à l'exécution d'un
+     fsync à la fin d'un checkpoint ou à l'écriture massive en tâche de fond
+     des données modifiées. Souvent, cela réduira fortement la latence des
+     transactions mais il existe aussi quelques cas de dégradation des
+     performances, tout spécialement avec les charges de travail plus
+     importantes que <a class="xref" href="runtime-config-resource.html#GUC-SHARED-BUFFERS">shared_buffers</a>, mais plus petites
+     que le cache disque du système d'exploitation. Ce paramètre pourrait ne
+     pas avoir d'effet sur certaines plateformes. Si cette valeur est indiquée
+     sans unité, elle est considérée comme un nombre de blocs, autrement dit
+     <code class="symbol">BLCKSZ</code> octets, typiquement 8 Ko. L'intervalle valide se situe
+     entre <code class="literal">0</code>, qui désactive le <span class="quote">« <span class="quote">writeback</span> »</span>
+     forcé, et <code class="literal">2MB</code>. La valeur par défaut est
+     <code class="literal">256KB</code> sur Linux, <code class="literal">0</code> ailleurs. (Si
+     <code class="symbol">BLCKSZ</code> ne vaut pas 8 ko, les valeurs par défaut et
+     maximale n'évoluent pas de façon proportionnelle à cette constante.) Ce
+     paramètre est seulement configurable dans le fichier
+     <code class="filename">postgresql.conf</code> et à la ligne de commande.
+    </p></dd><dt id="GUC-CHECKPOINT-WARNING"><span class="term"><code class="varname">checkpoint_warning</code> (<code class="type">integer</code>)</span> <a href="#GUC-CHECKPOINT-WARNING" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.4.2.4.2.1" class="indexterm"></a><p>
+     Si deux points de vérification imposés par le remplissage des
+     fichiers segment interviennent dans un délai plus court que celui
+     indiqué par cette durée (ce qui laisse supposer qu'il faut augmenter la
+     valeur du paramètre <code class="varname">max_wal_size</code>), un message
+     est écrit dans le fichier de traces du serveur.
+     Si cette valeur est indiquée sans unité, elle est considérée être un
+     nombre de secondes. Par défaut, 30 secondes.
+     Une valeur nulle (0) désactive cet avertissement.
+     Aucun avertissement ne sera fait si <code class="varname">checkpoint_timeout</code>
+     est inférieur à <code class="varname">checkpoint_warning</code>.
+     Ce paramètre ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+    </p></dd><dt id="GUC-MAX-WAL-SIZE"><span class="term"><code class="varname">max_wal_size</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.8.4.2.5.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MAX-WAL-SIZE" class="id_link">#</a></dt><dd><p>
+     Taille maximale de l'augmentation des WAL entre deux points de vérification
+     automatique des WAL. C'est une limite souple ; la taille des WAL peut
+     excéder <code class="varname">max_wal_size</code> sous certaines circonstances, comme
+     une surcharge du serveur, une commande <code class="varname">archive_command</code>
+     ou <code class="varname">archive_library</code> qui échoue, ou une configuration
+     haute pour <code class="varname">wal_keep_size</code>. Si cette valeur est indiquée
+     sans unité, elle est considérée être un nombre de Mo. La valeur par défaut
+     est 1 Go. Augmenter ce paramètre peut augmenter le temps nécessaire pour le
+     rejeu suite à un crash. Ce paramètre ne peut être configuré que dans le
+     fichier <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de
+     commande.
+    </p></dd><dt id="GUC-MIN-WAL-SIZE"><span class="term"><code class="varname">min_wal_size</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.8.4.2.6.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MIN-WAL-SIZE" class="id_link">#</a></dt><dd><p>
+     Tant que l'occupation disque reste sous la valeur de ce paramètre, les
+     anciens fichiers WAL sont toujours recyclés pour une utilisation future
+     lors des points de vérification, plutôt que supprimés. Ceci peut être
+     utilisé pour s'assurer qu'un espace suffisant est réservé pour faire face
+     à des pics dans l'usage des WAL, par exemple lorsque d'importants travaux
+     en lots sont lancés. Si cette valeur est indiquée sans unité, elle est
+     considérée être un nombre de Mo. La valeur par défaut est 80 Mo. Ce
+     paramètre ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-WAL-ARCHIVING"><div class="titlepage"><div><div><h3 class="title">19.5.3. Archivage <a href="#RUNTIME-CONFIG-WAL-ARCHIVING" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-ARCHIVE-MODE"><span class="term"><code class="varname">archive_mode</code> (<code class="type">enum</code>)</span> <a href="#GUC-ARCHIVE-MODE" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.5.2.1.2.1" class="indexterm"></a><p>
+     Quand <code class="varname">archive_mode</code> est activé, les segments WAL remplis
+     peuvent être archivés en configurant <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-COMMAND">archive_command</a>
+     ou <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-LIBRARY">archive_library</a>. En plus de
+     <code class="literal">off</code>, pour désactiver, il y a deux autres modes :
+     <code class="literal">on</code>, et <code class="literal">always</code>. Lors du fonctionnement
+     normal du serveur, il n'y a pas de différences entre les deux modes, mais
+     lorsqu'il est positionné sur <code class="literal">always</code>, l'archiveur des WAL
+     est aussi activé lors d'un rejeu des archives et en mode standby. Dans le
+     mode <code class="literal">always</code>, tous les fichiers restaurés à partir de
+     l'archive ou envoyés lors de la réplication en continue seront archivés (à
+     nouveau). Voir <a class="xref" href="warm-standby.html#CONTINUOUS-ARCHIVING-IN-STANDBY" title="26.2.9. Archivage continu côté secondaire">Section 26.2.9</a> pour des
+     détails.
+    </p><p>
+     <code class="varname">archive_mode</code> est un paramétrage séparé de
+     <code class="varname">archive_command</code> et <code class="varname">archive_library</code>
+     pour que <code class="varname">archive_command</code> et
+     <code class="varname">archive_library</code> puissent être modifiés sans abandonner
+     le mode d'archivage. Ce paramètre ne peut être configuré qu'au lancement
+     du serveur. <code class="varname">archive_mode</code> ne peut pas être activé quand
+     <code class="varname">wal_level</code> est configuré à <code class="literal">minimal</code>.
+    </p></dd><dt id="GUC-ARCHIVE-COMMAND"><span class="term"><code class="varname">archive_command</code> (<code class="type">string</code>)</span> <a href="#GUC-ARCHIVE-COMMAND" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.5.2.2.2.1" class="indexterm"></a><p>
+     Commande shell à exécuter pour archiver un segment terminé de
+     la série des fichiers WAL. Tout <code class="literal">%p</code> dans la
+     chaîne est remplacé par le chemin du fichier à archiver
+     et tout <code class="literal">%f</code> par le seul nom du fichier.
+     (Le chemin est relatif au répertoire de travail du serveur,
+     c'est-à-dire le répertoire de données du cluster.)
+     <code class="literal">%%</code> est utilisé pour intégrer un caractère
+     <code class="literal">%</code> dans la commande.  Il est important que la
+     commande renvoie un code zéro seulement si elle a réussit l'archivage.
+     Le processus d'archivage des journaux de transactions est redémarré par
+     le postmaster quand ce paramètre est modifié.
+     Pour plus d'informations, voir <a class="xref" href="continuous-archiving.html#BACKUP-ARCHIVING-WAL" title="25.3.1. Configurer l'archivage des journaux de transactions">Section 25.3.1</a>.
+    </p><p>
+     Ce paramètre ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+     Il est uniquement utilisé si <code class="varname">archive_mode</code> a été activé au
+     lancement du serveur et <code class="varname">archive_library</code> est configuré à
+     une chaîne vide. If both
+     <code class="varname">archive_command</code> and <code class="varname">archive_library</code>
+     are set, an error will be raised. Si <code class="varname">archive_command</code> est une chaîne vide
+     (la valeur par défaut) alors que <code class="varname">archive_mode</code> est activé
+     (et qu'<code class="varname">archive_library</code> est configuré à une chaîne vide),
+     alors l'archivage des journaux de transactions est désactivé temporairement
+     mais le serveur continue d'accumuler les fichiers des journaux de
+     transactions dans l'espoir qu'une commande lui soit rapidement proposée.
+     Configurer <code class="varname">archive_command</code> à une commande qui ne fait
+     rien tout en renvoyant true, par exemple <code class="literal">/bin/true</code>
+     (<code class="literal">REM</code> sur Windows), désactive l'archivage mais casse
+     aussi la chaîne des fichiers des journaux de transactions nécessaires pour
+     la restauration d'une archive. Cela ne doit donc être utilisé quand lors de
+     circonstances inhabituelles.
+    </p></dd><dt id="GUC-ARCHIVE-LIBRARY"><span class="term"><code class="varname">archive_library</code> (<code class="type">string</code>)
+   <a id="id-1.6.6.8.5.2.3.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ARCHIVE-LIBRARY" class="id_link">#</a></dt><dd><p>
+     Bibliothèque à utiliser pour l'archivage des journaux de transactions
+     terminés.  Si configuré à une chaîne vide (valeur par défaut), l'archivage
+     via le shell est activé et <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-COMMAND">archive_command</a> est
+     utilisé. If both
+     <code class="varname">archive_command</code> and <code class="varname">archive_library</code>
+     are set, an error will be raised. Sinon, la bibliothèque partagée est utilisée pour l'archivage.
+     Pour plus d'informations, voir <a class="xref" href="continuous-archiving.html#BACKUP-ARCHIVING-WAL" title="25.3.1. Configurer l'archivage des journaux de transactions">Section 25.3.1</a> et
+     <a class="xref" href="archive-modules.html" title="Chapitre 49. Modules d'archivage">Chapitre 49</a>.
+    </p><p>
+     Ce paramètre peut seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> et sur la ligne de commande du
+     serveur.
+    </p></dd><dt id="GUC-ARCHIVE-TIMEOUT"><span class="term"><code class="varname">archive_timeout</code> (<code class="type">integer</code>)</span> <a href="#GUC-ARCHIVE-TIMEOUT" class="id_link">#</a></dt><dd><a id="id-1.6.6.8.5.2.4.2.1" class="indexterm"></a><p>
+     Le <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-COMMAND">archive_command</a> ou le <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-LIBRARY">archive_library</a> n'est appelé que pour les segments WAL
+     remplis. De ce fait, si le serveur n'engendre que peu de trafic WAL (ou
+     qu'il y a des périodes de plus faible activité), il se peut qu'un long
+     moment s'écoule entre la fin d'une transaction et son archivage certain.
+     Pour limiter l'âge des données non encore archivées,
+     <code class="varname">archive_timeout</code> peut être configuré pour forcer le
+     serveur à basculer périodiquement sur un nouveau segment WAL. Lorsque ce
+     paramètre est positif, le serveur bascule sur un nouveau segment à chaque
+     fois que cette durée s'est écoulée depuis le dernier changement de segment
+     et qu'il n'y a pas eu d'activité de la base de données, y compris un seul
+     CHECKPOINT. (les points de reprise sont ne sont pas effectués s'il n'y a
+     pas d'activité sur les bases.) Les fichiers archivés clos par anticipation
+     suite à une bascule imposée sont toujours de la même taille que les
+     fichiers complets. Il est donc déconseillé de configurer un temps très
+     court pour <code class="varname">archive_timeout</code>  --  cela va faire
+     exploser la taille du stockage des archives. Un paramétrage
+     d'<code class="varname">archive_timeout</code> de l'ordre de la minute est
+     habituellement raisonnable. Cependant, vous devriez considérer
+     l'utilisation de la réplication en flux à la place de l'archivage si vous
+     voulez que les données soient envoyées du serveur primaire plus rapidement
+     que cela. Si cette valeur est indiquée sans unité, elle est considérée
+     comme un nombre de secondes. Ce paramètre ne peut être configuré que dans
+     le fichier <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de
+     commande.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-WAL-RECOVERY"><div class="titlepage"><div><div><h3 class="title">19.5.4. Restauration <a href="#RUNTIME-CONFIG-WAL-RECOVERY" class="id_link">#</a></h3></div></div></div><a id="id-1.6.6.8.6.2" class="indexterm"></a><p>
+  Cette section décrit les paramètres s'appliquant à la restauration en général,
+  affectant donc la restauration après un crash, la réplication en flux et la
+  réplication à partir des archives.
+ </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-RECOVERY-PREFETCH"><span class="term"><code class="varname">recovery_prefetch</code> (<code class="type">enum</code>)
+   <a id="id-1.6.6.8.6.4.1.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-RECOVERY-PREFETCH" class="id_link">#</a></dt><dd><p>
+     Indique s'il faut récupérer en avance
+     (<span class="foreignphrase"><em class="foreignphrase">prefetch</em></span>) les blocs référencés dans le
+     journal de transaction qui ne sont pas encore dans le cache lors de la
+     restauration.  Les valeurs valides sont <code class="literal">off</code>,
+     <code class="literal">on</code> et <code class="literal">try</code> (la valeur par défaut). La
+     configuration <code class="literal">try</code> active la récupération en avance
+     uniquement si le système d'exploitation fournit la fonction
+     <code class="function">posix_fadvise</code>, qui est actuellement utilisé pour
+     implémenter la récupération en avance. Notez que certains systèmes
+     d'exploitation fournissent la fonction mais elle ne fait rien.
+    </p><p>
+     Récupérer en avance les blocs qui seront bientôt nécessaires peut réduire
+     les durées d'attente pour les opérations d'entrée/sortie disques lors de la
+     restauration avec certains types de charge.  Voir aussi les paramètres
+     <a class="xref" href="runtime-config-wal.html#GUC-WAL-DECODE-BUFFER-SIZE">wal_decode_buffer_size</a> et <a class="xref" href="runtime-config-resource.html#GUC-MAINTENANCE-IO-CONCURRENCY">maintenance_io_concurrency</a>, qui limitent l'activité de
+     récupération en avance.
+    </p></dd><dt id="GUC-WAL-DECODE-BUFFER-SIZE"><span class="term"><code class="varname">wal_decode_buffer_size</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.8.6.4.2.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-WAL-DECODE-BUFFER-SIZE" class="id_link">#</a></dt><dd><p>
+     Une limite sur l'avancée que peut avoir le serveur dans les WAL pour
+     trouver les blocs à récupérer en avance. Si cette valeur n'a pas d'unité,
+     elle sera considérée comme un nombre d'octets. La valeur par défaut est de
+     512 Ko. Ce paramètre peut seulement être configuré au démarrage.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-WAL-ARCHIVE-RECOVERY"><div class="titlepage"><div><div><h3 class="title">19.5.5. Restauration des archives <a href="#RUNTIME-CONFIG-WAL-ARCHIVE-RECOVERY" class="id_link">#</a></h3></div></div></div><a id="id-1.6.6.8.7.2" class="indexterm"></a><p>
+  Cette section décrit la configuration s'appliquant uniquement pendant la
+  durée d'une restauration. Les paramètres doivent être reconfigurés pour
+  toute restauration que vous souhaitez réaliser.
+ </p><p>
+  La <span class="quote">« <span class="quote">restauration</span> »</span> couvre l'utilisation d'un serveur en tant
+  que standby ainsi que l'exécution d'une restauration ciblée. Typiquement,
+  le mode standby sera utilisé pour fournir de la haute disponibilité et/ou
+  de la répartition de charge en lecture, alors qu'une restauration ciblée
+  sera utilisée dans le cas d'une perte de données.
+ </p><p>
+  Pour démarrer le serveur en mode standby, créez le fichier
+  <code class="filename">standby.signal</code><a id="id-1.6.6.8.7.5.2" class="indexterm"></a>
+  dans le répertoire principal des données. Le serveur entrera en mode
+  restauration et n'arrêtera la restauration que quand la fin d'un WAL
+  archivé est rencontré, mais il essaiera de continuer la restauration en
+  se connectant au serveur d'envoi spécifié par le paramètre
+  <code class="varname">primary_conninfo</code> et/ou en récupérant les segments WAL
+  avec la <code class="varname">restore_command</code>. Pour ce mode, les paramètres
+  de cette section et de <a class="xref" href="runtime-config-replication.html#RUNTIME-CONFIG-REPLICATION-STANDBY" title="19.6.3. Serveurs secondaire/standby">Section 19.6.3</a> sont intéressants. Les
+  paramètres de <a class="xref" href="runtime-config-wal.html#RUNTIME-CONFIG-WAL-RECOVERY-TARGET" title="19.5.6. Cible de restauration">Section 19.5.6</a> seront
+  aussi appliqués mais ne sont généralement pas utiles dans ce mode.
+ </p><p>
+  Pour démarrer le serveur en mode restauration ciblée, créez le fichier
+  <code class="filename">recovery.signal</code><a id="id-1.6.6.8.7.6.2" class="indexterm"></a>
+  dans le répertoire des données. Si les fichiers
+  <code class="filename">standby.signal</code> et
+  <code class="filename">recovery.signal</code> sont créés, le mode standby est
+  prioritaire. Le mode de restauration ciblée s'arrêtera quand le WAL
+  archivé est complètement rejoué ou quand
+  <code class="varname">recovery_target</code> est atteint. Dans ce mode, les
+  paramètres de cette section et de <a class="xref" href="runtime-config-wal.html#RUNTIME-CONFIG-WAL-RECOVERY-TARGET" title="19.5.6. Cible de restauration">Section 19.5.6</a> seront utilisés.
+ </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-RESTORE-COMMAND"><span class="term"><code class="varname">restore_command</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.8.7.7.1.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-RESTORE-COMMAND" class="id_link">#</a></dt><dd><p>
+     La commande shell locale à exécuter pour récupérer un segment WAL
+     archivé. Ce paramètre est requi pour une restauration d'archive, et
+     optionnel pour une réplication en streaming. Tout
+     <code class="literal">%f</code> dans la chaîne est remplacé par le nom du
+     fichier à récupérer dans le répertoire d'archivage, et tout
+     <code class="literal">%p</code> est remplacé par le nom du chemin destination de
+     la copie sur le serveur. (Le chemin est relatif au répertoire actuel,
+     donc le répertoire de données principal de l'instance.) Tout
+     <code class="literal">%r</code> est remplacé par le nom du fichier contenant le
+     dernier point de redémarrage valide. C'est le fichier le plus récent à
+     conserver pour permettre le lancement d'une restauration, pour que
+     cette information puisse être utilisée pour tronquer l'archive au
+     minimum requis pour permettre le redémarrage de la restauration en
+     cours. <code class="literal">%r</code> est généralement utilisé seulement pour
+     les configurations warm-standby (voir <a class="xref" href="warm-standby.html" title="26.2. Serveurs secondaires par transfert de journaux">Section 26.2</a>).
+     Écrire <code class="literal">%%</code> pour ajouter un caractère
+     <code class="literal">%</code>.
+    </p><p>
+     Il est important que la commande renvoie un code de sortie zéro
+     uniquement en cas de succès. La commande <span class="emphasis"><em>doit</em></span>
+     gérer le fait que des fichiers ne soient pas présents dans les
+     archives ; dans ce cas, elle doit renvoyer un code de sortie
+     différent de zéro. Par exemple :
+     </p><pre class="programlisting">
+restore_command = 'cp /mnt/server/archivedir/%f "%p"'
+restore_command = 'copy "C:\\server\\archivedir\\%f" "%p"'  # Windows
+     </pre><p>
+     Il existe une exception quand la commande est arrêtée avec un signal
+     (autre que <span class="systemitem">SIGTERM</span>, qui est utilisé pour
+     l'arrêt du serveur de bases de données) ou une erreur provenant du
+     shell (par exemple <span class="quote">« <span class="quote">command not found</span> »</span>), alors la
+     restauration s'arrêtera et le serveur ne démarrera pas.
+    </p><p>
+     Cette paramètre peut seulement être configuré au démarrage du serveur.
+    </p></dd><dt id="GUC-ARCHIVE-CLEANUP-COMMAND"><span class="term"><code class="varname">archive_cleanup_command</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.8.7.7.2.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ARCHIVE-CLEANUP-COMMAND" class="id_link">#</a></dt><dd><p>
+     Ce paramètre optionnel indique une commande shell exécutée à chaque
+     restartpoint. Le but de <code class="varname">archive_cleanup_command</code> est
+     de fournir un mécanisme pour nettoyer les anciens fichiers WAL
+     archivés qui ne sont plus nécessaire sur le serveur standby. Tout
+     <code class="literal">%r</code> est remplacé par le nom du fichier contenant le
+     dernier point de redémarrage valide. C'est le fichier le plus ancien à
+     <span class="emphasis"><em>conserver</em></span> pour permettre une restauration, et
+     donc tous les fichiers plus ancien que <code class="literal">%r</code> peuvent
+     être supprimés en toute sécurité. Cette information peut être utilisée
+     pour tronquer les archives au minimum requis pour supporter le
+     redémarrage à partir de la restauration en cours. Le module <a class="xref" href="pgarchivecleanup.html" title="pg_archivecleanup"><span class="refentrytitle"><span class="application">pg_archivecleanup</span></span></a> est souvent utilisé dans
+     <code class="varname">archive_cleanup_command</code> pour les configurations
+     avec un seul standby, par exemple ::
+     </p><pre class="programlisting">archive_cleanup_command = 'pg_archivecleanup /mnt/server/archivedir %r'</pre><p>
+        Notez néanmoins que si plusieurs serveurs standby exécutent leur
+        restauration à partir du même répertoire d'archivage, vous aurez
+        besoin de vous assurer que vous ne supprimez que des fichiers WAL dont
+        aucun serveur n'a besoin. <code class="varname">archive_cleanup_command</code>
+        serait typiquement utilisé dans une configuration warm-standby (voir
+        <a class="xref" href="warm-standby.html" title="26.2. Serveurs secondaires par transfert de journaux">Section 26.2</a>). Écrire <code class="literal">%%</code> pour
+        intégrer un vrai caractère <code class="literal">%</code> dans la commande.
+       </p><p>
+        Si la commande renvoie un code de sortie différent de zéro, alors un
+        message d'avertissement sera écrit dans les traces. Une exception
+        survient quand la commande est terminée par un signal ou une erreur du
+        shell (tel que <span class="quote">« <span class="quote">command not found</span> »</span>), une erreur fatale
+        sera renvoyée.
+       </p><p>
+        Ce paramètre peut seulement être configuré dans le fichier
+        <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+        serveur.
+       </p></dd><dt id="GUC-RECOVERY-END-COMMAND"><span class="term"><code class="varname">recovery_end_command</code> (<code class="type">string</code>)
+      <a id="id-1.6.6.8.7.7.3.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-RECOVERY-END-COMMAND" class="id_link">#</a></dt><dd><p>
+        Ce paramètre indique une commande shell à exécuter une fois arrivé à
+        la fin de la restauration. Ce paramètre est optionnel. Le but de
+        <code class="varname">recovery_end_command</code> est de fournir un mécanisme
+        pour nettoyer après une réplication ou une restauration. Tout
+        <code class="literal">%r</code> est remplacé par le nom du fichier contenant le
+        dernier point de redémarrage valide, comme dans <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-CLEANUP-COMMAND">archive_cleanup_command</a>.
+       </p><p>
+        Si la commande renvoie un code de sortie différent de zéro, alors un
+        message d'avertissement sera écrit dans les traces et la base de
+        données continuera à démarrer. Une exception survient si la commande a
+        été terminée par un signal ou une erreur du shell (tel que
+        <span class="quote">« <span class="quote">command not found</span> »</span>), la base de données ne continuera
+        pas avec le démarrage.
+       </p><p>
+        Ce paramètre peut seulement être configuré dans le fichier
+        <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+        serveur.
+       </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-WAL-RECOVERY-TARGET"><div class="titlepage"><div><div><h3 class="title">19.5.6. Cible de restauration <a href="#RUNTIME-CONFIG-WAL-RECOVERY-TARGET" class="id_link">#</a></h3></div></div></div><p>
+      Par défaut, la restauration continuera jusqu'à la fin des WAL. Les
+      paramètres suivants peuvent être utilisés pour indiquer un point d'arrêt
+      précédent. Au moins un des paramètres parmi
+      <code class="varname">recovery_target</code>,
+      <code class="varname">recovery_target_lsn</code>,
+      <code class="varname">recovery_target_name</code>,
+      <code class="varname">recovery_target_time</code> et
+      <code class="varname">recovery_target_xid</code> peut être utilisé. Si plus d'un
+      paramètre est indiqué dans le fichier de configuration, une erreur sera
+      renvoyée. Ces paramètres ne peuvent être configurés qu'au démarrage du
+      serveur.
+     </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-RECOVERY-TARGET"><span class="term"><code class="varname">recovery_target</code><code class="literal"> = 'immediate'</code>
+      <a id="id-1.6.6.8.8.3.1.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-RECOVERY-TARGET" class="id_link">#</a></dt><dd><p>
+        Ce paramètre indique que la restauration doit s'arrêter dès qu'un
+        point de cohérence est atteint, autrement dit le plus tôt possible.
+        Lors de la restauration d'une sauvegarde, cela signifie le moment où
+        la sauvegarde s'est terminée.
+       </p><p>
+        Techniquement, la valeur est une chaîne de caractère, mais
+        <code class="literal">'immediate'</code> est actuellement la seule valeur
+        autorisée.
+       </p></dd><dt id="GUC-RECOVERY-TARGET-NAME"><span class="term"><code class="varname">recovery_target_name</code> (<code class="type">string</code>)
+      <a id="id-1.6.6.8.8.3.2.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-RECOVERY-TARGET-NAME" class="id_link">#</a></dt><dd><p>
+        Ce paramètre indique le point de restauration nommé (créé précédemment
+        avec <code class="function">pg_create_restore_point()</code>) où la
+        restauration doit s'arrêter.
+       </p></dd><dt id="GUC-RECOVERY-TARGET-TIME"><span class="term"><code class="varname">recovery_target_time</code> (<code class="type">timestamp</code>)
+      <a id="id-1.6.6.8.8.3.3.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-RECOVERY-TARGET-TIME" class="id_link">#</a></dt><dd><p>
+        Ce paramètre indique jusqu'à quel date et heure la restauration doit
+        s'arrêter. Le point d'arrêt précis est aussi influencé par <a class="xref" href="runtime-config-wal.html#GUC-RECOVERY-TARGET-INCLUSIVE">recovery_target_inclusive</a>.
+       </p></dd><dt id="GUC-RECOVERY-TARGET-XID"><span class="term"><code class="varname">recovery_target_xid</code> (<code class="type">string</code>)
+      <a id="id-1.6.6.8.8.3.4.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-RECOVERY-TARGET-XID" class="id_link">#</a></dt><dd><p>
+        Ce paramètre indique l'identifiant de transaction final où la
+        restauration s'arrêtera. Gardez en tête que, bien que les identifiants
+        soient affectés séquentiellement au début de la transaction, la
+        transaction peut se terminer dans un ordre numérique différent. Les
+        transactions qui seront restaurées sont celles validées avant (et en
+        option en incluant) celle indiquée. Le point d'arrêt précis est aussi
+        influencé par <a class="xref" href="runtime-config-wal.html#GUC-RECOVERY-TARGET-INCLUSIVE">recovery_target_inclusive</a>.
+       </p><p>
+        La valeur de ce paramètre est un horodatage dans le même format que
+        celui accepté par le type de données <code class="type">timestamp with time
+        zone</code>, à l'exception que vous ne pouvez pas utiliser une
+        abréviation de fuseau horaire (sauf si le paramètre <a class="xref" href="runtime-config-client.html#GUC-TIMEZONE-ABBREVIATIONS">timezone_abbreviations</a> a été configuré précédemment
+        dans le fichier de configuration). Le style préféré est d'utiliser un
+        décalage numérique à partir d'UTC. Vous pouvez aussi écrire un nom
+        complet de fuseau horaire, par exemple
+        <code class="literal">Europe/Helsinki</code>, et non pas
+        <code class="literal">EEST</code>.
+       </p></dd><dt id="GUC-RECOVERY-TARGET-LSN"><span class="term"><code class="varname">recovery_target_lsn</code> (<code class="type">pg_lsn</code>)
+      <a id="id-1.6.6.8.8.3.5.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-RECOVERY-TARGET-LSN" class="id_link">#</a></dt><dd><p>
+        Ce paramètre indique le LSN où la restauration s'arrêtera. Le point
+        d'arrêt précis est aussi influencé par <a class="xref" href="runtime-config-wal.html#GUC-RECOVERY-TARGET-INCLUSIVE">recovery_target_inclusive</a>. Ce paramètre est analysé en
+        utilisant le type de données système <a class="link" href="datatype-pg-lsn.html" title="8.20. Type pg_lsn"><code class="type">pg_lsn</code></a>.
+       </p></dd></dl></div><p>
+       Les options suivants indiquent plus en détails la cible de
+       restauration, et affectent ce qui survient quand la cible est
+       atteinte :
+     </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-RECOVERY-TARGET-INCLUSIVE"><span class="term"><code class="varname">recovery_target_inclusive</code> (<code class="type">boolean</code>)
+      <a id="id-1.6.6.8.8.5.1.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-RECOVERY-TARGET-INCLUSIVE" class="id_link">#</a></dt><dd><p>
+        Indique s'il faut arrêter juste après la cible de restauration
+        indiquée (<code class="literal">on</code>) ou juste avant
+        (<code class="literal">off</code>). S'applique quand <a class="xref" href="runtime-config-wal.html#GUC-RECOVERY-TARGET-LSN">recovery_target_lsn</a>, <a class="xref" href="runtime-config-wal.html#GUC-RECOVERY-TARGET-TIME">recovery_target_time</a> ou <a class="xref" href="runtime-config-wal.html#GUC-RECOVERY-TARGET-XID">recovery_target_xid</a> est spécifié. Ce paramètre
+        contrôle si les transactions ayant exactement, respectivement, le même
+        emplacement WAL (LSN), heure de validation, ou identifiant de
+        transaction seront incluses dans la restauration. La valeur par défaut
+        est <code class="literal">on</code>.
+       </p></dd><dt id="GUC-RECOVERY-TARGET-TIMELINE"><span class="term"><code class="varname">recovery_target_timeline</code> (<code class="type">string</code>)
+      <a id="id-1.6.6.8.8.5.2.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-RECOVERY-TARGET-TIMELINE" class="id_link">#</a></dt><dd><p>
+        Indique la restauration jusqu'à une certaine timeline. La valeur peut
+        être un identifiant numérique de timeline. La valeur
+        <code class="literal">current</code> restaure uniquement sur la même timeline
+        que celle de la sauvegarde de base. La valeur
+        <code class="literal">latest</code> restaure jusqu'à la dernière timeline
+        trouvée dans les archives, ce qui est utile pour un serveur standby.
+        <code class="literal">latest</code> est la valeur par défaut.
+       </p><p>
+        Pour spécifier un identifiant de timeline en hexadécimal
+        (par exemple, si extraite du nom d'un fichier WAL ou du fichier
+        d'historique), il est nécessaire de préfixer la valeur par
+        <code class="literal">0x</code>. Par exemple, si le nom du fichier WAL est
+        <code class="filename">00000011000000A10000004F</code>, alors l'identifiant est
+        <code class="literal">0x11</code> (ou 17 en décimal).
+       </p><p>
+        Vous avez seulement besoin de configurer ce paramètre dans les
+        situations complexes de re-restaurations, où vous avez besoin de
+        retourner à un état qui a été lui-même atteint après une restauration
+        à un point dans le temps. Voir <a class="xref" href="continuous-archiving.html#BACKUP-TIMELINES" title="25.3.6. Lignes temporelles (Timelines)">Section 25.3.6</a> pour
+        plus de détails.
+       </p></dd><dt id="GUC-RECOVERY-TARGET-ACTION"><span class="term"><code class="varname">recovery_target_action</code> (<code class="type">enum</code>)
+      <a id="id-1.6.6.8.8.5.3.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-RECOVERY-TARGET-ACTION" class="id_link">#</a></dt><dd><p>
+        Indique l'action que le serveur devra prendre une fois la cible de
+        restauration atteinte. La valeur par défaut est
+        <code class="literal">pause</code>, ce qui signifie que la restauration sera
+        mise en pause. <code class="literal">promote</code> signifie que le processus de
+        restauration finira et que le serveur démarrera pour accepter toute
+        connexion. Enfin, <code class="literal">shutdown</code> arrêtera le serveur
+        après avoir atteint la cible de restauration.
+       </p><p>
+        Le but de la configuration <code class="literal">pause</code> est de permettre
+        d'exécuter des requêtes sur la base pour vérifier si la cible de
+        restauration est le point réellement souhaité pour la fin de la
+        restauration. La mise en pause peut être annulée en utilisant
+        <code class="function">pg_wal_replay_resume()</code> (voir <a class="xref" href="functions-admin.html#FUNCTIONS-RECOVERY-CONTROL-TABLE" title="Tableau 9.97. Fonctions de contrôle de la restauration">Tableau 9.97</a>), qui cause ainsi la fin
+        de la restauration. Si la cible de restauration n'est pas le point
+        d'arrêt souhaité, alors arrêtez le serveur, modifiez la configuration
+        de la cible de restauration à un point ultérieur et redémarrer pour
+        continuer la restauration.
+       </p><p>
+        La configuration <code class="literal">shutdown</code> est utile pour avoir
+        l'instance prête au point de rejeu exact désiré. L'instance sera
+        toujours capable de rejouer plus d'enregistrements WAL (et en fait,
+        continuera à rejouer des enregistrements WAL depuis le dernier
+        checkpoint à son redémarrage).
+       </p><p>
+        Notez que comme <code class="filename">recovery.signal</code> ne sera pas
+        supprimé quand <code class="varname">recovery_target_action</code> est configuré
+        à <code class="literal">shutdown</code>, tout redémarrage finira avec un arrêt
+        immédiat à moins que la configuration ait changé ou que le fichier
+        <code class="filename">recovery.signal</code> ait été supprimé manuellement.
+       </p><p>
+        Cette configuration n'a pas d'effet si aucune cible de restauration
+        n'a été configurée. Si <a class="xref" href="runtime-config-replication.html#GUC-HOT-STANDBY">hot_standby</a> n'est pas
+        activé, une configuration à <code class="literal">pause</code> agira de la même
+        façon qu'une configuration à <code class="literal">shutdown</code>.
+        Si la cible de restauration est atteinte alors qu'une promotion est en
+        cours, une configuration à <code class="literal">pause</code> agira de la même
+        façon qu'une configuration à <code class="literal">promote</code>.
+       </p><p>
+        Dans tous les cas, si une cible de restauration est configurée mais
+        que la restauration d'archive se termine avant d'avoir atteint la
+        cible, le serveur s'arrêtera avec une erreur fatale.
+       </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-WAL-SUMMARIZATION"><div class="titlepage"><div><div><h3 class="title">19.5.7. Résumé de WAL <a href="#RUNTIME-CONFIG-WAL-SUMMARIZATION" class="id_link">#</a></h3></div></div></div><p>
+     Ces paramètres contrôlent le résumé des WAL, une fonctionnalité qui doit
+     être activée pour réaliser des <a class="link" href="continuous-archiving.html#BACKUP-INCREMENTAL-BACKUP" title="25.3.3. Réaliser une sauvegarde incrémentale">sauvegardes incrémentales</a>.
+    </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-SUMMARIZE-WAL"><span class="term"><code class="varname">summarize_wal</code> (<code class="type">boolean</code>)
+      <a id="id-1.6.6.8.9.3.1.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-SUMMARIZE-WAL" class="id_link">#</a></dt><dd><p>
+       Active le processus WAL summarizer. Notez que le résumé des WAL peut être
+       activé sur un primaire comme sur un secondaire. Ce paramètre peut seulement
+       être configuré dans le fichier <code class="filename">postgresql.conf</code> ou
+       sur la ligne de commande du serveur. La valeur par défaut est
+       <code class="literal">off</code>.
+      </p><p>
+       Le serveur ne peut pas être démarré avec <code class="literal">summarize_wal=on</code>
+       si <code class="literal">wal_level</code> est configuré à <code class="literal">minimal</code>.
+       Si <code class="literal">summarize_wal=on</code> est configuré après le démarrage
+       du serveur alors que <code class="literal">wal_level=minimal</code>, le processus
+       WAL summarizer se lancera mais refusera de créer des fichiers de résumé de
+       WAL pour tous les WAL générés avec
+       <code class="literal">wal_level=minimal</code>.
+      </p></dd><dt id="GUC-WAL-SUMMARY-KEEP-TIME"><span class="term"><code class="varname">wal_summary_keep_time</code> (<code class="type">integer</code>)
+      <a id="id-1.6.6.8.9.3.2.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-WAL-SUMMARY-KEEP-TIME" class="id_link">#</a></dt><dd><p>
+       Configure la durée après laquelle le processus WAL summarizer supprime
+       les anciens résumés de WAL. L'horodatage du fichier est utilisé pour
+       déterminer les fichiers suffisamment anciens pour être supprimés.
+       D'ordinaire, vous devriez le configurer à une valeur supérieur au délai
+       entre une sauvegarde complète et la sauvegarde incrémentale qui en dépend.
+       Les résumés de WAL doivent être disponibles pour l'intervalle entier
+       d'enregistrements WAL entre la sauvegarde précédente et la sauvegarde en
+       cours ; sinon, la sauvegarde incrémentale échouera. Si ce paramètre
+       est configuré à zéro, les résumés de WAL ne seront pas automatiquement
+       supprimés mais il est possible de supprimer manuellement les fichiers
+       que vous savez être inutiles pour les prochaines sauvegardes
+       incrémentales. Ce paramètre peut seulement être configuré dans le fichier
+       <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+       serveur. Si cette valeur est précisée sans unité, l'unité considérée
+       est la minute. La valeur par défaut est de 10 jours. Si
+       <code class="literal">summarize_wal = off</code>, les résumés de WAL existants
+       ne seront pas supprimés quelque soit la valeur de ce paramètre parce que
+       le processus WAL summarizer ne sera pas exécuté.
+      </p></dd></dl></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-wal.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+</html>

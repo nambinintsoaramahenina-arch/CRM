@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/tablesample-support-functions.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:14 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>58.1. Fonctions de support d'une méthode d'échantillonnage</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tablesample-method.html" title="Chapitre 58. Écrire une méthode d'échantillonnage de table" /><link rel="next" href="custom-scan.html" title="Chapitre 59. Écrire un module de parcours personnalisé" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/tablesample-support-functions.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/tablesample-support-functions.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/tablesample-support-functions.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/tablesample-support-functions.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/tablesample-support-functions.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/tablesample-support-functions.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/tablesample-support-functions.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/tablesample-support-functions.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/tablesample-support-functions.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/tablesample-support-functions.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="tablesample-method.html">Écrire une méthode d'échantillonnage de table</a></span> » <span class="breadcrumb-node">Fonctions de support d'une méthode d'échantillonnage</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tablesample-method.html" title="Chapitre 58. Écrire une méthode d'échantillonnage de table">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="tablesample-method.html" title="Chapitre 58. Écrire une méthode d'échantillonnage de table">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="custom-scan.html" title="Chapitre 59. Écrire un module de parcours personnalisé">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Chapitre 58. Écrire une méthode d'échantillonnage de table </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 59. Écrire un module de parcours personnalisé</td></tr></table></div><div class="sect1" id="TABLESAMPLE-SUPPORT-FUNCTIONS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">58.1. Fonctions de support d'une méthode d'échantillonnage <a href="#TABLESAMPLE-SUPPORT-FUNCTIONS" class="id_link">#</a></h2></div></div></div><p>
+   La fonction du gestionnaire TSM renvoie une structure
+   <code class="type">TsmRoutine</code> allouée avec palloc contenant des pointeurs
+   vers les fonctions de support décrites ci-dessous. La plupart des
+   fonctions sont obligatoires, mais certaines sont optionnelles, et
+   leurs pointeurs peuvent être NULL.
+  </p><p>
+   </p><pre class="programlisting">
+void
+SampleScanGetSampleSize (PlannerInfo *root,
+                         RelOptInfo *baserel,
+                         List *paramexprs,
+                         BlockNumber *pages,
+                         double *tuples);
+   </pre><p>
+   Cette fonction est appelée durant la planification. Elle doit
+   estimer le nombre de pages de la relation qui seront lues
+   lors d'un simple parcours, et le nombre de lignes qui seront
+   sélectionnées lors du parcours. (Par exemple, cela pourrait
+   être déterminé en estimant la fraction échantillonnée,
+   puis en multipliant <code class="literal">baserel-&gt;pages</code>
+   et <code class="literal">baserel-&gt;tuples</code> par ce chiffre,
+   après s'être assuré d'avoir arrondi ces chiffres à des
+   valeurs entières.) La liste <code class="literal">paramexprs</code>
+   contient les expressions qui sont les paramètres de la clause
+   <code class="literal">TABLESAMPLE</code>. Il est recommandé d'utiliser
+   la fonction <code class="function">estimate_expression_value</code> pour
+   essayer de réduire ces expressions à des constantes, si leurs
+   valeurs sont nécessaires pour les besoins de l'estimation ; mais la
+   fonction doit renvoyer les estimations des tailles même si elles
+   ne peuvent être réduites, et elle ne devrait pas échouer même
+   si les valeurs apparaissent invalides (rappelez-vous qu'il s'agit
+   uniquement d'une estimation de valeurs futures à l'exécution). Les
+   paramètres <code class="literal">pages</code> et <code class="literal">tuples</code>
+   sont les valeurs de sortie.
+  </p><p>
+   </p><pre class="programlisting">
+void
+InitSampleScan (SampleScanState *node,
+                int eflags);
+   </pre><p>
+
+   Initialise pour l'exécution d'un nœud du plan SampleScan.
+   La fonction est appelée au démarrage de l'exécuteur.  Elle
+   devrait effectuer toutes les initialisations nécessaires
+   avant que le traitement ne puisse commencer. Le nœud
+   <code class="structname">SampleScanState</code> a déjà été
+   créé, mais son champ <code class="structfield">tsm_state</code>
+   est NULL. La fonction peut allouer via palloc les
+   données internes d'état nécessaires à la fonction
+   d'échantillonnage, et enregistrer un pointeur dans
+   <code class="literal">node-&gt;tsm_state</code>. Des informations à
+   propos de la table à parcourir sont accessibles via d'autres
+   champs du nœud <code class="structname">SampleScanState</code>
+   (mais veuillez noter que le descripteur du parcours
+   <code class="literal">node-&gt;ss.ss_currentScanDesc</code> n'est pas
+   encore positionné à ce stade). <code class="literal">eflags</code>
+   contient un ensemble de bits décrivant le mode opératoire de
+   l'exécuteur pour ce nœud du plan.
+  </p><p>
+   Lorsque <code class="literal">(eflags &amp; EXEC_FLAG_EXPLAIN_ONLY)</code> est
+   true, le parcours ne sera pas encore effectué. Dans ce cas, cette
+   fonction devrait effectuer uniquement le minimum requis pour mettre dans
+   un état valide le nœud pour la commande <code class="command">EXPLAIN</code>
+   et la fonction <code class="function">EndSampleScan</code>.
+  </p><p>
+   Cette fonction est optionnelle (positionnez alors le pointeur sur
+   NULL), auquel cas la fonction <code class="function">BeginSampleScan</code>
+   doit effectuer toutes les initialisations nécessaires à la méthode
+   d'échantillonnage.
+  </p><p>
+   </p><pre class="programlisting">
+void
+BeginSampleScan (SampleScanState *node,
+                 Datum *params,
+                 int nparams,
+                 uint32 seed);
+   </pre><p>
+
+   Débute l'exécution d'un parcours d'échantillonnage.  Cette
+   fonction est appelée juste avant la première tentative de
+   récupération d'une ligne, et peut être appelée à nouveau si le
+   parcours a besoin d'être relancé. Des informations sur la table à
+   parcourir sont accessibles via les champs de la structure du nœud
+   <code class="structname">SampleScanState</code> (mais notez que le descripteur
+   du parcours <code class="literal">node-&gt;ss.ss_currentScanDesc</code> n'est pas
+   encore positionné à ce stade). Le tableau <code class="literal">params</code>,
+   de longueur <code class="literal">nparams</code>, contient les valeurs des
+   paramètres indiqués dans la clause <code class="literal">TABLESAMPLE</code>. Ces
+   paramètres seront en nombre et de types spécifiés par la méthode
+   d'échantillonnage dans la liste <code class="literal">parameterTypes</code>, et
+   ont été vérifiés comme n'étant pas null. <code class="literal">seed</code>&gt;
+   contient une graine à usage de la méthode d'échantillonnage pour
+   générer des nombres aléatoires ; il s'agit d'un hash dérivé
+   de la valeur de la clause <code class="literal">REPEATABLE</code> si fournie,
+   ou du résultat de la fonction <code class="literal">random()</code> dans le cas
+   contraire.
+  </p><p>
+   Cette fonction peut ajuster les champs
+   <code class="literal">node-&gt;use_bulkread</code>
+   et <code class="literal">node-&gt;use_pagemode</code>. Si
+   <code class="literal">node-&gt;use_bulkread</code> est true, ce qui est le cas
+   par défaut, le parcours utilisera une stratégie d'accès aux tampons
+   mémoires qui encourage le recyclage des tampons après usage. Il peut être
+   raisonnable de mettre cette valeur à <code class="literal">false</code>
+   si le parcours doit visiter seulement une petite fraction des pages
+   de la table. Si <code class="literal">node-&gt;use_pagemode</code> est
+   <code class="literal">true</code>, ce qui est la valeur par défaut, le parcours
+   effectuera une vérification de la visibilité avec un unique passage
+   pour l'ensemble des lignes composant chaque page visitée. Il peut
+   être raisonnable de mettre cette valeur à <code class="literal">false</code>
+   si le parcours doit sélectionner seulement une petite fraction des lignes de
+   chaque page visitée. Ceci aura pour conséquence un nombre moindre
+   de vérifications de visibilité effectuées, mais chacune sera plus
+   coûteuse car elle demandera plus de verrouillages.
+  </p><p>
+   Si la méthode d'échantillonnage est marquée comme
+   <code class="literal">repeatable_across_scans</code>, elle doit être capable de
+   sélectionner le même ensemble de lignes lors d'un parcours relancé
+   à nouveau comme elle l'a fait à l'origine, c'est-à-dire qu'un
+   nouvel appel à la fonction <code class="function">BeginSampleScan</code> doit
+   engendrer la sélection des mêmes lignes que précédemment (dans la
+   mesure où les paramètres de la clause <code class="literal">TABLESAMPLE</code>
+   et la graine ne changent pas).
+  </p><p>
+   </p><pre class="programlisting">
+BlockNumber
+NextSampleBlock (SampleScanState *node, BlockNumber nblocks);
+   </pre><p>
+
+   Renvoie le numéro du bloc de la page suivante à parcourir, ou
+   <code class="literal">InvalidBlockNumber</code> si il n'y a plus de pages
+   à parcourir.
+  </p><p>
+   Cette fonction peut être omise (mettez le pointeur à la valeur NULL),
+   auquel cas le code du serveur effectuera un parcours séquentiel de
+   l'ensemble de la relation. Un tel parcours peut utiliser un parcours
+   synchronisé, aussi la méthode d'échantillonnage ne peut pas supposer
+   que les pages de la relation sont visitées dans le même ordre à
+   chaque parcours.
+  </p><p>
+   </p><pre class="programlisting">
+OffsetNumber
+NextSampleTuple (SampleScanState *node,
+                 BlockNumber blockno,
+                 OffsetNumber maxoffset);
+   </pre><p>
+
+   Renvoie le décalage de la ligne suivante à echantillonner sur la
+   page spécifiée, ou <code class="literal">InvalidOffsetNumber</code> si il
+   n'y a plus de lignes à échantillonner. <code class="literal">maxoffset</code>
+   est le décalage le plus grand utilisé sur la page.
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    Il n'est pas explicitement indiqué à la fonction
+    <code class="function">NextSampleTuple</code> les décalages dans l'intervalle
+    <code class="literal">1 .. maxoffset</code> qui contiennent des lignes valides. Ce
+    n'est normalement pas un problème dans la mesure où le code du serveur
+    ignore les requêtes pour échantillonner des lignes manquantes ou non
+    visibles ; ceci ne devrait pas entraîner de biais dans l'échantillon.
+    Cependant, si nécessaire, la fonction peut utiliser
+    <code class="literal">node-&gt;donetuples</code> pour examiner le nombre de lignes
+    renvoyées valides et visibles.
+   </p></div><div class="note"><h3 class="title">Note</h3><p>
+    La fonction <code class="function">NextSampleTuple</code> ne doit
+    <span class="emphasis"><em>pas</em></span> assumer que <code class="literal">blockno</code>
+    est le même numéro de page que celui renvoyé par le plus récent
+    appel à la fonction <code class="function">NextSampleBlock</code>. Le
+    numéro a été renvoyé par un précédent appel à la fonction
+    <code class="function">NextSampleBlock</code>, mais le code du serveur
+    est autorisé à appeler <code class="function">NextSampleBlock</code>
+    en amont du parcours des pages, pour rendre possible la
+    récupération en avance. Il est acceptable d'assumer qu'une fois le
+    parcours d'une page débuté, les appels successifs à la fonction
+    <code class="function">NextSampleTuple</code> se réfèrent tous à la
+    même page jusqu'à ce que <code class="literal">InvalidOffsetNumber</code>
+    soit retourné.
+   </p></div><p>
+   </p><pre class="programlisting">
+void
+EndSampleScan (SampleScanState *node);
+   </pre><p>
+
+   Termine le parcours et libère les ressources. Il n'est normalement pas
+   important de libérer la mémoire allouée via palloc, mais toutes les
+   ressources visibles à l'extérieur doivent être nettoyées. Cette
+   fonction peut être omise (positionnez le pointeur sur la valeur NULL)
+   dans la plupart des cas où de telles ressources n'existent pas.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/tablesample-support-functions.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:14 GMT -->
+</html>

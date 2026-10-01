@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/auth-pg-hba-conf.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>20.1. Le fichier pg_hba.conf</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="client-authentication.html" title="Chapitre 20. Authentification du client" /><link rel="next" href="auth-username-maps.html" title="20.2. Correspondances d'utilisateurs" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/auth-pg-hba-conf.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/auth-pg-hba-conf.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/auth-pg-hba-conf.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/auth-pg-hba-conf.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/auth-pg-hba-conf.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/auth-pg-hba-conf.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/auth-pg-hba-conf.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/auth-pg-hba-conf.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/auth-pg-hba-conf.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/auth-pg-hba-conf.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="client-authentication.html">Authentification du client</a></span> » <span class="breadcrumb-node">Le fichier <code class="filename">pg_hba.conf</code></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="client-authentication.html" title="Chapitre 20. Authentification du client">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="client-authentication.html" title="Chapitre 20. Authentification du client">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="auth-username-maps.html" title="20.2. Correspondances d'utilisateurs">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Chapitre 20. Authentification du client </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 20.2. Correspondances d'utilisateurs</td></tr></table></div><div class="sect1" id="AUTH-PG-HBA-CONF"><div class="titlepage"><div><div><h2 class="title" style="clear: both">20.1. Le fichier <code class="filename">pg_hba.conf</code> <a href="#AUTH-PG-HBA-CONF" class="id_link">#</a></h2></div></div></div><a id="id-1.6.7.8.2" class="indexterm"></a><p>L'authentification du client est contrôlée par un fichier,
+   traditionnellement nommé <code class="filename">pg_hba.conf</code> et situé dans le
+   répertoire data du groupe de bases de données, par exemple
+   <code class="filename">/usr/local/pgsql/data/pg_hba.conf</code> (<acronym class="acronym">HBA</acronym>
+   signifie <span class="quote">« <span class="quote">host-based authentication</span> »</span> : authentification
+   fondée sur l'hôte.) Un
+   fichier <code class="filename">pg_hba.conf</code> par défaut est installé lorsque le
+   répertoire data est initialisé par <a class="xref" href="app-initdb.html" title="initdb"><span class="refentrytitle"><span class="application">initdb</span></span></a>. Néanmoins, il
+   est possible de placer le fichier de configuration de l'authentification
+   ailleurs ; voir le paramètre de configuration <a class="xref" href="runtime-config-file-locations.html#GUC-HBA-FILE">hba_file</a>.
+  </p><p>
+   Le fichier <code class="filename">pg_hba.conf</code> est lu au démarrage et
+   lorsque le processus serveur principal reçoit un signal
+   <span class="systemitem">SIGHUP</span><a id="id-1.6.7.8.4.3" class="indexterm"></a>.
+   Si le fichier est édité sur un système actif, on peut signaler au
+   postmaster (en utilisant <code class="literal">pg_ctl reload</code>, en appelant la
+   fonction SQL <code class="function">pg_reload_conf()</code>, ou <code class="literal">kill
+    -HUP</code>) de relire le fichier.
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    L'information précédente n'est pas vraie sous Microsoft Windows : ici, tout
+    changement dans le fichier <code class="filename">pg_hba.conf</code> est immédiatement
+    appliqué à toute nouvelle connexion.
+   </p></div><p>
+   La vue système
+   <a class="link" href="view-pg-hba-file-rules.html" title="52.9. pg_hba_file_rules"><code class="structname">pg_hba_file_rules</code></a>
+   peut aider pour pré-tester les changements dans le fichier <code class="filename">pg_hba.conf</code>,
+   ou pour diagnostiquer des problèmes si le rechargement du fichier n'a pas eu les
+   effets escomptés.  Les lignes dans la vue avec
+   des champs <code class="structfield">error</code> non vides indiquent des problèmes dans
+   les lignes correspondantes du fichier.
+  </p><p>
+   Le format général du fichier <code class="filename">pg_hba.conf</code> est un
+   ensemble d'enregistrements, un par ligne. Les lignes vides sont ignorées
+   tout comme n'importe quel texte placé après le caractère de commentaire
+   <code class="literal">#</code>. Un enregistrement peut être continué sur la ligne
+   suivante en terminant la ligne avec un antislash. (Les antislashs ne sont
+   pas spéciaux sauf à la fin d'une ligne.) Un enregistrement est constitué
+   d'un certain nombre de champs séparés par des espace et/ou des
+   tabulations. Les champs peuvent contenir des espaces si la valeur du champ
+   est mise entre guillemets doubles. Mettre entre guillemets un des
+   mots-clés dans un champ base de données, utilisateur ou adresse
+   (par exemple, <code class="literal">all</code> ou <code class="literal">replication</code>)
+   fait que le mot perd son interprétation spéciale, ou correspond à la base
+   de données, à l'utilisateur ou à l'hôte ayant ce nom. La continuation
+   d'une ligne avec un antislash s'applique même dans le texte entre
+   guillemets et les commentaires.
+  </p><p>
+   Chaque enregistrement d'authentification précise un type de connexion, une plage
+   d'adresses IP (si approprié au type de connexion), un nom de base de données, un
+   nom d'utilisateur et la méthode d'authentification à utiliser pour les
+   connexions correspondant à ces paramètres. Le premier enregistrement
+   qui correspond au type de connexion, à l'adresse client, à la base de données
+   demandée et au nom d'utilisateur est utilisé pour effectuer l'authentification.
+   Il n'y a pas de suite après une erreur (<span class="quote">« <span class="quote">fall-through</span> »</span> ou
+   <span class="quote">« <span class="quote">backup</span> »</span>) : si un enregistrement est choisi et que l'authentification
+   échoue, les enregistrements suivants ne sont pas considérés. Si aucun
+   enregistrement ne correspond, l'accès est refusé.
+  </p><p>
+   Chaque enregistrement peut être une directive d'inclusion ou un
+   enregistrement d'authentification. Les directives d'inclusion indiquent
+   des fichiers contenant des enregistrements supplémentaires à inclure.
+   Les enregistrements seront insérés à la place des directives d'inclusion
+   Les directives d'inclusion contiennent seulement deux champs :
+   la directive <code class="literal">include</code>,
+   <code class="literal">include_if_exists</code> ou
+   <code class="literal">include_dir</code> et le fichier ou le répertoire à inclure.
+   Le fichier ou répertoire peut être un chemin relatif ou absolu, et peut
+   être entre guillemets doubles. Pour la forme
+   <code class="literal">include_dir</code>, tous les fichiers ne commençant pas par
+   <code class="literal">.</code> et finissant avec
+   <code class="literal">.conf</code> seront inclus. Les fichiers d'un répertoire inclus
+   sont traités dans l'ordre des noms de fichiers (suivant les règles de la
+   locale C, autrement dit les chiffres avant les lettres, et les majuscules
+   avant les minuscules).
+  </p><p>Un enregistrement peut avoir différents formats :
+   </p><pre class="synopsis">
+local               <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>auth-method</code></em> [<span class="optional"><em class="replaceable"><code>auth-options</code></em></span>]
+host                <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>address</code></em>     <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-options</code></em></span>]
+hostssl             <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>address</code></em>     <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-options</code></em></span>]
+hostnossl           <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>address</code></em>     <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-options</code></em></span>]
+hostgssenc          <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>address</code></em>     <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-options</code></em></span>]
+hostnogssenc        <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>address</code></em>     <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-options</code></em></span>]
+host                <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>IP-address</code></em>  <em class="replaceable"><code>IP-mask</code></em>      <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-options</code></em></span>]
+hostssl             <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>IP-address</code></em>  <em class="replaceable"><code>IP-mask</code></em>      <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-options</code></em></span>]
+hostnossl           <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>IP-address</code></em>  <em class="replaceable"><code>IP-mask</code></em>      <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-options</code></em></span>]
+hostgssenc          <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>IP-address</code></em>  <em class="replaceable"><code>IP-mask</code></em>      <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-options</code></em></span>]
+hostnogssenc        <em class="replaceable"><code>database</code></em>  <em class="replaceable"><code>user</code></em>  <em class="replaceable"><code>IP-address</code></em>  <em class="replaceable"><code>IP-mask</code></em>      <em class="replaceable"><code>auth-method</code></em>  [<span class="optional"><em class="replaceable"><code>auth-options</code></em></span>]
+include             <em class="replaceable"><code>file</code></em>
+include_if_exists   <em class="replaceable"><code>file</code></em>
+include_dir         <em class="replaceable"><code>directory</code></em>
+   </pre><p>
+
+   La signification des champs est la suivante :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">local</code></span></dt><dd><p>Cet enregistrement intercepte les tentatives de connexion
+       qui utilise les sockets du domaine Unix. Sans enregistrement de ce type, les
+       connexions de sockets du domaine Unix ne sont pas autorisées.</p></dd><dt><span class="term"><code class="literal">host</code></span></dt><dd><p>
+       Cet enregistrement intercepte les tentatives de connexion par TCP/IP.
+       Les lignes <code class="literal">host</code> s'appliquent à toute tentative de
+       connexion, <acronym class="acronym">SSL</acronym> ou non, ainsi qu'à toute tentative de
+       connexion <acronym class="acronym">GSSAPI</acronym> chiffrée ou non.
+      </p><div class="note"><h3 class="title">Note</h3><p>
+        Les connexions TCP/IP ne sont pas autorisées si le serveur
+        n'est pas démarré avec la valeur appropriée du paramètre de configuration
+        <a class="xref" href="runtime-config-connection.html#GUC-LISTEN-ADDRESSES">listen_addresses</a>. En effet, par défaut, le
+        serveur n'écoute que les connexions TCP/IP en provenance de
+        l'adresse <code class="literal">loopback</code> locale, <code class="literal">localhost</code>.
+       </p></div></dd><dt><span class="term"><code class="literal">hostssl</code></span></dt><dd><p>
+       Cet enregistrement intercepte les seules tentatives de connexions par TCP/IP
+       qui utilisent le chiffrement <acronym class="acronym">SSL</acronym>.
+      </p><p>
+       Pour utiliser cette fonction, le serveur
+       doit être compilé avec le support de <acronym class="acronym">SSL</acronym>. De plus,
+       <acronym class="acronym">SSL</acronym> doit être activé en
+       positionnant le paramètre de configuration <a class="xref" href="runtime-config-connection.html#GUC-SSL">ssl</a>
+       (voir la <a class="xref" href="ssl-tcp.html" title="18.9. Connexions TCP/IP sécurisées avec SSL">Section 18.9</a> pour plus d'informations).
+       Dans le cas contraire, l'enregistrement <code class="literal">hostssl</code> est
+       ignoré à l'exception d'une alerte dans les traces indiquant qu'il n'y a
+       aucune connexion correspondante.
+      </p></dd><dt><span class="term"><code class="literal">hostnossl</code></span></dt><dd><p>
+       Cet enregistrement a un comportement opposé à <code class="literal">hostssl</code> : il
+       n'intercepte que les tentatives de connexion qui n'utilisent pas
+       <acronym class="acronym">SSL</acronym>.
+      </p></dd><dt><span class="term"><code class="literal">hostgssenc</code></span></dt><dd><p>
+       Cet enregistrement intercepte les tentatives de connexions par TCP/IP,
+       mais seulement si la connexion est faite avec un chiffrement
+       <acronym class="acronym">GSSAPI</acronym>
+       encryption.
+      </p><p>
+       Pour utiliser cette fonction, le serveur doit être compilé avec le
+       support de <acronym class="acronym">GSSAPI</acronym> activé. Dans le cas contraire,
+       l'enregistrement <code class="literal">hostgssenc</code> est ignoré à l'exception
+       d'une alerte dans les traces indiquant qu'il n'y a aucune connexion
+       correspondante.
+      </p></dd><dt><span class="term"><code class="literal">hostnogssenc</code></span></dt><dd><p>
+       Cet enregistrement a un comportement opposé à <code class="literal">hostgssenc</code>;
+       il n'intercepte que les tentatives de connexion qui n'utilisent pas le
+       chiffrement <acronym class="acronym">GSSAPI</acronym>.
+      </p></dd><dt><span class="term"><em class="replaceable"><code>database</code></em></span></dt><dd><p>
+       Indique les noms des bases de données concernées par l'enregistrement.
+       La valeur <code class="literal">all</code> indique qu'il concerne toutes les
+       bases de données. Le terme <code class="literal">sameuser</code> indique que
+       l'enregistrement coïncide si la base de données demandée a le même nom
+       que l'utilisateur demandé. Le terme <code class="literal">samerole</code>
+       indique que l'utilisateur demandé doit être membre du rôle portant le
+       même nom que la base de données demandée
+       (<code class="literal">samegroup</code> est obsolète bien qu'il soit toujours
+       accepté comme écriture alternative de <code class="literal">samerole</code>.).
+       Les superutilisateurs ne sont pas considérés comme membres d'un rôle
+       dans le cadre de <code class="literal">samerole</code> à moins qu'ils ne soient
+       explicitement membres du rôle, de manière directe ou indirecte, et non
+       pas juste par ses droits de superutilisateur. La valeur
+       <code class="literal">replication</code> indique que l'enregistrement établit
+       une correspondance si une connexion de réplication physique est
+       demandée. Néanmoins, il n'établit pas de correspondance pour les
+       connexions de réplication logique. Notez que les connexions de
+       réplication ne ciblent pas une base de données particulière alors que
+       les connexions de réplication logique le font. Sinon, c'est le nom
+       d'une base de données <span class="productname">PostgreSQL</span> spécifique
+       ou une expression rationnelle. Plusieurs noms de bases et/ou
+       expressions rationnelles peuvent être fournis en les séparant par des
+       virgules.
+      </p><p>
+       Si le nom de la base commence par un slash (<code class="literal">/</code>), le
+       reste du nom est traité comme une expression rationnelle.
+       (Voir <a class="xref" href="functions-matching.html#POSIX-SYNTAX-DETAILS" title="9.7.3.1. Détails sur les expressions rationnelles">Section 9.7.3.1</a> pour des détails sur la
+       syntaxe des expressions rationnelles de
+       <span class="productname">PostgreSQL</span>.)
+      </p><p>
+       Un fichier séparé contenant les noms des bases et les expressions rationnelles peut être indiquant en faisant précéder le nom du fichier
+       par le caractère <code class="literal">@</code>.
+      </p></dd><dt><span class="term"><em class="replaceable"><code>user</code></em></span></dt><dd><p>
+       Indique les utilisateurs de bases de données auxquels cet enregistrement
+       correspond. La valeur <code class="literal">all</code> indique qu'il concerne tous
+       les utilisateurs. Dans le cas contraire, il s'agit soit du nom d'un utilisateur
+       spécifique de bases de données, une expression rationnelle (lorsqu'il
+       commence par un slash
+       (<code class="literal">/</code>) ou d'un nom de groupe précédé par un
+       <code class="literal">+</code> (il n'existe pas de véritable distinction
+       entre les utilisateurs et les groupes dans
+       <span class="productname">PostgreSQL</span> ; un <code class="literal">+</code>
+       signifie exactement
+       <span class="quote">« <span class="quote">établit une correspondance pour tous les rôles faisant parti
+        directement ou indirectement de ce rôle</span> »</span> alors qu'un nom sans
+       <code class="literal">+</code> établit une correspondance avec ce rôle spécifique).
+       Ainsi, un superutilisateur n'est considéré comme membre d'un rôle que s'il
+       est explicitement membre du rôle, directement ou indirectement, et non pas
+       juste par ses droits de superutilisateur.
+       Plusieurs noms d'utilisateurs et/ou plusieurs expressions rationnelles
+       peuvent être fournies en les séparant par des virgules.
+      </p><p>
+       Si le nom de l'utilisateur commence avec un slash (<code class="literal">/</code>),
+       le reste du nom est traité comme une expression rationnelle.
+       (Voir <a class="xref" href="functions-matching.html#POSIX-SYNTAX-DETAILS" title="9.7.3.1. Détails sur les expressions rationnelles">Section 9.7.3.1</a> pour les détails de la
+       syntaxe des expressions rationnelles avec
+       <span class="productname">PostgreSQL</span>.)
+      </p><p>
+       Un fichier séparé contenant les noms d'utilisateurs et/ou les
+       expressions rationnelles peut être indiqué en précédant le nom du
+       fichier avec un caractère <code class="literal">@</code>.
+      </p></dd><dt><span class="term"><em class="replaceable"><code>address</code></em></span></dt><dd><p>
+       Indique l'adresse IP ou la plage d'adresses IP à laquelle correspond
+       cet enregistrement. Ce champ peut contenir soit un nom de machine
+       (FQDN), soit le suffixe d'un domaine (sous la forme .exemple.com),
+       soit une adresse ou une plage d'adresses IP, soit enfin l'un des mots-clés
+       mentionnés ci-après.
+      </p><p>
+       Une plage d'adresses IP est spécifiée en utilisant la notation
+       numérique standard (adresse de début de plage, suivi d'un slash
+       (<code class="literal">/</code>) et suivi de la longueur du masque
+       <acronym class="acronym">CIDR</acronym>. La longueur du masque indique le nombre de
+       bits forts pour lesquels une correspondance doit être trouvée avec
+       l'adresse IP du client. Les bits de droite doivent valoir zéro dans
+       l'adresse IP indiquée. Il ne doit y avoir aucune espace entre l'adresse
+       IP, le <code class="literal">/</code> et la longueur du masque CIDR.
+      </p><p>
+       À la place du <em class="replaceable"><code>CIDR-address</code></em>, vous pouvez
+       écrire <code class="literal">samehost</code> pour correspondre aux adresses IP du
+       serveur ou <code class="literal">samenet</code> pour correspondre à toute adresse
+       du sous-réseau auquel le serveur est directement connecté.
+      </p><p>
+       Une plage d'adresses IPv4 spécifiée au format CIDR est typiquement
+       <code class="literal">172.20.143.89/32</code> pour un hôte seul,
+       <code class="literal">172.20.143.0/24</code> pour un petit réseau ou
+       <code class="literal">10.6.0.0/16</code> pour un réseau plus grand. Une plage
+       d'adresses IPv6 spécifiée au format CIDR est par exemple
+       <code class="literal">::1/128</code> pour un hôte seul (dans ce cas la boucle
+       locale IPv6) ou <code class="literal">fe80::7a31:c1ff:0000:0000/96</code> pour un
+       petit réseau. <code class="literal">0.0.0.0/0</code> représente toutes les adresses
+       IPv4, et <code class="literal">::0/0</code> représente l'ensemble des adresses
+       IPv6. Pour n'indiquer qu'un seul hôte, on utilise une longueur de masque
+       de 32 pour IPv4 ou 128 pour IPv6. Dans une adresse réseau, ne pas oublier
+       les zéros terminaux.
+      </p><p>
+       Une entrée donnée dans le format IPv4 correspondra seulement aux
+       connexions IPv4, et une entrée donnée dans le format IPv6 correspondra
+       seulement aux connexions IPv6, même si l'adresse représentée est dans
+       la plage IPv4-in-IPv6.
+      </p><p>
+       La valeur <code class="literal">all</code> permet de cibler n'importe quelle
+       adresse IP cliente, <code class="literal">samehost</code> n'importe quelle adresse
+       IP du serveur ou <code class="literal">samenet</code> pour toute adresse IP
+       faisant partie du même sous-réseau que le serveur.
+      </p><p>
+       Si un nom d'hôte est renseigné (dans les faits tout ce qui ne correspond pas
+       à une plage d'adresse ou une plage d'adresses IP, ni à un mot clé, sera traité
+       comme un nom d'hôte), ce nom est comparé au résultat d'une
+       résolution de nom inverse de l'adresse IP du client (ou une recherche
+       DNS inverse si un DNS est utilisé). Les comparaisons de noms d'hôtes
+       ne sont pas sensibles à la casse. En cas de correspondance, une nouvelle
+       recherche récursive de nom sera lancée afin de déterminer que
+       le nom d'hôte concorde bel et bien avec l'adresse IP du client. L'enregistrement
+       n'est validé qu'en cas de concordance entre la résolution inverse et la
+       résolution récursive pour l'adresse IP cliente. (Le nom d'hôte fourni dans
+       le fichier <code class="filename">pg_hba.conf</code> doit donc correspondre à
+       au moins l'une des adresses IP fournies par le mécanisme de résolution de
+       noms, sinon l'enregistrement ne sera pas pris en considération. Certains
+       serveurs de noms réseau permettent d'associer une adresse IP à de multiples
+       noms d'hôtes (alias DNS), mais bien souvent le système d'exploitation ne
+       retourne qu'un seul nom d'hôte lors de la résolution d'une adresse IP.)
+      </p><p>
+       Un nom d'hôte débutant par un point (<code class="literal">.</code>) ciblera le
+       suffixe du nom d'hôte du poste client. Du coup, indiquer <code class="literal">.exemple.com</code>
+       correspondra à la machine <code class="literal">foo.exemple.com</code> (mais pas
+       au client <code class="literal">exemple.com</code>).
+      </p><p>
+       Lorsque vous spécifiez des noms d'hôtes dans le fichier <code class="filename">pg_hba.conf</code>,
+       vous devez vous assurer que la résolution de noms soit raisonnablement rapide.
+       À défaut, il peut être avantageux de configurer un serveur-cache local pour
+       effectuer la résolution de noms, tel que <code class="command">nscd</code>.
+       Vous pouvez également valider le paramètre de configuration <code class="varname">log_hostname</code>
+       afin de retrouver dans les journaux le nom d'hôte du client au lieu de sa
+       simple adresse IP.
+      </p><p>
+       Ces champs ne concernent pas les enregistrements
+       <code class="literal">local</code>.
+      </p><div class="note"><h3 class="title">Note</h3><p>
+        Les utilisateurs se demandent parfois pourquoi les noms d'hôte sont
+        gérés de cette manière apparemment si compliquée, avec deux résolutions
+        de nom incluant une résolution inverse de l'adresse IP du client.  Cela
+        complique l'utilisation de cette fonctionnalité dans le cas  où l'entrée
+        de reverse-DNS n'est pas remplie ou retourne un nom d'hôte indésirable.
+        Cela est fait essentiellement pour raison d'efficacité : de cette
+        manière, une tentative de connexion nécessite au plus deux recherches de
+        résolution, dont une inversée.  S'il y a un problème de résolution avec
+        une adresse, cela devient le problème du client.  Une alternative
+        d'implémentation hypothétique qui ne ferait pas de recherche inverse se
+        verrait obligée de résoudre chaque nom d'hôte mentionné dans
+        <code class="filename">pg_hba.conf</code> à chaque tentative de connexion.  Cela
+        serait plutôt lent si de nombreux noms étaient listés.  De plus, s'il y
+        a un problème de résolution pour un seul des noms d'hôte, cela devient
+        le problème de tout le monde.
+       </p><p>
+        De plus, une résolution inverse est nécessaire pour implémenter
+        la fonctionnalité de correspondance par suffixe dans la mesure où
+        le nom d'hôte du candidat à la connexion doit être connu afin de
+        pouvoir effectuer cette comparaison.
+       </p><p>
+        Enfin, cette méthode est couramment adoptée par d'autres implémentations
+        du contrôle d'accès basé sur les noms d'hôtes, tels que le serveur web
+        Apache ou TCP-wrapper.
+       </p></div></dd><dt><span class="term"><em class="replaceable"><code>IP-address</code></em><br /></span><span class="term"><em class="replaceable"><code>IP-mask</code></em></span></dt><dd><p>
+       Ces champs peuvent être utilisés comme alternative à la notation
+       <em class="replaceable"><code>adresse IP</code></em><code class="literal">/</code><em class="replaceable"><code>longueur
+        masque</code></em>. Au lieu de spécifier la longueur
+       du masque, le masque réel est indiquée dans une colonne distincte. Par
+       exemple, <code class="literal">255.0.0.0</code> représente une longueur de masque CIDR
+       IPv4 de 8, et <code class="literal">255.255.255.255</code> représente une longueur de
+       masque de 32.
+      </p><p>
+       Ces champs ne concernent pas les enregistrements
+       <code class="literal">local</code>.
+      </p></dd><dt><span class="term"><em class="replaceable"><code>auth-method</code></em></span></dt><dd><p>
+       Indique la méthode d'authentification à utiliser lors d'une
+       connexion via cet enregistrement. Les choix possibles sont résumés ici ; les
+       détails se trouvent dans la <a class="xref" href="auth-methods.html" title="20.3. Méthodes d'authentification">Section 20.3</a>. Toutes les options
+       sont en minuscules et traitées avec une sensibilité à la casse, donc
+       même les acronymes comme <code class="literal">ldap</code> doivent être écrits
+       en minuscule.
+
+       </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">trust</code></span></dt><dd><p>
+           Autorise la connexion sans condition. Cette méthode permet à
+           quiconque peut se connecter au serveur de bases de données
+           de s'enregistrer sous n'importe quel utilisateur
+           <span class="productname">PostgreSQL</span> de son choix sans
+           mot de passe ou autre authentification. Voir la <a class="xref" href="auth-trust.html" title="20.4. Authentification trust">Section 20.4</a> pour les détails.
+          </p></dd><dt><span class="term"><code class="literal">reject</code></span></dt><dd><p>
+           Rejette la connexion sans condition. Ce cas est utile
+           pour <span class="quote">« <span class="quote">filtrer</span> »</span> certains hôtes d'un groupe, par exemple une
+           ligne <code class="literal">reject</code> peut bloquer la connexion d'un hôte
+           spécifique alors qu'une ligne plus bas permettra aux autres hôtes de
+           se connecter à partir d'un réseau spécifique.
+          </p></dd><dt><span class="term"><code class="literal">scram-sha-256</code></span></dt><dd><p>
+           Réalise une authentification SCRAM-SHA-256 afin de vérifier le
+           mot de passe utilisateur. Voir <a class="xref" href="auth-password.html" title="20.5. Authentification par mot de passe">Section 20.5</a> pour les détails.
+          </p></dd><dt><span class="term"><code class="literal">md5</code></span></dt><dd><p>
+           Réalise une authentification SCRAM-SHA-256 ou MD5 afin de vérifier le
+           mot de passe utilisateur. Voir <a class="xref" href="auth-password.html" title="20.5. Authentification par mot de passe">Section 20.5</a>
+           pour les détails.
+          </p></dd><dt><span class="term"><code class="literal">password</code></span></dt><dd><p>
+           Requiert que le client fournisse un mot de passe non chiffré pour
+           l'authentification. Comme le mot de passe est envoyé en clair sur
+           le réseau, ceci ne doit pas être utilisé sur des réseaux non
+           dignes de confiance. Voir la <a class="xref" href="auth-password.html" title="20.5. Authentification par mot de passe">Section 20.5</a> pour
+           les détails.
+          </p></dd><dt><span class="term"><code class="literal">gss</code></span></dt><dd><p>
+           Utilise GSSAPI pour authentifier l'utilisateur. Disponible uniquement
+           pour les connexions TCP/IP. Voir <a class="xref" href="gssapi-auth.html" title="20.6. Authentification GSSAPI">Section 20.6</a> pour les détails. Il peut être utilisé
+           conjointement avec le chiffrement GSSAPI.
+          </p></dd><dt><span class="term"><code class="literal">sspi</code></span></dt><dd><p>
+           Utilise SSPI pour authentifier l'utilisateur. Disponible uniquement
+           sur Windows. Voir <a class="xref" href="sspi-auth.html" title="20.7. Authentification SSPI">Section 20.7</a> pour plus de détails.
+          </p></dd><dt><span class="term"><code class="literal">ident</code></span></dt><dd><p>
+           Récupère le nom de l'utilisateur en contactant le serveur d'identification
+           sur le poste client, et vérifie que cela correspond au nom d'utilisateur de
+           base de données demandé.
+           L'authentification Ident ne peut être utilisée que pour les connexions TCP/IP.
+           Pour les connexions locales, elle sera remplacée par l'authentification peer.
+          </p></dd><dt><span class="term"><code class="literal">peer</code></span></dt><dd><p>
+           Récupère le nom d'utilisateur identifié par le système d'exploitation
+           du client et vérifie que cela correspond au nom d'utilisateur de
+           base de données demandé.
+           Peer ne peut être utilisée que pour les connexions locales.
+           Voir la <a class="xref" href="auth-peer.html" title="20.9. Authentification Peer">Section 20.9</a> ci-dessous pour les details.
+          </p></dd><dt><span class="term"><code class="literal">ldap</code></span></dt><dd><p>
+           Authentification par un serveur <acronym class="acronym">LDAP</acronym>. Voir la
+           <a class="xref" href="auth-ldap.html" title="20.10. Authentification LDAP">Section 20.10</a> pour les détails.
+          </p></dd><dt><span class="term"><code class="literal">radius</code></span></dt><dd><p>
+           Authentification par un serveur RADIUS. Voir <a class="xref" href="auth-radius.html" title="20.11. Authentification RADIUS">Section 20.11</a> pour les détails.
+          </p></dd><dt><span class="term"><code class="literal">cert</code></span></dt><dd><p>
+           Authentification par certificat client SSL. Voir
+           <a class="xref" href="auth-cert.html" title="20.12. Authentification de certificat">Section 20.12</a> pour les détails.
+          </p></dd><dt><span class="term"><code class="literal">pam</code></span></dt><dd><p>
+           Authentification par les Pluggable Authentification Modules (PAM)
+           fournis par le système d'exploitation. Voir la <a class="xref" href="auth-pam.html" title="20.13. Authentification PAM">Section 20.13</a>
+           pour les détails.
+          </p></dd><dt><span class="term"><code class="literal">bsd</code></span></dt><dd><p>
+           Authentification utilisant le service BSD Authentication fourni par
+           le système d'exploitation. Voir <a class="xref" href="auth-bsd.html" title="20.14. Authentification BSD">Section 20.14</a> pour plus
+           de détails.
+          </p></dd></dl></div><p>
+      </p></dd><dt><span class="term"><em class="replaceable"><code>auth-options</code></em></span></dt><dd><p>
+       Après le champ <em class="replaceable"><code>auth-method</code></em>, on peut trouver
+       des champs de la forme
+       <em class="replaceable"><code>nom</code></em><code class="literal">=</code><em class="replaceable"><code>valeur</code></em>
+       qui spécifient des options pour la méthode d'authentification. Les
+       détails sur les options disponibles apparaissent ci-dessous pour chaque
+       méthode d'authentification.
+      </p><p>
+       En plus des options spécifiques à une méthode listées ci-dessous, il
+       existe une option d'authentification indépendante de la méthode,
+       appelée <code class="literal">clientcert</code>, qui peut être indiquée dans tout
+       enregistrement <code class="literal">hostssl</code>.
+       Cette option peut être positionnée à <code class="literal">verify-ca</code> ou
+       <code class="literal">verify-full</code>. Ces deux options nécessitent que le
+       client présente un certificat valide (de confiance), alors que
+       <code class="literal">verify-full</code> valide également que le
+       <code class="literal">cn</code> (Common Name) dans le certificat corresponde au
+       nom d'utilisateur ou a une correspondance adéquate.
+       Ce comportement est similaire à la méthode d'authentification <code class="literal">cert</code>
+       (voir <a class="xref" href="auth-cert.html" title="20.12. Authentification de certificat">Section 20.12</a> ) mais autorise à appairer la
+       vérification du certificat client avec toute méthode d'authentification
+       qui supporte les entrées <code class="literal">hostssl</code>.
+      </p><p>
+       Pour tous les enregistrements utilisant une authentification par
+       certificat client (autrement dit, ceux qui utilisent la méthode
+       d'authentification <code class="literal">cert</code> ou ceux utilisant l'option
+       <code class="literal">clientcert</code>), vous pouvez indiquer quel partie du
+       certificat client doit faire correspondance en utilisant l'option
+       <code class="literal">clientname</code>. Cette option doit avoir une valeur
+       parmi deux. Si vous indiquez <code class="literal">clientname=CN</code>, qui est
+       le comportement par défait, le nom de l'utilisateur doit établir une
+       correspondance avec le <code class="literal">Common Name (CN)</code> du
+       certificat. Si vous indiquez à la place
+       <code class="literal">clientname=DN</code>, le nom de l'utilisateur doit faire
+       une correspondance avec le <code class="literal">Distinguished Name
+       (DN)</code> entier du certificat. Cette option est probablement
+       mieux utilisée en conjonction avec une carte de noms d'utilisateurs.
+       La comparaison est faire avec le <code class="literal">DN</code> au format
+       <a class="ulink" href="https://datatracker.ietf.org/doc/html/rfc2253" target="_top">RFC 2253</a>.
+       Pour voir le <code class="literal">DN</code> d'un certificat client dans ce
+       format, faire
+</p><pre class="programlisting">
+openssl x509 -in myclient.crt -noout -subject -nameopt RFC2253 | sed "s/^subject=//"
+</pre><p>
+        Il est important de faire attention lors de l'utilisation de cette
+        option, tout spécialement lors de l'utilisation d'expression
+        rationnelle avec le <code class="literal">DN</code>.
+      </p></dd><dt><span class="term"><code class="literal">include</code></span></dt><dd><p>
+       Cette ligne sera remplacée par le contenu du fichier indiqué.
+      </p></dd><dt><span class="term"><code class="literal">include_if_exists</code></span></dt><dd><p>
+       Cette ligne sera remplacée par le contenu du fichier indiqué si le
+       fichier existe. Sinon, un message est tracé pour indiquer que le fichier
+       a été ignoré.
+      </p></dd><dt><span class="term"><code class="literal">include_dir</code></span></dt><dd><p>
+       Cette ligne sera remplacée par le contenu de tous les fichiers trouvés
+       dans le répertoire, s'ils ne commencent pas avec un
+       <code class="literal">.</code> et s'ils finissent avec <code class="literal">.conf</code>.
+       Ils sont traités dans l'ordre des noms de fichier (suivant les règles
+       de la locale C, autrement dit les chiffres avant les lettres, les
+       majuscules avant les minuscules).
+      </p></dd></dl></div><p>
+  </p><p>
+   Les fichiers inclus par les constructions <code class="literal">@</code> sont lus comme des
+   listes de noms, séparés soit par des espaces soit par
+   des virgules. Les commentaires sont introduits par le caractère
+   <code class="literal">#</code> comme dans <code class="filename">pg_hba.conf</code>, et les
+   constructions <code class="literal">@</code> imbriquées sont autorisées. À moins
+   que le nom du fichier qui suit <code class="literal">@</code> ne soit un chemin absolu,
+   il est supposé relatif au répertoire contenant le fichier le référençant.
+  </p><p>
+   Les enregistrements du fichier <code class="filename">pg_hba.conf</code> sont
+   examinés séquentiellement à chaque tentative de connexion, l'ordre des
+   enregistrements est donc significatif. Généralement, les premiers enregistrements
+   ont des paramètres d'interception de connexions stricts et des méthodes
+   d'authentification peu restrictives tandis que les
+   enregistrements suivants ont des paramètres plus larges et des méthodes
+   d'authentification plus fortes. Par exemple, on peut souhaiter utiliser
+   l'authentification <code class="literal">trust</code> pour les connexions TCP/IP locales mais
+   demander un mot de passe pour les connexion TCP/IP distantes. Dans ce cas,
+   l'enregistrement précisant une authentification <code class="literal">trust</code> pour les
+   connexions issues de 127.0.0.1 apparaît avant un enregistrement indiquant
+   une authentification par mot de passe pour une plage plus étendue d'adresses IP
+   client autorisées.
+  </p><div class="tip"><h3 class="title">Astuce</h3><p>
+    Pour se connecter à une base particulière, un utilisateur doit non
+    seulement passer les vérifications de <code class="filename">pg_hba.conf</code> mais doit
+    également avoir le droit <code class="literal">CONNECT</code> sur cette base. Pour
+    contrôler qui peut se connecter à quelles bases, il est en général plus
+    facile de le faire en donnant ou retirant le privilège
+    <code class="literal">CONNECT</code> plutôt qu'en
+    plaçant des règles dans le fichier <code class="filename">pg_hba.conf</code>.
+   </p></div><p>
+   Quelques exemples d'entrées de <code class="filename">pg_hba.conf</code> sont
+   donnés ci-dessous dans l'<a class="xref" href="auth-pg-hba-conf.html#EXAMPLE-PG-HBA.CONF" title="Exemple 20.1. Exemple d'entrées de pg_hba.conf">Exemple 20.1</a>. Voir la
+   section suivante pour les détails des méthodes d'authentification.  </p><div class="example" id="EXAMPLE-PG-HBA.CONF"><p class="title"><strong>Exemple 20.1. Exemple d'entrées de <code class="filename">pg_hba.conf</code></strong></p><div class="example-contents"><pre class="programlisting"># Permettre à n'importe quel utilisateur du système local de se connecter
+# à la base de données sous n'importe quel nom d'utilisateur au travers
+# des sockets de domaine Unix (par défaut pour les connexions locales).
+#
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+local   all             all                                     trust
+
+# La même chose en utilisant les connexions TCP/IP locales loopback.
+#
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+host    all             all             127.0.0.1/32            trust
+
+# Pareil mais en utilisant une colonne netmask distincte.
+#
+# TYPE  DATABASE    USER        IP-ADDRESS          IP-mask              METHOD
+host    all         all         127.0.0.1           255.255.255.255      trust
+
+# Pareil mais en IPv6.
+#
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+host    all             all             ::1/128                 trust
+
+# À l'identique en utilisant le nom d'hôte (qui doit typiquement fonctionner en IPv4 et IPv6).
+#
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+host    all             all             localhost               trust
+
+# La même chose en utilisant une expression rationnelle pour DATABASE, qui
+# permet la connexion à toute base de données dont le
+# nom commence avec db et finit avec un numéro utilisant deux à quatre chiffres
+# (comme "db1234" ou "db12").
+#
+# TYPE  DATABASE        USER            ADDRESS          METHOD
+local   "/^db\d{2,4}$"  all             localhost        trust
+
+# Permettre à n'importe quel utilisateur de n'importe quel hôte d'adresse IP
+# 192.168.93.x de se connecter à la base de données "postgres" sous le nom
+# d'utilisateur qu'ident signale à la connexion (généralement le
+# nom utilisateur du système d'exploitation).
+#
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+host    postgres        all             192.168.93.0/24         ident
+
+# Permet à un utilisateur de l'hôte 192.168.12.10 de se connecter à la base de
+# données "postgres" si le mot de passe de l'utilisateur est correctement fourni.
+#
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+host    postgres        all             192.168.12.10/32        scram-sha-256
+
+# Permet la connexion à n'importe quel utilisateur depuis toutes les machines du
+# domaine exemple.com à n'importe quelle base de données si le mot de passe
+# correct est fourni.
+#
+# Exige l'authentification SCRAM pour la plupart des utilisateurs, exception
+# faite pour l'utilisateur "mike", qui utilise un client plus ancien ne prenant
+# pas en charge l'authentification SCRAM.
+#
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+host    all             mike            .example.com            md5
+host    all             all             .example.com            scram-sha-256
+
+# Si aucune ligne "host" ne précède, ces trois lignes rejettent toutes
+# les connexions en provenance de 192.168.54.1 (puisque cette entrée déclenche
+# en premier), mais autorisent les connexions chiffrées GSSAPI de n'importe où
+# ailleurs sur l'Internet. Le masque zéro signifie qu'aucun bit de l'ip de
+# l'hôte n'est considéré, de sorte à correspondre à tous les hôtes. Les
+# connexions GSSAPI non chiffrée (qui "échouent" jusqu'à la troisième ligne
+# puisque "hostgssenc" ne correspond qu'aux connections GSSAPI chiffrées) sont
+# autorisées, mais seulement depuis 192.168.12.10.
+#
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+host    all             all             192.168.54.1/32         reject
+hostgssenc all          all             0.0.0.0/0               gss
+host    all             all             192.168.12.10/32        gss
+
+# Permettre à tous les utilisateurs de se connecter depuis 192.168.x.x à n'importe
+# quelle base de données s'ils passent la vérification d'identification. Si,
+# par exemple, ident indique que l'utilisateur est "bryanh" et qu'il
+# demande à se connecter en tant qu'utilisateur PostgreSQL "guest1", la
+# connexion n'est permise que s'il existe une entrée dans pg_ident.conf pour la
+# correspondance "omicron" disant que "bryanh" est autorisé à se connecter en
+# tant que "guest1".
+#
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+host    all             all             192.168.0.0/16          ident map=omicron
+
+# Si ces quatre lignes traitent seules les connexions locales, elles
+# n'autorisent les utilisateurs locaux qu'à se connecter à leur propre
+# base de données (base avec le même nom que leur nom d'utilisateur)
+# sauf pour les utilisateurs dont le nom finit par "helpdesk", les
+# administrateurs et membres du rôle "support", qui peuvent se connecter à
+# toutes les bases de données. Le fichier $PGDATA/admins contient une liste
+# de noms d'administrateurs. Les mots de passe sont requis dans tous les cas.
+#
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+local   sameuser        all                                     md5
+local   all             @admins                                 md5
+local   all             +support                                md5
+
+# Les deux dernières lignes ci-dessus peuvent être combinées en une seule ligne :
+local   all         @admins,+support                  md5
+
+# La colonne database peut aussi utiliser des listes et des noms de fichiers :
+local   db1,db2,@demodbs  all                         md5</pre></div></div><br class="example-break" /></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/auth-pg-hba-conf.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+</html>

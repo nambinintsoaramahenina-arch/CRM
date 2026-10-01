@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/rangetypes.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:26 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>8.17. Types intervalle de valeurs</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="rowtypes.html" title="8.16. Types composites" /><link rel="next" href="domains.html" title="8.18. Types domaine" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/rangetypes.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/rangetypes.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/rangetypes.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/rangetypes.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/rangetypes.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/rangetypes.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/rangetypes.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/rangetypes.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/rangetypes.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/rangetypes.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/rangetypes.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/rangetypes.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/rangetypes.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/rangetypes.html">9.2</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/rangetypes.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="datatype.html">Types de données</a></span> » <span class="breadcrumb-node">Types intervalle de valeurs</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="rowtypes.html" title="8.16. Types composites">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="datatype.html" title="Chapitre 8. Types de données">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="domains.html" title="8.18. Types domaine">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">8.16. Types composites </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 8.18. Types domaine</td></tr></table></div><div class="sect1" id="RANGETYPES"><div class="titlepage"><div><div><h2 class="title" style="clear: both">8.17. Types intervalle de valeurs <a href="#RANGETYPES" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="rangetypes.html#RANGETYPES-BUILTIN">8.17.1. Types internes d'intervalle de valeurs range et multirange</a></span></dt><dt><span class="sect2"><a href="rangetypes.html#RANGETYPES-EXAMPLES">8.17.2. Exemples</a></span></dt><dt><span class="sect2"><a href="rangetypes.html#RANGETYPES-INCLUSIVITY">8.17.3. Bornes inclusives et exclusives</a></span></dt><dt><span class="sect2"><a href="rangetypes.html#RANGETYPES-INFINITE">8.17.4. Intervalles de valeurs infinis (sans borne)</a></span></dt><dt><span class="sect2"><a href="rangetypes.html#RANGETYPES-IO">8.17.5. Saisie/affichage d'intervalle de valeurs</a></span></dt><dt><span class="sect2"><a href="rangetypes.html#RANGETYPES-CONSTRUCT">8.17.6. Construire des intervalles de valeurs ranges et multiranges</a></span></dt><dt><span class="sect2"><a href="rangetypes.html#RANGETYPES-DISCRETE">8.17.7. Types intervalle de valeurs discrètes</a></span></dt><dt><span class="sect2"><a href="rangetypes.html#RANGETYPES-DEFINING">8.17.8. Définir de nouveaux types intervalle de valeurs</a></span></dt><dt><span class="sect2"><a href="rangetypes.html#RANGETYPES-INDEXING">8.17.9. Indexation</a></span></dt><dt><span class="sect2"><a href="rangetypes.html#RANGETYPES-CONSTRAINT">8.17.10. Contraintes sur les intervalles de valeurs</a></span></dt></dl></div><a id="id-1.5.7.25.2" class="indexterm"></a><a id="id-1.5.7.25.3" class="indexterm"></a><a id="id-1.5.7.25.4" class="indexterm"></a><p>
+  Les types intervalle de valeurs sont des types de données représentant un
+  intervalle de valeurs d'un certain type d'élément (appelé
+  <em class="firstterm">sous-type</em> de l'intervalle). Par exemple, des
+  intervalles de <code class="type">timestamp</code> pourraient être utilisés pour
+  représenter les intervalles de temps durant lesquels une salle de réunion
+  est réservée. Dans ce cas, le type de données est <code class="type">tsrange</code>
+  (la version abrégée de <span class="quote">« <span class="quote">timestamp range</span> »</span>), et
+  <code class="type">timestamp</code> est le sous-type. Le sous-type doit avoir un tri
+  complet pour que les valeurs d'élément incluses soient bien définies, avant
+  ou après l'intervalle de valeurs.
+ </p><p>
+  Les types intervalle de valeurs sont utiles parce qu'ils représentent de nombreuses
+  valeurs d'élément en une seule valeur d'intervalle, et que des concepts
+  comme le chevauchement d'intervalles peuvent être exprimés clairement.
+  L'utilisation d'intervalle de temps et de date pour des besoins de
+  planification est l'exemple le plus parlant ; mais les intervalles de
+  prix, intervalles de mesure pour un instrument et ainsi de suite
+  peuvent également être utiles.
+ </p><p>
+  Chaque type range dispose d'un type multirange correspondant. Un multirange est
+  une liste triée de ranges non contigus, non vides et non NULL. La plupart des
+  opérateurs ranges fonctionnent aussi sur les multiranges, et ils ont quelques
+  fonctions à eux.
+ </p><div class="sect2" id="RANGETYPES-BUILTIN"><div class="titlepage"><div><div><h3 class="title">8.17.1. Types internes d'intervalle de valeurs range et multirange <a href="#RANGETYPES-BUILTIN" class="id_link">#</a></h3></div></div></div><p>
+   PostgreSQL fournit nativement les types intervalle de valeurs suivants :
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      <code class="type">INT4RANGE</code>  --  Intervalle d'<code class="type">integer</code>,
+       <code class="type">int4multirange</code>  --  correspondance Multirange
+     </p></li><li class="listitem"><p>
+      <code class="type">INT8RANGE</code>  --  Intervalle de <code class="type">bigint</code>,
+       <code class="type">int8multirange</code>  --  correspondance Multirange
+     </p></li><li class="listitem"><p>
+      <code class="type">NUMRANGE</code>  --  Intervalle de <code class="type">numeric</code>,
+       <code class="type">nummultirange</code>  --  correspondance Multirange
+     </p></li><li class="listitem"><p>
+      <code class="type">TSRANGE</code>  --  Intervalle de <code class="type">timestamp without time zone</code>,
+       <code class="type">tsmultirange</code>  --  correspondance Multirange
+     </p></li><li class="listitem"><p>
+      <code class="type">TSTZRANGE</code>  --  Intervalle de <code class="type">timestamp with time zone</code>,
+       <code class="type">tstzmultirange</code>  --  correspondance Multirange
+     </p></li><li class="listitem"><p>
+      <code class="type">DATERANGE</code>  --  Intervalle de <code class="type">date</code>,
+       <code class="type">datemultirange</code>  --  correspondance Multirange
+     </p></li></ul></div><p>
+   Vous pouvez en plus définir vos propres types intervalle de valeurs ;
+   voir <a class="xref" href="sql-createtype.html" title="CREATE TYPE"><span class="refentrytitle">CREATE TYPE</span></a> pour plus d'informations.
+  </p></div><div class="sect2" id="RANGETYPES-EXAMPLES"><div class="titlepage"><div><div><h3 class="title">8.17.2. Exemples <a href="#RANGETYPES-EXAMPLES" class="id_link">#</a></h3></div></div></div><p>
+   </p><pre class="programlisting">
+CREATE TABLE reservation (room int, during tsrange);
+INSERT INTO reservation VALUES
+  ( 1108, '[2010-01-01 14:30, 2010-01-01 15:30)' );
+
+-- Inclusion
+SELECT int4range(10, 20) @&gt; 3;
+
+-- Chevauchement
+SELECT numrange(11.1, 22.2) &amp;&amp; numrange(20.0, 30.0);
+
+-- Extraire la borne inférieure
+SELECT upper(int8range(15, 25));
+
+-- Calculer l'intersection
+SELECT int4range(10, 20) * int4range(15, 25);
+
+-- Est-ce que l'intervalle est vide ?
+SELECT isempty(numrange(1, 5));
+   </pre><p>
+
+   Voir <a class="xref" href="functions-range.html#RANGE-OPERATORS-TABLE" title="Tableau 9.56. Opérateurs sur les intervalles simples">Tableau 9.56</a>
+   et <a class="xref" href="functions-range.html#RANGE-FUNCTIONS-TABLE" title="Tableau 9.58. Fonctions sur intervalles simples">Tableau 9.58</a> pour la liste complète des
+   opérateurs et fonctions sur les types intervalle de valeurs.
+  </p></div><div class="sect2" id="RANGETYPES-INCLUSIVITY"><div class="titlepage"><div><div><h3 class="title">8.17.3. Bornes inclusives et exclusives <a href="#RANGETYPES-INCLUSIVITY" class="id_link">#</a></h3></div></div></div><p>
+   Chaque intervalle de valeurs non vide a deux bornes, la borne inférieure et
+   la borne supérieure. Tous les points entre ces valeurs sont inclus dans
+   l'intervalle.
+   Une borne inclusive signifie que le point limite lui-même est également
+   inclus dans l'intervalle, alors qu'une borne exclusive signifie que ce point
+   limite n'est pas inclus dans l'intervalle.
+  </p><p>
+   Dans un intervalle affiché sous la forme de texte, une borne inclusive
+   inférieure est représentée par <span class="quote">« <span class="quote"><code class="literal">[</code></span> »</span> tandis
+   qu'une borne exclusive inférieure est représentée par
+   <span class="quote">« <span class="quote"><code class="literal">(</code></span> »</span>. De la même façon, une borne inclusive
+   supérieure est représentée par <span class="quote">« <span class="quote"><code class="literal">]</code></span> »</span> tandis
+   qu'une borne exclusive supérieure est représentée par
+   <span class="quote">« <span class="quote"><code class="literal">)</code></span> »</span>.
+   (Voir <a class="xref" href="rangetypes.html#RANGETYPES-IO" title="8.17.5. Saisie/affichage d'intervalle de valeurs">Section 8.17.5</a> pour plus de détails.)
+  </p><p>
+   Les fonctions <code class="literal">lower_inc</code> et
+   <code class="literal">upper_inc</code> testent respectivement si les bornes
+   inférieures et supérieures d'une valeur d'intervalle sont inclusives.
+  </p></div><div class="sect2" id="RANGETYPES-INFINITE"><div class="titlepage"><div><div><h3 class="title">8.17.4. Intervalles de valeurs infinis (sans borne) <a href="#RANGETYPES-INFINITE" class="id_link">#</a></h3></div></div></div><p>
+   La limite basse d'un intervalle peut être omise, signifiant que toutes les
+   valeurs inférieures à la limite haute sont incluses dans l'intervalle, par
+   exemple <code class="literal">(,3]</code>. De la même façon, si la limite haute d'un
+   intervalle est omise, alors toutes les valeurs supérieures à la limite
+   basse sont incluses dans l'intervalle. Si les limites basse et haute sont
+   omises, toutes les valeurs du type de l'élément sont considérées faire
+   partie de l'intervalle. Indiquer une limite manquante comme inclus fait
+   qu'elle est automatique convertie en exclus, autrement dit
+   <code class="literal">[,]</code> est converti en <code class="literal">(,)</code>. Vous pouvez
+   penser à ces valeurs manquantes comme +/-infinity, mais ce sont des valeurs
+   spéciales du type intervalle et sont considérées au delà des valeurs
+   +/-infinity du type de l'élément.
+  </p><p>
+   Les types de l'élément qui ont une notion de <span class="quote">« <span class="quote">infinity</span> »</span>
+   peuvent les utiliser comme limites explicites. Par exemple, pour les
+   intervalles du type timestamp, <code class="literal">[today,infinity)</code> exclut
+   la valeur <code class="literal">infinity</code> du type <code class="type">timestamp</code>, alors
+   que <code class="literal">[today,infinity]</code> l'inclut, comme le font
+   <code class="literal">[today,)</code> et <code class="literal">[today,]</code>.
+  </p><p>
+   Les fonctions <code class="literal">lower_inf</code>
+   et <code class="literal">upper_inf</code> testent respectivement si
+   les bornes inférieure et supérieure sont infinies.
+  </p></div><div class="sect2" id="RANGETYPES-IO"><div class="titlepage"><div><div><h3 class="title">8.17.5. Saisie/affichage d'intervalle de valeurs <a href="#RANGETYPES-IO" class="id_link">#</a></h3></div></div></div><p>
+   La saisie d'un intervalle de valeurs doit suivre un des modèles suivants:
+   </p><pre class="synopsis">
+(<em class="replaceable"><code>borne-inférieure</code></em>,<em class="replaceable"><code>borne-supérieure</code></em>)
+(<em class="replaceable"><code>borne-inférieure</code></em>,<em class="replaceable"><code>borne-supérieure</code></em>]
+[<em class="replaceable"><code>borne-inférieure</code></em>,<em class="replaceable"><code>borne-supérieure</code></em>)
+[<em class="replaceable"><code>borne-inférieure</code></em>,<em class="replaceable"><code>borne-supérieure</code></em>]
+empty
+   </pre><p>
+   Les parenthèses ou crochets indiquent si les bornes inférieure et supérieure
+   sont exclusives ou inclusives, comme décrit précédemment.
+   Notez que le modèle final est <code class="literal">empty</code>, ce qui représente un
+   intervalle vide (un intervalle qui ne contient aucun point).
+  </p><p>
+   La <em class="replaceable"><code>borne-inférieure</code></em> peut être une chaîne
+   de caractères valide pour la saisie du sous-type, ou vide pour indiquer
+   qu'il n'y a pas de borne inférieure. De la même façon, la
+   <em class="replaceable"><code>borne-supérieure</code></em> peut être une chaîne de caractères
+   valide pour la saisie du sous-type, ou vide pour indiquer qu'il n'y a pas de
+   borne supérieure.
+  </p><p>
+   Chaque borne peut être protégée en entourant la valeur de guillemet double
+   (<code class="literal">"</code>). C'est nécessaire si la valeur de borne contient des
+   parenthèses, crochets, virgules, guillemets doubles, antislash, puisque, sans
+   cela, ces caractères seraient considérés comme faisant partie de la
+   syntaxe de l'intervalle de valeurs. Pour mettre un guillemet double ou un antislash
+   dans une valeur de borne protégée, faites-le précéder d'un antislash.
+   (Une paire de guillemets doubles dans une borne protégée est également
+   valable pour représenter un caractère guillemet double, de la même manière
+   que la règle pour les guillemets simples dans les chaînes SQL littérales.)
+   Vous pouvez éviter l'emploi des guillemets doubles en échappant avec un
+   antislash tous les caractères qui, sans cela, seraient pris comme une syntaxe
+   d'intervalle de valeurs. De plus, pour écrire une valeur de borne qui est une chaîne
+   vide, écrivez <code class="literal">""</code>, puisque ne rien écrire signifie
+   une borne infinie.
+  </p><p>
+   Des espaces sont autorisés avant et après la valeur de borne, mais
+   chaque espace entre les parenthèses ou les crochets fera partie de la
+   valeur de limite inférieure ou supérieure. (Selon le type d'élément, cela
+   peut être ou ne pas être significatif.)
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    Ces règles sont très proches de celles de l'écriture de valeurs de
+    champs pour les types composites. Voir <a class="xref" href="rowtypes.html#ROWTYPES-IO-SYNTAX" title="8.16.6. Syntaxe en entrée et sortie d'un type composite">Section 8.16.6</a>
+    pour des commentaires supplémentaires.
+   </p></div><p>
+   Exemples :
+   </p><pre class="programlisting">
+-- inclut 3, n'inclut pas 7, et inclut tous les points entre
+SELECT '[3,7)'::int4range;
+
+-- n'inclut ni 3 ni 7, mais inclut tous les points entre
+SELECT '(3,7)'::int4range;
+
+-- n'inclut que l'unique point 4
+SELECT '[4,4]'::int4range;
+
+-- n'inclut aucun point (et sera normalisé à 'empty')
+SELECT '[4,4)'::int4range;
+   </pre><p>
+  </p><p>
+   La saisie d'un multirange se fait avec des accolades (<code class="literal">{</code> et
+   <code class="literal">}</code>) contenant zéro ou plusieurs ranges valides, séparés
+   par des virgules. Les espaces blancs sont autorisés autour des accolades et des
+   virgules. Ceci a pour but de rappeler la syntaxe des tableaux, bien que les
+   multiranges sont bien plus simples : ils ont juste une dimension et il n'est
+   pas nécessaire de mettre entre guillemets leur contenu. (Les limites de leur ranges
+   pourraient être mises entre guillemets néanmoins.)
+  </p><p>
+  Exemples :
+</p><pre class="programlisting">
+SELECT '{}'::int4multirange;
+SELECT '{[3,7)}'::int4multirange;
+SELECT '{[3,7), [8,9)}'::int4multirange;
+</pre><p>
+  </p></div><div class="sect2" id="RANGETYPES-CONSTRUCT"><div class="titlepage"><div><div><h3 class="title">8.17.6. Construire des intervalles de valeurs ranges et multiranges <a href="#RANGETYPES-CONSTRUCT" class="id_link">#</a></h3></div></div></div><p>
+   Chaque type intervalle de valeurs a une fonction constructeur du même nom que
+   le type intervalle. Utiliser le constructeur est souvent plus pratique
+   que d'écrire une constante d'intervalle littérale puisque cela évite
+   d'avoir à ajouter des guillemets doubles sur les valeurs de borne. Le
+   constructeur accepte deux ou trois arguments. La forme à deux arguments
+   construit un intervalle dans sa forme standard (borne inférieure inclusive,
+   borne supérieure exclusive), alors que la version à trois arguments construit
+   un intervalle avec des bornes de la forme spécifiée par le troisième argument.
+   Le troisième argument doit être la chaîne
+   <span class="quote">« <span class="quote"><code class="literal">()</code></span> »</span>,
+   <span class="quote">« <span class="quote"><code class="literal">(]</code></span> »</span>,
+   <span class="quote">« <span class="quote"><code class="literal">[)</code></span> »</span> ou
+   <span class="quote">« <span class="quote"><code class="literal">[]</code></span> »</span>.
+   Par exemple :
+
+   </p><pre class="programlisting">
+-- La forme complète est : borne inférieure, borne supérieure et argument texte indiquant
+-- inclusivité/exclusivité des bornes.
+SELECT numrange(1.0, 14.0, '(]');
+
+-- Si le troisième argument est omis, '[)' est supposé.
+SELECT numrange(1.0, 14.0);
+
+-- Bien que  '(]' soit ici spécifié, à l'affichage la valeur sera convertie en sa forme
+-- canonique puisque int8range est un type intervalle discret (voir ci-dessous).
+SELECT int8range(1, 14, '(]');
+
+-- Utiliser NULL pour n'importe laquelle des bornes a pour effet de ne pas avoir de borne de ce côté.
+SELECT numrange(NULL, 2.2);
+</pre><p>
+  </p><p>
+   Chaque type range a aussi un constructeur multirange du même nom que le type
+   multirange. La fonction constructeur prend zéro ou plus d'argumentsqui
+   sont tous des intervalles du type approprié.
+   Par exemple :
+
+</p><pre class="programlisting">
+SELECT nummultirange();
+SELECT nummultirange(numrange(1.0, 14.0));
+SELECT nummultirange(numrange(1.0, 14.0), numrange(20.0, 25.0));
+   </pre><p>
+  </p></div><div class="sect2" id="RANGETYPES-DISCRETE"><div class="titlepage"><div><div><h3 class="title">8.17.7. Types intervalle de valeurs discrètes <a href="#RANGETYPES-DISCRETE" class="id_link">#</a></h3></div></div></div><p>
+   Un type d'intervalle de valeurs discrètes est un intervalle dont le type
+   d'élément a un <span class="quote">« <span class="quote">pas</span> »</span> bien défini, comme <code class="type">integer</code> ou
+   <code class="type">date</code>. Pour ces types, deux éléments peuvent être dits
+   comme étant adjacents, quand il n'y a pas de valeur valide entre eux.
+   Cela contraste avec des intervalles continus, où il y a toujours (ou
+   presque toujours) des valeurs d'autres éléments possibles à identifier
+   entre deux valeurs données. Par exemple, un intervalle de type
+   <code class="type">numeric</code> est continu, comme l'est un intervalle de type
+   <code class="type">timestamp</code>. (Même si <code class="type">timestamp</code> a une limite
+   de précision, et pourrait théoriquement être traité comme discret, il
+   est préférable de le considérer comme continu puisque la taille du pas
+   n'a normalement pas d'intérêt.)
+  </p><p>
+   Une autre façon d'imaginer un type d'intervalle de valeurs discrètes est qu'il
+   est possible de déterminer clairement une valeur <span class="quote">« <span class="quote">suivante</span> »</span> ou
+   <span class="quote">« <span class="quote">précédente</span> »</span> pour chaque valeur d'élément. En sachant cela,
+   il est possible de convertir des représentations inclusives et exclusives
+   d'une borne d'intervalle, en choisissant la valeur d'élément suivante
+   ou précédente à la place de celle d'origine.
+   Par exemple, dans un type d'intervalle entier, <code class="literal">[4,8]</code>
+   et <code class="literal">(3,9)</code> représentent le même ensemble de valeurs,
+   mais cela ne serait pas le cas pour un intervalle de numeric.
+  </p><p>
+   Un type d'intervalle discret devrait avoir une fonction de
+   <em class="firstterm">mise en forme canonique</em> consciente de la taille
+   du pas désiré pour le type d'élément. La fonction de mise en forme canonique
+   est chargée de convertir des valeurs équivalentes du type d'intervalle
+   pour avoir des représentations identiques, surtout aux voisinages de bornes
+   inclusives ou exclusives.
+   Si une fonction de mise en forme canonique n'est pas spécifiée, alors les
+   intervalles de notations différentes seront toujours traités comme étant
+   différents, même s'ils peuvent en réalité représenter le même ensemble
+   de valeurs.
+  </p><p>
+   Les types d'intervalle prédéfinis <code class="type">int4range</code>, <code class="type">int8range</code>,
+   et <code class="type">daterange</code> utilisent tous une forme canonique qui inclut
+   les bornes inférieures et exclut les bornes supérieures ; c'est-à-dire
+   <code class="literal">[)</code>. Les types intervalles définis par l'utilisateur
+   peuvent cependant utiliser d'autres conventions.
+  </p></div><div class="sect2" id="RANGETYPES-DEFINING"><div class="titlepage"><div><div><h3 class="title">8.17.8. Définir de nouveaux types intervalle de valeurs <a href="#RANGETYPES-DEFINING" class="id_link">#</a></h3></div></div></div><p>
+   Les utilisateurs peuvent définir leurs propres types intervalle de valeurs.
+   La raison la plus commune de le faire est d'utiliser des intervalles de
+   sous-types non prédéfinis.
+   Par exemple, pour définir un nouveau type d'intervalle de valeurs du
+   sous-type <code class="type">float8</code> :
+
+   </p><pre class="programlisting">
+CREATE TYPE floatrange AS RANGE (
+  subtype = float8,
+  subtype_diff = float8mi
+);
+
+SELECT '[1.234, 5.678]'::floatrange;
+   </pre><p>
+
+   Puisque <code class="type">float8</code> n'a pas de <span class="quote">« <span class="quote">pas</span> »</span> significatif,
+   nous ne définissons pas de fonction de mise en forme canonique dans
+   cet exemple.
+  </p><p>
+   Quand vous définissez votre propre intervalle, vous obtenez automatiquement un
+   type multirange correspondant.
+  </p><p>
+   Définir votre propre type intervalle vous permet aussi de spécifier une
+   classe différente d'opérateur ou un collationnement différent, à utiliser,
+   pour modifier l'ordre de tri qui détermine les valeurs tombant dans un
+   intervalle donné.
+  </p><p>
+   Si l'on considère que le sous-type est discret plutôt que continu, la
+   commande <code class="command">CREATE TYPE</code> devrait spécifier une fonction
+   <code class="literal">canonique</code>.
+   La fonction de mise en forme canonique prend une valeur d'intervalle en
+   entrée, et doit retourner une valeur d'intervalle équivalente qui peut avoir
+   des bornes et une représentation différente.
+   Les sorties canoniques  de deux intervalles qui représentent le même ensemble
+   de valeurs, par exemple les intervalles d'entier <code class="literal">[1, 7]</code> 
+   et <code class="literal">[1,8)</code> doivent être identiques.  La représentation choisie
+   n'a pas d'importance, du moment que deux valeurs équivalentes avec des
+   représentations différentes sont toujours liées à la même valeur avec la
+   même représentation. En plus d'ajuster le format des bornes inclusives
+   et exclusives, une fonction de mise en forme canonique peut arrondir une
+   valeur de borne, dans le cas où la taille de pas désirée est plus grande
+   que ce que le sous-type est capable de stocker. Par exemple, un intervalle
+   de <code class="type">timestamp</code> pourrait être défini pour avoir une taille de pas
+   d'une heure, et dans ce cas la fonction de mise en forme canonique nécessiterait
+   d'arrondir les bornes qui ne sont pas multiples d'une heure, ou peut-être
+   déclencher une erreur à la place.
+  </p><p>
+   De plus, tout type intervalle devant être utilisé avec des index GiST ou
+   SP-GiST doit définir une différence de sous-type ou une fonction
+   <code class="literal">subtype_diff</code>. (L'index fonctionnera toujours sans
+   fonction <code class="literal">subtype_diff</code>, mais il y a de fortes chances
+   qu'il soit considérablement moins efficace qu'avec une fonction de
+   différence.) La fonction de différence du sous-type prend deux valeurs en
+   entrée et renvoie leur différence (par exemple,
+   <em class="replaceable"><code>X</code></em> moins <em class="replaceable"><code>Y</code></em>)
+   représentée sous la forme d'une valeur de type <code class="type">float8</code>. Dans
+   notre exemple ci-dessus, la fonction <code class="function">float8mi</code> qui
+   soutient l'opérateur moins du type <code class="type">float8</code> peut être
+   utilisée ; mais pour tout autre sous-type, une conversion de type
+   serait nécessaire. Un peu de créativité peut se révéler nécessaire pour
+   représenter la différence sous une forme numérique. Dans la mesure du
+   possible, la fonction <code class="literal">subtype_diff</code> devrait être en
+   accord avec l'ordre de tri impliqué par la classe d'opérateurs et le
+   collationnement sélectionnés ; autrement dit, son résultat doit être
+   positif quand le premier argument est supérieur au second d'après l'ordre
+   de tri.
+  </p><p>
+   Voici un exemple moins simplifié d'une fonction
+   <code class="literal">subtype_diff</code> :
+  </p><pre class="programlisting">
+CREATE FUNCTION time_subtype_diff(x time, y time) RETURNS float8 AS
+'SELECT EXTRACT(EPOCH FROM (x - y))' LANGUAGE sql STRICT IMMUTABLE;
+
+CREATE TYPE timerange AS RANGE (
+    subtype = time,
+    subtype_diff = time_subtype_diff
+);
+
+SELECT '[11:10, 23:00]'::timerange;
+  </pre><p>
+   Voir <a class="xref" href="sql-createtype.html" title="CREATE TYPE"><span class="refentrytitle">CREATE TYPE</span></a> pour plus d'informations sur la façon
+   de créer des types intervalle de valeurs.
+  </p></div><div class="sect2" id="RANGETYPES-INDEXING"><div class="titlepage"><div><div><h3 class="title">8.17.9. Indexation <a href="#RANGETYPES-INDEXING" class="id_link">#</a></h3></div></div></div><a id="id-1.5.7.25.16.2" class="indexterm"></a><p>
+   Des index GiST et SP-GiST peuvent être créés pour des colonnes de table de type
+   intervalle de valeurs ranges.
+   Des index GiST peuvent aussi être créés pour les colonnes de types multirange.
+   Par exemple, pour créer un index GiST :
+   </p><pre class="programlisting">
+CREATE INDEX reservation_idx ON reservation USING GIST (during);
+   </pre><p>
+   Un index GiST ou SP-GiST sur un type range peut accélérer les requêtes
+   impliquant ces opérateurs
+   d'intervalle de valeurs :
+   <code class="literal">=</code>,
+   <code class="literal">&amp;&amp;</code>,
+   <code class="literal">&lt;@</code>,
+   <code class="literal">@&gt;</code>,
+   <code class="literal">&lt;&lt;</code>,
+   <code class="literal">&gt;&gt;</code>,
+   <code class="literal">-|-</code>,
+   <code class="literal">&amp;&lt;</code> et
+   <code class="literal">&amp;&gt;</code>.
+   Un index GiST sur des multiranges peut accélérer les requêtes impliquant le
+   même ensemble d'opérateurs multirange.
+   Un index GiST sur des ranges et un index GiST sur des multiranges peut aussi
+   accélérer les requêtes impliquant les opérateurs inter types range vers
+   multirange et multirange vers range :
+   <code class="literal">&amp;&amp;</code>,
+   <code class="literal">&lt;@</code>,
+   <code class="literal">@&gt;</code>,
+   <code class="literal">&lt;&lt;</code>,
+   <code class="literal">&gt;&gt;</code>,
+   <code class="literal">-|-</code>,
+   <code class="literal">&amp;&lt;</code> et
+   <code class="literal">&amp;&gt;</code>.
+   voir <a class="xref" href="functions-range.html#RANGE-OPERATORS-TABLE" title="Tableau 9.56. Opérateurs sur les intervalles simples">Tableau 9.56</a> pour plus d'informations.
+  </p><p>
+   De plus, les index B-tree et hash peuvent être créés pour des colonnes d'une table
+   de type intervalle de  valeurs. Pour ces types d'index, la seule opération d'intervalle
+   véritablement utile est l'égalité. Il y a un ordre de tri pour les index B-tree définis
+   pour les valeurs d'intervalle, correspondant aux opérateurs <code class="literal">&lt;</code>
+   et <code class="literal">&gt;</code>, mais le tri est plutôt arbitraire et généralement inutile
+   dans la réalité. Le support de B-tree et hash pour les types intervalle de valeurs
+   est à la base destiné à permettre le tri et le hachage de façon interne dans les
+   requêtes, plutôt que pour la création d'un vrai index.
+  </p></div><div class="sect2" id="RANGETYPES-CONSTRAINT"><div class="titlepage"><div><div><h3 class="title">8.17.10. Contraintes sur les intervalles de valeurs <a href="#RANGETYPES-CONSTRAINT" class="id_link">#</a></h3></div></div></div><a id="id-1.5.7.25.17.2" class="indexterm"></a><p>
+   Bien que <code class="literal">UNIQUE</code> soit une contrainte naturelle pour
+   des valeurs scalaires, c'est en générale inutilisable pour des types
+   intervalle de valeurs. À la place, une contrainte d'exclusion est
+   souvent plus appropriée
+   (voir <a class="link" href="sql-createtable.html#SQL-CREATETABLE-EXCLUDE">CREATE TABLE
+    ... CONSTRAINT ... EXCLUDE</a>).  Les contraintes d'exclusion
+   permettent la spécification de contraintes telles que le
+   <span class="quote">« <span class="quote">non chevauchement</span> »</span> sur un type intervalle de valeurs.
+   Par exemple :
+
+   </p><pre class="programlisting">
+CREATE TABLE reservation (
+    during tsrange,
+    EXCLUDE USING GIST (during WITH &amp;&amp;)
+);
+   </pre><p>
+
+   Cette contrainte empêchera toute valeur chevauchant une autre présente
+   dans la table à la même heure :
+
+   </p><pre class="programlisting">
+INSERT INTO reservation VALUES
+   ('[2010-01-01 11:30, 2010-01-01 15:00)');
+INSERT 0 1
+
+INSERT INTO reservation VALUES
+   ('[2010-01-01 14:45, 2010-01-01 15:45)');
+ERROR:  conflicting key value violates exclusion constraint "reservation_during_excl"
+DETAIL:  Key (during)=(["2010-01-01 14:45:00","2010-01-01 15:45:00")) conflicts
+with existing key (during)=(["2010-01-01 11:30:00","2010-01-01 15:00:00")).
+   </pre><p>
+  </p><p>
+   Vous pouvez utiliser l'extension <a class="link" href="btree-gist.html" title="F.8. btree_gist -- classes d'opérateurs GiST pour un comportement de type B-tree"><code class="literal">btree_gist</code></a> pour définir une
+   contrainte d'exclusion sur des types de données scalaires, qui peuvent alors
+   être combinés avec des exclusions d'intervalle de valeurs pour un maximum de
+   flexibilité. Par exemple, une fois que <code class="literal">btree_gist</code> est
+   installé, la contrainte suivante ne rejettera les intervalles de valeurs se
+   chevauchant que si le numéro de la salle de conférence est identique :
+
+   </p><pre class="programlisting">
+CREATE EXTENSION btree_gist;
+CREATE TABLE room_reservation
+(
+  room TEXT,
+  during TSRANGE,
+  EXCLUDE USING GIST (room WITH =, during WITH &amp;&amp;)
+);
+
+INSERT INTO room_reservation VALUES
+  ( '123A', '[2010-01-01 14:00, 2010-01-01 15:00)' );
+INSERT 0 1
+
+INSERT INTO room_reservation VALUES
+  ( '123A', '[2010-01-01 14:30, 2010-01-01 15:30)' );
+ERROR:  conflicting key value violates exclusion constraint "room_reservation_room_during_excl"
+DETAIL:  Key (room, during)=(123A, ["2010-01-01 14:30:00","2010-01-01 15:30:00")) conflicts
+with existing key (room, during)=(123A, ["2010-01-01 14:00:00","2010-01-01 15:00:00")).
+
+INSERT INTO room_reservation VALUES
+  ( '123B', '[2010-01-01 14:30, 2010-01-01 15:30)' );
+INSERT 0 1
+   </pre><p>
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/rangetypes.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:26 GMT -->
+</html>

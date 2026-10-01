@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/indexes-bitmap-scans.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:29 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>11.5. Combiner des index multiples</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="indexes-ordering.html" title="11.4. Index et ORDER BY" /><link rel="next" href="indexes-unique.html" title="11.6. Index d'unicité" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/indexes-bitmap-scans.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/indexes-bitmap-scans.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/indexes-bitmap-scans.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/indexes-bitmap-scans.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/indexes-bitmap-scans.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/indexes-bitmap-scans.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/indexes-bitmap-scans.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/indexes-bitmap-scans.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/indexes-bitmap-scans.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/indexes-bitmap-scans.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/indexes-bitmap-scans.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/indexes-bitmap-scans.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/indexes-bitmap-scans.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/indexes-bitmap-scans.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/indexes-bitmap-scans.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/indexes-bitmap-scans.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/indexes-bitmap-scans.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/indexes-bitmap-scans.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/indexes-bitmap-scans.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/indexes-bitmap-scans.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/indexes-bitmap-scans.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="indexes.html">Index</a></span> » <span class="breadcrumb-node">Combiner des index multiples</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="indexes-ordering.html" title="11.4. Index et ORDER BY">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="indexes.html" title="Chapitre 11. Index">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="indexes-unique.html" title="11.6. Index d'unicité">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">11.4. Index et <code class="literal">ORDER BY</code> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 11.6. Index d'unicité</td></tr></table></div><div class="sect1" id="INDEXES-BITMAP-SCANS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">11.5. Combiner des index multiples <a href="#INDEXES-BITMAP-SCANS" class="id_link">#</a></h2></div></div></div><a id="id-1.5.10.8.2" class="indexterm"></a><a id="id-1.5.10.8.3" class="indexterm"></a><p>
+   Un parcours unique d'index ne peut utiliser que les clauses de la requête qui utilisent
+   les colonnes de l'index avec les opérateurs de sa classe d'opérateurs et qui
+   sont jointes avec <code class="literal">AND</code>. Par exemple, étant donné un index sur
+   <code class="literal">(a, b)</code>, une condition de requête <code class="literal">WHERE a = 5
+    AND b = 6</code> peut utiliser l'index, mais une requête
+   <code class="literal">WHERE a = 5 OR b = 6</code> ne peut pas l'utiliser directement.
+  </p><p>
+   Heureusement, <span class="productname">PostgreSQL</span> peut combiner
+   plusieurs index (y compris plusieurs utilisations du même index) pour gérer
+   les cas qui ne peuvent pas être résolus par des parcours d'index
+   simples. Le système peut former des conditions <code class="literal">AND</code>
+   et <code class="literal">OR</code> sur plusieurs parcours d'index. Par exemple,
+   une requête comme <code class="literal">WHERE x = 42 OR x = 47 OR x = 53 OR x = 99</code>
+   peut être divisée en quatre parcours distincts d'un index sur
+   <code class="literal">x</code>, chaque parcours utilisant une des clauses de la requête. Les
+   résultats de ces parcours sont alors assemblés par OR pour produire le
+   résultat. Autre exemple, s'il existe des index séparés sur
+   <code class="literal">x</code> et <code class="literal">y</code>, une résolution possible d'une requête
+   comme <code class="literal">WHERE x = 5 AND y = 6</code> consiste à utiliser chaque index avec la
+   clause de la requête appropriée et d'assembler les différents résultats
+   avec un AND pour identifier les lignes résultantes.
+  </p><p>
+   Pour combiner plusieurs index, le système parcourt chaque index nécessaire
+   et prépare un <em class="firstterm">bitmap</em> en mémoire qui donne l'emplacement des
+   lignes de table qui correspondent aux conditions de
+   l'index. Les bitmaps sont ensuite assemblés avec des opérateurs AND ou OR
+   selon les besoins de la requête. Enfin, les lignes réelles de la table
+   sont visitées et renvoyées. Elles sont visitées dans l'ordre physique parce
+   c'est ainsi que le bitmap est créé ; cela signifie que l'ordre
+   des index originaux est perdu et que, du coup, une étape de tri séparée est
+   nécessaire si la requête comprend une clause <code class="literal">ORDER BY</code>. Pour
+   cette raison, et parce que chaque parcours d'index supplémentaire ajoute
+   un temps additionnel, le planificateur choisit quelques fois d'utiliser un
+   parcours d'index simple même si des index supplémentaires sont disponibles
+   et peuvent être utilisés.
+  </p><p>
+   Le nombre de combinaisons d'index possibles croît parallèlement à la
+   complexité des applications. Il est alors de la responsabilité du
+   développeur de la base de décider des index à fournir. Il est quelques fois
+   préférable de créer des index multicolonnes, mais il est parfois préférable
+   de créer des index séparés et de s'appuyer sur la fonctionnalité de
+   combinaison des index.
+  </p><p>
+   Par exemple, si la charge inclut un mélange de requêtes qui impliquent
+   parfois uniquement la colonne <code class="literal">x</code>, parfois uniquement
+   la colonne <code class="literal">y</code> et quelques
+   fois les deux colonnes, on peut choisir deux index séparés sur
+   <code class="literal">x</code> et <code class="literal">y</code> et s'appuyer sur la combinaison d'index
+   pour traiter les requêtes qui utilisent les deux colonnes. On peut aussi
+   créer un index multicolonne sur <code class="literal">(x, y)</code>. Cet index est
+   typiquement plus efficace que la combinaison d'index pour les requêtes
+   impliquant les deux colonnes, mais, comme discuté dans la <a class="xref" href="indexes-multicolumn.html" title="11.3. Index multicolonnes">Section 11.3</a>, il est pratiquement inutile pour les
+   requêtes n'impliquant que <code class="literal">y</code>. Il ne peut donc pas être le
+   seul index. Une combinaison de l'index multicolonne et d'un index séparé
+   sur <code class="literal">y</code> est une solution raisonnable. Pour les requêtes qui
+   n'impliquent que <code class="literal">x</code>, l'index multicolonne peut être
+   utilisé, bien qu'il soit plus large et donc plus lent qu'un index sur <code class="literal">x</code> seul.
+   La dernière alternative consiste à créer les trois index, mais cette
+   solution n'est raisonnable que si la table est lue bien plus
+   fréquemment qu'elle n'est mise à jour et que les trois types de requêtes sont
+   communs. Si un des types de requêtes est bien moins courant que les autres,
+   il est préférable de ne créer que les deux index qui
+   correspondent le mieux aux types communs.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/indexes-bitmap-scans.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:29 GMT -->
+</html>

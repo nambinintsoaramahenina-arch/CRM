@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/diskusage.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>27.6. Surveiller l'utilisation du disque</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="dynamic-trace.html" title="27.5. Traces dynamiques" /><link rel="next" href="wal.html" title="Chapitre 28. Fiabilité et journaux de transaction" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/diskusage.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/diskusage.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/diskusage.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/diskusage.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/diskusage.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/diskusage.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/diskusage.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/diskusage.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/diskusage.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/diskusage.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/diskusage.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/diskusage.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/diskusage.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/diskusage.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/diskusage.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/diskusage.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/diskusage.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/diskusage.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/diskusage.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/diskusage.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/diskusage.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="monitoring.html">Superviser l'activité de la base de données</a></span> » <span class="breadcrumb-node">Surveiller l'utilisation du disque</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="dynamic-trace.html" title="27.5. Traces dynamiques">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="monitoring.html" title="Chapitre 27. Superviser l'activité de la base de données">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="wal.html" title="Chapitre 28. Fiabilité et journaux de transaction">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">27.5. Traces dynamiques </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 28. Fiabilité et journaux de transaction</td></tr></table></div><div class="sect1" id="DISKUSAGE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">27.6. Surveiller l'utilisation du disque <a href="#DISKUSAGE" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="diskusage.html#DISK-USAGE">27.6.1. Déterminer l'utilisation du disque</a></span></dt><dt><span class="sect2"><a href="diskusage.html#DISK-FULL">27.6.2. Échecs pour cause de disque plein</a></span></dt></dl></div><p>
+   Cette section discute de la surveillance de l'utilisation du disque sur un
+   système de bases de données <span class="productname">PostgreSQL</span>.
+  </p><div class="sect2" id="DISK-USAGE"><div class="titlepage"><div><div><h3 class="title">27.6.1. Déterminer l'utilisation du disque <a href="#DISK-USAGE" class="id_link">#</a></h3></div></div></div><a id="id-1.6.14.11.3.2" class="indexterm"></a><p>
+    Chaque table a un fichier disque primaire où la plupart des données est
+    enregistrée. Si la table a des colonnes potentiellement volumineuses,
+    un fichier <acronym class="acronym">TOAST</acronym>, associé à la table, est utilisé pour
+    enregistrer les valeurs trop volumineuses pour tenir confortablement dans
+    le fichier principal (voir <a class="xref" href="storage-toast.html" title="65.2. TOAST">Section 65.2</a>). Il existe
+    un index sur la table <acronym class="acronym">TOAST</acronym>. Il peut aussi y avoir
+    des index sur la table de base. Chaque table et index sont enregistrés dans
+    un fichier séparé sur disque  --  potentiellement plus d'un fichier, si
+    le fichier dépasse 1 Go. Les conventions de nommage de ces fichiers sont
+    décrits dans <a class="xref" href="storage-file-layout.html" title="65.1. Emplacement des fichiers de la base de données">Section 65.1</a>.
+   </p><p>
+    Vous pouvez superviser l'espace disque de trois façons : en utilisant
+    les fonctions SQL listées dans <a class="xref" href="functions-admin.html#FUNCTIONS-ADMIN-DBSIZE" title="Tableau 9.100. Fonctions de taille des objets">Tableau 9.100</a>, en
+    utilisant le module <a class="xref" href="oid2name.html" title="oid2name"><span class="refentrytitle">oid2name</span></a> ou en inspectant manuellement
+    les catalogues systèmes. Les fonctions SQL sont le moyen le plus simple à
+    utiliser et sont de ce fait les plus fréquemment recommendées. Le reste de
+    cette section montre comment le faire à partir d'une inspection des
+    catalogues systèmes.
+   </p><p>
+    En utilisant <span class="application">psql</span> sur une base récemment traitée
+    par un VACUUM ou un ANALYZE, vous pouvez lancer la requête suivante pour
+    voir l'utilisation disque d'une table :
+</p><pre class="programlisting">
+SELECT pg_relation_filepath(oid), relpages FROM pg_class WHERE relname = 'customer';
+
+ pg_relation_filepath | relpages
+----------------------+----------
+ base/16384/16806     |       60
+(1 row)
+</pre><p>
+    Chaque bloc fait habituellement 8 Ko. (Pour rappel,
+    <code class="structfield">relpages</code> est seulement mis à jour par les
+    commandes <code class="command">VACUUM</code>, <code class="command">ANALYZE</code> et quelques
+    commandes DDL telles que <code class="command">CREATE INDEX</code>.) Le chemin du
+    fichier est intéressant si vous souhaitez examiner le fichier de la table
+    directement sur le disque.
+   </p><p>
+    Pour afficher l'espace utilisé par les tables <acronym class="acronym">TOAST</acronym>,
+    utilisez la requête suivante :
+</p><pre class="programlisting">
+SELECT relname, relpages
+FROM pg_class,
+     (SELECT reltoastrelid
+      FROM pg_class
+      WHERE relname = 'customer') AS ss
+WHERE oid = ss.reltoastrelid OR
+      oid = (SELECT indexrelid
+             FROM pg_index
+             WHERE indrelid = ss.reltoastrelid)
+ORDER BY relname;
+
+       relname        | relpages
+----------------------+----------
+ pg_toast_16806       |        0
+ pg_toast_16806_index |        1
+</pre><p>
+   </p><p>
+    Vous pouvez aisément afficher les tailles des index :
+</p><pre class="programlisting">
+SELECT c2.relname, c2.relpages
+FROM pg_class c, pg_class c2, pg_index i
+WHERE c.relname = 'customer' AND
+      c.oid = i.indrelid AND
+      c2.oid = i.indexrelid
+ORDER BY c2.relname;
+
+      relname      | relpages
+-------------------+----------
+ customer_id_index |       26
+</pre><p>
+   </p><p>
+    Il est facile de trouver vos tables et index les plus volumineux en
+    utilisant cette requête :
+</p><pre class="programlisting">
+SELECT relname, relpages
+FROM pg_class
+ORDER BY relpages DESC;
+
+       relname        | relpages
+----------------------+----------
+ bigtable             |     3290
+ customer             |     3144
+</pre><p>
+   </p></div><div class="sect2" id="DISK-FULL"><div class="titlepage"><div><div><h3 class="title">27.6.2. Échecs pour cause de disque plein <a href="#DISK-FULL" class="id_link">#</a></h3></div></div></div><p>
+    La tâche la plus importante en ce qui concerne la supervision des disques
+    pour un administrateur de base de données est de s'assurer que le disque
+    ne devienne pas plein. Un disque plein ne causera pas de corrution de
+    données mais empêchera toute activité utile. Si le disque contenant les
+    fichiers WAL devient plein, le serveur entre en mode panique et un arrêt
+    survient.
+   </p><p>
+    Si vous ne pouvez pas libérer de l'espace sur le disque en supprimant
+    d'autres choses, vous pouvez déplacer certains fichiers de la base vers
+    d'autres systèmes de fichier en utilisant des tablespaces. Voir <a class="xref" href="manage-ag-tablespaces.html" title="22.6. Tablespaces">Section 22.6</a> pour plus d'informations sur cela.
+   </p><div class="tip"><h3 class="title">Astuce</h3><p>
+     Certains systèmes de fichiers sont contre-performants quand ils sont
+     pratiquement plein, donc n'attendez pas que le disque soit plein pour
+     entrer en action.
+    </p></div><p>
+    Si votre système supporte des quotas disque par utilisateur, alors la base
+    de données sera naturellement sujette à tout quota placé sur l'utilisateur
+    qui exécute le serveur. Atteindre le quota aura les mêmes mauvais effets
+    qu'un disque complètement plein.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/diskusage.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+</html>

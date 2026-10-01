@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/rules-materializedviews.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>39.3. Vues matérialisées</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="rules-views.html" title="39.2. Vues et système de règles" /><link rel="next" href="rules-update.html" title="39.4. Règles sur insert, update et delete" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/rules-materializedviews.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/rules-materializedviews.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/rules-materializedviews.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/rules-materializedviews.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/rules-materializedviews.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/rules-materializedviews.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/rules-materializedviews.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/rules-materializedviews.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/rules-materializedviews.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/rules-materializedviews.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/rules-materializedviews.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/rules-materializedviews.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/rules-materializedviews.html">9.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/rules-materializedviews.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="rules.html">Système de règles</a></span> » <span class="breadcrumb-node">Vues matérialisées</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="rules-views.html" title="39.2. Vues et système de règles">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="rules.html" title="Chapitre 39. Système de règles">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="rules-update.html" title="39.4. Règles sur insert, update et&#10;   delete">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">39.2. Vues et système de règles </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 39.4. Règles sur <code class="command">insert</code>, <code class="command">update</code> et
+   <code class="command">delete</code></td></tr></table></div><div class="sect1" id="RULES-MATERIALIZEDVIEWS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">39.3. Vues matérialisées <a href="#RULES-MATERIALIZEDVIEWS" class="id_link">#</a></h2></div></div></div><a id="id-1.8.6.8.2" class="indexterm"></a><a id="id-1.8.6.8.3" class="indexterm"></a><a id="id-1.8.6.8.4" class="indexterm"></a><p>
+   Les vues matérialisées dans <span class="productname">PostgreSQL</span> utilisent
+   le système des règles, tout comme les vues, mais les résultats persistent
+   sous la forme d'une table. Les principales différences entre :
+
+   </p><pre class="programlisting">
+CREATE MATERIALIZED VIEW ma_vue_mat AS SELECT * FROM ma_table;
+   </pre><p>
+
+   et :
+
+   </p><pre class="programlisting">
+CREATE TABLE ma_vue_mat AS SELECT * FROM ma_table;
+   </pre><p>
+
+   sont que la vue matérialisée ne peut pas être directement mise à jour et que
+   la requête utilisée pour créer la vue matérialisée est enregistrée exactement
+   de la même façon qu'une requête d'une vue standard. Des données fraiches
+   peuvent être générées pour la vue matérialisée avec cette commande :
+
+   </p><pre class="programlisting">
+REFRESH MATERIALIZED VIEW ma_vue_mat;
+   </pre><p>
+
+   L'information sur une vue matérialisée est stockée dans les catalogues
+   systèmes de <span class="productname">PostgreSQL</span> exactement de la
+   même façon que pour les tables et les vues. Quand une vue matérialisée
+   est référencée dans une requête, les données sont renvoyées directement
+   à partir de la vue matérialisée, tout comme une table ; la règle
+   est seulement utilisée pour peupler la vue matérialisée.
+  </p><p>
+   Bien que l'accès aux données d'une vue matérialisée est souvent bien
+   plus rapide qu'accèder aux tables sous-jacentes directement ou par
+   l'intermédiaire d'une vue, les données ne sont pas toujours fraiches.
+   Cependant, quelques fois, des données plus fraiches ne sont pas nécessaires.
+   Considérez une table qui enregistre les ventes :
+
+   </p><pre class="programlisting">
+CREATE TABLE facture (
+    no_facture    integer        PRIMARY KEY,
+    no_vendeur    integer,       -- identifiant du vendeur
+    date_facture  date,          -- date de la vente
+    mtt_facture   numeric(13,2)  -- montant de la vente
+);
+   </pre><p>
+
+   Si des personnes souhaitent grapher rapidement les données de vente,
+   elles peuvent vouloir résumer l'information et ne pas avoir besoin
+   des données incomplètes du jour :
+
+   </p><pre class="programlisting">
+CREATE MATERIALIZED VIEW resume_ventes AS
+  SELECT
+      no_vendeur,
+      date_facture,
+      sum(mtt_facture)::numeric(13,2) as mtt_ventes
+    FROM facture
+    WHERE date_facture &lt; CURRENT_DATE
+    GROUP BY
+      no_vendeur,
+      date_facture;
+
+CREATE UNIQUE INDEX ventes_resume_vendeur
+  ON resume_ventes (no_vendeur, date_facture);
+   </pre><p>
+
+   Cette vue matérialisée peut être utile pour afficher un graphe dans
+   l'affichage créé pour les vendeurs. Une tâche de fond pourrait être
+   planifiée pour mettre à jour les statistiques chaque nuit en utilisant
+   cette requête SQL :
+
+   </p><pre class="programlisting">
+REFRESH MATERIALIZED VIEW resume_ventes;
+   </pre><p>
+  </p><p>
+   Une autre utilisation des vues matérialisées est de permettre un accès
+   rapide aux données provenant d'un système distant, au travers d'un wrapper
+   de données distantes. Un exemple utilisant <code class="literal">file_fdw</code> est
+   donné ci-dessous, avec des chronométrages mais comme cela utilise le cache
+   du système local, les performances comparées à l'accès à un système distant
+   seront supérieures à celles montrées ici. Notez que nous exploitons aussi
+   la capacité à placer un index sur la vue matérialisée alors que
+   <code class="literal">file_fdw</code> n'autorise pas les index ; cet avantage
+   pourrait ne pas s'appliquer pour d'autres types d'accès à des données
+   distantes.
+  </p><p>
+
+   Configuration ::
+
+   </p><pre class="programlisting">
+CREATE EXTENSION file_fdw;
+CREATE SERVER fichier_local FOREIGN DATA WRAPPER file_fdw;
+CREATE FOREIGN TABLE mots (mot text NOT NULL)
+  SERVER fichier_local
+  OPTIONS (filename '/usr/share/dict/words');
+CREATE MATERIALIZED VIEW vmots AS SELECT * FROM mots;
+CREATE UNIQUE INDEX idx_vmots ON vmots (mot);
+CREATE EXTENSION pg_trgm;
+CREATE INDEX vmots_trgm ON vmots USING gist (mot gist_trgm_ops);
+VACUUM ANALYZE vmots;
+   </pre><p>
+
+   Maintenant, vérifions un mot. En utilisant <code class="literal">file_fdw</code>
+   directement :
+
+   </p><pre class="programlisting">
+SELECT count(*) FROM mots WHERE mot = 'caterpiler';
+
+ count
+-------
+     0
+(1 row)
+   </pre><p>
+
+   Avec <code class="command">EXPLAIN ANALYZE</code>, nous voyons :
+
+   </p><pre class="programlisting">
+ Aggregate  (cost=21763.99..21764.00 rows=1 width=0) (actual time=188.180..188.181 rows=1 loops=1)
+   -&gt;  Foreign Scan on words  (cost=0.00..21761.41 rows=1032 width=0) (actual time=188.177..188.177 rows=0 loops=1)
+          Filter: (word = 'caterpiler'::text)
+         Rows Removed by Filter: 479829
+         Foreign File: /usr/share/dict/words
+         Foreign File Size: 4953699
+ Planning time: 0.118 ms
+ Execution time: 188.273 ms
+   </pre><p>
+
+   Si la vue matérialisée est utilisée à la place, la requête est bien plus
+   rapide :
+
+   </p><pre class="programlisting">
+ Aggregate  (cost=4.44..4.45 rows=1 width=0) (actual time=0.042..0.042 rows=1 loops=1)
+   -&gt;  Index Only Scan using wrd_word on wrd  (cost=0.42..4.44 rows=1 width=0) (actual time=0.039..0.039 rows=0 loops=1)
+          Index Cond: (word = 'caterpiler'::text)
+          Heap Fetches: 0
+ Planning time: 0.164 ms
+ Execution time: 0.117 ms
+   </pre><p>
+
+   Dans les deux cas, le mot est mal orthographié. Donc cherchons le bon mot.
+   Toujours en utilisant <code class="literal">file_fdw</code> et
+   <code class="literal">pg_trgm</code> :
+
+   </p><pre class="programlisting">
+SELECT mot FROM mots ORDER BY mot &lt;-&gt; 'caterpiler' LIMIT 10;
+
+     mot
+---------------
+ cater
+ caterpillar
+ Caterpillar
+ caterpillars
+ caterpillar's
+ Caterpillar's
+ caterer
+ caterer's
+ caters
+ catered
+(10 rows)
+   </pre><p>
+
+   </p><pre class="programlisting">
+ Limit  (cost=11583.61..11583.64 rows=10 width=32) (actual time=1431.591..1431.594 rows=10 loops=1)
+   -&gt;  Sort  (cost=11583.61..11804.76 rows=88459 width=32) (actual time=1431.589..1431.591 rows=10 loops=1)
+         Sort Key: ((word &lt;-&gt; 'caterpiler'::text))
+          Sort Method: top-N heapsort  Memory: 25kB
+         -&gt;  Foreign Scan on words  (cost=0.00..9672.05 rows=88459 width=32) (actual time=0.057..1286.455 rows=479829 loops=1)
+               Foreign File: /usr/share/dict/words
+               Foreign File Size: 4953699
+ Planning time: 0.128 ms
+ Execution time: 1431.679 ms
+   </pre><p>
+
+   Et en utilisant la vue matérialisée :
+
+   </p><pre class="programlisting">
+ Limit  (cost=0.29..1.06 rows=10 width=10) (actual time=187.222..188.257 rows=10 loops=1)
+   -&gt;  Index Scan using wrd_trgm on wrd  (cost=0.29..37020.87 rows=479829 width=10) (actual time=187.219..188.252 rows=10 loops=1)
+         Order By: (word &lt;-&gt; 'caterpiler'::text)
+ Planning time: 0.196 ms
+ Execution time: 198.640 ms
+   </pre><p>
+
+   Si vous pouvez tolérer des mises à jour périodiques sur les données
+   distantes pour votre base locale, les bénéfices en performance seront
+   importants.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/rules-materializedviews.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:43 GMT -->
+</html>

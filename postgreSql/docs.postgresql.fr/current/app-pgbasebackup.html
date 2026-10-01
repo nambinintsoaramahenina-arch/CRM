@@ -1,0 +1,676 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/app-pgbasebackup.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:06 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>pg_basebackup</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="app-pgamcheck.html" title="pg_amcheck" /><link rel="next" href="pgbench.html" title="pgbench" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/app-pgbasebackup.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/app-pgbasebackup.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/app-pgbasebackup.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/app-pgbasebackup.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/app-pgbasebackup.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/app-pgbasebackup.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/app-pgbasebackup.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/app-pgbasebackup.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/app-pgbasebackup.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/app-pgbasebackup.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/app-pgbasebackup.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/app-pgbasebackup.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/app-pgbasebackup.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/app-pgbasebackup.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/app-pgbasebackup.html">9.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/app-pgbasebackup.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="reference.html">Référence</a></span> » <span class="breadcrumb-link"><a href="reference-client.html">Applications client de PostgreSQL</a></span> » <span class="breadcrumb-node"><span class="application">pg_basebackup</span></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="app-pgamcheck.html" title="pg_amcheck">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="reference-client.html" title="Applications client de PostgreSQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="pgbench.html" title="pgbench">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top"><span class="application">pg_amcheck</span> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> <span class="application">pgbench</span></td></tr></table></div><div class="refentry" id="APP-PGBASEBACKUP"><div class="titlepage"></div><a id="id-1.9.4.10.1" class="indexterm"></a><div class="refnamediv"><h2><span class="refentrytitle"><span class="application">pg_basebackup</span></span></h2><p>pg_basebackup — réalise une sauvegarde de base d'une instance
+   <span class="productname">PostgreSQL</span></p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p id="id-1.9.4.10.4.1"><code class="command">pg_basebackup</code> [<em class="replaceable"><code>option</code></em>...]</p></div></div><div class="refsect1" id="id-1.9.4.10.5"><h2>Description</h2><p>
+   <span class="application">pg_basebackup</span> est utilisé pour effectuer une
+   sauvegarde de base d'une instance <span class="productname">PostgreSQL</span> en
+   cours d'exécution. Elle se fait sans affecter les autres clients du serveur
+   de bases de données, et peut être utilisée pour une restauration à un
+   certain point dans le temps (PITR, voir <a class="xref" href="continuous-archiving.html" title="25.3. Archivage continu et récupération d'un instantané (PITR)">Section 25.3</a>) ou comme point de départ pour un serveur
+   secondaire, par envoi des journaux de transactions ou par le flux de
+   réplication (voir <a class="xref" href="warm-standby.html" title="26.2. Serveurs secondaires par transfert de journaux">Section 26.2</a>).
+  </p><p>
+   <span class="application">pg_basebackup</span> peut réaliser une sauvegarde de
+   base complète ou incrémentale d'une instance. Quand il est utilisé pour
+   une sauvegarde complète, il fait une copie exacte des fichiers de
+   l'instance. Quand il est utilisé pour faire une sauvegarde incrémentale,
+   certains fichiers qui auraient fait partie d'une sauvegarde complète
+   pourraient être remplacés avec des versions incrémentales des mêmes fichiers, contenant uniquement les blocs modifiés depuis la sauvegarde de
+   référence. Une sauvegarde incrémentale ne peut pas être utilisée
+   directement ; à la place, <a class="xref" href="app-pgcombinebackup.html" title="pg_combinebackup"><span class="refentrytitle"><span class="application">pg_combinebackup</span></span></a> doit
+   tout d'abord être utilisé pour la combiner avec les sauvegardes
+   précédentes dont elle dépend. Voir
+   <a class="xref" href="continuous-archiving.html#BACKUP-INCREMENTAL-BACKUP" title="25.3.3. Réaliser une sauvegarde incrémentale">Section 25.3.3</a> pour plus d'informations sur
+   les sauvegardes incrémentales, et <a class="xref" href="continuous-archiving.html#BACKUP-PITR-RECOVERY" title="25.3.5. Restauration à partir d'un archivage continu">Section 25.3.5</a>
+   pour les étapes de restauration à partir d'une telle sauvegarde.
+  </p><p>
+   Quelque soit le mode, <span class="application">pg_basebackup</span> s'assure
+   que le serveur est placé automatiquement en mode sauvegarde et l'en retire
+   après la sauvegarde. Les sauvegardes sont toujours prises pour l'instance
+   complète ; il n'est pas possible de sauvegarder des bases ou des
+   objets de base individuels. Pour une sauvegarde sélective, il faut passer
+   par un autre outil, comme <a class="xref" href="app-pgdump.html" title="pg_dump"><span class="refentrytitle"><span class="application">pg_dump</span></span></a>.
+  </p><p>
+   La sauvegarde se fait via une connexion
+   <span class="productname">PostgreSQL</span> standard qui utilise le protocole de
+   réplication. La connexion doit se faire avec un rôle doté de l'attribut
+   <code class="literal">REPLICATION</code> ou <code class="literal">SUPERUSER</code> (voir <a class="xref" href="role-attributes.html" title="21.2. Attributs des rôles">Section 21.2</a>), et <code class="filename">pg_hba.conf</code> doit
+   explicitement permettre la connexion de réplication. Le serveur doit aussi
+   être configuré avec un <a class="xref" href="runtime-config-replication.html#GUC-MAX-WAL-SENDERS">max_wal_senders</a> suffisamment
+   élevé pour fournir au moins une connexion disponible pour la sauvegarde, et
+   une autre pour le transfert par flux des journaux de transactions (si
+   utilisé).
+  </p><p>
+   Plusieurs commandes <code class="command">pg_basebackup</code> peuvent tourner en
+   même temps, mais, du point de vue des performances, il est généralement
+   préférable de n'en faire qu'une seule, puis de faire une copie du résultat.
+  </p><p>
+   <span class="application">pg_basebackup</span> peut effectuer une sauvegarde non
+   seulement à partir du serveur primaire, mais aussi d'un serveur secondaire.
+   Pour cela, paramétrez le secondaire pour accepter les connexions de
+   réplication (c'est-à-dire configurez les paramètres
+   <code class="varname">max_wal_senders</code> et <a class="xref" href="runtime-config-replication.html#GUC-HOT-STANDBY">hot_standby</a>, et
+   configurez le fichier <code class="filename">pg_hba.conf</code> de façon appropriée).
+   Il sera aussi nécessaire d'activer <a class="xref" href="runtime-config-wal.html#GUC-FULL-PAGE-WRITES">full_page_writes</a>
+   sur le serveur primaire.
+  </p><p>
+   Il est à noter qu'il existe des limites à la sauvegarde à chaud depuis un
+   serveur secondaire :
+
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Le fichier d'historique de la sauvegarde n'est pas créé dans l'instance
+      sauvegardée.
+     </p></li><li class="listitem"><p>
+      <span class="application">pg_basebackup</span> ne peut forcer le serveur
+      secondaire à basculer vers un nouveau fichier WAL à la fin de la
+      sauvegarde. Quand vous utilisez <code class="literal">-X none</code>, si
+      l'activité en écriture sur le primaire est basse,
+      <span class="application">pg_basebackup</span> peut avoir besoin d'attendre un
+      long moment pour que le dernier fichier WAL requis par la sauvegarde
+      soit archivé. Dans ce cas, il pourrait être utile d'exécuter
+      <code class="function">pg_switch_wal</code> sur le primaire pour causer un
+      changement immédiat de fichier WAL.
+     </p></li><li class="listitem"><p>
+      Si le serveur secondaire est promu en tant que primaire durant la
+      sauvegarde à chaud, celle-ci échouera.
+     </p></li><li class="listitem"><p>
+      Toutes les entrées WAL nécessaires à la sauvegarde doivent disposer de
+      suffisamment de pages complètes, ce qui nécessite d'activer
+      <code class="varname">full_page_writes</code> sur le primaire.
+     </p></li></ul></div><p>
+  </p><p>
+   La vue <code class="structname">pg_stat_progress_basebackup</code> du serveur
+   sauvegardé permet de suivre la progression d'une sauvegarde de base
+   effectuée avec <span class="application">pg_basebackup</span>. Voir <a class="xref" href="progress-reporting.html#BASEBACKUP-PROGRESS-REPORTING" title="27.4.6. Rapporter la progression de la sauvegarde de base">Section 27.4.6</a> pour les détails.
+  </p></div><div class="refsect1" id="id-1.9.4.10.6"><h2>Options</h2><p>
+   Les options de ligne de commande suivantes contrôlent l'emplacement et le
+   format du résultat.
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-D <em class="replaceable"><code>répertoire</code></em></code><br /></span><span class="term"><code class="option">--pgdata=<em class="replaceable"><code>répertoire</code></em></code></span></dt><dd><p>
+       Configure le répertoire cible de la sauvegarde.
+       <span class="application">pg_basebackup</span> créera le répertoire (et les
+       répertoires parents) s'il n'existe pas. S'il existe déjà, il doit être
+       vide.
+      </p><p>
+       Quand la sauvegarde est en mode tar, le répertoire doit être spécifié
+       sous la forme d'un tiret (<code class="literal">-</code>), causant l'écriture du
+       fichier tar sur <code class="literal">stdout</code>.
+      </p><p>
+       Cette option est obligatoire.
+      </p></dd><dt><span class="term"><code class="option">-F <em class="replaceable"><code>format</code></em></code><br /></span><span class="term"><code class="option">--format=<em class="replaceable"><code>format</code></em></code></span></dt><dd><p>
+       Sélectionne le format de sortie. <em class="replaceable"><code>format</code></em> peut
+       valoir :
+
+       </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">p</code><br /></span><span class="term"><code class="literal">plain</code></span></dt><dd><p>
+           Écrit des fichiers standards, avec l'agencement d'origine du
+           répertoire des données et des tablespaces du serveur source.
+           Si l'instance n'a pas de tablespace supplémentaire,
+           toute l'instance sera placée dans le répertoire cible. Si l'instance
+           contient des tablespaces supplémentaires, le répertoire principal
+           des données sera placé dans le répertoire cible mais les autres
+           tablespaces seront placés dans le même chemin absolu que celui
+           d'origine. (Voir <code class="option">--tablespace-mapping</code> pour changer
+           cela.)
+          </p><p>
+           C'est le format par défaut.
+          </p></dd><dt><span class="term"><code class="literal">t</code><br /></span><span class="term"><code class="literal">tar</code></span></dt><dd><p>
+           Écrit des fichiers tar dans le répertoire cible. Le contenu du
+           répertoire principal de données sera écrit dans un fichier nommé
+           <code class="filename">base.tar</code>, et tous les autres tablespaces
+           seront écrits dans un fichier tar séparé nommé d'après l'OID du
+           tablespace.
+          </p><p>
+           Si le répertoire cible est indiqué avec un tiret
+           <code class="literal">-</code>, le contenu du fichier tar sera écrit sur la
+           sortie standard, ce qui est permet de l'envoyer par un tube vers
+           gzip, par exemple. Ceci n'est autorisé que si l'instance n'a pas de
+           tablespaces supplémentaires, ou que le transfert des WAL par
+           streaming n'est pas utilisé.
+          </p></dd></dl></div><p>
+      </p></dd><dt><span class="term"><code class="option">-i <em class="replaceable"><code>ancien_fichier_manifeste</code></em></code><br /></span><span class="term"><code class="option">--incremental=<em class="replaceable"><code>ancien_fichier_manifeste</code></em></code></span></dt><dd><p>
+        Réalise une <a class="link" href="continuous-archiving.html#BACKUP-INCREMENTAL-BACKUP" title="25.3.3. Réaliser une sauvegarde incrémentale">sauvegarde
+        incrémentale</a>. Le manifeste de sauvegarde pour la sauvegarde
+        de référence doit être fourni et sera téléchargé sur le serveur, qui
+        répondra en envoyant la sauvegarde incrémentale demandée.
+       </p></dd><dt><span class="term"><code class="option">-R</code><br /></span><span class="term"><code class="option">--write-recovery-conf</code></span></dt><dd><p>
+       Crée un fichier <a class="link" href="warm-standby.html#FILE-STANDBY-SIGNAL"><code class="filename">standby.signal</code></a>
+       <a id="id-1.9.4.10.6.2.1.4.3.1.2" class="indexterm"></a>
+       et ajoute les paramètres de connexion dans le fichier
+       <code class="filename">postgresql.auto.conf</code> du répertoire cible (ou dans
+       le fichier d'archive du répertoire principal des données lors de
+       l'utilisation du format tar). Ceci facilite la configuration d'un
+       serveur secondaire en utilisant les résultats de la sauvegarde.
+      </p><p>
+       Le fichier <code class="filename">postgresql.auto.conf</code> enregistrera les
+       paramètres de connexion et, si indiqué, le slot de réplication utilisé
+       par <span class="application">pg_basebackup</span>, pour que la réplication
+       en streaming et <a class="link" href="logicaldecoding-explanation.html#LOGICALDECODING-REPLICATION-SLOTS-SYNCHRONIZATION" title="47.2.3. Synchronisation du slot de réplication">???</a> utilisent
+       plus tard la même configuration. Le nom de la base sera enregistré
+       seulement si le paramètre dbname était indiqué spécifiquement dans la
+       chaîne de connexion ou via une <a class="link" href="libpq-envars.html" title="32.15. Variables d'environnement">variable d'environnement</a>.
+      </p></dd><dt><span class="term"><code class="option">-t <em class="replaceable"><code>cible</code></em></code><br /></span><span class="term"><code class="option">--target=<em class="replaceable"><code>cible</code></em></code></span></dt><dd><p>
+       Indique au serveur où placer la sauvegarde de base. La cible par défaut
+       est <code class="literal">client</code>, qui indique que la sauvegarde devrait être
+       envoyée à la machine où <span class="application">pg_basebackup</span> est
+       exécuté. Si la cible est configurée à
+       <code class="literal">server:/un/chemin</code>, la sauvegarde sera restaurée sur la
+       machine où le serveur est exécuté dans le répertoire
+       <code class="literal">/un/chemin</code>. Enregistrer une sauvegarde nécessite des
+       droits de superutilisateur ou d'avoir les droits du rôle
+       <code class="literal">pg_write_server_files</code>. Si la cible est configurée à
+       <code class="literal">blackhole</code>, le contenu est ignoré et n'est pas
+       sauvegardé.  Ceci devrait seulement être utilisé pour des tests. Cela ne
+       devrait pas concerner une sauvegarde réelle.
+      </p><p>
+       Comme le flux de journaux de transactions est implémenté par
+       <span class="application">pg_basebackup</span> plutôt que par le serveur, cette
+       option ne peut pas être utilisée avec <code class="literal">-Xstream</code>.  Comme
+       il s'agit de la valeur par défaut, quand cette option est soumise, vous
+       devez également spécifier soit <code class="literal">-Xfetch</code> soit
+       <code class="literal">-Xnone</code>.
+      </p></dd><dt><span class="term"><code class="option">-T <em class="replaceable"><code>ancien_repertoire</code></em>=<em class="replaceable"><code>nouveau_repertoire</code></em></code><br /></span><span class="term"><code class="option">--tablespace-mapping=<em class="replaceable"><code>ancien_repertoire</code></em>=<em class="replaceable"><code>nouveau_repertoire</code></em></code></span></dt><dd><p>
+       Déplace le tablespace du répertoire
+       <em class="replaceable"><code>ancien_repertoire</code></em> vers le répertoire
+       <em class="replaceable"><code>nouveau_repertoire</code></em> pendant la sauvegarde.
+       Pour bien fonctionner, <em class="replaceable"><code>ancien_repertoire</code></em>
+       doit correspondre exactement à la spécification du tablespace tel qu'il
+       est actuellement défini sur le serveur source. (Mais il n'y a pas
+       d'erreur s'il n'y a aucun tablespace dans
+       <em class="replaceable"><code>ancien_repertoire</code></em>  sur le serveur source.)
+       Pendant ce temps, <em class="replaceable"><code>nouveau_repertoire</code></em> est un
+       répertoire dans le système de fichiers de l'hôte cible. Comme avec le
+       répertoire principal cible
+       <em class="replaceable"><code>nouveau_repertoire</code></em> n'a pas besoin d'exister
+       déjà, mais s'il existe, il doit être vide.
+       <em class="replaceable"><code>ancien_repertoire</code></em> et
+       <em class="replaceable"><code>nouveau_repertoire</code></em> doivent tous deux être
+       des chemins absolus. S'il se trouve qu'un chemin contient un signe
+       <code class="literal">=</code>, échappez-le avec un anti-slash (\). Cette option
+       peut être spécifiée plusieurs fois pour différents tablespaces.
+      </p><p>
+       Si un tablespace est déplacé de cette façon, les liens symboliques à
+       l'intérieur du répertoire de données principal sont mis à jour pour
+       pointer vers le nouvel emplacement. Du coup, le nouveau répertoire de
+       données est prêt à être utilisé sur la nouvelle instance avec les
+       nouveaux chemins.
+      </p><p>
+       Actuellement, cette option ne fonctionne qu'avec le format de sortie
+       plain. Elle est ignorée si le format tar est sélectionné.
+      </p></dd><dt><span class="term"><code class="option">--waldir=<em class="replaceable"><code>rep_wal</code></em></code></span></dt><dd><p>
+       Indique l'emplacement du répertoire des journaux de transactions. Par
+       défaut, les journaux de transactions seront placés dans le
+       sous-répertoire <code class="filename">pg_wal</code> du répertoire cible, mais
+       cette option peut être utilisée pour les placer ailleurs.
+       <em class="replaceable"><code>rep_wal</code></em> doit être un chemin absolu. Comme
+       avec le répertoire principal des données,
+       <em class="replaceable"><code>waldir</code></em> peut ne pas exister mais s'il existe
+       déjà, il doit être vide. Cette option ne peut être utilisée que quand
+       la sauvegarde est au format plain.
+      </p></dd><dt><span class="term"><code class="option">-X <em class="replaceable"><code>methode</code></em></code><br /></span><span class="term"><code class="option">--wal-method=<em class="replaceable"><code>methode</code></em></code></span></dt><dd><p>
+       Inclut les journaux de transactions requis (fichiers WAL) dans la
+       sauvegarde. Cela inclura toutes les transactions intervenues pendant la
+       sauvegarde. À moins que la méthode <code class="literal">none</code> ne soit
+       spécifiée, il est possible de démarrer un postmaster sur le répertoire
+       cible sans avoir besoin de consulter les archives des journaux, ce qui
+       rend la sauvegarde complètement autonome.
+      </p><p>
+       Les méthodes suivantes sont supportées pour récupérer les journaux de
+       transactions :
+
+       </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">n</code><br /></span><span class="term"><code class="literal">none</code></span></dt><dd><p>
+           N'inclut pas les journaux de transactions dans la sauvegarde.
+          </p></dd><dt><span class="term"><code class="literal">f</code><br /></span><span class="term"><code class="literal">fetch</code></span></dt><dd><p>
+           Les journaux de transactions sont récupérés à la fin de la
+           sauvegarde. Il est donc nécessaire de définir le paramètre <a class="xref" href="runtime-config-replication.html#GUC-WAL-KEEP-SIZE">wal_keep_size</a> du serveur source suffisamment haut
+           pour que les données WAL requises ne soient pas recyclées avant la
+           fin de la sauvegarde. Si les données WAL ont été recyclées avant
+           qu'il n'ait été possible de les transférer, la sauvegarde échouera
+           et sera inutilisable.
+          </p><p>
+           Quand le format tar est utilisé, les journaux de transactions
+           seront écrits dans le fichier <code class="filename">base.tar</code>.
+          </p></dd><dt><span class="term"><code class="literal">s</code><br /></span><span class="term"><code class="literal">stream</code></span></dt><dd><p>
+           Envoie les données des journaux de transactions lors de la
+           sauvegarde. Cette option ouvre une seconde connexion sur le serveur
+           et entame l'envoi du journal de transactions en parallèle de la
+           sauvegarde. À cet effet, ce mécanisme consommera deux connexions,
+           et non pas juste une. Ce mode permet de ne pas avoir à sauvegarder
+           des journaux de transactions additionnels sur le serveur primaire,
+           aussi longtemps que le client pourra suivre le flux des journaux de
+           transactions.
+          </p><p>
+           Quand le format tar est utilisé, les journaux de transactions
+           seront écrits dans un fichier séparé nommé
+           <code class="filename">pg_wal.tar</code> (si le serveur est d'une version
+           antérieure à la version 10, le fichier sera nommé
+           <code class="filename">pg_xlog.tar</code>).
+          </p><p>
+           Cette valeur est la valeur par défaut.
+          </p></dd></dl></div><p>
+      </p></dd><dt><span class="term"><code class="option">-z</code><br /></span><span class="term"><code class="option">--gzip</code></span></dt><dd><p>
+       Active la compression gzip de l'archive tar en sortie, avec le niveau
+       de compression par défaut. La compression n'est disponible
+       qu'avec le format tar, et le suffixe <code class="filename">.gz</code>
+       sera automatiquement ajouté à tous les noms de fichier tar.
+      </p></dd><dt><span class="term"><code class="option">-Z <em class="replaceable"><code>niveau</code></em></code><br /></span><span class="term"><code class="option">-Z [{client|server}-]<em class="replaceable"><code>method</code></em>[:<em class="replaceable"><code>detail</code></em>]</code><br /></span><span class="term"><code class="option">--compress=<em class="replaceable"><code>niveau</code></em></code><br /></span><span class="term"><code class="option">--compress=[{client|server}-]<em class="replaceable"><code>method</code></em>[:<em class="replaceable"><code>detail</code></em>]</code></span></dt><dd><p>
+       Réclame la compression de la sauvegarde. Si <code class="literal">client</code> ou
+       <code class="literal">server</code> est inclus, cela indique où la compression doit
+       avoir lieu. Compresser sur le serveur réduira la bande passante réseau
+       mais augmentera la consommation CPU du serveur. La valeur par défaut est
+       <code class="literal">client</code> sauf quand <code class="literal">--target</code> est
+       utilisé. Dans ce cas, la sauvegarde n'est pas envoyée au client, donc
+       seule la compression serveur est sensée. Quand
+       <code class="literal">-Xstream</code>, qui est la valeur par défaut, est utilisé,
+       la compression côté serveur n'est pas appliquée aux journaux de
+       transaction. Pour les compresser, utilisez la compression niveau client
+       ou indiquez <code class="literal">-Xfetch</code>.
+      </p><p>
+       La méthode de compression peut être <code class="literal">gzip</code>,
+       <code class="literal">lz4</code>, <code class="literal">zstd</code>,
+       <code class="literal">none</code> pour aucune compression, ou un entier
+       (pas de compression si 0, compression <code class="literal">gzip</code> si
+       supérieur à 0).
+       Une chaîne de détails sur la compression peut être indiquée en option.
+       Sinon, il faut une liste d'éléments séparés par des virgules, chaque
+       élément étant de la forme <em class="replaceable"><code>motclé</code></em> ou
+       <em class="replaceable"><code>motclé=valeur</code></em>.
+       Actuellement, les mots clés acceptés sont <code class="literal">level</code>,
+       <code class="literal">long</code> et <code class="literal">workers</code>.
+       La chaîne de détails ne peut pas être utilisée quand la méthode de
+       compression est indiquée sous la forme d'un entier.
+      </p><p>
+       Si aucun niveau de compression n'est indiqué, le niveau de compression
+       par défaut sera utilisé. Si seulement un niveau est indiqué sans mention
+       d'un algorithme, la compression <code class="literal">gzip</code> sera utilisée si
+       le niveau est supérieur à zéro, et aucune compression ne sera utilisée si
+       le niveau est 0.
+      </p><p>
+       Quand le format tar est utilisé avec <code class="literal">gzip</code>,
+       <code class="literal">lz4</code> ou <code class="literal">zstd</code>, le suffixe,
+       respectivement, <code class="filename">.gz</code>, <code class="filename">.lz4</code> ou
+       <code class="filename">.zst</code> sera automatiquement ajouté aux noms de
+       fichiers tar. Quand le format plain est utilisé, la compression côté
+       client peut ne pas être précisée mais il est toujours possible de
+       réclamer la compression niveau serveur. Si c'est fait, le serveur
+       compressera la sauvegarde pour transmission, et le client la
+       décompressera et l'extraira.
+      </p><p>
+       Quand cette option est utilisée en combinaison avec
+       <code class="literal">-Xstream</code>, <code class="literal">pg_wal.tar</code> sera compressé
+       en utilisant <code class="literal">gzip</code> si la compression gzip côté client
+       est sélectionnée, mais ne sera pas compressé si un autre algorithme de
+       compression est sélectionné ou si la compression côté serveur est
+       sélectionnée.
+      </p></dd></dl></div><p>
+  </p><p>
+   Les options de ligne de commande suivantes contrôlent la génération de la
+   sauvegarde et l'exécution du programme :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-c {fast|spread}</code><br /></span><span class="term"><code class="option">--checkpoint={fast|spread}</code></span></dt><dd><p>
+       Configure le mode du checkpoint à immédiat (fast) ou étalé
+       (spread, la valeur par défaut). Voir <a class="xref" href="continuous-archiving.html#BACKUP-LOWLEVEL-BASE-BACKUP" title="25.3.4. Effectuer une sauvegarde de base avec l'API bas niveau">Section 25.3.4</a>.
+      </p></dd><dt><span class="term"><code class="option">-C</code><br /></span><span class="term"><code class="option">--create-slot</code></span></dt><dd><p>
+       Indique que le slot de réplication nommé par l'option
+       <code class="literal">--slot</code> doit être créé avant d'exécuter la
+       sauvegarde. Une erreur est levée si le slot existe déjà.
+      </p></dd><dt><span class="term"><code class="option">-l <em class="replaceable"><code>label</code></em></code><br /></span><span class="term"><code class="option">--label=<em class="replaceable"><code>label</code></em></code></span></dt><dd><p>
+       Définit un nom pour la sauvegarde. Sans indication, la valeur par
+       défaut, <span class="quote">« <span class="quote"><code class="literal">pg_basebackup base backup</code></span> »</span>,
+       sera utilisée.
+      </p></dd><dt><span class="term"><code class="option">-n</code><br /></span><span class="term"><code class="option">--no-clean</code></span></dt><dd><p>
+       Par défaut, quand <code class="command">pg_basebackup</code> échoue avec une
+       erreur, il supprime tous les répertoires qu'il aurait pu créer avant
+       de découvrir qu'il ne peut pas terminer le travail (par exemple, le
+       répertoire de données et le répertoire des journaux de transactions du
+       serveur cible).  Cette option désactive le nettoyage, et est donc
+       pratique pour le débogage.
+      </p><p>
+       Notez que les répertoires des tablespaces ne sont pas supprimés
+       non plus.
+      </p></dd><dt><span class="term"><code class="option">-N</code><br /></span><span class="term"><code class="option">--no-sync</code></span></dt><dd><p>
+       Par défaut, <code class="command">pg_basebackup</code> attendra que tous les
+       fichiers soient écrits de manière sûre sur disque. Cette option
+       demande à <code class="command">pg_basebackup</code> de rendre la main sans
+       attendre, ce qui est plus rapide, mais signifie qu'un arrêt brutal du
+       serveur après la sauvegarde peut laisser la sauvegarde de
+       base dans un état corrompu. De manière générale, cette option est
+       utile durant les tests, mais ne devrait pas être utilisée dans un
+       environnement de production.
+      </p></dd><dt><span class="term"><code class="option">-P</code><br /></span><span class="term"><code class="option">--progress</code></span></dt><dd><p>
+       Active l'indicateur de progression. Activer cette option donnera un
+       rapport de progression approximatif lors de la sauvegarde. Comme la
+       base de données peut changer pendant la sauvegarde, ce n'est
+       qu'une approximation, et peut ne pas se terminer à exactement
+       <code class="literal">100%</code>. En particulier, lorsque les journaux de
+       transactions sont inclus dans la sauvegarde, la quantité totale de
+       données ne peut pas être estimée à l'avance et, dans ce cas, la taille
+       cible estimée va augmenter une fois dépassée l'estimation totale sans
+       les journaux.
+      </p></dd><dt><span class="term"><code class="option">-r <em class="replaceable"><code>taux</code></em></code><br /></span><span class="term"><code class="option">--max-rate=<em class="replaceable"><code>taux</code></em></code></span></dt><dd><p>
+       Configure le taux maximum de transfert de données avec lequel les
+       données sont récupérées du serveur source. Ceci peut se révéler utile
+       pour limiter l'impact de <span class="application">pg_basebackup</span> sur
+       le serveur. Les valeurs sont en kilooctets par seconde. Le suffixe
+       <code class="literal">M</code> indique des mégaoctets par seconde. Un suffixe
+       <code class="literal">k</code> est aussi accepté, mais n'a pas d'effet
+       supplémentaire. Les valeurs valides vont de 32 ko/s à
+       1024 Mo/s.
+      </p><p>
+       Cette option concerne le transfert du répertoire de données. Le
+       transfert des journaux de transactions n'est affecté que si la méthode
+       de récupération est <code class="literal">fetch</code>.
+      </p></dd><dt><span class="term"><code class="option">-S <em class="replaceable"><code>nom_slot</code></em></code><br /></span><span class="term"><code class="option">--slot=<em class="replaceable"><code>nom_slot</code></em></code></span></dt><dd><p>
+       Cette option ne peut être utilisée qu'avec l'option <code class="literal">-X
+        stream</code>. Elle entraîne l'utilisation du slot de réplication
+       indiqué par le flux de réplication des journaux. Si la sauvegarde de
+       base doit être utilisée pour un serveur secondaire avec un slot, ce
+       serveur devra alors utiliser le même nom de slot dans <a class="xref" href="runtime-config-replication.html#GUC-PRIMARY-SLOT-NAME">primary_slot_name</a>. Ainsi, on s'assure que le serveur
+       primaire ne supprimera pas les journaux nécessaires entre la fin de la
+       sauvegarde et le début du lancement de la réplication par streaming sur
+       le nouveau secondaire.
+      </p><p>
+       Le slot de réplication spécifié doit exister, sauf si l'option
+       <code class="option">-C</code> est aussi utilisée.
+      </p><p>
+       Si cette option n'est pas spécifiée, et que le serveur supporte les
+       slots de réplication temporaires (versions 10 et supérieures), alors un
+       slot de réplication temporaire sera automatiquement utilisé pour le
+       transfert des WAL par streaming.
+      </p></dd><dt><span class="term"><code class="option">--sync-method=<em class="replaceable"><code>method</code></em></code></span></dt><dd><p>
+        Quand il est initialisé à <code class="literal">fsync</code>, qui est la valeur
+        par défaut, <code class="command">pg_basebackup</code> va ouvrir récursivement
+        tous les fichiers du répertoire de données et les synchroniser sur
+        disque. Quand le format plain est utilisé, la recherche des fichiers
+        suivra les liens symboliques pour le répertoire des journaux de
+        transactions et chaque tablespace configuré.
+       </p><p>
+        Sur Linux, <code class="literal">syncfs</code> peut être utilisé à la place
+        pour demander au système d'exploitation de synchroniser le système
+        de fichiers complet qui contient le répertoire de sauvegarde. Quand le format plain est utilisé, <code class="command">pg_basebackup</code>
+        synchronisera aussi les systèmes de fichiers qui contiennent les
+        journaux de transactions et chaque tablespace. Voir
+        <a class="xref" href="runtime-config-error-handling.html#GUC-RECOVERY-INIT-SYNC-METHOD">recovery_init_sync_method</a> pour plus
+        d'informations sur les points importants à connaître lors de
+        l'utilisation de <code class="literal">syncfs</code>.
+       </p><p>
+        Cette option n'a aucun effet quand <code class="option">--no-sync</code> est
+        utilisé.
+       </p></dd><dt><span class="term"><code class="option">-v</code><br /></span><span class="term"><code class="option">--verbose</code></span></dt><dd><p>
+       Active le mode verbeux. Il affichera des étapes supplémentaires
+       pendant le démarrage et l'arrêt, ainsi que, si le rapport de
+       progression est aussi activé, le nom exact du fichier
+       en cours de traitement.
+      </p></dd><dt><span class="term"><code class="option">--manifest-checksums=<em class="replaceable"><code>algorithm</code></em></code></span></dt><dd><p>
+       Spécifie l'algorithme à utiliser dans le manifeste de la sauvegarde
+       pour les sommes de contrôle appliquées à chaque fichier.
+       Les algorithmes disponibles sont actuellement
+       <code class="literal">NONE</code>, <code class="literal">CRC32C</code>,
+       <code class="literal">SHA224</code>, <code class="literal">SHA256</code>,
+       <code class="literal">SHA384</code> et <code class="literal">SHA512</code>.
+       Le défaut est <code class="literal">CRC32C</code>.
+      </p><p>
+       Si <code class="literal">NONE</code> est choisi, le manifeste ne contiendra
+       aucune somme de contrôle. Sinon, il y en aura une pour chaque fichier
+       de la sauvegarde, avec l'algorithme indiqué. De plus, le manifeste
+       contiendra toujours une somme de contrôle <code class="literal">SHA256</code> de
+       son propre contenu. Les algorithmes <code class="literal">SHA</code> sont
+       significativement plus consommateurs de CPU que
+       <code class="literal">CRC32C</code> ; choisir l'un d'eux peut donc augmenter
+       la durée nécessaire à la sauvegarde.
+      </p><p>
+       Une fonction de hachage SHA fournit un résumé cryptographiquement sûr
+       de chaque fichier, pour les utilisateurs voulant vérifier que la
+       sauvegarde n'a pas été modifiée ; alors que l'algorithme CRC32C
+       fournit une somme de contrôle bien plus rapide à calculer, bonne pour
+       déceler des erreurs dues à des changements accidentels, mais vulnérable
+       à des modifications ciblées. Notez que, pour qu'il serve face à un
+       adversaire avec un accès à la sauvegarde, il faut stocker de manière
+       sécurisée, ailleurs, le fichier manifeste, ou vérifier d'une manière ou
+       d'une autre qu'il n'a pas été modifié depuis le moment de la
+       sauvegarde.
+      </p><p>
+       <a class="xref" href="app-pgverifybackup.html" title="pg_verifybackup"><span class="refentrytitle"><span class="application">pg_verifybackup</span></span></a> peut être utilisé pour vérifier
+       l'intégrité d'une sauvegarde grâce à son manifeste.
+      </p></dd><dt><span class="term"><code class="option">--manifest-force-encode</code></span></dt><dd><p>
+       Dans le manifeste de la sauvegarde, force l'encodage hexadécimal de
+       tous les noms de fichiers. Sans cette option, seuls les noms de
+       fichiers non-UTF8 sont ainsi encodés. Cette option est surtout
+       destinée à tester que les outils qui lisent un manifeste de
+       sauvegarde traitent correctement ce cas.
+      </p></dd><dt><span class="term"><code class="option">--no-estimate-size</code></span></dt><dd><p>
+       Empêche le serveur d'estimer la taille totale de la sauvegarde qui
+       sera renvoyée, et entraînera toujours une valeur
+       <code class="literal">NULL</code> pour la colonne
+       <code class="structfield">backup_total</code> de
+       <code class="structname">pg_stat_progress_basebackup</code>.
+      </p><p>
+       Sans cette option, la sauvegarde commencera par calculer la
+       taille de toute l'instance, puis procédera à l'envoi du contenu.
+       Cela peut allonger légèrement la sauvegarde, en particulier
+       avant l'envoi des premières données. Si cela est trop long,
+       cette option permet de l'éviter.
+      </p><p>
+       Cette option n'est pas autorisée si l'on utilise <code class="option">--progress</code>.
+      </p></dd><dt><span class="term"><code class="option">--no-manifest</code></span></dt><dd><p>
+       Désactive la génération du fichier manifeste de la sauvegarde.
+       Sans cette option, le serveur générera et enverra un manifeste,
+       contrôlable avec <a class="xref" href="app-pgverifybackup.html" title="pg_verifybackup"><span class="refentrytitle"><span class="application">pg_verifybackup</span></span></a>.
+       Ce manifeste est une liste de tous les fichiers présent dans la
+       sauvegarde, à l'exception d'éventuels fichiers WAL.
+       Pour chaque fichier, il stocke aussi la taille, le moment de
+       la dernière modification et, optionnellement, une somme de contrôle.
+      </p></dd><dt><span class="term"><code class="option">--no-slot</code></span></dt><dd><p>
+       Empêche la création d'un slot de réplication temporaire pour la
+       sauvegarde.
+      </p><p>
+       Par défaut, si le flux de réplication est sélectionné mais qu'aucun nom
+       de slot n'a été donné avec l'option <code class="option">-S</code>, alors un slot
+       de réplication temporaire est créé si cela est supporté par le serveur
+       source).
+      </p><p>
+       Le but principal de cette option est de permettre de prendre une
+       sauvegarde de base même si le serveur est à cours de slots de
+       réplication. Utiliser les slots est presque toujours la meilleure
+       solution, car cela empêche le serveur de supprimer les WAL nécessaires
+       pendant la sauvegarde.
+      </p></dd><dt><span class="term"><code class="option">--no-verify-checksums</code></span></dt><dd><p>
+       Désactive la vérification des sommes de contrôles, si elles sont
+       activées sur le serveur sur lequel la sauvegarde est réalisée.
+      </p><p>
+       Par défaut, les sommes de contrôles sont vérifiées, et les erreurs
+       produiront un code de sortie différent de zéro. Cependant, la
+       sauvegarde ne sera pas supprimée, comme si l'option
+       <code class="option">--no-clean</code> avait été utilisée. Les échecs de
+       vérification des sommes de contrôle seront aussi rapportés dans
+       la vue <a class="xref" href="monitoring-stats.html#PG-STAT-DATABASE-VIEW" title="Tableau 27.27. Vue pg_stat_database">pg_stat_database</a>.
+      </p></dd></dl></div><p>
+  </p><p>
+   Les options de ligne de commande suivantes contrôlent la connexion au
+   serveur source :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-d <em class="replaceable"><code>connstr</code></em></code><br /></span><span class="term"><code class="option">--dbname=<em class="replaceable"><code>connstr</code></em></code></span></dt><dd><p>
+       Indique les paramètres utilisés pour se connecter au serveur sous la
+       forme d'une <a class="link" href="libpq-connect.html#LIBPQ-CONNSTRING" title="32.1.1. Chaînes de connexion">chaîne de
+        connexion</a> ; elles surchargeront les options en ligne de
+       commande conflictuelles.
+      </p><p>
+       Cette option est appelée <code class="literal">--dbname</code> par cohérence avec
+       les autres applications clientes, mais comme
+       <span class="application">pg_basebackup</span> ne se connecte à aucune base
+       de données particulière dans l'instance, le nom de la base de données
+       dans la chaîne de connexion est ignorée par
+       <span class="productname">PostgreSQL</span>. Néanmoins, un nom de base
+       fourni de cette façon surcharge le nom de base par défaut
+       (<code class="literal">replication</code>) pour rechercher le mot de passe de la
+       connexion de réplication dans <code class="filename">~/.pgpass</code>. De façon
+       similaire, les logiciels tiers et proxies utilisés dans la connexion à
+       <span class="productname">PostgreSQL</span> pourraient utiliser le nom pour
+       le routage de connexion. Le nom de la base spécifié dans la chaîne de
+       connexion peut aussi être utilisé par la <a class="link" href="logicaldecoding-explanation.html#LOGICALDECODING-REPLICATION-SLOTS-SYNCHRONIZATION" title="47.2.3. Synchronisation du slot de réplication">synchronisation
+       du slot de réplication logique</a>.
+      </p></dd><dt><span class="term"><code class="option">-h <em class="replaceable"><code>hôte</code></em></code><br /></span><span class="term"><code class="option">--host=<em class="replaceable"><code>hôte</code></em></code></span></dt><dd><p>
+       Indique le nom d'hôte de la machine sur laquelle le serveur de bases de
+       données est exécuté. Si la valeur commence par une barre oblique (/),
+       elle est interprétée comme le répertoire de socket de domaine Unix. La
+       valeur par défaut est fournie par la variable d'environnement
+       <code class="envar">PGHOST</code>, si elle est en place ; sinon
+       une connexion sur la socket de domaine Unix est tentée.
+      </p></dd><dt><span class="term"><code class="option">-p <em class="replaceable"><code>port</code></em></code><br /></span><span class="term"><code class="option">--port=<em class="replaceable"><code>port</code></em></code></span></dt><dd><p>
+       Indique le port TCP ou l'extension du fichier local de socket de
+       domaine Unix sur lequel le serveur écoute les connexions. La valeur par
+       défaut est fournie par la variable d'environnement
+       <code class="envar">PGPORT</code>, si elle est en place ; sinon
+       il s'agit de la valeur fournie à la compilation.
+      </p></dd><dt><span class="term"><code class="option">-s <em class="replaceable"><code>interval</code></em></code><br /></span><span class="term"><code class="option">--status-interval=<em class="replaceable"><code>interval</code></em></code></span></dt><dd><p>
+       Spécifie le nombre de secondes entre les envois au serveur source des
+       paquets informant de l'état en cours. Des valeurs plus petites
+       permettent une supervision plus précise de la progression de la
+       sauvegarde à partir du serveur source. Une valeur de zéro désactive
+       complètement les mises à jour de statut périodiques, bien qu'une mise à
+       jour sera toujours envoyée sur demande du serveur, pour éviter une
+       déconnexion suite au dépassement d'un délai. La valeur par défaut est
+       de 10 secondes.
+      </p></dd><dt><span class="term"><code class="option">-U <em class="replaceable"><code>nom_utilisateur</code></em></code><br /></span><span class="term"><code class="option">--username=<em class="replaceable"><code>nom_utilisateur</code></em></code></span></dt><dd><p>
+       Indique le nom d'utilisateur pour la connexion.
+      </p></dd><dt><span class="term"><code class="option">-w</code><br /></span><span class="term"><code class="option">--no-password</code></span></dt><dd><p>
+       Empêche l'affichage d'une demande de mot de passe. Si le serveur en
+       réclame un pour l'authentification, et qu'un mot de passe n'est pas
+       disponible d'une autre façon (par exemple avec le fichier
+       <code class="filename">.pgpass</code>), la tentative de connexion échouera.
+       Cette option peut être utile dans les batchs et les scripts où aucun
+       utilisateur n'est présent pour saisir un mot de passe.
+      </p></dd><dt><span class="term"><code class="option">-W</code><br /></span><span class="term"><code class="option">--password</code></span></dt><dd><p>
+       Force <span class="application">pg_basebackup</span> à demander un mot de
+       passe avant la connexion au serveur source.
+      </p><p>
+       Cette option n'est jamais nécessaire, car
+       <span class="application">pg_basebackup</span> demandera automatiquement un mot
+       de passe si le serveur exige une telle authentification.
+       Néanmoins, <span class="application">pg_basebackup</span> gaspillera une tentative
+       de connexion pour découvrir que le serveur veut ce mot de passe. Dans
+       certains cas, il est préférable d'ajouter l'option <code class="option">-W</code>
+       pour éviter la tentative de connexion.
+      </p></dd></dl></div><p>
+  </p><p>
+   D'autres options sont aussi disponibles :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-V</code><br /></span><span class="term"><code class="option">--version</code></span></dt><dd><p>
+       Affiche la version de <span class="application">pg_basebackup</span>,
+       puis quitte.
+      </p></dd><dt><span class="term"><code class="option">-?</code><br /></span><span class="term"><code class="option">--help</code></span></dt><dd><p>
+       Affiche l'aide sur les arguments en ligne de commande de
+       <span class="application">pg_basebackup</span>, puis quitte.
+      </p></dd></dl></div><p>
+  </p></div><div class="refsect1" id="id-1.9.4.10.7"><h2>Environnement</h2><p>
+   Cet outil, comme la plupart des outils
+   <span class="productname">PostgreSQL</span>, utilise les variables
+   d'environnement supportées par <span class="application">libpq</span> (voir <a class="xref" href="libpq-envars.html" title="32.15. Variables d'environnement">Section 32.15</a>).
+  </p><p>
+   La variable d'environnement <code class="envar">PG_COLOR</code> indique s'il faut
+   utiliser les couleurs dans les messages de diagnostics. Les valeurs
+   possibles sont <code class="literal">always</code>, <code class="literal">auto</code>,
+   <code class="literal">never</code>.
+  </p></div><div class="refsect1" id="id-1.9.4.10.8"><h2>Notes</h2><p>
+   Au début d'une sauvegarde, un checkpoint doit être réalisé sur le serveur
+   cible. Ceci peut prendre un certain temps (tout spécialement si l'option
+   <code class="literal">--checkpoint=fast</code> n'est pas utilisée), pendant lequel
+   <span class="application">pg_basebackup</span> semblera inactif.
+  </p><p>
+   La sauvegarde inclura tous les fichiers du répertoire de données et des
+   tablespaces, dont les fichiers de configuration, et aussi tout autre fichier
+   placé dans le répertoire par d'autres personnes, à
+   l'exception de certains fichiers temporaires gérés par PostgreSQL et des
+   fichiers du système d'exploitation. Seuls
+   les fichiers normaux et les répertoires sont cependant copiés.
+   Les liens symboliques utilisés pour les tablespaces sont aussi préservés. Les
+   liens symboliques pointant vers certains répertoires connus de PostgreSQL
+   sont copiés en tant que répertoires vides. Les autres liens symboliques et
+   les fichiers de périphérique spéciaux sont ignorés. Voir <a class="xref" href="protocol-replication.html" title="53.4. Protocole de réplication en flux">Section 53.4</a> pour des détails précis.
+  </p><p>
+   Dans le format plain, les tablespaces seront sauvegardés avec le même
+   chemin que sur le serveur source, sauf si l'option
+   <code class="literal">--tablespace-mapping</code> est utilisée. Sans elle, restaurer
+   et lancer une sauvegarde de format plain sur le même serveur ne
+   fonctionnera pas si les tablespaces sont utilisés, car la sauvegarde devra
+   écrire dans les mêmes répertoires que ceux des tablespaces originaux.
+  </p><p>
+   Quand le format tar est utilisé, il est de la responsabilité de
+   l'utilisateur de décompresser chaque archive tar avant de démarrer un
+   serveur PostgreSQL qui utilisera ces données. S'il existe des tablespaces
+   supplémentaires, les archives tar les concernant doivent être décompressés
+   au même emplacement. Dans ce cas, les liens symboliques pour ces
+   tablespaces seront créés par le serveur, suivant le contenu du fichier
+   <code class="filename">tablespace_map</code> inclus dans le fichier
+   <code class="filename">base.tar</code>.
+  </p><p>
+   <span class="application">pg_basebackup</span> fonctionne sur les serveurs de
+   même version, ou de version plus ancienne jusqu'à la 9.1. Néanmoins, le
+   streaming des WAL (option <code class="literal">-X</code>) ne fonctionne qu'avec un
+   serveur en version 9.3 ou ultérieure, et le format tar
+   (<code class="literal">--format=tar</code>) ne fonctionne qu'avec les serveurs de
+   version 9.5 ou ultérieure, et la sauvegarde incrémentale
+   (<code class="literal">--incremental</code>) fonctionne seulement avec les serveurs
+   de version 17 ou ultérieure.
+  </p><p>
+   <span class="application">pg_basebackup</span> conservera les droits de groupe
+   pour les fichiers de données si les droits de groupe sont activés sur
+   l'instance cible.
+  </p></div><div class="refsect1" id="id-1.9.4.10.9"><h2>Exemples</h2><p>
+   Pour créer une sauvegarde de base du serveur <code class="literal">mon_sgbd</code> et
+   l'enregistrer dans le répertoire local
+   <code class="filename">/usr/local/pgsql/data</code> :
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>pg_basebackup -h mon_sgbd -D /usr/local/pgsql/data</code></strong>
+   </pre><p>
+  </p><p>
+   Pour créer une sauvegarde du serveur local avec un fichier tar compressé
+   pour chaque tablespace, et stocker le tout dans le répertoire
+   <code class="filename">sauvegarde</code>, tout en affichant la progression pendant
+   l'exécution :
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>pg_basebackup -D sauvegarde -Ft -z -P</code></strong>
+   </pre><p>
+  </p><p>
+   Pour créer une sauvegarde d'une base de données locale avec un seul
+   tablespace, et la compresser avec <span class="productname">bzip2</span> :
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>pg_basebackup -D - -Ft -X fetch | bzip2 &gt; backup.tar.bz2</code></strong>
+   </pre><p>
+   (Cette commande échouera s'il existe plusieurs tablespaces dans l'instance.)
+  </p><p>
+   Pour créer une sauvegarde d'une base locale, où le tablespace situé dans
+   <code class="filename">/opt/ts</code> doit être déplacé vers
+   <code class="filename">./backup/ts</code> :
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>pg_basebackup -D backup/data -T /opt/ts=$(pwd)/backup/ts</code></strong>
+   </pre><p>
+  </p><p>
+   Pour créer une sauvegarde d'un serveur local avec un fichier tar pour chaque tablespace
+   compressé avec <span class="application">gzip</span> au niveau 9, enregistré dans le répertoire
+   <code class="filename">backup</code> :
+</p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>pg_basebackup -D backup -Ft --compress=gzip:9</code></strong>
+</pre><p>
+  </p></div><div class="refsect1" id="id-1.9.4.10.10"><h2>Voir aussi</h2><span class="simplelist"><a class="xref" href="app-pgdump.html" title="pg_dump"><span class="refentrytitle"><span class="application">pg_dump</span></span></a>, <a class="xref" href="progress-reporting.html#BASEBACKUP-PROGRESS-REPORTING" title="27.4.6. Rapporter la progression de la sauvegarde de base">Section 27.4.6</a></span></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/app-pgbasebackup.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:06 GMT -->
+</html>

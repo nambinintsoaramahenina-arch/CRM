@@ -1,0 +1,882 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/functions-aggregate.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:23 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>9.21. Fonctions d'agrégat</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="functions-range.html" title="9.20. Fonctions et opérateurs sur les intervalles simple/multiple" /><link rel="next" href="functions-window.html" title="9.22. Fonctions de fenêtrage" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/functions-aggregate.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/functions-aggregate.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/functions-aggregate.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/functions-aggregate.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/functions-aggregate.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/functions-aggregate.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/functions-aggregate.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/functions-aggregate.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/functions-aggregate.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/functions-aggregate.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/functions-aggregate.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/functions-aggregate.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/functions-aggregate.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/functions-aggregate.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/functions-aggregate.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/functions-aggregate.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/functions-aggregate.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/functions-aggregate.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/functions-aggregate.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/functions-aggregate.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/functions-aggregate.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="functions.html">Fonctions et opérateurs</a></span> » <span class="breadcrumb-node">Fonctions d'agrégat</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="functions-range.html" title="9.20. Fonctions et opérateurs sur les intervalles simple/multiple">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="functions.html" title="Chapitre 9. Fonctions et opérateurs">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="functions-window.html" title="9.22. Fonctions de fenêtrage">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">9.20. Fonctions et opérateurs sur les intervalles simple/multiple </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 9.22. Fonctions de fenêtrage</td></tr></table></div><div class="sect1" id="FUNCTIONS-AGGREGATE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">9.21. Fonctions d'agrégat <a href="#FUNCTIONS-AGGREGATE" class="id_link">#</a></h2></div></div></div><a id="id-1.5.8.27.2" class="indexterm"></a><p>
+ Les <em class="firstterm">fonctions d'agrégat</em> calculent un seul résultat à
+ partir d'un ensemble de valeurs en entrée. Les fonctions d'agrégat natives
+ à but général sont listées dans <a class="xref" href="functions-aggregate.html#FUNCTIONS-AGGREGATE-TABLE" title="Tableau 9.60. Fonctions d'agrégat à but général">Tableau 9.60</a>
+ alors que les agrégats statistiques sont dans <a class="xref" href="functions-aggregate.html#FUNCTIONS-AGGREGATE-STATISTICS-TABLE" title="Tableau 9.61. Fonctions d'agrégat pour les statistiques">Tableau 9.61</a>. Les fonctions d'agrégat
+ natives à ensemble trié dans des groupes sont listées dans <a class="xref" href="functions-aggregate.html#FUNCTIONS-ORDEREDSET-TABLE" title="Tableau 9.62. Fonctions d'agrégat à ensemble trié">Tableau 9.62</a> alors que les fonctions à ensemble
+ hypothétique dans des groupes sont dans <a class="xref" href="functions-aggregate.html#FUNCTIONS-HYPOTHETICAL-TABLE" title="Tableau 9.63. Fonctions d'agrégat à ensemble hypothétique">Tableau 9.63</a>. Les opérations de regroupement,
+ qui sont fortement liées aux fonctions d'agrégat, sont listées dans <a class="xref" href="functions-aggregate.html#FUNCTIONS-GROUPING-TABLE" title="Tableau 9.64. Opérations de regroupement">Tableau 9.64</a>. Les considérations spéciales de
+ syntaxe pour les fonctions d'agrégat sont expliquées dans <a class="xref" href="sql-expressions.html#SYNTAX-AGGREGATES" title="4.2.7. Expressions d'agrégat">Section 4.2.7</a>. Consultez <a class="xref" href="tutorial-agg.html" title="2.7. Fonctions d'agrégat">Section 2.7</a>
+ pour une introduction supplémentaire.
+</p><p>
+ Les fonctions d'agrégat qui supportent le <em class="firstterm">Mode Partiel</em>
+ sont éligibles à participer à différentes optimisations, telles que
+ l'agrégation parallélisée.
+</p><p>
+ Bien que tous les agrégats ci-dessous acceptent une clause optionnelle
+ <code class="literal">ORDER BY</code> (comme décrit dans <a class="xref" href="sql-expressions.html#SYNTAX-AGGREGATES" title="4.2.7. Expressions d'agrégat">Section 4.2.7</a>),
+ la clause n'a été ajoutée qu'aux agrégats dont la sortie est affectée par l'ordre.
+</p><div class="table" id="FUNCTIONS-AGGREGATE-TABLE"><p class="title"><strong>Tableau 9.60. Fonctions d'agrégat à but général</strong></p><div class="table-contents"><table class="table" summary="Fonctions d'agrégat à but général" border="1"><colgroup><col class="col1" /><col class="col2" /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+      Fonction
+     </p>
+     <p>
+      Description
+     </p></th><th>Mode Partiel</th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.6.2.4.1.1.1.1" class="indexterm"></a>
+     <code class="function">any_value</code> ( <code class="type">anyelement</code> )
+      → <code class="returnvalue"><em class="replaceable"><code>same as input type</code></em></code>
+     </p>
+     <p>
+      Renvoie une valeur arbitraire à partir des valeurs non NULL en entrée.
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.2.1.1.1" class="indexterm"></a>
+      <code class="function">array_agg</code> ( <code class="type">anynonarray</code> <code class="literal">ORDER BY</code> <code class="literal">colonnes_tri</code> )
+      → <code class="returnvalue">anyarray</code>
+     </p>
+     <p>
+      Récupère toutes les valeurs en entrée, y compris les NULL, et les place
+      dans un tableau.
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <code class="function">array_agg</code> ( <code class="type">anyarray</code> <code class="literal">ORDER BY</code> <code class="literal">colonnes_tri</code> )
+      → <code class="returnvalue">anyarray</code>
+     </p>
+     <p>
+      Concatène tous les tableaux en entrée dans un tableau d'une dimension
+      supérieure. (Les entrées doivent toutes avoir la même dimension, et ne
+      peuvent être ni vides ni NULL.)
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.4.1.1.1" class="indexterm"></a>
+      <a id="id-1.5.8.27.6.2.4.4.1.1.2" class="indexterm"></a>
+      <code class="function">avg</code> ( <code class="type">smallint</code> )
+      → <code class="returnvalue">numeric</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">avg</code> ( <code class="type">integer</code> )
+      → <code class="returnvalue">numeric</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">avg</code> ( <code class="type">bigint</code> )
+      → <code class="returnvalue">numeric</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">avg</code> ( <code class="type">numeric</code> )
+      → <code class="returnvalue">numeric</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">avg</code> ( <code class="type">real</code> )
+      → <code class="returnvalue">double precision</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">avg</code> ( <code class="type">double precision</code> )
+      → <code class="returnvalue">double precision</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">avg</code> ( <code class="type">interval</code> )
+      → <code class="returnvalue">interval</code>
+     </p>
+     <p>
+      Calcule la moyenne (arithmétique) de toutes les valeurs en entrée, non
+      NULL.
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.5.1.1.1" class="indexterm"></a>
+      <code class="function">bit_and</code> ( <code class="type">smallint</code> )
+      → <code class="returnvalue">smallint</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">bit_and</code> ( <code class="type">integer</code> )
+      → <code class="returnvalue">integer</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">bit_and</code> ( <code class="type">bigint</code> )
+      → <code class="returnvalue">bigint</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">bit_and</code> ( <code class="type">bit</code> )
+      → <code class="returnvalue">bit</code>
+     </p>
+     <p>
+      Calcule un AND bit à bit de toutes les valeurs en entrée non NULL.
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.6.1.1.1" class="indexterm"></a>
+      <code class="function">bit_or</code> ( <code class="type">smallint</code> )
+      → <code class="returnvalue">smallint</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">bit_or</code> ( <code class="type">integer</code> )
+      → <code class="returnvalue">integer</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">bit_or</code> ( <code class="type">bigint</code> )
+      → <code class="returnvalue">bigint</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">bit_or</code> ( <code class="type">bit</code> )
+      → <code class="returnvalue">bit</code>
+     </p>
+     <p>
+      Calcule un OR bit à bit de toutes les valeurs en entrée non NULL.
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.6.2.4.7.1.1.1" class="indexterm"></a>
+     <code class="function">bit_xor</code> ( <code class="type">smallint</code> )
+     → <code class="returnvalue">smallint</code>
+    </p>
+    <p class="func_signature">
+     <code class="function">bit_xor</code> ( <code class="type">integer</code> )
+     → <code class="returnvalue">integer</code>
+    </p>
+    <p class="func_signature">
+     <code class="function">bit_xor</code> ( <code class="type">bigint</code> )
+     → <code class="returnvalue">bigint</code>
+    </p>
+    <p class="func_signature">
+     <code class="function">bit_xor</code> ( <code class="type">bit</code> )
+     → <code class="returnvalue">bit</code>
+    </p>
+    <p>
+     Calcule un OR exclusif bit à bit de toutes les valeurs en entrée non NULL.
+     Peut être utile comme somme de contrôle pour un ensemble de valeurs non ordonnées.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.8.1.1.1" class="indexterm"></a>
+      <code class="function">bool_and</code> ( <code class="type">boolean</code> )
+      → <code class="returnvalue">boolean</code>
+     </p>
+     <p>
+      Renvoie true si toutes les valeurs en entrée non NULL valent true,
+      sinon false.
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.9.1.1.1" class="indexterm"></a>
+      <code class="function">bool_or</code> ( <code class="type">boolean</code> )
+      → <code class="returnvalue">boolean</code>
+     </p>
+     <p>
+      Renvoie true si au moins une des valeurs en entrée non NULL vaut true,
+      sinon false.
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.10.1.1.1" class="indexterm"></a>
+      <code class="function">count</code> ( <code class="literal">*</code> )
+      → <code class="returnvalue">bigint</code>
+     </p>
+     <p>
+      Calcule le nombre de lignes en entrée.
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <code class="function">count</code> ( <code class="type">"any"</code> )
+      → <code class="returnvalue">bigint</code>
+     </p>
+     <p>
+      Calcule le nombre de lignes en entrée pour lesquelles la valeur n'est
+      pas NULL.
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.12.1.1.1" class="indexterm"></a>
+      <code class="function">every</code> ( <code class="type">boolean</code> )
+      → <code class="returnvalue">boolean</code>
+     </p>
+     <p>
+      Ceci est l'équivalent de <code class="function">bool_and</code> pour le standard
+      SQL.
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.13.1.1.1" class="indexterm"></a>
+      <code class="function">json_agg</code> ( <code class="type">anyelement</code> <code class="literal">ORDER BY</code> <code class="literal">colonnes_tri</code> )
+      → <code class="returnvalue">json</code>
+     </p>
+     <p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.13.1.2.1" class="indexterm"></a>
+      <code class="function">jsonb_agg</code> ( <code class="type">anyelement</code> <code class="literal">ORDER BY</code> <code class="literal">colonnes_tri</code> )
+      → <code class="returnvalue">jsonb</code>
+     </p>
+     <p>
+      Récupère toutes les valeurs en entrée, y compris les NULL, et les place
+      dans un tableau JSON. Les valeurs sont converties en JSON avec
+      <code class="function">to_json</code> ou <code class="function">to_jsonb</code>.
+     </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.6.2.4.14.1.1.1" class="indexterm"></a>
+     <code class="function">json_agg_strict</code> ( <code class="type">anyelement</code> )
+     → <code class="returnvalue">json</code>
+    </p>
+    <p class="func_signature">
+     <a id="id-1.5.8.27.6.2.4.14.1.2.1" class="indexterm"></a>
+     <code class="function">jsonb_agg_strict</code> ( <code class="type">anyelement</code> )
+     → <code class="returnvalue">jsonb</code>
+    </p>
+    <p>
+     Récupère toutes les valeurs en entrée, en ignorant les valeurs NULL,
+     pour les intégrer dans un tableau JSON. Les valeurs sont converties en
+     JSON avec <code class="function">to_json</code>
+     ou <code class="function">to_jsonb</code>.
+    </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.15.1.1.1" class="indexterm"></a>
+      <code class="function">json_arrayagg</code> (
+      [<span class="optional"> <em class="replaceable"><code>value_expression</code></em> </span>]
+      [<span class="optional"> <code class="literal">ORDER BY</code> <em class="replaceable"><code>sort_expression</code></em> </span>]
+      [<span class="optional"> { <code class="literal">NULL</code> | <code class="literal">ABSENT</code> } <code class="literal">ON NULL</code> </span>]
+      [<span class="optional"> <code class="literal">RETURNING</code> <em class="replaceable"><code>data_type</code></em> [<span class="optional"> <code class="literal">FORMAT JSON</code> [<span class="optional"> <code class="literal">ENCODING UTF8</code> </span>] </span>] </span>])
+     </p>
+     <p>
+      Se comporte de la même façon que <code class="function">json_array</code> mais
+      sous la forme d'une fonction d'agrégat, donc elle ne prend qu'un seul
+      paramètre <em class="replaceable"><code>value_expression</code></em>.
+      Si <code class="literal">ABSENT ON NULL</code> est indiqué, toute valeur NULL
+      est omise. Si <code class="literal">ORDER BY</code> est indiqué, les éléments
+      apparaîtront dans le tableau dans cet ordre plutôt que dans l'ordre
+      de saisie.
+     </p>
+     <p>
+      <code class="literal">SELECT json_arrayagg(v) FROM (VALUES(2),(1)) t(v)</code>
+      → <code class="returnvalue">[2, 1]</code>
+     </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.16.1.1.1" class="indexterm"></a>
+      <code class="function">json_objectagg</code> (
+      [<span class="optional"> { <em class="replaceable"><code>key_expression</code></em> { <code class="literal">VALUE</code> | ':' } <em class="replaceable"><code>value_expression</code></em> } </span>]
+      [<span class="optional"> { <code class="literal">NULL</code> | <code class="literal">ABSENT</code> } <code class="literal">ON NULL</code> </span>]
+     [<span class="optional"> { <code class="literal">WITH</code> | <code class="literal">WITHOUT</code> } <code class="literal">UNIQUE</code> [<span class="optional"> <code class="literal">KEYS</code> </span>] </span>]
+     [<span class="optional"> <code class="literal">RETURNING</code> <em class="replaceable"><code>data_type</code></em> [<span class="optional"> <code class="literal">FORMAT JSON</code> [<span class="optional"> <code class="literal">ENCODING UTF8</code> </span>] </span>] </span>])
+     </p>
+     <p>
+      Se comporte comme <code class="function">json_object</code>, mais
+      sous la forme d'une fonction d'agrégat, donc elle prend uniquement
+      un paramètre <em class="replaceable"><code>key_expression</code></em> et un paramètre
+      <em class="replaceable"><code>value_expression</code></em>.
+     </p>
+     <p>
+      <code class="literal">SELECT json_objectagg(k:v) FROM (VALUES ('a'::text,current_date),('b',current_date + 1)) AS t(k,v)</code>
+      → <code class="returnvalue">{ "a" : "2022-05-10", "b" : "2022-05-11" }</code>
+    </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.17.1.1.1" class="indexterm"></a>
+      <code class="function">json_object_agg</code> ( <em class="parameter"><code>key</code></em>
+      <code class="type">"any"</code>, <em class="parameter"><code>value</code></em>
+      <code class="type">"any"</code>
+      <code class="literal">ORDER BY</code> <code class="literal">colonnes_tri</code> )
+      → <code class="returnvalue">json</code>
+     </p>
+     <p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.17.1.2.1" class="indexterm"></a>
+      <code class="function">jsonb_object_agg</code> ( <em class="parameter"><code>key</code></em>
+      <code class="type">"any"</code>, <em class="parameter"><code>value</code></em>
+      <code class="type">"any"</code>
+      <code class="literal">ORDER BY</code> <code class="literal">colonnes_tri</code> )
+      → <code class="returnvalue">jsonb</code>
+     </p>
+     <p>
+      Récupère toutes les paires clé/valeur et les place dans un objet JSON.
+      Les arguments clé sont convertis en texte ; les arguments valeur
+      sont convertis avec <code class="function">to_json</code> ou
+      <code class="function">to_jsonb</code>. Les valeurs peuvent être NULL, mais pas
+      les clés.
+     </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.18.1.1.1" class="indexterm"></a>
+      <code class="function">json_object_agg_strict</code> (
+       <em class="parameter"><code>key</code></em> <code class="type">"any"</code>,
+       <em class="parameter"><code>value</code></em> <code class="type">"any"</code> )
+      → <code class="returnvalue">json</code>
+     </p>
+     <p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.18.1.2.1" class="indexterm"></a>
+      <code class="function">jsonb_object_agg_strict</code> (
+       <em class="parameter"><code>key</code></em> <code class="type">"any"</code>,
+       <em class="parameter"><code>value</code></em> <code class="type">"any"</code> )
+      → <code class="returnvalue">jsonb</code>
+     </p>
+     <p>
+      Collectionne toutes les paires clé/valeur dans un objet JSON.
+      Les arguments clés sont convertis en texte ; les arguments
+      valeurs sont converties avec
+      <code class="function">to_json</code> ou <code class="function">to_jsonb</code>.
+      La <em class="parameter"><code>key</code></em> ne peut pas être NULL. Si la
+      <em class="parameter"><code>value</code></em> est NULL, alors la paire complète est
+      ignorée.
+     </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.19.1.1.1" class="indexterm"></a>
+      <code class="function">json_object_agg_unique</code> (
+       <em class="parameter"><code>key</code></em> <code class="type">"any"</code>,
+       <em class="parameter"><code>value</code></em> <code class="type">"any"</code> )
+      → <code class="returnvalue">json</code>
+     </p>
+     <p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.19.1.2.1" class="indexterm"></a>
+      <code class="function">jsonb_object_agg_unique</code> (
+       <em class="parameter"><code>key</code></em> <code class="type">"any"</code>,
+       <em class="parameter"><code>value</code></em> <code class="type">"any"</code> )
+      → <code class="returnvalue">jsonb</code>
+     </p>
+     <p>
+      Récupère toutes les paires clé/valeur dans un objet JSON. Les arguments
+      des clés sont converties en texte ; les arguments des valeurs
+      sont converties via <code class="function">to_json</code> ou
+      <code class="function">to_jsonb</code>. Les valeurs peuvent être NULL mais les
+      clés ne le peuvent pas. S'il existe une clé dupliquée, une erreur est
+      renvoyée.
+     </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.20.1.1.1" class="indexterm"></a>
+      <code class="function">json_object_agg_unique_strict</code> (
+       <em class="parameter"><code>key</code></em> <code class="type">"any"</code>,
+       <em class="parameter"><code>value</code></em> <code class="type">"any"</code> )
+      → <code class="returnvalue">json</code>
+     </p>
+     <p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.20.1.2.1" class="indexterm"></a>
+      <code class="function">jsonb_object_agg_unique_strict</code> (
+       <em class="parameter"><code>key</code></em> <code class="type">"any"</code>,
+       <em class="parameter"><code>value</code></em> <code class="type">"any"</code> )
+      → <code class="returnvalue">jsonb</code>
+     </p>
+     <p>
+      Récupère toutes les paires clé/valeur dans un objet JSON. Les arguments
+      des clés sont converties en texte ; les arguments des valeurs sont
+      converties via <code class="function">to_json</code> ou <code class="function">to_jsonb</code>.
+      Une <em class="parameter"><code>key</code></em> ne peut pas être NULL. Si
+      <em class="parameter"><code>value</code></em> vaut NULL, alors la paire complète est
+      ignorée. S'il ya une clé dupliquée, une erreur est renvoyée.
+     </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.21.1.1.1" class="indexterm"></a>
+      <code class="function">max</code> ( <em class="replaceable"><code>see text</code></em> )
+      → <code class="returnvalue"><em class="replaceable"><code>same as input type</code></em></code>
+     </p>
+     <p>
+      Calcule la valeur maximale de toutes les valeurs en entrée non NULL.
+      Disponible pour les types numeric, string, date/time ou enum type,
+      ainsi que <code class="type">inet</code>, <code class="type">interval</code>,
+      <code class="type">money</code>, <code class="type">oid</code>, <code class="type">pg_lsn</code>,
+      <code class="type">tid</code>, <code class="type">xid8</code> et les tableaux de chacun de ces types.
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.22.1.1.1" class="indexterm"></a>
+      <code class="function">min</code> ( <em class="replaceable"><code>see text</code></em> )
+      → <code class="returnvalue"><em class="replaceable"><code>same as input type</code></em></code>
+     </p>
+     <p>
+      Calcule la valeur minimale de toutes les valeurs en entrée non NULL.
+      Disponible pour les types numeric, string, date/time ou enum type,
+      ainsi que <code class="type">inet</code>, <code class="type">interval</code>,
+      <code class="type">money</code>, <code class="type">oid</code>, <code class="type">pg_lsn</code>,
+      <code class="type">tid</code>, <code class="type">xid8</code> et les tableaux de chacun de ces types.
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.6.2.4.23.1.1.1" class="indexterm"></a>
+     <code class="function">range_agg</code> ( <em class="parameter"><code>value</code></em>
+      <code class="type">anyrange</code> )
+     → <code class="returnvalue">anymultirange</code>
+    </p>
+    <p class="func_signature">
+     <code class="function">range_agg</code> ( <em class="parameter"><code>value</code></em>
+      <code class="type">anymultirange</code> )
+     → <code class="returnvalue">anymultirange</code>
+    </p>
+    <p>
+     Calcule l'union des valeurs non NULL en entrée.
+    </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.6.2.4.24.1.1.1" class="indexterm"></a>
+     <code class="function">range_intersect_agg</code> ( <em class="parameter"><code>value</code></em>
+      <code class="type">anyrange</code> )
+     → <code class="returnvalue">anyrange</code>
+    </p>
+    <p class="func_signature">
+     <code class="function">range_intersect_agg</code> ( <em class="parameter"><code>value</code></em>
+      <code class="type">anymultirange</code> )
+     → <code class="returnvalue">anymultirange</code>
+    </p>
+    <p>
+     Calcule l'intersection des valeurs non NULL en entrée.
+    </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.25.1.1.1" class="indexterm"></a>
+      <code class="function">string_agg</code> ( <em class="parameter"><code>value</code></em>
+      <code class="type">text</code>, <em class="parameter"><code>delimiter</code></em> <code class="type">text</code> )
+      → <code class="returnvalue">text</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">string_agg</code> ( <em class="parameter"><code>value</code></em>
+      <code class="type">bytea</code>, <em class="parameter"><code>delimiter</code></em> <code class="type">bytea</code>
+      <code class="literal">ORDER BY</code> <code class="literal">colonnes_tri</code> )
+      → <code class="returnvalue">bytea</code>
+     </p>
+     <p>
+      Concatène les valeurs en entrée non NULL dans une chaîne. Chaque valeur
+      après la première est précédée par le <em class="parameter"><code>delimiter</code></em>
+      correspondant (s'il n'est pas NULL).
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.26.1.1.1" class="indexterm"></a>
+      <code class="function">sum</code> ( <code class="type">smallint</code> )
+      → <code class="returnvalue">bigint</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">sum</code> ( <code class="type">integer</code> )
+      → <code class="returnvalue">bigint</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">sum</code> ( <code class="type">bigint</code> )
+      → <code class="returnvalue">numeric</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">sum</code> ( <code class="type">numeric</code> )
+      → <code class="returnvalue">numeric</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">sum</code> ( <code class="type">real</code> )
+      → <code class="returnvalue">real</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">sum</code> ( <code class="type">double precision</code> )
+      → <code class="returnvalue">double precision</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">sum</code> ( <code class="type">interval</code> )
+      → <code class="returnvalue">interval</code>
+     </p>
+     <p class="func_signature">
+      <code class="function">sum</code> ( <code class="type">money</code> )
+      → <code class="returnvalue">money</code>
+     </p>
+     <p>
+      Calcule la somme de toutes les valeurs en entrée non NULL.
+     </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.27.6.2.4.27.1.1.1" class="indexterm"></a>
+      <code class="function">xmlagg</code> ( <code class="type">xml</code> <code class="literal">ORDER BY</code> <code class="literal">colonnes_tri</code> )
+      → <code class="returnvalue">xml</code>
+     </p>
+     <p>
+      Concatène toutes les valeurs XML en entrée non NULL (voir
+      <a class="xref" href="functions-xml.html#FUNCTIONS-XML-XMLAGG" title="9.15.1.8. xmlagg">Section 9.15.1.8</a>).
+     </p></td><td>Non</td></tr></tbody></table></div></div><br class="table-break" /><p>
+ Il doit être noté que, sauf pour <code class="function">count</code>, ces fonctions
+ renvoient NULL quand aucune ligne n'est sélectionnée. En particulier, le
+ <code class="function">sum</code> d'aucune ligne renvoie NULL, et non pas zéro comme
+ certains s'y attendraient, et <code class="function">array_agg</code> renvoie NULL
+ plutôt qu'un tableau vide s'il n'y a pas de lignes en entrée. La fonction
+ <code class="function">coalesce</code> peut être utilisée pour substituer une valeur
+ NULL à zéro ou un tableau vide quand cela s'avère nécessaire.
+</p><p>
+ Les fonctions d'agrégat <code class="function">array_agg</code>,
+ <code class="function">json_agg</code>, <code class="function">jsonb_agg</code>,
+ <code class="function">json_agg_strict</code>, <code class="function">jsonb_agg_strict</code>,
+ <code class="function">json_object_agg</code>, <code class="function">jsonb_object_agg</code>,
+ <code class="function">json_object_agg_strict</code>, <code class="function">jsonb_object_agg_strict</code>,
+ <code class="function">json_object_agg_unique</code>, <code class="function">jsonb_object_agg_unique</code>,
+ <code class="function">json_object_agg_unique_strict</code>,
+ <code class="function">jsonb_object_agg_unique_strict</code>,
+ <code class="function">string_agg</code> et <code class="function">xmlagg</code>, ainsi que les
+ fonctions d'agrégat utilisateurs similaires, produisent des valeurs de résultat
+ différentes suivant l'ordre des valeurs en entrée. Cet ordre n'est pas spécifié
+ par défaut, mais peut être contrôlé en écrivant une clause <code class="literal">ORDER
+ BY</code> dans l'appel à l'agrégat, comme indiqué dans <a class="xref" href="sql-expressions.html#SYNTAX-AGGREGATES" title="4.2.7. Expressions d'agrégat">Section 4.2.7</a>. Autrement, fournir les valeurs en entrée triées
+ à partir d'une sous-requête fonctionne généralement. Par exemple :
+
+ </p><pre class="screen">
+SELECT xmlagg(x) FROM (SELECT x FROM test ORDER BY y DESC) AS tab;
+</pre><p>
+
+   Attention que cette approche peut échouer si le niveau de la requête
+   externe contient un traitement supplémentaire, tel qu'une jointure, parce
+   que cela pourrait remettre en cause la sortie de la sous-requête et
+   notamment un nouveau tri avant le calcul de l'agrégat.
+  </p><div class="note"><h3 class="title">Note</h3><a id="id-1.5.8.27.9.1" class="indexterm"></a><a id="id-1.5.8.27.9.2" class="indexterm"></a><p>
+      Les agrégats booléens <code class="function">bool_and</code> et
+      <code class="function">bool_or</code> correspondent aux agrégats du standard SQL
+      <code class="function">every</code> et <code class="function">any</code> ou
+      <code class="function">some</code>. <span class="productname">PostgreSQL</span> accepte
+      <code class="function">every</code>, mais pas <code class="function">any</code> et
+      <code class="function">some</code>, car il y a une ambiguité dans la syntaxe
+      standard :
+</p><pre class="programlisting">
+SELECT b1 = ANY((SELECT b2 FROM t2 ...)) FROM t1 ...;
+ </pre><p>
+ Ici, <code class="function">ANY</code> peut être considéré soit comme
+ introduisant une sous-requête, soit comme étant une fonction d'agrégat,
+ si la sous-requête renvoie une ligne avec une valeur booléenne. De ce
+ fait, le nom standard ne peut pas être donné à ces agrégats.
+</p></div><div class="note"><h3 class="title">Note</h3><p>
+ Les utilisateurs habitués à travailler avec d'autres systèmes de gestion
+ de bases de données pourraient être déçus par les performances de l'agrégat
+ <code class="function">count</code> quand il est appliqué à la table entière. Une
+ requête comme :
+ </p><pre class="programlisting">
+SELECT count(*) FROM sometable;
+ </pre><p>
+ nécessite un effort proportionnel à la taille de la table :
+ <span class="productname">PostgreSQL</span> aura besoin de parcourir soit toute
+ la table soit tout un index qui inclut toutes les lignes de la table.
+</p></div><p>
+<a class="xref" href="functions-aggregate.html#FUNCTIONS-AGGREGATE-STATISTICS-TABLE" title="Tableau 9.61. Fonctions d'agrégat pour les statistiques">Tableau 9.61</a> montre les fonctions
+d'agrégat typiquement utilisées dans les analyses statistiques. (Elles sont
+séparées principalement pour éviter d'encombrer la liste des agrégats plus
+fréquemment utilisés.) Les fonctions acceptant
+<em class="replaceable"><code>numeric_type</code></em> sont disponibles pour les types
+<code class="type">smallint</code>, <code class="type">integer</code>, <code class="type">bigint</code>,
+<code class="type">numeric</code>, <code class="type">real</code> et <code class="type">double precision</code>.
+Quand la description mentionne <em class="parameter"><code>N</code></em>, cela signifie le
+nombre de lignes en entrée pour lesquelles les expressions en entrée ne
+sont pas NULL. Dans tous les cas, NULL est renvoyé si le calcul n'a pas de
+sens, par exemple quand <em class="parameter"><code>N</code></em> vaut zéro.
+</p><a id="id-1.5.8.27.12" class="indexterm"></a><a id="id-1.5.8.27.13" class="indexterm"></a><div class="table" id="FUNCTIONS-AGGREGATE-STATISTICS-TABLE"><p class="title"><strong>Tableau 9.61. Fonctions d'agrégat pour les statistiques</strong></p><div class="table-contents"><table class="table" summary="Fonctions d'agrégat pour les statistiques" border="1"><colgroup><col class="col1" /><col class="col2" /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+     Fonction
+    </p>
+    <p>
+     Description
+    </p></th><th>Mode Partiel</th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.1.1.1.1" class="indexterm"></a>
+     <a id="id-1.5.8.27.14.2.4.1.1.1.2" class="indexterm"></a>
+     <code class="function">corr</code> ( <em class="parameter"><code>Y</code></em> <code class="type">double precision</code>, <em class="parameter"><code>X</code></em> <code class="type">double precision</code> )
+     → <code class="returnvalue">double precision</code>
+    </p>
+    <p>
+     Calcule le coefficient de corrélation.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.2.1.1.1" class="indexterm"></a>
+     <a id="id-1.5.8.27.14.2.4.2.1.1.2" class="indexterm"></a>
+     <code class="function">covar_pop</code> ( <em class="parameter"><code>Y</code></em> <code class="type">double precision</code>, <em class="parameter"><code>X</code></em> <code class="type">double precision</code> )
+     → <code class="returnvalue">double precision</code>
+    </p>
+    <p>
+     Calcule la covariance de population.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.3.1.1.1" class="indexterm"></a>
+     <a id="id-1.5.8.27.14.2.4.3.1.1.2" class="indexterm"></a>
+     <code class="function">covar_samp</code> ( <em class="parameter"><code>Y</code></em> <code class="type">double precision</code>, <em class="parameter"><code>X</code></em> <code class="type">double precision</code> )
+     → <code class="returnvalue">double precision</code>
+    </p>
+    <p>
+     Calcule la covariance d'échantillon.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.4.1.1.1" class="indexterm"></a>
+     <code class="function">regr_avgx</code> ( <em class="parameter"><code>Y</code></em> <code class="type">double precision</code>, <em class="parameter"><code>X</code></em> <code class="type">double precision</code> )
+     → <code class="returnvalue">double precision</code>
+    </p>
+    <p>
+     Calcule la moyenne de la variable indépendante,
+     <code class="literal">sum(<em class="parameter"><code>X</code></em>)/<em class="parameter"><code>N</code></em></code>.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.5.1.1.1" class="indexterm"></a>
+     <code class="function">regr_avgy</code> ( <em class="parameter"><code>Y</code></em> <code class="type">double precision</code>, <em class="parameter"><code>X</code></em> <code class="type">double precision</code> )
+     → <code class="returnvalue">double precision</code>
+    </p>
+    <p>
+     Calcule la moyenne de la variable dépendante,
+     <code class="literal">sum(<em class="parameter"><code>Y</code></em>)/<em class="parameter"><code>N</code></em></code>.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.6.1.1.1" class="indexterm"></a>
+     <code class="function">regr_count</code> ( <em class="parameter"><code>Y</code></em> <code class="type">double precision</code>, <em class="parameter"><code>X</code></em> <code class="type">double precision</code> )
+     → <code class="returnvalue">bigint</code>
+    </p>
+    <p>
+     Calcule le nombre de lignes pour lesquelles les deux entrées sont
+     non NULL.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.7.1.1.1" class="indexterm"></a>
+     <a id="id-1.5.8.27.14.2.4.7.1.1.2" class="indexterm"></a>
+     <code class="function">regr_intercept</code> ( <em class="parameter"><code>Y</code></em> <code class="type">double precision</code>, <em class="parameter"><code>X</code></em> <code class="type">double precision</code> )
+     → <code class="returnvalue">double precision</code>
+    </p>
+    <p>
+     Calcule l'ordonnée à l'origine de l'équation d'ajustement linéaire par les
+     moindres carrés déterminée par les paires de valeurs 
+     (<em class="parameter"><code>X</code></em>, <em class="parameter"><code>Y</code></em>).
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.8.1.1.1" class="indexterm"></a>
+     <code class="function">regr_r2</code> ( <em class="parameter"><code>Y</code></em> <code class="type">double precision</code>, <em class="parameter"><code>X</code></em> <code class="type">double precision</code> )
+     → <code class="returnvalue">double precision</code>
+    </p>
+    <p>
+     Calcule le carré du coefficient de corrélation.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.9.1.1.1" class="indexterm"></a>
+     <a id="id-1.5.8.27.14.2.4.9.1.1.2" class="indexterm"></a>
+     <code class="function">regr_slope</code> ( <em class="parameter"><code>Y</code></em> <code class="type">double precision</code>, <em class="parameter"><code>X</code></em> <code class="type">double precision</code> )
+     → <code class="returnvalue">double precision</code>
+    </p>
+    <p>
+     Calcule la pente de la droite de l'équation d'ajustement linéaire par les
+     moindres carrés déterminée par les paires de valeurs
+     (<em class="parameter"><code>X</code></em>, <em class="parameter"><code>Y</code></em>).
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.10.1.1.1" class="indexterm"></a>
+     <code class="function">regr_sxx</code> ( <em class="parameter"><code>Y</code></em> <code class="type">double precision</code>, <em class="parameter"><code>X</code></em> <code class="type">double precision</code> )
+     → <code class="returnvalue">double precision</code>
+    </p>
+    <p>
+     Calcule la <span class="quote">« <span class="quote">somme des carrés</span> »</span> de la variable indépendante,
+     <code class="literal">sum(<em class="parameter"><code>X</code></em>^2) - sum(<em class="parameter"><code>X</code></em>)^2/<em class="parameter"><code>N</code></em></code>.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.11.1.1.1" class="indexterm"></a>
+     <code class="function">regr_sxy</code> ( <em class="parameter"><code>Y</code></em> <code class="type">double precision</code>, <em class="parameter"><code>X</code></em> <code class="type">double precision</code> )
+     → <code class="returnvalue">double precision</code>
+    </p>
+    <p>
+     Calcule la <span class="quote">« <span class="quote">somme des produits</span> »</span> des variables dépendantes
+     heures indépendantes,
+     <code class="literal">sum(<em class="parameter"><code>X</code></em>*<em class="parameter"><code>Y</code></em>) - sum(<em class="parameter"><code>X</code></em>) * sum(<em class="parameter"><code>Y</code></em>)/<em class="parameter"><code>N</code></em></code>.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.12.1.1.1" class="indexterm"></a>
+     <code class="function">regr_syy</code> ( <em class="parameter"><code>Y</code></em> <code class="type">double precision</code>, <em class="parameter"><code>X</code></em> <code class="type">double precision</code> )
+     → <code class="returnvalue">double precision</code>
+    </p>
+    <p>
+     Calcule la <span class="quote">« <span class="quote">somme des carrés</span> »</span> de la variable dépendante,
+     <code class="literal">sum(<em class="parameter"><code>Y</code></em>^2) - sum(<em class="parameter"><code>Y</code></em>)^2/<em class="parameter"><code>N</code></em></code>.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.13.1.1.1" class="indexterm"></a>
+     <a id="id-1.5.8.27.14.2.4.13.1.1.2" class="indexterm"></a>
+     <code class="function">stddev</code> ( <em class="replaceable"><code>numeric_type</code></em> )
+     → <code class="returnvalue"></code> <code class="type">double precision</code>
+     pour <code class="type">real</code> ou <code class="type">double precision</code>,
+     sinon <code class="type">numeric</code>
+    </p>
+    <p>
+     Alias historique pour <code class="function">stddev_samp</code>.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.14.1.1.1" class="indexterm"></a>
+     <a id="id-1.5.8.27.14.2.4.14.1.1.2" class="indexterm"></a>
+     <code class="function">stddev_pop</code> ( <em class="replaceable"><code>numeric_type</code></em> )
+     → <code class="returnvalue"></code> <code class="type">double precision</code>
+     pour <code class="type">real</code> ou <code class="type">double precision</code>,
+     sinon <code class="type">numeric</code>
+    </p>
+    <p>
+     Calcule la déviation standard de la population pour les valeurs en
+     entrée.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.15.1.1.1" class="indexterm"></a>
+     <a id="id-1.5.8.27.14.2.4.15.1.1.2" class="indexterm"></a>
+     <code class="function">stddev_samp</code> ( <em class="replaceable"><code>numeric_type</code></em> )
+     → <code class="returnvalue"></code> <code class="type">double precision</code>
+     pour <code class="type">real</code> ou <code class="type">double precision</code>,
+     sinon <code class="type">numeric</code>
+    </p>
+    <p>
+     Calcule la déviation standard d'échantillon des valeurs en entrée.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.16.1.1.1" class="indexterm"></a>
+     <code class="function">variance</code> ( <em class="replaceable"><code>numeric_type</code></em> )
+     → <code class="returnvalue"></code> <code class="type">double precision</code>
+     pour <code class="type">real</code> ou <code class="type">double precision</code>,
+     sinon <code class="type">numeric</code>
+    </p>
+    <p>
+     Alias historique pour <code class="function">var_samp</code>.
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.17.1.1.1" class="indexterm"></a>
+     <a id="id-1.5.8.27.14.2.4.17.1.1.2" class="indexterm"></a>
+     <code class="function">var_pop</code> ( <em class="replaceable"><code>numeric_type</code></em> )
+     → <code class="returnvalue"></code> <code class="type">double precision</code>
+     pour <code class="type">real</code> ou <code class="type">double precision</code>,
+     sinon <code class="type">numeric</code>
+    </p>
+    <p>
+     Calcule la variance de la population pour les valeurs en entrée
+     (carré de la déviation standard de la population).
+    </p></td><td>Oui</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.14.2.4.18.1.1.1" class="indexterm"></a>
+     <a id="id-1.5.8.27.14.2.4.18.1.1.2" class="indexterm"></a>
+     <code class="function">var_samp</code> ( <em class="replaceable"><code>numeric_type</code></em> )
+     → <code class="returnvalue"></code> <code class="type">double precision</code>
+     for <code class="type">real</code> or <code class="type">double precision</code>,
+     otherwise <code class="type">numeric</code>
+    </p>
+    <p>
+     Calcule la variance d'échantillon des valeurs en entrée (carré de la
+     déviation standard d'échantillon).
+    </p></td><td>Oui</td></tr></tbody></table></div></div><br class="table-break" /><p>
+<a class="xref" href="functions-aggregate.html#FUNCTIONS-ORDEREDSET-TABLE" title="Tableau 9.62. Fonctions d'agrégat à ensemble trié">Tableau 9.62</a> montre certaines fonctions
+d'agrégat utilisant la syntaxe d'<em class="firstterm">agrégat à ensemble
+ ordonné</em>. Ces fonctions sont parfois nommées fonctions à
+<span class="quote">« <span class="quote">distribution inverse</span> »</span>. Leur entrée est introduite par
+<code class="literal">ORDER BY</code>, et elles peuvent aussi prendre un
+<em class="firstterm">argument direct</em> qui n'est pas agrégé mais calculé
+une seule fois. Toutes ces fonctions ignorent les valeurs NULL dans leur
+entrée agrégée. Pour celles qui prennent un paramètre
+<em class="parameter"><code>fraction</code></em>, la valeur de la fraction est comprise
+entre 0 et 1 ; une erreur est renvoyée dans le cas contraire.
+Néanmoins une valeur de <em class="parameter"><code>fraction</code></em> NULL donne
+simplement un résultat NULL.
+</p><a id="id-1.5.8.27.16" class="indexterm"></a><a id="id-1.5.8.27.17" class="indexterm"></a><div class="table" id="FUNCTIONS-ORDEREDSET-TABLE"><p class="title"><strong>Tableau 9.62. Fonctions d'agrégat à ensemble trié</strong></p><div class="table-contents"><table class="table" summary="Fonctions d'agrégat à ensemble trié" border="1"><colgroup><col class="col1" /><col class="col2" /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+     Fonction
+    </p>
+    <p>
+     Description
+    </p></th><th>Mode Partiel</th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.18.2.4.1.1.1.1" class="indexterm"></a>
+     <code class="function">mode</code> () <code class="literal">WITHIN GROUP</code> ( <code class="literal">ORDER BY</code> <code class="type">anyelement</code> )
+     → <code class="returnvalue">anyelement</code>
+    </p>
+    <p>
+     Calcule le <em class="firstterm">mode</em>, la valeur la plus fréquente
+     d'un argument agrégé (en choisissant arbitrairement le premier s'il
+     y a plusieurs valeurs de fréquence égale). L'argument agrégé doit
+     être d'un type triable.
+    </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.18.2.4.2.1.1.1" class="indexterm"></a>
+     <code class="function">percentile_cont</code> ( <em class="parameter"><code>fraction</code></em> <code class="type">double precision</code> ) <code class="literal">WITHIN GROUP</code> ( <code class="literal">ORDER BY</code> <code class="type">double precision</code> )
+     → <code class="returnvalue">double precision</code>
+    </p>
+    <p class="func_signature">
+     <code class="function">percentile_cont</code> ( <em class="parameter"><code>fraction</code></em> <code class="type">double precision</code> ) <code class="literal">WITHIN GROUP</code> ( <code class="literal">ORDER BY</code> <code class="type">interval</code> )
+     → <code class="returnvalue">interval</code>
+    </p>
+    <p>
+     Calcule le <em class="firstterm">pourcentage continu</em>, une valeur
+     correspondant à la <em class="parameter"><code>fraction</code></em> à l'intérieur d'un
+     ensemble ordonné de valeurs d'argument agrégées. Ceci va interpoler
+     entre les éléments en entrée adjacents si nécessaire.
+    </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <code class="function">percentile_cont</code> ( <em class="parameter"><code>fractions</code></em> <code class="type">double precision[]</code> ) <code class="literal">WITHIN GROUP</code> ( <code class="literal">ORDER BY</code> <code class="type">double precision</code> )
+     → <code class="returnvalue">double precision[]</code>
+    </p>
+    <p class="func_signature">
+     <code class="function">percentile_cont</code> ( <em class="parameter"><code>fractions</code></em> <code class="type">double precision[]</code> ) <code class="literal">WITHIN GROUP</code> ( <code class="literal">ORDER BY</code> <code class="type">interval</code> )
+     → <code class="returnvalue">interval[]</code>
+    </p>
+    <p>
+     Calcule plusieurs pourcentages continues. Le résultat est un tableau
+     de mêmes dimensions que le paramètre <em class="parameter"><code>fractions</code></em>,
+     avec chaque élément non NULL remplacé par la valeur (potentiellement
+     interpolée) correspondance à ce pourcentage.
+    </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.18.2.4.4.1.1.1" class="indexterm"></a>
+     <code class="function">percentile_disc</code> ( <em class="parameter"><code>fraction</code></em> <code class="type">double precision</code> ) <code class="literal">WITHIN GROUP</code> ( <code class="literal">ORDER BY</code> <code class="type">anyelement</code> )
+     → <code class="returnvalue">anyelement</code>
+    </p>
+    <p>
+     Calcule le <em class="firstterm">pourcentage discret</em>, la première
+     valeur avec l'ensemble de tri des valeurs d'argument agrégé dont la
+     position dans le tri est égale ou dépasse la
+     <em class="parameter"><code>fraction</code></em> indiquée. L'argument agrégé doit être
+     d'un type triable.
+    </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <code class="function">percentile_disc</code> ( <em class="parameter"><code>fractions</code></em> <code class="type">double precision[]</code> ) <code class="literal">WITHIN GROUP</code> ( <code class="literal">ORDER BY</code> <code class="type">anyelement</code> )
+     → <code class="returnvalue">anyarray</code>
+    </p>
+    <p>
+     Calcule plusieurs pourcentages discrets. Le résultat est un tableau de
+     mêmes dimensions que le paramètre <em class="parameter"><code>fractions</code></em>,
+     avec chaque élément non NULL remplacé par la valeur en entrée
+     correspondant à ce pourcentage. L'argument agrégé doit être d'un type
+     triable.
+    </p></td><td>Non</td></tr></tbody></table></div></div><br class="table-break" /><a id="id-1.5.8.27.19" class="indexterm"></a><p>
+Chacun des agrégats d'<span class="quote">« <span class="quote">ensemble hypothétique</span> »</span> listés dans
+<a class="xref" href="functions-aggregate.html#FUNCTIONS-HYPOTHETICAL-TABLE" title="Tableau 9.63. Fonctions d'agrégat à ensemble hypothétique">Tableau 9.63</a> est associé avec une
+fonction de fenêtrage du même nom définie dans <a class="xref" href="functions-window.html" title="9.22. Fonctions de fenêtrage">Section 9.22</a>. Dans chaque cas, le résultat de l'agrégat est
+la valeur que la fonction de fenêtrage associée aurait renvoyée pour la
+ligne <span class="quote">« <span class="quote">hypothétique</span> »</span> construite à partir de
+<em class="replaceable"><code>args</code></em>, si une telle ligne a été ajoutée au groupe
+trié de lignes représenté par <em class="replaceable"><code>sorted_args</code></em>. Pour
+chacune de ces fonctions, la liste des arguments directs donnée dans
+<em class="replaceable"><code>args</code></em> doit correspondre au nombre et types des
+arguments agrégés donnés dans <em class="replaceable"><code>sorted_args</code></em>.
+Contrairement à la plupart des agrégats natifs, ces agrégats ne sont pas
+stricts, c'est-à-dire qu'ils ne suppriment pas les lignes en entrée
+contenant des NULL. Les valeurs NULL se trient suivant la règle indiquée
+dans la clause <code class="literal">ORDER BY</code>.
+</p><div class="table" id="FUNCTIONS-HYPOTHETICAL-TABLE"><p class="title"><strong>Tableau 9.63. Fonctions d'agrégat à ensemble hypothétique</strong></p><div class="table-contents"><table class="table" summary="Fonctions d'agrégat à ensemble hypothétique" border="1"><colgroup><col class="col1" /><col class="col2" /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+     Fonction
+    </p>
+    <p>
+     Description
+    </p></th><th>Mode Partiel</th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.21.2.4.1.1.1.1" class="indexterm"></a>
+     <code class="function">rank</code> ( <em class="replaceable"><code>args</code></em> ) <code class="literal">WITHIN GROUP</code> ( <code class="literal">ORDER BY</code> <em class="replaceable"><code>sorted_args</code></em> )
+     → <code class="returnvalue">bigint</code>
+    </p>
+    <p>
+     Calcule le rang de la ligne hypothétique avec des trous ;
+     c'est-à-dire le numéro de la première ligne dans son groupe.
+    </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.21.2.4.2.1.1.1" class="indexterm"></a>
+     <code class="function">dense_rank</code> ( <em class="replaceable"><code>args</code></em> ) <code class="literal">WITHIN GROUP</code> ( <code class="literal">ORDER BY</code> <em class="replaceable"><code>sorted_args</code></em> )
+     → <code class="returnvalue">bigint</code>
+    </p>
+    <p>
+     Calcule le rang de la ligne hypothétique sans trous ; cette
+     fonction compte réellement le nombre de groupes.
+    </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.21.2.4.3.1.1.1" class="indexterm"></a>
+     <code class="function">percent_rank</code> ( <em class="replaceable"><code>args</code></em> ) <code class="literal">WITHIN GROUP</code> ( <code class="literal">ORDER BY</code> <em class="replaceable"><code>sorted_args</code></em> )
+     → <code class="returnvalue">double precision</code>
+    </p>
+    <p>
+     Calcule le rang relatif de la ligne hypothétique, c'est-à-dire
+     (<code class="function">rank</code> - 1) / (lignes totales - 1).
+     La valeur est donc comprise entre 0 et 1, les deux étant inclus.
+    </p></td><td>Non</td></tr><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.21.2.4.4.1.1.1" class="indexterm"></a>
+     <code class="function">cume_dist</code> ( <em class="replaceable"><code>args</code></em> ) <code class="literal">WITHIN GROUP</code> ( <code class="literal">ORDER BY</code> <em class="replaceable"><code>sorted_args</code></em> )
+     → <code class="returnvalue">double precision</code>
+    </p>
+    <p>
+     Calcule la distribution cumulative, c'est-à-dire (nombre de lignes
+     précédentes ou proches de la ligne hypothétique) / (total de lignes).
+     La valeur est donc comprise entre 1/<em class="parameter"><code>N</code></em> et 1.
+    </p></td><td>Non</td></tr></tbody></table></div></div><br class="table-break" /><div class="table" id="FUNCTIONS-GROUPING-TABLE"><p class="title"><strong>Tableau 9.64. Opérations de regroupement</strong></p><div class="table-contents"><table class="table" summary="Opérations de regroupement" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+     Fonction
+    </p>
+    <p>
+     Description
+    </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+     <a id="id-1.5.8.27.22.2.2.1.1.1.1" class="indexterm"></a>
+     <code class="function">GROUPING</code> ( <em class="replaceable"><code>group_by_expression(s)</code></em> )
+     → <code class="returnvalue">integer</code>
+    </p>
+    <p>
+     Renvoie un masque de bits indiquant les expressions <code class="literal">GROUP
+      BY</code> non incluses dans l'ensemble de regroupement actuel. Les
+     bits sont affectés avec l'argument le plus à droit correspondant au
+     bit de plus faible poids ; chaque bit vaut 0 si l'expression
+     correspondante est inclus dans le critère de regroupement de
+     l'ensemble de regroupement générant la ligne résultat actuelle, et 1
+     dans le cas contraire.
+    </p></td></tr></tbody></table></div></div><br class="table-break" /><p>
+Les opérations de regroupement affichées dans <a class="xref" href="functions-aggregate.html#FUNCTIONS-GROUPING-TABLE" title="Tableau 9.64. Opérations de regroupement">Tableau 9.64</a> sont utilisées en conjonction avec
+les ensembles de regroupement (voir <a class="xref" href="queries-table-expressions.html#QUERIES-GROUPING-SETS" title="7.2.4. GROUPING SETS, CUBE et ROLLUP">Section 7.2.4</a>) pour distinguer les lignes résultats.
+Les arguments à la fonction <code class="literal">GROUPING</code> ne sont pas
+réellement évalués car ils doivent correspondre exactement aux expressions
+données dans la clause <code class="literal">GROUP BY</code> du niveau de requête
+associé. Par exemple :
+</p><pre class="screen">
+<code class="prompt">=&gt;</code> <strong class="userinput"><code>SELECT * FROM items_sold;</code></strong>
+ make  | model | sales
+-------+-------+-------
+ Foo   | GT    |  10
+ Foo   | Tour  |  20
+ Bar   | City  |  15
+ Bar   | Sport |  5
+(4 rows)
+
+<code class="prompt">=&gt;</code> <strong class="userinput"><code>SELECT make, model, GROUPING(make,model), sum(sales) FROM items_sold GROUP BY ROLLUP(make,model);</code></strong>
+ make  | model | grouping | sum
+-------+-------+----------+-----
+ Foo   | GT    |        0 | 10
+ Foo   | Tour  |        0 | 20
+ Bar   | City  |        0 | 15
+ Bar   | Sport |        0 | 5
+ Foo   |       |        1 | 30
+ Bar   |       |        1 | 20
+       |       |        3 | 50
+(7 rows)
+</pre><p>
+Ici, la valeur <code class="literal">0</code> dans la colonne
+<code class="literal">grouping</code> des quatre premières lignes montre qu'elles
+ont été regroupées normalement par rapport aux colonnes de regroupement.
+La valeur <code class="literal">1</code> indique que la colonne
+<code class="literal">model</code> n'a pas été groupé dans les deux lignes
+suivantes, et la valeur <code class="literal">3</code> indique que ni la colonne
+<code class="literal">make</code> ni la colonne <code class="literal">model</code> n'ont été
+regroupées dans la dernière ligne (qui, de ce fait, est un agrégat sur
+tous les lignes en entrée).
+</p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/functions-aggregate.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:23 GMT -->
+</html>

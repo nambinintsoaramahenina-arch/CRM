@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/protocol-logicalrep-message-formats.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:14 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>53.9. Formats des messages de la réplication logique</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="protocol-error-fields.html" title="53.8. Champs des messages d'erreur et de notification" /><link rel="next" href="protocol-changes.html" title="53.10. Résumé des changements depuis le protocole 2.0" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/protocol-logicalrep-message-formats.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/protocol-logicalrep-message-formats.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/protocol-logicalrep-message-formats.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/protocol-logicalrep-message-formats.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/protocol-logicalrep-message-formats.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/protocol-logicalrep-message-formats.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/protocol-logicalrep-message-formats.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/protocol-logicalrep-message-formats.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/protocol-logicalrep-message-formats.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/protocol-logicalrep-message-formats.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="protocol.html">Protocole Frontend/Backend</a></span> » <span class="breadcrumb-node">Formats des messages de la réplication logique</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="protocol-error-fields.html" title="53.8. Champs des messages d'erreur et de notification">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="protocol.html" title="Chapitre 53. Protocole Frontend/Backend">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="protocol-changes.html" title="53.10. Résumé des changements depuis le protocole 2.0">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">53.8. Champs des messages d'erreur et de notification </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 53.10. Résumé des changements depuis le protocole 2.0</td></tr></table></div><div class="sect1" id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">53.9. Formats des messages de la réplication logique <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS" class="id_link">#</a></h2></div></div></div><p>
+   Cette section décrit le format détaillé de chaque message de réplication
+   logique. Ces messages sont renvoyés soit par l'interface SQL du slot de
+   réplication soit par un walsender. Dans ce dernier cas, ils sont encapsulés à
+   l'intérieur de messages WAL du protocole de réplication, comme décrit dans
+   <a class="xref" href="protocol-replication.html" title="53.4. Protocole de réplication en flux">Section 53.4</a>, et obéissent généralement au même
+   flux de message que la réplication physique.
+  </p><div class="variablelist"><dl class="variablelist"><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-BEGIN"><span class="term">Begin</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-BEGIN" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('B')</span></dt><dd><p>
+         Identifie le message comme un message begin.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN final de la transaction.
+        </p></dd><dt><span class="term">Int64 (TimestampTz)</span></dt><dd><p>
+         Horodatage de la validation de la transaction. La valeur est un nombre
+         de microsecondes depuis l'epoch PostgreSQL (1er janvier 2000).
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         Xid de la transaction.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-MESSAGE"><span class="term">Message</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-MESSAGE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('M')</span></dt><dd><p>
+         Identifie le message comme un message de décodage logique.
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         Xid de la transaction (seulement présent pour les transactions en
+         flux). Ce champ est disponible depuis la version 2 du protocole.
+        </p></dd><dt><span class="term">Int8</span></dt><dd><p>
+         Drapeaux ; soit 0 pour aucun drapeau, ou 1 si le message de
+         décodage logique est transactionnel.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN du message de décodage logique.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le préfixe du message de décodage logique.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Longueur du contenu.
+        </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+         Le contenu du message de décodage logique.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-COMMIT"><span class="term">Commit</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-COMMIT" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('C')</span></dt><dd><p>
+         Identifie le message comme un message de Commit.
+        </p></dd><dt><span class="term">Int8(0)</span></dt><dd><p>
+         Drapeaux ; actuellement inutilisé.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN du commit.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN de fin de la transaction.
+        </p></dd><dt><span class="term">Int64 (TimestampTz)</span></dt><dd><p>
+         Horodatage de la validation de la transaction. La valeur est en nombre
+         de microsecondes depuis l'epoch PostgreSQL (1er janvier 2000).
+        </p></dd></dl></div></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-ORIGIN"><span class="term">Origin</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-ORIGIN" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('O')</span></dt><dd><p>
+         Identifie le message comme un message Origin.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN de la validation sur le serveur d'origine.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Nom de l'origine.
+        </p></dd></dl></div><p>
+      Notez qu'il peut y avoir plusieurs messages Origin dans une même
+      transaction.
+     </p></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-RELATION"><span class="term">Relation</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-RELATION" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('R')</span></dt><dd><p>
+         Identifie le message comme un message Relation.
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         XID de la transaction (seulement présent pour les transactions en
+         flux). Ce champ est disponible à partir de la version 2 du protocole.
+        </p></dd><dt><span class="term">Int32 (Oid)</span></dt><dd><p>
+         OID de la relation.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Schéma (chaîne vide pour <code class="literal">pg_catalog</code>).
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Nom de la relation.
+        </p></dd><dt><span class="term">Int8</span></dt><dd><p>
+         Configuration de l'identité de réplication pour la relation (identique
+         à <code class="structfield">relreplident</code> dans
+         <code class="structname">pg_class</code>).
+        </p></dd><dt><span class="term">Int16</span></dt><dd><p>
+         Nombre de colonnes.
+        </p></dd></dl></div><p>
+      Ensuite, la partie suivante du message apparaît pour chaque colonne inclus
+      dans la publication, à l'exception des colonnes générées :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Int8</span></dt><dd><p>
+         Drapeaux pour la colonne. Actuellement, peut valoir soit 0 pour aucun
+         drapeau ou 1 pour marquer la colonne comme faisant partie de la clé.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Nom de la colonne.
+        </p></dd><dt><span class="term">Int32 (Oid)</span></dt><dd><p>
+         OID du type de données de la colonne.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Modifieur de type de la colonne (<code class="structfield">atttypmod</code>).
+        </p></dd></dl></div></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-TYPE"><span class="term">Type</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-TYPE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('Y')</span></dt><dd><p>
+         Identifie le message comme un message Type.
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         XID de la transaction (seulement présent pour les transactions en flux).
+         Ce champ est disponible depuis la version 2 du protocole.
+        </p></dd><dt><span class="term">Int32 (Oid)</span></dt><dd><p>
+         OID du type de données.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Schéma (chaîne vide pour <code class="literal">pg_catalog</code>).
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Nom du type de données.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-INSERT"><span class="term">Insert</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-INSERT" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('I')</span></dt><dd><p>
+         Identifie le message comme un message Insert.
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         XID de la transaction (seulement présent pour les transactions en flux).
+         Ce champ est disponible depuis la version 2 du protocole.
+        </p></dd><dt><span class="term">Int32 (Oid)</span></dt><dd><p>
+         OID de la relation correspondant à l'identifiant du message Relation
+         message.
+        </p></dd><dt><span class="term">Byte1('N')</span></dt><dd><p>
+         Identifie le message TupleData suivant comme une nouvelle ligne.
+        </p></dd><dt><span class="term">TupleData</span></dt><dd><p>
+         Message TupleData représentant le contenu de la nouvelle ligne.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-UPDATE"><span class="term">Update</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-UPDATE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('U')</span></dt><dd><p>
+         Identifie le message comme un message Update.
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         XID de la transaction (seulement présent pour les transactions en flux).
+         Ce champ est disponible depuis la version 2 du protocole.
+        </p></dd><dt><span class="term">Int32 (Oid)</span></dt><dd><p>
+         OID de la relation correspondant à l'identifiant du message Relation
+         message.
+        </p></dd><dt><span class="term">Byte1('K')</span></dt><dd><p>
+         Identifie les sous-messages TupleData suivants comme une clé. Ce champ
+         est optionnel et est présent uniquement si la mise à jour a modifié des
+         données dans une des colonnes qui font partie de l'index REPLICA
+         IDENTITY.
+        </p></dd><dt><span class="term">Byte1('O')</span></dt><dd><p>
+         Identifie les sous-messages TupleData suivants comme une ancienne
+         ligne. Ce champ est optionnel et est présent uniquement si la table
+         ciblée par la mise à jour a REPLICA IDENTITY configuré à FULL.
+        </p></dd><dt><span class="term">TupleData</span></dt><dd><p>
+         Message TupleData représentant le contenu de l'ancienne ligne ou la clé
+         primaire. Seulement présent si la partie 'O' ou 'K' précédente est
+         présente.
+        </p></dd><dt><span class="term">Byte1('N')</span></dt><dd><p>
+         Identifie le message TupleData suivant comme la nouvelle ligne.
+        </p></dd><dt><span class="term">TupleData</span></dt><dd><p>
+         Message TupleData représentant le contenu de la nouvelle ligne.
+        </p></dd></dl></div><p>
+      Le message Update peut contenir soit une partie d'un message 'K' soit
+      une partie d'un message 'O', mais jamais les deux.
+     </p></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-DELETE"><span class="term">Delete</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-DELETE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('D')</span></dt><dd><p>
+         Identifie le message comme un message Delete.
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         XID de la transaction (seulement présent pour les transactions en flux).
+         Ce champ est disponible depuis la version 2 du protocole.
+        </p></dd><dt><span class="term">Int32 (Oid)</span></dt><dd><p>
+         OID de la relation correspondant ç l'identifiant du message Relation
+         message.
+        </p></dd><dt><span class="term">Byte1('K')</span></dt><dd><p>
+         Identifie le sous-message TupleData suivant comme une clé. Ce champ
+         est présent si la table ciblée par la suppression utilise un index
+         comme REPLICA IDENTITY.
+        </p></dd><dt><span class="term">Byte1('O')</span></dt><dd><p>
+         Identifie le message TupleData suivant comme une ancienne ligne. Ce
+         champ est présent si la table ciblée par la suppression a le
+         REPLICA IDENTITY configuré à FULL.
+        </p></dd><dt><span class="term">TupleData</span></dt><dd><p>
+         Message TupleData représentant le contenu de l'ancienne ligne ou clé
+         primaire, suivant le champ précédent.
+        </p></dd></dl></div><p>
+      Le message Delete pourrait contenir soit une partie d'un message 'K' soit
+      une partie d'un message 'O', mais jamais les deux.
+     </p></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-TRUNCATE"><span class="term">Truncate</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-TRUNCATE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('T')</span></dt><dd><p>
+         Identifie le message comme un message Truncate.
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         XID de la transaction (seulement présent pour les transactions en flux).
+         Ce champ est disponible depuis la version 2 du protocole.
+        </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+         Nombre de relations.
+        </p></dd><dt><span class="term">Int8</span></dt><dd><p>
+         Options pour <code class="command">TRUNCATE</code> :
+         1 pour <code class="literal">CASCADE</code>, 2 pour <code class="literal">RESTART
+         IDENTITY</code>
+        </p></dd><dt><span class="term">Int32 (Oid)</span></dt><dd><p>
+         OID de la relation correspondant à l'identifiant du message Relation.
+         Ce champ est répété pour chaque relation.
+        </p></dd></dl></div></dd></dl></div><p>
+   Les messages suivants (Stream Start, Stream Stop, Stream Commit et
+   Stream Abort) sont disponibles depuis la version 2 du protocole.
+  </p><div class="variablelist"><dl class="variablelist"><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-STREAM-START"><span class="term">Stream Start</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-STREAM-START" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('S')</span></dt><dd><p>
+         Identifie le message comme un message de début de flux.
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         Xid de la transaction.
+        </p></dd><dt><span class="term">Int8</span></dt><dd><p>
+         Une valeur de 1 indique qu'il s'agit du premier segment pour cet XID,
+         et une valeur de 0 pour tout autre segment de flux.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-STREAM-STOP"><span class="term">Stream Stop</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-STREAM-STOP" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('E')</span></dt><dd><p>
+         Identifie le message comme un message d'arrêt de flux.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-STREAM-COMMIT"><span class="term">Stream Commit</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-STREAM-COMMIT" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('c')</span></dt><dd><p>
+         Identifie le message comme un message de validation du flux.
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         XID de la transaction.
+        </p></dd><dt><span class="term">Int8(0)</span></dt><dd><p>
+         Drapeaux ; actuellement inutilisé.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN de la validation.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN final de la transaction.
+        </p></dd><dt><span class="term">Int64 (TimestampTz)</span></dt><dd><p>
+         Horodatage de la validation de la transaction. La valeur est un nombre
+         de microsecondes depuis l'epoch PostgreSQL (1er janvier 2000).
+        </p></dd></dl></div></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-STREAM-ABORT"><span class="term">Stream Abort</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-STREAM-ABORT" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('A')</span></dt><dd><p>
+         Identifie le message comme un message d'annulation de flux.
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         XID de la transaction.
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         XID de la sous-transaction (identique à l'XID de la transaction pour
+         les transactions haut niveau).
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         LSN de l'annulation, présent uniquement quand l'envoi en flux est
+         parallélisé. Ce champ est disponible à partir de la version 4
+         du protocole.
+        </p></dd><dt><span class="term">Int64 (TimestampTz)</span></dt><dd><p>
+         Horodatage de l'annulation de la transaction, présent uniquement quand
+         l'envoi en flux est parallélisé. La valeur est en nombre
+         de microsecondes depuis l'epoch PostgreSQL (2000-01-01). Ce champ est
+         disponible depuis la version 4 du protocole.
+        </p></dd></dl></div></dd></dl></div><p>
+   Les messages suivants (Begin Prepare, Prepare, Commit Prepared, Rollback
+   Prepared, Stream Prepare) sont disponibles depuis la version 3 du
+   protocole.
+  </p><div class="variablelist"><dl class="variablelist"><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-BEGIN-PREPARE"><span class="term">Begin Prepare</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-BEGIN-PREPARE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('b')</span></dt><dd><p>
+         Identifie le message comme le début d'une transaction préparée.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN de la préparation de la transaction.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN final de la transaction préparée.
+        </p></dd><dt><span class="term">Int64 (TimestampTz)</span></dt><dd><p>
+         Horodatage de la phase de préparation de la transaction. La valeur est
+         en nombre de microsecondes depuis l'epoch PostgreSQL (1er janvier
+         2000).
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         XID de la transaction.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le GID défini par l'utilisateur pour la transaction préparée.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-PREPARE"><span class="term">Prepare</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-PREPARE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('P')</span></dt><dd><p>
+         Identifie le message comme un message de transaction préparée.
+        </p></dd><dt><span class="term">Int8(0)</span></dt><dd><p>
+         Drapeaux ; actuellement inutilisé.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN de la préparation.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN final de la transaction préparée.
+        </p></dd><dt><span class="term">Int64 (TimestampTz)</span></dt><dd><p>
+         Horodatage de la phase de préparation de la transaction. La valeur est
+         en nombre de microsecondes depuis l'epoch PostgreSQL (1er janvier 2000).
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         XID de la transaction.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le GID défini par l'utilisateur pour la transaction préparée.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-COMMIT-PREPARED"><span class="term">Commit Prepared</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-COMMIT-PREPARED" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('K')</span></dt><dd><p>
+         Identifie le message comme le message de validation d'une transaction
+         préparée.
+        </p></dd><dt><span class="term">Int8(0)</span></dt><dd><p>
+         Drapeaux ; actuellement inutilisé.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN de la validation de la transaction préparée.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN final de la validation de la transaction préparée.
+        </p></dd><dt><span class="term">Int64 (TimestampTz)</span></dt><dd><p>
+         Horodatage de la validation de la transaction. La valeur est en
+         nombre de microsecondes depuis l'epoch PostgreSQL (1er janvier 2000).
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         XID de la transaction.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le GID défini par l'utilisateur pour la transaction préparée.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-ROLLBACK-PREPARED"><span class="term">Rollback Prepared</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-ROLLBACK-PREPARED" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('r')</span></dt><dd><p>
+         Identifie le message comme le message d'annulation d'une transaction
+         préparée.
+        </p></dd><dt><span class="term">Int8(0)</span></dt><dd><p>
+         Drapeaux ; actuellement inutilisé.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN final de la transaction préparée.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN final de la transaction préparée annulée.
+        </p></dd><dt><span class="term">Int64 (TimestampTz)</span></dt><dd><p>
+         Horodatage de la phase de préparation de la transaction. La valeur est
+         en nombre de microsecondes depuis l'epoch PostgreSQL (1er janvier
+         2000).
+        </p></dd><dt><span class="term">Int64 (TimestampTz)</span></dt><dd><p>
+         Horodatage de la phase d'annulation de la transaction. La valeur est
+         en nombre de microsecondes depuis l'epoch PostgreSQL (1er janvier
+         2000).
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         XID de la transaction.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le GID défini par l'utilisateur pour la transaction préparée.
+        </p></dd></dl></div></dd><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-STREAM-PREPARE"><span class="term">Stream Prepare</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-STREAM-PREPARE" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('p')</span></dt><dd><p>
+         Identifie le message comme un message de préparation en flux 2PC.
+        </p></dd><dt><span class="term">Int8(0)</span></dt><dd><p>
+         Drapeaux ; actuellement inutilisé.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN de la phase de préparation.
+        </p></dd><dt><span class="term">Int64 (XLogRecPtr)</span></dt><dd><p>
+         Le LSN final de la transaction préparée.
+        </p></dd><dt><span class="term">Int64 (TimestampTz)</span></dt><dd><p>
+         Horodatage de la phase de préparation de la transaction. La valeur est
+         en nombre de microsecondes depuis l'epoch PostgreSQL (1er janvier
+         2000).
+        </p></dd><dt><span class="term">Int32 (TransactionId)</span></dt><dd><p>
+         XID de la transaction.
+        </p></dd><dt><span class="term">String</span></dt><dd><p>
+         Le GID défini par l'utilisateur pour la transaction préparée.
+        </p></dd></dl></div></dd></dl></div><p>
+   Les parties de message suivants sont partagées par les messages ci-dessus.
+  </p><div class="variablelist"><dl class="variablelist"><dt id="PROTOCOL-LOGICALREP-MESSAGE-FORMATS-TUPLEDATA"><span class="term">TupleData</span> <a href="#PROTOCOL-LOGICALREP-MESSAGE-FORMATS-TUPLEDATA" class="id_link">#</a></dt><dd><div class="variablelist"><dl class="variablelist"><dt><span class="term">Int16</span></dt><dd><p>
+         Nombre de colonnes.
+        </p></dd></dl></div><p>
+      Ensuite, un des sous-messages suivants apparaît pour chaque colonne, à
+      l'exception des colonnes générées) :
+
+      </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('n')</span></dt><dd><p>
+          Identifie la donnée comme une valeur NULL.
+         </p></dd></dl></div><p>
+      ou
+      </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('u')</span></dt><dd><p>
+          Identifie la valeur TOAST non modifiée (la valeur réelle n'est pas
+          envoyée).
+         </p></dd></dl></div><p>
+      ou
+      </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('t')</span></dt><dd><p>
+          Identifie la donnée comme une valeur formatée en texte.
+         </p></dd></dl></div><p>
+      ou
+      </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Byte1('b')</span></dt><dd><p>
+          Identifie la donnée comme une valeur formatée en binaire.
+         </p></dd><dt><span class="term">Int32</span></dt><dd><p>
+          Longueur de la valeur de la colonne.
+         </p></dd><dt><span class="term">Byte<em class="replaceable"><code>n</code></em></span></dt><dd><p>
+          La valeur de la colonne, en format soit binaire soit texte. (Comme
+          spécifié dans l'octet de format précédent.)
+          <em class="replaceable"><code>n</code></em> est la longueur ci-dessus.
+         </p></dd></dl></div><p>
+     </p></dd></dl></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/protocol-logicalrep-message-formats.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:14 GMT -->
+</html>

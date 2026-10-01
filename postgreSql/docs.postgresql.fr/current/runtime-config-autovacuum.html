@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-autovacuum.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.10. Nettoyage (vacuum) automatique</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-statistics.html" title="19.9. Statistiques d'exécution" /><link rel="next" href="runtime-config-client.html" title="19.11. Valeurs par défaut des connexions client" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/17/runtime-config-autovacuum.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/runtime-config-autovacuum.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/runtime-config-autovacuum.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/runtime-config-autovacuum.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/runtime-config-autovacuum.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/runtime-config-autovacuum.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/runtime-config-autovacuum.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/runtime-config-autovacuum.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/runtime-config-autovacuum.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/runtime-config-autovacuum.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/runtime-config-autovacuum.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/runtime-config-autovacuum.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/runtime-config-autovacuum.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/runtime-config-autovacuum.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/runtime-config-autovacuum.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/runtime-config-autovacuum.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/runtime-config-autovacuum.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/runtime-config-autovacuum.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/runtime-config-autovacuum.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/runtime-config-autovacuum.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="runtime-config.html">Configuration du serveur</a></span> » <span class="breadcrumb-node">Nettoyage (<code class="command">vacuum</code>) automatique</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-statistics.html" title="19.9. Statistiques d'exécution">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-client.html" title="19.11. Valeurs par défaut des connexions client">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">19.9. Statistiques d'exécution </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 19.11. Valeurs par défaut des connexions client</td></tr></table></div><div class="sect1" id="RUNTIME-CONFIG-AUTOVACUUM"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.10. Nettoyage (<code class="command">vacuum</code>) automatique <a href="#RUNTIME-CONFIG-AUTOVACUUM" class="id_link">#</a></h2></div></div></div><a id="id-1.6.6.13.2" class="indexterm"></a><p>
+ Ces paramètres contrôlent le comportement de la fonctionnalité appelée
+ <em class="firstterm">autovacuum</em>. Se référer à la
+ <a class="xref" href="routine-vacuuming.html#AUTOVACUUM" title="24.1.6. Le démon auto-vacuum">Section 24.1.6</a> pour plus de détails.
+ Notez que beaucoup de ces paramètres peuvent être surchargés au niveau
+ de chaque table ; voir <a class="xref" href="sql-createtable.html#SQL-CREATETABLE-STORAGE-PARAMETERS" title="Paramètres de stockage">Paramètres de stockage</a>.
+</p><div class="variablelist"><dl class="variablelist"><dt id="GUC-AUTOVACUUM"><span class="term"><code class="varname">autovacuum</code> (<code class="type">boolean</code>)</span> <a href="#GUC-AUTOVACUUM" class="id_link">#</a></dt><dd><a id="id-1.6.6.13.4.1.2.1" class="indexterm"></a><p>
+    Contrôle si le serveur doit démarrer le démon d'autovacuum.
+    Celui-ci est activé par défaut. <a class="xref" href="runtime-config-statistics.html#GUC-TRACK-COUNTS">track_counts</a>
+    doit aussi être activé pour que ce
+    démon soit démarré. Ce paramètre ne peut être configuré que dans le fichier
+    <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande;
+    cependant, le processus d'autovacuum peut être désactivé au niveau
+    de chaque table en modifiant les paramètres de stockage de la table.
+   </p><p>
+    Même si ce paramètre est désactivé, le système lance
+    les processus autovacuum nécessaires pour empêcher le bouclage
+    des identifiants de transaction. Voir <a class="xref" href="routine-vacuuming.html#VACUUM-FOR-WRAPAROUND" title="24.1.5. Éviter les cycles des identifiants de transactions">Section 24.1.5</a> pour plus d'informations.
+   </p></dd><dt id="GUC-AUTOVACUUM-MAX-WORKERS"><span class="term"><code class="varname">autovacuum_max_workers</code> (<code class="type">integer</code>)</span> <a href="#GUC-AUTOVACUUM-MAX-WORKERS" class="id_link">#</a></dt><dd><a id="id-1.6.6.13.4.2.2.1" class="indexterm"></a><p>
+    Indique le nombre maximum de processus autovacuum (autre que le lanceur
+    d'autovacuum) qui peuvent être exécutés simultanément. La valeur par défaut
+    est 3. Ce paramètre ne peut être configuré qu'au lancement du serveur.
+   </p></dd><dt id="GUC-AUTOVACUUM-NAPTIME"><span class="term"><code class="varname">autovacuum_naptime</code> (<code class="type">integer</code>)</span> <a href="#GUC-AUTOVACUUM-NAPTIME" class="id_link">#</a></dt><dd><a id="id-1.6.6.13.4.3.2.1" class="indexterm"></a><p>
+    Indique le délai minimum entre les tours d'activité du démon autovacuum sur
+    une base. À chaque tour, le démon examine une base de données et lance les
+    commandes <code class="command">VACUUM</code> et <code class="command">ANALYZE</code>
+    nécessaires aux tables de cette base. Si cette valeur est indiquée sans
+    unité, elle est comprise comme un nombre de secondes. Il vaut, par défaut,
+    une minute (<code class="literal">1min</code>). Ce paramètre ne peut être configuré
+    que dans le fichier <code class="filename">postgresql.conf</code> ou indiqué sur la
+    ligne de commande.
+   </p></dd><dt id="GUC-AUTOVACUUM-VACUUM-THRESHOLD"><span class="term"><code class="varname">autovacuum_vacuum_threshold</code> (<code class="type">integer</code>)</span> <a href="#GUC-AUTOVACUUM-VACUUM-THRESHOLD" class="id_link">#</a></dt><dd><a id="id-1.6.6.13.4.4.2.1" class="indexterm"></a><p>
+    Indique le nombre minimum de lignes mises à jour ou supprimées
+    nécessaire pour déclencher un <code class="command">VACUUM</code> sur une table.
+    La valeur par défaut est de 50 lignes.
+    Ce paramètre ne peut être configuré que dans le fichier
+    <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande
+    mais il est possible de surcharger ce paramètre pour toute table en
+    modifiant les paramètres de stockage de la table.
+   </p></dd><dt id="GUC-AUTOVACUUM-VACUUM-INSERT-THRESHOLD"><span class="term"><code class="varname">autovacuum_vacuum_insert_threshold</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.13.4.5.1.3" class="indexterm"></a>
+  </span> <a href="#GUC-AUTOVACUUM-VACUUM-INSERT-THRESHOLD" class="id_link">#</a></dt><dd><p>
+    Indique le nombre de lignes enregistrées avant de déclencher un
+    <code class="command">VACUUM</code> sur une table. La valeur par défaut est 1000
+    lignes. Si -1 est indiqué, autovacuum ne déclenchera pas d'opération
+    <code class="command">VACUUM</code> sur une table en se basant sur le nombre
+    d'insertions. Ce paramètre peut seulement être configuré dans le fichier
+    <code class="filename">postgresql.conf</code> et sur la ligne de commande du
+    serveur ; mais la configuration peut être surchargée par des tables
+    individuelles en modifiant leur paramètres de stockage.
+   </p></dd><dt id="GUC-AUTOVACUUM-ANALYZE-THRESHOLD"><span class="term"><code class="varname">autovacuum_analyze_threshold</code> (<code class="type">integer</code>)</span> <a href="#GUC-AUTOVACUUM-ANALYZE-THRESHOLD" class="id_link">#</a></dt><dd><a id="id-1.6.6.13.4.6.2.1" class="indexterm"></a><p>
+    Indique le nombre minimum de lignes insérées, mises à jour ou supprimées
+    nécessaire pour déclencher un <code class="command">ANALYZE</code> sur une table. La valeur
+    par défaut est de 50 lignes.
+    Ce paramètre ne peut être configuré que dans le fichier
+    <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande
+    mais il est possible de surcharger ce paramètre pour toute table en
+    modifiant les paramètres de stockage de la table.
+   </p></dd><dt id="GUC-AUTOVACUUM-VACUUM-INSERT-SCALE-FACTOR"><span class="term"><code class="varname">autovacuum_vacuum_insert_scale_factor</code> (<code class="type">floating point</code>)
+   <a id="id-1.6.6.13.4.7.1.3" class="indexterm"></a>
+  </span> <a href="#GUC-AUTOVACUUM-VACUUM-INSERT-SCALE-FACTOR" class="id_link">#</a></dt><dd><p>
+    Indique une fraction de la taille de la table à ajouter à
+    <code class="varname">autovacuum_vacuum_insert_threshold</code> avant de décider de
+    déclencher un <code class="command">VACUUM</code> sur une table. La valeur par défaut
+    est 0,2 (soit 20% de la table). Ce paramètre peut seulement être configuré
+    dans le fichier <code class="filename">postgresql.conf</code> et sur la ligne de
+    commande du serveur ; mais la configuration peut être surchargée par
+    des tables individuelles en modifiant leur paramètres de stockage.
+   </p></dd><dt id="GUC-AUTOVACUUM-VACUUM-SCALE-FACTOR"><span class="term"><code class="varname">autovacuum_vacuum_scale_factor</code> (<code class="type">floating point</code>)</span> <a href="#GUC-AUTOVACUUM-VACUUM-SCALE-FACTOR" class="id_link">#</a></dt><dd><a id="id-1.6.6.13.4.8.2.1" class="indexterm"></a><p>
+    Indique la fraction de taille de la table à ajouter à
+    <code class="varname">autovacuum_vacuum_threshold</code> pour décider du moment
+    auquel déclencher un <code class="command">VACUUM</code>. La valeur par défaut
+    est 0.2 (20 % de la taille de la table).
+    Ce paramètre ne peut être configuré que dans le fichier
+    <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande
+    mais il est possible de surcharger ce paramètre pour toute table en
+    modifiant les paramètres de stockage de la table.
+   </p></dd><dt id="GUC-AUTOVACUUM-ANALYZE-SCALE-FACTOR"><span class="term"><code class="varname">autovacuum_analyze_scale_factor</code> (<code class="type">floating point</code>)</span> <a href="#GUC-AUTOVACUUM-ANALYZE-SCALE-FACTOR" class="id_link">#</a></dt><dd><a id="id-1.6.6.13.4.9.2.1" class="indexterm"></a><p>
+    Indique la fraction de taille de la table à ajouter à
+    <code class="varname">autovacuum_analyze_threshold</code> pour décider du
+    moment auquel déclencher une commande <code class="command">ANALYZE</code>.
+    La valeur par défaut est 0.1 (10 % de la taille de la table).
+    Ce paramètre ne peut être configuré que dans le fichier
+    <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande
+    mais il est possible de surcharger ce paramètre pour toute table en
+    modifiant les paramètres de stockage de la table.
+   </p></dd><dt id="GUC-AUTOVACUUM-FREEZE-MAX-AGE"><span class="term"><code class="varname">autovacuum_freeze_max_age</code> (<code class="type">integer</code>)</span> <a href="#GUC-AUTOVACUUM-FREEZE-MAX-AGE" class="id_link">#</a></dt><dd><a id="id-1.6.6.13.4.10.2.1" class="indexterm"></a><p>
+    Indique l'âge maximum (en transactions) que le champ
+    <code class="structname">pg_class</code>.<code class="structfield">relfrozenxid</code>
+    d'une table peut atteindre avant qu'une opération
+    <code class="command">VACUUM</code> ne soit forcée pour empêcher la réinitialisation
+    de l'ID de transaction sur cette table. Le système lance les
+    processus autovacuum pour éviter ce bouclage même si l'autovacuum est désactivé.
+   </p><p>
+    L'opération VACUUM supprime aussi les anciens fichiers du
+    sous-répertoire <code class="filename">pg_xact</code>, ce qui explique pourquoi
+    la valeur par défaut est relativement basse (200 millions de transactions).
+    Ce paramètre
+    n'est lu qu'au démarrage du serveur, mais il peut être diminué pour
+    toute table en modifiant les paramètres de stockage de la table. Pour plus
+    d'informations, voir <a class="xref" href="routine-vacuuming.html#VACUUM-FOR-WRAPAROUND" title="24.1.5. Éviter les cycles des identifiants de transactions">Section 24.1.5</a>.
+   </p></dd><dt id="GUC-AUTOVACUUM-MULTIXACT-FREEZE-MAX-AGE"><span class="term"><code class="varname">autovacuum_multixact_freeze_max_age</code> (<code class="type">integer</code>)</span> <a href="#GUC-AUTOVACUUM-MULTIXACT-FREEZE-MAX-AGE" class="id_link">#</a></dt><dd><a id="id-1.6.6.13.4.11.2.1" class="indexterm"></a><p>
+    Indique l'âge maximum (en multixacts) que le champ
+    <code class="structname">pg_class</code>.<code class="structfield">relminmxid</code>
+    d'une table peut atteindre avant qu'une opération
+    <code class="command">VACUUM</code> ne soit forcé pour empêcher une réutilisation
+    des identifiants multixact dans la table. Notez que le système lancera
+    les processus autovacuum pour empêcher la réutilisation même si
+    l'autovacuum est normalement désactivé.
+   </p><p>
+    Un VACUUM des multixacts s'occupe aussi de la suppression des anciens
+    fichiers à partir des sous-répertoires <code class="filename">pg_multixact/members</code>
+    et <code class="filename">pg_multixact/offsets</code>, ce qui explique pourquoi
+    la valeur par défaut est relativement basse (400 million de multixacts).
+    Ce paramètre est seulement configurable au démarrage du serveur mais sa
+    valeur peut être réduite pour des tables individuelles en modifiant les
+    paramètres de stockage de la table. Pour plus d'informations, voir <a class="xref" href="routine-vacuuming.html#VACUUM-FOR-MULTIXACT-WRAPAROUND" title="24.1.5.1. Multixacts et cycle">Section 24.1.5.1</a>.
+   </p></dd><dt id="GUC-AUTOVACUUM-VACUUM-COST-DELAY"><span class="term"><code class="varname">autovacuum_vacuum_cost_delay</code> (<code class="type">integer</code>)</span> <a href="#GUC-AUTOVACUUM-VACUUM-COST-DELAY" class="id_link">#</a></dt><dd><a id="id-1.6.6.13.4.12.2.1" class="indexterm"></a><p>
+    Indique la valeur du coût de délai utilisée dans les opérations de
+    <code class="command">VACUUM</code>. Si -1 est indiqué,
+    la valeur habituelle de <a class="xref" href="runtime-config-resource.html#GUC-VACUUM-COST-DELAY">vacuum_cost_delay</a> est
+    utilisée. Si cette valeur est spécifiée sans unité, elle est comprise
+    comme un nombre de millisecondes. La valeur par défaut est 2 millisecondes.
+    Ce paramètre ne peut être configuré que dans le fichier
+    <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande
+    mais il est possible de le surcharger pour toute table en
+    modifiant les paramètres de stockage de la table.
+   </p></dd><dt id="GUC-AUTOVACUUM-VACUUM-COST-LIMIT"><span class="term"><code class="varname">autovacuum_vacuum_cost_limit</code> (<code class="type">integer</code>)</span> <a href="#GUC-AUTOVACUUM-VACUUM-COST-LIMIT" class="id_link">#</a></dt><dd><a id="id-1.6.6.13.4.13.2.1" class="indexterm"></a><p>
+    Indique la valeur de coût limite utilisée dans les opérations de
+    <code class="command">VACUUM</code> automatiques. Si -1 est
+    indiqué (valeur par défaut), la valeur courante de
+    <a class="xref" href="runtime-config-resource.html#GUC-VACUUM-COST-LIMIT">vacuum_cost_limit</a> est utilisée. La
+    valeur est distribuée proportionnellement entre les processus
+    autovacuum en cours d'exécution, s'il y en a plus d'un, de sorte que la
+    somme des limites de chaque processus ne dépasse jamais la limite de
+    cette variable.
+    Ce paramètre ne peut être configuré que dans le fichier
+    <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande
+    mais il est possible de le surcharger pour toute table en modifiant les
+    paramètres de stockage.
+   </p></dd></dl></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-autovacuum.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+</html>

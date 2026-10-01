@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/queries-with.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:25 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>7.8. Requêtes WITH (Common Table Expressions)</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="queries-values.html" title="7.7. Listes VALUES" /><link rel="next" href="datatype.html" title="Chapitre 8. Types de données" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/queries-with.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/queries-with.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/queries-with.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/queries-with.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/queries-with.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/queries-with.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/queries-with.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/queries-with.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/queries-with.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/queries-with.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/queries-with.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/queries-with.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/queries-with.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/queries-with.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/queries-with.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/queries-with.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/queries-with.html">8.4</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/queries-with.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="queries.html">Requêtes</a></span> » <span class="breadcrumb-node">Requêtes <code class="literal">WITH</code> (<span class="foreignphrase"><em class="foreignphrase">Common Table
+      Expressions</em></span>)</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="queries-values.html" title="7.7. Listes VALUES">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="queries.html" title="Chapitre 7. Requêtes">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="datatype.html" title="Chapitre 8. Types de données">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">7.7. Listes <code class="literal">VALUES</code> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 8. Types de données</td></tr></table></div><div class="sect1" id="QUERIES-WITH"><div class="titlepage"><div><div><h2 class="title" style="clear: both">7.8. Requêtes <code class="literal">WITH</code> (<span class="foreignphrase"><em class="foreignphrase">Common Table
+      Expressions</em></span>) <a href="#QUERIES-WITH" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="queries-with.html#QUERIES-WITH-SELECT">7.8.1. <code class="command">SELECT</code> dans <code class="literal">WITH</code></a></span></dt><dt><span class="sect2"><a href="queries-with.html#QUERIES-WITH-RECURSIVE">7.8.2. Requêtes récursives</a></span></dt><dt><span class="sect2"><a href="queries-with.html#QUERIES-WITH-CTE-MATERIALIZATION">7.8.3. Matérialisation des CTE</a></span></dt><dt><span class="sect2"><a href="queries-with.html#QUERIES-WITH-MODIFYING">7.8.4. Ordres de modification de données avec <code class="literal">WITH</code></a></span></dt></dl></div><a id="id-1.5.6.12.2" class="indexterm"></a><a id="id-1.5.6.12.3" class="indexterm"></a><p>
+     <code class="literal">WITH</code> fournit un moyen d'écrire des ordres
+     auxiliaires pour les utiliser dans des requêtes plus importantes. Ces
+     requêtes, qui sont souvent appelées Common Table Expressions ou
+     <acronym class="acronym">CTE</acronym>, peuvent être vues comme des tables temporaires
+     qui n'existent que pour une requête. Chaque ordre auxiliaire dans une
+     clause <code class="literal">WITH</code> peut être un <code class="command">SELECT</code>,
+     <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+     <code class="command">DELETE</code> ou <code class="command">MERGE</code> ; et la clause <code class="literal">WITH</code>
+     elle-même est attachée à un ordre primaire qui peut lui aussi
+     être un <code class="command">SELECT</code>, <code class="command">INSERT</code>,
+     <code class="command">UPDATE</code>, <code class="command">DELETE</code> ou
+     <code class="command">MERGE</code>.
+    </p><div class="sect2" id="QUERIES-WITH-SELECT"><div class="titlepage"><div><div><h3 class="title">7.8.1. <code class="command">SELECT</code> dans <code class="literal">WITH</code> <a href="#QUERIES-WITH-SELECT" class="id_link">#</a></h3></div></div></div><p>
+      L'intérêt de <code class="command">SELECT</code> dans <code class="literal">WITH</code> est de
+      diviser des requêtes complexes en parties plus simples. Un exemple est:
+
+      </p><pre class="programlisting">WITH ventes_regionales AS (
+        SELECT region, SUM(montant) AS ventes_totales
+        FROM commandes
+        GROUP BY region
+     ), meilleures_regions AS (
+        SELECT region
+        FROM ventes_regionales
+        WHERE ventes_totales &gt; (SELECT SUM(ventes_totales)/10 FROM ventes_regionales)
+     )
+SELECT region,
+       produit,
+       SUM(quantite) AS unites_produit,
+       SUM(montant) AS ventes_produit
+FROM commandes
+WHERE region IN (SELECT region FROM meilleures_regions)
+GROUP BY region, produit;</pre><p>
+
+   qui affiche les totaux de ventes par produit seulement dans les régions
+   ayant les meilleures ventes.
+   La clause <code class="literal">WITH</code> définit deux ordres
+   auxiliaires appelés <code class="structname">ventes_regionales</code>
+   et <code class="structname">meilleures_regions</code>, où la sortie
+   de <code class="structname">ventes_regionales</code> est utilisée dans
+   <code class="structname">meilleures_regions</code> et la sortie de
+   <code class="structname">meilleures_regions</code> est utilisée dans la
+   requête <code class="command">SELECT</code> primaire.
+   Cet exemple aurait pu être écrit sans
+   <code class="literal">WITH</code>, mais aurait alors nécessité deux niveaux de
+   sous-<code class="command">SELECT</code> imbriqués. Les choses sont un peu plus faciles à suivre de cette
+   façon.
+  </p></div><div class="sect2" id="QUERIES-WITH-RECURSIVE"><div class="titlepage"><div><div><h3 class="title">7.8.2. Requêtes récursives <a href="#QUERIES-WITH-RECURSIVE" class="id_link">#</a></h3></div></div></div><p>
+   <a id="id-1.5.6.12.6.2.1" class="indexterm"></a>
+   Le modificateur optionnel <code class="literal">RECURSIVE</code> fait passer
+   <code class="literal">WITH</code> du statut de simple aide syntaxique à celui de
+   quelque chose qu'il serait impossible d'accomplir avec du SQL standard.
+   Grâce à <code class="literal">RECURSIVE</code>, une requête <code class="literal">WITH</code>
+   peut utiliser sa propre sortie. Un exemple très simple se trouve dans cette
+   requête, qui ajoute les nombres de 1 à 100 :
+
+</p><pre class="programlisting">WITH RECURSIVE t(n) AS (
+    VALUES (1)
+  UNION ALL
+    SELECT n+1 FROM t WHERE n &lt; 100
+)
+SELECT sum(n) FROM t;</pre><p>
+
+   La forme générale d'une requête <code class="literal">WITH</code> est toujours un
+   <em class="firstterm">terme non récursif</em>, puis <code class="literal">UNION</code> (ou
+   <code class="literal">UNION ALL</code>), puis un <em class="firstterm">terme récursif</em>.
+   Seul le terme récursif peut contenir une référence à la sortie propre de la
+   requête. Une requête de ce genre est exécutée comme suit :
+  </p><div class="procedure" id="id-1.5.6.12.6.3"><p class="title"><strong>Évaluation de requête récursive</strong></p><ol class="procedure" type="1"><li class="step"><p>
+     Évaluer le terme non récursif. Pour <code class="literal">UNION</code> (mais pas
+     <code class="literal">UNION ALL</code>), supprimer les enregistrements en double.
+     Inclure le reste dans le résultat de la requête récursive et le mettre
+     aussi dans une table temporaire de travail (<em class="firstterm">working table</em>.)
+    </p></li><li class="step"><p>
+     Tant que la table de travail n'est pas vide, répéter ces étapes :
+    </p><ol type="a" class="substeps"><li class="step"><p>
+       Évaluer le terme récursif, en substituant à la référence récursive
+       le contenu courant de la table de travail.
+       Pour <code class="literal">UNION</code> (mais pas <code class="literal">UNION ALL</code>),
+       supprimer les doublons, ainsi que les enregistrements en doublon des
+       enregistrements déjà obtenus. Inclure les enregistrements restants dans
+       le résultat de la requête récursive, et les mettre aussi dans une table
+       temporaire intermédiaire (<em class="firstterm">intermediate table</em>).
+      </p></li><li class="step"><p>
+       Remplacer le contenu de la table de travail par celui de la table
+       intermédiaire, puis supprimer la table intermédiaire.
+      </p></li></ol></li></ol></div><div class="note"><h3 class="title">Note</h3><p>
+    Alors que <code class="literal">RECURSIVE</code> autorise que les requêtes soient
+    spécifiées récursivement, en interne, ce type de requêtes est évalué
+    itérativement.
+   </p></div><p>
+   Dans l'exemple précédent, la table de travail a un seul enregistrement à
+   chaque étape, et il prend les valeurs de 1 à 100 en étapes successives.
+   À la centième étape, il n'y a plus de sortie en raison de la clause
+   <code class="literal">WHERE</code>, ce qui met fin à la requête.
+  </p><p>
+   Les requêtes récursives sont utilisées généralement pour traiter des données
+   hiérarchiques ou sous forme d'arbres. Cette requête est un exemple utile
+   pour trouver toutes les sous-parties directes et indirectes d'un produit,
+   si seule une table donne toutes les inclusions immédiates :
+
+</p><pre class="programlisting">WITH RECURSIVE parties_incluses(sous_partie, partie, quantite) AS (
+    SELECT sous_partie, partie, quantite FROM parties WHERE partie = 'notre_produit'
+  UNION ALL
+    SELECT p.sous_partie, p.partie, p.quantite * pr.quantite
+    FROM parties_incluses pr, parties p
+    WHERE p.partie = pr.sous_partie
+  )
+SELECT sous_partie, SUM(quantite) as quantite_totale
+FROM parties_incluses
+GROUP BY sous_partie</pre><p>
+  </p><div class="sect3" id="QUERIES-WITH-SEARCH"><div class="titlepage"><div><div><h4 class="title">7.8.2.1. Ordre de recherche <a href="#QUERIES-WITH-SEARCH" class="id_link">#</a></h4></div></div></div><p>
+    Lors du calcul d'un parcours d'arbre en utilisant une requête récursive,
+    vous pourriez vouloir trier les résultats soit en
+    <span class="foreignphrase"><em class="foreignphrase">depth-first</em></span> soit en
+    <span class="foreignphrase"><em class="foreignphrase">breadth-first</em></span>. Ceci peut se faire en
+    calculant une colonne de tri parmi les autres colonnes de données et en
+    l'utilisant pour trier les résultats à la fin. Notez que cela ne contrôle
+    pas réellement dans qel ordre l'évaluation de la requête visite les
+    lignes ; ceci est toujours dépendant de l'implémentation SQL. Cette
+    approche fournit simplement une façon agréable de trier les résultats
+    après coup.
+   </p><p>
+    Pour créer un ordre <span class="foreignphrase"><em class="foreignphrase">depth-first</em></span>, nous
+    calculons pour chaque résultat un tableau de lignes que nous avons déjà
+    visité. Par exemple, considérez la requête suivante qui recherche dansune
+    table <code class="structname">tree</code> en utilisant un champ
+    <code class="structfield">link</code> :
+
+</p><pre class="programlisting">
+WITH RECURSIVE search_tree(id, link, data) AS (
+    SELECT t.id, t.link, t.data
+    FROM tree t
+  UNION ALL
+    SELECT t.id, t.link, t.data
+    FROM tree t, search_tree st
+    WHERE t.id = st.link
+)
+SELECT * FROM search_tree;
+</pre><p>
+
+    Pour ajouter l'information de tri
+    <span class="foreignphrase"><em class="foreignphrase">depth-first</em></span>, vous pouvez écrire
+    ceci :
+
+</p><pre class="programlisting">
+WITH RECURSIVE search_tree(id, link, data, <span class="emphasis"><strong>path</strong></span>) AS (
+    SELECT t.id, t.link, t.data, <span class="emphasis"><strong>ARRAY[t.id]</strong></span>
+    FROM tree t
+  UNION ALL
+    SELECT t.id, t.link, t.data, <span class="emphasis"><strong>path || t.id</strong></span>
+    FROM tree t, search_tree st
+    WHERE t.id = st.link
+)
+SELECT * FROM search_tree <span class="emphasis"><strong>ORDER BY path</strong></span>;
+</pre><p>
+   </p><p>
+    Dans le cas général où plus d'un champ a besoin d'être utilisé pour
+    identifier une ligne, utilisez un tableau de lignes. Par exemple, si vous
+    avez besoin de tracer les champs <code class="structfield">f1</code> et
+    <code class="structfield">f2</code> :
+
+</p><pre class="programlisting">
+WITH RECURSIVE search_tree(id, link, data, <span class="emphasis"><strong>path</strong></span>) AS (
+    SELECT t.id, t.link, t.data, <span class="emphasis"><strong>ARRAY[ROW(t.f1, t.f2)]</strong></span>
+    FROM tree t
+  UNION ALL
+    SELECT t.id, t.link, t.data, <span class="emphasis"><strong>path || ROW(t.f1, t.f2)</strong></span>
+    FROM tree t, search_tree st
+    WHERE t.id = st.link
+)
+SELECT * FROM search_tree <span class="emphasis"><strong>ORDER BY path</strong></span>;
+</pre><p>
+   </p><div class="tip"><h3 class="title">Astuce</h3><p>
+     Omettez la syntaxe <code class="literal">ROW()</code> dans le cas commun où
+     seulement un champ a besoin d'être tracé. Ceci permet l'utilisation d'un
+     tableau simple plutôt que d'un tableau de type composite, ce qui permet
+     de gagner en efficacité.
+    </p></div><p>
+    Pour créer un ordre <span class="foreignphrase"><em class="foreignphrase">breadth-first</em></span>, vous
+    pouvez utiliser un colonne qui trace la profondeur de la recherche, par
+    exemple :
+
+</p><pre class="programlisting">
+WITH RECURSIVE search_tree(id, link, data, <span class="emphasis"><strong>depth</strong></span>) AS (
+    SELECT t.id, t.link, t.data, <span class="emphasis"><strong>0</strong></span>
+    FROM tree t
+  UNION ALL
+    SELECT t.id, t.link, t.data, <span class="emphasis"><strong>depth + 1</strong></span>
+    FROM tree t, search_tree st
+    WHERE t.id = st.link
+)
+SELECT * FROM search_tree <span class="emphasis"><strong>ORDER BY depth</strong></span>;
+</pre><p>
+
+    Pour obtenir un tri stable, ajoutez des colonnes de données comme colonnes
+    secondaires de tri.
+   </p><div class="tip"><h3 class="title">Astuce</h3><p>
+     L'algorithme d'évaluation de la requête récursive produit sa sortie dans
+     l'ordre de recherche <span class="foreignphrase"><em class="foreignphrase">breadth-first</em></span>.
+     Néanmoins, ceci est un détail d'implémentation et il n'est pas conseillé
+     de se baser deuss. L'ordre des lignes à l'intérieur de chaque niveau
+     n'est pas défini, donc un tri explicite pourrait être désiré dans tous
+     les cas.
+    </p></div><p>
+    Une syntaxe native permet de calculer une colonne de tri
+    <span class="foreignphrase"><em class="foreignphrase">depth-first</em></span> ou
+    <span class="foreignphrase"><em class="foreignphrase">breadth-first</em></span>.
+    Par exemple :
+
+</p><pre class="programlisting">
+WITH RECURSIVE search_tree(id, link, data) AS (
+    SELECT t.id, t.link, t.data
+    FROM tree t
+  UNION ALL
+    SELECT t.id, t.link, t.data
+    FROM tree t, search_tree st
+    WHERE t.id = st.link
+) <span class="emphasis"><strong>SEARCH DEPTH FIRST BY id SET ordercol</strong></span>
+SELECT * FROM search_tree ORDER BY ordercol;
+
+WITH RECURSIVE search_tree(id, link, data) AS (
+    SELECT t.id, t.link, t.data
+    FROM tree t
+  UNION ALL
+    SELECT t.id, t.link, t.data
+    FROM tree t, search_tree st
+    WHERE t.id = st.link
+) <span class="emphasis"><strong>SEARCH BREADTH FIRST BY id SET ordercol</strong></span>
+SELECT * FROM search_tree ORDER BY ordercol;
+</pre><p>
+    Cette syntaxe est étendue en interne pour obtenir quelque chose de
+    similaire aux formes écrites manuellement. La clause
+    <code class="literal">SEARCH</code> indique le type de recherche désiré, la liste
+    des colonnes à tracer pour le tri et un nom de colonnes qui contiendra
+    les données résults pouvant être utilisée pour le tri. Cette colonne sera
+    ajoutée implicitement aux lignes en sortie de la CTE.
+   </p></div><div class="sect3" id="QUERIES-WITH-CYCLE"><div class="titlepage"><div><div><h4 class="title">7.8.2.2. Détection de cycles <a href="#QUERIES-WITH-CYCLE" class="id_link">#</a></h4></div></div></div><p>
+   Quand on travaille avec des requêtes récursives, il est important d'être sûr
+   que la partie récursive de la requête finira par ne retourner aucun enregistrement,
+   au risque sinon de voir la requête boucler indéfiniment. Quelquefois, utiliser
+   <code class="literal">UNION</code> à la place de <code class="literal">UNION ALL</code> peut
+   résoudre le problème en supprimant les enregistrements qui doublonnent ceux déjà
+   retournés. Toutefois, souvent, un cycle ne met pas en jeu des enregistrements de
+   sortie qui sont totalement des doublons : il peut s'avérer nécessaire de
+   vérifier juste un ou quelques champs, afin de s'assurer que le même point a déjà
+   été atteint précédemment. La méthode standard pour gérer ces situations est de
+   calculer un tableau de valeurs déjà visitées. Par exemple, observez de nouveau
+   la requête
+   suivante, qui parcourt une table <code class="structname">graphe</code> en utilisant
+   un champ <code class="structfield">lien</code> :
+
+</p><pre class="programlisting">
+WITH RECURSIVE parcourt_graphe(id, lien, donnee, profondeur) AS (
+        SELECT g.id, g.lien, g.donnee, 0
+        FROM graphe g
+      UNION ALL
+        SELECT g.id, g.lien, g.donnee, sg.profondeur + 1
+        FROM graphe g, parcourt_graphe sg
+        WHERE g.id = sg.lien
+)
+SELECT * FROM parcourt_graphe;
+      </pre><p>
+
+      Cette requête va boucler si la liaison <code class="structfield">lien</code>
+      contient des boucles. Parce que nous avons besoin de la sortie
+      <span class="quote">« <span class="quote">profondeur</span> »</span>, simplement remplacer <code class="literal">UNION ALL</code>
+      par <code class="literal">UNION</code> ne résoudra pas le problème.
+      À la place, nous avons besoin d'identifier si nous avons atteint un enregistrement
+      que nous avons déjà traité pendant notre parcours des liens. Nous ajoutons
+      deux colonnes <code class="structfield">is_cycle</code> et <code class="structfield">path</code>
+      à la requête :
+      </p><pre class="programlisting">
+WITH RECURSIVE search_graph(id, link, data, depth, <span class="emphasis"><strong>is_cycle, path</strong></span>) AS (
+    SELECT g.id, g.link, g.data, 0,
+      <span class="emphasis"><strong>false,
+      ARRAY[g.id]</strong></span>
+    FROM graph g
+  UNION ALL
+    SELECT g.id, g.link, g.data, sg.depth + 1,
+      <span class="emphasis"><strong>g.id = ANY(path),
+      path || g.id</strong></span>
+    FROM graph g, search_graph sg
+    WHERE g.id = sg.link <span class="emphasis"><strong>AND NOT is_cycle</strong></span>
+)
+SELECT * FROM search_graph;
+      </pre><p>
+
+      En plus de prévenir les boucles, cette valeur de tableau est souvent pratique
+      en elle-même pour représenter le <span class="quote">« <span class="quote">chemin</span> »</span> pris pour atteindre
+      chaque enregistrement.
+     </p><p>
+      De façon plus générale, quand plus d'un champ a besoin d'être vérifié pour
+      identifier une boucle, utilisez un tableau d'enregistrements. Par exemple,
+      si nous avions besoin de comparer les champs <code class="structfield">f1</code> et
+      <code class="structfield">f2</code> :
+
+      </p><pre class="programlisting">
+WITH RECURSIVE search_graph(id, link, data, depth, <span class="emphasis"><strong>is_cycle, path</strong></span>) AS (
+    SELECT g.id, g.link, g.data, 0,
+      <span class="emphasis"><strong>false,
+      ARRAY[ROW(g.f1, g.f2)]</strong></span>
+    FROM graph g
+  UNION ALL
+    SELECT g.id, g.link, g.data, sg.depth + 1,
+      <span class="emphasis"><strong>ROW(g.f1, g.f2) = ANY(path),
+      path || ROW(g.f1, g.f2)</strong></span>
+    FROM graph g, search_graph sg
+    WHERE g.id = sg.link <span class="emphasis"><strong>AND NOT is_cycle</strong></span>
+)
+SELECT * FROM search_graph;
+      </pre><p>
+     </p><div class="tip"><h3 class="title">Astuce</h3><p>
+       Omettez la syntaxe <code class="literal">ROW()</code> dans le cas courant où un seul
+       champ a besoin d'être testé pour déterminer une boucle. Ceci permet, par
+       l'utilisation d'un tableau simple plutôt que d'un tableau de type composite,
+       de gagner en efficacité.
+      </p></div><p>
+      Il existe une syntaxe interne pour simplifier la détection de cycles. La
+      requête ci-dessus peut aussi être écrite ainsi :
+
+      </p><pre class="programlisting">WITH RECURSIVE search_graph(id, link, data, depth) AS (
+    SELECT g.id, g.link, g.data, 1
+    FROM graph g
+  UNION ALL
+    SELECT g.id, g.link, g.data, sg.depth + 1
+    FROM graph g, search_graph sg
+    WHERE g.id = sg.link
+) <span class="emphasis"><strong>CYCLE id SET is_cycle USING path</strong></span>
+SELECT * FROM search_graph;</pre><p>
+
+      et elle sera réécrite en interne sous le forme ci-dessus. La clause
+      <code class="literal">CYCLE</code> indique tout d'abord la liste des colonnes à
+      tracer pour une détection de cycle, puis le nom de la colonne qui
+      indiquera si un cycle a été détecté, et enfin le nom d'une autre
+      colonne qui tracera le chemin. Les colonnes cycle et chemin seront
+      automatiquement ajoutées aux lignes en sortie de la CTE.
+     </p><div class="tip"><h3 class="title">Astuce</h3><p>
+       La colonne du chemindu cycle est calculée de la même façon que
+       l'affiche la colonne de tri <span class="foreignphrase"><em class="foreignphrase">depth-first</em></span>
+       dans la section précédente. Une requête peut avoir à la fois une
+       clause <code class="literal">SEARCH</code> et une clause
+       <code class="literal">CYCLE</code>, mais une spécification de recherche
+       <span class="foreignphrase"><em class="foreignphrase">depth-first</em></span> et une spécification de
+       recherche de cyle vont créer des calculs redondants, donc il est plus
+       efficace d'utiliser juste la clause <code class="literal">CYCLE</code> et trier
+       par la colonne du chemin. Si un tri
+       <span class="foreignphrase"><em class="foreignphrase">breadth-first</em></span> est voulu, alors indiquer
+       les deux, <code class="literal">SEARCH</code> and <code class="literal">CYCLE</code>, peut
+       être utile.
+      </p></div><p>
+      Si vous n'êtes pas certain qu'une requête puisse boucler, une astuce pratique
+      pour la tester est d'utiliser <code class="literal">LIMIT</code> dans la requête parente.
+      Par exemple, cette requête bouclerait indéfiniment sans un
+      <code class="literal">LIMIT</code> :
+
+      </p><pre class="programlisting">
+WITH RECURSIVE t(n) AS (
+    SELECT 1
+  UNION ALL
+    SELECT n+1 FROM t
+)
+SELECT n FROM t <span class="emphasis"><strong>LIMIT 100</strong></span>;
+      </pre><p>
+
+      Ceci fonctionne parce que l'implémentation de <span class="productname">PostgreSQL</span>
+      n'évalue que le nombre d'enregistrements de la requête <code class="literal">WITH</code>
+      récupérés par la requête parente. L'utilisation de cette astuce en production
+      est déconseillée parce que d'autres systèmes pourraient fonctionner différemment.
+      Par ailleurs, cela ne fonctionnera pas si vous demandez à la requête externe
+      de trier les résultats de la requête récursive, ou si vous les joignez à une
+      autre table, parce dans ces cas, la requête extérieure essaiera habituellement
+      de récupérer toute la sortie de la requête <code class="literal">WITH</code> de toute façon.
+     </p></div></div><div class="sect2" id="QUERIES-WITH-CTE-MATERIALIZATION"><div class="titlepage"><div><div><h3 class="title">7.8.3. Matérialisation des CTE <a href="#QUERIES-WITH-CTE-MATERIALIZATION" class="id_link">#</a></h3></div></div></div><p>
+      Une propriété intéressante des requêtes <code class="literal">WITH</code> est qu'elles
+      ne sont évaluées qu'une seule fois par exécution de la requête parente ou
+      des requêtes <code class="literal">WITH</code> sœurs.
+      Par conséquent, les calculs coûteux qui sont nécessaires à plusieurs endroits
+      peuvent être placés dans une requête <code class="literal">WITH</code> pour éviter le
+      travail redondant. Un autre intérêt peut être d'éviter l'exécution multiple
+      d'une fonction ayant des effets de bord.
+      Néanmoins, le revers de la médaille est que l'optimiseur n'est pas en
+      mesure de faire descendre les restrictions de la requête parent dans
+      une requête <code class="literal">WITH</code> à références multiples, car cela pourrait
+      affecter toutes les utilisations de la sortie de la requête <code class="literal">WITH</code>
+      alors que cela ne devrait en affecter qu'une seule.
+      La requête
+      <code class="literal">WITH</code> sera généralement exécutée telle quelle, sans
+      suppression d'enregistrements, que la requête parente devra supprimer ensuite.
+      (Mais, comme mentionné précédemment, l'évaluation pourrait s'arrêter rapidement
+      si la (les) référence(s) à la requête ne demande(nt) qu'un nombre limité
+      d'enregistrements).
+     </p><p>
+      Néanmoins, si une requête <code class="literal">WITH</code> est non récursive et
+      qu'elle est libre de tout effet de bord (autrement dit un
+      <code class="literal">SELECT</code> ne contenant aucune fonction volatile), alors
+      elle peut être intégrée dans la requête parent, permettant ainsi une
+      optimisation de la jointure sur les deux niveaux de la requête. Par défaut,
+      ceci survient si la requête parente fait référence une seule fois à la
+      requête <code class="literal">WITH</code> mais si elle y fait référence plusieurs
+      fois. Vous pouvez surcharger cette décision en indiquant
+      <code class="literal">MATERIALIZED</code> pour forcer un calcul séparé de la requête
+      <code class="literal">WITH</code> ou en spécifiant <code class="literal">NOT
+       MATERIALIZED</code> pour la forcer pour être intégrée dans la requête
+      parente. Ce dernier choix risque de dupliquer des calculs sur la requête
+      <code class="literal">WITH</code>, mais cela peut apporter un gain net si chaque
+      utilisation de la requête <code class="literal">WITH</code> ne nécessite qu'une
+      petite partie de la sortie complète de la requête <code class="literal">WITH</code>.
+     </p><p>
+      Un exemple simple de ces règles est le suivant :
+      </p><pre class="programlisting">
+WITH w AS (
+    SELECT * FROM big_table
+)
+SELECT * FROM w WHERE key = 123;
+      </pre><p>
+      Cette requête <code class="literal">WITH</code> va être intégrée, produisant le même
+      plan d'exécution que :
+      </p><pre class="programlisting">
+SELECT * FROM big_table WHERE key = 123;
+      </pre><p>
+      EN particulier, s'il existe un index sur <code class="structfield">key</code>, il
+      sera probablement utilisé pour récupérer les lignes pour lesquelles
+      <code class="literal">key = 123</code>. D'un autre côté, dans
+      </p><pre class="programlisting">
+WITH w AS (
+    SELECT * FROM big_table
+)
+SELECT * FROM w AS w1 JOIN w AS w2 ON w1.key = w2.ref
+WHERE w2.key = 123;
+      </pre><p>
+      la requête <code class="literal">WITH</code> sera matérialisée, produisant une copie
+      temporaire de <code class="structname">big_table</code> qui est ensuite jointe avec
+      elle-même  --  sans intérêt pour un index. Cette requête sera exécutée
+      bien plus efficacement s'il est écrite ainsi :
+      </p><pre class="programlisting">
+WITH w AS NOT MATERIALIZED (
+    SELECT * FROM big_table
+)
+SELECT * FROM w AS w1 JOIN w AS w2 ON w1.key = w2.ref
+WHERE w2.key = 123;
+      </pre><p>
+      pour que les restrictions de la requête parent puissent être appliquées
+      directement aux parcours de <code class="structname">big_table</code>.
+     </p><p>
+      Voici un exemple où <code class="literal">NOT MATERIALIZED</code> pourrait être
+      indésirable :
+      </p><pre class="programlisting">
+WITH w AS (
+    SELECT key, very_expensive_function(val) as f FROM some_table
+)
+SELECT * FROM w AS w1 JOIN w AS w2 ON w1.f = w2.f;
+      </pre><p>
+      Ici, la matérialisation de la requête <code class="literal">WITH</code> assure que
+      la <code class="function">very_expensive_function</code> est évaluée uniquement
+      une fois par ligne de table, et non pas deux fois.
+     </p><p>
+      Les exemples précédents ne montrent que des cas d'utilisation de <code class="literal">WITH</code>
+      avec <code class="command">SELECT</code>, mais on peut les attacher de la même façon à un
+      <code class="command">INSERT</code>, <code class="command">UPDATE</code>, <code class="command">DELETE</code>
+      ou <code class="command">MERGE</code>.
+      Dans chaque cas, le mécanisme fournit en fait des tables temporaires auxquelles on
+      peut faire référence dans la commande principale.
+     </p></div><div class="sect2" id="QUERIES-WITH-MODIFYING"><div class="titlepage"><div><div><h3 class="title">7.8.4. Ordres de modification de données avec <code class="literal">WITH</code> <a href="#QUERIES-WITH-MODIFYING" class="id_link">#</a></h3></div></div></div><p>
+      Vous pouvez utiliser des ordres de modification de données (<code class="command">INSERT</code>,
+      <code class="command">UPDATE</code>, <code class="command">DELETE</code> ou <code class="command">MERGE</code>)
+      dans <code class="literal">WITH</code>. Cela
+      vous permet d'effectuer plusieurs opérations différentes dans la même requête.
+      Par exemple:
+
+      </p><pre class="programlisting">
+WITH lignes_deplacees AS (
+    DELETE FROM produits
+    WHERE
+        "date" &gt;= '2010-10-01' AND
+        "date" &lt; '2010-11-01'
+    RETURNING *
+)
+INSERT INTO log_produits
+SELECT * FROM lignes_deplacees;
+      </pre><p>
+
+      Cette requête déplace les enregistrements de <code class="structname">produits</code> vers
+      <code class="structname">log_produits</code>. Le <code class="structname">DELETE</code> du <code class="literal">WITH</code>
+      supprime les enregistrements spécifiés de <code class="structname">produits</code>, en retournant leurs
+      contenus par la clause <code class="literal">RETURNING</code>; puis la requête primaire lit cette sortie et
+      l'insère dans <code class="structname">log_produits</code>.
+     </p><p>
+      Un point important à noter de l'exemple précédent est que la clause <code class="literal">WITH</code>
+      est attachée à l'<code class="command">INSERT</code>, pas au sous-<code class="command">SELECT</code> de l'
+      <code class="command">INSERT</code>. C'est nécessaire parce que les ordres de modification de données
+      ne sont autorisés que dans les clauses <code class="literal">WITH</code> qui sont attachées à l'ordre de
+      plus haut niveau. Toutefois, les règles de visibilité normales de <code class="literal">WITH</code>
+      s'appliquent, il est donc possible de faire référence à la sortie du <code class="literal">WITH</code>
+      dans le sous-<code class="command">SELECT</code>.
+     </p><p>
+      Les ordres de modification de données dans <code class="literal">WITH</code> ont habituellement
+      des clauses <code class="literal">RETURNING</code> (voir <a class="xref" href="dml-returning.html" title="6.4. Renvoyer des données provenant de lignes modifiées">Section 6.4</a>), comme dans l'exemple précédent.
+      C'est la sortie de la clause <code class="literal">RETURNING</code>, <span class="emphasis"><em>pas</em></span> la
+      table cible de l'ordre de modification de données, qui forme la table temporaire à laquelle
+      on pourra faire référence dans le reste de la requête. Si un ordre de
+      modification de données dans <code class="literal">WITH</code> n'a pas de clause <code class="literal">RETURNING</code>,
+      alors il ne produit pas de table temporaire et ne peut pas être utilisé dans le reste de la requête.
+      Un ordre de ce type sera toutefois exécuté.
+      En voici un exemple (dénué d'intérêt) :
+
+      </p><pre class="programlisting">
+WITH t AS (
+    DELETE FROM foo
+)
+DELETE FROM bar;
+      </pre><p>
+
+      Cet exemple supprimerait tous les éléments des tables <code class="structname">foo</code> et
+      <code class="structname">bar</code>. Le nombre d'enregistrements retourné au client n'inclurait
+      que les enregistrements supprimés de <code class="structname">bar</code>.
+     </p><p>
+      Les autoréférences récursives dans les ordres de modification de données ne
+      sont pas autorisées. Dans certains cas, il est possible de contourner cette limitation
+      en faisant référence à la sortie d'un <code class="literal">WITH</code>, par exemple:
+
+      </p><pre class="programlisting">
+WITH RECURSIVE pieces_incluses(sous_piece, piece) AS (
+    SELECT sous_piece, piece FROM pieces WHERE piece = 'notre_produit'
+  UNION ALL
+    SELECT p.sous_piece, p.piece
+    FROM pieces_incluses pr, pieces p
+    WHERE p.piece = pr.sous_piece
+  )
+DELETE FROM pieces
+  WHERE piece IN (SELECT piece FROM pieces_incluses);
+      </pre><p>
+      Cette requête supprimerait toutes les pièces directes et indirectes d'un produit.
+     </p><p>
+      Les ordres de modification de données dans <code class="literal">WITH</code> sont exécutés exactement
+      une fois, et toujours jusqu'à la fin, indépendamment du fait que la requête primaire
+      lise tout (ou même une partie) de leur sortie. Notez que c'est différent de la règle pour
+      <code class="command">SELECT</code> dans <code class="literal">WITH</code>: comme précisé dans la section précédente,
+      l'exécution d'un <code class="command">SELECT</code> n'est poursuivie que tant que la requête primaire
+      consomme sa sortie.
+     </p><p>
+      Les sous-requêtes du <code class="literal">WITH</code> sont toutes exécutées simultanément et
+      simultanément avec la requête principale. Par conséquent, quand vous utilisez un ordre de
+      modification de données avec <code class="literal">WITH</code>, l'ordre dans lequel les mises à jour
+      sont effectuées n'est pas prévisible. Toutes les requêtes sont exécutées dans le même
+      <em class="firstterm">instantané</em> (voyez <a class="xref" href="mvcc.html" title="Chapitre 13. Contrôle d'accès simultané">Chapitre 13</a>), elles ne peuvent donc pas
+      voir les effets des autres sur les tables cibles. Ceci rend sans importance le problème de
+      l'imprévisibilité de l'ordre des mises à jour, et signifie que <code class="literal">RETURNING</code> est
+      la seule façon de communiquer les modifications entre les différentes sous-requêtes
+      <code class="literal">WITH</code> et la requête principale. En voici un exemple :
+
+      </p><pre class="programlisting">
+WITH t AS (
+    UPDATE produits SET prix = prix * 1.05
+    RETURNING *
+)
+SELECT * FROM produits;
+      </pre><p>
+
+      Le <code class="command">SELECT</code> externe retournerait les prix originaux avant
+      l'action de <code class="command">UPDATE</code>, alors qu'avec :
+
+      </p><pre class="programlisting">
+WITH t AS (
+    UPDATE produits SET prix = prix * 1.05
+    RETURNING *
+)
+SELECT * FROM t;
+      </pre><p>
+
+      le <code class="command">SELECT</code> externe retournerait les données mises à jour.
+     </p><p>
+      Essayer de mettre à jour le même enregistrement deux fois dans le même ordre
+      n'est pas supporté. Seule une des deux modifications a lieu, mais il n'est pas
+      aisé (et quelquefois impossible) de déterminer laquelle. Ceci s'applique aussi
+      pour la suppression d'un enregistrement qui a déjà été mis à jour dans le même ordre :
+      seule la mise à jour est effectuée. Par conséquent, vous devriez éviter en règle
+      générale de mettre à jour le même enregistrement deux fois en un seul ordre. En
+      particulier, évitez d'écrire des sous-requêtes qui modifieraient les mêmes enregistrements
+      que la requête principale ou une autre sous-requête. Les effets d'un ordre de ce type seraient
+      imprévisibles.
+     </p><p>
+      À l'heure actuelle, les tables utilisées comme cibles d'un ordre modifiant les données
+      dans un <code class="literal">WITH</code> ne doivent avoir ni règle conditionnelle, ni règle
+      <code class="literal">ALSO</code>, ni une règle <code class="literal">INSTEAD</code> qui génère plusieurs ordres.
+     </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/queries-with.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:25 GMT -->
+</html>

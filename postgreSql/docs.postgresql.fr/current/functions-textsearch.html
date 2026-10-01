@@ -1,0 +1,768 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/functions-textsearch.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:27 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>9.13. Fonctions et opérateurs de recherche plein texte</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="functions-net.html" title="9.12. Fonctions et opérateurs pour les adresses réseau" /><link rel="next" href="functions-uuid.html" title="9.14. Fonctions UUID" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/functions-textsearch.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/functions-textsearch.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/functions-textsearch.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/functions-textsearch.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/functions-textsearch.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/functions-textsearch.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/functions-textsearch.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/functions-textsearch.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/functions-textsearch.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/functions-textsearch.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/functions-textsearch.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/functions-textsearch.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/functions-textsearch.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/functions-textsearch.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/functions-textsearch.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/functions-textsearch.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/functions-textsearch.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/functions-textsearch.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/functions-textsearch.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="functions.html">Fonctions et opérateurs</a></span> » <span class="breadcrumb-node">Fonctions et opérateurs de recherche plein texte</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="functions-net.html" title="9.12. Fonctions et opérateurs pour les adresses réseau">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="functions.html" title="Chapitre 9. Fonctions et opérateurs">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="functions-uuid.html" title="9.14. Fonctions UUID">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">9.12. Fonctions et opérateurs pour les adresses réseau </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 9.14. Fonctions UUID</td></tr></table></div><div class="sect1" id="FUNCTIONS-TEXTSEARCH"><div class="titlepage"><div><div><h2 class="title" style="clear: both">9.13. Fonctions et opérateurs de recherche plein texte <a href="#FUNCTIONS-TEXTSEARCH" class="id_link">#</a></h2></div></div></div><a id="id-1.5.8.19.2" class="indexterm"></a><a id="id-1.5.8.19.3" class="indexterm"></a><p>
+  <a class="xref" href="functions-textsearch.html#TEXTSEARCH-OPERATORS-TABLE" title="Tableau 9.42. Opérateurs de recherche plein texte">Tableau 9.42</a>,
+  <a class="xref" href="functions-textsearch.html#TEXTSEARCH-FUNCTIONS-TABLE" title="Tableau 9.43. Fonctions de recherche plein texte">Tableau 9.43</a> et
+  <a class="xref" href="functions-textsearch.html#TEXTSEARCH-FUNCTIONS-DEBUG-TABLE" title="Tableau 9.44. Fonctions de débogage de recherche plein texte">Tableau 9.44</a>
+  résument les fonctions et opérateurs fournis par la recherche plein texte.
+  Voir <a class="xref" href="textsearch.html" title="Chapitre 12. Recherche plein texte">Chapitre 12</a> pour une explication détaillée de la
+  fonctionnalité de recherche de texte de
+  <span class="productname">PostgreSQL</span>.
+ </p><div class="table" id="TEXTSEARCH-OPERATORS-TABLE"><p class="title"><strong>Tableau 9.42. Opérateurs de recherche plein texte</strong></p><div class="table-contents"><table class="table" summary="Opérateurs de recherche plein texte" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+       Opérateur
+      </p>
+      <p>
+       Description
+      </p>
+      <p>
+       Exemple(s)
+      </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="type">tsvector</code> <code class="literal">@@</code> <code class="type">tsquery</code>
+       → <code class="returnvalue">boolean</code>
+      </p>
+      <p class="func_signature">
+       <code class="type">tsquery</code> <code class="literal">@@</code> <code class="type">tsvector</code>
+       → <code class="returnvalue">boolean</code>
+      </p>
+      <p>
+       Est-ce que le <code class="type">tsvector</code> correspond au <code class="type">tsquery</code> ?
+       (Les arguments peuvent être donnés dans n'importe quel ordre.)
+      </p>
+      <p>
+       <code class="literal">to_tsvector('fat cats ate rats') @@ to_tsquery('cat &amp; rat')</code>
+       → <code class="returnvalue">t</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="type">text</code> <code class="literal">@@</code> <code class="type">tsquery</code>
+       → <code class="returnvalue">boolean</code>
+      </p>
+      <p>
+       Est-ce que la chaîne de texte, après appel implicite à
+       <code class="function">to_tsvector()</code>, correspond au
+       <code class="type">tsquery</code> ?
+      </p>
+      <p>
+       <code class="literal">'fat cats ate rats' @@ to_tsquery('cat &amp; rat')</code>
+       → <code class="returnvalue">t</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="type">tsvector</code> <code class="literal">||</code> <code class="type">tsvector</code>
+       → <code class="returnvalue">tsvector</code>
+      </p>
+      <p>
+       Concatène deux <code class="type">tsvector</code>. Si les deux entrées contiennent
+       des positions de lexème, les positions de la deuxième entrée sont
+       ajustées.
+      </p>
+      <p>
+       <code class="literal">'a:1 b:2'::tsvector || 'c:1 d:2 b:3'::tsvector</code>
+       → <code class="returnvalue">'a':1 'b':2,5 'c':3 'd':4</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="type">tsquery</code> <code class="literal">&amp;&amp;</code> <code class="type">tsquery</code>
+       → <code class="returnvalue">tsquery</code>
+      </p>
+      <p>
+       Calcule un AND des deux <code class="type">tsquery</code>, produisant une requête
+       qui établit une correspondance avec les documents correspondant aux
+       deux requêtes.
+      </p>
+      <p>
+       <code class="literal">'fat | rat'::tsquery &amp;&amp; 'cat'::tsquery</code>
+       → <code class="returnvalue">( 'fat' | 'rat' ) &amp; 'cat'</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="type">tsquery</code> <code class="literal">||</code> <code class="type">tsquery</code>
+       → <code class="returnvalue">tsquery</code>
+      </p>
+      <p>
+       Calcule un OR des deux <code class="type">tsquery</code>, produisant une requête
+       qui établit une correspondance avec les documents correspondant à
+       au moins une des deux requêtes.
+      </p>
+      <p>
+       <code class="literal">'fat | rat'::tsquery || 'cat'::tsquery</code>
+       → <code class="returnvalue">'fat' | 'rat' | 'cat'</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="literal">!!</code> <code class="type">tsquery</code>
+       → <code class="returnvalue">tsquery</code>
+      </p>
+      <p>
+       Inverse la <code class="type">tsquery</code>, produisant une requête qui établit
+       une correspondance avec les documents qui ne correspondent pas à la
+       requête en entrée.
+      </p>
+      <p>
+       <code class="literal">!! 'cat'::tsquery</code>
+       → <code class="returnvalue">!'cat'</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="type">tsquery</code> <code class="literal">&lt;-&gt;</code> <code class="type">tsquery</code>
+       → <code class="returnvalue">tsquery</code>
+      </p>
+      <p>
+       Construit une requête de phrase, qui établit une correspondance si les
+       deux requêtes en entrée correspondent aux lexèmes successifs.
+      </p>
+      <p>
+       <code class="literal">to_tsquery('fat') &lt;-&gt; to_tsquery('rat')</code>
+       → <code class="returnvalue">'fat' &lt;-&gt; 'rat'</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="type">tsquery</code> <code class="literal">@&gt;</code> <code class="type">tsquery</code>
+       → <code class="returnvalue">boolean</code>
+      </p>
+      <p>
+       Est-ce que le premier <code class="type">tsquery</code> contient le second ?
+       (Ceci considère seulement si tous les lexèmes apparaissant dans une
+       requêtes apparaissent dans l'autre, ignorant les opérateurs combinés.)
+      </p>
+      <p>
+       <code class="literal">'cat'::tsquery @&gt; 'cat &amp; rat'::tsquery</code>
+       → <code class="returnvalue">f</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="type">tsquery</code> <code class="literal">&lt;@</code> <code class="type">tsquery</code>
+       → <code class="returnvalue">boolean</code>
+      </p>
+      <p>
+       Est-ce que le premier <code class="type">tsquery</code> est contenu dans le
+       second ?  (Ceci considère seulement si tous les lexèmes
+       apparaissant dans une requête apparaissent aussi dans l'autre,
+       ignorant les opérateurs combinés.)
+      </p>
+      <p>
+       <code class="literal">'cat'::tsquery &lt;@ 'cat &amp; rat'::tsquery</code>
+       → <code class="returnvalue">t</code>
+      </p>
+      <p>
+       <code class="literal">'cat'::tsquery &lt;@ '!cat &amp; rat'::tsquery</code>
+       → <code class="returnvalue">t</code>
+      </p></td></tr></tbody></table></div></div><br class="table-break" /><p>
+  En plus de ces opérateurs spécialisés, les opérateurs de comparaison
+  habituels indiqués dans <a class="xref" href="functions-comparison.html#FUNCTIONS-COMPARISON-OP-TABLE" title="Tableau 9.1. Opérateurs de comparaison">Tableau 9.1</a>
+  sont disponibles pour les types <code class="type">tsvector</code> et
+  <code class="type">tsquery</code>. Ils ne sont pas très utiles pour la recherche de
+  texte mais permettent, par exemple, de construire des index d'unicité sur
+  des colonnes de ce type.
+ </p><div class="table" id="TEXTSEARCH-FUNCTIONS-TABLE"><p class="title"><strong>Tableau 9.43. Fonctions de recherche plein texte</strong></p><div class="table-contents"><table class="table" summary="Fonctions de recherche plein texte" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+       Fonction
+      </p>
+      <p>
+       Description
+      </p>
+      <p>
+       Exemple(s)
+      </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.1.1.1.1" class="indexterm"></a>
+       <code class="function">array_to_tsvector</code> ( <code class="type">text[]</code> )
+       → <code class="returnvalue">tsvector</code>
+      </p>
+      <p>
+       Convertit un tableau de chaînes de texte vers un <code class="type">tsvector</code>.
+       Les chaînes données sont utilisées comme lexemes, sans autre traitement.
+       Les éléments du tableau ne doivent pas être des chaînes vides ou or
+       <code class="literal">NULL</code>.
+      </p>
+      <p>
+       <code class="literal">array_to_tsvector('{fat,cat,rat}'::text[])</code>
+       → <code class="returnvalue">'cat' 'fat' 'rat'</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.2.1.1.1" class="indexterm"></a>
+       <code class="function">get_current_ts_config</code> ( )
+       → <code class="returnvalue">regconfig</code>
+      </p>
+      <p>
+       Renvoie l'OID de la configuration actuelle de recherche plein
+       texte (comme elle est configurée par <a class="xref" href="runtime-config-client.html#GUC-DEFAULT-TEXT-SEARCH-CONFIG">default_text_search_config</a>).
+      </p>
+      <p>
+       <code class="literal">get_current_ts_config()</code>
+       → <code class="returnvalue">english</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.3.1.1.1" class="indexterm"></a>
+       <code class="function">length</code> ( <code class="type">tsvector</code> )
+       → <code class="returnvalue">integer</code>
+      </p>
+      <p>
+       Renvoie le nombre de lexèmes dans le <code class="type">tsvector</code>.
+      </p>
+      <p>
+       <code class="literal">length('fat:2,4 cat:3 rat:5A'::tsvector)</code>
+       → <code class="returnvalue">3</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.4.1.1.1" class="indexterm"></a>
+       <code class="function">numnode</code> ( <code class="type">tsquery</code> )
+       → <code class="returnvalue">integer</code>
+      </p>
+      <p>
+       Renvoie le nombre de lexèmes plus les opérateurs dans le
+       <code class="type">tsquery</code>.
+      </p>
+      <p>
+       <code class="literal">numnode('(fat &amp; rat) | cat'::tsquery)</code>
+       → <code class="returnvalue">5</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.5.1.1.1" class="indexterm"></a>
+       <code class="function">plainto_tsquery</code> (
+       [<span class="optional"> <em class="parameter"><code>config</code></em> <code class="type">regconfig</code>, </span>]
+       <em class="parameter"><code>query</code></em> <code class="type">text</code> )
+       → <code class="returnvalue">tsquery</code>
+      </p>
+      <p>
+       Convertit le texte en un <code class="type">tsquery</code>, normalisant les mots
+       suivant la configuration spécifiée ou par défaut. Toute ponctuation
+       dans la chaîne est ignorée (elle ne détermine pas les opérateurs de la
+       requête). La requête résultante correspond aux documents contenant
+       tous les mots du texte qui ne sont pas des mots à ignorer.
+      </p>
+      <p>
+       <code class="literal">plainto_tsquery('english', 'The Fat Rats')</code>
+       → <code class="returnvalue">'fat' &amp; 'rat'</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.6.1.1.1" class="indexterm"></a>
+       <code class="function">phraseto_tsquery</code> (
+       [<span class="optional"> <em class="parameter"><code>config</code></em> <code class="type">regconfig</code>, </span>]
+       <em class="parameter"><code>query</code></em> <code class="type">text</code> )
+       → <code class="returnvalue">tsquery</code>
+      </p>
+      <p>
+       Convertit du texte en <code class="type">tsquery</code>, normalisant les mots
+       suivant la configuration spécifiée ou par défaut. Toute ponctuation
+       dans la chaîne est ignorée (elle ne détermine pas les opérateurs de
+       requête). La requête résultante correspond aux phrases contenant tous
+       les mots du texte qui ne sont pas des mots à ignorer.
+      </p>
+      <p>
+       <code class="literal">phraseto_tsquery('english', 'The Fat Rats')</code>
+       → <code class="returnvalue">'fat' &lt;-&gt; 'rat'</code>
+      </p>
+      <p>
+       <code class="literal">phraseto_tsquery('english', 'The Cat and Rats')</code>
+       → <code class="returnvalue">'cat' &lt;2&gt; 'rat'</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.7.1.1.1" class="indexterm"></a>
+       <code class="function">websearch_to_tsquery</code> (
+       [<span class="optional"> <em class="parameter"><code>config</code></em> <code class="type">regconfig</code>, </span>]
+       <em class="parameter"><code>query</code></em> <code class="type">text</code> )
+       → <code class="returnvalue">tsquery</code>
+      </p>
+      <p>
+       Convertit du texte en un <code class="type">tsquery</code>, normalisant des mots
+       suivant la configuration spécifiée ou par défaut. Les séquences de
+       mots entre guillemets sont converties pour phraser des tests. Le mot
+       <span class="quote">« <span class="quote">or</span> »</span> est compris comme produisant un opérateur OR, et un
+       tiret produit un opérateur NOT ; les autres ponctuations sont
+       ignorées. Ceci ressemble au comportement des outils de recherche web.
+      </p>
+      <p>
+       <code class="literal">websearch_to_tsquery('english', '"fat rat" or cat dog')</code>
+       → <code class="returnvalue">'fat' &lt;-&gt; 'rat' | 'cat' &amp; 'dog'</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.8.1.1.1" class="indexterm"></a>
+       <code class="function">querytree</code> ( <code class="type">tsquery</code> )
+       → <code class="returnvalue">text</code>
+      </p>
+      <p>
+       Produit une représentation de portion indexable d'un
+       <code class="type">tsquery</code>. Un résultat qui est vide ou juste
+       <code class="literal">T</code> indique une requête non indexable.
+      </p>
+      <p>
+       <code class="literal">querytree('foo &amp; ! bar'::tsquery)</code>
+       → <code class="returnvalue">'foo'</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.9.1.1.1" class="indexterm"></a>
+       <code class="function">setweight</code> ( <em class="parameter"><code>vector</code></em> <code class="type">tsvector</code>, <em class="parameter"><code>weight</code></em> <code class="type">"char"</code> )
+       → <code class="returnvalue">tsvector</code>
+      </p>
+      <p>
+       Assigne un poids (<em class="parameter"><code>weight</code></em>) spécifié pour chaque
+       élément d'un <em class="parameter"><code>vector</code></em>.
+      </p>
+      <p>
+       <code class="literal">setweight('fat:2,4 cat:3 rat:5B'::tsvector, 'A')</code>
+       → <code class="returnvalue">'cat':3A 'fat':2A,4A 'rat':5A</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.10.1.1.1" class="indexterm"></a>
+       <code class="function">setweight</code> ( <em class="parameter"><code>vector</code></em> <code class="type">tsvector</code>, <em class="parameter"><code>weight</code></em> <code class="type">"char"</code>, <em class="parameter"><code>lexemes</code></em> <code class="type">text[]</code> )
+       → <code class="returnvalue">tsvector</code>
+      </p>
+      <p>
+       Assigne le poids (<em class="parameter"><code>weight</code></em>) spécifié aux éléments
+       des <em class="parameter"><code>vector</code></em> qui sont listés dans les
+       <em class="parameter"><code>lexemes</code></em>.  Les chaînes dans
+       <em class="parameter"><code>lexemes</code></em> sont prises ainsi, sans autre traitement.
+       Les chaînes qui ne correspondent à aucun lexeme dans
+       <em class="parameter"><code>vector</code></em> sont ignorées.
+      </p>
+      <p>
+       <code class="literal">setweight('fat:2,4 cat:3 rat:5,6B'::tsvector, 'A', '{cat,rat}')</code>
+       → <code class="returnvalue">'cat':3A 'fat':2,4 'rat':5A,6A</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.11.1.1.1" class="indexterm"></a>
+       <code class="function">strip</code> ( <code class="type">tsvector</code> )
+       → <code class="returnvalue">tsvector</code>
+      </p>
+      <p>
+       Supprime les positions et les poids à partir d'un <code class="type">tsvector</code>.
+      </p>
+      <p>
+       <code class="literal">strip('fat:2,4 cat:3 rat:5A'::tsvector)</code>
+       → <code class="returnvalue">'cat' 'fat' 'rat'</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.12.1.1.1" class="indexterm"></a>
+       <code class="function">to_tsquery</code> (
+       [<span class="optional"> <em class="parameter"><code>config</code></em> <code class="type">regconfig</code>, </span>]
+       <em class="parameter"><code>query</code></em> <code class="type">text</code> )
+       → <code class="returnvalue">tsquery</code>
+      </p>
+      <p>
+       Convertit le texte en <code class="type">tsquery</code>, normalisant les mots
+       suivant la configuration spécifiée ou par défaut. Les mots doivent
+       être combinés par des opérateurs <code class="type">tsquery</code> valides.
+      </p>
+      <p>
+       <code class="literal">to_tsquery('english', 'The &amp; Fat &amp; Rats')</code>
+       → <code class="returnvalue">'fat' &amp; 'rat'</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.13.1.1.1" class="indexterm"></a>
+       <code class="function">to_tsvector</code> (
+       [<span class="optional"> <em class="parameter"><code>config</code></em> <code class="type">regconfig</code>, </span>]
+       <em class="parameter"><code>document</code></em> <code class="type">text</code> )
+       → <code class="returnvalue">tsvector</code>
+      </p>
+      <p>
+       Convertit du texte en un <code class="type">tsvector</code>, normalisant les mots
+       suivant la configuration spécifiée ou par défaut. L'information de
+       position est inclus dans le résultat.
+      </p>
+      <p>
+       <code class="literal">to_tsvector('english', 'The Fat Rats')</code>
+       → <code class="returnvalue">'fat':2 'rat':3</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="function">to_tsvector</code> (
+       [<span class="optional"> <em class="parameter"><code>config</code></em> <code class="type">regconfig</code>, </span>]
+       <em class="parameter"><code>document</code></em> <code class="type">json</code> )
+       → <code class="returnvalue">tsvector</code>
+      </p>
+      <p class="func_signature">
+       <code class="function">to_tsvector</code> (
+       [<span class="optional"> <em class="parameter"><code>config</code></em> <code class="type">regconfig</code>, </span>]
+       <em class="parameter"><code>document</code></em> <code class="type">jsonb</code> )
+       → <code class="returnvalue">tsvector</code>
+      </p>
+      <p>
+       Convertit chaque valeur chaîne du document JSON en un
+       <code class="type">tsvector</code>, normalisant les mots suivant la configuration
+       spécifiée ou par défaut. Les résultats sont ensuite concaténées dans
+       l'ordre du document pour produire la sortie. L'information de position
+       est générée comme si un mot d'arrêt existe chaque paire de valeurs
+       chaînes. (Attention que l'<span class="quote">« <span class="quote">ordre du document</span> »</span> des champs
+       d'un objet JSON est dépendant de l'implémentation quand l'entrée est
+       de type <code class="type">jsonb</code> ; observez la difference dans les
+       exemples.)
+      </p>
+      <p>
+       <code class="literal">to_tsvector('english', '{"aa": "The Fat Rats", "b": "dog"}'::json)</code>
+       → <code class="returnvalue">'dog':5 'fat':2 'rat':3</code>
+      </p>
+      <p>
+       <code class="literal">to_tsvector('english', '{"aa": "The Fat Rats", "b": "dog"}'::jsonb)</code>
+       → <code class="returnvalue">'dog':1 'fat':4 'rat':5</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.15.1.1.1" class="indexterm"></a>
+       <code class="function">json_to_tsvector</code> (
+       [<span class="optional"> <em class="parameter"><code>config</code></em> <code class="type">regconfig</code>, </span>]
+       <em class="parameter"><code>document</code></em> <code class="type">json</code>,
+       <em class="parameter"><code>filter</code></em> <code class="type">jsonb</code> )
+       → <code class="returnvalue">tsvector</code>
+      </p>
+      <p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.15.1.2.1" class="indexterm"></a>
+       <code class="function">jsonb_to_tsvector</code> (
+       [<span class="optional"> <em class="parameter"><code>config</code></em> <code class="type">regconfig</code>, </span>]
+       <em class="parameter"><code>document</code></em> <code class="type">jsonb</code>,
+       <em class="parameter"><code>filter</code></em> <code class="type">jsonb</code> )
+       → <code class="returnvalue">tsvector</code>
+      </p>
+      <p>
+       Sélectionne chaque élément du document JSON qui est réclamé par le
+       <em class="parameter"><code>filter</code></em> et convertit chacun en un
+       <code class="type">tsvector</code>, normalisant les mots suivant la configuration
+       spécifiée ou par défaut. Les résultats sont ensuite concaténées dans
+       l'ordre du document pour produire la sortie. L'information de position
+       est générée comme si un mot d'arrêt existe entre chaque paire
+       d'éléments sélectionnés. (Attention que l'<span class="quote">« <span class="quote">ordre du
+        document</span> »</span> des champs d'un objet JSON est dépendant de
+       l'implémentation quand l'entrée est de type <code class="type">jsonb</code>.) Le
+       <em class="parameter"><code>filter</code></em> doit être un tableau <code class="type">jsonb</code>
+       contenant zéro ou plusieurs de ces mots-clés :
+       <code class="literal">"string"</code> (pour inclure toutes les valeurs chaînes),
+       <code class="literal">"numeric"</code> (pour inclure toutes les valeurs
+       numériques), <code class="literal">"boolean"</code> (pour inclure toutes les
+       valeurs booléennes), <code class="literal">"key"</code> (pour inclure toutes les
+       clés) ou <code class="literal">"all"</code> (pour tous ces mots-clés). Comme
+       exception, <em class="parameter"><code>filter</code></em> peut aussi être une simple
+       valeur JSON qui est un de ces mots-clés.
+      </p>
+      <p>
+       <code class="literal">json_to_tsvector('english', '{"a": "The Fat Rats", "b": 123}'::json, '["string", "numeric"]')</code>
+       → <code class="returnvalue">'123':5 'fat':2 'rat':3</code>
+      </p>
+      <p>
+       <code class="literal">json_to_tsvector('english', '{"cat": "The Fat Rats", "dog": 123}'::json, '"all"')</code>
+       → <code class="returnvalue">'123':9 'cat':1 'dog':7 'fat':4 'rat':5</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.16.1.1.1" class="indexterm"></a>
+       <code class="function">ts_delete</code> ( <em class="parameter"><code>vector</code></em> <code class="type">tsvector</code>, <em class="parameter"><code>lexeme</code></em> <code class="type">text</code> )
+       → <code class="returnvalue">tsvector</code>
+      </p>
+      <p>
+       Supprime toute occurrence du <em class="parameter"><code>lexeme</code></em> donné à partir
+       de <em class="parameter"><code>vector</code></em>. La chaîne dans
+       <em class="parameter"><code>lexeme</code></em> est prise ainsi, sans autre traitement.
+      </p>
+      <p>
+       <code class="literal">ts_delete('fat:2,4 cat:3 rat:5A'::tsvector, 'fat')</code>
+       → <code class="returnvalue">'cat':3 'rat':5A</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="function">ts_delete</code> ( <em class="parameter"><code>vector</code></em> <code class="type">tsvector</code>, <em class="parameter"><code>lexemes</code></em> <code class="type">text[]</code> )
+       → <code class="returnvalue">tsvector</code>
+      </p>
+      <p>
+       Supprime toute occurrence des lexèmes dans <em class="parameter"><code>lexemes</code></em>
+       à partir de <em class="parameter"><code>vector</code></em>.  Les chaînes dans
+       <em class="parameter"><code>lexemes</code></em> sont prises ainsi, sans autre traitement.
+       Les chaînes qui ne correspondent à aucun lexeme dans
+       <em class="parameter"><code>vector</code></em> sont ignorées.
+      </p>
+      <p>
+       <code class="literal">ts_delete('fat:2,4 cat:3 rat:5A'::tsvector, ARRAY['fat','rat'])</code>
+       → <code class="returnvalue">'cat':3</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.18.1.1.1" class="indexterm"></a>
+       <code class="function">ts_filter</code> ( <em class="parameter"><code>vector</code></em> <code class="type">tsvector</code>, <em class="parameter"><code>weights</code></em> <code class="type">"char"[]</code> )
+       → <code class="returnvalue">tsvector</code>
+      </p>
+      <p>
+       Sélectionne seulement les éléments avec le <em class="parameter"><code>weights</code></em>
+       donné à partir de <em class="parameter"><code>vector</code></em>.
+      </p>
+      <p>
+       <code class="literal">ts_filter('fat:2,4 cat:3b,7c rat:5A'::tsvector, '{a,b}')</code>
+       → <code class="returnvalue">'cat':3B 'rat':5A</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.19.1.1.1" class="indexterm"></a>
+       <code class="function">ts_headline</code> (
+       [<span class="optional"> <em class="parameter"><code>config</code></em> <code class="type">regconfig</code>, </span>]
+       <em class="parameter"><code>document</code></em> <code class="type">text</code>,
+       <em class="parameter"><code>query</code></em> <code class="type">tsquery</code>
+       [<span class="optional">, <em class="parameter"><code>options</code></em> <code class="type">text</code> </span>] )
+       → <code class="returnvalue">text</code>
+      </p>
+      <p>
+       Affiche, dans sa forme abréviée, les correspondances de la
+       <em class="parameter"><code>query</code></em> dans le <em class="parameter"><code>document</code></em>,
+       qui doit être un texte brut, et non pas un <code class="type">tsvector</code>. Les
+       mots dans le document sont normalisés suivant la configuration
+       spécifiée ou par défaut avant d'établir les correspondances avec la
+       requête. L'utilisation de cette fonction est discutée dans <a class="xref" href="textsearch-controls.html#TEXTSEARCH-HEADLINE" title="12.3.4. Surligner les résultats">Section 12.3.4</a>, quid écrit aussi les
+       <em class="parameter"><code>options</code></em> disponibles.
+      </p>
+      <p>
+       <code class="literal">ts_headline('The fat cat ate the rat.', 'cat')</code>
+       → <code class="returnvalue">The fat &lt;b&gt;cat&lt;/b&gt; ate the rat.</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="function">ts_headline</code> (
+       [<span class="optional"> <em class="parameter"><code>config</code></em> <code class="type">regconfig</code>, </span>]
+       <em class="parameter"><code>document</code></em> <code class="type">json</code>,
+       <em class="parameter"><code>query</code></em> <code class="type">tsquery</code>
+       [<span class="optional">, <em class="parameter"><code>options</code></em> <code class="type">text</code> </span>] )
+       → <code class="returnvalue">text</code>
+      </p>
+      <p class="func_signature">
+       <code class="function">ts_headline</code> (
+       [<span class="optional"> <em class="parameter"><code>config</code></em> <code class="type">regconfig</code>, </span>]
+       <em class="parameter"><code>document</code></em> <code class="type">jsonb</code>,
+       <em class="parameter"><code>query</code></em> <code class="type">tsquery</code>
+       [<span class="optional">, <em class="parameter"><code>options</code></em> <code class="type">text</code> </span>] )
+       → <code class="returnvalue">text</code>
+      </p>
+      <p>
+       Affiche, dans une forme abréviée, les correspondances pour la
+       <em class="parameter"><code>query</code></em> qui surviennent dans les valeurs de type
+       chaîne dans le <em class="parameter"><code>document</code></em> JSON. Voir <a class="xref" href="textsearch-controls.html#TEXTSEARCH-HEADLINE" title="12.3.4. Surligner les résultats">Section 12.3.4</a> pour plus de détails.
+      </p>
+      <p>
+       <code class="literal">ts_headline('{"cat":"raining cats and dogs"}'::jsonb, 'cat')</code>
+       → <code class="returnvalue">{"cat": "raining &lt;b&gt;cats&lt;/b&gt; and dogs"}</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.21.1.1.1" class="indexterm"></a>
+       <code class="function">ts_rank</code> (
+       [<span class="optional"> <em class="parameter"><code>weights</code></em> <code class="type">real[]</code>, </span>]
+       <em class="parameter"><code>vector</code></em> <code class="type">tsvector</code>,
+       <em class="parameter"><code>query</code></em> <code class="type">tsquery</code>
+       [<span class="optional">, <em class="parameter"><code>normalization</code></em> <code class="type">integer</code> </span>] )
+       → <code class="returnvalue">real</code>
+      </p>
+      <p>
+       Calcule un score indiquant le niveau de correspondance du
+       <em class="parameter"><code>vector</code></em> avec la <em class="parameter"><code>query</code></em>.
+       Voir <a class="xref" href="textsearch-controls.html#TEXTSEARCH-RANKING" title="12.3.3. Ajouter un score aux résultats d'une recherche">Section 12.3.3</a> pour plus de détails.
+      </p>
+      <p>
+       <code class="literal">ts_rank(to_tsvector('raining cats and dogs'), 'cat')</code>
+       → <code class="returnvalue">0.06079271</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.22.1.1.1" class="indexterm"></a>
+       <code class="function">ts_rank_cd</code> (
+       [<span class="optional"> <em class="parameter"><code>weights</code></em> <code class="type">real[]</code>, </span>]
+       <em class="parameter"><code>vector</code></em> <code class="type">tsvector</code>,
+       <em class="parameter"><code>query</code></em> <code class="type">tsquery</code>
+       [<span class="optional">, <em class="parameter"><code>normalization</code></em> <code class="type">integer</code> </span>] )
+       → <code class="returnvalue">real</code>
+      </p>
+      <p>
+       Calcule un score indiquant le niveau de correspondance du
+       <em class="parameter"><code>vector</code></em> avec la <em class="parameter"><code>query</code></em>, en
+       utilisant un algorithme de densité de couverture. Voir <a class="xref" href="textsearch-controls.html#TEXTSEARCH-RANKING" title="12.3.3. Ajouter un score aux résultats d'une recherche">Section 12.3.3</a> pour les détails.
+      </p>
+      <p>
+       <code class="literal">ts_rank_cd(to_tsvector('raining cats and dogs'), 'cat')</code>
+       → <code class="returnvalue">0.1</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.23.1.1.1" class="indexterm"></a>
+       <code class="function">ts_rewrite</code> ( <em class="parameter"><code>query</code></em> <code class="type">tsquery</code>,
+       <em class="parameter"><code>target</code></em> <code class="type">tsquery</code>,
+       <em class="parameter"><code>substitute</code></em> <code class="type">tsquery</code> )
+       → <code class="returnvalue">tsquery</code>
+      </p>
+      <p>
+       Remplace les occurrences de <em class="parameter"><code>target</code></em> avec
+       <em class="parameter"><code>substitute</code></em> dans <em class="parameter"><code>query</code></em>.
+       Voir <a class="xref" href="textsearch-features.html#TEXTSEARCH-QUERY-REWRITING" title="12.4.2.1. Ré-écriture des requêtes">Section 12.4.2.1</a> pour les détails.
+      </p>
+      <p>
+       <code class="literal">ts_rewrite('a &amp; b'::tsquery, 'a'::tsquery, 'foo|bar'::tsquery)</code>
+       → <code class="returnvalue">'b' &amp; ( 'foo' | 'bar' )</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="function">ts_rewrite</code> ( <em class="parameter"><code>query</code></em> <code class="type">tsquery</code>,
+       <em class="parameter"><code>select</code></em> <code class="type">text</code> )
+       → <code class="returnvalue">tsquery</code>
+      </p>
+      <p>
+       Remplace les portions de la <em class="parameter"><code>query</code></em> suivant les
+       cibles et substituts obtenus en exécutant une commande
+       <code class="command">SELECT</code>. Voir <a class="xref" href="textsearch-features.html#TEXTSEARCH-QUERY-REWRITING" title="12.4.2.1. Ré-écriture des requêtes">Section 12.4.2.1</a> pour les détails.
+      </p>
+      <p>
+       <code class="literal">SELECT ts_rewrite('a &amp; b'::tsquery, 'SELECT t,s FROM aliases')</code>
+       → <code class="returnvalue">'b' &amp; ( 'foo' | 'bar' )</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.25.1.1.1" class="indexterm"></a>
+       <code class="function">tsquery_phrase</code> ( <em class="parameter"><code>query1</code></em> <code class="type">tsquery</code>, <em class="parameter"><code>query2</code></em> <code class="type">tsquery</code> )
+       → <code class="returnvalue">tsquery</code>
+      </p>
+      <p>
+       Construit une requête de phrases pour rechercher les correspondances
+       de <em class="parameter"><code>query1</code></em> et <em class="parameter"><code>query2</code></em> sur
+       des lexèmes successifs (identique à l'opérateur
+       <code class="literal">&lt;-&gt;</code>).
+      </p>
+      <p>
+       <code class="literal">tsquery_phrase(to_tsquery('fat'), to_tsquery('cat'))</code>
+       → <code class="returnvalue">'fat' &lt;-&gt; 'cat'</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="function">tsquery_phrase</code> ( <em class="parameter"><code>query1</code></em> <code class="type">tsquery</code>, <em class="parameter"><code>query2</code></em> <code class="type">tsquery</code>, <em class="parameter"><code>distance</code></em> <code class="type">integer</code> )
+       → <code class="returnvalue">tsquery</code>
+      </p>
+      <p>
+       Construit une requête de phrases pour rechercher les correspondances
+       de <em class="parameter"><code>query1</code></em> et <em class="parameter"><code>query2</code></em> qui
+       surviennent exactement entre <em class="parameter"><code>distance</code></em> lexèmes.
+      </p>
+      <p>
+       <code class="literal">tsquery_phrase(to_tsquery('fat'), to_tsquery('cat'), 10)</code>
+       → <code class="returnvalue">'fat' &lt;10&gt; 'cat'</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.27.1.1.1" class="indexterm"></a>
+       <code class="function">tsvector_to_array</code> ( <code class="type">tsvector</code> )
+       → <code class="returnvalue">text[]</code>
+      </p>
+      <p>
+       Convertit un <code class="type">tsvector</code> en un tableau de lexèmes.
+      </p>
+      <p>
+       <code class="literal">tsvector_to_array('fat:2,4 cat:3 rat:5A'::tsvector)</code>
+       → <code class="returnvalue">{cat,fat,rat}</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.7.2.2.28.1.1.1" class="indexterm"></a>
+       <code class="function">unnest</code> ( <code class="type">tsvector</code> )
+       → <code class="returnvalue">setof record</code>
+       ( <em class="parameter"><code>lexeme</code></em> <code class="type">text</code>,
+       <em class="parameter"><code>positions</code></em> <code class="type">smallint[]</code>,
+       <em class="parameter"><code>weights</code></em> <code class="type">text</code> )
+      </p>
+      <p>
+       Étend un <code class="type">tsvector</code> en un ensemble de lignes, une par lexème.
+      </p>
+      <p>
+       <code class="literal">select * from unnest('cat:3 fat:2,4 rat:5A'::tsvector)</code>
+       → <code class="returnvalue"></code>
+       </p><pre class="programlisting">
+ lexeme | positions | weights
+--------+-----------+---------
+ cat    | {3}       | {D}
+ fat    | {2,4}     | {D,D}
+ rat    | {5}       | {A}
+       </pre><p>
+      </p></td></tr></tbody></table></div></div><br class="table-break" /><div class="note"><h3 class="title">Note</h3><p>
+   Toutes les fonctions de recherche plein texte qui acceptent un argument
+   <code class="type">regconfig</code> optionnel utiliseront la configuration indiquée par
+   <a class="xref" href="runtime-config-client.html#GUC-DEFAULT-TEXT-SEARCH-CONFIG">default_text_search_config</a> quand cet argument est
+   omis.
+  </p></div><p>
+  Les fonctions de <a class="xref" href="functions-textsearch.html#TEXTSEARCH-FUNCTIONS-DEBUG-TABLE" title="Tableau 9.44. Fonctions de débogage de recherche plein texte">Tableau 9.44</a> sont
+  listées séparément parce qu'elles ne sont habituellement pas utilisées dans
+  les opérations standard de recherche de texte. Elles sont principalement
+  utiles pour le développement et le débogage des nouvelles configurations de
+  recherche plein texte.
+ </p><div class="table" id="TEXTSEARCH-FUNCTIONS-DEBUG-TABLE"><p class="title"><strong>Tableau 9.44. Fonctions de débogage de recherche plein texte</strong></p><div class="table-contents"><table class="table" summary="Fonctions de débogage de recherche plein texte" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+       Fonction
+      </p>
+      <p>
+       Description
+      </p>
+      <p>
+       Exemple(s)
+      </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.10.2.2.1.1.1.1" class="indexterm"></a>
+       <code class="function">ts_debug</code> (
+       [<span class="optional"> <em class="parameter"><code>config</code></em> <code class="type">regconfig</code>, </span>]
+       <em class="parameter"><code>document</code></em> <code class="type">text</code> )
+       → <code class="returnvalue">setof record</code>
+       ( <em class="parameter"><code>alias</code></em> <code class="type">text</code>,
+       <em class="parameter"><code>description</code></em> <code class="type">text</code>,
+       <em class="parameter"><code>token</code></em> <code class="type">text</code>,
+       <em class="parameter"><code>dictionaries</code></em> <code class="type">regdictionary[]</code>,
+       <em class="parameter"><code>dictionary</code></em> <code class="type">regdictionary</code>,
+       <em class="parameter"><code>lexemes</code></em> <code class="type">text[]</code> )
+      </p>
+      <p>
+       Extrait et normalise les jetons d'un <em class="parameter"><code>document</code></em>
+       suivant la configuration de recherche plein texte spécifié ou par
+       défaut, et renvoie l'information sur la façon dont chaque jeton a été
+       traité. Voir <a class="xref" href="textsearch-debugging.html#TEXTSEARCH-CONFIGURATION-TESTING" title="12.8.1. Test d'une configuration">Section 12.8.1</a> pour
+       plus de détails.
+      </p>
+      <p>
+       <code class="literal">ts_debug('english', 'The Brightest supernovaes')</code>
+       → <code class="returnvalue">(asciiword,"Word, all ASCII",The,{english_stem},english_stem,{}) ...</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.10.2.2.2.1.1.1" class="indexterm"></a>
+       <code class="function">ts_lexize</code> ( <em class="parameter"><code>dict</code></em> <code class="type">regdictionary</code>, <em class="parameter"><code>token</code></em> <code class="type">text</code> )
+       → <code class="returnvalue">text[]</code>
+      </p>
+      <p>
+       Renvoie un tableau de lexèmes de remplacement si le jeton en entrée
+       est connu par le dictionnaire ou un tableau suivant si le jeton est
+       connu du dictionnaire mais est un mot vide, ou NULL si ce n'est pas un
+       mot connu. Voir <a class="xref" href="textsearch-debugging.html#TEXTSEARCH-DICTIONARY-TESTING" title="12.8.3. Test des dictionnaires">Section 12.8.3</a> pour
+       les détails.
+      </p>
+      <p>
+       <code class="literal">ts_lexize('english_stem', 'stars')</code>
+       → <code class="returnvalue">{star}</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.10.2.2.3.1.1.1" class="indexterm"></a>
+       <code class="function">ts_parse</code> ( <em class="parameter"><code>parser_name</code></em> <code class="type">text</code>,
+       <em class="parameter"><code>document</code></em> <code class="type">text</code> )
+       → <code class="returnvalue">setof record</code>
+       ( <em class="parameter"><code>tokid</code></em> <code class="type">integer</code>,
+       <em class="parameter"><code>token</code></em> <code class="type">text</code> )
+      </p>
+      <p>
+       Extrait les jetons du <em class="parameter"><code>document</code></em> en utilisant
+       l'analyseur nommé. Voir <a class="xref" href="textsearch-debugging.html#TEXTSEARCH-PARSER-TESTING" title="12.8.2. Test de l'analyseur">Section 12.8.2</a>
+       pour les détails.
+      </p>
+      <p>
+       <code class="literal">ts_parse('default', 'foo - bar')</code>
+       → <code class="returnvalue">(1,foo) ...</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="function">ts_parse</code> ( <em class="parameter"><code>parser_oid</code></em> <code class="type">oid</code>,
+       <em class="parameter"><code>document</code></em> <code class="type">text</code> )
+       → <code class="returnvalue">setof record</code>
+       ( <em class="parameter"><code>tokid</code></em> <code class="type">integer</code>,
+       <em class="parameter"><code>token</code></em> <code class="type">text</code> )
+      </p>
+      <p>
+       Extrait les jetons du <em class="parameter"><code>document</code></em> en utilisant un
+       analyseur spécifié par OID. Voir <a class="xref" href="textsearch-debugging.html#TEXTSEARCH-PARSER-TESTING" title="12.8.2. Test de l'analyseur">Section 12.8.2</a> pour les détails.
+      </p>
+      <p>
+       <code class="literal">ts_parse(3722, 'foo - bar')</code>
+       → <code class="returnvalue">(1,foo) ...</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.10.2.2.5.1.1.1" class="indexterm"></a>
+       <code class="function">ts_token_type</code> ( <em class="parameter"><code>parser_name</code></em> <code class="type">text</code> )
+       → <code class="returnvalue">setof record</code>
+       ( <em class="parameter"><code>tokid</code></em> <code class="type">integer</code>,
+       <em class="parameter"><code>alias</code></em> <code class="type">text</code>,
+       <em class="parameter"><code>description</code></em> <code class="type">text</code> )
+      </p>
+      <p>
+       Renvoie une table qui décrit chaque type de jeton que l'analyseur
+       nommé peut reconnaître. Voir <a class="xref" href="textsearch-debugging.html#TEXTSEARCH-PARSER-TESTING" title="12.8.2. Test de l'analyseur">Section 12.8.2</a> pour les détails.
+      </p>
+      <p>
+       <code class="literal">ts_token_type('default')</code>
+       → <code class="returnvalue">(1,asciiword,"Word, all ASCII") ...</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <code class="function">ts_token_type</code> ( <em class="parameter"><code>parser_oid</code></em> <code class="type">oid</code> )
+       → <code class="returnvalue">setof record</code>
+       ( <em class="parameter"><code>tokid</code></em> <code class="type">integer</code>,
+       <em class="parameter"><code>alias</code></em> <code class="type">text</code>,
+       <em class="parameter"><code>description</code></em> <code class="type">text</code> )
+      </p>
+      <p>
+       Renvoie une table qui décrit chaque type de jeton qu'un analyseur
+       spécifié par OID peut reconnaître. Voir <a class="xref" href="textsearch-debugging.html#TEXTSEARCH-PARSER-TESTING" title="12.8.2. Test de l'analyseur">Section 12.8.2</a> pour les détails.
+      </p>
+      <p>
+       <code class="literal">ts_token_type(3722)</code>
+       → <code class="returnvalue">(1,asciiword,"Word, all ASCII") ...</code>
+      </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+       <a id="id-1.5.8.19.10.2.2.7.1.1.1" class="indexterm"></a>
+       <code class="function">ts_stat</code> ( <em class="parameter"><code>sqlquery</code></em> <code class="type">text</code>
+       [<span class="optional">, <em class="parameter"><code>weights</code></em> <code class="type">text</code> </span>] )
+       → <code class="returnvalue">setof record</code>
+       ( <em class="parameter"><code>word</code></em> <code class="type">text</code>,
+       <em class="parameter"><code>ndoc</code></em> <code class="type">integer</code>,
+       <em class="parameter"><code>nentry</code></em> <code class="type">integer</code> )
+      </p>
+      <p>
+       Exécute la <em class="parameter"><code>sqlquery</code></em>, qui doit renvoyer une
+       seule colonne <code class="type">tsvector</code>, et renvoyer des statistiques sur
+       chaque lexème distinct contenu dans la donnée. Voir <a class="xref" href="textsearch-features.html#TEXTSEARCH-STATISTICS" title="12.4.4. Récupérer des statistiques sur les documents">Section 12.4.4</a> pour les détails.
+      </p>
+      <p>
+       <code class="literal">ts_stat('SELECT vector FROM apod')</code>
+       → <code class="returnvalue">(foo,10,15) ...</code>
+      </p></td></tr></tbody></table></div></div><br class="table-break" /></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/functions-textsearch.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:27 GMT -->
+</html>

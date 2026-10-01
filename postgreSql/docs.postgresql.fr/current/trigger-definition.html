@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/trigger-definition.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>37.1. Aperçu du comportement des triggers</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="triggers.html" title="Chapitre 37. Triggers (triggers)" /><link rel="next" href="trigger-datachanges.html" title="37.2. Visibilité des modifications des données" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/trigger-definition.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/trigger-definition.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/trigger-definition.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/trigger-definition.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/trigger-definition.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/trigger-definition.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/trigger-definition.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/trigger-definition.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/trigger-definition.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/trigger-definition.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="triggers.html">Triggers (triggers)</a></span> » <span class="breadcrumb-node">Aperçu du comportement des triggers</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="triggers.html" title="Chapitre 37. Triggers (triggers)">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="triggers.html" title="Chapitre 37. Triggers (triggers)">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="trigger-datachanges.html" title="37.2. Visibilité des modifications des données">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Chapitre 37. Triggers (triggers) </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 37.2. Visibilité des modifications des données</td></tr></table></div><div class="sect1" id="TRIGGER-DEFINITION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">37.1. Aperçu du comportement des triggers <a href="#TRIGGER-DEFINITION" class="id_link">#</a></h2></div></div></div><p>
+   Un trigger spécifie que la base de données doit
+   exécuter automatiquement une fonction donnée chaque fois qu'un certain type d'opération est
+   exécuté. Les fonctions trigger peuvent être attachées à une table (partitionnée ou non),
+   une vue ou une table distante.
+  </p><p>
+   Sur des tables et tables distantes, les triggers peuvent être définies pour s'exécuter
+   avant ou après une commande <code class="command">INSERT</code>,
+   <code class="command">UPDATE</code> ou <code class="command">DELETE</code>, soit une fois par
+   ligne modifiée, soit une fois par expression <acronym class="acronym">SQL</acronym>.
+   Les triggers <code class="command">UPDATE</code> peuvent en plus être
+   configurées pour n'être déclenchés que si certaines colonnes sont
+   mentionnées dans la clause <code class="literal">SET</code> de l'instruction
+   <code class="command">UPDATE</code>.  Les triggers peuvent aussi se déclencher
+   pour des instructions
+   <code class="command">TRUNCATE</code>. Si un événement d'un trigger intervient, la
+   fonction du trigger est appelée au moment approprié pour gérer
+   l'événement.
+  </p><p>
+   Des triggers peuvent être définies sur des vues pour exécuter des opérations
+   à la place des commandes <code class="command">INSERT</code>, <code class="command">UPDATE</code>
+   ou <code class="command">DELETE</code>. Les triggers <code class="literal">INSTEAD OF</code>
+   sont déclenchés une fois par ligne devant être modifiée dans la vue. C'est
+   de la responsabilité de la fonction trigger de réaliser les modifications
+   nécessaires pour que les tables de base sous-jacentes d'une vue et, si approprié,
+   de renvoyer la ligne modifiée comme elle apparaîtra dans la vue. Les
+   triggers sur les vues peuvent aussi être définis pour s'exécuter une
+   fois par requête <acronym class="acronym">SQL</acronym> statement, avant ou après des
+   opérations <code class="command">INSERT</code>, <code class="command">UPDATE</code> ou
+   <code class="command">DELETE</code>. Néanmoins, de tels triggers sont déclenchés
+   seulement s'il existe aussi un trigger <code class="literal">INSTEAD OF</code> sur
+   la vue. Dans le cas contraire, toute requête ciblant la vue doit être
+   réécrite en une requête affectant sa (ou ses) table(s) de base. Les
+   triggers déclenchés seront ceux de(s) table(s) de base.
+  </p><p>
+   La fonction trigger doit être définie avant que le trigger lui-même
+   puisse être créé. La fonction trigger doit être déclarée comme une
+   fonction ne prenant aucun argument et retournant un type <code class="literal">trigger</code>
+   (la fonction trigger reçoit ses entrées via une structure
+   <code class="structname">TriggerData</code> passée spécifiquement, et non pas sous la forme
+   d'arguments ordinaires de fonctions).
+  </p><p>
+   Une fois qu'une fonction trigger est créée, le trigger
+   est créé avec <a class="xref" href="sql-createtrigger.html" title="CREATE TRIGGER"><span class="refentrytitle">CREATE TRIGGER</span></a>.
+   La même fonction trigger est utilisable par plusieurs triggers.
+  </p><p>
+   <span class="productname">PostgreSQL</span> offre des triggers
+   <em class="firstterm">par ligne</em> et <em class="firstterm">par instruction</em>. Avec un
+   trigger en mode ligne, la fonction du
+   trigger est appelée une fois pour chaque ligne affectée par
+   l'instruction qui a lancé le trigger. Au contraire, un trigger en mode
+   instruction n'est appelé qu'une seule fois lorsqu'une instruction appropriée
+   est exécutée, quel que soit le nombre de lignes affectées par cette
+   instruction. En particulier, une instruction n'affectant aucune ligne
+   résultera toujours en l'exécution de tout trigger en mode instruction
+   applicable. Ces deux types sont parfois appelés respectivement des
+   <em class="firstterm">triggers niveau ligne</em> et des
+   <em class="firstterm">triggers niveau instruction</em>.
+   Les triggers sur <code class="command">TRUNCATE</code> peuvent seulement être définis
+   au niveau instruction, et non pas au niveau ligne.
+  </p><p>
+   Les triggers sont aussi classifiées suivant qu'ils se déclenchent avant
+   (<em class="firstterm">before</em>), après (<em class="firstterm">after</em>) ou
+   à la place (<em class="firstterm">instead of</em>) de l'opération. Ils sont
+   référencés respectivement comme des triggers <code class="literal">BEFORE</code>,
+   <code class="literal">AFTER</code> et <code class="literal">INSTEAD OF</code>. Les triggers
+   <code class="literal">BEFORE</code> au niveau requête se déclenchent avant que la
+   requête ne commence quoi que ce soit alors que les triggers
+   <code class="literal">AFTER</code> au niveau requête se déclenchent tout à la fin de
+   la requête. Ces types de triggers peuvent être définis sur les tables,
+   vues et tables externes. Les triggers <code class="literal">BEFORE</code> au niveau ligne se déclenchent
+   immédiatement avant l'opération sur une ligne particulière alors que les
+   triggers <code class="literal">AFTER</code> au niveau ligne se déclenchent à la fin
+   de la requête (mais avant les triggers <code class="literal">AFTER</code> au niveau
+   requête). Ces types de triggers peuvent seulement être définis sur les
+   tables et sur les tables distantes, et non pas sur les vues. Les triggers
+   <code class="literal">INSTEAD OF</code>
+   peuvent seulement être définis sur des vues, et seulement au niveau ligne.
+   Ils se déclenchent immédiatement pour chaque ligne de la vue identifiée
+   comme nécessitant une action.
+  </p><p>
+   L'exécution d'un trigger <code class="literal">AFTER</code> peut être reporté à la
+   fin de la transaction, plutôt qu'à la fin de la requête, s'il a été défini
+   comme un <em class="firstterm">trigger de contrainte</em>. Dans tous les cas,
+   un trigger est exécuté comme faisant partie de la même transaction que la
+   requête qui l'a exécuté, donc si soit la requête soit le trigger renvoie
+   une erreur, l'effet sera une annulation par ROLLBACK.
+  </p><p>
+   Si un <code class="command">INSERT</code> contient une clause <code class="literal">ON CONFLICT DO
+   UPDATE</code>, il est possible pour les triggers niveau ligne
+   <code class="literal">BEFORE</code> <code class="command">INSERT</code> puis
+   <code class="literal">BEFORE</code> <code class="command">UPDATE</code> d'être exécutés sur
+   les lignes cibles. De telles interactions peuvent être complexes si les
+   triggers ne sont pas idempotents parce que les modifications réalisées par
+   les triggers <code class="literal">BEFORE</code> <code class="command">INSERT</code> seront
+   vus par les triggers <code class="literal">BEFORE</code> <code class="command">UPDATE</code>,
+   ceci inclut les modifications sur les colonnes
+   <code class="varname">EXCLUDED</code>.
+  </p><p>
+   Notez que les triggers
+   <code class="command">UPDATE</code> niveau instruction sont exécutés lorsque
+   la clause <code class="literal">ON CONFLICT DO UPDATE</code> est spécifiée,
+   quand bien même aucune ligne ne serait affectée par la commande
+   <code class="command">UPDATE</code> (et même si la commande
+   <code class="command">UPDATE</code> n'est pas exécutée). Une commande
+   <code class="command">INSERT</code> avec une clause <code class="literal">ON CONFLICT DO
+    UPDATE</code> exécutera d'abord les triggers niveau
+   instruction <code class="literal">BEFORE</code> <code class="command">INSERT</code>,
+   puis les triggers niveau instruction <code class="literal">BEFORE</code>
+   <code class="command">UPDATE</code>, suivis par les triggers niveau
+   instruction <code class="literal">AFTER</code> <code class="command">UPDATE</code>,
+   puis finalement les triggers niveau instruction
+   <code class="literal">AFTER</code> <code class="command">INSERT</code>.
+  </p><p>
+   Une instruction qui cible une table parente dans une hiérarchie d'héritage
+   ou de partitionnement ne cause pas le déclenchement des triggers niveau
+   instruction des tables enfants affectées ; seuls les triggers niveau
+   instruction de la table parent sont déclenchés. Néanmoins, les triggers
+   niveau ligne de toute table enfant affectée seront déclenchés.
+  </p><p>
+   Si un <code class="command">UPDATE</code> sur une table partitionnée implique le
+   déplacement d'une ligne vers une autre partition, il sera réalisé comme un
+   <code class="command">DELETE</code> de la partition originale, suivi d'un
+   <code class="command">INSERT</code> dans la nouvelle partition. Dans ce cas, les
+   triggers <code class="literal">BEFORE</code> <code class="command">UPDATE</code> niveau ligne
+   et tous les triggers <code class="literal">BEFORE</code> <code class="command">DELETE</code>
+   niveau ligne sont déclenchés sur la partition originale. Puis tous les
+   triggers <code class="literal">BEFORE</code> <code class="command">INSERT</code> niveau ligne
+   sont déclenchés sur la partition destination. La possibilité de résultats
+   surprenants doit être considéré quand tous les triggers affectent la ligne
+   déplacée. En ce qui concerne les triggers <code class="literal">AFTER ROW</code>,
+   les triggers <code class="literal">AFTER</code> <code class="command">DELETE</code> et
+   <code class="literal">AFTER</code> <code class="command">INSERT</code> sont appliqués mais les
+   triggers <code class="literal">AFTER</code> <code class="command">UPDATE</code> ne le sont pas
+   car <code class="command">UPDATE</code> a été convertis en un
+   <code class="command">DELETE</code> et un <code class="command">INSERT</code>. Quant aux
+   triggers niveau instruction, aucun des triggers <code class="command">DELETE</code>
+   et <code class="command">INSERT</code> ne sont déclenchés, y compris en cas de
+   déplacement de lignes. Seuls les triggers <code class="command">UPDATE</code>
+   définis sur la table cible utilisée dans une instruction
+   <code class="command">UPDATE</code> seront déclenchés.
+  </p><p>
+   Aucun trigger spécifique n'est défini pour <code class="command">MERGE</code>. À la
+   place, des triggers niveau instruction ou niveau ligne sont déclenchés pour
+   les instructions <code class="command">UPDATE</code>, <code class="command">DELETE</code> et
+   <code class="command">INSERT</code> suivant l'action indiquée dans la requête
+   <code class="command">MERGE</code> (pour les triggers niveau instruction) et suivant
+   les actions réellement exécutées (pour les triggers niveau instruction).
+  </p><p>
+   Lors de l'exécution d'une commande <code class="command">MERGE</code>, les triggers
+   <code class="literal">BEFORE</code> and <code class="literal">AFTER</code> au niveau instruction
+   sont déclenchées pour les événements spécifiés dans les actions de la
+   commande <code class="command">MERGE</code>, que l'action soit exécutée ou non au
+   final. C'est identique à l'instruction <code class="command">UPDATE</code> qui ne met à
+   jour aucune ligne, mais pour laquelle, néanmoins, les triggers niveau
+   instruction ont été exécutés. Les triggers niveau ligne sont déclenchés
+   uniquement quand une ligne est réellement mise à jour, insérée ou supprimée.
+   Donc il est parfaitement normal que, bien que les triggers niveau instruction
+   soient déclenchés pour certains types d'action, les triggers niveau ligne ne
+   le soient pas pour les mêmes actions.
+  </p><p>
+   Les fonctions triggers appelées par des triggers niveau instruction
+   devraient toujours renvoyer <code class="symbol">NULL</code>. Les fonctions triggers
+   appelées par des triggers niveau ligne peuvent renvoyer une ligne de la
+   table (une valeur de type <code class="structname">HeapTuple</code>) vers
+   l'exécuteur appelant, s'ils le veulent. Un trigger niveau ligne exécuté
+   avant une opération a les choix suivants :
+
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Il peut retourner un pointeur <code class="symbol">NULL</code> pour sauter l'opération
+      pour la ligne courante. Ceci donne comme instruction à l'exécuteur de ne pas exécuter
+      l'opération niveau ligne qui a lancé le trigger (l'insertion, la
+      modification ou la suppression d'une ligne particulière de la table).
+     </p></li><li class="listitem"><p>
+      Pour les triggers <code class="command">INSERT</code> et
+      <code class="command">UPDATE</code> de niveau ligne uniquement, la valeur de retour devient la
+      ligne qui sera insérée ou remplacera la ligne en cours de mise à jour.
+      Ceci permet à la fonction trigger de modifier la ligne en cours
+      d'insertion ou de mise à jour.
+     </p></li></ul></div><p>
+
+
+   Un trigger <code class="literal">BEFORE</code> niveau ligne qui ne serait pas conçu pour avoir l'un de
+   ces comportements doit prendre garde à retourner la même ligne que celle
+   qui lui a été passée comme nouvelle ligne (c'est-à-dire : pour des triggers
+   <code class="command">INSERT</code> et <code class="command">UPDATE</code> : la nouvelle
+   (<code class="varname">NEW</code>) ligne, et pour les triggers
+   <code class="command">DELETE</code>) : l'ancienne
+   (<code class="varname">OLD</code>) ligne .
+  </p><p>
+   Un trigger <code class="literal">INSTEAD OF</code> niveau ligne devrait renvoyer
+   soit <code class="symbol">NULL</code> pour indiquer qu'il n'a pas modifié de données
+   des tables de base sous-jacentes de la vue, soit la ligne de la vue qui lui
+   a été passé (la ligne <code class="varname">NEW</code> pour les opérations
+   <code class="command">INSERT</code> et <code class="command">UPDATE</code>, ou la ligne
+   <code class="varname">OLD</code> pour l'opération <code class="command">DELETE</code>). Une
+   valeur de retour différent de NULL est utilisée comme signal indiquant que
+   le trigger a réalisé les modifications de données nécessaires dans la vue.
+   Ceci causera l'incrémentation du nombre de lignes affectées par la commande.
+   Pour les opérations <code class="command">INSERT</code> et <code class="command">UPDATE</code>
+   seulement,
+   le trigger peut modifier la ligne <code class="varname">NEW</code> avant de la
+   renvoyer. Ceci modifiera les données renvoyées par <code class="command">INSERT
+    RETURNING</code> ou <code class="command">UPDATE RETURNING</code>, et est utile
+   quand la vue n'affichera pas exactement les données fournies.
+  </p><p>
+   La valeur de retour est ignorée pour les triggers niveau ligne lancés
+   après une opération. Ils peuvent donc renvoyer la valeur
+   <code class="symbol">NULL</code>.
+  </p><p>
+   Certaines considérations s'appliquent pour les colonnes générées.
+   <a id="id-1.8.4.5.19.1" class="indexterm"></a> Les colonnes générées sont calculées après
+   les triggers <code class="literal">BEFORE</code> et avant les triggers
+   <code class="literal">AFTER</code>. De ce fait, la valeur générée peut être inspectée
+   dans les triggers <code class="literal">AFTER</code>. Dans les triggers
+   <code class="literal">BEFORE</code>, la ligne <code class="literal">OLD</code> contient
+   l'ancienne valeur générée, comme on pourrait s'y attendre, mais la ligne
+   <code class="literal">NEW</code> ne contient pas encore la nouvelle valeur générée et
+   ne doit pas être accédée. Dans l'interface en langage C, le contenu de la
+   colonne est non défini à ce moment ; un langage de programmation de
+   plus haut niveau doit empêcher l'accès à une colonne générée dans la ligne
+   <code class="literal">NEW</code> pour un trigger <code class="literal">BEFORE</code>. Les
+   modifications de la valeur d'une colonne générée dans un trigger
+   <code class="literal">BEFORE</code> sont ignorées et seront écrasées.
+  </p><p>
+   Si plus d'un trigger est défini pour le même événement sur la même
+   relation, les triggers seront lancés dans l'ordre alphabétique de leur
+   nom. Dans le cas de triggers <code class="literal">BEFORE</code> et
+   <code class="literal">INSTEAD OF</code>, la ligne
+   renvoyée par chaque trigger, qui a éventuellement été modifiée, devient l'argument du
+   prochain trigger. Si un des triggers <code class="literal">BEFORE</code> ou
+   <code class="literal">INSTEAD OF</code> renvoie un pointeur
+   <code class="symbol">NULL</code>, l'opération est abandonnée pour cette ligne et les
+   triggers suivants ne sont pas lancés (pour cette ligne).
+  </p><p>
+   Une définition de trigger peut aussi spécifier une condition booléenne
+   <code class="literal">WHEN</code> qui sera testée pour savoir si le trigger doit
+   bien être déclenché. Dans les triggers de niveau ligne, la condition
+   <code class="literal">WHEN</code> peut examiner l'ancienne et la nouvelle valeur
+   des colonnes de la ligne. (les triggers de niveau instruction peuvent
+   aussi avoir des conditions <code class="literal">WHEN</code> mais cette fonctionnalité
+   est moins intéressante pour elles). Dans un trigger
+   <em class="firstterm">avant</em>, la condition <code class="literal">WHEN</code> est
+   évaluée juste avant l'exécution de la fonction, donc l'utilisation de
+   <code class="literal">WHEN</code> n'est pas réellement différente du test de la même
+   condition au début de la fonction trigger. Néanmoins, dans un tigger
+   <code class="literal">AFTER</code>, la condition <code class="literal">WHEN</code> est
+   évaluée juste avant la mise à jour de la ligne et détermine si un événement
+   va déclencher le trigger à la fin de l'instruction. Donc, quand la
+   condition <code class="literal">WHEN</code> d'un trigger <code class="literal">AFTER</code>
+   ne renvoie pas true, il n'est pas nécessaire de mettre en queue un
+   événement ou de récupérer de nouveau la ligne à la fin de l'instruction.
+   Ceci permet une amélioration conséquente des performances pour les
+   instructions qui modifient un grand nombre de lignes si le trigger a
+   seulement besoin d'être exécuté que sur quelques lignes. Les triggers
+   <code class="literal">INSTEAD OF</code> n'acceptent pas les conditions
+   <code class="literal">WHEN</code>.
+  </p><p>
+   Les triggers <code class="literal">BEFORE</code> en mode ligne sont typiquement utilisés pour
+   vérifier ou modifier les données qui seront insérées ou mises à jour. Par
+   exemple, un trigger <code class="literal">BEFORE</code> pourrait être utilisé pour insérer l'heure
+   actuelle dans une colonne de type <code class="type">timestamp</code> ou pour vérifier que deux
+   éléments d'une ligne sont cohérents. Les triggers <code class="literal">AFTER</code> en mode ligne
+   sont pour la plupart utilisés pour propager des mises à jour vers d'autres
+   tables ou pour réaliser des tests de cohérence avec d'autres tables. La
+   raison de cette division du travail est qu'un trigger <code class="literal">AFTER</code> peut être
+   certain qu'il voit la valeur finale de la ligne alors qu'un trigger
+   <code class="literal">BEFORE</code> ne l'est pas ; il pourrait exister d'autres triggers <code class="literal">BEFORE</code>
+   qui seront exécutés après lui. Si vous n'avez aucune raison spéciale pour le
+   moment du déclenchement, le cas <code class="literal">BEFORE</code> est plus efficace car l'information
+   sur l'opération n'a pas besoin d'être sauvegardée jusqu'à la fin du
+   traitement.
+  </p><p>
+   Si une fonction trigger exécute des commandes SQL,
+   alors ces commandes peuvent lancer à leur tour des triggers. On appelle ceci un
+   trigger en cascade. Il n'y a pas de limitation directe du nombre de
+   niveaux de cascade. Il est possible que les cascades causent un appel
+   récursif du même trigger ; par exemple, un trigger
+   <code class="command">INSERT</code> pourrait exécuter une commande qui insère une
+   ligne supplémentaire dans la même table, entraînant un nouveau lancement du
+   trigger <code class="command">INSERT</code>. Il est de la responsabilité du
+   programmeur d'éviter les récursions infinies dans de tels scénarios.
+  </p><p>
+   Si une clé étrangère indique des actions référentielles (autrement dit,
+   des mises à jour ou des suppressions en cascade), ces actions seront
+   réalisées via des commandes SQL ordinaires de mise à jour ou de suppression
+   sur la table référençante. En particulier, tout trigger qui existe sur la
+   table référençante sera déclenché pour ces modifications. Si un trigger
+   modifie ou bloque l'effet d'une de ces commandes, le résultat final
+   pourrait casser l'intégrité référentielle. C'est de la responsabilité
+   du développeur du trigger d'éviter cela.
+  </p><a id="id-1.8.4.5.25" class="indexterm"></a><p>
+   Quand un trigger est défini, des arguments peuvent être spécifiés pour
+   lui. L'objectif de l'inclusion d'arguments dans la définition du
+   trigger est de permettre à différents triggers ayant des exigences
+   similaires d'appeler la même fonction. Par exemple, il pourrait y avoir une
+   fonction trigger généralisée qui prend comme arguments deux noms de
+   colonnes et place l'utilisateur courant dans l'une et un horodatage dans
+   l'autre. Correctement écrit, cette fonction trigger serait indépendante
+   de la table particulière sur laquelle il se déclenche. Ainsi, la même
+   fonction pourrait être utilisée pour des événements
+   <code class="command">INSERT</code> sur n'importe quelle table ayant des colonnes
+   adéquates, pour automatiquement suivre les créations d'enregistrements dans
+   une table de transactions par exemple. Elle pourrait aussi être utilisée
+   pour suivre les dernières mises à jour si elle est définie comme un
+   trigger <code class="command">UPDATE</code>.
+  </p><p>
+   Chaque langage de programmation supportant les triggers à sa propre
+   méthode pour rendre les données en entrée disponible à la fonction du
+   trigger. Cette donnée en entrée inclut le type d'événement du
+   trigger (c'est-à-dire <code class="command">INSERT</code> ou
+   <code class="command">UPDATE</code>) ainsi que tous les arguments listés dans
+   <code class="command">CREATE TRIGGER</code>. Pour un trigger niveau ligne, la donnée en
+   entrée inclut aussi la ligne <code class="varname">NEW</code> pour les triggers
+   <code class="command">INSERT</code> et <code class="command">UPDATE</code> et/ou la ligne
+   <code class="varname">OLD</code> pour les triggers <code class="command">UPDATE</code> et
+   <code class="command">DELETE</code>.
+  </p><p>
+   Par défaut, les triggers niveau instruction n'ont aucun moyen d'examiner le
+   ou les lignes individuelles modifiées par la requête. Mais un trigger
+   <code class="literal">AFTER STATEMENT</code> peut demander que des <em class="firstterm">tables
+    de transition</em> soient créées pour rendre disponible les
+   ensembles de lignes affectées au trigger. <code class="literal">AFTER ROW</code> peut
+   aussi demander les tables de transactions, pour accéder au changement
+   global dans la table, ainsi qu'au changement de lignes individuelles pour
+   lesquels ils ont été déclenchés. La méthode d'examen des tables de
+   transition dépend là-aussi du langage de programmation utilisé mais
+   l'approche typique est de transformer les tables de transition en tables
+   temporaires en lecture seule pouvant être accédées par des commandes SQL
+   lancées par la fonction trigger.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/trigger-definition.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:43 GMT -->
+</html>

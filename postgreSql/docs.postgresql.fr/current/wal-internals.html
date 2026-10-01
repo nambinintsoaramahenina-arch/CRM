@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/wal-internals.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>28.6. Vue interne des journaux de transaction</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="wal-configuration.html" title="28.5. Configuration des journaux de transaction" /><link rel="next" href="logical-replication.html" title="Chapitre 29. Réplication logique" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/wal-internals.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/wal-internals.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/wal-internals.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/wal-internals.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/wal-internals.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/wal-internals.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/wal-internals.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/wal-internals.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/wal-internals.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/wal-internals.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/wal-internals.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/wal-internals.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/wal-internals.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/wal-internals.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/wal-internals.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/wal-internals.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/wal-internals.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/wal-internals.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/wal-internals.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/wal-internals.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/wal-internals.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="wal.html">Fiabilité et journaux de transaction</a></span> » <span class="breadcrumb-node">Vue interne des journaux de transaction</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="wal-configuration.html" title="28.5. Configuration des journaux de transaction">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="wal.html" title="Chapitre 28. Fiabilité et journaux de transaction">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="logical-replication.html" title="Chapitre 29. Réplication logique">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">28.5. Configuration des journaux de transaction </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 29. Réplication logique</td></tr></table></div><div class="sect1" id="WAL-INTERNALS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">28.6. Vue interne des journaux de transaction <a href="#WAL-INTERNALS" class="id_link">#</a></h2></div></div></div><a id="id-1.6.15.8.2" class="indexterm"></a><p>
+   Le mécanisme <acronym class="acronym">WAL</acronym> est automatiquement activé ;
+   aucune action n'est requise de la part de l'administrateur, sauf
+   s'assurer que l'espace disque requis par les journaux de transaction
+   est présent et que tous les réglages nécessaires sont faits (voir
+   la <a class="xref" href="wal-configuration.html" title="28.5. Configuration des journaux de transaction">Section 28.5</a>).
+  </p><p>
+   Les enregistrements <acronym class="acronym">WAL</acronym> sont ajoutés aux journaux
+   <acronym class="acronym">WAL</acronym>, enregistrement après enregistrement. La position
+   d'insertion est donnée par le
+   <span class="foreignphrase"><em class="foreignphrase">Log Sequence Number</em></span> (<acronym class="acronym">LSN</acronym>,
+   pour numéro de séquence de journal)
+   qui est un décalage d'octets (<span class="foreignphrase"><em class="foreignphrase">offset</em></span>)
+   au sein des journaux de transactions,
+   qui s'incrémente de manière monotone à chaque enregistrement. Les valeurs du
+   <acronym class="acronym">LSN</acronym> sont renvoyées en tant que type de données <a class="link" href="datatype-pg-lsn.html" title="8.20. Type pg_lsn"><code class="type">pg_lsn</code></a>. Les valeurs peuvent
+   être comparées pour calculer le volume de données <acronym class="acronym">WAL</acronym>
+   les séparant, permettant ainsi de mesurer l'avancement de la réplication et
+   de la restauration.
+  </p><p>
+   Les journaux de transactions sont un ensemble de fichiers stockés dans le répertoire
+   <code class="filename">pg_wal</code> sous celui des données,
+   chacun d'une taille de 16 Mo normalement (cette
+   taille pouvant être modifiée en modifiant l'option
+   <code class="option">--wal-segsize</code> d'<span class="application">initdb</span>).
+   Chaque fichier est divisé en
+   pages de généralement 8 ko (cette taille pouvant être modifiée
+   avec l'option <code class="option">--with-wal-blocksize</code> de
+   configure). Les en-têtes d'une entrée de journal sont décrites dans
+   <code class="filename">access/xlogrecord.h</code> ; le contenu d'une entrée
+   dépend du type de l'événement qui est enregistré. Les fichiers sont nommés
+   suivant des nombres continûment incrémentés, commençant par
+   <code class="filename">000000010000000000000001</code>. Les nombres ne bouclent
+   pas, mais cela prendra beaucoup, beaucoup de temps pour épuiser le stock de nombres
+   disponibles.
+  </p><p>
+   Il est avantageux que les journaux soient situés sur un autre disque que
+   celui des fichiers principaux de la base de données.  Cela peut
+   se faire en déplaçant le répertoire
+   <code class="filename">pg_wal</code> vers un autre emplacement
+   (serveur arrêté, bien sûr) et en créant dans le répertoire principal de
+   données un lien symbolique de l'emplacement original vers le nouveau.
+  </p><p>
+   Le but de <acronym class="acronym">WAL</acronym> est de s'assurer que le journal est écrit
+   avant de modifier les enregistrements de la base,
+   mais cela peut être mis en échec par
+   des disques<a id="id-1.6.15.8.7.2" class="indexterm"></a> qui
+   rapportent une écriture
+   réussie au noyau quand, en fait, ils ont seulement mis en cache
+   les données et ne les ont pas encore stockées sur le disque. Une
+   coupure de courant dans ce genre de situation peut mener à
+   une corruption irrécupérable des données.  Les administrateurs
+   devraient s'assurer que les disques contenant les journaux de
+   transaction de <span class="productname">PostgreSQL</span> ne
+   produisent pas ce genre de faux rapports.
+   (Voir <a class="xref" href="wal-reliability.html" title="28.1. Fiabilité">Section 28.1</a>.)
+  </p><p>
+   Après qu'un checkpoint a été fait et le journal vidé sur disque,
+   la position du checkpoint est sauvegardée dans le
+   fichier <code class="filename">pg_control</code>.  Donc, au début de la
+   récupération, le serveur lit en premier
+   <code class="filename">pg_control</code> et ensuite l'entrée du
+   checkpoint ; ensuite, il opère le REDO en progressant
+   à partir de la position du journal indiquée dans l'entrée du
+   checkpoint. Parce que l'ensemble du contenu des pages de
+   données est sauvegardé dans le journal à la première modification de
+   page après un checkpoint (en supposant que <a class="xref" href="runtime-config-wal.html#GUC-FULL-PAGE-WRITES">full_page_writes</a> n'est pas désactivé), toutes les pages
+   modifiées depuis le checkpoint seront restaurées dans un état cohérent.
+  </p><p>
+   Pour gérer le cas où <code class="filename">pg_control</code> est corrompu, nous
+   devrions permettre le parcours des segments de journaux
+   existants en ordre inverse  --  du plus récent au plus ancien  --  pour
+   trouver le dernier checkpoint. Ceci n'a pas encore été implémenté.
+   <code class="filename">pg_control</code> est assez petit (moins d'une page disque)
+   pour ne pas être sujet aux problèmes d'écriture partielle et, au moment où
+   ceci est écrit, il n'y a eu aucun rapport de défaillance d'une base
+   due uniquement à l'incapacité à lire <code class="filename">pg_control</code>.
+   Donc, bien qu'étant théoriquement un point faible,
+   <code class="filename">pg_control</code> ne semble pas être un problème en pratique.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/wal-internals.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+</html>

@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/brin.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:17 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>64.5. Index BRIN</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="gin.html" title="64.4. Index GIN" /><link rel="next" href="hash-index.html" title="64.6. Index Hash" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/brin.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/brin.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/brin.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/brin.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/brin.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/brin.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/brin.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/brin.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/brin.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/brin.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/brin.html">9.5</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/brin.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="indextypes.html">Méthodes d'accès natives des index</a></span> » <span class="breadcrumb-node">Index BRIN</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="gin.html" title="64.4. Index GIN">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="indextypes.html" title="Chapitre 64. Méthodes d'accès natives des index">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="hash-index.html" title="64.6. Index Hash">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">64.4. Index GIN </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 64.6. Index Hash</td></tr></table></div><div class="sect1" id="BRIN"><div class="titlepage"><div><div><h2 class="title" style="clear: both">64.5. Index BRIN <a href="#BRIN" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="brin.html#BRIN-INTRO">64.5.1. Introduction</a></span></dt><dt><span class="sect2"><a href="brin.html#BRIN-BUILTIN-OPCLASSES">64.5.2. Classes d'opérateurs intégrées</a></span></dt><dt><span class="sect2"><a href="brin.html#BRIN-EXTENSIBILITY">64.5.3. Extensibilité</a></span></dt></dl></div><a id="id-1.10.17.6.2" class="indexterm"></a><div class="sect2" id="BRIN-INTRO"><div class="titlepage"><div><div><h3 class="title">64.5.1. Introduction <a href="#BRIN-INTRO" class="id_link">#</a></h3></div></div></div><p>
+   <acronym class="acronym">BRIN</acronym> signifie Block Range Index, soit index par
+   intervalles de bloc. <acronym class="acronym">BRIN</acronym> est conçu pour gérer de grosses
+   tables dont certaines ont des colonnes ayant une corrélation naturelle avec
+   leur stockage physique.
+  </p><p>
+   <acronym class="acronym">BRIN</acronym> fonctionne en terme d'<em class="firstterm">intervalle de blocs</em>
+   (ou <span class="quote">« <span class="quote">intervalle de pages</span> »</span>).
+   Un <em class="firstterm">intervalle de bloc</em> est un
+   groupe de blocs physiquement adjacents dans la table ; Pour chaque
+   gamme de bloc, un résumé des informations est stocké par l'index. Un exemple
+   courant est une table avec une colonne date, contenant les références des
+   ventes d'un magasin. Chaque commande y serait enregistrée chronologiquement.
+   Dans la plupart des cas, les données seront donc insérées dans le même ordre
+   où elles apparaîtront par la suite. De la même manière, une table, avec une
+   colonne code postal, pourrait avoir tous les codes d'une même ville
+   rassemblés naturellement au même endroit.
+  </p><p>
+   Les index <acronym class="acronym">BRIN</acronym> peuvent répondre à des requêtes via un
+   parcours d'index bitmap classique, et retourneront toutes les lignes de
+   toutes les pages dans chaque intervalle si le résumé des informations
+   contenues dans l'index est cohérent avec les conditions de la requête.
+   L'exécuteur de la requête doit revérifier ces lignes et annuler celles qui
+   ne répondent pas aux conditions initiales de la requête. En d'autres termes,
+   on parle d'index à perte (<span class="foreignphrase"><em class="foreignphrase">lossy</em></span>). Comme
+   l'index <acronym class="acronym">BRIN</acronym> est un petit index, parcourir cet index
+   ajoute une légère surcharge par rapport à un parcours séquentiel mais permet
+   d'éviter de parcourir des grandes parties de la table où on sait qu'on ne
+   trouvera pas de lignes à remonter.
+  </p><p>
+   Les données spécifiques qu'un index <acronym class="acronym">BRIN</acronym> va stocker, de
+   même que les requêtes spécifiques auquel l'index va pouvoir répondre
+   dépendent de la classe d'opérateurs choisie pour chaque colonne de l'index.
+   Les types de données possédant un ordre de tri linéaire peuvent utiliser une
+   classe d'opérateurs qui ne conserve que la valeur minimale et la valeur
+   maximale dans chaque intervalle de bloc. Par exemple, un type géométrique
+   peut stocker une <span class="foreignphrase"><em class="foreignphrase">bounding box</em></span> pour tous les
+   objets de l'intervalle de bloc.
+  </p><p>
+   La taille de l'intervalle de bloc est déterminée à la création de l'index
+   par le paramètre <code class="literal">pages_per_range</code> Le nombre des entrées de
+   l'index sera égal à la taille de la relation en page, divisée par la valeur
+   sélectionnée dans <code class="literal">pages_per_range</code>. De ce fait, plus ce
+   nombre est bas, plus l'index sera volumineux (il y a plus d'entrées d'index
+   à stocker) mais, en même temps, le résumé des informations stockées pourra
+   être plus précis, et un nombre plus important de blocs de données pourront
+   être ignorés pendant le parcours d'index.
+  </p><div class="sect3" id="BRIN-OPERATION"><div class="titlepage"><div><div><h4 class="title">64.5.1.1. Maintenance de l'index <a href="#BRIN-OPERATION" class="id_link">#</a></h4></div></div></div><p>
+    Lors de la création de l'index, toutes les pages de la table sont
+    parcourues et un résumé des lignes de l'index est créé pour chaque
+    intervalle, incluant certainement aussi un intervalle incomplet à la fin.
+    Lors de l'ajout de nouvelles données dans des pages déjà incluses dans des
+    résumés, cela va entraîner la mise à jour du résumé, avec les informations
+    sur les nouvelles lignes insérées.
+    Lorsqu'une nouvelle page est créée et qu'elle ne correspond à aucun des
+    derniers intervalles résumés, l'intervalle auquel appartient la nouvelle
+    page n'acquiert pas automatiquement un résumé ; ces lignes restent sans
+    résumé jusqu'à ce qu'une exécution de résumé soit demandée plus tard, créant
+    ainsi le résumé initial pour cet intervalle.
+   </p><p>
+    Il existe plusieurs façons de déclencher le résumé initial d'un intervalle
+    de blocs. Si la table est traitée par VACUUM, soit manuellement soit par
+    l'<a class="link" href="routine-vacuuming.html#AUTOVACUUM" title="24.1.6. Le démon auto-vacuum">autovacuum</a>, tous les intervalles de
+    blocs existants non résumés sont résumés. De plus, si le paramètre <a class="xref" href="sql-createindex.html#INDEX-RELOPTION-AUTOSUMMARIZE">autosummarize</a> de l'index est activé, ce qui
+    n'est pas le cas par défaut, à chaque fois que l'autovacuum est exécuté dans
+    cette base, le résumé surviendra pour tous les intervalles de blocs non
+    résumés qui ont été remplis, que la table elle-même soit traitée par
+    l'autovacuum ou pas ; voir ci-dessous.
+   </p><p>
+    Dernièrement, les fonctions suivantes peuvent être utilisées
+    (lors de l'exécution de ces fonctions, le paramètre
+    <a class="xref" href="runtime-config-client.html#GUC-SEARCH-PATH">search_path</a> est temporairement modifié à
+    <code class="literal">pg_catalog, pg_temp</code>) :
+    </p><table border="0" summary="Simple list" class="simplelist"><tr><td>
+      <code class="function">brin_summarize_new_values(regclass)</code>
+      qui résume tous les blocs sans résumé ;
+     </td></tr><tr><td>
+      <code class="function">brin_summarize_range(regclass, bigint)</code>
+      qui résume seulement l'intervalle contenant le bloc donné
+      s'il n'est pas résumé.
+     </td></tr></table><p>
+   </p><p>
+    Quand le résumé automatique est activé, une requête est envoyée à
+    l'<code class="literal">autovacuum</code> pour exécuter un résumé cible pour un
+    intervalle de bloc quand une insertion est détecté pour le premier élément
+    du premier bloc du prochain intervalle de bloc, opération à réaliser la
+    prochaine fois qu'un autovacuum worker finit son exécution dans la même
+    base. Si la queue des demandes est remplie, la demande n'est pas
+    enregistrée et un message est enregistré dans les traces du serveur :
+    </p><pre class="screen">
+ LOG:  request for BRIN range summarization for index "brin_wi_idx" page 128 was not recorded
+    </pre><p>
+    Quand cela arrive, l'intervalle restera non résumé jusqu'à la prochaine
+    exécution d'un vacuum standard sur la table ou jusqu'à ce qu'une des
+    fonctions mentionnées ci-dessus soit appelée.
+   </p><p>
+    Inversement, un intervalle peut se voir supprimer son résumé avec la
+    fonction <code class="function">brin_desummarize_range(regclass, bigint)</code>, qui
+    est utile quand l'enregistrement de l'index n'est plus une très bonne
+    représentation car les valeurs existantes ont changé. Voir <a class="xref" href="functions-admin.html#FUNCTIONS-ADMIN-INDEX" title="9.28.8. Fonctions de maintenance des index">Section 9.28.8</a> pour les détails.
+   </p></div></div><div class="sect2" id="BRIN-BUILTIN-OPCLASSES"><div class="titlepage"><div><div><h3 class="title">64.5.2. Classes d'opérateurs intégrées <a href="#BRIN-BUILTIN-OPCLASSES" class="id_link">#</a></h3></div></div></div><p>
+   La distribution du noyau <span class="productname">PostgreSQL</span> inclut la
+   classe d'opérateurs <acronym class="acronym">BRIN</acronym> montrée dans <a class="xref" href="brin.html#BRIN-BUILTIN-OPCLASSES-TABLE" title="Tableau 64.4. classe d'opérateurs BRIN intégrée">Tableau 64.4</a>.
+  </p><p>
+   La classe d'opérateurs <em class="firstterm">minmax</em> stocke les valeurs
+   minimale et maximale apparaissant dans l'intervalle de la colonne indexée.
+   L'opérateur de classe <em class="firstterm">inclusion</em> stocke une valeur
+   qui est incluse dans les valeurs contenues dans l'intervalle de la colonne
+   indexée. Les classes d'opérateurs <em class="firstterm">bloom</em> génèrent un
+   filtre Bloom pour toutes les valeurs dans l'intervalle. Les classes
+   d'opérateur <em class="firstterm">minmax-multi</em> conservent les multiples
+   valeurs minimale et maximale, représentant les valeurs apparaissant dans
+   la colonne indexée dans l'intervalle.
+  </p><div class="table" id="BRIN-BUILTIN-OPCLASSES-TABLE"><p class="title"><strong>Tableau 64.4. classe d'opérateurs <acronym class="acronym">BRIN</acronym> intégrée</strong></p><div class="table-contents"><table class="table" summary="classe d'opérateurs BRIN intégrée" border="1"><colgroup><col /><col /></colgroup><thead><tr><th>Nom</th><th>Opérateurs indexables</th></tr></thead><tbody><tr><td rowspan="5" valign="middle"><code class="literal">bit_minmax_ops</code></td><td><code class="literal">= (bit,bit)</code></td></tr><tr><td><code class="literal">&lt; (bit,bit)</code></td></tr><tr><td><code class="literal">&gt; (bit,bit)</code></td></tr><tr><td><code class="literal">&lt;= (bit,bit)</code></td></tr><tr><td><code class="literal">&gt;= (bit,bit)</code></td></tr><tr><td rowspan="13" valign="middle"><code class="literal">box_inclusion_ops</code></td><td><code class="literal">@&gt; (box,point)</code></td></tr><tr><td><code class="literal">&lt;&lt; (box,box)</code></td></tr><tr><td><code class="literal">&amp;&lt; (box,box)</code></td></tr><tr><td><code class="literal">&amp;&gt; (box,box)</code></td></tr><tr><td><code class="literal">&gt;&gt; (box,box)</code></td></tr><tr><td><code class="literal">&lt;@ (box,box)</code></td></tr><tr><td><code class="literal">@&gt; (box,box)</code></td></tr><tr><td><code class="literal">~= (box,box)</code></td></tr><tr><td><code class="literal">&amp;&amp; (box,box)</code></td></tr><tr><td><code class="literal">&lt;&lt;| (box,box)</code></td></tr><tr><td><code class="literal">&amp;&lt;| (box,box)</code></td></tr><tr><td><code class="literal">|&amp;&gt; (box,box)</code></td></tr><tr><td><code class="literal">|&gt;&gt; (box,box)</code></td></tr><tr><td valign="middle"><code class="literal">bpchar_bloom_ops</code></td><td><code class="literal">= (character,character)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">bpchar_minmax_ops</code></td><td><code class="literal">= (character,character)</code></td></tr><tr><td><code class="literal">&lt; (character,character)</code></td></tr><tr><td><code class="literal">&lt;= (character,character)</code></td></tr><tr><td><code class="literal">&gt; (character,character)</code></td></tr><tr><td><code class="literal">&gt;= (character,character)</code></td></tr><tr><td valign="middle"><code class="literal">bytea_bloom_ops</code></td><td><code class="literal">= (bytea,bytea)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">bytea_minmax_ops</code></td><td><code class="literal">= (bytea,bytea)</code></td></tr><tr><td><code class="literal">&lt; (bytea,bytea)</code></td></tr><tr><td><code class="literal">&lt;= (bytea,bytea)</code></td></tr><tr><td><code class="literal">&gt; (bytea,bytea)</code></td></tr><tr><td><code class="literal">&gt;= (bytea,bytea)</code></td></tr><tr><td valign="middle"><code class="literal">char_bloom_ops</code></td><td><code class="literal">= ("char","char")</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">char_minmax_ops</code></td><td><code class="literal">= ("char","char")</code></td></tr><tr><td><code class="literal">&lt; ("char","char")</code></td></tr><tr><td><code class="literal">&lt;= ("char","char")</code></td></tr><tr><td><code class="literal">&gt; ("char","char")</code></td></tr><tr><td><code class="literal">&gt;= ("char","char")</code></td></tr><tr><td valign="middle"><code class="literal">date_bloom_ops</code></td><td><code class="literal">= (date,date)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">date_minmax_ops</code></td><td><code class="literal">= (date,date)</code></td></tr><tr><td><code class="literal">&lt; (date,date)</code></td></tr><tr><td><code class="literal">&lt;= (date,date)</code></td></tr><tr><td><code class="literal">&gt; (date,date)</code></td></tr><tr><td><code class="literal">&gt;= (date,date)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">date_minmax_multi_ops</code></td><td><code class="literal">= (date,date)</code></td></tr><tr><td><code class="literal">&lt; (date,date)</code></td></tr><tr><td><code class="literal">&lt;= (date,date)</code></td></tr><tr><td><code class="literal">&gt; (date,date)</code></td></tr><tr><td><code class="literal">&gt;= (date,date)</code></td></tr><tr><td valign="middle"><code class="literal">float4_bloom_ops</code></td><td><code class="literal">= (float4,float4)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">float4_minmax_ops</code></td><td><code class="literal">= (float4,float4)</code></td></tr><tr><td><code class="literal">&lt; (float4,float4)</code></td></tr><tr><td><code class="literal">&gt; (float4,float4)</code></td></tr><tr><td><code class="literal">&lt;= (float4,float4)</code></td></tr><tr><td><code class="literal">&gt;= (float4,float4)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">float4_minmax_multi_ops</code></td><td><code class="literal">= (float4,float4)</code></td></tr><tr><td><code class="literal">&lt; (float4,float4)</code></td></tr><tr><td><code class="literal">&gt; (float4,float4)</code></td></tr><tr><td><code class="literal">&lt;= (float4,float4)</code></td></tr><tr><td><code class="literal">&gt;= (float4,float4)</code></td></tr><tr><td valign="middle"><code class="literal">float8_bloom_ops</code></td><td><code class="literal">= (float8,float8)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">float8_minmax_ops</code></td><td><code class="literal">= (float8,float8)</code></td></tr><tr><td><code class="literal">&lt; (float8,float8)</code></td></tr><tr><td><code class="literal">&lt;= (float8,float8)</code></td></tr><tr><td><code class="literal">&gt; (float8,float8)</code></td></tr><tr><td><code class="literal">&gt;= (float8,float8)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">float8_minmax_multi_ops</code></td><td><code class="literal">= (float8,float8)</code></td></tr><tr><td><code class="literal">&lt; (float8,float8)</code></td></tr><tr><td><code class="literal">&lt;= (float8,float8)</code></td></tr><tr><td><code class="literal">&gt; (float8,float8)</code></td></tr><tr><td><code class="literal">&gt;= (float8,float8)</code></td></tr><tr><td rowspan="6" valign="middle"><code class="literal">inet_inclusion_ops</code></td><td><code class="literal">&lt;&lt; (inet,inet)</code></td></tr><tr><td><code class="literal">&lt;&lt;= (inet,inet)</code></td></tr><tr><td><code class="literal">&gt;&gt; (inet,inet)</code></td></tr><tr><td><code class="literal">&gt;&gt;= (inet,inet)</code></td></tr><tr><td><code class="literal">= (inet,inet)</code></td></tr><tr><td><code class="literal">&amp;&amp; (inet,inet)</code></td></tr><tr><td valign="middle"><code class="literal">inet_bloom_ops</code></td><td><code class="literal">= (inet,inet)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">inet_minmax_ops</code></td><td><code class="literal">= (inet,inet)</code></td></tr><tr><td><code class="literal">&lt; (inet,inet)</code></td></tr><tr><td><code class="literal">&lt;= (inet,inet)</code></td></tr><tr><td><code class="literal">&gt; (inet,inet)</code></td></tr><tr><td><code class="literal">&gt;= (inet,inet)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">inet_minmax_multi_ops</code></td><td><code class="literal">= (inet,inet)</code></td></tr><tr><td><code class="literal">&lt; (inet,inet)</code></td></tr><tr><td><code class="literal">&lt;= (inet,inet)</code></td></tr><tr><td><code class="literal">&gt; (inet,inet)</code></td></tr><tr><td><code class="literal">&gt;= (inet,inet)</code></td></tr><tr><td valign="middle"><code class="literal">int2_bloom_ops</code></td><td><code class="literal">= (int2,int2)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">int2_minmax_ops</code></td><td><code class="literal">= (int2,int2)</code></td></tr><tr><td><code class="literal">&lt; (int2,int2)</code></td></tr><tr><td><code class="literal">&gt; (int2,int2)</code></td></tr><tr><td><code class="literal">&lt;= (int2,int2)</code></td></tr><tr><td><code class="literal">&gt;= (int2,int2)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">int2_minmax_multi_ops</code></td><td><code class="literal">= (int2,int2)</code></td></tr><tr><td><code class="literal">&lt; (int2,int2)</code></td></tr><tr><td><code class="literal">&gt; (int2,int2)</code></td></tr><tr><td><code class="literal">&lt;= (int2,int2)</code></td></tr><tr><td><code class="literal">&gt;= (int2,int2)</code></td></tr><tr><td valign="middle"><code class="literal">int4_bloom_ops</code></td><td><code class="literal">= (int4,int4)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">int4_minmax_ops</code></td><td><code class="literal">= (int4,int4)</code></td></tr><tr><td><code class="literal">&lt; (int4,int4)</code></td></tr><tr><td><code class="literal">&gt; (int4,int4)</code></td></tr><tr><td><code class="literal">&lt;= (int4,int4)</code></td></tr><tr><td><code class="literal">&gt;= (int4,int4)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">int4_minmax_multi_ops</code></td><td><code class="literal">= (int4,int4)</code></td></tr><tr><td><code class="literal">&lt; (int4,int4)</code></td></tr><tr><td><code class="literal">&gt; (int4,int4)</code></td></tr><tr><td><code class="literal">&lt;= (int4,int4)</code></td></tr><tr><td><code class="literal">&gt;= (int4,int4)</code></td></tr><tr><td valign="middle"><code class="literal">int8_bloom_ops</code></td><td><code class="literal">= (bigint,bigint)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">int8_minmax_ops</code></td><td><code class="literal">= (bigint,bigint)</code></td></tr><tr><td><code class="literal">&lt; (bigint,bigint)</code></td></tr><tr><td><code class="literal">&gt; (bigint,bigint)</code></td></tr><tr><td><code class="literal">&lt;= (bigint,bigint)</code></td></tr><tr><td><code class="literal">&gt;= (bigint,bigint)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">int8_minmax_multi_ops</code></td><td><code class="literal">= (bigint,bigint)</code></td></tr><tr><td><code class="literal">&lt; (bigint,bigint)</code></td></tr><tr><td><code class="literal">&gt; (bigint,bigint)</code></td></tr><tr><td><code class="literal">&lt;= (bigint,bigint)</code></td></tr><tr><td><code class="literal">&gt;= (bigint,bigint)</code></td></tr><tr><td valign="middle"><code class="literal">interval_bloom_ops</code></td><td><code class="literal">= (interval,interval)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">interval_minmax_ops</code></td><td><code class="literal">= (interval,interval)</code></td></tr><tr><td><code class="literal">&lt; (interval,interval)</code></td></tr><tr><td><code class="literal">&lt;= (interval,interval)</code></td></tr><tr><td><code class="literal">&gt; (interval,interval)</code></td></tr><tr><td><code class="literal">&gt;= (interval,interval)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">interval_minmax_multi_ops</code></td><td><code class="literal">= (interval,interval)</code></td></tr><tr><td><code class="literal">&lt; (interval,interval)</code></td></tr><tr><td><code class="literal">&lt;= (interval,interval)</code></td></tr><tr><td><code class="literal">&gt; (interval,interval)</code></td></tr><tr><td><code class="literal">&gt;= (interval,interval)</code></td></tr><tr><td valign="middle"><code class="literal">macaddr_bloom_ops</code></td><td><code class="literal">= (macaddr,macaddr)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">macaddr_minmax_ops</code></td><td><code class="literal">= (macaddr,macaddr)</code></td></tr><tr><td><code class="literal">&lt; (macaddr,macaddr)</code></td></tr><tr><td><code class="literal">&lt;= (macaddr,macaddr)</code></td></tr><tr><td><code class="literal">&gt; (macaddr,macaddr)</code></td></tr><tr><td><code class="literal">&gt;= (macaddr,macaddr)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">macaddr_minmax_multi_ops</code></td><td><code class="literal">= (macaddr,macaddr)</code></td></tr><tr><td><code class="literal">&lt; (macaddr,macaddr)</code></td></tr><tr><td><code class="literal">&lt;= (macaddr,macaddr)</code></td></tr><tr><td><code class="literal">&gt; (macaddr,macaddr)</code></td></tr><tr><td><code class="literal">&gt;= (macaddr,macaddr)</code></td></tr><tr><td valign="middle"><code class="literal">macaddr8_bloom_ops</code></td><td><code class="literal">= (macaddr8,macaddr8)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">macaddr8_minmax_ops</code></td><td><code class="literal">= (macaddr8,macaddr8)</code></td></tr><tr><td><code class="literal">&lt; (macaddr8,macaddr8)</code></td></tr><tr><td><code class="literal">&lt;= (macaddr8,macaddr8)</code></td></tr><tr><td><code class="literal">&gt; (macaddr8,macaddr8)</code></td></tr><tr><td><code class="literal">&gt;= (macaddr8,macaddr8)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">macaddr8_minmax_multi_ops</code></td><td><code class="literal">= (macaddr8,macaddr8)</code></td></tr><tr><td><code class="literal">&lt; (macaddr8,macaddr8)</code></td></tr><tr><td><code class="literal">&lt;= (macaddr8,macaddr8)</code></td></tr><tr><td><code class="literal">&gt; (macaddr8,macaddr8)</code></td></tr><tr><td><code class="literal">&gt;= (macaddr8,macaddr8)</code></td></tr><tr><td valign="middle"><code class="literal">name_bloom_ops</code></td><td><code class="literal">= (name,name)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">name_minmax_ops</code></td><td><code class="literal">= (name,name)</code></td></tr><tr><td><code class="literal">&lt; (name,name)</code></td></tr><tr><td><code class="literal">&lt;= (name,name)</code></td></tr><tr><td><code class="literal">&gt; (name,name)</code></td></tr><tr><td><code class="literal">&gt;= (name,name)</code></td></tr><tr><td valign="middle"><code class="literal">numeric_bloom_ops</code></td><td><code class="literal">= (numeric,numeric)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">numeric_minmax_ops</code></td><td><code class="literal">= (numeric,numeric)</code></td></tr><tr><td><code class="literal">&lt; (numeric,numeric)</code></td></tr><tr><td><code class="literal">&lt;= (numeric,numeric)</code></td></tr><tr><td><code class="literal">&gt; (numeric,numeric)</code></td></tr><tr><td><code class="literal">&gt;= (numeric,numeric)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">numeric_minmax_multi_ops</code></td><td><code class="literal">= (numeric,numeric)</code></td></tr><tr><td><code class="literal">&lt; (numeric,numeric)</code></td></tr><tr><td><code class="literal">&lt;= (numeric,numeric)</code></td></tr><tr><td><code class="literal">&gt; (numeric,numeric)</code></td></tr><tr><td><code class="literal">&gt;= (numeric,numeric)</code></td></tr><tr><td valign="middle"><code class="literal">oid_bloom_ops</code></td><td><code class="literal">= (oid,oid)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">oid_minmax_ops</code></td><td><code class="literal">= (oid,oid)</code></td></tr><tr><td><code class="literal">&lt; (oid,oid)</code></td></tr><tr><td><code class="literal">&gt; (oid,oid)</code></td></tr><tr><td><code class="literal">&lt;= (oid,oid)</code></td></tr><tr><td><code class="literal">&gt;= (oid,oid)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">oid_minmax_multi_ops</code></td><td><code class="literal">= (oid,oid)</code></td></tr><tr><td><code class="literal">&lt; (oid,oid)</code></td></tr><tr><td><code class="literal">&gt; (oid,oid)</code></td></tr><tr><td><code class="literal">&lt;= (oid,oid)</code></td></tr><tr><td><code class="literal">&gt;= (oid,oid)</code></td></tr><tr><td valign="middle"><code class="literal">pg_lsn_bloom_ops</code></td><td><code class="literal">= (pg_lsn,pg_lsn)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">pg_lsn_minmax_ops</code></td><td><code class="literal">= (pg_lsn,pg_lsn)</code></td></tr><tr><td><code class="literal">&lt; (pg_lsn,pg_lsn)</code></td></tr><tr><td><code class="literal">&gt; (pg_lsn,pg_lsn)</code></td></tr><tr><td><code class="literal">&lt;= (pg_lsn,pg_lsn)</code></td></tr><tr><td><code class="literal">&gt;= (pg_lsn,pg_lsn)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">pg_lsn_minmax_multi_ops</code></td><td><code class="literal">= (pg_lsn,pg_lsn)</code></td></tr><tr><td><code class="literal">&lt; (pg_lsn,pg_lsn)</code></td></tr><tr><td><code class="literal">&gt; (pg_lsn,pg_lsn)</code></td></tr><tr><td><code class="literal">&lt;= (pg_lsn,pg_lsn)</code></td></tr><tr><td><code class="literal">&gt;= (pg_lsn,pg_lsn)</code></td></tr><tr><td rowspan="14" valign="middle"><code class="literal">range_inclusion_ops</code></td><td><code class="literal">= (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&lt; (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&lt;= (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&gt;= (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&gt; (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&amp;&amp; (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">@&gt; (anyrange,anyelement)</code></td></tr><tr><td><code class="literal">@&gt; (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&lt;@ (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&lt;&lt; (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&gt;&gt; (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&amp;&lt; (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">&amp;&gt; (anyrange,anyrange)</code></td></tr><tr><td><code class="literal">-|- (anyrange,anyrange)</code></td></tr><tr><td valign="middle"><code class="literal">text_bloom_ops</code></td><td><code class="literal">= (text,text)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">text_minmax_ops</code></td><td><code class="literal">= (text,text)</code></td></tr><tr><td><code class="literal">&lt; (text,text)</code></td></tr><tr><td><code class="literal">&lt;= (text,text)</code></td></tr><tr><td><code class="literal">&gt; (text,text)</code></td></tr><tr><td><code class="literal">&gt;= (text,text)</code></td></tr><tr><td valign="middle"><code class="literal">tid_bloom_ops</code></td><td><code class="literal">= (tid,tid)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">tid_minmax_ops</code></td><td><code class="literal">= (tid,tid)</code></td></tr><tr><td><code class="literal">&lt; (tid,tid)</code></td></tr><tr><td><code class="literal">&gt; (tid,tid)</code></td></tr><tr><td><code class="literal">&lt;= (tid,tid)</code></td></tr><tr><td><code class="literal">&gt;= (tid,tid)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">tid_minmax_multi_ops</code></td><td><code class="literal">= (tid,tid)</code></td></tr><tr><td><code class="literal">&lt; (tid,tid)</code></td></tr><tr><td><code class="literal">&gt; (tid,tid)</code></td></tr><tr><td><code class="literal">&lt;= (tid,tid)</code></td></tr><tr><td><code class="literal">&gt;= (tid,tid)</code></td></tr><tr><td valign="middle"><code class="literal">timestamp_bloom_ops</code></td><td><code class="literal">= (timestamp,timestamp)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">timestamp_minmax_ops</code></td><td><code class="literal">= (timestamp,timestamp)</code></td></tr><tr><td><code class="literal">&lt; (timestamp,timestamp)</code></td></tr><tr><td><code class="literal">&lt;= (timestamp,timestamp)</code></td></tr><tr><td><code class="literal">&gt; (timestamp,timestamp)</code></td></tr><tr><td><code class="literal">&gt;= (timestamp,timestamp)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">timestamp_minmax_multi_ops</code></td><td><code class="literal">= (timestamp,timestamp)</code></td></tr><tr><td><code class="literal">&lt; (timestamp,timestamp)</code></td></tr><tr><td><code class="literal">&lt;= (timestamp,timestamp)</code></td></tr><tr><td><code class="literal">&gt; (timestamp,timestamp)</code></td></tr><tr><td><code class="literal">&gt;= (timestamp,timestamp)</code></td></tr><tr><td valign="middle"><code class="literal">timestamptz_bloom_ops</code></td><td><code class="literal">= (timestamptz,timestamptz)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">timestamptz_minmax_ops</code></td><td><code class="literal">= (timestamptz,timestamptz)</code></td></tr><tr><td><code class="literal">&lt; (timestamptz,timestamptz)</code></td></tr><tr><td><code class="literal">&lt;= (timestamptz,timestamptz)</code></td></tr><tr><td><code class="literal">&gt; (timestamptz,timestamptz)</code></td></tr><tr><td><code class="literal">&gt;= (timestamptz,timestamptz)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">timestamptz_minmax_multi_ops</code></td><td><code class="literal">= (timestamptz,timestamptz)</code></td></tr><tr><td><code class="literal">&lt; (timestamptz,timestamptz)</code></td></tr><tr><td><code class="literal">&lt;= (timestamptz,timestamptz)</code></td></tr><tr><td><code class="literal">&gt; (timestamptz,timestamptz)</code></td></tr><tr><td><code class="literal">&gt;= (timestamptz,timestamptz)</code></td></tr><tr><td valign="middle"><code class="literal">time_bloom_ops</code></td><td><code class="literal">= (time,time)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">time_minmax_ops</code></td><td><code class="literal">= (time,time)</code></td></tr><tr><td><code class="literal">&lt; (time,time)</code></td></tr><tr><td><code class="literal">&lt;= (time,time)</code></td></tr><tr><td><code class="literal">&gt; (time,time)</code></td></tr><tr><td><code class="literal">&gt;= (time,time)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">time_minmax_multi_ops</code></td><td><code class="literal">= (time,time)</code></td></tr><tr><td><code class="literal">&lt; (time,time)</code></td></tr><tr><td><code class="literal">&lt;= (time,time)</code></td></tr><tr><td><code class="literal">&gt; (time,time)</code></td></tr><tr><td><code class="literal">&gt;= (time,time)</code></td></tr><tr><td valign="middle"><code class="literal">timetz_bloom_ops</code></td><td><code class="literal">= (timetz,timetz)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">timetz_minmax_ops</code></td><td><code class="literal">= (timetz,timetz)</code></td></tr><tr><td><code class="literal">&lt; (timetz,timetz)</code></td></tr><tr><td><code class="literal">&lt;= (timetz,timetz)</code></td></tr><tr><td><code class="literal">&gt; (timetz,timetz)</code></td></tr><tr><td><code class="literal">&gt;= (timetz,timetz)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">timetz_minmax_multi_ops</code></td><td><code class="literal">= (timetz,timetz)</code></td></tr><tr><td><code class="literal">&lt; (timetz,timetz)</code></td></tr><tr><td><code class="literal">&lt;= (timetz,timetz)</code></td></tr><tr><td><code class="literal">&gt; (timetz,timetz)</code></td></tr><tr><td><code class="literal">&gt;= (timetz,timetz)</code></td></tr><tr><td valign="middle"><code class="literal">uuid_bloom_ops</code></td><td><code class="literal">= (uuid,uuid)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">uuid_minmax_ops</code></td><td><code class="literal">= (uuid,uuid)</code></td></tr><tr><td><code class="literal">&lt; (uuid,uuid)</code></td></tr><tr><td><code class="literal">&gt; (uuid,uuid)</code></td></tr><tr><td><code class="literal">&lt;= (uuid,uuid)</code></td></tr><tr><td><code class="literal">&gt;= (uuid,uuid)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">uuid_minmax_multi_ops</code></td><td><code class="literal">= (uuid,uuid)</code></td></tr><tr><td><code class="literal">&lt; (uuid,uuid)</code></td></tr><tr><td><code class="literal">&gt; (uuid,uuid)</code></td></tr><tr><td><code class="literal">&lt;= (uuid,uuid)</code></td></tr><tr><td><code class="literal">&gt;= (uuid,uuid)</code></td></tr><tr><td rowspan="5" valign="middle"><code class="literal">varbit_minmax_ops</code></td><td><code class="literal">= (varbit,varbit)</code></td></tr><tr><td><code class="literal">&lt; (varbit,varbit)</code></td></tr><tr><td><code class="literal">&gt; (varbit,varbit)</code></td></tr><tr><td><code class="literal">&lt;= (varbit,varbit)</code></td></tr><tr><td><code class="literal">&gt;= (varbit,varbit)</code></td></tr></tbody></table></div></div><br class="table-break" /><div class="sect3" id="BRIN-BUILTIN-OPCLASSES--PARAMETERS"><div class="titlepage"><div><div><h4 class="title">64.5.2.1. Paramètres de classe d'opérateurs <a href="#BRIN-BUILTIN-OPCLASSES--PARAMETERS" class="id_link">#</a></h4></div></div></div><p>
+    Certaines des classes d'opérateurs intégrées permettent aux paramètres
+    spécifiés d'affecter leurs comportements. Chaque opérateur de classe a
+    son propre ensemble de paramètres autorisés. Seules les classes
+    d'opérateur <code class="literal">bloom</code> et <code class="literal">minmax-multi</code>
+    permettent de spécifier ces paramètres :
+   </p><p>
+    Les classes d'opérateurs bloom acceptent ces paramètres :
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">n_distinct_per_range</code></span></dt><dd><p>
+     Définit le nombre estimé de valeurs non NULL distinctes dans un
+     intervalle de blocs, utilisé par les index bloom <acronym class="acronym">BRIN</acronym>
+     pour dimensionner le filtre Bloom. Il se comporte similairement à
+     l'option <code class="literal">n_distinct</code> pour <a class="xref" href="sql-altertable.html" title="ALTER TABLE"><span class="refentrytitle">ALTER TABLE</span></a>. Quand la valeur affectée est positive, il
+     est supposé que chaque intervalle de blocs contient ce nombre de valeurs
+     non NULL distinctes. Quand la valeur affectée est négative mais
+     supérieure ou égale à -1, il est supposé que le nombre de valeurs non
+     NULL distinctes croît linéairement avec le nombre maximum possible de
+     lignes dans l'intervalle de blocs(environ 290 lignes par bloc). La
+     valeur par défaut est <code class="literal">-0,1</code>, et le nombre minimum de
+     valeurs distinctes non NULL est <code class="literal">16</code>.
+    </p></dd><dt><span class="term"><code class="literal">false_positive_rate</code></span></dt><dd><p>
+     Définit le taux désiré de faux positifs utilisé par les index bloom
+     <acronym class="acronym">BRIN</acronym> pour dimensionner le filtre Bloom. La valeur
+     doit être comprise entre 0,0001 et 0,25. La valeur par défaut est 0,01,
+     ce qui correspond à 1% pour le taux de faux positifs.
+    </p></dd></dl></div><p>
+    Les classes d'opérateurs minmax-multi accepte ces paramètres :
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">values_per_range</code></span></dt><dd><p>
+     Définit le nombre maximum de valeurs conservées par les index minmax
+     <acronym class="acronym">BRIN</acronym> pour résumer un intervalle de blocs. Chaque
+     valeur peut représenter un point, ou une limite d'un intervalle. La
+     valeur doit être comprise entre 8 et 256, et la valeur par défaut est
+     32.
+    </p></dd></dl></div></div></div><div class="sect2" id="BRIN-EXTENSIBILITY"><div class="titlepage"><div><div><h3 class="title">64.5.3. Extensibilité <a href="#BRIN-EXTENSIBILITY" class="id_link">#</a></h3></div></div></div><p>
+   L'interface <acronym class="acronym">BRIN</acronym> possède un niveau élevé d'abstraction,
+   qui nécessite l'implémentation de la méthode d'accès rien que pour
+   l'implémentation de la sémantique des types de données accédées. La couche
+   <acronym class="acronym">BRIN</acronym> s'occupera par contre elle-même de la concurrence,
+   l'accès et la recherche dans la structure de l'index.
+  </p><p>
+   Tout ce qu'il faut pour faire fonctionner la méthode d'accès
+   <acronym class="acronym">BRIN</acronym> est d'implémenter quelques méthodes utilisateurs,
+   déterminant pour l'index les genre de valeurs stockées dans le résumé et la
+   manière dont elles interagissent avec les nœuds du parcours. En bref,
+   <acronym class="acronym">BRIN</acronym> combine l'extensibilité avec la généralité, la
+   réutilisation du code et une interface claire.
+  </p><p>
+   Il y a quatre méthodes qu'un opérateur de classe pour
+   <acronym class="acronym">BRIN</acronym> doit fournir :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="function">BrinOpcInfo *opcInfo(Oid type_oid)</code></span></dt><dd><p>
+       Retourne les informations internes au sujet du résumé de données de la
+       colonne indexée. Cette valeur doit pointer vers une structure
+       <code class="structname">BrinOpcInfo</code> (allouée avec la fonction palloc),
+       qui a cette définition :
+       </p><pre class="programlisting">
+typedef struct BrinOpcInfo
+{
+    /* Nombre de colonnes stockées dans une colonne indexée de cette classe d'opérateurs */
+    uint16      oi_nstored;
+
+    /* Pointeur opaque pour l'utilisation privée de la classe d'opérateurs */
+    void       *oi_opaque;
+
+    /* Type des entrées cachées de la colonne stockées */
+    TypeCacheEntry *oi_typcache[FLEXIBLE_ARRAY_MEMBER];
+} BrinOpcInfo;
+       </pre><p>
+       <code class="structname">BrinOpcInfo</code>.<code class="structfield">oi_opaque</code>
+       peut être utilisé par les routines d'opérateur de classe pour
+       transmettre des informations entre les procédures de support pendant le
+       parcours de l'index.
+      </p></dd><dt><span class="term"><code class="function">bool consistent(BrinDesc *bdesc, BrinValues *column,
+        ScanKey *keys, int nkeys)</code></span></dt><dd><p>
+       Retourne si toutes les entrées ScanKey sont cohérentes avec les valeurs
+       indexées données pour cet intervalle. Le nombre d'attributs à utiliser
+       est passé en tant que partie de la clé de parcours. De multiples clés
+       de parcours pour un même attribut peuvent être passées en une
+       fois ; le nombre d'entrées est déterminé par le paramètre
+       <code class="literal">nkeys</code>.
+      </p></dd><dt><span class="term"><code class="function">bool consistent(BrinDesc *bdesc, BrinValues *column,
+       ScanKey key)</code></span></dt><dd><p>
+       Retourne la clé de parcours si elle est cohérente avec les valeurs
+       indexées données pour cet intervalle. Le nombre attribué à utiliser
+       est passé en tant que partie de la clé de parcours. Cette version est
+       une variante pour compatibilité descendante plus ancienne de la
+       fonction de cohérence.
+      </p></dd><dt><span class="term"><code class="function">bool addValue(BrinDesc *bdesc, BrinValues *column,
+       Datum newval, bool isnull)</code></span></dt><dd><p>
+       Renvoie à une ligne indexée et une valeur indexée, modifie les
+       attributs indiqués de cette ligne, de manière à ce que le cumul
+       représente la nouvelle valeur. Si une modification a été apportée à la
+       ligne, la valeur <code class="literal">true</code> est retournée.
+      </p></dd><dt><span class="term"><code class="function">bool unionTuples(BrinDesc *bdesc, BrinValues *a,
+       BrinValues *b)</code></span></dt><dd><p>
+       Consolidation de deux lignes d'index. Ceci en prenant deux lignes
+       d'index et en modifiant l'attribut indiqué de la première des deux, de
+       manière à ce qu'elle représente les deux lignes. La seconde ligne n'est
+       pas modifiée.
+      </p></dd></dl></div><p>
+
+   Une classe d'opérateurs pour <acronym class="acronym">BRIN</acronym> peut indiquer en option
+   la méthode suivante :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="function">void options(local_relopts *relopts)</code></span></dt><dd><p>
+       Définit un ensemble de paramètres visibles aux utilisateurs qui
+       contrôlent le comportement d'une classe d'opérateurs.
+      </p><p>
+       La fonction <code class="function">options</code> se voit donnée un pointeur
+       vers une structure <code class="structname">local_relopts</code> qui doit
+       être remplie avec un ensemble d'options spécifiques à la classe
+       d'opérateur. Les options peuvent être accédées à partir des autres
+       fonctions de support en utilisant les macros
+       <code class="literal">PG_HAS_OPCLASS_OPTIONS()</code> et
+       <code class="literal">PG_GET_OPCLASS_OPTIONS()</code>.
+      </p><p>
+       Étant donné que l'extraction des clés des valeurs indexées et la
+       représentation de la clé dans <acronym class="acronym">BRIN</acronym> sont flexibles,
+       elles peuvent dépendre de paramètres spécifiés par l'utilisateur.
+      </p></dd></dl></div><p>
+
+   La distribution du noyau inclut du support pour les quatre types de classe
+   d'opérateur : minmax, minmax-multi, inclusion et bloom. Les définitions de classes
+   d'opérateur qui les utilisent sont envoyées en types de données basiques
+   appropriées. Des classes d'opérateurs appropriées peuvent être définies par
+   l'utilisateur pour d'autres types de données utilisant des définitions
+   équivalentes, et ceci sans avoir besoin d'écrire du code source. La
+   déclaration des entrées appropriées dans le catalogue est suffisante. Notez
+   que les hypothèses sur les sémantiques de stratégie d'opérateurs sont
+   embarquées dans les fonctions de support du code source.
+  </p><p>
+   Les classes d'opérateurs qui implémentent des sémantiques complètement
+   différentes sont utilisables. Les implémentations fournies par les quatre
+   principales fonctions de support présentées ci-dessous sont écrites. Notez
+   que la compatibilité ascendante entre les versions majeures n'est pas
+   garantie : par exemple, les fonctions de support additionnelles peuvent
+   être requises dans des versions ultérieures.
+  </p><p>
+   Pour écrire une classe d'opérateurs pour un type de données qui implémente
+   un résultat complètement ordonné, il est possible d'utiliser les fonctions
+   de support "minmax" avec les opérateurs correspondant tel que décrit dans
+   <a class="xref" href="brin.html#BRIN-EXTENSIBILITY-MINMAX-TABLE" title="Tableau 64.5. Fonctions et numéros de support pour les classes d'opérateurs Minmax">Tableau 64.5</a>. Tous les membres de
+   classe d'opérateurs (fonctions et opérateurs) sont obligatoires.
+  </p><div class="table" id="BRIN-EXTENSIBILITY-MINMAX-TABLE"><p class="title"><strong>Tableau 64.5. Fonctions et numéros de support pour les classes d'opérateurs Minmax</strong></p><div class="table-contents"><table class="table" summary="Fonctions et numéros de support pour les classes d'opérateurs Minmax" border="1"><colgroup><col /><col /></colgroup><thead><tr><th>Membre de classe d'opérateurs</th><th>Objet</th></tr></thead><tbody><tr><td>Fonction de support 1</td><td>Fonction interne <code class="function">brin_minmax_opcinfo()</code></td></tr><tr><td>Fonction de support 2</td><td>Fonction interne <code class="function">brin_minmax_add_value()</code></td></tr><tr><td>Fonction de support 3</td><td>Fonction interne <code class="function">brin_minmax_consistent()</code></td></tr><tr><td>Fonction de support 4</td><td>Fonction interne <code class="function">brin_minmax_union()</code></td></tr><tr><td>Stratégie d'opérateur 1</td><td>Opérateur strictement inférieur</td></tr><tr><td>Stratégie d'opérateur 2</td><td>Opérateur inférieur</td></tr><tr><td>Stratégie d'opérateur 3</td><td>Opérateur d'égalité</td></tr><tr><td>Stratégie d'opérateur 4</td><td>Opérateur supérieur</td></tr><tr><td>Stratégie d'opérateur 5</td><td>Opérateur strictement supérieur</td></tr></tbody></table></div></div><br class="table-break" /><p>
+   Pour écrire un opérateur de classe pour un type de données complexe, qui
+   aurait des valeurs incluses dans un autre type, il est possible d'utiliser
+   la fonction de support d'inclusion avec l'opérateur correspondant, tel que
+   décrit dans <a class="xref" href="brin.html#BRIN-EXTENSIBILITY-INCLUSION-TABLE" title="Tableau 64.6. Fonctions et numéros de support pour les classes d'opérateurs d'inclusion">Tableau 64.6</a>. Cela
+   nécessite uniquement une simple fonction d'addition, qui peut être écrite
+   dans n'importe quel langage. Des fonctions supplémentaires peuvent être
+   définies pour obtenir des fonctionnalités additionnelles. Tous les
+   opérateurs sont optionnels. Certains opérateurs requièrent d'autres
+   opérateurs, affichés en tant que dépendances de la table.
+  </p><div class="table" id="BRIN-EXTENSIBILITY-INCLUSION-TABLE"><p class="title"><strong>Tableau 64.6. Fonctions et numéros de support pour les classes d'opérateurs
+    d'inclusion</strong></p><div class="table-contents"><table class="table" summary="Fonctions et numéros de support pour les classes d'opérateurs&#10;    d'inclusion" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Membre de classe d'opérateurs</th><th>Objet</th><th>Dépendance</th></tr></thead><tbody><tr><td>Fonction de support 1</td><td>Fonction interne <code class="function">brin_inclusion_opcinfo()</code></td><td> </td></tr><tr><td>Fonction de support 2</td><td>Fonction interne <code class="function">brin_inclusion_add_value()</code></td><td> </td></tr><tr><td>Fonction de support 3</td><td>Fonction interne <code class="function">brin_inclusion_consistent()</code></td><td> </td></tr><tr><td>Fonction de support 4</td><td>Fonction interne <code class="function">brin_inclusion_union()</code></td><td> </td></tr><tr><td>Fonction de support 11</td><td>Fonction de fusion de deux élements</td><td> </td></tr><tr><td>Fonction de support 12</td><td>Fonction optionnelle de vérification si les deux éléments peuvent être fusionnés
+      </td><td> </td></tr><tr><td>Fonction de support 13</td><td>Fonction optionnelle de vérification si un élément est contenu dans un autre</td><td> </td></tr><tr><td>Fonction de support 14</td><td>Fonction optionnelle de vérification si un élement est vide</td><td> </td></tr><tr><td>Stratégie d'opérateur 1</td><td>Opérateur A-gauche-de </td><td>Stratégie d'opérateur 4</td></tr><tr><td>Stratégie d'opérateur 2</td><td>Opérateur Ne-s-etend-pas-à-la-droite-de</td><td>Stratégie d'opérateur 5</td></tr><tr><td>Stratégie d'opérateur 3</td><td>Opérateur chevauchement</td><td> </td></tr><tr><td>Stratégie d'opérateur 4</td><td>Opérateur Ne-s-etend-pas-à-la-gauche-de</td><td>Stratégie d'opérateur 1</td></tr><tr><td>Stratégie d'opérateur 5</td><td>Opérateur A-droite-de</td><td>Stratégie d'opérateur 2</td></tr><tr><td>Stratégie d'opérateur 6, 18</td><td>Opérateur Equivalent-ou-identique-à</td><td>Stratégie d'opérateur 7</td></tr><tr><td>Stratégie d'opérateur 7, 16, 24, 25</td><td>Opérateur Contient-ou-identique-à</td><td> </td></tr><tr><td>Stratégie d'opérateur 8, 26, 27</td><td>Opérateur Contient-ou-identique-à</td><td>Stratégie d'opérateur 3</td></tr><tr><td>Stratégie d'opérateur 9</td><td>Opérateur Ne-s-étend-pas-plus-loin</td><td>Stratégie d'opérateur 11</td></tr><tr><td>Stratégie d'opérateur 10</td><td>Opérateur Est-le-suivant</td><td>Stratégie d'opérateur 12</td></tr><tr><td>Stratégie d'opérateur 11</td><td>Opérateur Est-le-précédent</td><td>Stratégie d'opérateur 9</td></tr><tr><td>Stratégie d'opérateur 12</td><td>Opérateur Ne-s-étend-pas-plus-loin</td><td>Stratégie d'opérateur 10</td></tr><tr><td>Stratégie d'opérateur 20</td><td>Opérateur Strictement-inférieur-à</td><td>Stratégie d'opérateur 5</td></tr><tr><td>Stratégie d'opérateur 21</td><td>Opérateur Inférieur-à</td><td>Stratégie d'opérateur 5</td></tr><tr><td>Stratégie d'opérateur 22</td><td>Opérateur Strictement-supérieur-à</td><td>Stratégie d'opérateur 1</td></tr><tr><td>Stratégie d'opérateur 23</td><td>Opérateur supérieur-à</td><td>Stratégie d'opérateur 1</td></tr></tbody></table></div></div><br class="table-break" /><p>
+   Les numéros 1 à 10 des fonctions support sont reservés pour les fonctions
+   internes BRIN, de ce fait le niveau des fonctions SQL commence à 11. La
+   fonction de support 11 est la principale fonction utilisée pour construire
+   l'index. Elle doit accepter deux arguments, avec le même type de données que
+   la la classe d'opérateurs, et renvoyer l'union des deux. La classe
+   d'opérateur inclusion peut stocker des valeurs unies de types différents si
+   elles sont définies avec le paramètre <code class="literal">STORAGE</code> La valeur
+   renvoyée par la fonction union doit correspondre au type de données
+   <code class="literal">STORAGE</code>
+  </p><p>
+   Les numéros 12 et 14 des fonctions de support sont fournies pour supporter
+   les irrégularités des types de données internes. La fonction 12 est
+   utilisée pour supporter les adresses réseaux de différentes familles qui ne
+   sont pas fusionnables. La fonction 14 est utilisée pour supporter les
+   intervalles vides. La fonction 13 est une fonction optionnelle mais
+   recommandée. Elle permet à une nouvelle valeur d'être vérifiée avant d'être
+   passée à la fonction d'union. Puisque BRIN peut raccourcir certaines
+   opérations lorsque l'union n'est pas modifiée, utiliser cette fonction peut
+   améliorer les performances de l'index.
+  </p><p>
+   Pour écrire une classe d'opérateurs pour un type de données qui implémente
+   seulement l'opérateur égalité et supporte le hachage, il est possible
+   d'utiliser les procédures d'appui bloom aux côtés des opérateurs
+   correspondants, comme montré dans <a class="xref" href="brin.html#BRIN-EXTENSIBILITY-BLOOM-TABLE" title="Tableau 64.7. Procédures et numéros de support pour les classes d'opérateurs Bloom">Tableau 64.7</a>. Tout membre de classe
+   d'opérateur (procédures et opérateurs) sont obligatoires.
+  </p><div class="table" id="BRIN-EXTENSIBILITY-BLOOM-TABLE"><p class="title"><strong>Tableau 64.7. Procédures et numéros de support pour les classes d'opérateurs Bloom</strong></p><div class="table-contents"><table class="table" summary="Procédures et numéros de support pour les classes d'opérateurs Bloom" border="1"><colgroup><col /><col /></colgroup><thead><tr><th>Membre de la classe d'opérateurs</th><th>Objet</th></tr></thead><tbody><tr><td>Procédure support 1</td><td>Fonction interne <code class="function">brin_bloom_opcinfo()</code></td></tr><tr><td>Procédure support 2</td><td>Fonction interne <code class="function">brin_bloom_add_value()</code></td></tr><tr><td>Procédure support 3</td><td>Fonction interne <code class="function">brin_bloom_consistent()</code></td></tr><tr><td>Procédure support 4</td><td>Fonction interne <code class="function">brin_bloom_union()</code></td></tr><tr><td>Fonction de support 5</td><td>fonction interne <code class="function">brin_bloom_options()</code></td></tr><tr><td>Procédure support 11</td><td>Fonction pour calculer le hachage d'un élément</td></tr><tr><td>Stratégie d'opérateur 1</td><td>Opérateur égal-à</td></tr></tbody></table></div></div><br class="table-break" /><p>
+   Les procédures support numéros 1-10 sont réservées pour les fonctions
+   internes BRIN, ainsi les fonctions au niveau SQL débutent avec le numéro
+   11. La fonction support numéro 11 est la principale fonction requise pour
+   construire un index. Elle doit accepter un argument avec le même type de
+   données que la classe d'opérateurs et retourner un hachage de la valeur.
+  </p><p>
+   La classe d'opérateurs minmax-multi est aussi prévue pour les types de
+   données implémentant un ensemble totalement ordonné, et peut être vue
+   comme une simple extension de la classe d'opérateurs minmax. Tandis que la
+   classe d'opérateurs minmax résume les valeurs pour chaque intervalle de
+   bloc dans un intervalle unique et contigu, minmax-multi permet de résumer
+   dans de multiples intervalles plus petits pour améliorer la gestion des
+   valeurs aberrantes. Il est possible d'utiliser les procédures support
+   minmax-multi aux côtés des opérateurs correspondant, comme indiqué dans
+   <a class="xref" href="brin.html#BRIN-EXTENSIBILITY-MINMAX-MULTI-TABLE" title="Tableau 64.8. Procédure et numéros de support pour les classes d'opérateurs minmax-multi">Tableau 64.8</a>. Tous les membres
+   de classe d'opérateurs (procédures et opérateurs) sont obligatoires.
+  </p><div class="table" id="BRIN-EXTENSIBILITY-MINMAX-MULTI-TABLE"><p class="title"><strong>Tableau 64.8. Procédure et numéros de support pour les classes d'opérateurs minmax-multi</strong></p><div class="table-contents"><table class="table" summary="Procédure et numéros de support pour les classes d'opérateurs minmax-multi" border="1"><colgroup><col /><col /></colgroup><thead><tr><th>Membre de classe d'opérateurs</th><th>Objet</th></tr></thead><tbody><tr><td>Procédure support 1</td><td>Fonction interne <code class="function">brin_minmax_multi_opcinfo()</code></td></tr><tr><td>Procédure support 2</td><td>Fonction interne <code class="function">brin_minmax_multi_add_value()</code></td></tr><tr><td>Procédure support 3</td><td>Fonction interne <code class="function">brin_minmax_multi_consistent()</code></td></tr><tr><td>Procédure support 4</td><td>Fonction interne <code class="function">brin_minmax_multi_union()</code></td></tr><tr><td>Fonction de support 5</td><td>Fonction interne <code class="function">brin_minmax_multi_options()</code></td></tr><tr><td>Procédure support 11</td><td>Fonction de calcul de distance entre deux valeurs (longueur d'un intervalle)</td></tr><tr><td>Stratégie d'opérateur 1</td><td>Opérateur inférieur-à</td></tr><tr><td>Stratégie d'opérateur 2</td><td>Opérateur inférieur-ou-égal-à</td></tr><tr><td>Stratégie d'opérateur 3</td><td>Opérateur égal-à</td></tr><tr><td>Stratégie d'opérateur 4</td><td>Opérateur supérieur-ou-égal-à</td></tr><tr><td>Stratégie d'opérateur 5</td><td>Opérateur supérieur-à</td></tr></tbody></table></div></div><br class="table-break" /><p>
+   Les classes d'opérateurs minmax et inclusion supportent les opérateurs
+   utilisables sur des types de données croisés, même si cela complexifie la
+   gestion des dépendances. La classe d'opérateurs minmax a besoin d'un
+   ensemble complet d'opérateurs pour être définie avec deux arguments qui
+   auraient le même type de données. Cela permet aux types de données
+   additionnels d'être supportés en définissant un ensemble d'opérateurs
+   supplémentaires. Les opérateurs de la classe d'opérateurs inclusion sont
+   dépendants d'autres stratégies d'opérateur tel que décrit dans le <a class="xref" href="brin.html#BRIN-EXTENSIBILITY-INCLUSION-TABLE" title="Tableau 64.6. Fonctions et numéros de support pour les classes d'opérateurs d'inclusion">Tableau 64.6</a>, ou des même stratégie
+   d'opérateur qu'eux-mêmes. Cela nécessite que l'opérateur dépendant soit
+   défini avec le type de données <code class="literal">STORAGE</code> pour l'argument
+   du côté gauche, et que l'autre type de données supporté se trouve du côté
+   droit de l'opérateur de support. Vous pouvez consulter
+   <code class="literal">float4_minmax_ops</code> comme exemple pour minmax et
+   <code class="literal">box_inclusion_ops</code> comme exemple pour inclusion.
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/brin.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:17 GMT -->
+</html>

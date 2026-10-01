@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/app-pgamcheck.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:06 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>pg_amcheck</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="app-ecpg.html" title="ecpg" /><link rel="next" href="app-pgbasebackup.html" title="pg_basebackup" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/app-pgamcheck.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/app-pgamcheck.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/app-pgamcheck.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/app-pgamcheck.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/app-pgamcheck.html">14</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/app-pgamcheck.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="reference.html">Référence</a></span> » <span class="breadcrumb-link"><a href="reference-client.html">Applications client de PostgreSQL</a></span> » <span class="breadcrumb-node"><span class="application">pg_amcheck</span></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="app-ecpg.html" title="ecpg">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="reference-client.html" title="Applications client de PostgreSQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="app-pgbasebackup.html" title="pg_basebackup">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top"><span class="application">ecpg</span> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> <span class="application">pg_basebackup</span></td></tr></table></div><div class="refentry" id="APP-PGAMCHECK"><div class="titlepage"></div><a id="id-1.9.4.9.1" class="indexterm"></a><div class="refnamediv"><h2><span class="refentrytitle"><span class="application">pg_amcheck</span></span></h2><p>pg_amcheck — vérifie la corruption d'une ou plusieurs bases de données
+  <span class="productname">PostgreSQL</span></p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p id="id-1.9.4.9.4.1"><code class="command">pg_amcheck</code> [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>nom_base</code></em>]</p></div></div><div class="refsect1" id="id-1.9.4.9.5"><h2>Description</h2><p>
+   <span class="application">pg_amcheck</span> exécute les fonctions de vérification
+   de corruption fournies par <a class="xref" href="amcheck.html" title="F.1. amcheck -- outils pour vérifier la cohérence des tables et index">amcheck</a> sur une ou plusieurs
+   bases de données, avec des options pour sélectionner schémas, tables et
+   index à vérifier, et s'il faut réaliser les tests en parallèle et, si oui,
+   le nombre de connexions parallélisées à établir et utiliser.
+  </p><p>
+   Seuls les relations de tables ordinaires et de tables TOAST, les vues
+   matérialisées, les séquences et les index BTree sont actuellement acceptés.
+   Les autres types de relation sont silencieusement ignorés.
+  </p><p>
+   Si <code class="literal">nom_base</code> est précisé, elle devra correspondre au nom
+   d'une base à vérifier, et aucune autre option de sélection de base ne
+   devra être présente. Sinon, toutes les bases correspondantes seront
+   vérifiées. Si aucune de ces options n'est présente, la base de données par
+   défaut sera vérifiée. Les options de sélection de bases incluent
+   <code class="option">--all</code>, <code class="option">--database</code> et
+   <code class="option">--exclude-database</code>. Elles incluent aussi
+   <code class="option">--relation</code>, <code class="option">--exclude-relation</code>,
+   <code class="option">--table</code>, <code class="option">--exclude-table</code>,
+   <code class="option">--index</code> et <code class="option">--exclude-index</code>, mais
+   seulement quand de telles options sont utilisées avec un motif en trois
+   parties(par exemple, <code class="option">mabase*.monschema*.marelation*</code>).
+   Enfin, elles incluent <code class="option">--schema</code> et
+   <code class="option">--exclude-schema</code> quand ces options sont utilisées avec un
+   motif en deux parties(par exemple, <code class="option">mabase*.monschema*</code>).
+  </p><p>
+   <em class="replaceable"><code>nom_base</code></em> peut aussi être remplacé par une <a class="link" href="libpq-connect.html#LIBPQ-CONNSTRING" title="32.1.1. Chaînes de connexion">chaîne de connexion</a>.
+  </p></div><div class="refsect1" id="id-1.9.4.9.6"><h2>Options</h2><p>
+   Les lignes de commande suivante contrôlent ce qui doit être vérifié :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-a</code><br /></span><span class="term"><code class="option">--all</code></span></dt><dd><p>
+       Vérifie toutes les bases de données, sauf celles exclues avec
+       <code class="option">--exclude-database</code>.
+      </p></dd><dt><span class="term"><code class="option">-d <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--database=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Vérifie les bases de données correspondant au
+       <a class="link" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs"><em class="replaceable"><code>motif</code></em></a>,
+       indiqué en dehors de celles exclues par l'option
+       <code class="option">--exclude-database</code>. Cette option peut être utilisée
+       plus d'une fois.
+      </p></dd><dt><span class="term"><code class="option">-D <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--exclude-database=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Exclut les bases de données correspondant au
+       <a class="link" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs"><em class="replaceable"><code>motif</code></em></a>
+       indiqué. Cette option peut être utilisée plus d'une fois.
+      </p></dd><dt><span class="term"><code class="option">-i <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--index=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Vérifie les index correspondant au
+       <a class="link" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs"><em class="replaceable"><code>motif</code></em></a>
+       indiqué, sauf s'ils sont exclus d'une autre façon. Cette option peut
+       être utilisée plus d'une fois.
+      </p><p>
+       Ceci est similaire à l'option <code class="option">--relation</code>, sauf qu'il
+       s'applique seulement aux index, et non pas aux autres types de relation.
+      </p></dd><dt><span class="term"><code class="option">-I <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--exclude-index=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Exclut les index correspondant au
+       <a class="link" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs"><em class="replaceable"><code>motif</code></em></a>
+       indiqué. Cette option peut être utilisée plus d'une fois.
+      </p><p>
+       Ceci est similaire à l'option <code class="option">--exclude-relation</code>, sauf qu'il
+       s'applique seulement aux index, et non pas aux autres types de relation.
+      </p></dd><dt><span class="term"><code class="option">-r <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--relation=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Vérifie les relations correspondant au
+       <a class="link" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs"><em class="replaceable"><code>motif</code></em></a>
+       indiqué, sauf si elles sont exclues autrement. Cette option peut être
+       utilisée plus d'une fois.
+      </p><p>
+       Les motifs peuvent être sans qualification de schéma, par exemple
+       <code class="literal">marelation*</code>, ou ils peuvent avoir une qualification
+       comme <code class="literal">monschema*.marelation*</code> ou une qualification
+       de base et de schéma, par exemple
+       <code class="literal">mabase*.monschema*.marelation*</code>. Un motif avec une
+       qualification de base ajoutera la correspondance de bases à la liste
+       des bases de données à vérifier.
+      </p></dd><dt><span class="term"><code class="option">-R <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--exclude-relation=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Exclut les relations correspondant au
+       <a class="link" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs"><em class="replaceable"><code>motif</code></em></a>
+       indiqué. Cette option peut être utilisée plus d'une fois.
+      </p><p>
+       Comme avec <code class="option">--relation</code>, le
+       <a class="link" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs"><em class="replaceable"><code>motif</code></em></a>
+       peut être sans qualification, qualité du schéma, qualifié du schéma et
+       de la base.
+      </p></dd><dt><span class="term"><code class="option">-s <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--schema=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Vérifie les tables et indexes des schémas correspondant au
+       <a class="link" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs"><em class="replaceable"><code>motif</code></em></a>
+       indiqué, sauf s'ils sont exclus autrement. Cette option peut être
+       utilisée plus d'une fois.
+      </p><p>
+       Pour sélectionner seulement les tables dans les schémas correspondant à
+       un motif particulier, considérez l'utilisation de quelque chose comme
+       <code class="literal">--table=MOTIFSCHEMA.* --no-dependent-indexes</code>. Pour
+       sélectionner seulement les index, considérez l'utilisation de quelque
+       chose comme <code class="literal">--index=MOTIFSCHEMA.*</code>.
+      </p><p>
+       Un motif de schémas pourrait être qualifié du nom de base. Par exemple,
+       vous pourriez écrire <code class="literal">--schema=mabase*.monschema*</code>
+       pour sélectionner les schémas correspondant à
+       <code class="literal">monschema*</code> dans les bases de données correspondant à
+       <code class="literal">mabase*</code>.
+      </p></dd><dt><span class="term"><code class="option">-S <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--exclude-schema=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Exclut les tables et index dans les schémas correspondant au
+       <a class="link" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs"><em class="replaceable"><code>motif</code></em></a>
+       indiqué.  Cette option peut être utilisée plus d'une fois.
+      </p><p>
+       Comme avec <code class="option">--schema</code>, le motif peut être qualifié du
+       nom de la base.
+      </p></dd><dt><span class="term"><code class="option">-t <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--table=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Vérifie les tables correspondant au
+       <a class="link" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs"><em class="replaceable"><code>motif</code></em></a>
+       indiqué, sauf si elles sont exclues autrement. Cette option peut être
+       utilisée plus d'une fois.
+      </p><p>
+       Ceci est similaire à l'option <code class="option">--relation</code>, sauf qu'elle
+       s'applique seulement aux tables, vues matérialisées et séquences, et non pas aux index.
+      </p></dd><dt><span class="term"><code class="option">-T <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--exclude-table=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Exclut les tables correspondant au
+       <a class="link" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs"><em class="replaceable"><code>motif</code></em></a>
+       indiqué. Cette option peut être utilisée plus d'une fois.
+      </p><p>
+       Ceci est similaire à l'option <code class="option">--exclude-relation</code>, sauf
+       qu'elle s'applique seulement aux tables, vues matérialisées et séquences, et non pas aux index.
+      </p></dd><dt><span class="term"><code class="option">--no-dependent-indexes</code></span></dt><dd><p>
+       Par défaut, si une table est vérifiée, tout index btree de cette table
+       est lui-aussi vérifié, même s'ils ne sont pas explicitement sélectionnés
+       par une option telle que <code class="literal">--index</code> ou
+       <code class="literal">--relation</code>. Cette option désactive ce comportement.
+      </p></dd><dt><span class="term"><code class="option">--no-dependent-toast</code></span></dt><dd><p>
+       Par défaut, si une table est vérifiée, sa table TOAST sera aussi
+       vérifiée, même si elle n'est pas explicitement sélectionnée par une
+       option telle que <code class="literal">--table</code> ou
+       <code class="literal">--relation</code>. Cette option désactive ce comportement.
+      </p></dd><dt><span class="term"><code class="option">--no-strict-names</code></span></dt><dd><p>
+       Par défaut, si un argument de <code class="literal">--database</code>,
+       <code class="literal">--table</code>, <code class="literal">--index</code>
+       ou <code class="literal">--relation</code> ne correspond à aucun objet,
+       ceci est traité comme une erreur fatale. Cette option diminue
+       le niveau de l'erreur à un simple message d'avertissement.
+      </p></dd></dl></div><p>
+  </p><p>
+   Les options en ligne de commande suivantes contrôlent la vérification des
+   tables :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">--exclude-toast-pointers</code></span></dt><dd><p>
+       Par défaut, quand un pointeur TOAST est rencontré sur une table, une
+       recherche est réalisée pour s'assurer qu'elle référence toujours des
+       entrés apparemment valides dans la table TOAST. Ces vérifications
+       peuvent être assez lentes, et cette option peut être utilisée pour
+       ne pas les faire.
+      </p></dd><dt><span class="term"><code class="option">--on-error-stop</code></span></dt><dd><p>
+       Après avoir affiché toutes les corruptions du premier bloc d'une table
+       om une corruption a été trouvé, arrête le traitement de cette table et
+       continue avec la prochaine table ou le prochain index.
+      </p><p>
+       Notez que cette vérification des index s'arrête toujours après le
+       premier bloc corrompu. Cette option a seulement les tables pour cible.
+      </p></dd><dt><span class="term"><code class="option">--skip=<em class="replaceable"><code>option</code></em></code></span></dt><dd><p>
+       Si <code class="literal">all-frozen</code> est indiqué, les vérifications de
+       corruption de table ignoreront les blocs des tables marqués
+       comme gelés entièrement.
+      </p><p>
+       Si <code class="literal">all-visible</code> est indiqué, les vérifications de
+       corruption de table ignoreront les blocs des tables marqués comme
+       visibles entièrement.
+      </p><p>
+       Par défaut, aucun bloc n'est ignoré. Ceci peut être indiqué avec
+       <code class="literal">none</code> mais comme il s'agit de la valeur par défaut, il
+       n'est pas nécessaire de le mentionner.
+      </p></dd><dt><span class="term"><code class="option">--startblock=<em class="replaceable"><code>bloc</code></em></code></span></dt><dd><p>
+       Commence la vérification au numéro de bloc mentionné. Une erreur
+       surviendra si la table en cours de vérification a moins de blocs que
+       ce numéro. Cette option ne s'applique pas aux index et est probablement
+       uniquement utile lors de la vérification d'une seule table. Voir
+       <code class="literal">--endblock</code> pour d'autres mises en garde.
+      </p></dd><dt><span class="term"><code class="option">--endblock=<em class="replaceable"><code>bloc</code></em></code></span></dt><dd><p>
+       Termine la vérification au numéro de bloc mentionné. Une erreur
+       surviendra si la table en cours de vérification a moins de blocs que
+       ce numéro. Cette option ne s'applique pas aux index et est probablement
+       uniquement utile lors de la vérification d'une seule table. Si une table
+       normale et une table TOAST sont vérifiées, cette option s'appliquera aux
+       deux mais des blocs supérieurs du TOAST pourraient être accédés pour
+       valider les pointeurs des valeurs TOAST, sauf si cela est désactivé avec
+       l'option <code class="option">--exclude-toast-pointers</code>.
+      </p></dd></dl></div><p>
+  </p><p>
+   Les options en ligne de commande suivantes contrôlent la vérification des
+   index B-tree :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">--checkunique</code></span></dt><dd><p>
+       Pour chaque index vérifié avec une contrainte d'unicité, vérifie
+       que pas plus d'une entrée parmi les entrées dupliquées n'est visible
+       dans un index utilisant l'option <code class="option">checkunique</code> de
+       <a class="xref" href="amcheck.html" title="F.1. amcheck -- outils pour vérifier la cohérence des tables et index">amcheck</a>.
+      </p></dd><dt><span class="term"><code class="option">--heapallindexed</code></span></dt><dd><p>
+       Pour chaque index vérifié, vérifie la présence de toutes les lignes de
+       la table comme enregistrements dans l'index en utilisant l'option
+       <code class="option">heapallindexed</code> d'<a class="xref" href="amcheck.html" title="F.1. amcheck -- outils pour vérifier la cohérence des tables et index">amcheck</a>.
+      </p></dd><dt><span class="term"><code class="option">--parent-check</code></span></dt><dd><p>
+       Pour chaque index btree vérifié, utilisez la fonction
+       <code class="function">bt_index_parent_check</code> d' <a class="xref" href="amcheck.html" title="F.1. amcheck -- outils pour vérifier la cohérence des tables et index">amcheck</a>,
+       qui réalise des vérifications supplémentaires des relations parent/enfant
+       lors de la vérification de l'index.
+      </p><p>
+       Le comportement par défaut est d'utiliser la fonction
+       <code class="function">bt_index_check</code>
+       d'<span class="application">amcheck</span>, mais notez que l'utilisation de
+       l'option <code class="option">--rootdescend</code> sélectionne implicitement
+       <code class="function">bt_index_parent_check</code>.
+      </p></dd><dt><span class="term"><code class="option">--rootdescend</code></span></dt><dd><p>
+       Pour chaque index vérifié, retrouve les lignes au niveau feuille en
+       réalisant une nouvelle recherche du bloc racine pour chaque ligne en
+       utilisant l'option <code class="option">rootdescend</code> d'<a class="xref" href="amcheck.html" title="F.1. amcheck -- outils pour vérifier la cohérence des tables et index">amcheck</a>.
+      </p><p>
+       Utiliser cette option implicitement sélectionne aussi l'option
+       <code class="option">--parent-check</code>.
+      </p><p>
+       Cette forme de vérification a été écrit à l'origine pour aider au
+       développement des fonctionnalités de l'index btree. Elle sera
+       d'utilisation limitée, voire inutile, pour aider à la détection de
+       corruptions survenant réellement. Elle pourrait aussi faire que la
+       vérification de corruption prenne beaucoup plus de temps et consomme
+       beaucoup plus de ressources sur le serveur.
+      </p></dd></dl></div><p>
+  </p><div class="warning"><h3 class="title">Avertissement</h3><p>
+    Les vérifications supplémentaires réalisées avec les index B-tree quand
+    l'option <code class="option">--parent-check</code> ou l'option
+    <code class="option">--rootdescend</code> sont spécifiées nécessitent des verrous
+    relativement fort sur les relations. Ce sont les seules vérifications qui
+    bloquent les modifications concurrentes de données par les commandes
+    <code class="command">INSERT</code>, <code class="command">UPDATE</code> et
+    <code class="command">DELETE</code>.
+   </p></div><p>
+   Les options en ligne de commande suivantes contrôlent la connexion au
+   serveur :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-h <em class="replaceable"><code>nom_hôte</code></em></code><br /></span><span class="term"><code class="option">--host=<em class="replaceable"><code>nom_hôte</code></em></code></span></dt><dd><p>
+       Indique le nom d'hôte de la machine qui héberge le serveur de bases de
+       données. Si la valeur commence par une barre oblique (/), elle est
+       utilisée comme répertoire pour la socket de domaine Unix.
+      </p></dd><dt><span class="term"><code class="option">-p <em class="replaceable"><code>port</code></em></code><br /></span><span class="term"><code class="option">--port=<em class="replaceable"><code>port</code></em></code></span></dt><dd><p>
+       Indique le port TCP ou l'extension du fichier local de la socket de
+       domaine Unix sur lequel le serveur attend les connexions.
+      </p></dd><dt><span class="term"><code class="option">-U</code><br /></span><span class="term"><code class="option">--username=<em class="replaceable"><code>nom_rôle</code></em></code></span></dt><dd><p>
+       Nom d'utilisateur pour la connexion.
+      </p></dd><dt><span class="term"><code class="option">-w</code><br /></span><span class="term"><code class="option">--no-password</code></span></dt><dd><p>
+       Ne demande jamais un mot de passe. Si le serveur en réclame un pour
+       l'authentification et qu'un mot de passe n'est pas disponible d'une
+       autre façon (par exemple avec le fichier <code class="filename">.pgpass</code>),
+       la tentative de connexion échouera. Cette option peut être utile pour
+       les scripts où aucun utilisateur n'est présent pour saisir un mot de
+       passe.
+      </p></dd><dt><span class="term"><code class="option">-W</code><br /></span><span class="term"><code class="option">--password</code></span></dt><dd><p>
+       Force <span class="application">pg_amcheck</span> à demander un mot de passe
+       avant la connexion à une base de données.
+      </p><p>
+       Cette option n'est jamais obligatoire car
+       <span class="application">pg_amcheck</span> demandera automatiquement un mot
+       de passe si le serveur exige une authentification par mot de passe.
+       Néanmoins, <span class="application">pg_amcheck</span> perdra une tentative
+       de connexion pour trouver que le serveur veut un mot de passe. Dans
+       certains cas, il est préférable d'ajouter l'option <code class="option">-W</code>
+       pour éviter la tentative de connexion.
+      </p></dd><dt><span class="term"><code class="option">--maintenance-db=<em class="replaceable"><code>nom_base</code></em></code></span></dt><dd><p>
+       Indique le nom de la base ou une <a class="link" href="libpq-connect.html#LIBPQ-CONNSTRING" title="32.1.1. Chaînes de connexion">chaîne de connexion</a> à utiliser pour
+       récupérer la liste des bases à vérifier. Si ni <code class="option">--all</code>
+       ni d'autres options incluant un motif de nom de bases de données n'est
+       utilisé, cette connexion n'est pas nécessaire et cette option ne fera
+       rien. Sinon, tous les paramètres de la chaîne de connexion autre que
+       le nom de le base, qui sont inclus dans la valeur pour cette option,
+       seront aussi utilisés pour se connecter aux bases de données à
+       vérifier. Si cette option est omise, la valeur par défaut est
+       <code class="literal">postgres</code> ou, en cas d'échec,
+       <code class="literal">template1</code>.
+      </p></dd></dl></div><p>
+  </p><p>
+   D'autres options sont aussi disponibles :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-e</code><br /></span><span class="term"><code class="option">--echo</code></span></dt><dd><p>
+       Afficher sur la sortie standard toutes les requêtes SQL envoyées au
+       serveur.
+      </p></dd><dt><span class="term"><code class="option">-j <em class="replaceable"><code>nombre</code></em></code><br /></span><span class="term"><code class="option">--jobs=<em class="replaceable"><code>nombre</code></em></code></span></dt><dd><p>
+       Utilise <em class="replaceable"><code>nombre</code></em> connexions concurrentes au
+       serveur ou une par objet à vérifier, suivant ce qui fera le moins de
+       connexions.
+      </p><p>
+       Par défaut, utilise une seule connexion.
+      </p></dd><dt><span class="term"><code class="option">-P</code><br /></span><span class="term"><code class="option">--progress</code></span></dt><dd><p>
+       Affiche des informations de progression. Ces dernières inclient le
+       nombre de relations pour lesquelles la vérification est terminée, et
+       la taille totale de ces relations. Elles incluent aussi le nombre
+       total de relations qui devront être vérifiées et la taille estimée de
+       ces relations.
+      </p></dd><dt><span class="term"><code class="option">-v</code><br /></span><span class="term"><code class="option">--verbose</code></span></dt><dd><p>
+       Affiche plus de messages. En particulier, cela affichera un message pour
+       chaque relation en cours de vérification, et cela accroitera le niveau
+       de détails utilisé pour les erreurs du serveur.
+      </p></dd><dt><span class="term"><code class="option">-V</code><br /></span><span class="term"><code class="option">--version</code></span></dt><dd><p>
+       Affiche la version de <span class="application">pg_amcheck</span>, puis quitte.
+      </p></dd><dt><span class="term"><code class="option">--install-missing</code><br /></span><span class="term"><code class="option">--install-missing=<em class="replaceable"><code>schema</code></em></code></span></dt><dd><p>
+       Installe toute extension manquante requise pour vérifier les bases de
+       données. S'ils ne sont pas encore installés, les objets de chaque
+       extension seront installés dans le schéma <em class="replaceable"><code>schema</code></em>. S'il n'est pas spécifié, ils
+       iront dans le schéma <code class="literal">pg_catalog</code>.
+      </p><p>
+       Actuellement, la seule extension requise est <a class="xref" href="amcheck.html" title="F.1. amcheck -- outils pour vérifier la cohérence des tables et index">amcheck</a>.
+      </p></dd><dt><span class="term"><code class="option">-?</code><br /></span><span class="term"><code class="option">--help</code></span></dt><dd><p>
+       Affiche l'aide sur les arguments en ligne de commande de
+       <span class="application">pg_amcheck</span>, puis quitte.
+      </p></dd></dl></div><p>
+  </p></div><div class="refsect1" id="id-1.9.4.9.7"><h2>Environment</h2><p>
+   <code class="command">pg_amcheck</code>, comme la plupart des outils de la
+   distribution <span class="productname">PostgreSQL</span>, utilise aussi les
+   variables d'environnement acceptées par <span class="application">libpq</span>
+   (voir <a class="xref" href="libpq-envars.html" title="32.15. Variables d'environnement">Section 32.15</a>).
+  </p><p>
+   La variable d'environnement <code class="envar">PG_COLOR</code> indique s'il faut
+   utiliser, ou pas, les couleurs dans les messages de diagnostics. Les
+   valeurs possibles sont <code class="literal">always</code>, <code class="literal">auto</code>
+   et <code class="literal">never</code>.
+  </p></div><div class="refsect1" id="id-1.9.4.9.8"><h2>Notes</h2><p>
+   <span class="application">pg_amcheck</span> est conçu pour fonctionner avec
+   <span class="productname">PostgreSQL</span> 14.0 et ultérieur.
+  </p></div><div class="refsect1" id="id-1.9.4.9.9"><h2>Voir aussi</h2><span class="simplelist"><a class="xref" href="amcheck.html" title="F.1. amcheck -- outils pour vérifier la cohérence des tables et index">amcheck</a></span></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/app-pgamcheck.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:06 GMT -->
+</html>

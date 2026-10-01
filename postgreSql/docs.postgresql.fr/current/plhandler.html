@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/plhandler.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:47:23 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapitre 56. Écrire un gestionnaire de langage procédural</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="nls-programmer.html" title="55.2. Pour le développeur" /><link rel="next" href="fdwhandler.html" title="Chapitre 57. Écrire un wrapper de données distantes" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/plhandler.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/plhandler.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/plhandler.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/plhandler.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/plhandler.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/plhandler.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/plhandler.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/plhandler.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/plhandler.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/plhandler.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/plhandler.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/plhandler.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/plhandler.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/plhandler.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/plhandler.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/plhandler.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/plhandler.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/plhandler.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/plhandler.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/plhandler.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/plhandler.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-node">Écrire un gestionnaire de langage procédural</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="nls-programmer.html" title="55.2. Pour le développeur">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="internals.html" title="Partie VII. Internes">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="fdwhandler.html" title="Chapitre 57. Écrire un wrapper de données distantes">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">55.2. Pour le développeur </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 57. Écrire un wrapper de données distantes</td></tr></table></div><div class="chapter" id="PLHANDLER"><div class="titlepage"><div><div><h2 class="title">Chapitre 56. Écrire un gestionnaire de langage procédural</h2></div></div></div><a id="id-1.10.9.2" class="indexterm"></a><p>
+  Tous les appels de fonctions écrites dans un langage autre que celui
+  de l'interface <span class="quote">« <span class="quote">version 1</span> »</span> pour les langages compilés (ce qui
+  inclut les fonctions dans les langages procéduraux utilisateur, les
+  fonctions SQL), passent par une fonction spécifique au langage du
+  <em class="firstterm">gestionnaire d'appels</em>.
+  Le gestionnaire d'appels exécute la fonction de manière appropriée,
+  par exemple en interprétant le code source fourni. Ce chapitre
+  décrit l'écriture du gestionnaire d'appels d'un nouveau langage
+  procédural.
+ </p><p>
+  Le gestionnaire d'appel d'un langage procédural est une fonction
+  <span class="quote">« <span class="quote">normale</span> »</span> qui doit être écrite dans un langage compilé tel que
+  le C, en utilisant l'interface version-1, et enregistrée sous
+  <span class="productname">PostgreSQL</span> comme une fonction sans argument
+  et retournant le type <code class="type">language_handler</code>. Ce pseudo-type spécial
+  identifie la fonction comme gestionnaire d'appel et empêche son appel
+  à partir des commandes SQL.
+  Pour plus de détails sur les conventions d'appels et le chargement
+  dynamique en langage C, voir <a class="xref" href="xfunc-c.html" title="36.10. Fonctions en langage C">Section 36.10</a>.
+ </p><p>
+  L'appel du gestionnaire d'appels est identique à celui de toute
+  autre fonction : il reçoit un pointeur de <code class="type">structure</code>
+  <code class="structname">FunctionCallInfoBaseData</code> qui contient les
+  valeurs des arguments et d'autres informations de la fonction appelée.
+  Il retourne un résultat <code class="type">Datum</code> (et, initialise
+  le champ <code class="structfield">isnull</code> de la structure
+  <code class="structname">FunctionCallInfoBaseData</code> si un résultat SQL NULL doit
+  être retourné). La différence entre un gestionnaire d'appels et une
+  fonction ordinaire se situe au niveau du champ
+  <code class="structfield">flinfo-&gt;fn_oid</code> de la structure
+  <code class="structname">FunctionCallInfoBaseData</code>. Dans le cas du gestionnaire
+  d'appels, il contiendra l'OID de la fonction à appeler, et non pas celui du
+  gestionnaire d'appels lui-même.
+  Le gestionnaire d'appels utilise ce champ pour déterminer la
+  fonction à exécuter. De plus, la liste d'arguments passée a été dressée
+  à partir de la déclaration de la fonction cible, et non pas en
+  fonction du gestionnaire d'appels.
+ </p><p>
+  C'est le gestionnaire d'appels qui récupère l'entrée de la
+  fonction dans la table système <code class="classname">pg_proc</code> et
+  analyse les types des arguments et de la valeur de retour de la fonction
+  appelée. La clause <code class="literal">AS</code> de la commande
+  <code class="command">CREATE FUNCTION</code> se situe dans la
+  colonne <code class="literal">prosrc</code> de
+  <code class="classname">pg_proc</code>. Il s'agit généralement du texte source du
+  langage procédural lui-même (comme pour PL/Tcl) mais, en théorie, cela
+  peut être un chemin vers un fichier ou tout ce qui indique
+  au gestionnaire d'appels les détails des actions à effectuer.
+ </p><p>
+  Souvent, la même fonction est appelée plusieurs fois dans la même
+  instruction SQL.
+  L'utilisation du champ <code class="structfield">flinfo-&gt;fn_extra</code>
+  évite au gestionnaire d'appels de répéter la recherche des informations
+  concernant la fonction appelée. Ce champ, initialement
+  <code class="symbol">NULL</code>, peut être configuré par le gestionnaire d'appels pour
+  pointer sur l'information concernant la fonction appelée. Lors des appels
+  suivants, si <code class="structfield">flinfo-&gt;fn_extra</code> est différent
+  de <code class="symbol">NULL</code>, alors il peut être utilisé et l'étape de
+  recherche d'information évitée. Le gestionnaire d'appels doit
+  s'assurer que <code class="structfield">flinfo-&gt;fn_extra</code> pointe sur une
+  zone mémoire qui restera allouée au moins jusqu'à la fin de la requête en
+  cours, car une structure de données <code class="structname">FmgrInfo</code> peut
+  être conservée aussi longtemps. Cela peut être obtenu par l'allocation
+  des données supplémentaires dans le contexte mémoire spécifié par
+  <code class="structfield">flinfo-&gt;fn_mcxt</code> ; de telles données
+  ont la même espérance de vie que <code class="structname">FmgrInfo</code>.
+  Le gestionnaire peut également choisir d'utiliser un contexte mémoire de
+  plus longue espérance de vie de façon à
+  mettre en cache sur plusieurs
+  requêtes les informations concernant les définitions des fonctions.
+ </p><p>
+  Lorsqu'une fonction en langage procédural est appelée via un trigger,
+  aucun argument ne lui est passé de façon traditionnelle mais le champ
+  <code class="structfield">context</code> de
+  <code class="structname">FunctionCallInfoBaseData</code> pointe sur une structure
+  <code class="structname">TriggerData</code>. Il n'est pas
+  <code class="symbol">NULL</code> comme c'est le cas dans les appels de fonctions standard.
+  Un gestionnaire de langage doit fournir les mécanismes pour que les
+  fonctions de langages procéduraux obtiennent les informations du
+  trigger.
+ </p><p>
+  Un modèle de gestionnaire de langage procédural écrit sous la forme d'une
+  extension C est fourni dans <code class="literal">src/test/modules/plsample</code>.
+  C'est un exemple fonctionnel démontrant une façon de créer un tel
+  gestionnaire, de traiter des paramètres et de renvoyer une valeur. Il
+  suffit de remplacer les points de suspension par quelques milliers de
+  lignes de code pour compléter ce modèle.
+ </p><p>
+  Lorsque la fonction du gestionnaire est compilée dans un module chargeable
+  (voir <a class="xref" href="xfunc-c.html#DFUNC" title="36.10.5. Compiler et lier des fonctions chargées dynamiquement">Section 36.10.5</a>), les commandes suivantes enregistrent le langage
+  procédural défini dans l'exemple :
+  </p><pre class="programlisting">CREATE FUNCTION plsample_call_handler() RETURNS language_handler
+    AS '<em class="replaceable"><code>nomfichier</code></em>'
+    LANGUAGE C;
+CREATE LANGUAGE plsample
+    HANDLER plsample_call_handler;
+  </pre><p>
+ </p><p>
+  Bien que fournir un gestionnaire d'appels est suffisant pour créer un
+  langage de procédures minimal, il existe deux autres fonctions qui peuvent
+  être fournies pour faciliter l'utilisation du langage. Ce sont les
+  fonctions de validation (<em class="firstterm">validator</em>) et de
+  traitement en ligne (<em class="firstterm">inline handler</em>). Une fonction
+  de validation peut être fournie pour activer une vérification spécifique
+  au langage lors du <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle">CREATE FUNCTION</span></a>. Une fonction de
+  traitement en ligne sera utilisé pour supporter les blocs de code anonymes
+  exécutés via la commande <a class="xref" href="sql-do.html" title="DO"><span class="refentrytitle">DO</span></a>.
+ </p><p>
+  Si une fonction de validation est fournie par un langage de procédures,
+  elle doit être déclarée comme une fonction prenant un seul paramètre, de
+  type <code class="type">oid</code>. Le résultat de la validation est ignoré, donc elle
+  peut renvoyer le type <code class="type">void</code>. La fonction de validation sera
+  appelée à la fin de la commande <code class="command">CREATE FUNCTION</code> qui a
+  créé ou mis à jour une fonction écrite dans ce langage. L'OID passé en
+  argument est l'OID de la fonction, disponible dans le catalogue
+  <code class="classname">pg_proc</code>. La fonction de validation doit récupérer
+  cette ligne de la façon habituelle et réaliser les vérifications
+  appropriées. Tout d'abord, elle appelle
+  <code class="function">CheckFunctionValidatorAccess()</code> pour diagnostiquer les
+  appels explicites au validateur que l'utilisateur ne peut pas réaliser
+  via <code class="command">CREATE FUNCTION</code>.
+  Les vérifications typiques incluent la vérification du
+  support des types en arguments et en sortie, ainsi que la vérification
+  syntaxique du corps de la requête pour ce langage. Si la fonction de
+  validation est satisfait par la fonction, elle quitte sans erreur. Si, par
+  contre, elle trouve une erreur, elle doit rapporter cette erreur au travers
+  du mécanisme <code class="function">ereport()</code> standard. Renvoyer une erreur
+  forcera une annulation de la transaction et empêchera du même coup
+  l'enregistrement de la fonction dont la définition est erronée.
+ </p><p>
+  Les fonctions de validation devraient typiquement accepter le paramètre
+  <a class="xref" href="runtime-config-client.html#GUC-CHECK-FUNCTION-BODIES">check_function_bodies</a> : s'il est désactivé,
+  alors toute vérification coûteuse ou spécifique au contexte devrait être
+  abandonnée. Si le langage permet l'exécution de code à la compilation,
+  le validateur doit supprimer les vérifications qui impliquerait une
+  telle exécution. En particulier, ce paramètre est désactivé par
+  <span class="application">pg_dump</span>, pour qu'il puisse charger le langage
+  de procédures sans avoir à s'inquiéter des effets de bord et des dépendances
+  possibles dans le
+  corps des procédures stockées avec d'autres objets de la base de données.
+  (À cause de cela, le gestionnaire d'appels doit éviter de supposer que la
+  fonction de validation a vérifié complètement la fonction. Le but d'avoir
+  une fonction de validation n'est pas d'éviter au gestionnaire d'appels de
+  faire des vérifications, mais plutôt de notifier immédiatement à
+  l'utilisateur si des erreurs évidentes apparaissent dans la commande
+  <code class="command">CREATE FUNCTION</code>.)
+  Bien que le choix de ce qui est à vérifier est laissé à la discrétion de la
+  fonction de validation, il faut noter que le code de <code class="command">CREATE
+   FUNCTION</code> exécute seulement les clauses <code class="literal">SET</code>
+  attachées à la fonction quand le paramètre
+  <code class="varname">check_function_bodies</code> est activé. Du coup, les vérifications
+  dont les résultats pourraient être affectés par les paramètres en question
+  doivent être ignorées quand <code class="varname">check_function_bodies</code> est
+  désactivé pour éviter des échecs erronés lors du chargement d'une sauvegarde.
+ </p><p>
+  Si une fonction de traitement en ligne est fournie au langage de
+  procédures, elle doit être déclarée comme une fonction acceptant un seul
+  paramètre de type <code class="type">internal</code>. Le résultat de la fonction de
+  traitement en ligne est ignoré, donc elle peut renvoyer le type
+  <code class="type">void</code>. Elle sera appelée quand une instruction
+  <code class="command">DO</code> est exécutée pour ce langage. Le paramètre qui lui
+  est fourni est un pointeur vers une structure
+  <code class="structname">InlineCodeBlock</code>, structure contenant des
+  informations sur les paramètres de l'instruction <code class="command">DO</code>, en
+  particulier le texte du bloc de code anonyme à exécuter. La fonction doit
+  exécuter ce code.
+ </p><p>
+  Il est recommandé de placer toutes les déclarations de fonctions ainsi que
+  la commande <code class="command">CREATE LANGUAGE</code> dans une
+  <em class="firstterm">extension</em> pour qu'une simple commande
+  <code class="command">CREATE EXTENSION</code> suffise à installer le langage. Voir
+  <a class="xref" href="extend-extensions.html" title="36.17. Empaqueter des objets dans une extension">Section 36.17</a> pour plus d'informations sur
+  l'écriture d'extensions.
+ </p><p>
+  Les langages procéduraux inclus dans la distribution standard sont de
+  bons points de départ à l'écriture de son propre gestionnaire
+  de langage. Les sources se trouvent dans le répertoire <code class="filename">src/pl</code>.
+  La page de référence de <a class="xref" href="sql-createlanguage.html" title="CREATE LANGUAGE"><span class="refentrytitle">CREATE LANGUAGE</span></a> contient aussi
+  certains détails utiles.
+ </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/plhandler.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:47:23 GMT -->
+</html>

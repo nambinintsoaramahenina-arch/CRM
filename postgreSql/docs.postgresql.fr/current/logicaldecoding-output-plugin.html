@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/logicaldecoding-output-plugin.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:46 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>47.6. Plugins de sortie de décodage logique</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="logicaldecoding-catalogs.html" title="47.5. Catalogues systèmes liés au décodage logique" /><link rel="next" href="logicaldecoding-writer.html" title="47.7. Écrivains de sortie de décodage logique" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/logicaldecoding-output-plugin.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/logicaldecoding-output-plugin.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/logicaldecoding-output-plugin.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/logicaldecoding-output-plugin.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/logicaldecoding-output-plugin.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/logicaldecoding-output-plugin.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/logicaldecoding-output-plugin.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/logicaldecoding-output-plugin.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/logicaldecoding-output-plugin.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/logicaldecoding-output-plugin.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/logicaldecoding-output-plugin.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/logicaldecoding-output-plugin.html">9.4</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/logicaldecoding-output-plugin.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="logicaldecoding.html">Décodage logique (Logical Decoding)</a></span> » <span class="breadcrumb-node">Plugins de sortie de décodage logique</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="logicaldecoding-catalogs.html" title="47.5. Catalogues systèmes liés au décodage logique">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="logicaldecoding.html" title="Chapitre 47. Décodage logique (Logical Decoding)">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="logicaldecoding-writer.html" title="47.7. Écrivains de sortie de décodage logique">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">47.5. Catalogues systèmes liés au décodage logique </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 47.7. Écrivains de sortie de décodage logique</td></tr></table></div><div class="sect1" id="LOGICALDECODING-OUTPUT-PLUGIN"><div class="titlepage"><div><div><h2 class="title" style="clear: both">47.6. Plugins de sortie de décodage logique <a href="#LOGICALDECODING-OUTPUT-PLUGIN" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="logicaldecoding-output-plugin.html#LOGICALDECODING-OUTPUT-INIT">47.6.1. Fonction d'initialisation</a></span></dt><dt><span class="sect2"><a href="logicaldecoding-output-plugin.html#LOGICALDECODING-CAPABILITIES">47.6.2. Capacités</a></span></dt><dt><span class="sect2"><a href="logicaldecoding-output-plugin.html#LOGICALDECODING-OUTPUT-MODE">47.6.3. Modes de sortie</a></span></dt><dt><span class="sect2"><a href="logicaldecoding-output-plugin.html#LOGICALDECODING-OUTPUT-PLUGIN-CALLBACKS">47.6.4. Callbacks de plugin de sortie</a></span></dt><dt><span class="sect2"><a href="logicaldecoding-output-plugin.html#LOGICALDECODING-OUTPUT-PLUGIN-OUTPUT">47.6.5. Fonction pour produire une sortie</a></span></dt></dl></div><p>
+   Un exemple de plugin de sortie peut être trouvé dans le sous-répertoire
+   <a class="link" href="test-decoding.html" title="F.43. test_decoding -- module d'exemple et de test pour le décodage logique des journaux de transactions en SQL"><code class="filename">contrib/test_decoding</code></a>
+   de l'arborescence du code source de PostgreSQL.
+  </p><div class="sect2" id="LOGICALDECODING-OUTPUT-INIT"><div class="titlepage"><div><div><h3 class="title">47.6.1. Fonction d'initialisation <a href="#LOGICALDECODING-OUTPUT-INIT" class="id_link">#</a></h3></div></div></div><a id="id-1.8.14.12.3.2" class="indexterm"></a><p>
+    Un plugin de sortie est initialisé en chargeant dynamiquement une bibliothèque
+    partagée avec comme nom de base le nom du plugin de sortie. Le chemin de
+    recherche de bibliothèque habituel est utilisé pour localiser cette
+    bibliothèque. Pour fournir les callbacks de plugins de sortie requis et
+    pour indiquer que la bibliothèque est effectivement un plugin de sortie,
+    elle doit fournir une fonction nommée
+    <code class="function">_PG_output_plugin_init</code>. Une structure est passée à
+    cette fonction qui doit la remplir avec les pointeurs des fonctions de
+    callback pour chaque action individuelle.
+
+    </p><pre class="programlisting">typedef struct OutputPluginCallbacks
+{
+    LogicalDecodeStartupCB startup_cb;
+    LogicalDecodeBeginCB begin_cb;
+    LogicalDecodeChangeCB change_cb;
+    LogicalDecodeTruncateCB truncate_cb;
+    LogicalDecodeCommitCB commit_cb;
+    LogicalDecodeMessageCB message_cb;
+    LogicalDecodeFilterByOriginCB filter_by_origin_cb;
+    LogicalDecodeShutdownCB shutdown_cb;
+    LogicalDecodeFilterPrepareCB filter_prepare_cb;
+    LogicalDecodeBeginPrepareCB begin_prepare_cb;
+    LogicalDecodePrepareCB prepare_cb;
+    LogicalDecodeCommitPreparedCB commit_prepared_cb;
+    LogicalDecodeRollbackPreparedCB rollback_prepared_cb;
+    LogicalDecodeStreamStartCB stream_start_cb;
+    LogicalDecodeStreamStopCB stream_stop_cb;
+    LogicalDecodeStreamAbortCB stream_abort_cb;
+    LogicalDecodeStreamPrepareCB stream_prepare_cb;
+    LogicalDecodeStreamCommitCB stream_commit_cb;
+    LogicalDecodeStreamChangeCB stream_change_cb;
+    LogicalDecodeStreamMessageCB stream_message_cb;
+    LogicalDecodeStreamTruncateCB stream_truncate_cb;
+} OutputPluginCallbacks;
+
+typedef void (*LogicalOutputPluginInit) (struct OutputPluginCallbacks *cb);</pre><p>
+
+    Les fonctions callback <code class="function">begin_cb</code>,
+    <code class="function">change_cb</code> et <code class="function">commit_cb</code> sont
+    obligatoires, alors que <code class="function">startup_cb</code>,
+    <code class="function">truncate_cb</code>, <code class="function">message_cb</code>,
+    <code class="function">filter_by_origin_cb</code> et <code class="function">shutdown_cb</code>
+    sont optionnelles. Si <code class="function">truncate_cb</code> n'est pas configuré
+    mais que <code class="command">TRUNCATE</code> doit être décodé, l'action sera
+    ignorée.
+   </p><p>
+    Un plugin de sortie peut aussi définir les fonctions pour accepter le flux
+    de grosses transactions en cours. Les callbacks
+    <code class="function">stream_start_cb</code>,
+    <code class="function">stream_stop_cb</code>, <code class="function">stream_abort_cb</code>,
+    <code class="function">stream_commit_cb</code> et <code class="function">stream_change_cb</code>
+    sont obligatoires, alors que <code class="function">stream_message_cb</code> et
+    <code class="function">stream_truncate_cb</code> sont optionnelles. La callback
+    <code class="function">stream_prepare_cb</code> est aussi requise si le plugin de
+    sortie accepte aussi les validations en deux phases.
+   </p><p>
+    Un plugin de sortie peut aussi définir les fonctions pour accepter les
+    validations en deux phases, ce qui permet de décoder un <code class="command">PREPARE
+    TRANSACTION</code>. Les callbacks
+    <code class="function">begin_prepare_cb</code>, <code class="function">prepare_cb</code>,
+    <code class="function">commit_prepared_cb</code> et
+    <code class="function">rollback_prepared_cb</code> sont obligatoires, alors que
+    <code class="function">filter_prepare_cb</code> est facultatif.
+    La callback <code class="function">stream_prepare_cb</code> est aussi requise si le
+    plugin de sortie accepte le flux de grosses transactions en cours.
+   </p></div><div class="sect2" id="LOGICALDECODING-CAPABILITIES"><div class="titlepage"><div><div><h3 class="title">47.6.2. Capacités <a href="#LOGICALDECODING-CAPABILITIES" class="id_link">#</a></h3></div></div></div><p>
+    Pour décoder, formater et afficher les changements, les plugins de sortie
+    peuvent utiliser une grande partie de l'infrastructure habituelle des
+    processus clients, y compris l'appel aux fonctions de sortie. Les accès
+    en lecture seule aux relations est permis du moment que les relations
+    accédées ont été créées par <code class="command">initdb</code> dans le schéma
+    <code class="literal">pg_catalog</code>, ou ont été marquées comme tables du
+    catalogue pour l'utilisateur en utilisant :
+
+    </p><pre class="programlisting">ALTER TABLE table_catalogue_utilisateur SET (user_catalog_table = true);
+CREATE TABLE autre_table_catalogue(data text) WITH (user_catalog_table = true);</pre><p>
+
+    Notez que l'accès aux tables utilisateurs ou aux tables systèmes dans le
+    plugin de sortie doit se faire uniquement via les API de parcours
+    <code class="literal">systable_*</code>. L'accès via les API de parcours
+    <code class="literal">heap_*</code> renverra une erreur. De plus, toute action
+    amenant à l'affectation d'un identifiant de transaction est prohibée.
+    Ceci, parmi d'autres choses, inclut l'écriture dans les tables, la réalisation
+    de modifications DDL, et l'appel à <code class="literal">pg_current_xact_id()</code>.
+   </p></div><div class="sect2" id="LOGICALDECODING-OUTPUT-MODE"><div class="titlepage"><div><div><h3 class="title">47.6.3. Modes de sortie <a href="#LOGICALDECODING-OUTPUT-MODE" class="id_link">#</a></h3></div></div></div><p>
+    Les fonctions callbacks des plugins en sortie peuvent renvoyer des données
+    au consommateur dans des formats pratiquement arbitraires. Pour certains
+    cas d'utilisation, comme la visualisation des changements en SQL, le
+    renvoi des données dans un type de données qui peut contenir des données
+    arbitraires (par exemple du <code class="type">bytea</code>) est complexe. Si le
+    plugin en sortie renvoie seulement les données au format texte dans
+    l'encodage du serveur, il peut déclarer cela en configurant
+    <code class="literal">OutputPluginOptions.output_type</code> à
+    <code class="literal">OUTPUT_PLUGIN_TEXTUAL_OUTPUT</code> au lieu de
+    <code class="literal">OUTPUT_PLUGIN_BINARY_OUTPUT</code> dans la <a class="link" href="logicaldecoding-output-plugin.html#LOGICALDECODING-OUTPUT-PLUGIN-STARTUP" title="47.6.4.1. Callback de démarrage"> fonction callback de
+    démarrage</a>. Dans ce cas, toutes les données doivent être dans
+    l'encodage du serveur pour qu'un champ de type <code class="type">text</code> puisse
+    les contenir. Ceci est vérifié dans les constructions comprenant les
+    assertions.
+   </p></div><div class="sect2" id="LOGICALDECODING-OUTPUT-PLUGIN-CALLBACKS"><div class="titlepage"><div><div><h3 class="title">47.6.4. Callbacks de plugin de sortie <a href="#LOGICALDECODING-OUTPUT-PLUGIN-CALLBACKS" class="id_link">#</a></h3></div></div></div><p>
+    Un plugin de sortie est notifié des changements arrivant au travers de
+    différents callbacks qu'il doit fournir.
+   </p><p>
+    Les transactions concurrentes sont décodées dans l'ordre dans lequel elles
+    sont validées, et seuls les changements appartenant à une transaction
+    spécifique sont décodés entre les callbacks <code class="literal">begin</code> et
+    <code class="literal">commit</code>. Les transactions qui ont été explicitement ou
+    implicitement annulées ne sont jamais décodées. Les savepoints validés
+    sont inclus dans la transaction les contenant, dans l'ordre dans lequel
+    ils ont été effectués dans la transaction. Une transaction qui est
+    préparée pour une validation en deux phases avec <code class="command">PREPARE
+    TRANSACTION</code> sera aussi décodée si les callbacks du plugin de
+    sortie nécessaires sont fournies pour le décodage. Il est possible que la
+    transaction préparée courante en cours de décodage soit annulée en
+    parallèle via une commande <code class="command">ROLLBACK PREPARED</code>. Dans ce
+    cas, le décodage logique de cette transaction sera lui-aussi annulé. Tous
+    les changements d'une telle transaction seront ignorés une fois que
+    l'annulation est détectée et que la fonction callback
+    <code class="function">prepare_cb</code> est appelée. De ce fait, même dans le cas
+    d'une annulation en parallèle, suffisamment d'informations sont fournies
+    au plugin de sortie pour gérer correctement un <code class="command">ROLLBACK
+    PREPARED</code> une fois qu'il est décodé.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Seules les transactions qui ont été synchronisées sur disque de manière
+     sûre seront décodées. Cela peut amener à ce qu'un
+     <code class="command">COMMIT</code> ne soit pas immédiatement décodé lors d'un
+     appel à <code class="literal">pg_logical_slot_get_changes()</code> juste après
+     celui-ci quand <code class="varname">synchronous_commit</code> est positionné à
+     <code class="literal">off</code>.
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-STARTUP"><div class="titlepage"><div><div><h4 class="title">47.6.4.1. Callback de démarrage <a href="#LOGICALDECODING-OUTPUT-PLUGIN-STARTUP" class="id_link">#</a></h4></div></div></div><p>
+     Le callback facultatif <code class="function">startup_cb</code> est appelé chaque
+     fois qu'un slot de réplication est créé ou qu'on lui demande de fournir
+     les flux de changement, indépendamment du nombre de changements qui sont
+     prêt à être fournis.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeStartupCB) (struct LogicalDecodingContext *ctx,
+                                        OutputPluginOptions *options,
+                                        bool is_init);</pre><p>
+
+     Le paramètre <code class="literal">is_init</code> sera positionné à true quand le
+     slot de réplication est créé, et à false sinon.
+     <em class="parameter"><code>options</code></em> pointe vers une structure d'options que
+     le plugin de sortie peut positionner :
+
+     </p><pre class="programlisting">typedef struct OutputPluginOptions
+{
+    OutputPluginOutputType output_type;
+    bool        receive_rewrites;
+} OutputPluginOptions;</pre><p>
+
+     <code class="literal">output_type</code> doit être positionné soit à
+     <code class="literal">OUTPUT_PLUGIN_TEXTUAL_OUTPUT</code> ou à
+     <code class="literal">OUTPUT_PLUGIN_BINARY_OUTPUT</code>. Voir aussi <a class="xref" href="logicaldecoding-output-plugin.html#LOGICALDECODING-OUTPUT-MODE" title="47.6.3. Modes de sortie">Section 47.6.3</a>. Si
+     <code class="literal">receive_rewrites</code> vaut true, le plugin de sortie sera
+     aussi appelé pour les modifications réalisées par des réécritures du
+     fichier HEAP lors de certaines opérations DDL. Ceci est intéressant pour
+     les plugins qui gèrent la réplication DDL mais ils nécessitent une
+     gestion particulière.
+    </p><p>
+     Le callback de démarrage devrait valider les options présentes dans
+     <code class="literal">ctx-&gt;output_plugin_options</code>. Si le plugin de sortie
+     a besoin d'avoir un état, il peut utiliser
+     <code class="literal">ctx-&gt;output_plugin_private</code> pour le stocker.
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-SHUTDOWN"><div class="titlepage"><div><div><h4 class="title">47.6.4.2. Callback d'arrêt <a href="#LOGICALDECODING-OUTPUT-PLUGIN-SHUTDOWN" class="id_link">#</a></h4></div></div></div><p>
+     Le callback facultatif <code class="function">shutdown_cb</code> est appelé chaque
+     fois qu'un slot de réplication anciennement actif n'est plus utilisé et
+     peut être utilisé pour désallouer les ressources privées du plugin de
+     sortie. Le slot n'est pas nécessairement supprimé, le flux est juste
+     arrêté.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeShutdownCB) (struct LogicalDecodingContext *ctx);</pre><p>
+
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-BEGIN"><div class="titlepage"><div><div><h4 class="title">47.6.4.3. Callback de début de transaction <a href="#LOGICALDECODING-OUTPUT-PLUGIN-BEGIN" class="id_link">#</a></h4></div></div></div><p>
+     Le callback obligatoire <code class="function">begin_cb</code> est appelé chaque
+     fois que le début d'une transaction validée a été décodé. Les
+     transactions annulées et leur contenu ne sont pas décodés.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeBeginCB) (struct LogicalDecodingContext *ctx, ReorderBufferTXN *txn);</pre><p>
+
+     Le paramètre <em class="parameter"><code>txn</code></em> contient des métadonnées sur la
+     transaction, comme l'heure à laquelle elle a été validée et son XID.
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-COMMIT"><div class="titlepage"><div><div><h4 class="title">47.6.4.4. Callback de fin de transaction <a href="#LOGICALDECODING-OUTPUT-PLUGIN-COMMIT" class="id_link">#</a></h4></div></div></div><p>
+     Le callback obligatoire <code class="function">commit_cb</code> est appelé chaque
+     fois qu'une transaction validée a été décodée. Le callback
+     <code class="function">change_cb</code> aura été appelé avant cela pour chacune
+     des lignes modifiées, s'il y en a eu.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeCommitCB) (struct LogicalDecodingContext *ctx,
+                                       ReorderBufferTXN *txn,
+                                       XLogRecPtr commit_lsn);</pre><p>
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-CHANGE"><div class="titlepage"><div><div><h4 class="title">47.6.4.5. Callback de modification <a href="#LOGICALDECODING-OUTPUT-PLUGIN-CHANGE" class="id_link">#</a></h4></div></div></div><p>
+     Le callback obligatoire <code class="function">change_cb</code> est appelé pour
+     chacune des modifications de ligne au sein d'une transaction, qu'il
+     s'agisse d'un <code class="command">INSERT</code>, <code class="command">UPDATE</code> ou
+     <code class="command">DELETE</code>. Même si la commande d'origine a modifié
+     plusieurs ligne en une seule instruction, le callback sera appelé pour
+     chaque ligne individuellement. Le callback
+     <code class="function">change_cb</code> pourrait accéder aux tables systèmes et
+     utilisateurs pour aider au traitement en sortie des détails de
+     modification de la ligne. Dans le cas du décodage d'une transaction
+     préparée (mais pas encore validée) ou du décodage d'une transaction non
+     validée, ce callback de modification pourrait aussi renvoyer une erreur
+     à cause de l'annulation simultanée de cette même transaction. Dans ce
+     cas, le décodage logique de cette transaction annulée est arrêté
+     proprement.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeChangeCB) (struct LogicalDecodingContext *ctx,
+                                       ReorderBufferTXN *txn,
+                                       Relation relation,
+                                       ReorderBufferChange *change);</pre><p>
+
+     Les paramètres <em class="parameter"><code>ctx</code></em> et <em class="parameter"><code>txn</code></em>
+     ont le même contenu que pour les callbacks <code class="function">begin_cb</code>
+     et <code class="function">commit_cb</code>, mais en plus le descripteur de
+     relation <em class="parameter"><code>relation</code></em> pointe vers la relation à
+     laquelle appartient la ligne et une structure
+     <em class="parameter"><code>change</code></em> décrivant les modifications de la ligne y est
+     passée.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Seuls les changements dans les tables définies par les utilisateurs qui
+      sont journalisées (voir <a class="xref" href="sql-createtable.html#SQL-CREATETABLE-UNLOGGED"><code class="literal">UNLOGGED</code></a>) et
+      non temporaires (voir <a class="xref" href="sql-createtable.html#SQL-CREATETABLE-TEMPORARY"><code class="literal">TEMPORARY</code> ou <code class="literal">TEMP</code></a>)
+      peuvent être extraits avec le décodage logique.
+     </p></div></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-TRUNCATE"><div class="titlepage"><div><div><h4 class="title">47.6.4.6. Callback Truncate <a href="#LOGICALDECODING-OUTPUT-PLUGIN-TRUNCATE" class="id_link">#</a></h4></div></div></div><p>
+
+     La fonction callback <code class="function">truncate_cb</code> optionnelle est
+     appelée pour la commande <code class="command">TRUNCATE</code>.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeTruncateCB) (struct LogicalDecodingContext *ctx,
+                                         ReorderBufferTXN *txn,
+                                         int nrelations,
+                                         Relation relations[],
+                                         ReorderBufferChange *change);</pre><p>
+
+     Les paramètres sont identiques à ceux du callback
+     <code class="function">change_cb</code>. Néanmoins, comme les actions du
+     <code class="command">TRUNCATE</code> sur les tables liées par clés étrangères
+     doivent être exécutées ensemble, ce callback reçoit un tableau de
+     relations au lieu d'une seule relation. Voir la description de
+     l'instruction <a class="xref" href="sql-truncate.html" title="TRUNCATE"><span class="refentrytitle">TRUNCATE</span></a> pour les détails.
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-FILTER-ORIGIN"><div class="titlepage"><div><div><h4 class="title">47.6.4.7. Fonction de filtre sur l'origine <a href="#LOGICALDECODING-OUTPUT-PLUGIN-FILTER-ORIGIN" class="id_link">#</a></h4></div></div></div><p>
+     La fonction optionnelle <code class="function">filter_by_origin_cb</code> est
+     appelée pour déterminer si les données rejouées à partir de
+     <em class="parameter"><code>origin_id</code></em> ont un intérêt pour le plugin de
+     sortie.
+
+     </p><pre class="programlisting">typedef bool (*LogicalDecodeFilterByOriginCB) (
+    struct LogicalDecodingContext *ctx,
+    RepNodeId origin_id
+);</pre><p>
+
+     Le paramètre <em class="parameter"><code>ctx</code></em> a le même contenu que pour les
+     autres fonctions. Aucune information n'est disponible à part l'origine. Pour
+     signaler que les changements provenant du nœud sont hors de propos, elle
+     renvoie true, ce qui permet de les filtrer. Elle renvoie false dans les
+     autres cas. Les autres fonctions ne seront pas appelées pour les
+     transactions et changements qui ont été filtrés.
+    </p><p>
+     Ceci est utile pour implémenter des solutions de réplication en cascade
+     ou des solutions de réplication multi-directionnelles. Filtrer par
+     rapport à l'origine permet d'empêcher la réplication dans les deux
+     sens des mêmes modifications dans ce type de configuration. Quand les
+     transactions et les modifications contiennent aussi des informations sur
+     l'origine, le filtre via cette fonction est beaucoup plus efficace.
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-MESSAGE"><div class="titlepage"><div><div><h4 class="title">47.6.4.8. Fonctions personnalisées de message générique <a href="#LOGICALDECODING-OUTPUT-PLUGIN-MESSAGE" class="id_link">#</a></h4></div></div></div><p>
+     La fonction (callback) <code class="function">message_cb</code> est appelée quand
+     un message de décodage logique a été décodé.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeMessageCB) (
+    struct LogicalDecodingContext *,
+    ReorderBufferTXN *txn,
+    XLogRecPtr message_lsn,
+    bool transactional,
+    const char *prefix,
+    Size message_size,
+    const char *message
+);</pre><p>
+
+     Le paramètre <em class="parameter"><code>txn</code></em> contient des méta-informations
+     sur la transaction, comme l'horodatage de la validation de la transaction
+     et son identifiant (XID). Notez néanmoins qu'il peut être NULL
+     quand le message n'est pas transactionnel et que le XID n'a pas encore
+     été affecté dans la transaction qui a tracé le message. Le
+     <em class="parameter"><code>lsn</code></em> a la position du message dans les WAL. Le
+     paramètre <em class="parameter"><code>transactional</code></em> indique si le message a
+     été envoyé de façon transactionnelle ou non. De façon similaire au
+     callback de changement, dans le cas du décodage d'une transaction
+     préparée (mais pas encore validée) ou du décodage d'une transaction non
+     validée, ce callback de message pourrait renvoyer une erreur en cas
+     d'annulation simultanée de cette même transaction. Dans ce cas, le
+     décodage logique de cette transaction annulée est stoppé proprement. Le
+     paramètre <em class="parameter"><code>prefix</code></em> est un préfixe arbitraire
+     terminé par un caractère nul qui peut être utilisé pour identifier les
+     messages intéressants pour le plugin courant. Et enfin, le paramètre
+     <em class="parameter"><code>message</code></em> contient le message réel de taille
+     <em class="parameter"><code>message_size</code></em>.
+    </p><p>
+     Une attention particulière doit être portée à l'unicité du préfixe que le
+     plugin de sortie trouve intéressant. Utiliser le nom de l'extension ou
+     du plugin de sortie est souvent un bon choix.
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-FILTER-PREPARE"><div class="titlepage"><div><div><h4 class="title">47.6.4.9. Fonction de filtre du PREPARE <a href="#LOGICALDECODING-OUTPUT-PLUGIN-FILTER-PREPARE" class="id_link">#</a></h4></div></div></div><p>
+     La fonction callback facultative <code class="function">filter_prepare_cb</code>
+     est appelée pour déterminer si les données qui font partie de la
+     transaction de validation en deux phases en cours doivent être
+     considérées pour le décoage à cette étape préparatoire ou plus tard
+     comme une transaction standard en une phase au moment du <code class="command">COMMIT
+     PREPARED</code>. Pour signaler que le décodage doit être ignoré,
+     renvoyez <code class="literal">true</code> ; <code class="literal">false</code> dans le
+     cas contraire. Quand la fonction callback est définie,
+     <code class="literal">false</code> est supposé (autrement dit, il n'y a pas de
+     filtrage et toutes les transactions utilisant la validation en deux phases
+     sont décodées aussi en deux phases).
+
+     </p><pre class="programlisting">typedef bool (*LogicalDecodeFilterPrepareCB) (struct LogicalDecodingContext *ctx,
+                                              TransactionId xid,
+                                              const char *gid);</pre><p>
+
+     Le paramètre <em class="parameter"><code>ctx</code></em> a le même contenu que pour les
+     autres fonctions callbacks. Les paramètres <em class="parameter"><code>xid</code></em> et
+     <em class="parameter"><code>gid</code></em> fournissent deux façons différentes
+     d'identifier la transaction. La commande <code class="command">COMMIT
+     PREPARED</code> ou <code class="command">ROLLBACK PREPARED</code> ultérieure
+     intègre les identifiants, autorisant au plugin de sortie le choix de
+     celui à utiliser.
+    </p><p>
+     La fonction callback pourrait être appelée plusieurs fois par transaction
+     pour décoder, et doit fournir la même réponse statique pour une paire
+     donnée de <em class="parameter"><code>xid</code></em> et de <em class="parameter"><code>gid</code></em> à
+     chaque fois qu'elle est appelée.
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-BEGIN-PREPARE"><div class="titlepage"><div><div><h4 class="title">47.6.4.10. Fonction de préparation de début de la transaction <a href="#LOGICALDECODING-OUTPUT-PLUGIN-BEGIN-PREPARE" class="id_link">#</a></h4></div></div></div><p>
+     La fonction callback requise <code class="function">begin_prepare_cb</code> est
+     appelée à chaque fois que le début d'une transaction préparée a été
+     décodée. Le champ <em class="parameter"><code>gid</code></em>, qui fait partie du
+     paramètre <em class="parameter"><code>txn</code></em>, peut être utilisé dans cette
+     fonction callback pour vérifier si le plugin a déjà reçu cette commande
+     <code class="command">PREPARE</code>, auquel cas elle peut renvoyer une erreur ou
+     ignorer les changements restants de la transaction.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeBeginPrepareCB) (struct LogicalDecodingContext *ctx,
+                                             ReorderBufferTXN *txn);</pre><p>
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-PREPARE"><div class="titlepage"><div><div><h4 class="title">47.6.4.11. Fonction de transaction préparée <a href="#LOGICALDECODING-OUTPUT-PLUGIN-PREPARE" class="id_link">#</a></h4></div></div></div><p>
+     La fonction callback requise <code class="function">prepare_cb</code> est appelée
+     à chaque fois qu'une transaction préparée pour une validation en deux
+     phrases a été décodée. La fonction callback
+     <code class="function">change_cb</code> sera appelée avant celle-ci pour toutes
+     les lignes modifiées, à condition que des lignes aient été modifiées. Le
+     champ <em class="parameter"><code>gid</code></em>, qui fait partie du paramètre
+     <em class="parameter"><code>txn</code></em>, peut être utilisé dans cette fonction
+     callback.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodePrepareCB) (struct LogicalDecodingContext *ctx,
+                                        ReorderBufferTXN *txn,
+                                        XLogRecPtr prepare_lsn);</pre><p>
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-COMMIT-PREPARED"><div class="titlepage"><div><div><h4 class="title">47.6.4.12. Fonction pour le COMMIT PREPARED d'une transaction <a href="#LOGICALDECODING-OUTPUT-PLUGIN-COMMIT-PREPARED" class="id_link">#</a></h4></div></div></div><p>
+     La fonction callback requise <code class="function">commit_prepared_cb</code> est
+     appelée quand une commande <code class="command">COMMIT PREPARED</code> d'une
+     transaction a été décodée. Le champ <em class="parameter"><code>gid</code></em>, qui fait
+     partie du paramètre <em class="parameter"><code>txn</code></em>, peut être utilisé dans
+     cette fonction callback.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeCommitPreparedCB) (struct LogicalDecodingContext *ctx,
+                                               ReorderBufferTXN *txn,
+                                               XLogRecPtr commit_lsn);</pre><p>
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-ROLLBACK-PREPARED"><div class="titlepage"><div><div><h4 class="title">47.6.4.13. Fonction d'annulation de transaction préparée <a href="#LOGICALDECODING-OUTPUT-PLUGIN-ROLLBACK-PREPARED" class="id_link">#</a></h4></div></div></div><p>
+     La fonction callback requise <code class="function">rollback_prepared_cb</code>
+     est appelée à chaque fois qu'une transaction <code class="command">ROLLBACK
+     PREPARED</code> a été décodée. Le champ <em class="parameter"><code>gid</code></em>,
+     qui fait partie du paramètre <em class="parameter"><code>txn</code></em>, peut être
+     utilisé dans cette fonction callback. Les paramètres
+     <em class="parameter"><code>prepare_end_lsn</code></em> et
+     <em class="parameter"><code>prepare_time</code></em> peuvent être utilisés pour vérifier
+     si le plugin a reçu la commande <code class="command">PREPARE TRANSACTION</code>
+     auquel cas il peut appliquer l'annulation. Sinon, il peut ignorer
+     l'opération d'annulation. Le paramètre <em class="parameter"><code>gid</code></em> seul
+     n'est pas suffisant parce que le nœud en amont peut avoir une
+     transaction préparée avec le même identifiant.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeRollbackPreparedCB) (struct LogicalDecodingContext *ctx,
+                                                 ReorderBufferTXN *txn,
+                                                 XLogRecPtr prepare_end_lsn,
+                                                 TimestampTz prepare_time);</pre><p>
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-STREAM-START"><div class="titlepage"><div><div><h4 class="title">47.6.4.14. Fonction de début de flux <a href="#LOGICALDECODING-OUTPUT-PLUGIN-STREAM-START" class="id_link">#</a></h4></div></div></div><p>
+     La fonction callback <code class="function">stream_start_cb</code> obligatoire est
+     appelée à l'ouverture d'un bloc de changements en flux à partir d'une
+     transaction en cours.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeStreamStartCB) (struct LogicalDecodingContext *ctx,
+                                            ReorderBufferTXN *txn);</pre><p>
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-STREAM-STOP"><div class="titlepage"><div><div><h4 class="title">47.6.4.15. Fonction d'arrêt de flux <a href="#LOGICALDECODING-OUTPUT-PLUGIN-STREAM-STOP" class="id_link">#</a></h4></div></div></div><p>
+     La fonction callback <code class="function">stream_stop_cb</code> obligatoire est appelée lors
+     de la fermeture d'un bloc de changements en flux provenant d'une
+     transaction en cours.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeStreamStopCB) (struct LogicalDecodingContext *ctx,
+                                           ReorderBufferTXN *txn);</pre><p>
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-STREAM-ABORT"><div class="titlepage"><div><div><h4 class="title">47.6.4.16. Fonction d'annulation du flux <a href="#LOGICALDECODING-OUTPUT-PLUGIN-STREAM-ABORT" class="id_link">#</a></h4></div></div></div><p>
+     La fonction callback <code class="function">stream_abort_cb</code> obligatoire est
+     appelée lors de l'annulation d'une transaction en flux précédente.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeStreamAbortCB) (struct LogicalDecodingContext *ctx,
+                                            ReorderBufferTXN *txn,
+                                            XLogRecPtr abort_lsn);</pre><p>
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-STREAM-PREPARE"><div class="titlepage"><div><div><h4 class="title">47.6.4.17. Fonction de préparation du flux <a href="#LOGICALDECODING-OUTPUT-PLUGIN-STREAM-PREPARE" class="id_link">#</a></h4></div></div></div><p>
+     La fonction callback <code class="function">stream_prepare_cb</code> est appelée
+     pour préparer une transaction en flux précédente pour faire partie d'une
+     validation en deux phases. Ce callback est obligatoire quand le plugin de
+     sortie accepte à la fois le flux de grosses transactions en cours et les
+     validations en deux phases.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeStreamPrepareCB) (struct LogicalDecodingContext *ctx,
+                                              ReorderBufferTXN *txn,
+                                              XLogRecPtr prepare_lsn);</pre><p>
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-STREAM-COMMIT"><div class="titlepage"><div><div><h4 class="title">47.6.4.18. Fonction de validation d'un flux <a href="#LOGICALDECODING-OUTPUT-PLUGIN-STREAM-COMMIT" class="id_link">#</a></h4></div></div></div><p>
+     La fonction callback <code class="function">stream_commit_cb</code> obligatoire est appelée
+     pour valider une transaction en flux précédente.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeStreamCommitCB) (struct LogicalDecodingContext *ctx,
+                                             ReorderBufferTXN *txn,
+                                             XLogRecPtr commit_lsn);</pre><p>
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-STREAM-CHANGE"><div class="titlepage"><div><div><h4 class="title">47.6.4.19. Fonction de changement du flux <a href="#LOGICALDECODING-OUTPUT-PLUGIN-STREAM-CHANGE" class="id_link">#</a></h4></div></div></div><p>
+     La fonction callback <code class="function">stream_change_cb</code> obligatoire est appelée
+     pour un changement dans un bloc de changements de flux (démarqué par des
+     appels à <code class="function">stream_start_cb</code> et
+     <code class="function">stream_stop_cb</code>). Les modifications réelles ne sont
+     pas affichées car la transaction peut annuler plus tard et que nous ne
+     décodons par les changements pour les transactions annulées.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeStreamChangeCB) (struct LogicalDecodingContext *ctx,
+                                             ReorderBufferTXN *txn,
+                                             Relation relation,
+                                             ReorderBufferChange *change);</pre><p>
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-STREAM-MESSAGE"><div class="titlepage"><div><div><h4 class="title">47.6.4.20. Fonction de message du flux <a href="#LOGICALDECODING-OUTPUT-PLUGIN-STREAM-MESSAGE" class="id_link">#</a></h4></div></div></div><p>
+     La fonction callback <code class="function">stream_message_cb</code> optionnelle
+     est appelée
+     lors de l'envoi d'un message générique dans un bloc de changements en
+     flux (démarqué par des appels à <code class="function">stream_start_cb</code> et
+     <code class="function">stream_stop_cb</code>). Le contenu du message pour des
+     messages transactionnels n'est pas affiché car la transaction peut
+     s'annuler plus tard et que nous ne décodons pas les changements pour les
+     transactions annulées.
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeStreamMessageCB) (struct LogicalDecodingContext *ctx,
+                                              ReorderBufferTXN *txn,
+                                              XLogRecPtr message_lsn,
+                                              bool transactional,
+                                              const char *prefix,
+                                              Size message_size,
+                                              const char *message);</pre><p>
+    </p></div><div class="sect3" id="LOGICALDECODING-OUTPUT-PLUGIN-STREAM-TRUNCATE"><div class="titlepage"><div><div><h4 class="title">47.6.4.21. Fonction troncage du flux <a href="#LOGICALDECODING-OUTPUT-PLUGIN-STREAM-TRUNCATE" class="id_link">#</a></h4></div></div></div><p>
+     La fonction callback <code class="function">stream_truncate_cb</code> optionnelle
+     est appelée pour une commande
+     <code class="command">TRUNCATE</code> dans un bloc de changements en flux
+     (démarqué par des appels à <code class="function">stream_start_cb</code> et
+     <code class="function">stream_stop_cb</code>).
+
+     </p><pre class="programlisting">typedef void (*LogicalDecodeStreamTruncateCB) (struct LogicalDecodingContext *ctx,
+                                               ReorderBufferTXN *txn,
+                                               int nrelations,
+                                               Relation relations[],
+                                               ReorderBufferChange *change);</pre><p>
+
+     Les paramètres sont analogues à ceux de la fonction callback
+     <code class="function">stream_change_cb</code>. Néanmoins, comme les actions de
+     la commande <code class="command">TRUNCATE</code> sur des tables connectées par
+     des clés étrangères doivent s'exécuter ensemble, cette fonction callback
+     reçoit un tableau de relations au lieu d'une seule relation. Voir la
+     description de l'instruction <a class="xref" href="sql-truncate.html" title="TRUNCATE"><span class="refentrytitle">TRUNCATE</span></a> pour les
+     détails.
+    </p></div></div><div class="sect2" id="LOGICALDECODING-OUTPUT-PLUGIN-OUTPUT"><div class="titlepage"><div><div><h3 class="title">47.6.5. Fonction pour produire une sortie <a href="#LOGICALDECODING-OUTPUT-PLUGIN-OUTPUT" class="id_link">#</a></h3></div></div></div><p>
+    Pour pouvoir produire une sortie, les plugins de sortie peuvent écrire des
+    données dans le tampon de sortie <code class="literal">StringInfo</code> dans
+    <code class="literal">ctx-&gt;out</code> dans les callbacks
+    <code class="function">begin_cb</code>, <code class="function">commit_cb</code> ou
+    <code class="function">change_cb</code>. Avant d'écrire dans le tampon de sortie,
+    <code class="function">OutputPluginWrite(ctx, last_write)</code> doit avoir été
+    appelé pour effectuer l'écriture. <em class="parameter"><code>last_write</code></em>
+    indique si une écriture particulière était la dernière écriture du
+    callback.
+   </p><p>
+    L'exemple suivant montre comment sortir des données pour le consommateur
+    d'un plugin de sortie :
+
+    </p><pre class="programlisting">OutputPluginPrepareWrite(ctx, true);
+appendStringInfo(ctx-&gt;out, "BEGIN %u", txn-&gt;xid);
+OutputPluginWrite(ctx, true);</pre><p>
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/logicaldecoding-output-plugin.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:46 GMT -->
+</html>

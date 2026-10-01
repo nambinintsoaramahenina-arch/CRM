@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/index-unique-checks.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:16 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>62.5. Vérification de l'unicité par les index</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="index-locking.html" title="62.4. Considérations sur le verrouillage d'index" /><link rel="next" href="index-cost-estimation.html" title="62.6. Fonctions d'estimation des coûts d'index" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/index-unique-checks.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/index-unique-checks.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/index-unique-checks.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/index-unique-checks.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/index-unique-checks.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/index-unique-checks.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/index-unique-checks.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/index-unique-checks.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/index-unique-checks.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/index-unique-checks.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/index-unique-checks.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/index-unique-checks.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/index-unique-checks.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/index-unique-checks.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/index-unique-checks.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/index-unique-checks.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/index-unique-checks.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/index-unique-checks.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/index-unique-checks.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/index-unique-checks.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/index-unique-checks.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="indexam.html">Définition de l'interface des méthodes d'accès aux index</a></span> » <span class="breadcrumb-node">Vérification de l'unicité par les index</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="index-locking.html" title="62.4. Considérations sur le verrouillage d'index">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="indexam.html" title="Chapitre 62. Définition de l'interface des méthodes d'accès aux index">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="index-cost-estimation.html" title="62.6. Fonctions d'estimation des coûts d'index">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">62.4. Considérations sur le verrouillage d'index </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 62.6. Fonctions d'estimation des coûts d'index</td></tr></table></div><div class="sect1" id="INDEX-UNIQUE-CHECKS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">62.5. Vérification de l'unicité par les index <a href="#INDEX-UNIQUE-CHECKS" class="id_link">#</a></h2></div></div></div><p>
+   <span class="productname">PostgreSQL</span> assure les contraintes d'unicité SQL
+   par des <em class="firstterm">index uniques</em>, qui sont des index qui
+   refusent des entrées multiples pour un même clé. Une méthode d'accès qui
+   supporte cette fonctionnalité initialise
+   <code class="structfield">amcanunique</code> à true. (À ce jour, seul B-tree le
+   supporte). Les colonnes listées dans la clause <code class="literal">INCLUDE</code>
+   ne sont pas considérées lors de la vérification d'unicité.
+  </p><p>
+   Du fait de MVCC, il est toujours nécessaire de permettre à des entrées dupliquées
+   d'exister physiquement dans un index : elles peuvent faire
+   référence à des versions successives d'une même ligne logique.
+   Nous voulons garantir qu'aucune image MVCC n'inclut deux
+   lignes avec les mêmes clés d'index. Cela se résume aux cas suivants,
+   à vérifier à l'insertion d'une nouvelle ligne dans un index
+   d'unicité :
+
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      si une ligne valide conflictuelle a été supprimée par la transaction
+      courante, pas de problème. (En particulier, comme un UPDATE supprime
+      toujours l'ancienne version de la ligne avant d'insérer la nouvelle
+      version, cela permet un UPDATE sur une ligne sans changer la clé) ;
+     </p></li><li class="listitem"><p>
+      si une ligne conflictuelle a été insérée par une transaction non encore
+      validée, l'inséreur potentiel doit attendre de voir si la transaction
+      est validée. Si elle est annulée, alors il n'y a pas de conflit.
+      Si elle est validée sans avoir supprimé la ligne conflictuelle,
+      il y a violation de la contrainte d'unicité. (En pratique,
+      on attend que l'autre transaction finisse et le contrôle de visibilité
+      est effectué à nouveau dans son intégralité) ;
+     </p></li><li class="listitem"><p>
+      de façon similaire, si une ligne conflictuelle validée est supprimée par
+      une transaction encore non validée, l'inséreur potentiel doit attendre la
+      validation ou l'annulation de cette transaction et recommencer le test.
+     </p></li></ul></div><p>
+  </p><p>
+   De plus, immédiatement avant de lever une violation d'unicité
+   en fonction des règles ci-dessus, la méthode d'accès doit
+   revérifier l'état de la ligne en cours d'insertion. Si elle
+   est validée mais est déjà morte, alors aucune erreur ne
+   survient. (Ce cas ne peut pas survenir lors du scénario ordinaire
+   d'insertion d'une ligne tout juste créée par la
+   transaction en cours. Cela peut néanmoins arriver lors d'un
+   <code class="command">CREATE UNIQUE INDEX CONCURRENTLY</code>.)
+  </p><p>
+   La méthode d'accès à l'index doit appliquer elle-même ces tests,
+   ce qui signifie qu'elle doit accéder à la table pour vérifier le
+   statut de validation de toute ligne présentant une clé dupliquée
+   au regard du contenu de l'index. C'est sans doute moche et non
+   modulaire, mais cela permet d'éviter un travail redondant : si un test
+   séparé était effectué, alors la recherche d'une ligne conflictuelle dans
+   l'index serait en grande partie répétée lors de la recherche d'une place pour
+   la nouvelle entrée d'index. Qui plus, est, il n'y a pas
+   de façon évidente d'éviter des <span class="foreignphrase"><em class="foreignphrase">race conditions</em></span>,
+   sauf si la recherche de conflit
+   est partie intégrante de l'insertion d'une nouvelle entrée d'index.
+  </p><p>
+   Si la contrainte unique est déferrable, il y a une complication
+   supplémentaire : nous devons être capable d'insérer une entrée d'index
+   pour une nouvelle ligne mais devons déferrer toute erreur de violation de
+   l'unicité jusqu'à la fin de l'instruction, voire après. Pour éviter
+   des recherches répétées et inutiles dans l'index, la méthode d'accès
+   doit faire une vérification préliminaire d'unicité dès
+   l'insertion initiale. Si elle ne montre pas de conflit avec une
+   ligne visible, nous avons terminé. Sinon, nous devons planifier une
+   nouvelle vérification quand il sera temps de forcer la contrainte. Si,
+   lors de la nouvelle vérification, la ligne insérée et d'autres lignes de
+   la même clé sont vivantes, alors l'erreur doit être rapportée. (Notez que,
+   dans ce contexte, <span class="quote">« <span class="quote">vivant</span> »</span> signifie réellement <span class="quote">« <span class="quote">toute
+    ligne dans la chaîne HOT de l'entrée d'index est vivante</span> »</span>.)
+   Pour implanter ceci, la fonction <code class="function">aminsert</code> reçoit un
+   paramètre <code class="literal">checkUnique</code> qui peut avoir une des valeurs
+   suivantes :
+
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      <code class="literal">UNIQUE_CHECK_NO</code> indique qu'aucun test d'unicité
+      ne doit être fait (ce n'est pas un index unique).
+     </p></li><li class="listitem"><p>
+      <code class="literal">UNIQUE_CHECK_YES</code> indique qu'il s'agit d'un index
+      unique non déferrable et la vérification de l'unicité doit se faire
+      immédiatement, comme décrit ci-dessus.
+     </p></li><li class="listitem"><p>
+      <code class="literal">UNIQUE_CHECK_PARTIAL</code> indique que la contrainte
+      unique est déferrable. <span class="productname">PostgreSQL</span> utilisera
+      ce mode pour insérer l'entrée d'index de chaque ligne. La méthode
+      d'accès doit autoriser les entrées dupliquées dans l'index et rapporter
+      tout duplicat potentiel en renvoyant FALSE à partir de
+      <code class="function">aminsert</code>. Pour chaque ligne pour laquelle FALSE
+      est renvoyé, une revérification déferrée sera planifiée.
+     </p><p>
+      La méthode d'accès doit identifier toute ligne qui pourrait violer la
+      contrainte unique, mais rapporter des faux positifs n'est pas une
+      erreur. Cela permet de faire la vérification sans attendre la fin des
+      autres transactions ; les conflits rapportés ici ne sont pas
+      traités comme des erreurs, et seront revérifiés plus tard, à un moment
+      où ils ne seront peut-être plus en conflit.
+     </p></li><li class="listitem"><p>
+      <code class="literal">UNIQUE_CHECK_EXISTING</code> indique qu'une
+      revérification déferrée d'une ligne a été rapportée en
+      violation potentielle d'unicité. Bien que cela soit implémenté par un
+      appel à <code class="function">aminsert</code>, la méthode d'accès ne doit
+      <span class="emphasis"><em>pas</em></span> insérer une nouvelle entrée d'index dans ce
+      cas. L'entrée d'index est déjà présente. À la place, la méthode d'accès
+      doit vérifier s'il existe une autre entrée d'index vivante. Si c'est le
+      cas et que la ligne cible est toujours vivante, elle doit rapporter
+      l'erreur.
+     </p><p>
+      Il est recommendé que, dans un appel à
+      <code class="literal">UNIQUE_CHECK_EXISTING</code>, la méthode d'accès vérifie en
+      plus que la ligne cible ait réellement une entrée existante dans l'index
+      et de lever une erreur si ce n'est pas le cas. C'est une bonne idée
+      car les valeurs de la ligne d'index passées à
+      <code class="function">aminsert</code> auront été recalculées. Si la définition
+      de l'index implique des fonctions qui ne sont pas vraiment immutables,
+      nous pourrions être en train de vérifier une mauvaise partie de l'index. Vérifier que la
+      ligne cible est trouvée dans la revérification permet de s'assurer que
+      nous recherchons les mêmes valeurs de la ligne comme elles ont été
+      utilisées lors de l'insertion originale.
+     </p></li></ul></div><p>
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/index-unique-checks.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:16 GMT -->
+</html>

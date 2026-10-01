@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/pgvisibility.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.34. pg_visibility -- informations et outils sur la carte de visibilité</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="pgtrgm.html" title="F.33. pg_trgm -- support de la similarité de texte en utilisant la correspondance de trigrammes" /><link rel="next" href="pgwalinspect.html" title="F.35. pg_walinspect -- inspection bas niveau des journaux de transactions" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/pgvisibility.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/pgvisibility.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/pgvisibility.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/pgvisibility.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/pgvisibility.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/pgvisibility.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/pgvisibility.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/pgvisibility.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/pgvisibility.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/pgvisibility.html">9.6</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/pgvisibility.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="appendixes.html">Annexes</a></span> » <span class="breadcrumb-link"><a href="contrib.html">Modules et extensions supplémentaires fournis</a></span> » <span class="breadcrumb-node">pg_visibility  --  informations et outils sur la carte de visibilité</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pgtrgm.html" title="F.33. pg_trgm  -- &#10;  support de la similarité de texte en utilisant la correspondance de trigrammes">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="pgwalinspect.html" title="F.35. pg_walinspect  --  inspection bas niveau des journaux de&#10;  transactions">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">F.33. pg_trgm  -- 
+  support de la similarité de texte en utilisant la correspondance de trigrammes </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> F.35. pg_walinspect  --  inspection bas niveau des journaux de
+  transactions</td></tr></table></div><div class="sect1" id="PGVISIBILITY"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.34. pg_visibility  --  informations et outils sur la carte de visibilité <a href="#PGVISIBILITY" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="pgvisibility.html#PGVISIBILITY-FUNCS">F.34.1. Fonctions</a></span></dt><dt><span class="sect2"><a href="pgvisibility.html#PGVISIBILITY-AUTHOR">F.34.2. Auteur</a></span></dt></dl></div><a id="id-1.11.7.45.2" class="indexterm"></a><p>
+  Le module <code class="filename">pg_visibility</code> fournit la possibilité
+  d'examiner la visibility map (VM) et les informations de visibilité au
+  niveau bloc d'une table. Il fournit aussi des fonctions permettant de vérifier
+  l'intégrité d'une visibility map et de forcer sa reconstruction.
+ </p><p>
+  Trois bits différents sont utilisés pour enregistrer des informations sur la
+  visibilité au niveau des blocs. L'octet totalement-visible (all-visible) de
+  la visibility map indique que chaque ligne d'un bloc donné d'une relation
+  est visible pour toute transaction courante et future. L'octet totalement-figé (all-
+  frozen) de la visibility map indique que chaque ligne du bloc est figée,
+  c'est-à-dire qu'aucun vacuum n'aura besoin de modifier le bloc tant qu'une
+  ligne n'est pas insérée, mise à jour, supprimée ou verrouillée dans ce bloc.
+  Le bit <code class="literal">PD_ALL_VISIBLE</code> dans l'en-tête de page a la même
+  signification que l'octet totalement-visible de la visibility map, mais il
+  est stocké au sein du bloc plutôt que dans une structure de données séparée.
+  Ces deux bits seront normalement identiques, mais le bit de niveau de
+  bloc peut parfois rester défini pendant que la visibility map est purgée
+  lors de la récupération suite à un crash ; ou ils peuvent être
+  différents suite à un changement survenant après que
+  <code class="literal">pg_visibility</code> ait examiné la visibility map et avant
+  qu'il ait examiné le bloc donné. Tout événement causant une corruption de
+  données peut aussi un désaccord sur ces trois bits.
+ </p><p>
+  Les fonctions qui affichent les informations concernant le bit
+  <code class="literal">PD_ALL_VISIBLE</code> sont beaucoup plus coûteuses que
+  celles qui consultent uniquement la visibility map. En effet, elles doivent
+  lire les blocs de données des relations plutôt que de ne s'intéresser qu'à
+  la visibility map (qui est bien plus petite). Les fonctions qui vérifient
+  les blocs de données de la relation sont aussi très coûteuses.
+ </p><div class="sect2" id="PGVISIBILITY-FUNCS"><div class="titlepage"><div><div><h3 class="title">F.34.1. Fonctions <a href="#PGVISIBILITY-FUNCS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="function">pg_visibility_map(relation regclass, blkno bigint, all_visible
+      OUT boolean, all_frozen OUT boolean) renvoie un enregistrement
+     </code></span></dt><dd><p>
+      Renvoie tous les octets complètement visibles et complètement figés de
+      la visibility map pour un bloc donné pour une relation donnée.
+     </p></dd><dt><span class="term"><code class="function">pg_visibility(relation regclass, blkno bigint, all_visible OUT
+      boolean, all_frozen OUT boolean, pd_all_visible OUT boolean) returns setof record</code></span></dt><dd><p>
+      Renvoie tous les octets complètement visibles et complètement figés de
+      la visibility map pour un bloc donné pour une relation donnée ainsi que
+      l'octet <code class="literal">PD_ALL_VISIBLE</code> pour le bloc.
+     </p></dd><dt><span class="term"><code class="function">pg_visibility_map(relation regclass, blkno OUT bigint, all_visible OUT boolean, all_frozen OUT boolean) returns setof record</code></span></dt><dd><p>
+      Renvoie tous les octets complètement visibles et complètement figés de
+      la visibility map pour un bloc donné pour une relation donnée.
+     </p></dd><dt><span class="term"><code class="function">pg_visibility(relation regclass, blkno OUT bigint, all_visible OUT boolean, all_frozen OUT boolean, pd_all_visible OUT boolean) returns setof record</code></span></dt><dd><p>
+      Renvoie tous les octets complètement visibles et complètement figés de
+      la visibility map pour un bloc donné pour une relation donnée, ainsi que
+      l'octet <code class="literal">PD_ALL_VISIBLE</code> pour le bloc.
+     </p></dd><dt><span class="term"><code class="function">pg_visibility_map_summary(relation regclass, all_visible OUT
+      bigint, all_frozen OUT bigint) returns setof record</code></span></dt><dd><p>
+      Renvoie le nombre de pages complètement visibles ainsi que le nombre de
+      pages complètement figées de la relation, en concordance avec la
+      visibility map.
+     </p></dd><dt><span class="term"><code class="function">pg_check_frozen(relation regclass, t_ctid OUT tid) returns setof tid</code></span></dt><dd><p>
+      Renvoie le TID (identifiant de ligne) des lignes non gelées présentes
+      dans les pages marquées complètement figés dans la visibility map. Si
+      cette fonction renvoie un ensemble non vide de TID, la visibility map
+      est corrompue.
+     </p></dd><dt><span class="term"><code class="function">pg_check_visible(relation regclass, t_ctid OUT tid) returns setof tid</code></span></dt><dd><p>
+      Renvoie les TID (identifiants de lignes) de tous les enregistrements qui
+      ne sont pas all-visible enregistrés dans des pages marquées all-visible
+      dans la visibility map. Si cette fonction renvoie un ensemble non vide,
+      la visibility map est corrompue.
+     </p></dd><dt><span class="term"><code class="function">pg_truncate_visibility_map(relation regclass) returns void</code></span></dt><dd><p>
+      Tronque la visibility map de la relation indiquée. Cette fonction est
+      utile si vous pensez que la visibility map de cette relation est
+      corrompue et que vous souhaitez forcer sa reconstruction. Le premier
+      <code class="command">VACUUM</code> exécuté sur cette relation après l'exécution
+      de cette fonction parcourera chaque bloc de la relation et reconstruiera
+      la visibility map. (Tant que cela ne sera pas fait, les requêtes
+      traiteront la visibility map comme ne contenant que des zéros.)
+     </p></dd></dl></div><p>
+   Par défaut, ces fonctions ne sont exécutables que par des
+   superutilisateurs et les rôles disposant des droits du rôle
+   <code class="literal">pg_stat_scan_tables</code>, à l'exception de
+   <code class="function">pg_truncate_visibility_map(relation regclass)</code> qui ne
+   peut être exécutée que par des superutilisateurs.
+  </p></div><div class="sect2" id="PGVISIBILITY-AUTHOR"><div class="titlepage"><div><div><h3 class="title">F.34.2. Auteur <a href="#PGVISIBILITY-AUTHOR" class="id_link">#</a></h3></div></div></div><p>
+   Robert Haas <code class="email">&lt;<a class="email" href="mailto:rhaas@postgresql.org">rhaas@postgresql.org</a>&gt;</code>
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/pgvisibility.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+</html>

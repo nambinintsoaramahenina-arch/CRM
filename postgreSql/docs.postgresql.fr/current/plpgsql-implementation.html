@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/plpgsql-implementation.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>41.11. Les dessous de PL/pgSQL</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="plpgsql-trigger.html" title="41.10. Fonctions trigger" /><link rel="next" href="plpgsql-development-tips.html" title="41.12. Astuces pour développer en PL/pgSQL" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/plpgsql-implementation.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/plpgsql-implementation.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/plpgsql-implementation.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/plpgsql-implementation.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/plpgsql-implementation.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/plpgsql-implementation.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/plpgsql-implementation.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/plpgsql-implementation.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/plpgsql-implementation.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/plpgsql-implementation.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/plpgsql-implementation.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/plpgsql-implementation.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/plpgsql-implementation.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/plpgsql-implementation.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/plpgsql-implementation.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/plpgsql-implementation.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/plpgsql-implementation.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/plpgsql-implementation.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/plpgsql-implementation.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="plpgsql.html"><span class="application">PL/pgSQL</span>  --  Langage de procédures <acronym class="acronym">SQL</acronym></a></span> » <span class="breadcrumb-node">Les dessous de <span class="application">PL/pgSQL</span></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="plpgsql-trigger.html" title="41.10. Fonctions trigger">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="plpgsql.html" title="Chapitre 41. PL/pgSQL  --  Langage de procédures SQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="plpgsql-development-tips.html" title="41.12. Astuces pour développer en PL/pgSQL">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">41.10. Fonctions trigger </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 41.12. Astuces pour développer en <span class="application">PL/pgSQL</span></td></tr></table></div><div class="sect1" id="PLPGSQL-IMPLEMENTATION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">41.11. Les dessous de <span class="application">PL/pgSQL</span> <a href="#PLPGSQL-IMPLEMENTATION" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="plpgsql-implementation.html#PLPGSQL-VAR-SUBST">41.11.1. Substitution de variables</a></span></dt><dt><span class="sect2"><a href="plpgsql-implementation.html#PLPGSQL-PLAN-CACHING">41.11.2. Mise en cache du plan</a></span></dt></dl></div><p>
+  Cette section discute des détails d'implémentation les plus importants
+  à connaître pour les utilisateurs de <span class="application">PL/pgSQL</span>.
+ </p><div class="sect2" id="PLPGSQL-VAR-SUBST"><div class="titlepage"><div><div><h3 class="title">41.11.1. Substitution de variables <a href="#PLPGSQL-VAR-SUBST" class="id_link">#</a></h3></div></div></div><p>
+   Les instructions et expressions SQL au sein d'une fonction
+   <span class="application">PL/pgSQL</span> peuvent faire appel aux variables et
+   paramètres d'une fonction. En coulisses,
+   <span class="application">PL/pgSQL</span> remplace les paramètres de requêtes
+   par des références. Les paramètres de la requête ne seront remplacés
+   qu'aux endroits où un paramètre ou une référence de colonne sont autorisés
+   par la syntaxe. Dans un cas extrême, considérez cet exemple de mauvaise
+   programmation : </p><pre class="programlisting"> INSERT INTO foo (foo) VALUES (foo
+   (foo)); </pre><p> La première occurrence de <code class="literal">foo</code>
+   doit être un nom de table, d'après la syntaxe et ne sera donc pas
+   remplacée, même si la fonction a une variable nommée
+   <code class="literal">foo</code>. La deuxième occurrence doit être le nom d'une
+   colonne de cette table et ne sera donc pas remplacée non plus. De la même
+   façon, la troisième occurrence doit être un nom de fonction, donc il ne
+   sera pas non plus substitué. Seule la dernière occurrence peut être une
+   référence à une variable de la fonction
+   <span class="application">PL/pgSQL</span>.
+  </p><p>
+   Une autre façon de comprendre cela est que la substitution de variable peut
+   seulement insérer des valeurs de type données dans une commande SQL ;
+   celane peut pas modifier dynamiquement les objets de la base référencés
+   par la commande. (Si ous voulez le faire, vous devez construire
+   dynamiquement une chaîne de caractère contenant les commandes, comme
+   expliqué dans <a class="xref" href="plpgsql-statements.html#PLPGSQL-STATEMENTS-EXECUTING-DYN" title="41.5.4. Exécuter des commandes dynamiques">Section 41.5.4</a>.)
+  </p><p>
+   Les noms de variables n'étant pas différents des noms de colonnes,
+   d'après la syntaxe, il peut y avoir ambigüité dans les instructions qui font
+   référence aux deux : un nom donné fait-il référence à un nom de colonne
+   ou à une variable ?
+   Modifions l'exemple précédent.
+   </p><pre class="programlisting">
+        INSERT INTO dest (col) SELECT foo + bar FROM src;
+   </pre><p>
+   Ici, <code class="literal">dest</code> et <code class="literal">src</code> doivent être des noms de table et
+   <code class="literal">col</code> doit être une colonne de <code class="literal">dest</code> mais <code class="literal">foo</code>
+   et <code class="literal">bar</code> peuvent être aussi bien des variables de la fonction
+   que des colonnes de <code class="literal">src</code>.
+  </p><p>
+   Par défaut, <span class="application">PL/pgSQL</span> signalera une erreur si un nom
+   dans une requête SQL peut faire référence à la fois à une variable et à une colonne.
+   Vous pouvez corriger ce problème en renommant la variable ou colonne,
+   en qualifiant la référence ambigüe ou en précisant à
+   <span class="application">PL/pgSQL</span> quelle est l'interprétation à privilégier.
+  </p><p>
+   Le choix le plus simple est de renommer la variable ou colonne.
+   Une règle de codage récurrente est d'utiliser une
+   convention de nommage différente pour les variables de
+   <span class="application">PL/pgSQL</span> que pour les noms de colonne. Par exemple,
+   si vous utilisez toujours des variables de fonctions en
+   <code class="literal">v_<em class="replaceable"><code>quelquechose</code></em></code> tout en vous
+   assurant qu'aucun nom de colonne ne commence par <code class="literal">v_</code>,
+   aucun conflit ne sera possible.
+  </p><p>
+   Autrement, vous pouvez qualifier les références ambigües pour les rendre plus claires.
+   Dans l'exemple ci-dessus, <code class="literal">src.foo</code> serait une référence sans ambigüité
+   à une colonne de table. Pour créer une référence sans ambigüité à une variable,
+   déclarez-la dans un bloc nommé et utilisez le nom du bloc
+   (voir <a class="xref" href="plpgsql-structure.html" title="41.2. Structure de PL/pgSQL">Section 41.2</a>). Par exemple,
+   </p><pre class="programlisting">
+    &lt;&lt;bloc&gt;&gt;
+    DECLARE
+        foo int;
+    BEGIN
+        foo := ...;
+        INSERT INTO dest (col) SELECT bloc.foo + bar FROM src;
+   </pre><p>
+   Ici, <code class="literal">bloc.foo</code> désigne la variable même s'il existe une colonne
+   <code class="literal">foo</code> dans la base <code class="literal">src</code>. Les paramètres de fonction, ainsi que
+   les variables spéciales tel que <code class="literal">FOUND</code>, peuvent être qualifiés par le
+   nom de la fonction, parce qu'ils sont implicitement déclarés dans un bloc extérieur
+   portant le nom de la fonction.
+  </p><p>
+   Quelque fois, il n'est pas envisageable de lever toutes les ambigüités dans une
+   grande quantité de code <span class="application">PL/pgSQL</span>. Dans ces cas-ci, vous pouvez
+   spécifier à <span class="application">PL/pgSQL</span> qu'il doit traiter les références ambigües
+   comme étant une variable (ce qui est compatible avec le comportement de
+   <span class="application">PL/pgSQL</span> avant <span class="productname">PostgreSQL</span> 9.0) ou comme étant
+   la colonne d'une table (ce qui est compatible avec d'autres systèmes tels que
+   <span class="productname">Oracle</span>).
+  </p><a id="id-1.8.8.13.3.9" class="indexterm"></a><p>
+   Pour modifier ce comportement dans toute l'instance, mettez le paramètre de
+   configuration <code class="literal">plpgsql.variable_conflict</code> à l'un de
+   <code class="literal">error</code>, <code class="literal">use_variable</code> ou
+   <code class="literal">use_column</code> (où <code class="literal">error</code> est la valeur par défaut).
+   Ce paramètre agit sur les compilations posterieures
+   d'instructions dans les fonctions <span class="application">PL/pgSQL</span> mais pas les instructions
+   déjà compilées dans la session en cours. Cette modification pouvant
+   affecter de manière inattendue le comportement des fonctions <span class="application">PL/pgSQL</span>,
+   elle ne peut être faite que par un administrateur.
+  </p><p>
+   Vous pouvez modifier ce comportement fonction par fonction, en
+   insérant l'une de ces commandes spéciales au début de la fonction :
+   </p><pre class="programlisting">
+#variable_conflict error
+#variable_conflict use_variable
+#variable_conflict use_column
+   </pre><p>
+   Ces commandes n'agissent que sur les fonctions qui les contient et surchargent
+   la valeur de <code class="literal">plpgsql.variable_conflict</code>. Un exemple est
+   </p><pre class="programlisting">
+CREATE FUNCTION stamp_user(id int, comment text) RETURNS void AS $$
+    #variable_conflict use_variable
+    DECLARE
+        curtime timestamp := now();
+    BEGIN
+        UPDATE users SET last_modified = curtime, comment = comment
+          WHERE users.id = id;
+    END;
+$$ LANGUAGE plpgsql;
+   </pre><p>
+   Dans la commande <code class="literal">UPDATE</code>, <code class="literal">curtime</code>, <code class="literal">comment</code>,
+   et <code class="literal">id</code> font référence aux variables et paramètres de la fonction,
+   que la table <code class="literal">users</code> ait ou non des colonnes portant ces noms. Notez
+   qu'il a fallu qualifier la référence à <code class="literal">users.id</code> dans la
+   clause <code class="literal">WHERE</code> pour qu'elle fasse référence à la colonne.
+   Mais nous ne qualifions pas la référence à <code class="literal">comment</code>
+   comme cible dans la liste <code class="literal">UPDATE</code> car, d'après la syntaxe,
+   elle doit être une colonne de <code class="literal">users</code>. Nous pourrions écrire la même
+   fonction sans dépendre de la valeur de <code class="literal">variable_conflict</code>
+   de cette manière :
+   </p><pre class="programlisting">
+CREATE FUNCTION stamp_user(id int, comment text) RETURNS void AS $$
+    &lt;&lt;fn&gt;&gt;
+    DECLARE
+        curtime timestamp := now();
+    BEGIN
+        UPDATE users SET last_modified = fn.curtime, comment = stamp_user.comment
+          WHERE users.id = stamp_user.id;
+    END;
+$$ LANGUAGE plpgsql;
+   </pre><p>
+  </p><p>
+   La substitution de variable n'arrive pas dans la chaîne de commande donnée
+   à <code class="command">EXECUTE</code> ou une de ces variantes. Si vous avez
+   besoin d'insérer une valeur dans une telle commande, faites-le lors de la
+   construction d'une valeur de chaîne, illustrée dans la
+   <a class="xref" href="plpgsql-statements.html#PLPGSQL-STATEMENTS-EXECUTING-DYN" title="41.5.4. Exécuter des commandes dynamiques">Section 41.5.4</a>, ou utilisez <code class="literal">USING</code>.
+  </p><p>
+   La substitution de variable fonctionne seulement dans les commandes
+   <code class="command">SELECT</code>, <code class="command">INSERT</code>,
+   <code class="command">UPDATE</code>, <code class="command">DELETE</code>,
+   <code class="command">MERGE</code> et les commandes contenant l'une de ces commandes
+   (telles que <code class="command">EXPLAIN</code> et <code class="command">CREATE TABLE
+   ... AS SELECT</code>) parce que le moteur SQL principal autorise
+   les paramètres de la requête seulement dans ces commandes. Pour utiliser un
+   nom variable ou une valeur dans les autres types d'instructions (généralement
+   appelées des instructions utilitaires), vous devez construire l'instruction
+   en question comme une chaîne et l'exécuter via <code class="command">EXECUTE</code>.
+  </p></div><div class="sect2" id="PLPGSQL-PLAN-CACHING"><div class="titlepage"><div><div><h3 class="title">41.11.2. Mise en cache du plan <a href="#PLPGSQL-PLAN-CACHING" class="id_link">#</a></h3></div></div></div><p>
+   L'interpréteur <span class="application">PL/pgSQL</span> analyse le source d'une
+   fonction et produit un arbre binaire interne d'instructions la première fois
+   que la fonction est appelée (à l'intérieur de chaque session). L'arbre des
+   instructions se traduit complètement par la structure d'instructions
+   <span class="application">PL/pgSQL</span> mais les expressions et les commandes
+   <acronym class="acronym">SQL</acronym> individuelles utilisées dans la fonction ne sont
+   pas traduites immédiatement.
+  </p><p>
+   <a id="id-1.8.8.13.4.3.1" class="indexterm"></a>
+   Au moment où chaque expression et commande <acronym class="acronym">SQL</acronym> est
+   exécutée en premier lieu dans la fonction, l'interpréteur
+   <span class="application">PL/pgSQL</span> lit et analyse la commande pour
+   créer une instruction préparée en
+   utilisant la fonction <code class="function">SPI_prepare</code> du gestionnaire
+   <acronym class="acronym">SPI</acronym>.
+   Les appels suivants à cette expression ou commande réutilisent le plan
+   préparé. Donc, une fonction avec des chemins de code conditionnel peu
+   fréquemment exécutés n'auront jamais la surcharge de l'analyse de ces
+   commandes qui ne sont jamais exécutées à l'intérieur de la session en
+   cours. Un inconvénient
+   est que les erreurs dans une expression ou commande spécifique ne peuvent
+   pas être détectées avant que la fonction a atteint son exécution. (Les
+   erreurs de syntaxe triviales seront détectées à la première passe d'analyse
+   mais quelque chose de plus complexe ne sera pas détecté avant son
+   exécution.)
+  </p><p>
+   <span class="application">PL/pgSQL</span> (ou plus exactement le gestionnaire SPI)
+   peut tenter de mettre en cache le plan d'exécution associé à toute requête
+   préparée. Si un plan en cache n'est pas utilisé, alors un nouveau plan
+   d'exécution est généré pour chaque appel de la requête, et les valeurs
+   actuelles du paramètre (autrement dit les valeurs de la variable
+   <span class="application">PL/pgSQL</span>) peuvent être utilisées pour optimiser
+   le plan sélectionné. Si la requête n'a pas de paramètres ou est exécuté
+   plusieurs fois, le gestionnaire SPI considérera la création d'un plan
+   <em class="firstterm">générique</em> qui n'est pas dépendant des valeurs du
+   paramètre et placera ce plan en cache pour le réutiliser. Habituellement,
+   ceci survient seulement si le plan d'exécution n'est pas très sensible
+   aux valeurs des variables <span class="application">PL/pgSQL</span> référencées.
+   Si ce n'est pas le cas, générer un nouveau plan à chaque fois est un gain
+   net. Voir <a class="xref" href="sql-prepare.html" title="PREPARE"><span class="refentrytitle">PREPARE</span></a> pour plus d'informations sur le
+   comportement des requêtes préparées.
+  </p><p>
+   Comme <span class="application">PL/pgSQL</span> sauvegarde des instructions
+   préparées et quelques fois des plans d'exécution
+   de cette façon, les commandes SQL qui apparaissent directement dans une
+   fonction <span class="application">PL/pgSQL</span> doivent faire référence aux
+   même tables et aux mêmes colonnes à chaque exécution ; c'est-à-dire
+   que vous ne pouvez pas utiliser un paramètre comme le nom d'une table ou
+   d'une colonne dans une commande SQL. Pour contourner cette restriction,
+   vous pouvez construire des commandes dynamiques en utilisant l'instruction
+   <code class="command">EXECUTE</code> de <span class="application">PL/pgSQL</span>
+    --  au prix d'une nouvelle analyse du plan et de la construction d'un
+   nouveau plan d'exécution sur chaque exécution.
+  </p><p>
+   La nature muable des variables de type record présente un autre problème
+   dans cette connexion. Quand les champs d'une variable record sont utilisés
+   dans les expressions ou instructions, les types de données des champs
+   ne doivent pas modifier d'un appel de la fonction à un autre car chaque
+   expression sera analysée en utilisant le type de données qui est présent
+   quand l'expression est atteinte en premier. <code class="command">EXECUTE</code> peut
+   être utilisé pour contourner ce problème si nécessaire.
+  </p><p>
+   Si la même fonction est utilisée comme trigger pour plus d'une table,
+   <span class="application">PL/pgSQL</span> prépare et met en cache les instructions
+   indépendamment pour chacune de ses tables  --  c'est-à-dire qu'il y a
+   un cache pour chaque combinaison fonction trigger/table, pas
+   uniquement pour chaque fonction. Ceci diminue certains des problèmes avec
+   les types de données variables ; par exemple, une fonction trigger
+   pourra fonctionner correctement avec une colonne nommée
+   <code class="literal">cle</code> même si cette colonne a différents types dans
+   différentes tables.
+  </p><p>
+   De la même façon, les fonctions ayant des types polymorphiques pour les
+   arguments ont un cache séparé des instructions pour chaque combinaison des types
+   d'argument réels avec lesquels elles ont été appelées, donc les différences
+   de type de données ne causent pas d'échecs inattendus.
+  </p><p>
+   La mise en cache des instructions peut parfois avoir des effets surprenants sur
+   l'interprétation des valeurs sensibles à l'heure. Par exemple, il y a une
+   différence entre ce que font ces deux fonctions :
+
+   </p><pre class="programlisting">
+CREATE FUNCTION logfunc1(logtxt text) RETURNS void AS $$
+    BEGIN
+        INSERT INTO logtable VALUES (logtxt, 'now');
+    END;
+$$ LANGUAGE plpgsql;
+   </pre><p>
+
+   et :
+
+   </p><pre class="programlisting">
+CREATE FUNCTION logfunc2(logtxt text) RETURNS void AS $$
+    DECLARE
+        curtime timestamp;
+    BEGIN
+        curtime := 'now';
+        INSERT INTO logtable VALUES (logtxt, curtime);
+    END;
+$$ LANGUAGE plpgsql;
+   </pre><p>
+  </p><p>
+   Dans le cas de <code class="function">logfunc1</code>, l'analyseur principal de
+   <span class="productname">PostgreSQL</span> sait lors de l'analyser du
+   <code class="command">INSERT</code> que la chaîne <code class="literal">'now'</code>
+   devrait être interprétée comme un <code class="type">timestamp</code> car la
+   colonne cible de <code class="classname">logtable</code> est de ce type. Du coup,
+   <code class="literal">'now'</code> sera converti en une constante
+   <code class="type">timestamp</code> quand <code class="command">INSERT</code> est analysé, puis
+   utilisé dans tous les appels de <code class="function">logfunc1</code> tout au
+   long de la vie de la session. Il est inutile de dire que ce n'est pas ce
+   que voulait le développeur. Une meilleure idée reviendrait à utiliser la
+   fonction <code class="literal">now()</code> ou <code class="literal">current_timestamp</code>.
+  </p><p>
+   Dans le cas de <code class="function">logfunc2</code>, l'analyseur principal de
+   <span class="productname">PostgreSQL</span> ne connaît pas le type que deviendra
+   <code class="literal">'now'</code> et, du coup, il renvoie une valeur de type
+   <code class="type">text</code> contenant la chaîne <code class="literal">now</code>. Lors de
+   l'affectation à la variable <code class="varname">curtime</code> locale, l'interpréteur
+   <span class="application">PL/pgSQL</span> convertie cette chaîne dans le type
+   <code class="type">timestamp</code> en appelant les fonctions <code class="function">textout</code>
+   et <code class="function">timestamp_in</code> pour la conversion. Du coup, l'heure
+   calculée est mise à jour à chaque exécution comme le suppose le développeur.
+   Même s'il arrive que ça fonctionne ainsi, ce n'est pas très efficace, donc
+   l'utilisation de la fonction <code class="literal">now()</code> sera encore une fois
+   une meilleur idée.
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/plpgsql-implementation.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:44 GMT -->
+</html>

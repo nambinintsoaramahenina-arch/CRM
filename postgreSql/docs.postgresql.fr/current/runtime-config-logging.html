@@ -1,0 +1,944 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-logging.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:23 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.8. Remonter et tracer les erreurs</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-query.html" title="19.7. Planification des requêtes" /><link rel="next" href="runtime-config-statistics.html" title="19.9. Statistiques d'exécution" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/runtime-config-logging.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/runtime-config-logging.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/runtime-config-logging.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/runtime-config-logging.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/runtime-config-logging.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/runtime-config-logging.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/runtime-config-logging.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/runtime-config-logging.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/runtime-config-logging.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/runtime-config-logging.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/runtime-config-logging.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/runtime-config-logging.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/runtime-config-logging.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/runtime-config-logging.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/runtime-config-logging.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/runtime-config-logging.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/runtime-config-logging.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/runtime-config-logging.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/runtime-config-logging.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/runtime-config-logging.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/runtime-config-logging.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="runtime-config.html">Configuration du serveur</a></span> » <span class="breadcrumb-node">Remonter et tracer les erreurs</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-query.html" title="19.7. Planification des requêtes">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-statistics.html" title="19.9. Statistiques d'exécution">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">19.7. Planification des requêtes </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 19.9. Statistiques d'exécution</td></tr></table></div><div class="sect1" id="RUNTIME-CONFIG-LOGGING"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.8. Remonter et tracer les erreurs <a href="#RUNTIME-CONFIG-LOGGING" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHERE">19.8.1. Où tracer</a></span></dt><dt><span class="sect2"><a href="runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHEN">19.8.2. Quand tracer</a></span></dt><dt><span class="sect2"><a href="runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-WHAT">19.8.3. Que tracer</a></span></dt><dt><span class="sect2"><a href="runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-CSVLOG">19.8.4. Utiliser les journaux au format CSV</a></span></dt><dt><span class="sect2"><a href="runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-JSONLOG">19.8.5. Utiliser le format de trace JSON</a></span></dt><dt><span class="sect2"><a href="runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-PROC-TITLE">19.8.6. Titre des processus</a></span></dt></dl></div><a id="id-1.6.6.11.2" class="indexterm"></a><div class="sect2" id="RUNTIME-CONFIG-LOGGING-WHERE"><div class="titlepage"><div><div><h3 class="title">19.8.1. Où tracer <a href="#RUNTIME-CONFIG-LOGGING-WHERE" class="id_link">#</a></h3></div></div></div><a id="id-1.6.6.11.3.2" class="indexterm"></a><a id="id-1.6.6.11.3.3" class="indexterm"></a><div class="variablelist"><dl class="variablelist"><dt id="GUC-LOG-DESTINATION"><span class="term"><code class="varname">log_destination</code> (<code class="type">string</code>)</span> <a href="#GUC-LOG-DESTINATION" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.3.4.1.2.1" class="indexterm"></a><p>
+         <span class="productname">PostgreSQL</span> supporte plusieurs méthodes pour
+         la journalisation des messages du serveur, dont
+         <span class="systemitem">stderr</span>, <span class="systemitem">csvlog</span>,
+         <span class="systemitem">jsonlog</span> et <span class="systemitem">syslog</span>.
+         Sur Windows, <span class="systemitem">eventlog</span> est aussi supporté. Ce
+         paramètre se configure avec la liste des destinations souhaitées
+         séparées par des virgules. Par défaut, les traces ne sont dirigées que
+         vers <span class="systemitem">stderr</span>.  Ce paramètre ne peut être
+         configuré que dans le fichier <code class="filename">postgresql.conf</code> ou
+         indiqué sur la ligne de commande.
+        </p><p>
+         Si <span class="systemitem">csvlog</span> est la valeur de
+         <code class="varname">log_destination</code>, les entrées du journal applicatif
+         sont enregistrées dans le format <acronym class="acronym">CSV</acronym> (<span class="quote">« <span class="quote">comma
+         separated value</span> »</span>), ce qui est bien pratique pour les charger
+         dans des programmes. Voir <a class="xref" href="runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-CSVLOG" title="19.8.4. Utiliser les journaux au format CSV">Section 19.8.4</a> pour les détails.  <a class="xref" href="runtime-config-logging.html#GUC-LOGGING-COLLECTOR">logging_collector</a> doit être activé pour produire des
+         journaux applicatifs au format CSV.
+        </p><p>
+         Si <span class="systemitem">jsonlog</span> est inclus dans
+         <code class="varname">log_destination</code>, les enregistrements des traces sont
+         faits dans le format <acronym class="acronym">JSON</acronym>, ce qui peut être adéquat
+         pour le chargement des fichiers de traces dans des programmes. Voir
+         <a class="xref" href="runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-JSONLOG" title="19.8.5. Utiliser le format de trace JSON">Section 19.8.5</a> pour les détails.
+         <a class="xref" href="runtime-config-logging.html#GUC-LOGGING-COLLECTOR">logging_collector</a> doit être activé pour générer
+         des traces au format JSON.
+        </p><p>
+         Quand soit <span class="systemitem">stderr</span>, soit
+         <span class="systemitem">csvlog</span>, soit <span class="systemitem">jsonlog</span>
+         sont inclus, le fichier <code class="filename">current_logfiles</code> est créé
+         pour enregistrer l'emplacement des fichiers de trace actuellement
+         utilisés par le récupérateur des traces, ainsi que la destination
+         associée des traces. Ceci fournit un moyen agréable pour trouver les
+         fichiers en cours d'utilisation par l'instance. Voici un exemple du
+         contenu de ce fichier :
+
+ </p><pre class="programlisting">stderr log/postgresql.log
+ csvlog log/postgresql.csv
++jsonlog log/postgresql.json</pre><p>
+
+         <code class="filename">current_logfiles</code> est recréé quand un nouveau
+         fichier de trace est crée du à une rotation, et quand
+         <code class="varname">log_destination</code> est rechargé.  Il est supprimé quand
+         ni <span class="systemitem">stderr</span> ni <span class="systemitem">csvlog</span>
+         ni <span class="systemitem">jsonlog</span> ne sont inclus dans
+         <code class="varname">log_destination</code>, et quand le collecteur de traces es
+         désactivé.
+        </p><div class="note"><h3 class="title">Note</h3><p>
+      Sur la plupart des systèmes Unix, il est nécessaire de modifier la
+      configuration du démon <span class="application">syslog</span> pour utiliser
+      l'option <span class="systemitem">syslog</span> de
+      <code class="varname">log_destination</code>.  <span class="productname">PostgreSQL</span>
+      peut tracer dans les niveaux <span class="application">syslog</span>
+      <code class="literal">LOCAL0</code> à <code class="literal">LOCAL7</code> (voir <a class="xref" href="runtime-config-logging.html#GUC-SYSLOG-FACILITY">syslog_facility</a>) mais la configuration par défaut de
+      <span class="application">syslog</span> sur la plupart des plateformes
+      ignore de tels messages. Il faut ajouter une ligne similaire à :
+      </p><pre class="programlisting">
+local0.*    /var/log/postgresql
+      </pre><p>
+      dans le fichier de configuration de <span class="application">syslog</span>
+      pour obtenir ce type de journalisation.
+     </p><p>
+      Sur Windows, quand vous utilisez l'option <code class="literal">eventlog</code>
+      pour <code class="varname">log_destination</code>, vous devez enregistrer une
+      source d'événement et sa bibliothèque avec le système d'exploitation,
+      pour que le visualisateur des événements Windows puisse affiche
+      correctement les traces. Voir
+      <a class="xref" href="event-log-registration.html" title="18.12. Enregistrer le journal des événements sous Windows">Section 18.12</a> pour les détails.
+     </p></div></dd><dt id="GUC-LOGGING-COLLECTOR"><span class="term"><code class="varname">logging_collector</code> (<code class="type">boolean</code>)</span> <a href="#GUC-LOGGING-COLLECTOR" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.3.4.2.2.1" class="indexterm"></a><p>
+     Ce paramètre active le collecteur de traces (<em class="firstterm">logging
+      collector</em>), qui est un processus en tâche de fond capturant
+     les traces envoyées sur <span class="systemitem">stderr</span> et les
+     enregistrant dans des fichiers. Cette approche est souvent plus utile
+     que la journalisation avec <span class="application">syslog</span>, car
+     certains messages peuvent ne pas apparaître dans
+     <span class="application">syslog</span>. (Un exemple standard concerne les
+     messages d'échec de l'édition dynamique ; un autre concerne les
+     messages d'erreurs produits par les scripts comme
+     <code class="varname">archive_command</code>.). Ce paramètre ne peut être configuré
+     qu'au lancement du serveur.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Il est possible de tracer sur <span class="systemitem">stderr</span> sans
+      utiliser le collecteur de traces. Les messages iront à l'endroit où
+      est redirigé la sortie des erreurs (<span class="systemitem">stderr</span>)
+      du système. Néanmoins, cette méthode est seulement acceptable pour les
+      petits volumes de traces car il ne fournit pas de moyens corrects pour
+      gérer la rotation des fichiers de traces. Ainsi, sur certaines
+      plateformes n'utilisant pas le collecteur des traces, cela peut avoir
+      pour résultat la perte ou la corruption des traces, notamment si
+      plusieurs processus écrivent en même temps dans le même fichier de
+      traces, écrasant ainsi les traces des autres processus.
+     </p></div><div class="note"><h3 class="title">Note</h3><p>
+      Le collecteur des traces est conçu pour ne jamais perdre de
+      messages. Cela signifie que, dans le cas d'une charge extrêmement
+      forte, les processus serveur pourraient se trouver bloqués lors de
+      l'envoi de messages de trace supplémentaires. Le collecteur
+      pourrait accumuler dans ce cas du retard.
+      <span class="application">syslog</span> préfère supprimer des messages
+      s'il ne peut pas les écrire. Il pourrait donc ne pas récupérer
+      certains messages dans ces cas mais il ne bloquera pas le reste du
+      système.
+     </p></div></dd><dt id="GUC-LOG-DIRECTORY"><span class="term"><code class="varname">log_directory</code> (<code class="type">string</code>)</span> <a href="#GUC-LOG-DIRECTORY" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.3.4.3.2.1" class="indexterm"></a><p>
+     Lorsque <code class="varname">logging_collector</code> est activé, ce paramètre
+     détermine le répertoire dans lequel les fichiers de trace sont
+     créés. Il peut s'agir d'un chemin absolu ou d'un chemin
+     relatif au répertoire des données du cluster.
+     Ce paramètre ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+     La valeur par défaut est <code class="literal">log</code>.
+    </p></dd><dt id="GUC-LOG-FILENAME"><span class="term"><code class="varname">log_filename</code> (<code class="type">string</code>)</span> <a href="#GUC-LOG-FILENAME" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.3.4.4.2.1" class="indexterm"></a><p>
+     Lorsque <code class="varname">logging_collector</code> est activé, ce paramètre
+     indique les noms des journaux applicatifs créés. La valeur est
+     traitée comme un motif <code class="function">strftime</code>. Ainsi
+     les échappements <code class="literal">%</code> peuvent être utilisés pour
+     indiquer des noms de fichiers horodatés.  (S'il y a des
+     échappements <code class="literal">%</code> dépendant des fuseaux horaires, le
+     calcul se fait dans le fuseau précisé par
+     <a class="xref" href="runtime-config-logging.html#GUC-LOG-TIMEZONE">log_timezone</a>.) Les échappements
+     <code class="literal">%</code> supportés sont similaires à ceux listés dans
+     la spécification de <a class="ulink" href="https://pubs.opengroup.org/onlinepubs/009695399/functions/strftime.html" target="_top">strftime</a>
+     par l'Open Group.
+     Notez que la fonction <code class="function">strftime</code> du système n'est
+     pas utilisée directement, ce qui entraîne que les extensions spécifiques
+     à la plateforme (non-standard) ne fonctionneront pas.
+    </p><p>
+     Si vous spécifiez un nom de fichier sans échappements, vous devriez
+     prévoir d'utiliser un utilitaire de rotation des journaux pour éviter
+     le risque de remplir le disque entier. Dans les versions précédentes à
+     8.4, si aucun échappement <code class="literal">%</code> n'était présent,
+     <span class="productname">PostgreSQL</span> aurait ajouté l'epoch de la date de
+     création du nouveau journal applicatif mais ce n'est plus le cas.
+    </p><p>
+     Si la sortie au format CSV est activée dans
+     <code class="varname">log_destination</code>, <code class="literal">.csv</code> est
+     automatiquement ajouté au nom du journal horodaté. (Si
+     <code class="varname">log_filename</code> se termine en <code class="literal">.log</code>,
+     le suffixe est simplement remplacé.)
+    </p><p>
+     Si la sortie en format JSON est activée dans
+     <code class="varname">log_destination</code>, <code class="literal">.json</code> sera ajouté au
+     nom du fichier de trace pour créer le nom du fichier au format JSON.  (Si
+     <code class="varname">log_filename</code> se termine en <code class="literal">.log</code>, le
+     suffise est remplacé.)
+    </p><p>
+     Ce paramètre ne peut être positionné que dans le fichier
+     <code class="filename">postgresql.conf</code> ou en ligne de commande.
+     La valeur par défaut est <code class="literal">postgresql-%Y-%m-%d_%H%M%S.log</code>.
+    </p></dd><dt id="GUC-LOG-FILE-MODE"><span class="term"><code class="varname">log_file_mode</code> (<code class="type">integer</code>)</span> <a href="#GUC-LOG-FILE-MODE" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.3.4.5.2.1" class="indexterm"></a><p>
+     Sur les systèmes Unix, ce paramètre configure les droits pour
+     les journaux applicatifs quand
+     <code class="varname">logging_collector</code> est activé. (Sur Microsoft
+     Windows, ce paramètre est ignoré.) La valeur de ce paramètre
+     doit être un mode numérique spécifié dans le format accepté par
+     les appels systèmes <code class="function">chmod</code> et
+     <code class="function">umask</code>. (Pour utiliser le format octal, ce
+     nombre doit être précédé d'un zéro, <code class="literal">0</code>.)
+    </p><p>
+     Les droits par défaut sont <code class="literal">0600</code>, signifiant
+     que seul l'utilisateur qui a lancé le serveur peut lire ou
+     écrire les journaux applicatifs. Un autre paramétrage habituel
+     est <code class="literal">0640</code>, permettant aux membres du groupe
+     propriétaire de lire les fichiers. Notez néanmoins que pour
+     utiliser ce paramètre, vous devez modifier <a class="xref" href="runtime-config-logging.html#GUC-LOG-DIRECTORY">log_directory</a> pour enregistrer les fichiers en
+     dehors du répertoire des données de l'instance. Dans ce cas, il
+     est déconseillé de rendre les journaux applicatifs lisibles par
+     tout le monde car ils pourraient contenir des données sensibles.
+    </p><p>
+     Ce paramètre ne peut être positionné que dans le fichier
+     <code class="filename">postgresql.conf</code> ou en ligne de commande.
+    </p></dd><dt id="GUC-LOG-ROTATION-AGE"><span class="term"><code class="varname">log_rotation_age</code> (<code class="type">integer</code>)</span> <a href="#GUC-LOG-ROTATION-AGE" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.3.4.6.2.1" class="indexterm"></a><p>
+     Lorsque <code class="varname">logging_collector</code> est activé, ce paramètre
+     détermine la durée maximale pour utiliser un fichier de trace individuel,
+     après lequel un nouveau fichier de trace sera créé. Si cette valeur est
+     indiquée sans unité, elle sera compris comme un nombre de minutes. La
+     valeur par défaut est de 24 heures. Configurer à zéro désactive la
+     création de nouveaux fichiers de trace en se basant sur la date et heure.
+     Ce paramètre ne peut qu'être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+    </p></dd><dt id="GUC-LOG-ROTATION-SIZE"><span class="term"><code class="varname">log_rotation_size</code> (<code class="type">integer</code>)</span> <a href="#GUC-LOG-ROTATION-SIZE" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.3.4.7.2.1" class="indexterm"></a><p>
+     Lorsque <code class="varname">logging_collector</code> est activé, ce paramètre
+     détermine la taille maximale (en kilooctets) d'un journal individuel.
+     Après cette quantité de données a été émise dans un fichier de trace, un
+     nouveau fichier de trace sera créé. Si cette valeur est spécifiée sans
+     unité, elle est comprise comme un nombre de Ko. La valeur par défaut est
+     de 10 Mo. Configurer à zéro désactive la création de nouveaux fichiers de
+     trace en se basant sur la taille. Ce paramètre ne peut être configuré que
+     dans le fichier <code class="filename">postgresql.conf</code> ou indiqué sur la
+     ligne de commande.
+    </p></dd><dt id="GUC-LOG-TRUNCATE-ON-ROTATION"><span class="term"><code class="varname">log_truncate_on_rotation</code> (<code class="type">boolean</code>)</span> <a href="#GUC-LOG-TRUNCATE-ON-ROTATION" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.3.4.8.2.1" class="indexterm"></a><p>
+     Lorsque <code class="varname">logging_collector</code> est activé, ce paramètre
+     impose à <span class="productname">PostgreSQL</span> de vider
+     (écraser), plutôt qu'ajouter à, tout fichier journal dont le
+     nom existe déjà.
+     Toutefois, cet écrasement ne survient qu'à partir du moment où
+     un nouveau fichier doit être ouvert du fait d'une rotation par
+     temps compté, et non pas à la suite du démarrage du serveur ou d'une
+     rotation par taille comptée. Si ce paramètre est désactivé (off),
+     les traces sont, dans tous les cas, ajoutées aux fichiers qui
+     existent déjà.
+    </p><p>
+     Par exemple, si ce paramètres est utilisé en combinaison avec un
+     <code class="varname">log_filename</code> tel que
+     <code class="literal">postgresql-%H.log</code>, il en résulte la génération
+     de 24 journaux (un par heure) écrasés de façon cyclique.
+    </p><p>
+     Ce paramètre ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+    </p><p>
+     Exemple : pour conserver sept jours de traces, un fichier par
+     jour nommé <code class="literal">server_log.Mon</code>,
+     <code class="literal">server_log.Tue</code>, etc. et écraser automatiquement
+     les traces de la semaine précédente avec celles de la semaine
+     courante, on positionne <code class="varname">log_filename</code> à
+     <code class="literal">server_log.%a</code>,
+     <code class="varname">log_truncate_on_rotation</code> à <code class="literal">on</code>
+     et <code class="varname">log_rotation_age</code> à <code class="literal">1440</code>.
+    </p><p>
+     Exemple : pour conserver 24 heures de traces, un journal par
+     heure, toute en effectuant la rotation plus tôt si le journal dépasse
+     1 Go, on positionne
+     <code class="varname">log_filename</code> à <code class="literal">server_log.%H%M</code>,
+     <code class="varname">log_truncate_on_rotation</code> à <code class="literal">on</code>,
+     <code class="varname">log_rotation_age</code> à <code class="literal">60</code> et
+     <code class="varname">log_rotation_size</code> à <code class="literal">1000000</code>.
+     Inclure <code class="literal">%M</code> dans
+     <code class="varname">log_filename</code> permet à toute rotation par taille
+     comptée qui survient d'utiliser un nom de fichier distinct du nom
+     initial horodaté.
+    </p></dd><dt id="GUC-SYSLOG-FACILITY"><span class="term"><code class="varname">syslog_facility</code> (<code class="type">enum</code>)</span> <a href="#GUC-SYSLOG-FACILITY" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.3.4.9.2.1" class="indexterm"></a><p>
+     Lorsque les traces <span class="application">syslog</span> sont activées, ce
+     paramètre fixe le niveau (<span class="quote">« <span class="quote">facility</span> »</span>) utilisé par
+     <span class="application">syslog</span>. Les différentes possibilités
+     sont <code class="literal">LOCAL0</code>, <code class="literal">LOCAL1</code>,
+     <code class="literal">LOCAL2</code>, <code class="literal">LOCAL3</code>,
+     <code class="literal">LOCAL4</code>, <code class="literal">LOCAL5</code>,
+     <code class="literal">LOCAL6</code>, <code class="literal">LOCAL7</code> ;
+     <code class="literal">LOCAL0</code> étant la valeur par défaut. Voir aussi la
+     documentation du démon <span class="application">syslog</span> du
+     serveur. Ce paramètre ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+    </p></dd><dt id="GUC-SYSLOG-IDENT"><span class="term"><code class="varname">syslog_ident</code> (<code class="type">string</code>)</span> <a href="#GUC-SYSLOG-IDENT" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.3.4.10.2.1" class="indexterm"></a><p>
+     Si <span class="application">syslog</span> est activé, ce paramètre fixe le nom
+     du programme utilisé pour identifier les messages
+     <span class="productname">PostgreSQL</span> dans les traces de
+     <span class="application">syslog</span>. La valeur par défaut est
+     <code class="literal">postgres</code>.
+     Ce paramètre ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+    </p></dd><dt id="GUC-SYSLOG-SEQUENCE-NUMBERS"><span class="term"><code class="varname">syslog_sequence_numbers</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.11.3.4.11.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SYSLOG-SEQUENCE-NUMBERS" class="id_link">#</a></dt><dd><p>
+     Lorsque les traces ont pour destination <span class="application">syslog</span>
+     et que ce paramètre vaut on (c'est la valeur par défaut), alors chaque
+     message est préfixé par un numéro de séquence en constante augmentation
+     (par exemple <code class="literal">[2]</code>).  Ceci permet d'éviter la suppression
+     du type <span class="quote">« <span class="quote">--- last message repeated N times ---</span> »</span> qu'un grand
+     nombre d'implémentations de syslog réalisent par défaut. Dans les
+     implémentations plus modernes de syslog, la suppression des messages
+     répétés peut être configurée (par exemple,
+     <code class="literal">$RepeatedMsgReduction</code> dans
+     <span class="productname">rsyslog</span>), ce paramètre pourrait ne plus être
+     nécessaire. De plus, vous pouvez désactiver cette fonction si vous voulez
+     vraiment supprimer des messages répétés
+    </p><p>
+     Ce paramètre peut seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+     serveur.
+    </p></dd><dt id="GUC-SYSLOG-SPLIT-MESSAGES"><span class="term"><code class="varname">syslog_split_messages</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.11.3.4.12.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SYSLOG-SPLIT-MESSAGES" class="id_link">#</a></dt><dd><p>
+     Lorsque les traces ont pour destination <span class="application">syslog</span>,
+     ce paramètre détermine comment les messages sont délivrées à syslog. Si ce
+     paramètre vaut on (ce qui correspond à la valeur par défaut), les messages
+     sont divisés en ligne, et les longues lignes sont divisées pour qu'elles
+     tiennent sur 1024 octets, qui est la limite typique en taille pour les
+     implémentations syslog traditionnelles. Si ce paramètre est à off, les
+     messages du serveur PostgreSQL sont délivrés au service syslog tel quel,
+     et c'est au service syslog de se débrouiller avec les messages
+     potentiellement gros.
+    </p><p>
+     Si syslog enregistre au final les messages dans un fichier texte, alors
+     l'effet sera le même de toute façon et il est préférable de laisser ce
+     paramètre à la valeur on car la plupart des implémentations syslog ne
+     peuvent pas gérer de grands messages ou auraient besoin d'être configurés
+     spécialement pour les gérer. Si syslog écrit au final dans un autre média,
+     il pourrait être nécessaire ou utile de conserver les messages dans un
+     ensemble logique.
+    </p><p>
+     Ce paramètre peut seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+     serveur.
+    </p></dd><dt id="GUC-EVENT-SOURCE"><span class="term"><code class="varname">event_source</code> (<code class="type">string</code>)</span> <a href="#GUC-EVENT-SOURCE" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.3.4.13.2.1" class="indexterm"></a><p>
+     Si la journalisation applicative se fait au travers du journal des
+     événements (<span class="application">event log</span>), ce paramètre
+     détermine le nom du programme utilisé pour identifier les messages de
+     <span class="productname">PostgreSQL</span> dans la trace. La valeur par
+     défaut est <code class="literal">PostgreSQL</code>.
+     Ce paramètre peut seulement être configuré au démarrage du serveur.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-LOGGING-WHEN"><div class="titlepage"><div><div><h3 class="title">19.8.2. Quand tracer <a href="#RUNTIME-CONFIG-LOGGING-WHEN" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-LOG-MIN-MESSAGES"><span class="term"><code class="varname">log_min_messages</code> (<code class="type">enum</code>)</span> <a href="#GUC-LOG-MIN-MESSAGES" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.4.2.1.2.1" class="indexterm"></a><p>
+     Contrôle les <a class="link" href="runtime-config-logging.html#RUNTIME-CONFIG-SEVERITY-LEVELS" title="Tableau 19.2. Niveaux de sévérité des messages">niveaux de
+      message</a> écrits dans les traces du serveur.
+     Les valeurs valides sont <code class="literal">DEBUG5</code>, <code class="literal">DEBUG4</code>,
+     <code class="literal">DEBUG3</code>, <code class="literal">DEBUG2</code>, <code class="literal">DEBUG1</code>,
+     <code class="literal">INFO</code>, <code class="literal">NOTICE</code>, <code class="literal">WARNING</code>,
+     <code class="literal">ERROR</code>, <code class="literal">LOG</code>, <code class="literal">FATAL</code> et
+     <code class="literal">PANIC</code>. Chaque niveau inclut tous les niveaux qui le
+     suivent. Plus on progresse dans la liste, plus le nombre de messages
+     envoyés est faible. <code class="literal">WARNING</code> est la valeur par
+     défaut. <code class="literal">LOG</code> a ici une portée différente de celle
+     de <a class="xref" href="runtime-config-client.html#GUC-CLIENT-MIN-MESSAGES">client_min_messages</a>. Seuls les superutilisateurs et les
+     utilisateurs disposant des droits <code class="literal">SET</code> appropriés peuvent
+     modifier la valeur de ce paramètre.
+    </p></dd><dt id="GUC-LOG-MIN-ERROR-STATEMENT"><span class="term"><code class="varname">log_min_error_statement</code> (<code class="type">enum</code>)</span> <a href="#GUC-LOG-MIN-ERROR-STATEMENT" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.4.2.2.2.1" class="indexterm"></a><p>
+     Contrôle si l'instruction SQL à l'origine d'une erreur doit être
+     enregistrée dans les traces du serveur. L'instruction SQL en cours est
+     incluse dans les traces pour tout message de <a class="link" href="runtime-config-logging.html#RUNTIME-CONFIG-SEVERITY-LEVELS" title="Tableau 19.2. Niveaux de sévérité des messages">sévérité</a> indiquée ou
+     supérieure. Les valeurs valides sont <code class="literal">DEBUG5</code>,
+     <code class="literal">DEBUG4</code>, <code class="literal">DEBUG3</code>,
+     <code class="literal">DEBUG2</code>, <code class="literal">DEBUG1</code>,
+     <code class="literal">INFO</code>, <code class="literal">NOTICE</code>,
+     <code class="literal">WARNING</code>, <code class="literal">ERROR</code>,
+     <code class="literal">LOG</code>, <code class="literal">FATAL</code> et <code class="literal">PANIC</code>.
+     <code class="literal">ERROR</code> est la valeur par défaut, ce qui signifie que
+     les instructions à l'origine d'erreurs, de messages applicatifs,
+     d'erreurs fatales ou de
+     paniques sont tracées. Pour réellement désactiver le traçage des
+     instructions échouées, ce paramètre doit être positionné à
+     <code class="literal">PANIC</code>. Seuls les superutilisateurs et les
+     utilisateurs disposant des droits <code class="literal">SET</code> appropriés peuvent
+     modifier la valeur de ce paramètre.
+    </p></dd><dt id="GUC-LOG-MIN-DURATION-STATEMENT"><span class="term"><code class="varname">log_min_duration_statement</code> (<code class="type">integer</code>)</span> <a href="#GUC-LOG-MIN-DURATION-STATEMENT" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.4.2.3.2.1" class="indexterm"></a><p>
+     Trace la durée de toute instruction terminée dont le temps d'exécution
+     égale ou dépasse cette durée. Par exemple, si le paramètre est positionné
+     à <code class="literal">250ms</code>, alors toutes les instructions SQL dont la
+     durée est supérieure ou égale à 250 ms sont tracées. Il est utile
+     d'activer ce paramètre pour tracer les requêtes non optimisées des
+     applications. Si cette valeur est indiquée sans unité, elle est considérée
+     comme un nombre de millisecondes. La configurer à zéro affiche la durée de
+     toutes les requêtes. <code class="literal">-1</code> (valeur par défaut) désactive
+     la trace de la durée des requêtes. Seuls les superutilisateurs et les
+     utilisateurs disposant des droits <code class="literal">SET</code> appropriés peuvent
+     modifier cette configuration.
+    </p><p>
+     Ceci surcharge <a class="xref" href="runtime-config-logging.html#GUC-LOG-MIN-DURATION-SAMPLE">log_min_duration_sample</a>, ceci
+     signifiant que les requêtes dont la durée dépasse cette configuration ne
+     sont pas sujet à l'échantillonnage et sont toujours tracées.
+    </p><p>
+     Pour les clients utilisant le protocole de requêtage étendu, les durées
+     des étapes Parse (analyse), Bind (lien) et Execute (exécution) sont
+     tracées indépendamment.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Lorsque cette option est utilisée avec
+      <a class="xref" href="runtime-config-logging.html#GUC-LOG-STATEMENT">log_statement</a>, le texte des instructions tracées
+      du fait de <code class="varname">log_statement</code> n'est pas répété dans le
+      message de trace de la durée. Si <span class="application">syslog</span>
+      n'est pas utilisé, il est recommandé de tracer le PID
+      ou l'ID de session à l'aide de <a class="xref" href="runtime-config-logging.html#GUC-LOG-LINE-PREFIX">log_line_prefix</a>
+      de façon à pouvoir lier le message de l'instruction au message de
+      durée par cet identifiant.
+     </p></div></dd><dt id="GUC-LOG-MIN-DURATION-SAMPLE"><span class="term"><code class="varname">log_min_duration_sample</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.11.4.2.4.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-LOG-MIN-DURATION-SAMPLE" class="id_link">#</a></dt><dd><p>
+     Permet l'échantillonnage de la durée des requêtes traitées pour celles
+     qui durent au moins la durée indiquée. Ceci produit le même type de
+     traces que <a class="xref" href="runtime-config-logging.html#GUC-LOG-MIN-DURATION-STATEMENT">log_min_duration_statement</a>, mais
+     seulement pour un sous-ensemble des requêtes exécutées, avec un taux
+     d'échantillonnage contrôlé avec le paramètre <a class="xref" href="runtime-config-logging.html#GUC-LOG-STATEMENT-SAMPLE-RATE">log_statement_sample_rate</a>. Par exemple, si vous voulez le
+     configurer à <code class="literal">100ms</code>, alors toutes les requêtes SQL qui
+     durent 100 millisecondes ou plus seront considérées pour
+     l'échantillonnage. Activer ce paramètre peut être utile quand le trafic
+     est trop important pour tracer toutes les requêtes. Si cette valeur est
+     indiquée sans unité, elle est considérée comme un nombre de
+     milltisecondes. Le configurer à zéro échantillonne toutes les durées de
+     requêtes. La valeur <code class="literal">-1</code> (valeur par défaut) désactive
+     l'échantillonnage des durées des requêtes. Seuls les superutilisateurs
+     et les utilisateurs disposant des droits <code class="literal">SET</code> appropriés
+     peuvent modifier ce paramètre.
+    </p><p>
+     Ce paramètre a une priorité plus basse que
+     <code class="varname">log_min_duration_statement</code>, signifiant que les
+     requêtes dont la durée dépasse
+     <code class="varname">log_min_duration_statement</code> ne sont pas sujets à
+     l'échantillonnage et seront toujours tracées.
+    </p><p>
+     D'autres notes pour <code class="varname">log_min_duration_statement</code>
+     s'appliquent aussi à ce paramètre.
+    </p></dd><dt id="GUC-LOG-STATEMENT-SAMPLE-RATE"><span class="term"><code class="varname">log_statement_sample_rate</code> (<code class="type">floating point</code>)
+    <a id="id-1.6.6.11.4.2.5.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-LOG-STATEMENT-SAMPLE-RATE" class="id_link">#</a></dt><dd><p>
+     Détermine la fraction de requêtes dont la durée dépasse <a class="xref" href="runtime-config-logging.html#GUC-LOG-MIN-DURATION-SAMPLE">log_min_duration_sample</a> et qui seront tracées.
+     L'échantillonnage est stochastique, par exemple <code class="literal">0.5</code>
+     signifie qu'il y a une chance sur qu'une requête soit tracée. La valeur
+     par défaut est <code class="literal">1.0</code>, signifiant toutes les requêtes. Le
+     configurer à zéro désactive la trace des durées des requêtes, tout comme
+     configurer le paramètre <code class="varname">log_min_duration_sample</code> à
+     <code class="literal">-1</code>. Seuls les superutilisateurs et les utilisateurs disposant
+     des droits <code class="literal">SET</code> appropriés peuvent modifier ce
+     paramètre.
+    </p></dd><dt id="GUC-LOG-TRANSACTION-SAMPLE-RATE"><span class="term"><code class="varname">log_transaction_sample_rate</code> (<code class="type">floating point</code>)
+    <a id="id-1.6.6.11.4.2.6.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-LOG-TRANSACTION-SAMPLE-RATE" class="id_link">#</a></dt><dd><p>
+     Initialise la fraction de transactions dont les requêtes seront toutes
+     tracées en plus des requêtes tracées pour d'autres raisons. Cela
+     s'applique à toute nouvelle transaction, quelque soit les durées des
+     requêtes. L'échantillonnage est stochastique, par exemple
+     <code class="literal">0.1</code> signifie qu'il y a statistiquement une chance sur
+     dix qu'une transaction donnée soit tracée.
+     <code class="varname">log_transaction_sample_rate</code> peut être utilisé pour
+     construire un échantillon de transactions. La valeur par défaut
+     (<code class="literal">0</code>) signifie qu'aucune requête d'une transaction
+     supplémentaire ne sera tracée. Positionner ce paramètre à
+     <code class="literal">1</code> permet de tracer toutes les requêtes de toutes les
+     transactions. Seuls les superutilisateurs peuvent changer ce
+     paramètre.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Comme toutes les options sur les traces des requêtes, cette option peut
+      ajouter une surcharge importante.
+     </p></div></dd><dt id="GUC-LOG-STARTUP-PROGRESS-INTERVAL"><span class="term"><code class="varname">log_startup_progress_interval</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.11.4.2.7.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-LOG-STARTUP-PROGRESS-INTERVAL" class="id_link">#</a></dt><dd><p>
+      Configure la durée après laquelle le processus de démarrage tracera un
+      message sur l'opération longue toujours en cours, ainsi que l'intervalle
+      entre les messages de progression*. La valeur par défaut est de 10
+      secondes. Une configuration à <code class="literal">0</code> désactive cette
+      fonctionnalité. Si cette valeur est indiquée sans unité, elle est
+      considérée comme étant un nombre de millisecondes. Cette configuration est
+      appliquée séparément pour chaque opération. Ce paramètre peut seulement
+      être configuré dans le fichier <code class="filename">postgresql.conf</code> et sur
+      la ligne de commande du serveur.
+     </p><p>
+      Par exemple, si la synchronisation du répertoire de données prends 25
+      secondes et qu'après cela, la réinitialisation des relations non
+      journalisées prend 8 secondes et que ce paramètre a sa valeur par défaut
+      de 10 secondes, alors un message sera tracé pour la synchronisation du
+      répertoire de données une fois que cette étape est en cours depuis plus de
+      10 secondes, puis de nouveau au bout de 20 secondes, mais rien ne sera
+      tracé pour les opérations de réinitialisation des relations non
+      journalisées.
+     </p></dd></dl></div><p>
+  <a class="xref" href="runtime-config-logging.html#RUNTIME-CONFIG-SEVERITY-LEVELS" title="Tableau 19.2. Niveaux de sévérité des messages">Tableau 19.2</a> explique les niveaux de
+  sévérité des messages utilisés par <span class="productname">PostgreSQL</span>.
+  Si la journalisation est envoyée à<span class="systemitem">syslog</span> ou à
+  l'<span class="systemitem">eventlog</span> de Windows, les niveaux de sévérité
+  sont traduits comme indiqué ci-dessous.
+ </p><div class="table" id="RUNTIME-CONFIG-SEVERITY-LEVELS"><p class="title"><strong>Tableau 19.2. Niveaux de sévérité des messages</strong></p><div class="table-contents"><table class="table" summary="Niveaux de sévérité des messages" border="1"><colgroup><col class="col1" /><col class="col2" /><col class="col3" /><col class="col4" /></colgroup><thead><tr><th>Sévérité</th><th>Usage</th><th><span class="systemitem">syslog</span></th><th><span class="systemitem">eventlog</span></th></tr></thead><tbody><tr><td><code class="literal">DEBUG1 .. DEBUG5</code></td><td>Fournit des informations successivement plus détaillées
+      à destination des développeurs.</td><td><code class="literal">DEBUG</code></td><td><code class="literal">INFORMATION</code></td></tr><tr><td><code class="literal">INFO</code></td><td>Fournit des informations implicitement demandées par
+      l'utilisateur, par exemple la sortie de <code class="command">VACUUM
+       VERBOSE</code>.</td><td><code class="literal">INFO</code></td><td><code class="literal">INFORMATION</code></td></tr><tr><td><code class="literal">NOTICE</code></td><td>Fournit des informations éventuellement utiles aux
+      utilisateurs, par exemple la troncature des identifiants longs.</td><td><code class="literal">NOTICE</code></td><td><code class="literal">INFORMATION</code></td></tr><tr><td><code class="literal">WARNING</code></td><td>Fournit des messages d'avertissement sur d'éventuels problèmes.
+      Par exemple, un <code class="command">COMMIT</code> en dehors d'un bloc de
+      transaction.</td><td><code class="literal">NOTICE</code></td><td><code class="literal">WARNING</code></td></tr><tr><td><code class="literal">ERROR</code></td><td>Rapporte l'erreur qui a causé l'annulation de la commande en
+      cours.</td><td><code class="literal">WARNING</code></td><td><code class="literal">ERROR</code></td></tr><tr><td><code class="literal">LOG</code></td><td>Rapporte des informations à destination des administrateurs.
+      Par exemple, l'activité des points de vérification.</td><td><code class="literal">INFO</code></td><td><code class="literal">INFORMATION</code></td></tr><tr><td><code class="literal">FATAL</code></td><td>Rapporte l'erreur qui a causé la fin de la session en
+      cours.</td><td><code class="literal">ERR</code></td><td><code class="literal">ERROR</code></td></tr><tr><td><code class="literal">PANIC</code></td><td>Rapporte l'erreur qui a causé la fin de toutes les
+      sessions.</td><td><code class="literal">CRIT</code></td><td><code class="literal">ERROR</code></td></tr></tbody></table></div></div><br class="table-break" /></div><div class="sect2" id="RUNTIME-CONFIG-LOGGING-WHAT"><div class="titlepage"><div><div><h3 class="title">19.8.3. Que tracer <a href="#RUNTIME-CONFIG-LOGGING-WHAT" class="id_link">#</a></h3></div></div></div><div class="note"><h3 class="title">Note</h3><p>
+   Ce que vous choisissez de tracer peut avoir des implications sur la sécurité ;
+   voir <a class="xref" href="logfile-maintenance.html" title="24.3. Maintenance du fichier de traces">Section 24.3</a>.
+  </p></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-APPLICATION-NAME"><span class="term"><code class="varname">application_name</code> (<code class="type">string</code>)</span> <a href="#GUC-APPLICATION-NAME" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.5.3.1.2.1" class="indexterm"></a><p>
+     Le paramètre <code class="varname">application_name</code> peut être n'importe
+     quelle chaîne de caractères inférieure à <code class="symbol">NAMEDATALEN</code>
+     caractères (64 caractères
+     après une compilation standard). Il est typiquement configuré lors
+     de la connexion d'une application au serveur. Le nom sera affiché
+     dans la vue <code class="structname">pg_stat_activity</code> et inclus dans
+     les traces du journal au format CSV. Il peut aussi être inclus dans
+     les autres formats de traces en configurant le paramètre <a class="xref" href="runtime-config-logging.html#GUC-LOG-LINE-PREFIX">log_line_prefix</a>. Tout caractère ASCII affichable peut
+     être utilisé. Les autres caractères seront remplacés par des <a class="link" href="sql-syntax-lexical.html#SQL-SYNTAX-STRINGS-ESCAPE" title="4.1.2.2. Constantes chaîne avec des échappements de style C">échappements hexadécimaux
+     comme en langage C</a>.
+    </p></dd><dt id="GUC-DEBUG-PRINT-PARSE"><span class="term"><code class="varname">debug_print_parse</code> (<code class="type">boolean</code>)<br /></span><span class="term"><code class="varname">debug_print_rewritten</code> (<code class="type">boolean</code>)<br /></span><span class="term"><code class="varname">debug_print_plan</code> (<code class="type">boolean</code>)</span> <a href="#GUC-DEBUG-PRINT-PARSE" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.5.3.2.4.1" class="indexterm"></a><a id="id-1.6.6.11.5.3.2.4.2" class="indexterm"></a><a id="id-1.6.6.11.5.3.2.4.3" class="indexterm"></a><p>
+     Ces paramètres activent plusieurs sorties de débogage.
+     Quand positionnés, il affichent l'arbre d'interprétation résultant,
+     la sortie de la réécriture de requête, ou le plan d'exécution pour chaque
+     requête exécutée.
+     Ces messages sont émis au niveau de trace <code class="literal">LOG</code> , par
+     conséquent ils apparaîtront dans le journal applicatif du serveur, mais
+     ne seront pas envoyés au client. Vous pouvez changer cela en ajustant
+     <a class="xref" href="runtime-config-client.html#GUC-CLIENT-MIN-MESSAGES">client_min_messages</a> et/ou
+     <a class="xref" href="runtime-config-logging.html#GUC-LOG-MIN-MESSAGES">log_min_messages</a>.
+     Ces paramètres sont désactivés par défaut.
+    </p></dd><dt id="GUC-DEBUG-PRETTY-PRINT"><span class="term"><code class="varname">debug_pretty_print</code> (<code class="type">boolean</code>)</span> <a href="#GUC-DEBUG-PRETTY-PRINT" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.5.3.3.2.1" class="indexterm"></a><p>
+     Quand positionné, <code class="varname">debug_pretty_print</code> indente les
+     messages produits par <code class="varname">debug_print_parse</code>,
+     <code class="varname">debug_print_rewritten</code>, ou
+     <code class="varname">debug_print_plan</code>. Le résultat est une sortie plus
+     lisible mais plus verbeuse que le format <span class="quote">« <span class="quote">compact</span> »</span> utilisé
+     quand ce paramètre est à off. La valeur par défaut est 'on'.
+    </p></dd><dt id="GUC-LOG-AUTOVACUUM-MIN-DURATION"><span class="term"><code class="varname">log_autovacuum_min_duration</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.11.5.3.4.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-LOG-AUTOVACUUM-MIN-DURATION" class="id_link">#</a></dt><dd><p>
+     Permet de tracer chaque action de l'autovacuum dans les journaux de
+     PostgreSQL si celui-ci tourne pour une durée supérieure à la valeur
+     spécifiée. Configurer ce paramètre à zéro permet de tracer toutes les
+     actions de l'autovacuum. La valeur
+     <code class="literal">-1</code> désactive cette fonctionnalité. Si la valeur ne
+     comporte pas d'unité, elle est comprise en millisecondes. Par exemple,
+     si la valeur <code class="literal">250ms</code> est fournie, toutes les actions
+     des opérations automatiques de vacuum et d'analyze durant plus de 250ms
+     seront tracées dans les journaux de PostgreSQL. De plus, lorsque ce
+     paramètre prend une valeur différente de <code class="literal">-1</code>, un
+     message sera inscrit dans les journaux de PostgreSQL si une action
+     d'autovacuum doit être omise à cause d'un conflit de verrou ou parce
+     qu'une relation a été supprimée entretemps. La valeur par défaut est
+     <code class="literal">10min</code>. Activer ce paramètre peut
+     aider à mieux comprendre les activités de l'autovacuum. Ce paramètre ne
+     peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande, mais
+     le paramétrage peut être surchargé pour chaque table au niveau des
+     paramètres de stockage de chaque table.
+    </p></dd><dt id="GUC-LOG-CHECKPOINTS"><span class="term"><code class="varname">log_checkpoints</code> (<code class="type">boolean</code>)</span> <a href="#GUC-LOG-CHECKPOINTS" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.5.3.5.2.1" class="indexterm"></a><p>
+     Trace les points de vérification and restartpoints dans les journaux applicatifs.
+     Diverses statistiques sont incluses dans les
+     journaux applicatifs, dont le nombre de tampons écrits et le
+     temps passé à les écrire. Activé par défaut,
+     ce paramètre ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+    </p></dd><dt id="GUC-LOG-CONNECTIONS"><span class="term"><code class="varname">log_connections</code> (<code class="type">boolean</code>)</span> <a href="#GUC-LOG-CONNECTIONS" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.5.3.6.2.1" class="indexterm"></a><p>
+     Trace chaque tentative de connexion sur le serveur, ainsi que la réussite
+     de l'authentification du client (si nécessaire) et son autorisation.
+     Seuls les superutilisateurs et les utilisateurs disposant des droits
+     <code class="literal">SET</code> adéquats peuvent modifier ce paramètre au
+     démarrage d'une session, et il ne peut pas être changé du
+     tout à l'intérieur d'une session. La valeur par défaut est
+     <code class="literal">off</code>.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Quelques programmes clients, comme <span class="application">psql</span>,
+      tentent de se connecter deux fois pour déterminer si un mot de passe
+      est nécessaire, des messages <span class="quote">« <span class="quote">connection received</span> »</span>
+      dupliqués n'indiquent donc pas forcément un problème.
+     </p></div></dd><dt id="GUC-LOG-DISCONNECTIONS"><span class="term"><code class="varname">log_disconnections</code> (<code class="type">boolean</code>)</span> <a href="#GUC-LOG-DISCONNECTIONS" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.5.3.7.2.1" class="indexterm"></a><p>
+     Entraîne l'enregistrement dans les traces du serveur de la fin
+     des sessions. Les sorties des traces fournissent une information
+     similaire à <code class="varname">log_connections</code>, plus la durée
+     de la session.  Seuls les superutilisateurs et les utilisateurs disposant
+     des droits <code class="literal">SET</code> adéquats peuvent modifier ce
+     paramètre au démarrage d'une session, et il ne peut pas être
+     changé du tout à l'intérieur d'une session. La valeur par défaut
+     est <code class="literal">off</code>.
+    </p></dd><dt id="GUC-LOG-DURATION"><span class="term"><code class="varname">log_duration</code> (<code class="type">boolean</code>)</span> <a href="#GUC-LOG-DURATION" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.5.3.8.2.1" class="indexterm"></a><p>
+     Trace la durée de toute instruction exécutée. Désactivé par défaut
+     (<code class="literal">off</code>), seuls les superutilisateurs et les utilisateurs
+     disposant des droits <code class="literal">SET</code> adéquats peuvent modifier ce
+     paramètre.
+    </p><p>
+     Pour les clients utilisant le protocole de requêtage étendu, les durées
+     des étapes Parse (analyse), Bind (lien) et Execute (exécution) sont
+     tracées indépendamment.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      À la différence de <a class="xref" href="runtime-config-logging.html#GUC-LOG-MIN-DURATION-STATEMENT">log_min_duration_statement</a>,
+      <code class="varname">log_duration</code> ne force pas le traçage du texte des
+      requêtes. De ce fait, si <code class="varname">log_duration</code> est activé
+      (<code class="literal">on</code>) et que
+      <code class="varname">log_min_duration_statement</code> a une valeur positive,
+      toutes les durées sont tracées mais le texte de la requête n'est inclus
+      que pour les instructions qui dépassent la limite. Ce comportement peut
+      être utile pour récupérer des statistiques sur les installations à forte
+      charge.
+     </p></div></dd><dt id="GUC-LOG-ERROR-VERBOSITY"><span class="term"><code class="varname">log_error_verbosity</code> (<code class="type">enum</code>)</span> <a href="#GUC-LOG-ERROR-VERBOSITY" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.5.3.9.2.1" class="indexterm"></a><p>
+     Contrôle la quantité de détails écrit dans les traces pour chaque
+     message tracé. Les valeurs valides sont <code class="literal">TERSE</code>,
+     <code class="literal">DEFAULT</code> et <code class="literal">VERBOSE</code>, chacun
+     ajoutant plus de champs aux messages affichés. <code class="literal">TERSE</code>
+     exclut des traces les informations de niveau <code class="literal">DETAIL</code>,
+     <code class="literal">HINT</code>, <code class="literal">QUERY</code> et
+     <code class="literal">CONTEXT</code>. La sortie <code class="literal">VERBOSE</code> inclut
+     le code d'erreur <code class="symbol">SQLSTATE</code> (voir aussi <a class="xref" href="errcodes-appendix.html" title="Annexe A. Codes d'erreur de PostgreSQL">Annexe A</a>), le
+     nom du code source, le nom de la fonction et le numéro de la ligne qui
+     a généré l'erreur. Seuls les superutilisateurs et les utilisateurs
+     disposant des droits <code class="literal">SET</code> adéquats peuvent modifier ce
+     paramètre.
+    </p></dd><dt id="GUC-LOG-HOSTNAME"><span class="term"><code class="varname">log_hostname</code> (<code class="type">boolean</code>)</span> <a href="#GUC-LOG-HOSTNAME" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.5.3.10.2.1" class="indexterm"></a><p>
+     Par défaut, les traces de connexion n'affichent que l'adresse IP
+     de l'hôte se connectant. Activer ce paramètre permet de tracer aussi
+     le nom de l'hôte. En fonction de la configuration de la résolution
+     de nom d'hôte, les performances peuvent être pénalisées.
+     Ce paramètre ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+    </p></dd><dt id="GUC-LOG-LINE-PREFIX"><span class="term"><code class="varname">log_line_prefix</code> (<code class="type">string</code>)</span> <a href="#GUC-LOG-LINE-PREFIX" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.5.3.11.2.1" class="indexterm"></a><p>
+     Il s'agit d'une chaîne de style <code class="function">printf</code>
+     affichée au début de chaque ligne de trace. Les caractères
+     <code class="literal">%</code> débutent des <span class="quote">« <span class="quote">séquences d'échappement</span> »</span>
+     qui sont remplacées avec l'information de statut décrite ci-dessous.
+     Les échappement non reconnus sont ignorés. Les autres caractères sont
+     copiés directement dans la trace. Certains échappements ne sont
+     reconnus que par les processus de session et seront traités comme vide
+     par les processus en tâche de fond tels que le processus principal du
+     serveur. L'information de statut pourrait être alignée soit à gauche
+     soit à droite en indiquant un nombre après le signe pourcent et avant
+     l'option. Une valeur négative implique un alignement à droite par
+     ajout d'espaces alors qu'une valeur positive est pour un alignement à
+     gauche. L'alignement peut être utile pour aider à la lecture des
+     fichiers de trace.
+    </p><p>
+     Ce paramètre ne peut être configuré que dans le
+     fichier <code class="filename">postgresql.conf</code> ou indiqué sur la ligne
+     de commande. La valeur par défaut est <code class="literal">'%m [%p] '</code>
+     ce qui affiche dans les trace l'heure courante ainsi que l'identifiant de
+     processus.
+    </p><div class="informaltable"><table class="informaltable" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Échappement</th><th>Produit</th><th>Session seule</th></tr></thead><tbody><tr><td><code class="literal">%a</code></td><td>Nom de l'application</td><td>yes</td></tr><tr><td><code class="literal">%u</code></td><td>Nom de l'utilisateur</td><td>oui</td></tr><tr><td><code class="literal">%d</code></td><td>Nom de la base de données</td><td>oui</td></tr><tr><td><code class="literal">%r</code></td><td>Nom ou adresse IP de l'hôte distant et port distant</td><td>oui</td></tr><tr><td><code class="literal">%h</code></td><td>Nom d'hôte distant ou adresse IP</td><td>oui</td></tr><tr><td><code class="literal">%b</code></td><td>Type de processus serveur</td><td>no</td></tr><tr><td><code class="literal">%p</code></td><td>ID du processus</td><td>non</td></tr><tr><td><code class="literal">%P</code></td><td>L'ID du processus leader du groupe de parallélisation, si ce processus
+        est parallélisé</td><td>no</td></tr><tr><td><code class="literal">%t</code></td><td>Estampille temporelle sans millisecondes</td><td>non</td></tr><tr><td><code class="literal">%m</code></td><td>Estampille temporelle avec millisecondes</td><td>non</td></tr><tr><td><code class="literal">%n</code></td><td>Estampille temporelle avec millisecondes (sous la forme d'un epoch Unix)</td><td>non</td></tr><tr><td><code class="literal">%i</code></td><td>Balise de commande : type de commande</td><td>oui</td></tr><tr><td><code class="literal">%e</code></td><td>code d'erreur correspondant à l'état SQL</td><td>no</td></tr><tr><td><code class="literal">%c</code></td><td>ID de session : voir ci-dessous</td><td>non</td></tr><tr><td><code class="literal">%l</code></td><td>Numéro de la ligne de trace de chaque session ou processus,
+         commençant à 1</td><td>non</td></tr><tr><td><code class="literal">%s</code></td><td>Estampille temporelle du lancement du processus</td><td>oui</td></tr><tr><td><code class="literal">%v</code></td><td>Identifiant virtuel de transaction (procNumber/localXID) ;
+         voir <a class="xref" href="transaction-id.html" title="66.1. Transactions et identifiants">Section 66.1</a></td><td>no</td></tr><tr><td><code class="literal">%x</code></td><td>ID de la transaction (0 si aucune affectée) ; voir
+         <a class="xref" href="transaction-id.html" title="66.1. Transactions et identifiants">Section 66.1</a></td><td>non</td></tr><tr><td><code class="literal">%q</code></td><td>Ne produit aucune sortie, mais indique aux autres processus
+         de stopper à cet endroit de la chaîne. Ignoré par les processus
+         de session.</td><td>non</td></tr><tr><td><code class="literal">%Q</code></td><td>Identifiant de la requête actuelle. Les identifiants de requête
+        ne sont pas calculés par défaut, ce champ vaudra donc zéro à moins
+        que le paramètre <a class="xref" href="runtime-config-statistics.html#GUC-COMPUTE-QUERY-ID">compute_query_id</a> ne soit
+        activé ou qu'un module externe qui calcule ce champ ne soit
+        utilisé.</td><td>oui</td></tr><tr><td><code class="literal">%%</code></td><td><code class="literal">%</code></td><td>non</td></tr></tbody></table></div><p>
+     Le type de processus serveur correspond à la colonne
+     <code class="structfield">backend_type</code> dans la vue <a class="link" href="monitoring-stats.html#MONITORING-PG-STAT-ACTIVITY-VIEW" title="27.2.3. pg_stat_activity">
+      <code class="structname">pg_stat_activity</code></a>, mais des types
+     supplémentaires, non visibles dans cette vue, peuvent apparaître dans les
+     traces.
+    </p><p>
+     L'échappement <code class="literal">%c</code> affiche un identifiant de session
+     quasi-unique constitué de deux nombres hexadécimaux sur quatre octets
+     (sans les zéros initiaux) et séparés par un point. Les nombres
+     représentent l'heure de lancement du processus et l'identifiant du
+     processus, <code class="literal">%c</code> peut donc aussi être utilisé
+     comme une manière de raccourcir l'affichage de ces éléments.
+     Par exemple, pour générer l'identifiant de session à partir de
+     <code class="literal">pg_stat_activity</code>, utilisez cette requête :
+     </p><pre class="programlisting">
+SELECT to_hex(trunc(EXTRACT(EPOCH FROM backend_start))::integer) || '.' ||
+       to_hex(pid)
+FROM pg_stat_activity;
+     </pre><p>
+    </p><div class="tip"><h3 class="title">Astuce</h3><p>
+      Si <code class="varname">log_line_prefix</code> est différent d'une chaîne vide,
+      il est intéressant d'ajouter une espace en fin de chaîne pour créer
+      une séparation visuelle avec le reste de la ligne. Un caractère de
+      ponctuation peut aussi être utilisé.
+     </p></div><div class="tip"><h3 class="title">Astuce</h3><p>
+      <span class="application">syslog</span> produit ses propres informations
+      d'horodatage et d'identifiant du processus. Ces
+      échappements n'ont donc que peu d'intérêt avec
+      <span class="application">syslog</span>.
+     </p></div><div class="tip"><h3 class="title">Astuce</h3><p>
+      L'échappement <code class="literal">%q</code> est utile quand des informations
+      qui ne sont disponibles que dans le contexte d'une session (processus
+      client) est utilisé, comme le nom de l'utilisateur ou de la base.  Par
+      exemple :
+      </p><pre class="programlisting">
+log_line_prefix = '%m [%p] %q%u@%d/%a '
+      </pre><p>
+     </p></div><div class="note"><h3 class="title">Note</h3><p>
+      L'échappement <code class="literal">%Q</code> retourne toujours un identifiant à
+      zéro pour les sorties de lignes ordonnées par <a class="xref" href="runtime-config-logging.html#GUC-LOG-STATEMENT">log_statement</a> car <code class="varname">log_statement</code>
+      génère la sortie avant que les identifiants ne soient calculés, y
+      compris pour les requêtes invalides pour lesquelles un identifiant ne
+      peut pas être calculé.
+     </p></div></dd><dt id="GUC-LOG-LOCK-WAITS"><span class="term"><code class="varname">log_lock_waits</code> (<code class="type">boolean</code>)</span> <a href="#GUC-LOG-LOCK-WAITS" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.5.3.12.2.1" class="indexterm"></a><p>
+     Contrôle si une trace applicative est écrite quand une session attend
+     plus longtemps que <a class="xref" href="runtime-config-locks.html#GUC-DEADLOCK-TIMEOUT">deadlock_timeout</a> pour acquérir
+     un verrou.  Ceci est utile pour déterminer si les attentes de verrous
+     sont la cause des pertes de performance. Désactivé
+     (<code class="literal">off</code>) par défaut. Seuls les superutilisateurs et les utilisateurs
+     disposant des droits <code class="literal">SET</code> adéquats peuvent
+     modifier ce paramétrage.
+    </p></dd><dt id="GUC-LOG-RECOVERY-CONFLICT-WAITS"><span class="term"><code class="varname">log_recovery_conflict_waits</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.11.5.3.13.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-LOG-RECOVERY-CONFLICT-WAITS" class="id_link">#</a></dt><dd><p>
+     Contrôle si un message doit être tracé dans les journaux de PostgreSQL au
+     cas où le processus de démarrage doit attendre plus longtemps que
+     <code class="varname">deadlock_timeout</code> en cas de conflit de récupération.
+     C'est utile pour savoir si un conflit de restauration empêche
+     l'application des journaux de transactions.
+    </p><p>
+     La valeur par défaut est <code class="literal">off</code>. Ce paramètre ne peut
+     être configuré que dans le fichier <code class="filename">postgresql.conf</code>
+     ou sur la ligne de commande.
+    </p></dd><dt id="GUC-LOG-PARAMETER-MAX-LENGTH"><span class="term"><code class="varname">log_parameter_max_length</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.11.5.3.14.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-LOG-PARAMETER-MAX-LENGTH" class="id_link">#</a></dt><dd><p>
+     Si supérieur à zéro, chaque valeur de paramètre lié tracée avec un message
+     qui n'est pas dû à une erreur est raccourcie à ce nombre d'octets. Zéro
+     désactive la trace des paramètres liés pour les traces de requêtes sans
+     erreur. <code class="literal">-1</code> (valeur par défaut) autorise la trace
+     complète des paramètres liés. Si cette valeur est indiquée sans unité,
+     elle est prise pour un nombre d'octets. Seuls les superutilisateurs
+     et les utilisateurs disposant des droits <code class="literal">SET</code> appropriés
+     peuvent modifier ce paramètre.
+    </p><p>
+     Ce paramètre affecte seulement les messages affichés en résultat de la
+     configuration de <a class="xref" href="runtime-config-logging.html#GUC-LOG-STATEMENT">log_statement</a>, <a class="xref" href="runtime-config-logging.html#GUC-LOG-DURATION">log_duration</a>, et d'autres paramètres liés. Une valeur
+     différente de zéro pour ce paramètre ajoute une surcharge,
+     particulièrement si les paramètres sont envoyés en forme binaire, parce
+     qu'une conversion en texte est requise.
+    </p></dd><dt id="GUC-LOG-PARAMETER-MAX-LENGTH-ON-ERROR"><span class="term"><code class="varname">log_parameter_max_length_on_error</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.11.5.3.15.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-LOG-PARAMETER-MAX-LENGTH-ON-ERROR" class="id_link">#</a></dt><dd><p>
+     Si supérieur à zéro, chaque valeur de paramètre lié dans une trace
+     d'erreur est raccourcie à ce nombre d'octets. Zéro (valeur par défaut)
+     désactive la trace des paramètres liés pour les traces de requêtes en
+     erreur. <code class="literal">-1</code> autorise la trace complète des paramètres
+     liés. Si cette valeur est indiquée sans unité, elle est prise pour un
+     nombre d'octets.
+    </p><p>
+     Une configuration de ce paramètre à une valeur différente de zéro ajoute
+     une surcharge car <span class="productname">PostgreSQL</span> aura besoin de
+     stocker les représentations textuelles des valeurs de paramètres en
+     mémoire au début de chaque requête, qu'une erreur survienne ou pas. La
+     surcharge est supérieure quand les paramètres liés sont envoyés au format
+     binaire que quand ils sont envoyés au format car le premier cas nécessite
+     la conversion des données alors que le dernier cas nécessite seulement la
+     copie de la chaîne.
+    </p></dd><dt id="GUC-LOG-STATEMENT"><span class="term"><code class="varname">log_statement</code> (<code class="type">enum</code>)</span> <a href="#GUC-LOG-STATEMENT" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.5.3.16.2.1" class="indexterm"></a><p>
+     Contrôle les instructions SQL à tracer. Les valeurs valides sont
+     <code class="literal">none</code> (off), <code class="literal">ddl</code>, <code class="literal">mod</code>
+     et <code class="literal">all</code> (toutes les instructions).
+     <code class="literal">ddl</code> trace toutes les
+     commandes de définition comme <code class="command">CREATE</code>,
+     <code class="command">ALTER</code> et <code class="command">DROP</code>.
+     <code class="literal">mod</code> trace toutes les instructions
+     <code class="literal">ddl</code> ainsi que les instructions de modification
+     de données <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+     <code class="command">DELETE</code>, <code class="command">TRUNCATE</code> et
+     <code class="command">COPY FROM</code>. Les instructions <code class="command">PREPARE</code>,
+     <code class="command">EXECUTE</code> et <code class="command">EXPLAIN ANALYZE</code> sont
+     aussi tracées si la commande qui les contient est d'un type approprié.
+     Pour les clients utilisant le protocole de requêtage étendu, la trace
+     survient quand un message Execute est reçu et les valeurs des paramètres
+     de Bind sont incluses (avec doublement de tout guillemet simple embarqué).
+    </p><p>
+     La valeur par défaut est <code class="literal">none</code>. Seuls les superutilisateurs
+     et les utilisateurs disposant des droits <code class="literal">SET</code> appropriés
+     peuvent changer ce paramétrage.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Les instructions qui contiennent de simples erreurs de syntaxe ne sont pas
+      tracées même si <code class="varname">log_statement</code> est positionné à
+      <code class="literal">all</code> car la trace n'est émise qu'après qu'une analyse
+      basique soit réalisée pour déterminer le type
+      d'instruction. Dans le cas du protocole de requêtage étendu, ce paramètre
+      ne trace pas les instructions qui échouent avant la phase Execute
+      (c'est-à-dire pendant l'analyse et la planification).
+      <code class="varname">log_min_error_statement</code> doit être positionné à
+      <code class="literal">ERROR</code> pour tracer ce type d'instructions.
+     </p><p>
+      Les requêtes tracées pourraient révéler des données sensibles et même contenir
+      des mots de passe en clair.
+     </p></div></dd><dt id="GUC-LOG-REPLICATION-COMMANDS"><span class="term"><code class="varname">log_replication_commands</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.11.5.3.17.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-LOG-REPLICATION-COMMANDS" class="id_link">#</a></dt><dd><p>
+     A pour effet d'enregistrer dans le fichier des traces du serveur chaque
+     commande de réplication et chaque acquisition/libération d'un slot de
+     réplication du processus <code class="literal">walsender</code>.
+     Voir <a class="xref" href="protocol-replication.html" title="53.4. Protocole de réplication en flux">Section 53.4</a>
+     pour plus d'informations à propos des commandes de réplication. La
+     valeur par défaut est <code class="literal">off</code>. Seuls les
+     superutilisateurs et les utilisateurs avec les droits
+     <code class="literal">SET</code> adéquats peuvent modifier ce paramètre.
+    </p></dd><dt id="GUC-LOG-TEMP-FILES"><span class="term"><code class="varname">log_temp_files</code> (<code class="type">integer</code>)</span> <a href="#GUC-LOG-TEMP-FILES" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.5.3.18.2.1" class="indexterm"></a><p>
+     Contrôle l'écriture de traces sur l'utilisation des fichiers temporaires
+     (noms et tailles). Les fichiers temporaires peuvent être créés pour des
+     tris, des hachages et des résultats temporaires de requête. Si activé, une
+     entrée de journal est générée pour chaque fichier temporaire, avec sa
+     taille en octets, au moment où
+     il est effacé. Zéro implique une trace des informations sur tous les
+     fichiers temporaires alors qu'une valeur positive ne trace que les
+     fichiers dont la taille est supérieure ou égale au nombre indiqué (en
+     kilo-octets). Si cette valeur est indiquée sans unité, elle est comprise
+     comme un nombre de Ko. La valeur par défaut est -1, ce qui a pour effet de
+     désactiver les traces. Seuls les superutilisateurs et les utilisateurs
+     disposant des droits <code class="literal">SET</code> peuvent modifier ce
+     paramètre.
+    </p></dd><dt id="GUC-LOG-TIMEZONE"><span class="term"><code class="varname">log_timezone</code> (<code class="type">string</code>)</span> <a href="#GUC-LOG-TIMEZONE" class="id_link">#</a></dt><dd><a id="id-1.6.6.11.5.3.19.2.1" class="indexterm"></a><p>
+     Configure le fuseau horaire utilisé par l'horodatage des traces.
+     Contrairement à <a class="xref" href="runtime-config-client.html#GUC-TIMEZONE">TimeZone</a>, cette valeur est
+     valable pour le cluster complet, de façon à ce que toutes les
+     sessions utilisent le même.
+     La valeur par défaut est <code class="literal">GMT</code>, mais elle est généralement surchargée
+     dans le fichier <code class="filename">postgresql.conf</code> ; <span class="application">initdb</span>
+     installera une configuration correspondant à l'environnement système.
+     Voir <a class="xref" href="datatype-datetime.html#DATATYPE-TIMEZONES" title="8.5.3. Fuseaux horaires">Section 8.5.3</a> pour plus d'informations.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-LOGGING-CSVLOG"><div class="titlepage"><div><div><h3 class="title">19.8.4. Utiliser les journaux au format CSV <a href="#RUNTIME-CONFIG-LOGGING-CSVLOG" class="id_link">#</a></h3></div></div></div><p>
+  L'ajout de <code class="literal">csvlog</code> dans la liste
+  <code class="varname">log_destination</code> est une manière simple d'importer
+  des journaux dans une table de base de données. Cette option permet de
+  créer des journaux au format <acronym class="acronym">CSV</acronym> avec les
+  colonnes : l'horodatage en millisecondes, le nom de l'utilisateur,
+  le nom de la base de données, le PID du processus serveur, l'hôte et
+  le numéro de port du client, l'identifiant de la session, le numéro
+  de ligne dans la session, le tag de la commande, l'horodatage de début
+  de la session, l'identifiant de transaction virtuelle, l'identifiant
+  de transaction standard, la sévérité de l'erreur, le code SQLSTATE,
+  le message d'erreur, les détails du message d'erreur, une astuce, la
+  requête interne qui a amené l'erreur (si elle existe), le nombre de
+  caractères pour arriver à la position de l'erreur, le contexte de
+  l'erreur, la requête utilisateur qui a amené l'erreur (si elle existe
+  et si <code class="varname">log_min_error_statement</code> est activé), le nombre
+  de caractères pour arriver à la position de l'erreur, l'emplacement de
+  l'erreur dans le code source de PostgreSQL
+  (si <code class="varname">log_error_verbosity</code> est configuré à
+  <code class="literal">verbose</code>), le nom de l'application, le type du processus
+  serveur, l'identifiant du processus du leader et l'identifiant de la
+  requête.
+
+ </p><p>
+  Exemple de définition d'une table de stockage de journaux au format
+  CSV :
+ </p><pre class="programlisting">
+CREATE TABLE postgres_log
+(
+  log_time timestamp(3) with time zone,
+  user_name text,
+  database_name text,
+  process_id integer,
+  connection_from text,
+  session_id text,
+  session_line_num bigint,
+  command_tag text,
+  session_start_time timestamp with time zone,
+  virtual_transaction_id text,
+  transaction_id bigint,
+  error_severity text,
+  sql_state_code text,
+  message text,
+  detail text,
+  hint text,
+  internal_query text,
+  internal_query_pos integer,
+  context text,
+  query text,
+  query_pos integer,
+  location text,
+  application_name text,
+  backend_type text,
+  leader_pid integer,
+  query_id bigint,
+  PRIMARY KEY (session_id, session_line_num)
+);
+ </pre><p>
+  Pour importer un journal dans cette table, on utilise la commande
+  <code class="command">COPY FROM</code> :
+
+  </p><pre class="programlisting">
+COPY postgres_log FROM '/chemin/complet/vers/le/logfile.csv' WITH csv;
+  </pre><p>
+  Il est aussi possible d'accéder au fichier via une table externe en
+  utilisant le module <a class="xref" href="file-fdw.html" title="F.15. file_fdw -- accéder aux fichiers de données sur le système de fichiers du serveur">file_fdw</a>.
+ </p><p>
+  Quelques conseils pour simplifier et automatiser l'import
+  des journaux CVS :
+
+  </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>
+     configurer <code class="varname">log_filename</code> et
+     <code class="varname">log_rotation_age</code> pour fournir un schéma de
+     nommage cohérent et prévisible des journaux. Cela permet de
+     prédire le nom du fichier et le moment où il sera complet
+     (et donc prêt à être importé) ;
+    </p></li><li class="listitem"><p>
+     initialiser <code class="varname">log_rotation_size</code> à 0 pour désactiver
+     la rotation par taille comptée, car elle rend plus difficile la
+     prévision du nom du journal ;
+    </p></li><li class="listitem"><p>
+     positionner <code class="varname">log_truncate_on_rotation</code>
+     à <code class="literal">on</code> pour que les données anciennes ne soient pas
+     mélangées aux nouvelles dans le même fichier ;
+    </p></li><li class="listitem"><p>
+     la définition de la table ci-dessus inclut une clé primaire. C'est
+     utile pour se protéger de l'import accidentel de la même
+     information à plusieurs reprises. La commande
+     <code class="command">COPY</code> valide toutes les
+     données qu'elle importe en une fois. Toute erreur annule donc
+     l'import complet. Si un journal incomplet est importé et qu'il est
+     de nouveau importé lorsque le fichier est complet, la violation de la
+     clé primaire cause un échec de l'import. Il faut attendre que le
+     journal soit complet et fermé avant de l'importer. Cette procédure
+     protége aussi de l'import accidentel d'une ligne partiellement
+     écrite, qui causerait aussi un échec de <code class="command">COPY</code>.
+    </p></li></ol></div><p>
+ </p></div><div class="sect2" id="RUNTIME-CONFIG-LOGGING-JSONLOG"><div class="titlepage"><div><div><h3 class="title">19.8.5. Utiliser le format de trace JSON <a href="#RUNTIME-CONFIG-LOGGING-JSONLOG" class="id_link">#</a></h3></div></div></div><p>
+  Ajouter <code class="literal">jsonlog</code> dans la liste
+  <code class="varname">log_destination</code> permet d'importer facilement les fichiers
+  de trace dans différents programmes. Cette option émet des lignes de trace au
+  format <acronym class="acronym">JSON</acronym>.
+ </p><p>
+  Les champs texte avec des valeurs NULL sont exclus de la sortie.  Des champs
+  supplémentaires pourraient être ajoutés dans le futur.  Les applications
+  utilisateurs qui traitent le format <code class="literal">jsonlog</code> doivent ignorer
+  les champs inconnus.
+ </p><p>
+  Chaque ligne de trace est sérialisée sous la forme d'un objet JSON avec un
+  ensemble de clés et de valeurs associées, clés indiquées dans <a class="xref" href="runtime-config-logging.html#RUNTIME-CONFIG-LOGGING-JSONLOG-KEYS-VALUES" title="Tableau 19.3. Clés et valeurs des enregistrements JSON">Tableau 19.3</a>.
+ </p><div class="table" id="RUNTIME-CONFIG-LOGGING-JSONLOG-KEYS-VALUES"><p class="title"><strong>Tableau 19.3. Clés et valeurs des enregistrements JSON</strong></p><div class="table-contents"><table class="table" summary="Clés et valeurs des enregistrements JSON" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Clé</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">timestamp</code></td><td>string</td><td>Horodatage en millisecondes</td></tr><tr><td><code class="literal">user</code></td><td>string</td><td>Nom d'utilisateur</td></tr><tr><td><code class="literal">dbname</code></td><td>string</td><td>Nom de base de données</td></tr><tr><td><code class="literal">pid</code></td><td>number</td><td>Identifiant de processus</td></tr><tr><td><code class="literal">remote_host</code></td><td>string</td><td>Hôte client</td></tr><tr><td><code class="literal">remote_port</code></td><td>number</td><td>Port client</td></tr><tr><td><code class="literal">session_id</code></td><td>string</td><td>Identifiant de session</td></tr><tr><td><code class="literal">line_num</code></td><td>number</td><td>Numéro de ligne par session</td></tr><tr><td><code class="literal">ps</code></td><td>string</td><td>Affichage actuel de ps</td></tr><tr><td><code class="literal">session_start</code></td><td>string</td><td>Heure de début de session</td></tr><tr><td><code class="literal">vxid</code></td><td>string</td><td>Identifiant de transaction virtuelle</td></tr><tr><td><code class="literal">txid</code></td><td>string</td><td>Identifiant de transaction standard</td></tr><tr><td><code class="literal">error_severity</code></td><td>string</td><td>Niveau de l'erreur</td></tr><tr><td><code class="literal">state_code</code></td><td>string</td><td>Code SQLSTATE</td></tr><tr><td><code class="literal">message</code></td><td>string</td><td>Message d'erreur</td></tr><tr><td><code class="literal">detail</code></td><td>string</td><td>Détails du message d'erreur</td></tr><tr><td><code class="literal">hint</code></td><td>string</td><td>Astuce du message d'erreur</td></tr><tr><td><code class="literal">internal_query</code></td><td>string</td><td>Requête interne qui amène à l'erreur</td></tr><tr><td><code class="literal">internal_position</code></td><td>number</td><td>Curseur dans la requête interne</td></tr><tr><td><code class="literal">context</code></td><td>string</td><td>Contexte d'erreur</td></tr><tr><td><code class="literal">statement</code></td><td>string</td><td>Chaîne de requête fournie par le client</td></tr><tr><td><code class="literal">cursor_position</code></td><td>number</td><td>Curseur dans la chaîne de requête</td></tr><tr><td><code class="literal">func_name</code></td><td>string</td><td>Nom de la fonction ayant déclenché l'erreur</td></tr><tr><td><code class="literal">file_name</code></td><td>string</td><td>Nom du fichier contenant la fonction ayant déclenché l'erreur</td></tr><tr><td><code class="literal">file_line_num</code></td><td>number</td><td>Numéro de ligne du fichier contenant la fonction ayant déclenché l'erreur</td></tr><tr><td><code class="literal">application_name</code></td><td>string</td><td>Nom d'application du client</td></tr><tr><td><code class="literal">backend_type</code></td><td>string</td><td>Type de backend</td></tr><tr><td><code class="literal">leader_pid</code></td><td>number</td><td>Identifiant du processus leader pour les workers parallélisés</td></tr><tr><td><code class="literal">query_id</code></td><td>number</td><td>Identifiant de requête</td></tr></tbody></table></div></div><br class="table-break" /></div><div class="sect2" id="RUNTIME-CONFIG-LOGGING-PROC-TITLE"><div class="titlepage"><div><div><h3 class="title">19.8.6. Titre des processus <a href="#RUNTIME-CONFIG-LOGGING-PROC-TITLE" class="id_link">#</a></h3></div></div></div><p>
+  Ces paramètres contrôlent comment les titres de processus des processus
+  serveurs sont modifiés. Les titres de processus sont affichées
+  typiquement en utilisant des programmes comme
+  <span class="application">ps</span> ou, sur Windows, <span class="application">Process
+   Explorer</span>. Voir <a class="xref" href="monitoring-ps.html" title="27.1. Outils Unix standard">Section 27.1</a> pour plus de
+  détails.
+ </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-CLUSTER-NAME"><span class="term"><code class="varname">cluster_name</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.11.8.3.1.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-CLUSTER-NAME" class="id_link">#</a></dt><dd><p>
+     Configure un nom qui identifie cette instance pour différentes
+     raisons. Le nom de l'instance apparaît dans le titre de tous les
+     processus de l'instance. De plus, c'est le nom d'application par
+     défaut pour une connexion standby (voir <a class="xref" href="runtime-config-replication.html#GUC-SYNCHRONOUS-STANDBY-NAMES">synchronous_standby_names</a>.)
+    </p><p>
+     Le nom peut être
+     n'importe quelle chaîne de caractères de longueur inférieure à
+     <code class="symbol">NAMEDATALEN</code> (64 caractères dans une compilation
+     standard du serveur). Seuls les caractères ASCII imprimables
+     peuvent être utilisés dans <code class="varname">cluster_name</code>. Les
+     autres caractères seront remplacés par des <a class="link" href="sql-syntax-lexical.html#SQL-SYNTAX-STRINGS-ESCAPE" title="4.1.2.2. Constantes chaîne avec des échappements de style C">échappements hexadécimaux comme
+     en langage C</a>. Aucun nom n'est
+     affiché si ce paramètre est positionné sur la chaîne vide
+     <code class="literal">''</code> (ce qui est la valeur par défaut). Ce
+     paramètre ne peut être positionné qu'au démarrage du serveur.
+    </p></dd><dt id="GUC-UPDATE-PROCESS-TITLE"><span class="term"><code class="varname">update_process_title</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.11.8.3.2.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-UPDATE-PROCESS-TITLE" class="id_link">#</a></dt><dd><p>
+     Active la mise à jour du titre du processus chaque fois qu'une
+     nouvelle commande SQL est reçue par le serveur. Ce paramètre est à
+     <code class="literal">on</code> par défaut sur la plupart des plateformes mais
+     il est à <code class="literal">off</code> sur Windows car cette plateforme
+     souffre de lenteurs plus importantes pour la mise à jour du titre du
+     processus. Seuls les superutilisateurs et les utilisateurs disposant
+     des droits <code class="literal">SET</code> adéquats peuvent modifier ce paramètre.
+    </p></dd></dl></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-logging.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:23 GMT -->
+</html>

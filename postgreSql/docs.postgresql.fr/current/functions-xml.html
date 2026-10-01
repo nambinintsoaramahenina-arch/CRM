@@ -1,0 +1,953 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/functions-xml.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:27 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>9.15. Fonctions XML</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="functions-uuid.html" title="9.14. Fonctions UUID" /><link rel="next" href="functions-json.html" title="9.16. Fonctions et opérateurs JSON" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/functions-xml.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/functions-xml.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/functions-xml.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/functions-xml.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/functions-xml.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/functions-xml.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/functions-xml.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/functions-xml.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/functions-xml.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/functions-xml.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/functions-xml.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/functions-xml.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/functions-xml.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/functions-xml.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/functions-xml.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/functions-xml.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/functions-xml.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/functions-xml.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/functions-xml.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="functions.html">Fonctions et opérateurs</a></span> » <span class="breadcrumb-node">Fonctions XML</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="functions-uuid.html" title="9.14. Fonctions UUID">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="functions.html" title="Chapitre 9. Fonctions et opérateurs">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="functions-json.html" title="9.16. Fonctions et opérateurs JSON">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">9.14. Fonctions UUID </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 9.16. Fonctions et opérateurs JSON</td></tr></table></div><div class="sect1" id="FUNCTIONS-XML"><div class="titlepage"><div><div><h2 class="title" style="clear: both">9.15. Fonctions XML <a href="#FUNCTIONS-XML" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="functions-xml.html#FUNCTIONS-PRODUCING-XML">9.15.1. Produire du contenu XML</a></span></dt><dt><span class="sect2"><a href="functions-xml.html#FUNCTIONS-XML-PREDICATES">9.15.2. Prédicats XML</a></span></dt><dt><span class="sect2"><a href="functions-xml.html#FUNCTIONS-XML-PROCESSING">9.15.3. Traiter du XML</a></span></dt><dt><span class="sect2"><a href="functions-xml.html#FUNCTIONS-XML-MAPPING">9.15.4. Correspondances tables et XML</a></span></dt></dl></div><a id="id-1.5.8.21.2" class="indexterm"></a><p>
+  Les fonctions et les expressions décrites dans cette section opèrent sur
+  des valeurs de type <code class="type">xml</code>. Voir <a class="xref" href="datatype-xml.html" title="8.13. Type XML">Section 8.13</a>
+  pour des informations sur le type <code class="type">xml</code>. Les expressions
+  <code class="function">xmlparse</code> et <code class="function">xmlserialize</code> pour
+  convertir vers ou à partir d'un type <code class="type">xml</code> sont documentées ici,
+  et non pas dans cette section.
+ </p><p>
+  L'utilisation de la plupart de ces fonctions requiert que
+  <span class="productname">PostgreSQL</span> soit construit avec
+  <code class="command">configure --with-libxml</code>.
+ </p><div class="sect2" id="FUNCTIONS-PRODUCING-XML"><div class="titlepage"><div><div><h3 class="title">9.15.1. Produire du contenu XML <a href="#FUNCTIONS-PRODUCING-XML" class="id_link">#</a></h3></div></div></div><p>
+   Un ensemble de fonctions et d'expressions est disponible pour produire du
+   contenu XML à partir de données SQL. Elles sont donc tout particulièrement
+   intéressantes pour formater le résultat de requêtes en des documents XML
+   pour un traitement dans des applications clientes.
+  </p><div class="sect3" id="FUNCTIONS-PRODUCING-XML-XMLTEXT"><div class="titlepage"><div><div><h4 class="title">9.15.1.1. <code class="literal">xmltext</code> <a href="#FUNCTIONS-PRODUCING-XML-XMLTEXT" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.5.3.2" class="indexterm"></a><pre class="synopsis">
+<code class="function">xmltext</code> ( <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+</pre><p>
+     Cette fonction <code class="function">xmltext</code> renvoie une valeur XML avec un seul
+     nœud de texte contenant l'argument d'entrée comme contenu. Les entités prédéfinies
+     comme l'esperluette (<code class="literal">&amp;</code>), les chevrons gauche et droit
+     (<code class="literal">&lt; &gt;</code>), et les guillemets (<code class="literal">""</code>)
+     sont échappées.
+    </p><p>
+     Exemple :
+</p><pre class="screen">
+SELECT xmltext('&lt; foo &amp; bar &gt;');
+         xmltext
+-------------------------
+ &amp;lt; foo &amp;amp; bar &amp;gt;
+</pre><p>
+    </p></div><div class="sect3" id="FUNCTIONS-PRODUCING-XML-XMLCOMMENT"><div class="titlepage"><div><div><h4 class="title">9.15.1.2. <code class="literal">xmlcomment</code> <a href="#FUNCTIONS-PRODUCING-XML-XMLCOMMENT" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.5.4.2" class="indexterm"></a><pre class="synopsis">
+<code class="function">xmlcomment</code> ( <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+   </pre><p>
+    La fonction <code class="function">xmlcomment</code> crée une valeur XML contenant
+    un commentaire XML avec le texte spécifié comme contenu. Le texte ne peut
+    pas contenir <span class="quote">« <span class="quote"><code class="literal">--</code></span> »</span> ou se terminer avec un
+    <span class="quote">« <span class="quote"><code class="literal">-</code></span> »</span>, sinon la construction résultante
+    serait un commentaire XML invalide. Si l'argument est NULL, le résultat
+    est NULL.
+   </p><p>
+    Example:
+    </p><pre class="screen">
+SELECT xmlcomment('hello');
+
+  xmlcomment
+--------------
+ &lt;!--hello--&gt;
+    </pre><p>
+  </p></div><div class="sect3" id="FUNCTIONS-PRODUCING-XML-XMLCONCAT"><div class="titlepage"><div><div><h4 class="title">9.15.1.3. <code class="literal">xmlconcat</code> <a href="#FUNCTIONS-PRODUCING-XML-XMLCONCAT" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.5.5.2" class="indexterm"></a><pre class="synopsis">
+<code class="function">xmlconcat</code> ( <code class="type">xml</code> [<span class="optional">, ...</span>] ) → <code class="returnvalue">xml</code>
+  </pre><p>
+   La fonction <code class="function">xmlconcat</code> concatène une liste de valeurs
+   XML individuelles pour créer une seule valeur contenant un fragment de
+   contenu XML. Les valeurs NULL sont omises. Le résultat est NULL si tous
+   les arguments sont NULL.
+  </p><p>
+   Example:
+   </p><pre class="screen">
+SELECT xmlconcat('&lt;abc/&gt;', '&lt;bar&gt;foo&lt;/bar&gt;');
+
+      xmlconcat
+----------------------
+ &lt;abc/&gt;&lt;bar&gt;foo&lt;/bar&gt;
+</pre><p>
+    </p><p>
+     Les déclarations XML sont combinées ainsi. Si toutes les valeurs des
+     arguments ont la même déclaration de version XML, cette version est
+     utilisée comme résultat. Sinon, aucune version n'est utilisée. Si toutes
+     les valeurs des arguments ont une valeur de déclarationl standalone à
+     <span class="quote">« <span class="quote">yes</span> »</span>, alors cette valeur est utilisée dans le résultat. Si
+     toutes les valeurs d'agument ont une valeur de déclaration standalone et
+     qu'au moins une de ces valeurs est <span class="quote">« <span class="quote">no</span> »</span>, alors cette valeur
+     est utilisée dans le résultat. Dans tous les autres cas, le résultat
+     n'aura pas de déclaration standalone. Si le résultat nécessite une
+     déclaration standalone, mais par de déclaration version, une déclaration
+     version 1.0 sera utilisée car XML requiert qu'une déclaration XML
+     contiennent une déclaration de version. Les déclarations d'encodage sont
+     ignorés et supprimés dans tous les cas.
+    </p><p>
+     Example:
+</p><pre class="screen">
+SELECT xmlconcat('&lt;?xml version="1.1"?&gt;&lt;foo/&gt;', '&lt;?xml version="1.1" standalone="no"?&gt;&lt;bar/&gt;');
+
+             xmlconcat
+-----------------------------------
+ &lt;?xml version="1.1"?&gt;&lt;foo/&gt;&lt;bar/&gt;
+</pre><p>
+    </p></div><div class="sect3" id="FUNCTIONS-PRODUCING-XML-XMLELEMENT"><div class="titlepage"><div><div><h4 class="title">9.15.1.4. <code class="literal">xmlelement</code> <a href="#FUNCTIONS-PRODUCING-XML-XMLELEMENT" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.5.6.2" class="indexterm"></a><pre class="synopsis">
+<code class="function">xmlelement</code> ( <code class="literal">NAME</code> <em class="replaceable"><code>name</code></em> [<span class="optional">, <code class="literal">XMLATTRIBUTES</code> ( <em class="replaceable"><code>attvalue</code></em> [<span class="optional"> <code class="literal">AS</code> <em class="replaceable"><code>attname</code></em> </span>] [<span class="optional">, ...</span>] ) </span>] [<span class="optional">, <em class="replaceable"><code>content</code></em> [<span class="optional">, ...</span>]</span>] ) → <code class="returnvalue">xml</code>
+   </pre><p>
+    L'expression <code class="function">xmlelement</code> produit un élément XML avec
+    le nom, les attributs et le contenu donnés. Les éléments
+    <em class="replaceable"><code>name</code></em> et <em class="replaceable"><code>attname</code></em>
+    affichés dans la syntaxe sont de simples identifiants, et non pas des
+    valeurs. Les éléments <em class="replaceable"><code>attvalue</code></em> et
+    <em class="replaceable"><code>content</code></em> sont des expressions, qui peuvent être
+    de n'importe quel type de données <span class="productname">PostgreSQL</span>.
+    Les arguments dans <code class="literal">XMLATTRIBUTES</code> génèrent les
+    attributs de l'élément XML ; les valeurs
+    <em class="replaceable"><code>content</code></em> sont concaténées pour former son
+    contenu.
+   </p><p>
+    Examples:
+    </p><pre class="screen">
+SELECT xmlelement(name foo);
+
+ xmlelement
+------------
+ &lt;foo/&gt;
+
+SELECT xmlelement(name foo, xmlattributes('xyz' as bar));
+
+    xmlelement
+------------------
+ &lt;foo bar="xyz"/&gt;
+
+SELECT xmlelement(name foo, xmlattributes(current_date as bar), 'cont', 'ent');
+
+             xmlelement
+-------------------------------------
+ &lt;foo bar="2007-01-26"&gt;content&lt;/foo&gt;
+</pre><p>
+    </p><p>
+     Les noms d'éléments et d'attributs qui ne sont pas des noms XML valides
+     sont échappés en remplaçant les caractères problématiques par la séquence
+     <code class="literal">_x<em class="replaceable"><code>HHHH</code></em>_</code>, où
+     <em class="replaceable"><code>HHHH</code></em> est le point code Unicode du caractère
+     dans sa notation hexadécimale. Par exemple :
+</p><pre class="screen">
+SELECT xmlelement(name "foo$bar", xmlattributes('xyz' as "a&amp;b"));
+
+            xmlelement
+----------------------------------
+ &lt;foo_x0024_bar a_x0026_b="xyz"/&gt;
+</pre><p>
+    </p><p>
+     Un nom d'attribut explicite n'a pas besoin d'être spécifié si la valeur
+     de l'attribut est une référence de colonne, auquel cas le nom de la
+     colonne sera utilisé comme nom d'attribut par défaut. Dans les autres
+     cas, l'attribut doit se voir donner un nom explicite. Donc cet exemple
+     est valide :
+</p><pre class="screen">
+CREATE TABLE test (a xml, b xml);
+SELECT xmlelement(name test, xmlattributes(a, b)) FROM test;
+    </pre><p>
+    Mais ces exemples ne le sont pas :
+    </p><pre class="screen">
+SELECT xmlelement(name test, xmlattributes('constant'), a, b) FROM test;
+SELECT xmlelement(name test, xmlattributes(func(a, b))) FROM test;
+    </pre><p>
+   </p><p>
+    Le contenu d'un élément, si indiqué, sera formaté suivant ton type de
+    données. Si le contenu est lui-même de type <code class="type">xml</code>, des
+    documents XML complexes peuvent être construits. Par exemple :
+    </p><pre class="screen">
+SELECT xmlelement(name foo, xmlattributes('xyz' as bar),
+                            xmlelement(name abc),
+                            xmlcomment('test'),
+                            xmlelement(name xyz));
+
+                  xmlelement
+----------------------------------------------
+ &lt;foo bar="xyz"&gt;&lt;abc/&gt;&lt;!--test--&gt;&lt;xyz/&gt;&lt;/foo&gt;
+   </pre><p>
+
+  Le contenu des autres types sera formaté en une donnée caractère XML
+  valide. Ceci signifie en particulier que les caractères &lt;, &gt;, et
+  &amp; seront convertis en entités. Les données binaires (type de données
+  <code class="type">bytea</code>) seront représentées dans un encodage base64 ou hex,
+  suivant la configuration du paramètre <a class="xref" href="runtime-config-client.html#GUC-XMLBINARY">xmlbinary</a>. Le
+  comportement particulier pour les types de données individuels devrait
+  évoluer pour aligner les correspondances PostgreSQL avec ceux spécifiés
+  dans SQL:2006 et ultérieurs, comme discuté dans <a class="xref" href="xml-limits-conformance.html#FUNCTIONS-XML-LIMITS-CASTS" title="D.3.1.3. Correspondances entre types de données et valeurs SQL et XML">Section D.3.1.3</a>.
+ </p></div><div class="sect3" id="FUNCTIONS-PRODUCING-XML-XMLFOREST"><div class="titlepage"><div><div><h4 class="title">9.15.1.5. <code class="literal">xmlforest</code> <a href="#FUNCTIONS-PRODUCING-XML-XMLFOREST" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.5.7.2" class="indexterm"></a><pre class="synopsis">
+<code class="function">xmlforest</code> ( <em class="replaceable"><code>content</code></em> [<span class="optional"> <code class="literal">AS</code> <em class="replaceable"><code>name</code></em> </span>] [<span class="optional">, ...</span>] ) → <code class="returnvalue">xml</code>
+ </pre><p>
+  L'expression <code class="function">xmlforest</code> produit une forêt (séquence)
+  XML d'éléments en utilisant les noms et le contenu donnés. Quant à
+  <code class="function">xmlelement</code>, chaque <em class="replaceable"><code>name</code></em>
+  doit être un simple identifiant, alors que les expressions
+  <em class="replaceable"><code>content</code></em> peuvent avoir n'importe quel type de
+  données.
+ </p><p>
+  Exemples :
+  </p><pre class="screen">
+SELECT xmlforest('abc' AS foo, 123 AS bar);
+
+          xmlforest
+------------------------------
+ &lt;foo&gt;abc&lt;/foo&gt;&lt;bar&gt;123&lt;/bar&gt;
+
+
+SELECT xmlforest(table_name, column_name)
+FROM information_schema.columns
+WHERE table_schema = 'pg_catalog';
+
+                                xmlforest
+------------------------------------​-----------------------------------
+ &lt;table_name&gt;pg_authid&lt;/table_name&gt;​&lt;column_name&gt;rolname&lt;/column_name&gt;
+ &lt;table_name&gt;pg_authid&lt;/table_name&gt;​&lt;column_name&gt;rolsuper&lt;/column_name&gt;
+ ...
+  </pre><p>
+
+  Comme indiqué dans le deuxième exemple, le nom de l'élément peut être
+  omis si la valeur contenue est une référence de colonne, auquel cas le
+  nom de l'élément est utilisé par défaut. Sinon un nom doit être spécifié.
+ </p><p>
+  Les noms d'élément qui ne sont pas des noms XML valides sont échappés
+  comme indiqué pour <code class="function">xmlelement</code> ci-dessus. De façon
+  similaire, les données du contenu sont échappées pour rendre le contenu
+  XML valide, sauf s'il est déjà de type <code class="type">xml</code>.
+ </p><p>
+  Notez que les forêts XML ne sont pas des documents XML valides si elles
+  consistent de plus d'un élément, donc il pourrait être utile d'envelopper
+  les expressions <code class="function">xmlforest</code> dans
+  <code class="function">xmlelement</code>.
+ </p></div><div class="sect3" id="FUNCTIONS-PRODUCING-XML-XMLPI"><div class="titlepage"><div><div><h4 class="title">9.15.1.6. <code class="literal">xmlpi</code> <a href="#FUNCTIONS-PRODUCING-XML-XMLPI" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.5.8.2" class="indexterm"></a><pre class="synopsis">
+<code class="function">xmlpi</code> ( <code class="literal">NAME</code> <em class="replaceable"><code>name</code></em> [<span class="optional">, <em class="replaceable"><code>content</code></em> </span>] ) → <code class="returnvalue">xml</code>
+ </pre><p>
+  L'instruction <code class="function">xmlpi</code> crée une instruction de
+  traitement XML. Quant à <code class="function">xmlelement</code>,
+  <em class="replaceable"><code>name</code></em> doit être un simple identifiant, alors
+  que l'expression <em class="replaceable"><code>content</code></em> peut contenir tout
+  type de données. Si présent, <em class="replaceable"><code>content</code></em> ne doit
+  pas contenir la séquence de caractères <code class="literal">?&gt;</code>.
+ </p><p>
+  Exemple :
+  </p><pre class="screen">
+SELECT xmlpi(name php, 'echo "hello world";');
+
+            xmlpi
+-----------------------------
+ &lt;?php echo "hello world";?&gt;
+</pre><p>
+    </p></div><div class="sect3" id="FUNCTIONS-PRODUCING-XML-XMLROOT"><div class="titlepage"><div><div><h4 class="title">9.15.1.7. <code class="literal">xmlroot</code> <a href="#FUNCTIONS-PRODUCING-XML-XMLROOT" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.5.9.2" class="indexterm"></a><pre class="synopsis">
+<code class="function">xmlroot</code> ( <code class="type">xml</code>, <code class="literal">VERSION</code> {<code class="type">text</code>|<code class="literal">NO VALUE</code>} [<span class="optional">, <code class="literal">STANDALONE</code> {<code class="literal">YES</code>|<code class="literal">NO</code>|<code class="literal">NO VALUE</code>} </span>] ) → <code class="returnvalue">xml</code>
+  </pre><p>
+   L'expression <code class="function">xmlroot</code> altère les propriétés du nœud
+   racine d'une valeur XML. Si une version est spécifiée, elle remplace la
+   valeur dans la déclaration de version du nœud racine ; si un
+   paramètre standalone est spécifié, il remplace la valeur dans la
+   déclaration standalone du nœud racine.
+  </p><p>
+   </p><pre class="screen">
+SELECT xmlroot(xmlparse(document '&lt;?xml version="1.1"?&gt;&lt;content&gt;abc&lt;/content&gt;'),
+               version '1.0', standalone yes);
+
+                xmlroot
+----------------------------------------
+ &lt;?xml version="1.0" standalone="yes"?&gt;
+ &lt;content&gt;abc&lt;/content&gt;
+</pre><p>
+    </p></div><div class="sect3" id="FUNCTIONS-XML-XMLAGG"><div class="titlepage"><div><div><h4 class="title">9.15.1.8. <code class="literal">xmlagg</code> <a href="#FUNCTIONS-XML-XMLAGG" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.5.10.2" class="indexterm"></a><pre class="synopsis">
+<code class="function">xmlagg</code> ( <code class="type">xml</code> ) → <code class="returnvalue">xml</code>
+   </pre><p>
+    La fonction <code class="function">xmlagg</code> est, contrairement aux autres
+    fonctions décrites ici, une fonction d'agrégat. Elle concatène les
+    valeurs en entrée à l'appel de fonction d'agrégat, tout comme le fait
+    <code class="function">xmlconcat</code>, sauf que la concaténation survient au
+    travers des lignes plutôt qu'au travers des expressions dans une seule
+    ligne. Voir <a class="xref" href="functions-aggregate.html" title="9.21. Fonctions d'agrégat">Section 9.21</a> pour l'information
+    supplémentaire sur les fonctions d'agrégat.
+   </p><p>
+    Exemple :
+    </p><pre class="screen">
+CREATE TABLE test (y int, x xml);
+INSERT INTO test VALUES (1, '&lt;foo&gt;abc&lt;/foo&gt;');
+INSERT INTO test VALUES (2, '&lt;bar/&gt;');
+SELECT xmlagg(x) FROM test;
+        xmlagg
+----------------------
+ &lt;foo&gt;abc&lt;/foo&gt;&lt;bar/&gt;
+</pre><p>
+    </p><p>
+     Pour déterminer l'ordre de la concaténation, une clause <code class="literal">ORDER
+     BY</code> peut être ajouté à l'appel de l'agrégat comme décrit dans
+     <a class="xref" href="sql-expressions.html#SYNTAX-AGGREGATES" title="4.2.7. Expressions d'agrégat">Section 4.2.7</a>. Par exemple :
+
+</p><pre class="screen">
+SELECT xmlagg(x ORDER BY y DESC) FROM test;
+        xmlagg
+----------------------
+ &lt;bar/&gt;&lt;foo&gt;abc&lt;/foo&gt;
+</pre><p>
+    </p><p>
+     L'approche non standard suivante était recommendée dans les versions
+     précédentes et pourrait toujours être utile dans des cas
+     spécifiques :
+
+</p><pre class="screen">
+SELECT xmlagg(x) FROM (SELECT * FROM test ORDER BY y DESC) AS tab;
+        xmlagg
+----------------------
+ &lt;bar/&gt;&lt;foo&gt;abc&lt;/foo&gt;
+</pre><p>
+    </p></div></div><div class="sect2" id="FUNCTIONS-XML-PREDICATES"><div class="titlepage"><div><div><h3 class="title">9.15.2. Prédicats XML <a href="#FUNCTIONS-XML-PREDICATES" class="id_link">#</a></h3></div></div></div><p>
+     Les expressions décrites dans cette section vérifient les propriétés des
+     valeurs <code class="type">xml</code>.
+    </p><div class="sect3" id="FUNCTIONS-PRODUCING-XML-IS-DOCUMENT"><div class="titlepage"><div><div><h4 class="title">9.15.2.1. <code class="literal">IS DOCUMENT</code> <a href="#FUNCTIONS-PRODUCING-XML-IS-DOCUMENT" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.6.3.2" class="indexterm"></a><pre class="synopsis">
+<code class="type">xml</code> <code class="literal">IS DOCUMENT</code> → <code class="returnvalue">boolean</code>
+    </pre><p>
+     L'expression <code class="literal">IS DOCUMENT</code> renvoie true si la valeur de
+     l'argument XML est un document XML propre, false si elle ne l'est pas
+     (c'est-à-dire un fragment de contenu), ou null si l'argument est null.
+     Voir <a class="xref" href="datatype-xml.html" title="8.13. Type XML">Section 8.13</a> sur la différence entre les documents
+     et les fragments de contenu.
+    </p></div><div class="sect3" id="FUNCTIONS-PRODUCING-XML-IS-NOT-DOCUMENT"><div class="titlepage"><div><div><h4 class="title">9.15.2.2. <code class="literal">IS NOT DOCUMENT</code> <a href="#FUNCTIONS-PRODUCING-XML-IS-NOT-DOCUMENT" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.6.4.2" class="indexterm"></a><pre class="synopsis">
+<code class="type">xml</code> <code class="literal">IS NOT DOCUMENT</code> → <code class="returnvalue">boolean</code>
+    </pre><p>
+     L'expression <code class="literal">IS NOT DOCUMENT</code> renvoie false si la
+     valeur de l'argument XML est un document XML propre, true si elle ne
+     l'est pas (c'est-à-dire un fragment de contenu), ou null si l'argument
+     est null.
+    </p></div><div class="sect3" id="XML-EXISTS"><div class="titlepage"><div><div><h4 class="title">9.15.2.3. <code class="literal">XMLEXISTS</code> <a href="#XML-EXISTS" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.6.5.2" class="indexterm"></a><pre class="synopsis">
+<code class="function">XMLEXISTS</code> ( <code class="type">text</code> <code class="literal">PASSING</code> [<span class="optional"><code class="literal">BY</code> {<code class="literal">REF</code>|<code class="literal">VALUE</code>}</span>] <code class="type">xml</code> [<span class="optional"><code class="literal">BY</code> {<code class="literal">REF</code>|<code class="literal">VALUE</code>}</span>] ) → <code class="returnvalue">boolean</code>
+    </pre><p>
+     La fonction <code class="function">xmlexists</code> évalue une expression XPath
+     1.0 (le premier argument), avec la valeur XML passée comme son élément de
+     contexte. La fonction renvoie false si le résultat de cette évaluation
+     renvoie un ensemble de nœud vide, true si elle renvoie toute autre
+     valeur. La fonction renvoie null si un argument vaut null. Une valeur non
+     null passée comme élément de contexte doit être un document XML, et non
+     pas un fragment de contenu ou une valeur non XML.
+    </p><p>
+     Example:
+     </p><pre class="screen">
+SELECT xmlexists('//town[text() = ''Toronto'']' PASSING BY VALUE '&lt;towns&gt;&lt;town&gt;Toronto&lt;/town&gt;&lt;town&gt;Ottawa&lt;/town&gt;&lt;/towns&gt;');
+
+ xmlexists
+------------
+ t
+(1 row)
+</pre><p>
+    </p><p>
+     Les clauses <code class="literal">BY REF</code> et <code class="literal">BY VALUE</code> sont
+     acceptées dans <span class="productname">PostgreSQL</span>, mais sont ignorées
+     comme indiqué dans <a class="xref" href="xml-limits-conformance.html#FUNCTIONS-XML-LIMITS-POSTGRESQL" title="D.3.2.  Limites accidentelles de l'implémentation">Section D.3.2</a>.
+    </p><p>
+     Dans le standard SQL, la fonction <code class="function">xmlexists</code> évalue
+     une expression dans le langage XML Query, mais
+     <span class="productname">PostgreSQL</span> autorise seulement une expression
+     XPath 1.0, comme discuté dans <a class="xref" href="xml-limits-conformance.html#FUNCTIONS-XML-LIMITS-XPATH1" title="D.3.1. Les requêtes sont limitées à XPath 1.0">Section D.3.1</a>.
+    </p></div><div class="sect3" id="XML-IS-WELL-FORMED"><div class="titlepage"><div><div><h4 class="title">9.15.2.4. <code class="literal">xml_is_well_formed</code> <a href="#XML-IS-WELL-FORMED" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.6.6.2" class="indexterm"></a><a id="id-1.5.8.21.6.6.3" class="indexterm"></a><a id="id-1.5.8.21.6.6.4" class="indexterm"></a><pre class="synopsis">
+<code class="function">xml_is_well_formed</code> ( <code class="type">text</code> ) → <code class="returnvalue">boolean</code>
+<code class="function">xml_is_well_formed_document</code> ( <code class="type">text</code> ) → <code class="returnvalue">boolean</code>
+<code class="function">xml_is_well_formed_content</code> ( <code class="type">text</code> ) → <code class="returnvalue">boolean</code>
+     </pre><p>
+      Ces fonctions vérifient si une chaîne de type <code class="type">text</code>
+      représente un XML bien formé, renvoyant un résultat booléen.
+      <code class="function">xml_is_well_formed_document</code> vérifie si le document
+      est bien formé alors que <code class="function">xml_is_well_formed_content</code>
+      vérifie que c'est une contenu bien formé.
+      <code class="function">xml_is_well_formed</code> fait le premier si le paramètre
+      de configuration <a class="xref" href="runtime-config-client.html#GUC-XMLOPTION">xmloption</a> est configuré à
+      <code class="literal">DOCUMENT</code>, et le deuxième s'il est configuré à
+      <code class="literal">CONTENT</code>. Ceci signifie que
+      <code class="function">xml_is_well_formed</code> est utile pour voir si une simple
+      conversion vers le type <code class="type">xml</code> réussira, alors que les deux
+      autres fonctions sont utiles pour voir si les variantes correspondantes
+      de <code class="function">XMLPARSE</code> réussira.
+     </p><p>
+      Exemples :
+
+      </p><pre class="screen">
+SET xmloption TO DOCUMENT;
+SELECT xml_is_well_formed('&lt;&gt;');
+ xml_is_well_formed
+--------------------
+ f
+(1 row)
+
+SELECT xml_is_well_formed('&lt;abc/&gt;');
+ xml_is_well_formed
+--------------------
+ t
+(1 row)
+
+SET xmloption TO CONTENT;
+SELECT xml_is_well_formed('abc');
+ xml_is_well_formed
+--------------------
+ t
+(1 row)
+
+SELECT xml_is_well_formed_document('&lt;pg:foo xmlns:pg="http://postgresql.org/stuff"&gt;bar&lt;/pg:foo&gt;');
+ xml_is_well_formed_document
+-----------------------------
+ t
+(1 row)
+
+SELECT xml_is_well_formed_document('&lt;pg:foo xmlns:pg="http://postgresql.org/stuff"&gt;bar&lt;/my:foo&gt;');
+ xml_is_well_formed_document
+-----------------------------
+ f
+(1 row)
+</pre><p>
+
+     Le dernier exemple montre que les vérifications incluent une vérification
+     de correspondance sur les espaces de nom.
+    </p></div></div><div class="sect2" id="FUNCTIONS-XML-PROCESSING"><div class="titlepage"><div><div><h3 class="title">9.15.3. Traiter du XML <a href="#FUNCTIONS-XML-PROCESSING" class="id_link">#</a></h3></div></div></div><p>
+    Pour traiter les valeurs de type <code class="type">xml</code>, PostgreSQL offre les
+    fonctions <code class="function">xpath</code> et <code class="function">xpath_exists</code>,
+    qui évaluent les expressions XPath 1.0 et la fonction de table
+    <code class="function">XMLTABLE</code>.
+   </p><div class="sect3" id="FUNCTIONS-XML-PROCESSING-XPATH"><div class="titlepage"><div><div><h4 class="title">9.15.3.1. <code class="literal">xpath</code> <a href="#FUNCTIONS-XML-PROCESSING-XPATH" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.7.3.2" class="indexterm"></a><pre class="synopsis">
+<code class="function">xpath</code> ( <em class="parameter"><code>xpath</code></em> <code class="type">text</code>, <em class="parameter"><code>xml</code></em> <code class="type">xml</code> [<span class="optional">, <em class="parameter"><code>nsarray</code></em> <code class="type">text[]</code> </span>] ) → <code class="returnvalue">xml[]</code>
+      </pre><p>
+       La fonction <code class="function">xpath</code> évalue l'expression XPath 1.0
+       indiquée dans <em class="parameter"><code>xpath</code></em> (sous la forme d'une donnée de
+       type text) avec la valeur XML de type <em class="parameter"><code>xml</code></em>. Elle
+       renvoie des valeurs XML correspondant à l'ensemble de nœuds produits par
+       l'expression XPath. Si l'expression XPath renvoie une valeur scalaire
+       plutôt qu'un ensemble de nœuds, un tableau d'un seul élément est renvoyé.
+      </p><p>
+       Le deuxième argument doit être un document XML bien formé. En
+       particulier, il doit avoir un seul élément de nœud racine.
+      </p><p>
+       Le troisième argument optionnel de la fonction est un tableau de
+       correspondances d'espaces de nom. Ce tableau devrait être un tableau de
+       <code class="type">text</code> à deux dimensions avec la longueur du deuxième axe
+       égale à 2 (cela devrait être un tableau de tableaux, chacun des deux
+       contenant exactement deux éléments). Le premier élément de chaque entrée
+       de tableau est le nom de l'espace de noms (alias), le second est l'URI de
+       l'espace de noms. Il n'est pas requis que les alias fournis dans ce
+       tableau soient identiques à ceux utilisés dans le document XML lui-même
+       (en d'autres termes, dans le document XML et dans le contexte de la
+       fonction <code class="function">xpath</code> function context, les alias sont
+       <span class="emphasis"><em>local</em></span>).
+      </p><p>
+       Exemple :
+       </p><pre class="screen">
+SELECT xpath('/my:a/text()', '&lt;my:a xmlns:my="http://example.com"&gt;test&lt;/my:a&gt;',
+             ARRAY[ARRAY['my', 'http://example.com']]);
+
+ xpath
+--------
+ {test}
+(1 row)
+</pre><p>
+    </p><p>
+     Pour gérer les espaces de noms par défaut (anonymes), faire ceci :
+</p><pre class="screen">
+SELECT xpath('//mydefns:b/text()', '&lt;a xmlns="http://example.com"&gt;&lt;b&gt;test&lt;/b&gt;&lt;/a&gt;',
+             ARRAY[ARRAY['mydefns', 'http://example.com']]);
+
+ xpath
+--------
+ {test}
+(1 row)
+</pre><p>
+    </p></div><div class="sect3" id="FUNCTIONS-XML-PROCESSING-XPATH-EXISTS"><div class="titlepage"><div><div><h4 class="title">9.15.3.2. <code class="literal">xpath_exists</code> <a href="#FUNCTIONS-XML-PROCESSING-XPATH-EXISTS" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.7.4.2" class="indexterm"></a><pre class="synopsis">
+<code class="function">xpath_exists</code> ( <em class="parameter"><code>xpath</code></em> <code class="type">text</code>, <em class="parameter"><code>xml</code></em> <code class="type">xml</code> [<span class="optional">, <em class="parameter"><code>nsarray</code></em> <code class="type">text[]</code> </span>] ) → <code class="returnvalue">boolean</code>
+       </pre><p>
+        La fonction <code class="function">xpath_exists</code> est une forme spécialisée
+        de la fonction <code class="function">xpath</code>. Au lieu de renvoyer les
+        valeurs XML individuelles satisfaisant l'expression XPath 1.0, cette
+        fonction renvoie un booléen indiquant si la requête était satisfaite ou
+        non (spécifiquement s'il produit une valeur autre qu'un ensemble vide de
+        nœuds). Cette fonction est équivalente au prédicat
+        <code class="literal">XMLEXISTS</code>, sauf qu'il offre aussi du support pour
+        l'argument de correspondance d'espaces de noms.
+       </p><p>
+        Example:
+        </p><pre class="screen">
+SELECT xpath_exists('/my:a/text()', '&lt;my:a xmlns:my="http://example.com"&gt;test&lt;/my:a&gt;',
+                     ARRAY[ARRAY['my', 'http://example.com']]);
+
+ xpath_exists
+--------------
+ t
+(1 row)
+</pre><p>
+    </p></div><div class="sect3" id="FUNCTIONS-XML-PROCESSING-XMLTABLE"><div class="titlepage"><div><div><h4 class="title">9.15.3.3. <code class="literal">xmltable</code> <a href="#FUNCTIONS-XML-PROCESSING-XMLTABLE" class="id_link">#</a></h4></div></div></div><a id="id-1.5.8.21.7.5.2" class="indexterm"></a><a id="id-1.5.8.21.7.5.3" class="indexterm"></a><pre class="synopsis">
+<code class="function">XMLTABLE</code> (
+    [<span class="optional"> <code class="literal">XMLNAMESPACES</code> ( <em class="replaceable"><code>namespace_uri</code></em> <code class="literal">AS</code> <em class="replaceable"><code>namespace_name</code></em> [<span class="optional">, ...</span>] ), </span>]
+    <em class="replaceable"><code>row_expression</code></em> <code class="literal">PASSING</code> [<span class="optional"><code class="literal">BY</code> {<code class="literal">REF</code>|<code class="literal">VALUE</code>}</span>] <em class="replaceable"><code>document_expression</code></em> [<span class="optional"><code class="literal">BY</code> {<code class="literal">REF</code>|<code class="literal">VALUE</code>}</span>]
+    <code class="literal">COLUMNS</code> <em class="replaceable"><code>name</code></em> { <em class="replaceable"><code>type</code></em> [<span class="optional"><code class="literal">PATH</code> <em class="replaceable"><code>column_expression</code></em></span>] [<span class="optional"><code class="literal">DEFAULT</code> <em class="replaceable"><code>default_expression</code></em></span>] [<span class="optional"><code class="literal">NOT NULL</code> | <code class="literal">NULL</code></span>]
+                  | <code class="literal">FOR ORDINALITY</code> }
+            [<span class="optional">, ...</span>]
+) → <code class="returnvalue">setof record</code>
+        </pre><p>
+         L'expression <code class="function">xmltable</code> produit une table basée sur
+         une valeur XML, un filtre XPath pour extraire les lignes et un ensemble
+         de définition de colonnes. Bien que cela ressemble syntaxiquement à une
+         fonction, il peut aussi apparaître comme une table dans la clause
+         <code class="literal">FROM</code> de la requête.
+        </p><p>
+         La clause <code class="literal">XMLNAMESPACES</code> optionnelle donne une liste,
+         séparée par des virgules, des définitions d'espaces de nom, où chaque
+         <em class="replaceable"><code>namespace_uri</code></em> est une expression
+         <code class="type">text</code> et chaque <em class="replaceable"><code>namespace_name</code></em> est
+         un simple identifiant. Elle spécifie les espaces de nom XML utilisés dans
+         le document et leur alias. La spécification d'un espace de nom par défaut
+         n'est actuellement pas supportée.
+        </p><p>
+         L'argument requis <em class="replaceable"><code>row_expression</code></em> est une
+         expression XPath 1.0 (donné sous la forme d'un <code class="type">text</code>) qui est
+         évaluée, passant la valeur XML
+         <em class="replaceable"><code>document_expression</code></em> sous la forme d'un élément
+         de contexte, pour obtenir un ensemble de nœuds XML. Ces nœuds sont ce que
+         <code class="function">xmltable</code> transforme des lignes en sortie. Aucune
+         ligne ne sera produite si <em class="replaceable"><code>document_expression</code></em>
+         est NULL, ou si <em class="replaceable"><code>row_expression</code></em> produit un
+         ensemble vide de nœuds ou tout autre valeur qu'un ensemble de nœuds.
+        </p><p>
+         <em class="replaceable"><code>document_expression</code></em> fournit l'élément de
+         contexte pour <em class="replaceable"><code>row_expression</code></em>. Cela doit être
+         un document XML bien formé ; les fragments/forêts ne sont pas
+         acceptés. Les clauses <code class="literal">BY REF</code> et <code class="literal">BY
+          VALUE</code> sont acceptées mais ignorées, comme discuté dans <a class="xref" href="xml-limits-conformance.html#FUNCTIONS-XML-LIMITS-POSTGRESQL" title="D.3.2.  Limites accidentelles de l'implémentation">Section D.3.2</a>.
+        </p><p>
+         Dans le standard SQL, la fonction <code class="function">xmltable</code> évalue
+         des expressions dans le langage XML Query, mais
+         <span class="productname">PostgreSQL</span> autorise seulement les expressions
+         XPath 1.0, comme discutées dans <a class="xref" href="xml-limits-conformance.html#FUNCTIONS-XML-LIMITS-XPATH1" title="D.3.1. Les requêtes sont limitées à XPath 1.0">Section D.3.1</a>.
+        </p><p>
+         La clause requise <code class="literal">COLUMNS</code> spécifie les colonnes
+         produites dans la table en sortie. Voir le résumé de la syntaxe ci-dessus
+         pour le format. Un nom est requis pour chaque colonne, comme l'est un
+         type de données (sauf si <code class="literal">FOR ORDINALITY</code> est spécifié,
+         auquel cas le type <code class="type">integer</code> est implicite). Les clauses de
+         chemin, de valeur par défaut et de nullabilité sont optionnelles.
+        </p><p>
+         Une colonne marquée <code class="literal">FOR ORDINALITY</code> sera peuplée avec
+         les numéros de lignes, commençant par 1, dans l'ordre des nœuds récupérés
+         à partir de l'ensemble de nœuds résultats de
+         <em class="replaceable"><code>row_expression</code></em>. Au plus une colonne sera
+         marquée <code class="literal">FOR ORDINALITY</code>.
+        </p><div class="note"><h3 class="title">Note</h3><p>
+          XPath 1.0 ne spécifie pas d'ordre pour les nœuds dans un ensemble de
+          nœuds, donc le code qui relie un ordre particulier de résultats sera
+          dépendant de l'implémentation. Les détails sont disponibles dans <a class="xref" href="xml-limits-conformance.html#XML-XPATH-1-SPECIFICS" title="D.3.1.2. Restriction de XPath pour la version 1.0">Section D.3.1.2</a>.
+         </p></div><p>
+         Le <em class="replaceable"><code>column_expression</code></em> pour un colonne est une
+         expression XPath 1.0 qui est évaluée pour chaque ligne, avec le nœud
+         courant provenant du résultat de
+         <em class="replaceable"><code>row_expression</code></em> comme son élément de contexte,
+         pour trouver la valeur de la colonne. Si aucune
+         <em class="replaceable"><code>column_expression</code></em> n'est donnée, alors le nom
+         de la colonne est utilisé comme un chemin implicite.
+        </p><p>
+         Si une expression XPath de colonne renvoie une valeur non XML (qui est
+         limitée à une chaîne, un booléen ou un double en XPath 1.0) et la colonne
+         a un type type autre que <code class="type">xml</code>, la colonne sera configurée
+         ainsi en affectant la représentation textuelle de la valeur vers le type
+         PostgreSQL. (Si la valeur est un booléen, sa représentation textuelle est
+         comprise comme <code class="literal">1</code> ou <code class="literal">0</code> si la
+         catégorie du type de la colonne en sortie est numérique, sinon
+         <code class="literal">true</code> ou <code class="literal">false</code>.)
+        </p><p>
+         Si l'expression XPath d'une colonne renvoie un ensemble non vide de nœuds
+         XML et si le type PostgreSQL de la colonne est <code class="type">xml</code>, la
+         colonne sera affectée au résultat exact de l'expression s'il est de forme
+         document ou contenu.
+         <a href="#ftn.id-1.5.8.21.7.5.15.2" class="footnote"><sup class="footnote" id="id-1.5.8.21.7.5.15.2">[8]</sup></a>
+        </p><p>
+         Un résultat non XML affecté à une colonne <code class="type">xml</code> en sortie
+         produit du contenu, un nœud texte simple avec la valeur chaîne du
+         résultat. Un résultat XML affecté à une colonne de tout autre type
+         pourrait ne pas avoir plus d'un nœud, sinon une erreur est levée. S'il y
+         a exactement un nœud, la colonne sera configurée d'après son affectation
+         de la valeur textuelle du nœud (comme défini pour la fonction
+         <code class="function">string</code> XPath 1.0) du type PostgreSQL.
+        </p><p>
+         La valeur de chaîne d'un élément XML est la concaténation, dans
+         l'ordre du document, de tous les nœuds texte contenus dans cet
+         élément et ses descendants. La valeur de chaîne d'un élément sans nœuds
+         texte descendants est une chaîne vide (non <code class="literal">NULL</code>).
+         Tous les attributs <code class="literal">xsi:nil</code> sont ignorés.
+         Notez que le nœud <code class="literal">text()</code> avec uniquement des espaces
+         blancs entre deux éléments non-texte est préservé et que l'espace blanc
+         au début du nœud <code class="literal">text()</code> n'est pas aplati.
+         La fonction XPath 1.0 <code class="function">string</code> peut être consultée
+         pour les règles définissant la valeur de chaîne des autres types de
+         nœuds XML et des valeurs non XML.
+        </p><p>
+         Les règles de conversion présentées ici ne sont pas exactement ceux du
+         standard SQL, comme discuté dans <a class="xref" href="xml-limits-conformance.html#FUNCTIONS-XML-LIMITS-CASTS" title="D.3.1.3. Correspondances entre types de données et valeurs SQL et XML">Section D.3.1.3</a>.
+        </p><p>
+         Si l'expression de chemin renvoie un ensemble vide de nœuds (typiquement
+         quand cela ne correspond pas) pour une ligne donnée, la colonne sera
+         configurée à <code class="literal">NULL</code>, sauf si une
+         <em class="replaceable"><code>default_expression</code></em> est indiquée ; alors
+         la valeur résultant de l'évaluation d'une expression est utilisée.
+        </p><p>
+         Une <em class="replaceable"><code>default_expression</code></em>, plutôt qu'être évaluée
+         immédiatement quand <code class="function">xmltable</code> est appelée, est
+         évaluée chaque fois qu'une valeur par défaut est nécessaire pour la
+         colonne. Si l'expression qualifie comme stable ou immuable, l'évaluation
+         de répétition peut être ignorée. Ceci signifie que vous pouvez utiliser
+         utilement les fonctions volatiles comme <code class="function">nextval</code> dans
+         <em class="replaceable"><code>default_expression</code></em>.
+        </p><p>
+         Les colonnes peuvent être marquées <code class="literal">NOT NULL</code>. Si
+         <em class="replaceable"><code>column_expression</code></em> pour une colonne
+         <code class="literal">NOT NULL</code> ne correspond à rien et qu'il n'y a ni valeur
+         par défaut (<code class="literal">DEFAULT</code>) ni
+         <em class="replaceable"><code>default_expression</code></em>, elle s'évalue à NULL, une
+         erreur est rapportée.
+        </p><p>
+         Exemples :
+         </p><pre class="screen">
+CREATE TABLE xmldata AS SELECT
+xml $$
+&lt;ROWS&gt;
+  &lt;ROW id="1"&gt;
+    &lt;COUNTRY_ID&gt;AU&lt;/COUNTRY_ID&gt;
+    &lt;COUNTRY_NAME&gt;Australia&lt;/COUNTRY_NAME&gt;
+  &lt;/ROW&gt;
+  &lt;ROW id="5"&gt;
+    &lt;COUNTRY_ID&gt;JP&lt;/COUNTRY_ID&gt;
+    &lt;COUNTRY_NAME&gt;Japan&lt;/COUNTRY_NAME&gt;
+    &lt;PREMIER_NAME&gt;Shinzo Abe&lt;/PREMIER_NAME&gt;
+    &lt;SIZE unit="sq_mi"&gt;145935&lt;/SIZE&gt;
+  &lt;/ROW&gt;
+  &lt;ROW id="6"&gt;
+    &lt;COUNTRY_ID&gt;SG&lt;/COUNTRY_ID&gt;
+    &lt;COUNTRY_NAME&gt;Singapore&lt;/COUNTRY_NAME&gt;
+    &lt;SIZE unit="sq_km"&gt;697&lt;/SIZE&gt;
+  &lt;/ROW&gt;
+&lt;/ROWS&gt;
+$$ AS data;
+
+SELECT xmltable.*
+  FROM xmldata,
+       XMLTABLE('//ROWS/ROW'
+                PASSING data
+                COLUMNS id int PATH '@id',
+                        ordinality FOR ORDINALITY,
+                        "COUNTRY_NAME" text,
+                        country_id text PATH 'COUNTRY_ID',
+                        size_sq_km float PATH 'SIZE[@unit = "sq_km"]',
+                        size_other text PATH
+                             'concat(SIZE[@unit!="sq_km"], " ", SIZE[@unit!="sq_km"]/@unit)',
+                        premier_name text PATH 'PREMIER_NAME' DEFAULT 'not specified');
+
+ id | ordinality | COUNTRY_NAME | country_id | size_sq_km |  size_other  | premier_name
+----+------------+--------------+------------+------------+--------------+---------------
+  1 |          1 | Australia    | AU         |            |              | not specified
+  5 |          2 | Japan        | JP         |            | 145935 sq_mi | Shinzo Abe
+  6 |          3 | Singapore    | SG         |        697 |              | not specified
+</pre><p>
+
+     L'exemple suivant montre une concaténation de plusieurs nœuds text(), une
+     utilisation du nom de colonne en tant que filtre XPath, et le traitement
+     des espaces blancs, des commentaires XML et le traitement des
+     instructions :
+
+  </p><pre class="screen">
+CREATE TABLE xmlelements AS SELECT
+xml $$
+  &lt;root&gt;
+   &lt;element&gt;  Hello&lt;!-- xyxxz --&gt;2a2&lt;?aaaaa?&gt; &lt;!--x--&gt;  bbb&lt;x&gt;xxx&lt;/x&gt;CC  &lt;/element&gt;
+        &lt;/root&gt;
+        $$ AS data;
+
+        SELECT xmltable.*
+        FROM xmlelements, XMLTABLE('/root' PASSING data COLUMNS element text);
+        element
+        -------------------------
+        Hello2a2   bbbxxxCC
+        </pre><p>
+      </p><p>
+       L'exemple suivant illustre comment la clause
+       <code class="literal">XMLNAMESPACES</code> peut être utilisé pour spécifier une
+       liste d'espaces de noms utilisée dans le document XML ainsi que dans les
+       expressions XPath :
+
+       </p><pre class="screen">
+WITH xmldata(data) AS (VALUES ('
+&lt;example xmlns="http://example.com/myns" xmlns:B="http://example.com/b"&gt;
+ &lt;item foo="1" B:bar="2"/&gt;
+ &lt;item foo="3" B:bar="4"/&gt;
+ &lt;item foo="4" B:bar="5"/&gt;
+&lt;/example&gt;'::xml)
+)
+SELECT xmltable.*
+  FROM XMLTABLE(XMLNAMESPACES('http://example.com/myns' AS x,
+                              'http://example.com/b' AS "B"),
+             '/x:example/x:item'
+                PASSING (SELECT data FROM xmldata)
+                COLUMNS foo int PATH '@foo',
+                  bar int PATH '@B:bar');
+ foo | bar
+-----+-----
+   1 |   2
+   3 |   4
+   4 |   5
+(3 rows)
+</pre><p>
+    </p></div></div><div class="sect2" id="FUNCTIONS-XML-MAPPING"><div class="titlepage"><div><div><h3 class="title">9.15.4. Correspondances tables et XML <a href="#FUNCTIONS-XML-MAPPING" class="id_link">#</a></h3></div></div></div><a id="id-1.5.8.21.8.2" class="indexterm"></a><p>
+    Les fonctions suivantes font correspondre le contenu des tables
+    relationnelles aux valeurs XML. Elles peuvent être vues comme une
+    fonctionnalité d'export du XML :
+</p><pre class="synopsis">
+<code class="function">table_to_xml</code> ( <em class="parameter"><code>table</code></em> <code class="type">regclass</code>, <em class="parameter"><code>nulls</code></em> <code class="type">boolean</code>,
+               <em class="parameter"><code>tableforest</code></em> <code class="type">boolean</code>, <em class="parameter"><code>targetns</code></em> <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+<code class="function">query_to_xml</code> ( <em class="parameter"><code>query</code></em> <code class="type">text</code>, <em class="parameter"><code>nulls</code></em> <code class="type">boolean</code>,
+               <em class="parameter"><code>tableforest</code></em> <code class="type">boolean</code>, <em class="parameter"><code>targetns</code></em> <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+<code class="function">cursor_to_xml</code> ( <em class="parameter"><code>cursor</code></em> <code class="type">refcursor</code>, <em class="parameter"><code>count</code></em> <code class="type">integer</code>, <em class="parameter"><code>nulls</code></em> <code class="type">boolean</code>,
+                <em class="parameter"><code>tableforest</code></em> <code class="type">boolean</code>, <em class="parameter"><code>targetns</code></em> <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+       </pre><p>
+      </p><p>
+       <code class="function">table_to_xml</code> fait correspondre le contenu de la table
+       nommée, passée en paramètre sous le nom de <em class="parameter"><code>table</code></em>.
+       Le type <code class="type">regclass</code> accepte les chaînes identifiant les tables
+       en utilisant la notation habituelle incluant une qualification optionnelle
+       avec le nom du schéma et les guillemets doubles (voir <a class="xref" href="datatype-oid.html" title="8.19. Types identifiant d'objet">Section 8.19</a> pour les détails).
+       <code class="function">query_to_xml</code> exécute la requête dont le texte est
+       passé avec le paramètre <em class="parameter"><code>query</code></em> et fait la
+       correspondance avec le résultat. <code class="function">cursor_to_xml</code>
+       récupère le nombre indiqué de lignes à partir du curseur indiqué par le
+       paramètre <em class="parameter"><code>cursor</code></em>. Cette variante est recommandée si
+       des tables volumineuses sont utilisées car la valeur de résultat est
+       construire en mémoire par chaque fonction.
+      </p><p>
+       Si <em class="parameter"><code>tableforest</code></em> vaut false, alors le document XML
+       résultant ressemble à ceci :
+       </p><pre class="screen">
+&lt;tablename&gt;
+  &lt;row&gt;
+    &lt;columnname1&gt;data&lt;/columnname1&gt;
+    &lt;columnname2&gt;data&lt;/columnname2&gt;
+  &lt;/row&gt;
+
+  &lt;row&gt;
+    ...
+  &lt;/row&gt;
+
+  ...
+&lt;/tablename&gt;
+</pre><p>
+
+    Si <em class="parameter"><code>tableforest</code></em> vaut true, le résultat est un
+    fragment de contenu XML qui ressemble à ceci :
+</p><pre class="screen">
+&lt;tablename&gt;
+  &lt;columnname1&gt;data&lt;/columnname1&gt;
+  &lt;columnname2&gt;data&lt;/columnname2&gt;
+&lt;/tablename&gt;
+
+&lt;tablename&gt;
+  ...
+&lt;/tablename&gt;
+
+...
+</pre><p>
+
+    Si aucun nom de table n'est disponible, par exemple pour une requête ou un
+    curseur, la chaîne indiquée pour <code class="literal">table</code> est utilisée
+    pour le premier format, et <code class="literal">row</code> pour le deuxième format.
+   </p><p>
+    Le choix entre ces formats dépend de l'utilisateur. Le premier format est
+    un document XML propre, qui sera important pour de nombreuses
+    applications. Le deuxième format tend à être plus utile dans la fonction
+    <code class="function">cursor_to_xml</code> si les valeurs du résultat sont à
+    réassembler en un seul document plus tard. Les fonctions pour produire du
+    contenu XML discutées ci-dessus, en particulier
+    <code class="function">xmlelement</code>, peuvent être utilisées pour modifier les
+    résultats.
+   </p><p>
+    Les valeurs des données sont projetées de la même façon que décrit pour la
+    fonction <code class="function">xmlelement</code> ci-dessus.
+   </p><p>
+    Le paramètre <em class="parameter"><code>nulls</code></em> détermine si les valeurs NULL
+    doivent être incluses dans la sortie. Si true, les valeurs NULL dans les
+    colonnes sont représentées sous cette forme :
+</p><pre class="screen">
+&lt;columnname xsi:nil="true"/&gt;
+</pre><p>
+    où <code class="literal">xsi</code> est le préfixe de l'espace de nom XML pour XML
+    Schema Instance. Une déclaration appropriée d'espace de nom sera ajoutée à
+    la valeur résultat. Si false, les colonnes contenant des valeurs NULL
+    seront simplement omises dans la sortie.
+   </p><p>
+    Le paramètre <em class="parameter"><code>targetns</code></em> spécifie l'espace de nom XML
+    désiré pour le résultat. Si aucun espace de nom n'est souhaité, une chaîne
+    vide doit être passée.
+   </p><p>
+    Les fonctions suivantes renvoient les documents XML Schema décrivant les
+    correspondances réalisées par les fonctions ci-dessus :
+</p><pre class="synopsis">
+<code class="function">table_to_xmlschema</code> ( <em class="parameter"><code>table</code></em> <code class="type">regclass</code>, <em class="parameter"><code>nulls</code></em> <code class="type">boolean</code>,
+                     <em class="parameter"><code>tableforest</code></em> <code class="type">boolean</code>, <em class="parameter"><code>targetns</code></em> <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+<code class="function">query_to_xmlschema</code> ( <em class="parameter"><code>query</code></em> <code class="type">text</code>, <em class="parameter"><code>nulls</code></em> <code class="type">boolean</code>,
+                     <em class="parameter"><code>tableforest</code></em> <code class="type">boolean</code>, <em class="parameter"><code>targetns</code></em> <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+<code class="function">cursor_to_xmlschema</code> ( <em class="parameter"><code>cursor</code></em> <code class="type">refcursor</code>, <em class="parameter"><code>nulls</code></em> <code class="type">boolean</code>,
+                      <em class="parameter"><code>tableforest</code></em> <code class="type">boolean</code>, <em class="parameter"><code>targetns</code></em> <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+       </pre><p>
+       Il est essentiel que les mêmes paramètres soient passés dans l'ordre pour
+       obtenir les projections de données XML correspondantes et les documents
+       XML Schema.
+      </p><p>
+       Les fonctions suivantes produisent les projections de données XML
+       correspondantes et les documents XML Schema dans un document (ou forêt),
+       liés ensemble. Elles peuvent être utiles lorsque des résultats auto
+       contenus et auto descriptifs sont désirés :
+       </p><pre class="synopsis">
+<code class="function">table_to_xml_and_xmlschema</code> ( <em class="parameter"><code>table</code></em> <code class="type">regclass</code>, <em class="parameter"><code>nulls</code></em> <code class="type">boolean</code>,
+                             <em class="parameter"><code>tableforest</code></em> <code class="type">boolean</code>, <em class="parameter"><code>targetns</code></em> <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+<code class="function">query_to_xml_and_xmlschema</code> ( <em class="parameter"><code>query</code></em> <code class="type">text</code>, <em class="parameter"><code>nulls</code></em> <code class="type">boolean</code>,
+                             <em class="parameter"><code>tableforest</code></em> <code class="type">boolean</code>, <em class="parameter"><code>targetns</code></em> <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+       </pre><p>
+      </p><p>
+       De plus, les fonctions suivantes sont disponibles pour produire des
+       projections analogues de schémas entiers ou de la base de donnée
+       courante entière :
+       </p><pre class="synopsis">
+<code class="function">schema_to_xml</code> ( <em class="parameter"><code>schema</code></em> <code class="type">name</code>, <em class="parameter"><code>nulls</code></em> <code class="type">boolean</code>,
+                <em class="parameter"><code>tableforest</code></em> <code class="type">boolean</code>, <em class="parameter"><code>targetns</code></em> <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+<code class="function">schema_to_xmlschema</code> ( <em class="parameter"><code>schema</code></em> <code class="type">name</code>, <em class="parameter"><code>nulls</code></em> <code class="type">boolean</code>,
+                      <em class="parameter"><code>tableforest</code></em> <code class="type">boolean</code>, <em class="parameter"><code>targetns</code></em> <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+<code class="function">schema_to_xml_and_xmlschema</code> ( <em class="parameter"><code>schema</code></em> <code class="type">name</code>, <em class="parameter"><code>nulls</code></em> <code class="type">boolean</code>,
+                              <em class="parameter"><code>tableforest</code></em> <code class="type">boolean</code>, <em class="parameter"><code>targetns</code></em> <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+
+<code class="function">database_to_xml</code> ( <em class="parameter"><code>nulls</code></em> <code class="type">boolean</code>,
+                  <em class="parameter"><code>tableforest</code></em> <code class="type">boolean</code>, <em class="parameter"><code>targetns</code></em> <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+<code class="function">database_to_xmlschema</code> ( <em class="parameter"><code>nulls</code></em> <code class="type">boolean</code>,
+                        <em class="parameter"><code>tableforest</code></em> <code class="type">boolean</code>, <em class="parameter"><code>targetns</code></em> <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+<code class="function">database_to_xml_and_xmlschema</code> ( <em class="parameter"><code>nulls</code></em> <code class="type">boolean</code>,
+                                <em class="parameter"><code>tableforest</code></em> <code class="type">boolean</code>, <em class="parameter"><code>targetns</code></em> <code class="type">text</code> ) → <code class="returnvalue">xml</code>
+       </pre><p>
+
+       Ces fonctions ignorent les tables qui ne sont pas lisibles par
+       l'utilisateur courant. Les fonctions sur la base entière ignorent en plus
+       les schémas pour lesquels l'utilisateur actuel ne dispose pas du droit
+       <code class="literal">USAGE</code>.
+      </p><p>
+       Notez qu'elles peuvent produire beaucoup de données, entièrement stockées
+       en mémoire. Lors de demandes de création de contenu à partir de gros
+       schémas ou de base, il peut être intéressant de réfléchir à traiter les
+       tables séparément, potentiellement même via un curseur.
+      </p><p>
+       Le résultat d'un contenu de schéma ressemble à ceci :
+
+       </p><pre class="screen">
+&lt;schemaname&gt;
+
+table1-mapping
+
+table2-mapping
+
+...
+
+&lt;/schemaname&gt;</pre><p>
+
+    où le format de correspondance de table dépend du paramètre
+    <em class="parameter"><code>tableforest</code></em> comme expliqué ci-dessus.
+   </p><p>
+    Le résultat d'un contenu de base ressemble à ceci :
+
+</p><pre class="screen">
+&lt;dbname&gt;
+
+&lt;schema1name&gt;
+  ...
+&lt;/schema1name&gt;
+
+&lt;schema2name&gt;
+  ...
+&lt;/schema2name&gt;
+
+...
+
+&lt;/dbname&gt;</pre><p>
+
+    où la correspondance de schéma est indiquée ci-dessus.
+   </p><p>
+    Comme exemple d'utilisation de la sortie de ces fonctions, <a class="xref" href="functions-xml.html#XSLT-XML-HTML" title="Exemple 9.1. Feuille de style XSLT pour convertir un résultat SQL/XML en HTML">Exemple 9.1</a> montre une feuille de style XSLT qui convertit
+    la sortie de <code class="function">table_to_xml_and_xmlschema</code> en un
+    document HTML contenant une représentation en tableau des données de la
+    table. D'une façon similaire, le résultat de ces fonctions peut être
+    converti en d'autres formats basés sur le XML.
+   </p><div class="example" id="XSLT-XML-HTML"><p class="title"><strong>Exemple 9.1. Feuille de style XSLT pour convertir un résultat SQL/XML en HTML</strong></p><div class="example-contents"><pre class="programlisting">
+&lt;?xml version="1.0"?&gt;
+&lt;xsl:stylesheet version="1.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns="http://www.w3.org/1999/xhtml"
+&gt;
+
+  &lt;xsl:output method="xml"
+      doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
+      doctype-public="-//W3C/DTD XHTML 1.0 Strict//EN"
+      indent="yes"/&gt;
+
+  &lt;xsl:template match="/*"&gt;
+    &lt;xsl:variable name="schema" select="//xsd:schema"/&gt;
+    &lt;xsl:variable name="tabletypename"
+                  select="$schema/xsd:element[@name=name(current())]/@type"/&gt;
+    &lt;xsl:variable name="rowtypename"
+                  select="$schema/xsd:complexType[@name=$tabletypename]/xsd:sequence/xsd:element[@name='row']/@type"/&gt;
+
+    &lt;html&gt;
+      &lt;head&gt;
+        &lt;title&gt;&lt;xsl:value-of select="name(current())"/&gt;&lt;/title&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+        &lt;table&gt;
+          &lt;tr&gt;
+            &lt;xsl:for-each select="$schema/xsd:complexType[@name=$rowtypename]/xsd:sequence/xsd:element/@name"&gt;
+              &lt;th&gt;&lt;xsl:value-of select="."/&gt;&lt;/th&gt;
+            &lt;/xsl:for-each&gt;
+          &lt;/tr&gt;
+
+          &lt;xsl:for-each select="row"&gt;
+            &lt;tr&gt;
+              &lt;xsl:for-each select="*"&gt;
+                &lt;td&gt;&lt;xsl:value-of select="."/&gt;&lt;/td&gt;
+              &lt;/xsl:for-each&gt;
+            &lt;/tr&gt;
+          &lt;/xsl:for-each&gt;
+        &lt;/table&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+  &lt;/xsl:template&gt;
+
+&lt;/xsl:stylesheet&gt;
+</pre></div></div><br class="example-break" /></div><div class="footnotes"><br /><hr style="width:100; text-align:left;margin-left: 0" /><div id="ftn.id-1.5.8.21.7.5.15.2" class="footnote"><p><a href="#id-1.5.8.21.7.5.15.2" class="para"><sup class="para">[8] </sup></a>
+           Un résultat contenant plus d'un nœud élément au niveau haut ou du texte
+           sans espace blanc à l'extérieur d'un élément, est un exemple de forme
+           contenu. Un résultat XPath peut être de toute forme, par exemple s'il
+           renvoie un nœud attribut sélectionné à partir de l'élément qui le
+           contient. Un tel résultat sera placé dans sa forme contenu avec chacun
+           des nœuds non autorisés replacés par sa valeur de chaîne de texte,
+           comme définis pour la fonction <code class="function">string</code> XPath 1.0.
+          </p></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/functions-xml.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:27 GMT -->
+</html>

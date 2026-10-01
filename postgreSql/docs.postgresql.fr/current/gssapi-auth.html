@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/gssapi-auth.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:33 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>20.6. Authentification GSSAPI</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="auth-password.html" title="20.5. Authentification par mot de passe" /><link rel="next" href="sspi-auth.html" title="20.7. Authentification SSPI" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/gssapi-auth.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/gssapi-auth.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/gssapi-auth.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/gssapi-auth.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/gssapi-auth.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/gssapi-auth.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/gssapi-auth.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/gssapi-auth.html">11</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/gssapi-auth.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="client-authentication.html">Authentification du client</a></span> » <span class="breadcrumb-node">Authentification GSSAPI</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="auth-password.html" title="20.5. Authentification par mot de passe">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="client-authentication.html" title="Chapitre 20. Authentification du client">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="sspi-auth.html" title="20.7. Authentification SSPI">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">20.5. Authentification par mot de passe </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 20.7. Authentification SSPI</td></tr></table></div><div class="sect1" id="GSSAPI-AUTH"><div class="titlepage"><div><div><h2 class="title" style="clear: both">20.6. Authentification GSSAPI <a href="#GSSAPI-AUTH" class="id_link">#</a></h2></div></div></div><a id="id-1.6.7.13.2" class="indexterm"></a><p>
+   <span class="productname">GSSAPI</span> est un protocole du standard de
+   l'industrie pour l'authentification sécurisée définie dans
+   <a class="ulink" href="https://datatracker.ietf.org/doc/html/rfc2743" target="_top">RFC 2743</a>.
+   <span class="productname">PostgreSQL</span>
+   supporte <span class="productname">GSSAPI</span> pour l'authentification,
+   le chiffrement des communications, ou les deux.
+   <span class="productname">GSSAPI</span> fournit une authentification automatique
+   (single sign-on) pour les systèmes qui le supportent.  L'authentification
+   elle-même est sécurisée. Si le chiffrement  <span class="productname">GSSAPI</span>
+   ou le chiffrement <acronym class="acronym">SSL</acronym>
+   est utilisé, les données envoyées au travers de la connexion à la base de
+   données seront chiffrées, sinon elles ne le seront pas.
+  </p><p>
+   Le support de GSSAPI doit être activé quand
+   <span class="productname">PostgreSQL</span> est compilé ; voir
+   <a class="xref" href="installation.html" title="Chapitre 17. Procédure d'installation depuis le code source">Chapitre 17</a> pour plus d'informations.
+  </p><p>
+   Quand <span class="productname">GSSAPI</span> passe par
+   <span class="productname">Kerberos</span>, il utilise un principal service
+   standard au format
+   <code class="literal"><em class="replaceable"><code>nom_service</code></em>/<em class="replaceable"><code>nom_hôte</code></em>@<em class="replaceable"><code>domaine</code></em></code>.
+   Le nom utilisé pour le principal sur une installation particulière n'est
+   pas encodé dans le serveur <span class="productname">PostgreSQL</span> ; il
+   est en fait indiqué dans le fichier <em class="firstterm">keytab</em> que le
+   serveur lit pour déterminer son identité. Si plusieurs principaux sont
+   listés dans le fichier keytab, le serveur acceptera n'importe lequel parmi
+   eux. Le nom de royaume du serveur est le royaume préféré indiqué dans le
+   fichier de configuration Kerberos accessible au serveur.
+  </p><p>
+   Lors de la connexion, le client doit connaître le nom du principal du
+   serveur où il souhaite se connecter. La partie
+   <em class="replaceable"><code>servicename</code></em> est habituellement
+   <code class="literal">postgres</code>, mais une autre valeur peut être sélectionnée
+   via le paramètre de connexion <a class="xref" href="libpq-connect.html#LIBPQ-CONNECT-KRBSRVNAME">krbsrvname</a> de
+   <span class="application">libpq</span>. La partie
+   <em class="replaceable"><code>hostname</code></em> est le nom d'hôte complètement qualifié
+   auquel <span class="application">libpq</span> se connecte. Le nom de royaume est
+   le royaume préféré indiqué dans le fichier de configuration Kerberos
+   accessible au client.
+  </p><p>
+   Le client aura aussi un nom de principal pour sa propre identité (et il
+   doit avoir un ticket valide pour ce principal). Pour utiliser
+   <span class="productname">GSSAPI</span> pour l'authentification, le principal du
+   client doit être associé avec un nom d'utilisateur de base
+   <span class="productname">PostgreSQL</span>. Le fichier de configuration
+   <code class="filename">pg_ident.conf</code> peut être utilisé pour établir une
+   correspondance entre les principaux et les noms d'utilisateurs. Par
+   exemple, <code class="literal">pgusername@realm</code> pourrait correspondre à
+   <code class="literal">pgusername</code>. De la même façon, vous pouvez utiliser le
+   principal complet <code class="literal">username@realm</code> comme nom de rôle dans
+   <span class="productname">PostgreSQL</span> sans aucune correspondance.
+  </p><p>
+   <span class="productname">PostgreSQL</span> supporte aussi la correspondance
+   entre principaux de clients et noms d'utilisateur en supprimant le royaume
+   du principal. Cette méthode est supportée pour des
+   raisons de compatibilité ascendante et est fortement déconseillé car il
+   est ensuite impossible de distinguer différents utilisateurs avec le même
+   nom d'utilisateur mais un domaine différent. Pour l'activer, configurez
+   <code class="literal">include_realm</code> à 0. Pour des installations simples à un
+   seul royaume, le faire en combinant avec la configuration du paramètre
+   <code class="literal">krb_realm</code> (qui vérifie que le royaume du principal
+   correspond exactement à ce qui est dans le paramètre
+   <code class="literal">krb_realm</code>) est toujours sécurisé mais cette approche
+   offre moins de possibilités en comparaison à la spécification d'une
+   correspondance explicite.
+  </p><p>
+   L'emplacement du fichier keytab du serveur est indiqué grâce au paramètre
+   de configuration <a class="xref" href="runtime-config-connection.html#GUC-KRB-SERVER-KEYFILE">krb_server_keyfile</a>. Pour des raisons
+   de sécurité, il est recommandé d'utiliser un fichier de clés séparé pour
+   <span class="productname">PostgreSQL</span> uniquement plutôt que d'autoriser le
+   serveur à lire le fichier keytab du système. Assurez-vous que le fichier
+   keytab du serveur est lisible (et de préférence seulement lisible, pas
+   modifiable) par le compte serveur <span class="productname">PostgreSQL</span>
+   (voir aussi <a class="xref" href="postgres-user.html" title="18.1. Compte utilisateur PostgreSQL">Section 18.1</a>).
+  </p><p>
+   Le fichier de clés est généré en utilisant le logiciel Kerberos ; voir
+   la documentation de Kerberos pour plus de détails. L'exemple suivant montre
+   comment le faire en utilisant l'outil <span class="application">kadmin</span> des
+   implémentations compatibles MIT de Kerberos :
+   </p><pre class="screen">
+<code class="prompt">kadmin% </code><strong class="userinput"><code>addprinc -randkey postgres/server.my.domain.org</code></strong>
+<code class="prompt">kadmin% </code><strong class="userinput"><code>ktadd -k krb5.keytab postgres/server.my.domain.org</code></strong>
+   </pre><p>
+  </p><p>
+   Les options d'authentification suivantes sont supportées pour
+   la méthode d'authentification <span class="productname">GSSAPI</span> :
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">include_realm</code></span></dt><dd><p>
+       Si configuré à 0, le nom du royaume provenant du principal de
+       l'utilisateur authentifié est supprimé avant d'être passé à la
+       correspondance du nom d'utilisateur (<a class="xref" href="auth-username-maps.html" title="20.2. Correspondances d'utilisateurs">Section 20.2</a>). Ceci n'est pas conseillé mais reste
+       disponible principalement pour des raisons de compatibilité ascendante
+       car ce n'est pas sûr dans des environnements avec plusieurs royaumes
+       sauf si <code class="literal">krb_realm</code> est aussi utilisé. Il est
+       recommandé de laisser <code class="literal">include_realm</code> configurer à sa
+       valeur par défaut et de fournir une correspondance explicite dans
+       <code class="filename">pg_ident.conf</code> pour convertir les noms de principaux
+       en noms d'utilisateurs <span class="productname">PostgreSQL</span>.
+      </p></dd><dt><span class="term"><code class="literal">compat_realm</code></span></dt><dd><p>
+       Si configuré à 1, le nom, compatible SAM, du domaine (aussi connu en
+       tant que nom NetBIOS) est utilisé pour l'option
+       <code class="literal">include_realm</code>. C'est la valeur par défaut. Si
+       configuré à 0, le vrai nom de royaume provenant de nom du principal
+       Kerberos est utilisé.
+      </p><p>
+       Ne désactivez pas cette option sauf si votre serveur est exécuté sous
+       un compte domaine (ceci inclut les comptes de service virtuels sur un
+       système membre du domaine) et si tous les clients s'authentifiant via
+       SSPI utilisent aussi des comptes domaines. Dans le cas contraire,
+       l'authentification va échouer.
+      </p></dd><dt><span class="term"><code class="literal">upn_username</code></span></dt><dd><p>
+       Si cette option est activée avec <code class="literal">compat_realm</code>, le
+       nom de l'utilisateur provenant du UPN Kerberos est utilisé pour
+       l'authentification. Si elle est désactivée (par défaut), le nom
+       d'utilisateur provenant de l'UPN Kerberos est utilisé pour
+       l'authentification. Si elle est désactivée (par défaut), le nom
+       d'utilisateur compatible SAM est utilisé. Par défaut, ces deux noms
+       sont identiques pour les nouveaux comptes utilisateurs.
+      </p><p>
+       Notez que <span class="application">libpq</span> utilise le nom compatible SAM
+       si aucun nom d'utilisateur explicite n'est spécifié. Si vous utilisez la
+       <span class="application">libpq</span> ou un connecteur basé sur cette
+       bibliothèque, vous devriez laisser cette option désactivée ou indiquer
+       explicitement le nom d'utilisateur dans la chaîne de connexion.
+      </p></dd><dt><span class="term"><code class="literal">map</code></span></dt><dd><p>
+       Permet la mise en correspondance entre les principaux clients et les
+       noms d'utilisateurs de base. Voir <a class="xref" href="auth-username-maps.html" title="20.2. Correspondances d'utilisateurs">Section 20.2</a>
+       pour plus de détails. Pour un principal GSSAPI/Kerberos, tel que
+       <code class="literal">username@EXAMPLE.COM</code> (ou, moins communément,
+       <code class="literal">username/hostbased@EXAMPLE.COM</code>), le nom d'utilisateur
+       utilisé pour la correspondance est
+       <code class="literal">username@EXAMPLE.COM</code> (ou
+       <code class="literal">username/hostbased@EXAMPLE.COM</code>, respectivement),
+       sauf si <code class="literal">include_realm</code> a été configuré à 0, auquel
+       cas <code class="literal">username</code> (ou
+       <code class="literal">username/hostbased</code>) est ce qui est vu comme le nom
+       d'utilisateur du système lors de la recherche de correspondance.
+      </p></dd><dt><span class="term"><code class="literal">krb_realm</code></span></dt><dd><p>
+       Configure le domaine pour la correspondance du principal de l'utilisateur.
+       Si ce paramètre est configuré, seuls les utilisateurs de ce domaine
+       seront acceptés. S'il n'est pas configuré, les utilisateurs de tout
+       domaine peuvent se connecter, à condition que la correspondance du nom
+       de l'utilisateur est faite.
+      </p></dd></dl></div><p>
+  </p><p>
+   En plus de ces paramètres, qui peuvent être différents pour différentes
+   entrées <code class="filename">pg_hba.conf</code>, il existe le paramètre serveur de
+   configuration <a class="xref" href="runtime-config-connection.html#GUC-KRB-CASEINS-USERS">krb_caseins_users</a>. S'il est configuré à
+   true, les principaux clients sont comparés aux entrées de la carte
+   utilisateurs, sans attention à la casse. Si <code class="literal">krb_realm</code>
+   est configuré, il est aussi comparé sans attention à la casse.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/gssapi-auth.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:33 GMT -->
+</html>

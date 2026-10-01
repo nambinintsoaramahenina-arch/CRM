@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/pgupgrade.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:08 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>pg_upgrade</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="pgtesttiming.html" title="pg_test_timing" /><link rel="next" href="pgwaldump.html" title="pg_waldump" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/pgupgrade.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/pgupgrade.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/pgupgrade.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/pgupgrade.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/pgupgrade.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/pgupgrade.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/pgupgrade.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/pgupgrade.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/pgupgrade.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/pgupgrade.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/pgupgrade.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/pgupgrade.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/pgupgrade.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/pgupgrade.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/pgupgrade.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/pgupgrade.html">9.0</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/pgupgrade.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="reference.html">Référence</a></span> » <span class="breadcrumb-link"><a href="reference-server.html">Applications relatives au serveur PostgreSQL</a></span> » <span class="breadcrumb-node"><span class="application">pg_upgrade</span></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pgtesttiming.html" title="pg_test_timing">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="reference-server.html" title="Applications relatives au serveur PostgreSQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="pgwaldump.html" title="pg_waldump">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top"><span class="application">pg_test_timing</span> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> <span class="application">pg_waldump</span></td></tr></table></div><div class="refentry" id="PGUPGRADE"><div class="titlepage"></div><a id="id-1.9.5.13.1" class="indexterm"></a><div class="refnamediv"><h2><span class="refentrytitle"><span class="application">pg_upgrade</span></span></h2><p>pg_upgrade — met à jour une instance du serveur <span class="productname">PostgreSQL</span></p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p id="id-1.9.5.13.4.1"><code class="command">pg_upgrade</code>  <code class="option">-b</code>   <em class="replaceable"><code>ancien_repertoire_executables</code></em>  [<code class="option">-B</code> <em class="replaceable"><code>nouveau_repertoire_executables</code></em>]  <code class="option">-d</code>   <em class="replaceable"><code>ancien_repertoire_configuration</code></em>   <code class="option">-D</code>   <em class="replaceable"><code>nouveau_repertoire_configuration</code></em>  [<em class="replaceable"><code>option</code></em>...]</p></div></div><div class="refsect1" id="id-1.9.5.13.5"><h2>Description</h2><p>
+   <span class="application">pg_upgrade</span> (antérieurement connu
+   sous le nom <span class="application">pg_migrator</span>) permet
+   de mettre à jour les fichiers de données vers une version
+   plus récente de <span class="productname">PostgreSQL</span> sans la
+   sauvegarde et le rechargement de données typiquement requis
+   pour les mises à jour d'une version majeure vers une autre,
+   par exemple d'une version 12.14 à une version 13.10 ou à partir de 14.9
+   vers 15.5. Il n'est pas nécessaire pour les mises à jour de versions
+   mineures, par exemple de 12.7 à 12.8 ou de 14.1 à 14.5.
+  </p><p>
+   Les sorties de version majeures de PostgreSQL ajoutent
+   régulièrement de nouvelles fonctionnalités qui changent souvent
+   la structure des tables système, mais le format interne des données
+   stockées change rarement. <span class="application">pg_upgrade</span>
+   utilise ce fait pour effectuer des mises à jour rapides en créant
+   de nouvelles tables systèmes et en réutilisant les anciens fichiers
+   de données. Si jamais une future version majeure devait modifier le format
+   d'enregistrement des données de telle sorte que l'ancien format
+   des données soit illisible, <span class="application">pg_upgrade</span>
+   ne pourrait pas être utilisé pour ces mises à jour. (La communauté
+   essaiera d'éviter de telles situations.)
+  </p><p>
+   <span class="application">pg_upgrade</span> fait de son mieux pour être
+   sûr que la nouvelle et l'ancienne instances soient compatibles au niveau
+   binaire, par exemple en vérifiant que les options de compilation
+   sont compatibles, y compris le format 32/64 bits des binaires. Il
+   est également important que les modules externes soient aussi
+   compatibles au plan binaire, bien que ceci ne puisse être
+   vérifié par <span class="application">pg_upgrade</span>.
+  </p><p>
+   pg_upgrade supporte les mises à jour à partir de la version
+   9.2.X et suivantes jusqu'à la version majeure courante de
+   <span class="productname">PostgreSQL</span>, y compris les images et
+   versions beta.
+  </p><div class="warning"><h3 class="title">Avertissement</h3><p>
+    Mettre à jour une instance fait que la destination exécute du code arbitraire
+    au choix des superutilisateurs de la source. Assurez-vous que les
+    superutilisateurs de la source sont de confiance avant de mettre à jour.
+   </p></div></div><div class="refsect1" id="id-1.9.5.13.6"><h2>Options</h2><p>
+   <span class="application">pg_upgrade</span> accepte les arguments de ligne de
+   commande suivants :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-b</code> <em class="replaceable"><code>repertoire_executables</code></em><br /></span><span class="term"><code class="option">--old-bindir=</code><em class="replaceable"><code>repertoire_executables</code></em></span></dt><dd><p>l'ancien répertoire des exécutables PostgreSQL ;
+       variable d'environnement <code class="envar">PGBINOLD</code></p></dd><dt><span class="term"><code class="option">-B</code> <em class="replaceable"><code>repertoire_executables</code></em><br /></span><span class="term"><code class="option">--new-bindir=</code><em class="replaceable"><code>repertoire_executables</code></em></span></dt><dd><p>le nouveau répertoire des exécutables PostgreSQL ;
+       la valeur par défaut est le répertoire d'installation de
+       <span class="application">pg_upgrade</span> ; variable d'environnement
+       <code class="envar">PGBINNEW</code></p></dd><dt><span class="term"><code class="option">-c</code><br /></span><span class="term"><code class="option">--check</code></span></dt><dd><p>uniquement la vérification des instances, ne
+       modifie aucune donnée</p></dd><dt><span class="term"><code class="option">-d</code> <em class="replaceable"><code>repertoire_configuration</code></em><br /></span><span class="term"><code class="option">--old-datadir=</code><em class="replaceable"><code>repertoire_configuration</code></em></span></dt><dd><p>répertoire de configuration de l'ancienne instance ;
+       variable d'environnement<code class="envar">PGDATAOLD</code></p></dd><dt><span class="term"><code class="option">-D</code> <em class="replaceable"><code>repertoire_configuration</code></em><br /></span><span class="term"><code class="option">--new-datadir=</code><em class="replaceable"><code>repertoire_configuration</code></em></span></dt><dd><p>répertoire de configuration de la nouvelle instance ;
+       variable d'environnement <code class="envar">PGDATANEW</code></p></dd><dt><span class="term"><code class="option">-j <em class="replaceable"><code>njobs</code></em></code><br /></span><span class="term"><code class="option">--jobs=<em class="replaceable"><code>njobs</code></em></code></span></dt><dd><p>nombres de processus ou threads simultanés à utiliser
+      </p></dd><dt><span class="term"><code class="option">-k</code><br /></span><span class="term"><code class="option">--link</code></span></dt><dd><p>utiliser des liens physiques au lieu de copier les
+       fichiers vers la nouvelle instance</p></dd><dt><span class="term"><code class="option">-N</code><br /></span><span class="term"><code class="option">--no-sync</code></span></dt><dd><p>
+       Par défaut, <code class="command">pg_upgrade</code> attendra que tous les fichiers
+       de l'instance mise à jour soient écrits sur disque. Cette option fait
+       que <code class="command">pg_upgrade</code> quitte sans attendre, ce qui est plus
+       rapide mais signifie qu'un crash ultérieur du système d'exploitation peut
+       laisser le répertoire de données corrompu. Généralement, cette option est
+       utile dans le cas de tests mais elle ne devrait pas être utilisée pour
+       une installation en production.
+      </p></dd><dt><span class="term"><code class="option">-o</code> <em class="replaceable"><code>options</code></em><br /></span><span class="term"><code class="option">--old-options</code> <em class="replaceable"><code>options</code></em></span></dt><dd><p>options à passer directement à l'ancienne commande
+       <code class="command">postgres</code> ; les invocations multiples de cette
+       option sont cumulées</p></dd><dt><span class="term"><code class="option">-O</code> <em class="replaceable"><code>options</code></em><br /></span><span class="term"><code class="option">--new-options</code> <em class="replaceable"><code>options</code></em></span></dt><dd><p>options à passer directement à la nouvelle
+       commande <code class="command">postgres</code> ; les invocations multiples
+       de cette commande sont cumulées</p></dd><dt><span class="term"><code class="option">-p</code> <em class="replaceable"><code>port</code></em><br /></span><span class="term"><code class="option">--old-port=</code><em class="replaceable"><code>port</code></em></span></dt><dd><p>le numéro de port de l'ancienne instance ; variable
+       d'environnement<code class="envar">PGPORTOLD</code></p></dd><dt><span class="term"><code class="option">-P</code> <em class="replaceable"><code>port</code></em><br /></span><span class="term"><code class="option">--new-port=</code><em class="replaceable"><code>port</code></em></span></dt><dd><p>le numéro de port de la nouvelle instance ; variable
+       d'environnement<code class="envar">PGPORTNEW</code></p></dd><dt><span class="term"><code class="option">-r</code><br /></span><span class="term"><code class="option">--retain</code></span></dt><dd><p>conserver les fichiers SQL et de traces y compris
+       après avoir terminé avec succès</p></dd><dt><span class="term"><code class="option">-s</code> <em class="replaceable"><code>dir</code></em><br /></span><span class="term"><code class="option">--socketdir=</code><em class="replaceable"><code>dir</code></em></span></dt><dd><p>répertoire utilisé pour stocker les sockets lors de la
+       mise à jour ; la valeur par défaut est le répertoire courant ;
+       la variable d'environnement est <code class="envar">PGSOCKETDIR</code></p></dd><dt><span class="term"><code class="option">-U</code> <em class="replaceable"><code>username</code></em><br /></span><span class="term"><code class="option">--username=</code><em class="replaceable"><code>username</code></em></span></dt><dd><p>nom d'utilisateur de l'instance d'installation ;
+       variable d'environnement<code class="envar">PGUSER</code></p></dd><dt><span class="term"><code class="option">-v</code><br /></span><span class="term"><code class="option">--verbose</code></span></dt><dd><p>activer la trace interne verbeuse</p></dd><dt><span class="term"><code class="option">-V</code><br /></span><span class="term"><code class="option">--version</code></span></dt><dd><p>afficher les informations de version, puis quitter</p></dd><dt><span class="term"><code class="option">--clone</code></span></dt><dd><p>
+       Utilise le clonage efficace de fichiers (connu aussi sous le nom de
+       <span class="quote">« <span class="quote">reflinks</span> »</span> sur certains systèmes) au lieu de copier les
+       fichiers vers la nouvelle instance. Ceci peut résulter en une copie
+       pratiquement instantanée des fichiers de données, donnant l'avantage
+       en vitesse de l'option <code class="option">-k</code>/<code class="option">--link</code>
+       tout en laissant l'ancienne instance non modifiée.
+      </p><p>
+       Le clonage de fichiers est seulement supporté sur certains systèmes
+       d'exploitation et systèmes de fichiers. Si cette option est
+       sélectionnée alors qu'elle n'est pas supportée, l'exécution de
+       <span class="application">pg_upgrade</span> renverra une erreur.
+       Actuellement, cette option est supportée sous Linux (à partir du noyau
+       4.5) avec Btrfs et XFS (pour les systèmes de fichiers créés avec le
+       support de reflink), et sur macOS avec APFS.
+      </p></dd><dt><span class="term"><code class="option">--copy</code></span></dt><dd><p>
+       Copie les fichiers sur la nouvelle instance. Cette option est activée
+       par défaut. (Voir aussi
+       <code class="option">--link</code> et <code class="option">--clone</code>.)
+      </p></dd><dt><span class="term"><code class="option">--copy-file-range</code></span></dt><dd><p>
+       Utiliser l'appel système <code class="function">copy_file_range</code> pour un clonage
+       efficace. Sur certains systèmes de fichiers, cela donne des résultats similaires à
+       <code class="option">--clone</code> en partageant les blocs physiques du disque, tandis que sur d'autres,
+       cet appel pourrait copier les blocs mais en le faisant de manière optimisée. Actuellement,
+       ceci est supporté sur Linux et FreeBSD.
+      </p></dd><dt><span class="term"><code class="option">--sync-method=</code><em class="replaceable"><code>méthode</code></em></span></dt><dd><p>
+       Quand positionné à <code class="literal">fsync</code>, ce qui est la valeur par défaut,
+       <code class="command">pg_upgrade</code> va ouvrir récursivement et synchroniser sur disque tous
+       les fichiers présents dans le répertoire de données de l'instance mise à jour. La recherche des fichiers
+       suivra les liens symboliques pour le répertoire des journaux de transactions et chaque tablespace
+       configuré.
+      </p><p>
+       Sous Linux, <code class="literal">syncfs</code> peut être utilisé à la place pour demander au
+       système d'exploitation de synchroniser l'ensemble du système de fichiers contenant le
+       répertoire de données de l'instance mise à jour, ses journaux de transactions et chaque tablespace.
+       Consulter <a class="xref" href="runtime-config-error-handling.html#GUC-RECOVERY-INIT-SYNC-METHOD">recovery_init_sync_method</a> pour obtenir des informations sur
+       les mises en garde à prendre en compte lors de l'utilisation de <code class="literal">syncfs</code>.
+      </p><p>
+       Cette option n'a pas d'effet quand <code class="option">--no-sync</code> est utilisé.
+      </p></dd><dt><span class="term"><code class="option">-?</code><br /></span><span class="term"><code class="option">--help</code></span></dt><dd><p>afficher l'aide, puis quitter</p></dd></dl></div><p>
+  </p></div><div class="refsect1" id="id-1.9.5.13.7"><h2>Usage</h2><p>
+   Ci-dessous les étapes pour effectuer une mise à jour avec
+   <span class="application">pg_upgrade</span> :
+  </p><div class="procedure"><ol class="procedure" type="1"><li class="step"><p class="title"><strong>Si nécessaire, déplacez l'ancienne instance</strong></p><p>
+     Si vous utilisez un répertoire d'installation spécifique par
+     version, exemple <code class="filename">/opt/PostgreSQL/17</code>, vous
+     n'avez pas besoin de déplacer l'ancienne instance. Les installateurs
+     graphiques utilisent tous des répertoires d'installation
+     spécifiques par version.
+    </p><p>
+     Si votre répertoire d'installation n'est pas spécifique par
+     version, par exemple <code class="filename">/usr/local/pgsql</code>, il est
+     nécessaire de déplacer le répertoire d'installation courant de
+     PostgreSQL de telle manière à ce qu'il n'interfère pas avec la nouvelle
+     installation de <span class="productname">PostgreSQL</span>. Une fois
+     que le serveur courant <span class="productname">PostgreSQL</span>
+     est éteint, il est sans danger de renommer le répertoire
+     d'installation de PostgreSQL ; en supposant que l'ancien
+     répertoire est <code class="filename">/usr/local/pgsql</code>, vous
+     pouvez faire :
+
+     </p><pre class="programlisting">mv /usr/local/pgsql /usr/local/pgsql.old</pre><p>
+
+     pour renommer le répertoire.
+    </p></li><li class="step"><p class="title"><strong>Pour les installations à partir des sources, construisez la
+    nouvelle version</strong></p><p>
+     Construisez la nouvelle version de PostgreSQL à partir des
+     sources avec des options de <code class="command">configure</code>
+     qui sont compatibles avec l'ancienne instance.
+     <span class="application">pg_upgrade</span> utilisera
+     <code class="command">pg_controldata</code> pour s'assurer que l'ensemble
+     des configurations sont compatibles avant de commencer la mise
+     à jour.
+    </p></li><li class="step"><p class="title"><strong>Installez les nouveaux binaires PostgreSQL</strong></p><p>
+     Installez les binaires du nouveau serveur et les fichiers
+     associés. Par défaut, <span class="application">pg_upgrade</span> est
+     inclus dans une installation.
+    </p><p>
+     Pour les installations à partir des sources, si vous souhaitez
+     installer le nouveau serveur dans un répertoire personnalisé, utilisez
+     la variable <code class="literal">prefix</code> :
+
+</p><pre class="programlisting">
+make prefix=/usr/local/pgsql.new install
+     </pre></li><li class="step"><p class="title"><strong>Initialisez la nouvelle instance PostgreSQL</strong></p><p>
+     Initialisez la nouvelle instance en utilisant la commande
+     <code class="command">initdb</code>. À nouveau, utilisez des options de
+     la commande <code class="command">initdb</code> compatibles avec l'ancienne
+     instance. Beaucoup d'installateurs pré-construits effectuent cette
+     étape automatiquement. Il n'est pas nécessaire de démarrer
+     la nouvelle instance.
+    </p></li><li class="step"><p class="title"><strong>Installez les fichiers objets partagés d'extension</strong></p><p>
+     Beaucoup d'extensions et de modules personnalisés, qu'ils viennent de
+     <code class="filename">contrib</code> ou d'une autre source, utilisent les
+     fichiers d'objets partagés (ou DLL), par exemple
+     <code class="filename">pgcrypto.so</code>. Si l'ancienne instance les utilisait,
+     les fichiers d'objets partagés correspondant aux binaires du nouveau
+     serveur doivent être installés dans la nouvelle instance, habituellement
+     avec les commandes du système d'exploitation. Ne chargez pas les
+     définitions de schéma, par exemple <code class="command">CREATE EXTENSION
+     pgcrypto</code>, parce qu'elles seront dupliquées à partir de
+     l'ancienne instance. Si des mises à jour d'extensions sont disponibles,
+     <span class="application">pg_upgrade</span> l'indiquera et créera un script à
+     exécuter plus tard pour les mettre à jour.
+    </p></li><li class="step"><p class="title"><strong>Copiez les fichiers personnalisés de recherche plein texte</strong></p><p>
+     Copiez tous les fichiers personnalisés de recherche plein texte
+     (dictionnaire, synonymes, thésaurus, mots d'arrêt) de l'ancienne
+     instance vers la nouvelle.
+    </p></li><li class="step"><p class="title"><strong>Ajustez l'authentification</strong></p><p>
+     <code class="command">pg_upgrade</code> se connectera à l'ancien et au
+     nouveau serveur plusieurs fois, aussi vous pourriez avoir besoin
+     de positionner l'authentification sur <code class="literal">peer</code>
+     ou d'utiliser un fichier <code class="filename">~/.pgpass</code> (voir
+     <a class="xref" href="libpq-pgpass.html" title="32.16. Fichier de mots de passe">Section 32.16</a>).
+    </p></li><li class="step"><p class="title"><strong>Préparez la mise à jour des publieurs</strong></p><p>
+     <span class="application">pg_upgrade</span> essaie de migrer les slots de réplication
+     logique. Cela évite de devoir manuellement définir les mêmes
+     slots logiques sur le nouveau publieur. La migration des slots logiques est
+     seulement supportée lorsque l'ancienne instance à migrer est en version 17.0 ou plus récente.
+     Les slots logiques des instances antérieures à la version 17.0 seront ignorés
+     silencieusement.
+    </p><p>
+     Avant de démarrer la mise à jour des publieurs de l'instance, assurez-vous que
+     l'abonnement correspondant est temporairement désactivé, en exécutant
+     <a class="link" href="sql-altersubscription.html" title="ALTER SUBSCRIPTION"><code class="command">ALTER SUBSCRIPTION ... DISABLE</code></a>.
+     Réactiver l'abonnement après la mise à jour.
+    </p><p>
+     Il y a certains prérequis pour que <span class="application">pg_upgrade</span>
+     puisse mettre à jour les slots de réplication logique. Si ceux-ci ne sont pas rencontrés,
+     une erreur sera rapportée.
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       La nouvelle instance doit avoir
+       <a class="link" href="runtime-config-wal.html#GUC-WAL-LEVEL"><code class="varname">wal_level</code></a> à
+       <code class="literal">logical</code>.
+      </p></li><li class="listitem"><p>
+       La nouvelle instance doit avoir
+       <a class="link" href="runtime-config-replication.html#GUC-MAX-REPLICATION-SLOTS"><code class="varname">max_replication_slots</code></a>
+       configuré à une valeur plus grande ou égale au nombre de slots
+       présents dans l'ancienne instance.
+      </p></li><li class="listitem"><p>
+       Les plugins de sortie référencés par les slots de l'ancienne instance doivent être
+       installés dans le nouveau répertoire des exécutables PostgreSQL.
+      </p></li><li class="listitem"><p>
+       L'ancienne instance a répliqué toutes les transactions et messages de décodage
+       logique vers les abonnés.
+      </p></li><li class="listitem"><p>
+       Tous les slots de l'ancienne instance doivent être utilisables, par exemple, il n'y a pas de slots
+       dont
+       <a class="link" href="view-pg-replication-slots.html" title="52.19. pg_replication_slots">pg_replication_slots</a>.<code class="structfield">conflicting</code>
+       soit <code class="literal">true</code>.
+      </p></li><li class="listitem"><p>
+       La nouvelle instance ne doit pas avoir de slots logique permanents, par exemple,
+       il ne doit pas y avoir de slots où
+       <a class="link" href="view-pg-replication-slots.html" title="52.19. pg_replication_slots">pg_replication_slots</a>.<code class="structfield">temporary</code>
+       soit <code class="literal">false</code>.
+      </p></li></ul></div></li><li class="step"><p class="title"><strong>Préparez la mise à jour des abonnés</strong></p><p>
+     Mettre en place les <a class="link" href="logical-replication-config.html#LOGICAL-REPLICATION-CONFIG-SUBSCRIBER" title="29.11.2. Abonnés">
+     configurations des abonnés</a> sur le nouvel abonné.
+     <span class="application">pg_upgrade</span> tente de migrer les dépendances
+     de l'abonnement, ce qui inclut les informations des tables de l'abonnement présentes dans
+     le catalogue système <a class="link" href="catalog-pg-subscription-rel.html" title="51.55. pg_subscription_rel">pg_subscription_rel</a>
+     ainsi que l'origine de réplication de l'abonnement. Cela permet
+     à la réplication logique sur le nouvel abonné de reprendre là où
+     l'ancien abonné s'était arrêté. La migration des dépendances de l'abonnement n'est
+     prise en charge que lorsque l'ancienne instance est en version 17.0 ou ultérieure. Les dépendances
+     des abonnements des instances antérieures à la version 17.0 seront ignorées silencieusement.
+    </p><p>
+     Il y a certains prérequis pour que <span class="application">pg_upgrade</span>
+     puisse mettre à jour les abonnements. Si ceux-ci ne sont pas rencontrés, une erreur
+     sera rapportée.
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Toutes les tables de l'abonnement dans l'ancienne instance doivent être dans l'état
+       <code class="literal">i</code> (<span class="foreignphrase"><em class="foreignphrase">initialize</em></span>) ou <code class="literal">r</code> (<span class="foreignphrase"><em class="foreignphrase">ready</em></span>). Cela
+       peut se vérifier via <a class="link" href="catalog-pg-subscription-rel.html" title="51.55. pg_subscription_rel">pg_subscription_rel</a>.<code class="structfield">srsubstate</code>.
+      </p></li><li class="listitem"><p>
+       L'entrée d'origine de réplication correspondante à chacun des abonnements
+       doit exister dans l'ancienne instance. Cela peut être vérifié en consultant
+       les tables système
+       <a class="link" href="catalog-pg-subscription.html" title="51.54. pg_subscription">pg_subscription</a> et
+       <a class="link" href="catalog-pg-replication-origin.html" title="51.44. pg_replication_origin">pg_replication_origin</a>.
+      </p></li><li class="listitem"><p>
+       La nouvelle instance doit avoir
+       <a class="link" href="runtime-config-replication.html#GUC-MAX-REPLICATION-SLOTS"><code class="varname">max_replication_slots</code></a>
+       configuré à une valeur plus grande ou égale au nombre
+       d'abonnements présents dans l'ancienne instance.
+      </p></li></ul></div></li><li class="step"><p class="title"><strong>Arrêtez les deux serveurs</strong></p><p>
+     Assurez vous que les deux serveurs sont arrêtés en utilisant,
+     sur Unix par exemple :
+
+     </p><pre class="programlisting">
+pg_ctl -D /opt/PostgreSQL/12 stop
+pg_ctl -D /opt/PostgreSQL/17 stop
+     </pre><p>
+
+     ou sur Windows, en utilisant les noms de services corrects :
+
+     </p><pre class="programlisting">
+NET STOP postgresql-12
+NET STOP postgresql-17
+     </pre><p>
+    </p><p>
+     Les serveurs secondaires par réplication en flux et par copie
+     des journaux doivent être en cours d'exécution jusqu'à une étape
+     ultérieure.
+    </p></li><li class="step"><p class="title"><strong>Préparez la mise à jour d'un serveur secondaire</strong></p><p>
+     Si vous êtes en train de mettre à jour des serveurs secondaires
+     en suivant la description de la section <a class="xref" href="pgupgrade.html#PGUPGRADE-STEP-REPLICAS" title="Mettez à jour les serveurs secondaires par réplication en flux ou par copie de journaux de transactions">Étape 13</a>, vérifiez
+     en utilisant <span class="application">pg_controldata</span> sur
+     les anciennes instances primaire et secondaire que les anciens
+     serveurs secondaires sont à jour. Vérifiez que les valeurs de
+     <span class="quote">« <span class="quote">Latest checkpoint location</span> »</span> correspondent dans
+     toutes les instances.
+     De plus, assurez-vous que le paramètre <code class="varname">wal_level</code> ne
+     soit pas configuré avec la valeur <code class="literal">minimal</code> dans le
+     fichier de configuration <code class="filename">postgresql.conf</code> sur la
+     nouvelle instance primaire.
+    </p></li><li class="step"><p class="title"><strong>Lancez <span class="application">pg_upgrade</span></strong></p><p>
+     Lancez toujours le binaire <span class="application">pg_upgrade</span>
+     du nouveau serveur, pas celui de
+     l'ancien. <span class="application">pg_upgrade</span> exige la
+     spécification des anciens et des nouveaux répertoires de
+     données et des exécutables (<code class="filename">bin</code>). Vous
+     pouvez aussi indiquer des valeurs pour les utilisateurs et les
+     ports, et si vous voulez que les fichiers de données soient liées ou clonées
+     plutôt que copiées (par défaut ce dernier).
+    </p><p>
+     Si vous utilisez le mode lien, la mise à jour sera beaucoup plus rapide
+     (pas de copie de fichiers) et utilisera moins d'espace disque, mais vous
+     ne serez plus en mesure d'accéder à votre ancienne instance une fois que
+     la nouvelle instance sera démarrée après la mise à jour. Le mode lien
+     exige également que le répertoire de données de l'ancienne et de la
+     nouvelle instance soient dans le même système de fichiers. (Les
+     tablespaces et <code class="filename">pg_wal</code> peuvent être sur des systèmes
+     de fichiers différents.) Le mode de clonage fournit les mêmes avantages
+     au niveau vitesse et espace disque mais ne rend pas l'ancienne instance
+     inutilisable une fois que la nouvelle instance a été démarrée. Le mode de
+     clonage requiert aussi que les répertoires de données de l'ancienne et la
+     nouvelle instances soient dans le même système de fichiers. Ce mode est
+     seulement disponible sur certains systèmes d'exploitation et certains
+     systèmes de fichiers.
+    </p><p>
+     L'option <code class="option">--jobs</code> permet l'utilisation de plusieurs
+     cœurs CPU pour copier ou lier des fichiers, et pour sauvegarder
+     et recharger les schémas des bases de données en parallèle ;
+     un bon chiffre pour commencer est le maximum du nombre de cœurs
+     CPU et des tablespaces. Cette option peut réduire drastiquement
+     le temps pour mettre à jour un serveur avec plusieurs bases de
+     données s'exécutant sur une machine multiprocesseur.
+    </p><p>
+     Pour les utilisateurs Windows, vous devez être connecté avec
+     un compte administrateur, puis lancez
+     <span class="application">pg_upgrade</span> avec les
+     répertoires entre guillemets, par exemple :
+
+     </p><pre class="programlisting">
+pg_upgrade.exe
+        --old-datadir "C:/Program Files/PostgreSQL/12/data"
+        --new-datadir "C:/Program Files/PostgreSQL/17/data"
+        --old-bindir "C:/Program Files/PostgreSQL/12/bin"
+        --new-bindir "C:/Program Files/PostgreSQL/17/bin"
+     </pre><p>
+
+     Une fois démarré, <code class="command">pg_upgrade</code> vérifiera que les deux
+     instances sont compatibles avant d'effectuer la mise à jour. Vous pouvez
+     utiliser <code class="command">pg_upgrade --check</code> pour effectuer uniquement
+     la vérification, y compris si l'ancien serveur est actuellement en
+     fonctionnement. <code class="command">pg_upgrade --check</code> mettra également
+     en évidence les ajustements manuels nécessaires que vous aurez besoin de
+     faire après la mise à jour. Si vous désirez utiliser le mode lien ou le mode clone,
+     vous devriez indiquer l'option <code class="option">--link</code> ou <code class="option">--clone</code> avec l'option
+     <code class="option">--check</code> pour activer les vérifications spécifiques
+     au mode lien. <code class="command">pg_upgrade</code> doit avoir le droit
+     d'écrire dans le répertoire courant.
+    </p><p>
+     Évidemment, personne ne doit accéder aux instances pendant
+     la mise à jour. <span class="application">pg_upgrade</span> lance par
+     défaut les serveurs sur le port 50432 pour éviter les connexions
+     non désirées de clients. Vous pouvez utilisez le même numéro de
+     port pour les deux instances lors d'une mise à jour car l'ancienne et
+     la nouvelle instance ne fonctionneront pas en même temps. Cependant,
+     lors de la vérification d'un ancien serveur en fonctionnement,
+     l'ancien et le nouveau numéros de port doivent être différents.
+    </p><p>
+     Si une erreur survient lors de la restauration du schéma de la
+     base de données, <code class="command">pg_upgrade</code> quittera et vous
+     devrez revenir à l'ancienne instance comme décrit ci-dessous
+     (<a class="xref" href="pgupgrade.html#PGUPGRADE-STEP-REVERT" title="Revenir à l'ancienne instance">Étape 19</a>). Pour réessayer
+     <code class="command">pg_upgrade</code>, vous aurez besoin de modifier
+     l'ancienne instance de telle manière que la restauration du
+     schéma par pg_upgrade réussisse. Si le problème est un module
+     <code class="filename">contrib</code>, vous pourriez avoir besoin de
+     désinstaller le module <code class="filename">contrib</code> de l'ancienne
+     instance et le réinstaller dans la nouvelle instance après la
+     mise à jour, en supposant que le module n'est pas utilisé pour
+     stocker des données utilisateur.
+    </p></li><li class="step" id="PGUPGRADE-STEP-REPLICAS"><p class="title"><strong>Mettez à jour les serveurs secondaires par réplication en flux
+     ou par copie de journaux de transactions</strong></p><p>
+     Si vous utilisez le mode lien et avez des serveurs secondaires par
+     réplication continue (voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION" title="26.2.5. Réplication en flux">Section 26.2.5</a>) ou
+     par copie des journaux de transactions (voir <a class="xref" href="warm-standby.html" title="26.2. Serveurs secondaires par transfert de journaux">Section 26.2</a>), vous pouvez suivre les étapes ci-dessous pour
+     les mettre à jour rapidement. Vous ne lancerez pas
+     <span class="application">pg_upgrade</span> sur les serveurs secondaires, mais
+     plutôt <span class="application">rsync</span> sur le primaire. Ne démarrez
+     encore aucun serveur.
+    </p><p>
+     Si vous n'utilisez <span class="emphasis"><em>pas</em></span> le mode lien, n'avez pas ou
+     ne voulez pas utiliser <span class="application">rsync</span>, ou si vous
+     voulez une solution plus simple, ignorez les instructions de cette
+     section et recréez simplement les serveurs secondaires une fois que
+     <span class="application">pg_upgrade</span> a terminé et que le nouveau
+     primaire fonctionne de nouveau.
+    </p><div class="procedure"><ol class="procedure" type="1"><li class="step"><p class="title"><strong>Installez les nouveaux binaires PostgreSQL sur les serveurs secondaires</strong></p><p>
+       Assurez-vous que les nouveaux binaires et fichiers de support
+       sont installés sur tous les serveurs secondaires.
+      </p></li><li class="step"><p class="title"><strong>Assurez vous que les nouveaux répertoires de données sur
+       les serveurs secondaires n'existent <span class="emphasis"><em>pas</em></span></strong></p><p>
+       Assurez vous que les nouveaux répertoires de données sur les serveurs
+       secondaires n'existent <span class="emphasis"><em>pas</em></span> ou sont vides. Si
+       <span class="application">initdb</span> a été lancé, détruisez les nouveaux
+       répertoires de données des serveurs secondaires.
+      </p></li><li class="step"><p class="title"><strong>Installez les fichiers objets partagés d'extension</strong></p><p>
+       Installez les mêmes fichiers objets partagés d'extension
+       sur les nouveaux serveurs secondaires que vous avez installé sur la
+       nouvelle instance primaire.
+      </p></li><li class="step"><p class="title"><strong>Arrêtez les serveurs secondaires</strong></p><p>
+       Si les serveurs secondaires sont encore lancés, arrêtez les
+       maintenant en utilisant les instructions ci-dessus.
+      </p></li><li class="step"><p class="title"><strong>Sauvegardez les fichiers de configuration</strong></p><p>
+       Sauvegardez tous les fichiers de configuration des anciens serveurs
+       secondaires que vous avez besoin de conserver, par exemple
+       <code class="filename">postgresql.conf</code> (et tout fichier qu'il inclut),
+       <code class="filename">postgresql.auto.conf</code>,
+       <code class="literal">pg_hba.conf</code>, dans la mesure où ceux-ci seront
+       réécrits ou supprimés dans l'étape suivante.
+      </p></li><li class="step"><p class="title"><strong>Lancez <span class="application">rsync</span></strong></p><p>
+       Lors de l'utilisation du mode lien, les serveurs secondaires peuvent être
+       rapidement mis à jour en utilisant <span class="application">rsync</span>.
+       Pour cela, à partir d'un répertoire du serveur primaire situé au-dessus
+       des répertoires de l'ancienne et de la nouvelle instance de bases de
+       données, exécutez cette commande sur le <span class="emphasis"><em>primaire</em></span>
+       pour chaque serveur secondaire :
+
+       </p><pre class="programlisting">
+rsync --archive --delete --hard-links --size-only --no-inc-recursive ancien_rep_config nouveau_rep_config repertoire_distant
+       </pre><p>
+
+       où <code class="option">ancien_rep_config</code> et <code class="option">nouveau_rep_config</code>
+       sont relatifs au répertoire courant du serveur primaire, et
+       <code class="option">repertoire_distant</code> est <span class="emphasis"><em>au-dessus</em></span>
+       des ancien et nouveau répertoires des instances sur le serveur secondaire.
+       La structure des répertoires sous les répertoires spécifiés du primaire
+       et des secondaires doit correspondre. Consultez les pages du manuel de
+       <span class="application">rsync</span> pour des détails sur la manière de
+       spécifier le répertoire distant, par exemple :
+
+       </p><pre class="programlisting">
+rsync --archive --delete --hard-links --size-only --no-inc-recursive /opt/PostgreSQL/12 \
+      /opt/PostgreSQL/17 standby.example.com:/opt/PostgreSQL
+       </pre><p>
+
+       Vous pouvez vérifier ce que la commande va faire en utilisant l'option
+       <code class="option">--dry-run</code> de <span class="application">rsync</span>. Alors
+       que <span class="application">rsync</span> doit être exécuté sur le primaire
+       pour au moins un serveur secondaire, il est possible d'exécuter
+       <span class="application">rsync</span> sur un secondaire mis à jour pour mettre
+       à jour les autres secondaires tant que le secondaire mis à jour n'est pas
+       démarré.
+      </p><p>
+       Cela enregistre les liens créés par le mode lien de
+       <span class="application">pg_upgrade</span> qui connecte les fichiers dans
+       les ancienne et nouvelle instances du serveur primaire. Puis, il trouve
+       les fichiers correspondant dans l'ancienne instance du secondaire et crée
+       les liens pour eux dans la nouvelle instance du serveur secondaire. Les
+       fichiers qui n'ont pas été liés sur le primaire sont copiés sur à
+       partir du serveur primaire vers le serveur secondaire. (Ils sont
+       généralement petits.) Ceci fournit des mises à jour rapides des
+       serveurs secondaires. Malheureusement, <span class="application">rsync</span>
+       copie sans raison les fichiers associés aux tables temporaires et non
+       journalisées parce que ces fichiers n'existent normalement pas sur les
+       serveurs secondaires.
+      </p><p>
+       Si vous avez des tablespaces, vous aurez besoin de lancer
+       une commande <span class="application">rsync</span> similaire pour
+       chaque répertoire de tablespace, par exemple :
+
+       </p><pre class="programlisting">
+rsync --archive --delete --hard-links --size-only --no-inc-recursive /vol1/pg_tblsp/PG_12_201909212 \
+      /vol1/pg_tblsp/PG_17_202307071 standby.example.com:/vol1/pg_tblsp
+       </pre><p>
+
+       Si vous avez déplacé
+       <code class="filename">pg_wal</code> en dehors des répertoires de
+       données, <span class="application">rsync</span> doit être lancé
+       aussi sur ces répertoires.
+      </p></li><li class="step"><p class="title"><strong>Configurez les serveurs secondaires par réplication en flux ou par copie de journaux de transactions</strong></p><p>
+       Configurez les serveurs pour les copies des journaux
+       de transactions. (Vous n'avez pas besoin d'exécuter
+       les fonctions <code class="function">pg_backup_start()</code> et
+       <code class="function">pg_backup_stop()</code> ou d'effectuer une sauvegarde
+       des fichiers car les secondaires sont toujours synchronisés avec
+       le primaire.) Si l'ancien primaire est en version antérieure à la 17.0, alors
+       aucun slot de réplication du primaire ne sera copié vers le nouveau secondaire, ainsi tous les slots sur
+       l'ancien secondaire doivent être recréés manuellement. Si l'ancien primaire est
+       en version 17.0 ou ultérieure, alors seulement les slots logiques du primaire seront copiés
+       vers le nouveau secondaire, mais les autres slots de l'ancien secondaire ne seront pas copiés
+       et devront donc être recréés manuellement.
+      </p></li></ol></div></li><li class="step"><p class="title"><strong>Restaurez <code class="filename">pg_hba.conf</code></strong></p><p>
+     Si vous avez modifié <code class="filename">pg_hba.conf</code>,
+     restaurez cette configuration d'origine. Il peut être aussi
+     nécessaire d'ajuster d'autres fichiers de configuration dans la
+     nouvelle instance pour correspondre à l'ancienne instance, par exemple
+     <code class="filename">postgresql.conf</code> (et tout fichier qu'il inclut),
+     <code class="filename">postgresql.auto.conf</code>.
+    </p></li><li class="step"><p class="title"><strong>Démarrez le nouveau serveur</strong></p><p>
+     Le nouveau serveur peut maintenant être démarré en toute
+     sécurité, puis les autres serveurs secondaires synchronisés avec
+     <span class="application">rsync</span>.
+    </p></li><li class="step"><p class="title"><strong>Traitements après mise à jour</strong></p><p>
+     Si des traitements après mise à jour sont nécessaires,
+     pg_upgrade affichera des avertissements lors de son travail. Il
+     générera également des scripts qui devront être lancés par
+     l'administrateur. Les scripts se connecteront à chaque base de
+     données qui ont besoin de traitements après mise à jour. Chaque
+     script devrait être lancé comme suit :
+
+     </p><pre class="programlisting">
+psql --username=postgres --file=script.sql postgres
+     </pre><p>
+
+     Les scripts peuvent être lancés dans n'importe quel ordre et
+     détruits une fois terminés.
+    </p><div class="caution"><h3 class="title">Attention</h3><p>
+      Généralement, il n'est pas sûr d'accéder à des tables référencées
+      dans les scripts de reconstruction avant la fin de leurs traitements ;
+      le faire pourrait entraîner des résultats incorrects ou de
+      médiocres performances. Les tables non référencées dans les
+      scripts de reconstruction peuvent être accédées immédiatement.
+     </p></div></li><li class="step"><p class="title"><strong>Statistiques</strong></p><p>
+     Parce que les statistiques de l'optimiseur ne sont pas transférées
+     par <code class="command">pg_upgrade</code>, vous serez invités à lancer
+     une commande pour regénérer les statistiques à la fin de la mise
+     à jour. Vous pourriez avoir besoin de positionner les paramètres
+     de connexion pour qu'ils correspondent à votre nouvelle instance.
+    </p><p>
+     Utiliser <code class="command">vacuumdb --all --analyze-only</code> peut efficacement
+     générer de telles statistiques, et l'utilisation de <code class="option">--jobs</code>
+     peut l'accélérer. L'option <code class="option">--analyze-in-stages</code>
+     peut être utilisée pour générer des statistiques minimales rapidement.
+     Si <code class="varname">vacuum_cost_delay</code> est positionné à une valeur différente
+     de zéro, cela peut être outrepassé pour accélérer la génération des statistiques
+     en utilisant <code class="envar">PGOPTIONS</code>, par exemple, <code class="literal">PGOPTIONS='-c
+     vacuum_cost_delay=0' vacuumdb ...</code>.
+    </p></li><li class="step"><p class="title"><strong>Détruire les anciennes instances</strong></p><p>
+     Une fois que vous êtes satisfait de la mise à jour, vous pouvez
+     détruire les répertoires de données des anciennes instances en
+     lançant le script indiqué par <code class="command">pg_upgrade</code>
+     à la fin de son traitement. (La destruction automatique n'est
+     pas possible si vous avez défini des tablespaces personnalisés
+     dans l'ancien répertoire de données.) Vous pouvez également
+     supprimer les anciens répertoires d'installation (par exemple
+     <code class="filename">bin</code>, <code class="filename">share</code>).
+    </p></li><li class="step" id="PGUPGRADE-STEP-REVERT"><p class="title"><strong>Revenir à l'ancienne instance</strong></p><p>
+     Si, après avoir lancé <code class="command">pg_upgrade</code>, vous désirez
+     revenir à l'ancienne instance, il y a plusieurs options :
+
+     </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+        Si l'option <code class="option">--check</code> a été utilisée, l'ancienne
+        instance n'a pas été modifiée, elle peut être redémarrée.
+       </p></li><li class="listitem"><p>
+        Si l'option <code class="option">--link</code> n'a <span class="emphasis"><em>pas</em></span> été
+        utilisée, l'ancienne instance n'a pas été modifiée, elle peut être
+        redémarrée.
+       </p></li><li class="listitem"><p>
+        Si l'option <code class="option">--link</code> a été utilisée, les fichiers de
+        données pourraient être partagés entre l'ancienne instance et la
+        nouvelle :
+        </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem"><p>
+           Si <code class="command">pg_upgrade</code> a annulé avant de réaliser les
+           liens, l'ancienne instance n'a pas été modifiée, elle peut être
+           redémarrée.
+          </p></li><li class="listitem"><p>
+           Si vous n'avez <span class="emphasis"><em>pas</em></span> démarré la nouvelle
+           instance, l'ancienne instance n'a pas été modifiée sauf, quand les
+           liens ont commencé, un suffixe <code class="literal">.old</code> a été ajouté
+           au fichier <code class="filename">$PGDATA/global/pg_control</code>. Pour
+           utiliser de nouveau l'ancienne instance, supprimez le suffixe
+           <code class="filename">.old</code> du fichier
+           <code class="filename">$PGDATA/global/pg_control</code> ; vous pouvez
+           alors redémarrer l'ancienne instance.
+          </p></li><li class="listitem"><p>
+           Si vous avez démarré la nouvelle instance, elle a écrit dans des
+           fichiers partagés et il est dangereux d'utiliser l'ancienne
+           instance. Cette dernière doit être restaurée d'une sauvegarde dans
+           ce cas.
+          </p></li></ul></div><p>
+       </p></li></ul></div><p>
+    </p></li></ol></div></div><div class="refsect1" id="id-1.9.5.13.8"><h2>Environnement</h2><p>
+   Certaines variables d'environnement peuvent être utilisées pour fournir des valeurs par défaut aux options en ligne de commande :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">PGBINOLD</code></span></dt><dd><p>
+       L'ancien répertoire des exécutables PostgreSQL ; option
+       <code class="option">-b</code>/<code class="option">--old-bindir</code>.
+      </p></dd><dt><span class="term"><code class="envar">PGBINNEW</code></span></dt><dd><p>
+       Le nouveau répertoire des exécutables PostgreSQL ; option
+       <code class="option">-B</code>/<code class="option">--new-bindir</code>.
+      </p></dd><dt><span class="term"><code class="envar">PGDATAOLD</code></span></dt><dd><p>
+       Le répertoire de configuration de l'ancienne instance ; option
+       <code class="option">-d</code>/<code class="option">--old-datadir</code>.
+      </p></dd><dt><span class="term"><code class="envar">PGDATANEW</code></span></dt><dd><p>
+       Le répertoire de configuration de la nouvelle instance ; option
+       <code class="option">-D</code>/<code class="option">--new-datadir</code>.
+      </p></dd><dt><span class="term"><code class="envar">PGPORTOLD</code></span></dt><dd><p>
+       Le numéro de port de l'ancienne instance ; option
+       <code class="option">-p</code>/<code class="option">--old-port</code>.
+      </p></dd><dt><span class="term"><code class="envar">PGPORTNEW</code></span></dt><dd><p>
+       Le numéro de port de la nouvelle instance ; option
+       <code class="option">-P</code>/<code class="option">--new-port</code>.
+      </p></dd><dt><span class="term"><code class="envar">PGSOCKETDIR</code></span></dt><dd><p>
+       Le répertoire à utiliser pour les sockets du processus postmaster pendant la mise à jour ; option
+       <code class="option">-s</code>/<code class="option">--socketdir</code>.
+      </p></dd><dt><span class="term"><code class="envar">PGUSER</code></span></dt><dd><p>
+       Nom d'utilisateur de l'instance d'installation ; option
+       <code class="option">-U</code>/<code class="option">--username</code>.
+      </p></dd></dl></div><p>
+  </p></div><div class="refsect1" id="id-1.9.5.13.9"><h2>Notes</h2><p>
+   <span class="application">pg_upgrade</span> crée différents fichiers de travail,
+   tel que des sauvegardes de schémas, enregistré dans le sous-répertoire
+   <code class="filename">pg_upgrade_output.d</code> du répertoire principal de la nouvelle
+   instance. Chaque exécution crée un sous-répertoire nommé avec un horodatage
+   formaté d'après ISO 8601 (<code class="literal">%Y%m%dT%H%M%S</code>), où tous ses
+   fichiers générés sont stockés.
+   <code class="filename">pg_upgrade_output.d</code> et ses fichiers seront supprimés
+   automatiquement si <span class="application">pg_upgrade</span> se termine
+   avec succès ; en cas de problème, ses fichiers pourraient fournir
+   des informations de debug très utiles.
+  </p><p>
+   <span class="application">pg_upgrade</span> lance brièvement les serveurs dans
+   les ancien et nouveau répertoires de données. Les fichiers temporaires des
+   sockets Unix pour communiquer avec ces serveurs sont, par défaut, créés
+   dans le répertoire courant. Dans certaines situations, le nom du chemin
+   pour le répertoire courant pourrait être trop long pour être un nom de
+   socket valide. Dans ce cas, vous pouvez utiliser l'option
+   <code class="option">-s</code> pour placer les fichiers socket dans un autre
+   répertoire dont le nom du chemin est plus court. Pour des raisons de
+   sécurité, assurez-vous que le répertoire n'est ni lisible ni modifiable par
+   les autres utilisateurs. (Ceci n'est pas applicable à Windows.)
+  </p><p>
+   Tous les échecs, reconstructions et réindexations seront
+   reportés par <span class="application">pg_upgrade</span> s'ils
+   affectent votre installation ; les scripts d'après mise à
+   jour pour reconstruire les tables et index seront générés
+   automatiquement. Si vous essayez d'automatiser la mise à jour de
+   plusieurs instances, vous devriez constater que les instances avec
+   des schémas de bases de données identiques ont besoin des mêmes
+   étapes après mise à jour ; car les étapes après mise à jour
+   sont basées sur les schémas des bases de données, et pas sur
+   les données utilisateurs.
+  </p><p>
+   Pour les déploiements de tests, créez uniquement une copie du
+   schéma de l'ancienne instance, insérez des données de tests, et faites
+   la mise à jour.
+  </p><p>
+   <span class="application">pg_upgrade</span> ne supporte pas la mise à jour de
+   bases de données contenant des colonnes de table utilisant les types de
+   données systèmes référençant les OID, nommés <code class="type">reg*</code> :
+   </p><table border="0" summary="Simple list" class="simplelist"><tr><td><code class="type">regcollation</code></td></tr><tr><td><code class="type">regconfig</code></td></tr><tr><td><code class="type">regdictionary</code></td></tr><tr><td><code class="type">regnamespace</code></td></tr><tr><td><code class="type">regoper</code></td></tr><tr><td><code class="type">regoperator</code></td></tr><tr><td><code class="type">regproc</code></td></tr><tr><td><code class="type">regprocedure</code></td></tr></table><p>
+   (<code class="type">regclass</code>, <code class="type">regrole</code> et <code class="type">regtype</code> peuvent
+   être mis à jour.)
+  </p><p>
+   Si vous souhaitez utiliser le mode lien et ne voulez pas que
+   votre ancienne instance ne soit modifiée lorsque la nouvelle instance est
+   démarrée, considérez l'utilisation du mode clone. Si ce n'est pas possible,
+   faites une copie de l'ancienne instance et faites la mise
+   à jour à partir de cette copie. Pour faire une copie valide de
+   l'ancienne instance, utilisez <code class="command">rsync</code> pour effectuer une
+   copie grossière de l'ancienne instance lancée, puis arrêtez l'ancien
+   serveur et lancez <code class="command">rsync --checksum</code> à nouveau
+   pour mettre à jour la copie dans un état cohérent avec tous les
+   changements. (L'option <code class="option">--checksum</code> est nécessaire
+   car <code class="command">rsync</code> n'a une granularité sur les dates de
+   modification de fichiers que d'une seconde.) Vous pourriez souhaiter
+   exclure certains fichiers, par exemple <code class="filename">postmaster.pid</code>,
+   comme documenté à <a class="xref" href="continuous-archiving.html#BACKUP-LOWLEVEL-BASE-BACKUP" title="25.3.4. Effectuer une sauvegarde de base avec l'API bas niveau">Section 25.3.4</a>. Si
+   votre système de fichiers supporte les images de système de fichiers
+   ou la fonctionnalité Copy-On-Write, vous pouvez utiliser ces
+   fonctionnalités pour faire une sauvegarde de l'ancienne instance et
+   des tablespaces, bien que l'image et les copies doivent être créées
+   simultanément ou lorsque le serveur de bases de données est éteint.
+  </p></div><div class="refsect1" id="id-1.9.5.13.10"><h2>Voir aussi</h2><span class="simplelist"><a class="xref" href="app-initdb.html" title="initdb"><span class="refentrytitle"><span class="application">initdb</span></span></a>, <a class="xref" href="app-pg-ctl.html" title="pg_ctl"><span class="refentrytitle"><span class="application">pg_ctl</span></span></a>, <a class="xref" href="app-pgdump.html" title="pg_dump"><span class="refentrytitle"><span class="application">pg_dump</span></span></a>, <a class="xref" href="app-postgres.html" title="postgres"><span class="refentrytitle"><span class="application">postgres</span></span></a></span></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/pgupgrade.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:08 GMT -->
+</html>

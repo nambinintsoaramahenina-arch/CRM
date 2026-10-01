@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/pgrowlocks.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.29. pgrowlocks -- afficher des informations sur le verrouillage d'une table</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="pgprewarm.html" title="F.28. pg_prewarm -- précharger les données des relations dans le cache disque de PostgreSQL" /><link rel="next" href="pgstatstatements.html" title="F.30. pg_stat_statements -- récupérer les statistiques de planification et d'exécution de requêtes SQL" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/pgrowlocks.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/pgrowlocks.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/pgrowlocks.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/pgrowlocks.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/pgrowlocks.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/pgrowlocks.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/pgrowlocks.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/pgrowlocks.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/pgrowlocks.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/pgrowlocks.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/pgrowlocks.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/pgrowlocks.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/pgrowlocks.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/pgrowlocks.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/pgrowlocks.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/pgrowlocks.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/pgrowlocks.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/pgrowlocks.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/pgrowlocks.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="appendixes.html">Annexes</a></span> » <span class="breadcrumb-link"><a href="contrib.html">Modules et extensions supplémentaires fournis</a></span> » <span class="breadcrumb-node">pgrowlocks  --  afficher des informations sur le verrouillage
+  d'une table</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pgprewarm.html" title="F.28. pg_prewarm  --  précharger les données des relations dans le cache&#10;  disque de PostgreSQL">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="pgstatstatements.html" title="F.30. pg_stat_statements  --  récupérer les statistiques de planification&#10;  et d'exécution de requêtes SQL">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">F.28. pg_prewarm  --  précharger les données des relations dans le cache
+  disque de PostgreSQL </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> F.30. pg_stat_statements  --  récupérer les statistiques de planification
+  et d'exécution de requêtes SQL</td></tr></table></div><div class="sect1" id="PGROWLOCKS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.29. pgrowlocks  --  afficher des informations sur le verrouillage
+  d'une table <a href="#PGROWLOCKS" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="pgrowlocks.html#PGROWLOCKS-OVERVIEW">F.29.1. Aperçu</a></span></dt><dt><span class="sect2"><a href="pgrowlocks.html#PGROWLOCKS-SAMPLE-OUTPUT">F.29.2. Exemple d'affichage</a></span></dt><dt><span class="sect2"><a href="pgrowlocks.html#PGROWLOCKS-AUTHOR">F.29.3. Auteur</a></span></dt></dl></div><a id="id-1.11.7.40.2" class="indexterm"></a><p>
+  Le module <code class="filename">pgrowlocks</code> fournit une fonction pour afficher
+  les informations de verrouillage de lignes pour une table spécifiée.
+ </p><p>
+  Par défaut, l'utilisation est restreinte aux superutilisateurs, aux rôles
+  disposant des droits du rôle <code class="literal">pg_stat_scan_tables</code>, ainsi que
+  les utilisateurs avec le droit <code class="literal">SELECT</code> sur la table.
+ </p><div class="sect2" id="PGROWLOCKS-OVERVIEW"><div class="titlepage"><div><div><h3 class="title">F.29.1. Aperçu <a href="#PGROWLOCKS-OVERVIEW" class="id_link">#</a></h3></div></div></div><a id="id-1.11.7.40.5.2" class="indexterm"></a><pre class="synopsis">
+pgrowlocks(text) returns setof record
+  </pre><p>
+   Le paramètre est le nom d'une table. Le résultat est un ensemble
+   d'enregistrements, avec une ligne pour chaque ligne verrouillée dans la
+   table. Les colonnes en sortie sont affichées dans <a class="xref" href="pgrowlocks.html#PGROWLOCKS-COLUMNS" title="Tableau F.20. Colonnes de pgrowlocks">Tableau F.20</a>.
+  </p><div class="table" id="PGROWLOCKS-COLUMNS"><p class="title"><strong>Tableau F.20. Colonnes de <code class="function">pgrowlocks</code></strong></p><div class="table-contents"><table class="table" summary="Colonnes de pgrowlocks" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Nom</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code class="structfield">locked_row</code></td><td><code class="type">tid</code></td><td>ID de ligne (TID) d'une ligne verrouillée</td></tr><tr><td><code class="structfield">locker</code></td><td><code class="type">xid</code></td><td>ID de transaction de la pose du verrou, ou ID multixact dans le
+       cas d'une multi-transaction ; voir <a class="xref" href="transaction-id.html" title="66.1. Transactions et identifiants">Section 66.1</a></td></tr><tr><td><code class="structfield">multi</code></td><td><code class="type">boolean</code></td><td>True si le verrou est détenu par une multi-transaction</td></tr><tr><td><code class="structfield">xids</code></td><td><code class="type">xid[]</code></td><td>ID de transaction détenant les verrous (plus d'une en cas de
+       multi-transaction)</td></tr><tr><td><code class="structfield">modes</code></td><td><code class="type">text[]</code></td><td>Mode de verrouillage des verrous (plus d'un dans le cas d'une
+       multi-transaction), un tableau de <code class="literal">For Key Share</code>,
+       <code class="literal">For Share</code>, <code class="literal">For No Key Update</code>,
+       <code class="literal">No Key Update</code>, <code class="literal">For Update</code>,
+       <code class="literal">Update</code>.</td></tr><tr><td><code class="structfield">pids</code></td><td><code class="type">integer[]</code></td><td>ID de processus des serveurs ayant posé les verrous (plus d'une
+       en cas de multi-transaction)</td></tr></tbody></table></div></div><br class="table-break" /><p>
+   <code class="function">pgrowlocks</code> prend un verrou
+   <code class="literal">AccessShareLock</code> pour la table cible et lit chaque ligne
+   une par une pour récupérer les informations de verrouillage de lignes.
+   Ce n'est pas très rapide pour une grosse table. Notez que :
+  </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>
+     Si un verrou de type <code class="literal">ACCESS EXCLUSIVE</code> est posé sur la
+     table, <code class="function">pgrowlocks</code> sera bloqué.
+    </p></li><li class="listitem"><p>
+     <code class="function">pgrowlocks</code> ne garantit pas de produire une image
+     cohérente. Il est possible qu'un nouveau verrou de ligne soit pris ou
+     qu'un ancien verrou soit libéré pendant son exécution.
+    </p></li></ol></div><p>
+   <code class="function">pgrowlocks</code> ne montre pas le contenu des lignes
+   verrouillées. Si vous voulez jeter un œil au contenu de la ligne en même
+   temps, vous pouvez le faire ainsi :
+
+   </p><pre class="programlisting">
+SELECT * FROM accounts AS a, pgrowlocks('accounts') AS p
+  WHERE p.locked_row = a.ctid;
+   </pre><p>
+
+   Mais soyez conscient qu'une telle requête sera particulièrement inefficace.
+  </p></div><div class="sect2" id="PGROWLOCKS-SAMPLE-OUTPUT"><div class="titlepage"><div><div><h3 class="title">F.29.2. Exemple d'affichage <a href="#PGROWLOCKS-SAMPLE-OUTPUT" class="id_link">#</a></h3></div></div></div><pre class="screen">
+=# SELECT * FROM pgrowlocks('t1');
+ locked_row | locker | multi | xids  |     modes      |  pids
+------------+--------+-------+-------+----------------+--------
+ (0,1)      |    609 | f     | {609} | {"For Share"}  | {3161}
+ (0,2)      |    609 | f     | {609} | {"For Share"}  | {3161}
+ (0,3)      |    607 | f     | {607} | {"For Update"} | {3107}
+ (0,4)      |    607 | f     | {607} | {"For Update"} | {3107}
+(4 rows)
+  </pre></div><div class="sect2" id="PGROWLOCKS-AUTHOR"><div class="titlepage"><div><div><h3 class="title">F.29.3. Auteur <a href="#PGROWLOCKS-AUTHOR" class="id_link">#</a></h3></div></div></div><p>
+   Tatsuo Ishii
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/pgrowlocks.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+</html>

@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-query.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.7. Planification des requêtes</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-replication.html" title="19.6. Réplication" /><link rel="next" href="runtime-config-logging.html" title="19.8. Remonter et tracer les erreurs" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/runtime-config-query.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/runtime-config-query.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/runtime-config-query.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/runtime-config-query.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/runtime-config-query.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/runtime-config-query.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/runtime-config-query.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/runtime-config-query.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/runtime-config-query.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/runtime-config-query.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/runtime-config-query.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/runtime-config-query.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/runtime-config-query.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/runtime-config-query.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/runtime-config-query.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/runtime-config-query.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/runtime-config-query.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/runtime-config-query.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/runtime-config-query.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/runtime-config-query.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/runtime-config-query.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="runtime-config.html">Configuration du serveur</a></span> » <span class="breadcrumb-node">Planification des requêtes</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-replication.html" title="19.6. Réplication">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-logging.html" title="19.8. Remonter et tracer les erreurs">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">19.6. Réplication </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 19.8. Remonter et tracer les erreurs</td></tr></table></div><div class="sect1" id="RUNTIME-CONFIG-QUERY"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.7. Planification des requêtes <a href="#RUNTIME-CONFIG-QUERY" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="runtime-config-query.html#RUNTIME-CONFIG-QUERY-ENABLE">19.7.1. Configuration de la méthode du planificateur</a></span></dt><dt><span class="sect2"><a href="runtime-config-query.html#RUNTIME-CONFIG-QUERY-CONSTANTS">19.7.2. Constantes de coût du planificateur</a></span></dt><dt><span class="sect2"><a href="runtime-config-query.html#RUNTIME-CONFIG-QUERY-GEQO">19.7.3. Optimiseur génétique de requêtes</a></span></dt><dt><span class="sect2"><a href="runtime-config-query.html#RUNTIME-CONFIG-QUERY-OTHER">19.7.4. Autres options du planificateur</a></span></dt></dl></div><div class="sect2" id="RUNTIME-CONFIG-QUERY-ENABLE"><div class="titlepage"><div><div><h3 class="title">19.7.1. Configuration de la méthode du planificateur <a href="#RUNTIME-CONFIG-QUERY-ENABLE" class="id_link">#</a></h3></div></div></div><p>
+  Ces paramètres de configuration fournissent une méthode brutale pour
+  influencer les plans de requête choisis par l'optimiseur de requêtes.
+  Si le plan choisi par défaut par l'optimiseur pour une requête
+  particulière n'est pas optimal, une solution
+  <span class="emphasis"><em>temporaire</em></span> peut provenir de l'utilisation de l'un
+  de ces paramètres de configuration pour forcer l'optimiseur à choisir
+  un plan différent. De meilleures façons d'améliorer la qualité des
+  plans choisis par l'optimiseur passent par l'ajustement des constantes
+  de coût du planificateur (voir <a class="xref" href="runtime-config-query.html#RUNTIME-CONFIG-QUERY-CONSTANTS" title="19.7.2. Constantes de coût du planificateur">Section 19.7.2</a>), le lancement manuel plus
+  fréquent de <a class="link" href="sql-analyze.html" title="ANALYZE"><code class="command">ANALYZE</code></a>,
+  l'augmentation de la valeur du paramètre de configuration <a class="xref" href="runtime-config-query.html#GUC-DEFAULT-STATISTICS-TARGET">default_statistics_target</a> et l'augmentation du nombre
+  de statistiques récupérées pour des colonnes spécifiques en utilisant
+  <code class="command">ALTER TABLE SET STATISTICS</code>.
+ </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-ENABLE-ASYNC-APPEND"><span class="term"><code class="varname">enable_async_append</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.10.2.3.1.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ENABLE-ASYNC-APPEND" class="id_link">#</a></dt><dd><p>
+     Active ou désactive la possibilité pour le planificateur d'utiliser des
+     types de plans d'exécution tenant compte du caractère asynchrone des
+     ajouts. La valeur par défaut est <code class="literal">on</code>.
+    </p></dd><dt id="GUC-ENABLE-BITMAPSCAN"><span class="term"><code class="varname">enable_bitmapscan</code> (<code class="type">boolean</code>)</span> <a href="#GUC-ENABLE-BITMAPSCAN" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.2.3.2.2.1" class="indexterm"></a><a id="id-1.6.6.10.2.3.2.2.2" class="indexterm"></a><p>
+     Active ou désactive l'utilisation des plans de parcours de bitmap
+     (<span class="foreignphrase"><em class="foreignphrase">bitmap-scan</em></span>) par
+     le planificateur de requêtes. Activé par défaut (<code class="literal">on</code>).
+    </p></dd><dt id="GUC-ENABLE-GATHERMERGE"><span class="term"><code class="varname">enable_gathermerge</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.10.2.3.3.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ENABLE-GATHERMERGE" class="id_link">#</a></dt><dd><p>
+     Active ou désactive l'utilisation des plans de type gather merge.
+     La valeur par défaut est <code class="literal">on</code>.
+    </p></dd><dt id="GUC-ENABLE-GROUPBY-REORDERING"><span class="term"><code class="varname">enable_group_by_reordering</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.10.2.3.4.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ENABLE-GROUPBY-REORDERING" class="id_link">#</a></dt><dd><p>
+     Contrôle si l'optimiseur produira un plan de requête qui fournira les clés
+     du <code class="literal">GROUP BY</code> dans l'ordre des clés d'un noeud enfant du
+     plan, tel qu'un parcours d'index. S'il est désactivé, l'optimiseur produira
+     un plan avec les clés du <code class="literal">GROUP BY</code> triées uniquement pour
+     correspondre à la clause <code class="literal">ORDER BY</code>, si elle existe. S'il
+     est activé, l'optimiseur essaiera de produire un plan plus efficace. La
+     valeur par défaut est <code class="literal">on</code>.
+    </p></dd><dt id="GUC-ENABLE-HASHAGG"><span class="term"><code class="varname">enable_hashagg</code> (<code class="type">boolean</code>)</span> <a href="#GUC-ENABLE-HASHAGG" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.2.3.5.2.1" class="indexterm"></a><p>
+     Active ou désactive l'utilisation des plans d'agrégation hachée
+     (<span class="foreignphrase"><em class="foreignphrase">hashed aggregation</em></span>) par le
+     planificateur. Activé par défaut (<code class="literal">on</code>).
+    </p></dd><dt id="GUC-ENABLE-HASHJOIN"><span class="term"><code class="varname">enable_hashjoin</code> (<code class="type">boolean</code>)</span> <a href="#GUC-ENABLE-HASHJOIN" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.2.3.6.2.1" class="indexterm"></a><p>
+     Active ou désactive l'utilisation des jointures de hachage
+     (<span class="foreignphrase"><em class="foreignphrase">hash-join</em></span>) par le
+     planificateur. Activé par défaut (<code class="literal">on</code>).
+    </p></dd><dt id="GUC-ENABLE-INCREMENTAL-SORT"><span class="term"><code class="varname">enable_incremental_sort</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.10.2.3.7.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ENABLE-INCREMENTAL-SORT" class="id_link">#</a></dt><dd><p>
+     Active ou désactive l'utilisation des tris incrémentaux par le
+     planificateur. La valeur par défaut est <code class="literal">on</code>.
+    </p></dd><dt id="GUC-ENABLE-INDEXSCAN"><span class="term"><code class="varname">enable_indexscan</code> (<code class="type">boolean</code>)</span> <a href="#GUC-ENABLE-INDEXSCAN" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.2.3.8.2.1" class="indexterm"></a><a id="id-1.6.6.10.2.3.8.2.2" class="indexterm"></a><p>
+     Active ou désactive l'utilisation des parcours d'index
+     (<span class="foreignphrase"><em class="foreignphrase">index-scan</em></span> et
+     <span class="foreignphrase"><em class="foreignphrase">index-only-scan</em></span>) par le
+     planificateur. Activé par défaut (<code class="literal">on</code>).
+     Voir aussi <a class="xref" href="runtime-config-query.html#GUC-ENABLE-INDEXONLYSCAN">enable_indexonlyscan</a>.
+    </p></dd><dt id="GUC-ENABLE-INDEXONLYSCAN"><span class="term"><code class="varname">enable_indexonlyscan</code> (<code class="type">boolean</code>)</span> <a href="#GUC-ENABLE-INDEXONLYSCAN" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.2.3.9.2.1" class="indexterm"></a><a id="id-1.6.6.10.2.3.9.2.2" class="indexterm"></a><p>
+     Active ou désactive l'utilisation des parcours d'index seuls
+     (<span class="foreignphrase"><em class="foreignphrase">index-only-scan</em></span>) par le planificateur
+     (voir <a class="xref" href="indexes-index-only-scans.html" title="11.9. Parcours d'index seul et index couvrants">Section 11.9</a>). Activé par défaut
+     (<code class="literal">on</code>).Le paramètre <a class="xref" href="runtime-config-query.html#GUC-ENABLE-INDEXSCAN">enable_indexscan</a>
+     doit aussi être activé pour que l'optimiseur considère l'utilisation de
+     parcours d'index seuls.
+    </p></dd><dt id="GUC-ENABLE-MATERIAL"><span class="term"><code class="varname">enable_material</code> (<code class="type">boolean</code>)</span> <a href="#GUC-ENABLE-MATERIAL" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.2.3.10.2.1" class="indexterm"></a><p>
+     Active ou désactive l'utilisation de la matérialisation par le
+     planificateur. Il est impossible de supprimer complètement son
+     utilisation mais la désactivation de cette variable permet d'empêcher
+     le planificateur d'insérer des nœuds de matérialisation sauf
+     dans le cas où son utilisation est obligatoire pour des raisons de
+     justesse de résultat. Activé par défaut (<code class="literal">on</code>).
+    </p></dd><dt id="GUC-ENABLE-MEMOIZE"><span class="term"><code class="varname">enable_memoize</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.10.2.3.11.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ENABLE-MEMOIZE" class="id_link">#</a></dt><dd><p>
+     Active ou désactive l'utilisation par le planificateur des résultats des
+     plans d'éxécution en mémoire pour récupérer les résultats des parcours
+     paramétrés dans les jointures de type boucle impriquée
+     (<span class="foreignphrase"><em class="foreignphrase">nested loop join</em></span>). Ce type de plans
+     permet aux parcours du plan sous-jacent d'être ignorés quand le résultat
+     des paramètres actuels sont déjà en mémoire. Les résultats les moins
+     fréquents peuvent être sortis de la mémoire lorsqu'il est nécessaire de
+     faire de la place pour de nouvelles données. La valeur par défaut est
+     <code class="literal">on</code>.
+    </p></dd><dt id="GUC-ENABLE-MERGEJOIN"><span class="term"><code class="varname">enable_mergejoin</code> (<code class="type">boolean</code>)</span> <a href="#GUC-ENABLE-MERGEJOIN" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.2.3.12.2.1" class="indexterm"></a><p>
+     Active ou désactive l'utilisation des jointures de fusion
+     (<span class="foreignphrase"><em class="foreignphrase">merge-join</em></span>)par le
+     planificateur. Activé par défaut (<code class="literal">on</code>).
+    </p></dd><dt id="GUC-ENABLE-NESTLOOP"><span class="term"><code class="varname">enable_nestloop</code> (<code class="type">boolean</code>)</span> <a href="#GUC-ENABLE-NESTLOOP" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.2.3.13.2.1" class="indexterm"></a><p>
+     Active ou désactive l'utilisation des jointures de boucles imbriquées
+     (<span class="foreignphrase"><em class="foreignphrase">nested-loop</em></span>)
+     par le planificateur. Il n'est pas possible de supprimer
+     complètement les jointures de boucles imbriquées mais la
+     désactivation de cette variable décourage le planificateur d'en
+     utiliser une si d'autres méthodes sont disponibles.
+     Activé par défaut (<code class="literal">on</code>).
+    </p></dd><dt id="GUC-ENABLE-PARALLEL-APPEND"><span class="term"><code class="varname">enable_parallel_append</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.10.2.3.14.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ENABLE-PARALLEL-APPEND" class="id_link">#</a></dt><dd><p>
+     Active ou désactive l'utilisation de plans Append parallélisés.
+     La valeur par défaut est <code class="literal">on</code>.
+    </p></dd><dt id="GUC-ENABLE-PARALLEL-HASH"><span class="term"><code class="varname">enable_parallel_hash</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.10.2.3.15.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ENABLE-PARALLEL-HASH" class="id_link">#</a></dt><dd><p>
+     Active ou désactive l'utilisation des plans parallélisés de jointure
+     par hachage. N'a pas d'effet si les plans de jointure par hachage ne
+     sont pas activés. La valeur par défaut est
+     <code class="literal">on</code>.
+    </p></dd><dt id="GUC-ENABLE-PARTITION-PRUNING"><span class="term"><code class="varname">enable_partition_pruning</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.10.2.3.16.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ENABLE-PARTITION-PRUNING" class="id_link">#</a></dt><dd><p>
+     Active ou désactive la capacité du planificateur à éliminer les
+     partitions d'une table partitionnée dans les plans d'exécution. Cela
+     contrôle aussi la capacité du planificateur à générer des plans de
+     requête autorisant l'exécuteur à supprimer (ignorer) les partitions
+     durant l'exécution. Le défaut est <code class="literal">on</code>.
+     Voir <a class="xref" href="ddl-partitioning.html#DDL-PARTITION-PRUNING" title="5.12.4. Élagage de partition">Section 5.12.4</a> pour les détails.
+    </p></dd><dt id="GUC-ENABLE-PARTITIONWISE-JOIN"><span class="term"><code class="varname">enable_partitionwise_join</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.10.2.3.17.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ENABLE-PARTITIONWISE-JOIN" class="id_link">#</a></dt><dd><p>
+     Active ou désactive l'utilisation par le planificateur des jointures
+     entre partitions, qui permettent aux jointures entre tables partitionnées
+     d'être effectuées en joignant les partitions correspondantes. Pour le
+     moment, une jointure entre partitions ne s'applique que si la condition de
+     jointure inclut toutes les clés de partition, qui doivent être du même
+     type et avoir exactement les mêmes ensembles de partitions filles.
+     Avec ce paramètre activé, le nombre de nœuds dont l'utilisation
+     mémoire est restreinte par <code class="varname">work_mem</code> apparaissant dans
+     le plan final peut augmenter de façon linéaire suivant le nombre de partitions
+     parcourues. Ceci peut engendrer une forte augmentation de la consommation de
+     la mémoire globale lors de l'exécution de la requête. La planification de
+     requête devient aussi significativement plus coûteuse en terme de mémoire et
+     de CPU. La valeur par défaut est <code class="literal">off</code>.
+    </p></dd><dt id="GUC-ENABLE-PARTITIONWISE-AGGREGATE"><span class="term"><code class="varname">enable_partitionwise_aggregate</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.10.2.3.18.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ENABLE-PARTITIONWISE-AGGREGATE" class="id_link">#</a></dt><dd><p>
+     Active ou désactive l'utilisation par le planificateur des regroupements
+     ou agrégations par partition, qui permettent, dans les tables
+     partitionnées, d'exécuter regroupement ou agrégation séparément pour
+     chaque partition. Si la clause  <code class="literal">GROUP BY</code> n'inclut pas
+     les clés de partition, seule une agrégation partielle peut être
+     effectuée par partition, et la finalisation interviendra plus tard.
+     Avec ce paramètre activé, le nombre de nœuds dont l'utilisation
+     mémoire est restreinte par <code class="varname">work_mem</code> apparaissant dans
+     le plan final peut augmenter de façon linéaire suivant le nombre de partitions
+     parcourues. Ceci peut engendrer une forte augmentation de la consommation de
+     la mémoire globale lors de l'exécution de la requête. La planification de
+     requête devient aussi significativement plus coûteuse en terme de mémoire et
+     de CPU. La valeur par défaut est <code class="literal">off</code>.
+    </p></dd><dt id="GUC-ENABLE-PRESORTED-AGGREGATE"><span class="term"><code class="varname">enable_presorted_aggregate</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.10.2.3.19.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-ENABLE-PRESORTED-AGGREGATE" class="id_link">#</a></dt><dd><p>
+     Contrôle si le planificateur de requêtes produira un plan qui fournira
+     des lignes triées dans l'ordre requis par la fonction d'agrégat
+     <code class="literal">ORDER BY</code> / <code class="literal">DISTINCT</code> de la requête.
+     Lorsqu'il est désactivé, le planificateur de requêtes produira toujours un
+     plan qui demandera à l'exécuteur d'effectuer un tri avant de procéder
+     à l'agrégation de chaque fonction d'agrégat contenant <code class="literal">ORDER
+     BY</code> ou <code class="literal">DISTINCT</code>.
+     Lorsque cette option est activée, le planificateur tente de produire un
+     plan plus efficace qui fournira aux fonctions d'agrégation des données
+     pré-triées. La valeur par défaut est <code class="literal">on</code>.
+    </p></dd><dt id="GUC-ENABLE-SEQSCAN"><span class="term"><code class="varname">enable_seqscan</code> (<code class="type">boolean</code>)</span> <a href="#GUC-ENABLE-SEQSCAN" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.2.3.20.2.1" class="indexterm"></a><a id="id-1.6.6.10.2.3.20.2.2" class="indexterm"></a><p>
+     Active ou désactive l'utilisation des parcours séquentiels
+     (<span class="foreignphrase"><em class="foreignphrase">sequential scan</em></span>) par le
+     planificateur. Il n'est pas possible de supprimer complètement les
+     parcours séquentiels mais la désactivation de cette variable décourage le
+     planificateur d'n utiliser un si d'autres méthodes sont disponibles.
+     Activé par défaut (<code class="literal">on</code>).
+    </p></dd><dt id="GUC-ENABLE-SORT"><span class="term"><code class="varname">enable_sort</code> (<code class="type">boolean</code>)</span> <a href="#GUC-ENABLE-SORT" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.2.3.21.2.1" class="indexterm"></a><p>
+     Active ou désactive l'utilisation des étapes de tri explicite par le
+     planificateur. Il n'est pas possible de supprimer complètement ces tris
+     mais la désactivation de cette variable décourage le planificateur
+     d'en utiliser un si d'autres méthodes sont disponibles. Activé par défaut
+     (<code class="literal">on</code>).
+    </p></dd><dt id="GUC-ENABLE-TIDSCAN"><span class="term"><code class="varname">enable_tidscan</code> (<code class="type">boolean</code>)</span> <a href="#GUC-ENABLE-TIDSCAN" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.2.3.22.2.1" class="indexterm"></a><p>
+     Active ou désactive l'utilisation des parcours de <acronym class="acronym">TID</acronym> par
+     le planificateur. Activé par défaut (<code class="literal">on</code>).
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-QUERY-CONSTANTS"><div class="titlepage"><div><div><h3 class="title">19.7.2. Constantes de coût du planificateur <a href="#RUNTIME-CONFIG-QUERY-CONSTANTS" class="id_link">#</a></h3></div></div></div><p>
+  Les variables de <em class="firstterm">coût</em> décrites dans cette section
+  sont mesurées sur une échelle arbitraire. Seules leurs valeurs relatives
+  ont un intérêt. De ce fait, augmenter ou diminuer leurs valeurs d'un même facteur
+  n'occasione aucun changement dans les choix du planificateur.
+  Par défaut, ces variables de coût sont basées sur le coût de
+  récupération séquentielle d'une page ; c'est-à-dire que
+  <code class="varname">seq_page_cost</code> est, par convention, positionné à
+  <code class="literal">1.0</code> et les autres variables de coût sont configurées
+  relativement à cette référence. Il est toutefois possible d'utiliser
+  une autre échelle, comme les temps d'exécution réels en millisecondes sur
+  une machine particulière.
+ </p><div class="note"><h3 class="title">Note</h3><p>
+   Il n'existe malheureusement pas de méthode bien définie pour
+   déterminer les valeurs idéales des variables de coût.
+   Il est préférable de les considérer comme moyennes sur un jeu complet
+   de requêtes d'une installation particulière. Cela signifie que
+   modifier ces paramètres sur la seule base de quelques expériences est très risqué.
+  </p></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-SEQ-PAGE-COST"><span class="term"><code class="varname">seq_page_cost</code> (<code class="type">floating point</code>)</span> <a href="#GUC-SEQ-PAGE-COST" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.3.4.1.2.1" class="indexterm"></a><p>
+     Initialise l'estimation faite par le planificateur du coût de
+     récupération d'une page disque incluse dans une série de récupérations
+     séquentielles. La valeur par défaut est 1.0. Cette valeur peut être
+     surchargée pour les tables et index d'un tablespace spécifique en
+     configurant le paramètre du même nom pour un tablespace (voir <a class="xref" href="sql-altertablespace.html" title="ALTER TABLESPACE"><span class="refentrytitle">ALTER TABLESPACE</span></a>).
+    </p></dd><dt id="GUC-RANDOM-PAGE-COST"><span class="term"><code class="varname">random_page_cost</code> (<code class="type">floating point</code>)</span> <a href="#GUC-RANDOM-PAGE-COST" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.3.4.2.2.1" class="indexterm"></a><p>
+     Initialise l'estimation faite par le planificateur du coût de
+     récupération non-séquentielle d'une page disque. Mesurée comme un
+     multiple du coût de récupération d'une page séquentielle, sa valeur
+     par défaut est 4.0. Cette valeur peut être
+     surchargée pour les tables et index d'un tablespace spécifique en configurant le paramètre du
+     même nom pour un tablespace (voir <a class="xref" href="sql-altertablespace.html" title="ALTER TABLESPACE"><span class="refentrytitle">ALTER TABLESPACE</span></a>).
+    </p><p>
+     Réduire cette valeur par rapport à <code class="varname">seq_page_cost</code>
+     incite le système à privilégier les parcours d'index ;
+     l'augmenter donne l'impression de parcours d'index plus
+     coûteux. Les deux valeurs peuvent être augmentées ou diminuées
+     concomitament pour modifier l'importance des coûts d'entrées/sorties disque
+     par rapport aux coûts CPU, décrits par les paramètres qui suivent.
+    </p><p>
+     Les accès aléatoires sur du stockage permanent sont généralement bien
+     plus coûteux que quatre fois un accès séquentiel. Néanmoins, une valeur
+     plus basse est utilisée (4,0) car la majorité des accès aléatoires au
+     stockage, comme les lectures d'index, est supposée survenir en cache.
+     De plus, la latence des stockages réseaux tend à réduire la surcharge
+     relative des accès aléatoires.
+    </p><p>
+     Si vous pensez que le cache est moins fréquent que ce que reflète la
+     valeur par défaut et que la latence réseau est minimale, vous pouvez
+     augmenter la valeur du paramètre random_page_cost pour que cela
+     corresponde mieux au coût réel d'un accès aléatoire.
+     Le stockage qui a un coût d'accès aléatoire plus haut que le séquentiel,
+     typiquement les disques magnétiques, pourrait profiter d'une valeur plus
+     haute de random_page_cost. De même, si vos données tiennent entièrement
+     en cache, par exemple quand la volumétrie de la base est inférieure à la
+     quantité totale de mémoire du serveur ou que la latence réseau est haute,
+     diminuer random_page_cost pourrait être approprié.
+    </p><div class="tip"><h3 class="title">Astuce</h3><p>
+      Bien que le système permette de configurer
+      <code class="varname">random_page_cost</code> à une valeur inférieure à celle
+      de <code class="varname">seq_page_cost</code>, cela n'a aucun intérêt.
+      En revanche, les configurer à des valeurs identiques prend tout son
+      sens si la base tient entièrement dans le cache en RAM. En effet, dans ce
+      cas, il n'est pas pénalisant d'atteindre des pages qui ne se suivent
+      pas. De plus, dans une base presque entièrement en cache, ces valeurs
+      peuvent être abaissées relativement aux paramètres CPU car le coût de
+      récupération d'une page déjà en RAM est bien moindre à celui de sa
+      récupération sur disque.
+     </p></div></dd><dt id="GUC-CPU-TUPLE-COST"><span class="term"><code class="varname">cpu_tuple_cost</code> (<code class="type">floating point</code>)</span> <a href="#GUC-CPU-TUPLE-COST" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.3.4.3.2.1" class="indexterm"></a><p>
+     Initialise l'estimation faite par le planificateur du coût de
+     traitement de chaque ligne lors d'une requête. La valeur
+     par défaut est 0.01.
+    </p></dd><dt id="GUC-CPU-INDEX-TUPLE-COST"><span class="term"><code class="varname">cpu_index_tuple_cost</code> (<code class="type">floating point</code>)</span> <a href="#GUC-CPU-INDEX-TUPLE-COST" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.3.4.4.2.1" class="indexterm"></a><p>
+     Initialise l'estimation faite par le planificateur du coût de
+     traitement de chaque entrée de l'index lors d'un parcours d'index.
+     La valeur par défaut est 0.005.
+    </p></dd><dt id="GUC-CPU-OPERATOR-COST"><span class="term"><code class="varname">cpu_operator_cost</code> (<code class="type">floating point</code>)</span> <a href="#GUC-CPU-OPERATOR-COST" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.3.4.5.2.1" class="indexterm"></a><p>
+     Initialise l'estimation faite par le planificateur du coût de
+     traitement de chaque opérateur ou fonction exécutée dans une requête.
+     La valeur par défaut est 0.0025.
+    </p></dd><dt id="GUC-PARALLEL-SETUP-COST"><span class="term"><code class="varname">parallel_setup_cost</code> (<code class="type">floating point</code>)
+    <a id="id-1.6.6.10.3.4.6.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-PARALLEL-SETUP-COST" class="id_link">#</a></dt><dd><p>
+     Configure le coût estimé par l'optimiseur pour le lancement de
+     processus de travail parallèle. La valeur par défaut est 1000.
+    </p></dd><dt id="GUC-PARALLEL-TUPLE-COST"><span class="term"><code class="varname">parallel_tuple_cost</code> (<code class="type">floating point</code>)
+    <a id="id-1.6.6.10.3.4.7.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-PARALLEL-TUPLE-COST" class="id_link">#</a></dt><dd><p>
+     Configure le coût estimé par l'optimiseur pour le transfert d'une
+     ligne d'un processus de travail parallèle à un autre. La valeur par
+     défaut est 0,1.
+    </p></dd><dt id="GUC-MIN-PARALLEL-TABLE-SCAN-SIZE"><span class="term"><code class="varname">min_parallel_table_scan_size</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.10.3.4.8.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MIN-PARALLEL-TABLE-SCAN-SIZE" class="id_link">#</a></dt><dd><p>
+     Spécifie la quantité minimale de donnée de la table qui doit être
+     parcourue pour qu'un parcours parallèle soit envisagé.  Pour un
+     parcours séquentiel parallèle, la quantité de données de la table
+     parcourue est toujours égale à la taille de la table, mais quand des
+     index sont utilisés la quantité de données de la table parcourue sera
+     normalement moindre. Si cette valeur est spécifiée sans unité, elle
+     est comprise comme un nombre de blocs, autrement dit
+     <code class="symbol">BLCKSZ</code> octets, typiquement 8 Ko. La valeur par défaut
+     est 8 Mo (<code class="literal">8MB</code>).
+    </p></dd><dt id="GUC-MIN-PARALLEL-INDEX-SCAN-SIZE"><span class="term"><code class="varname">min_parallel_index_scan_size</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.10.3.4.9.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MIN-PARALLEL-INDEX-SCAN-SIZE" class="id_link">#</a></dt><dd><p>
+     Spécifie la quantité minimale de donnée d'index qui doit être
+     parcourue pour qu'un parcours parallèle soit envisagé.  Veuillez noter
+     qu'un parcours d'index parallèle ne touchera en général pas la
+     totalité de l'index ; il s'agit du nombre de page que
+     l'optimisateur pensera réellement toucher durant le parcours qui est
+     important. Ce paramètre est aussi utilisé pour décider si un index
+     particulier peut participer à un vacuum parallélisé. Voir <a class="xref" href="sql-vacuum.html" title="VACUUM"><span class="refentrytitle" id="SQL-VACUUM-TITLE">VACUUM</span></a>. Si cette valeur est spécifiée sans unité, elle
+     est comprise comme un nombre de blocs, autrement dit
+     <code class="symbol">BLCKSZ</code> octets, typiquement 8 Ko. La valeur par défaut
+     est 512 kilooctets (<code class="literal">512kB</code>).
+    </p></dd><dt id="GUC-EFFECTIVE-CACHE-SIZE"><span class="term"><code class="varname">effective_cache_size</code> (<code class="type">integer</code>)</span> <a href="#GUC-EFFECTIVE-CACHE-SIZE" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.3.4.10.2.1" class="indexterm"></a><p>
+     Initialise l'estimation faite par le planificateur de la taille
+     réelle du cache disque disponible pour une requête. Ce paramètre est
+     lié à l'estimation du coût d'utilisation d'un index ; une valeur
+     importante favorise les parcours d'index, une valeur faible les
+     parcours séquentiels. Pour configurer ce paramètre, il est important
+     de considérer à la fois les tampons partagés de
+     <span class="productname">PostgreSQL</span> et la portion de cache disque
+     du noyau utilisée pour les fichiers de données de
+     <span class="productname">PostgreSQL</span>, bien que certaines données pourraient
+     être présentes aux deux endroits. Il faut également tenir
+     compte du nombre attendu de requêtes concurrentes sur des tables
+     différentes car elles partagent l'espace disponible. Ce paramètre n'a
+     pas d'influence sur la taille de la mémoire partagée allouée par
+     <span class="productname">PostgreSQL</span>, et ne réserve pas non plus le
+     cache disque du noyau ; il n'a qu'un rôle estimatif. Le système
+     ne suppose pas non plus que les données reste dans le cache du disque
+     entre des requêtes. Si cette valeur est indiquée sans unité, elle est
+     pris comme un nombre de blocs, autrement dit <code class="symbol">BLCKSZ</code>
+     octets, typiquement 8 Ko. La valeur par défaut est de 4 Go
+     (<code class="literal">4GB</code>). (Si <code class="symbol">BLCKSZ</code> n'est pas 8 Ko, les
+     valeurs par défaut changent de façon proportionnée.)
+    </p></dd><dt id="GUC-JIT-ABOVE-COST"><span class="term"><code class="varname">jit_above_cost</code> (<code class="type">floating point</code>)
+    <a id="id-1.6.6.10.3.4.11.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-JIT-ABOVE-COST" class="id_link">#</a></dt><dd><p>
+     Configure le coût de la requête au-dessus duquel la compilation JIT
+     est activée (voir <a class="xref" href="jit.html" title="Chapitre 30. JIT (compilation à la volée)">Chapitre 30</a>). Exécuter
+     <acronym class="acronym">JIT</acronym> coûte en temps de planification mais peut
+     accélérer l'exécution de la requête. Configurer ce paramètre à
+     <code class="literal">-1</code> désactive la compilation JIT. Le défaut est
+     <code class="literal">100000</code>.
+    </p></dd><dt id="GUC-JIT-INLINE-ABOVE-COST"><span class="term"><code class="varname">jit_inline_above_cost</code> (<code class="type">floating point</code>)
+    <a id="id-1.6.6.10.3.4.12.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-JIT-INLINE-ABOVE-COST" class="id_link">#</a></dt><dd><p>
+     Configure le coût de requête au-dessus duquel la compilation JIT tente
+     de mettre à plat fonctions et opérateurs. Ceci ajoute au temps de
+     planification mais peut améliorer la durée d'exécution. Il n'y a pas
+     de sens à le configurer à une valeur inférieure à celle de
+     <code class="varname">jit_above_cost</code>. Le configurer à
+     <code class="literal">-1</code> désactive cette mise à plat. Le défaut est
+     <code class="literal">500000</code>.
+    </p></dd><dt id="GUC-JIT-OPTIMIZE-ABOVE-COST"><span class="term"><code class="varname">jit_optimize_above_cost</code> (<code class="type">floating point</code>)
+    <a id="id-1.6.6.10.3.4.13.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-JIT-OPTIMIZE-ABOVE-COST" class="id_link">#</a></dt><dd><p>
+     Configure le coût de requête au-dessus duquel la compilation JIT
+     utilise aussi les optimisations coûteuses. De telles optimisations
+     ajoutent au temps de planification mais peuvent améliorer la durée
+     d'exécution. Il n'y a pas de sens à le configurer à une valeur
+     inférieure à celle de <code class="varname">jit_above_cost</code>, et il y a peu
+     d'intérêt à le configurer à une valeur supérieure à
+     <code class="varname">jit_inline_above_cost</code>. Le configurer à
+     <code class="literal">-1</code> désactive ces optimisations. Le défaut est
+     <code class="literal">500000</code>.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-QUERY-GEQO"><div class="titlepage"><div><div><h3 class="title">19.7.3. Optimiseur génétique de requêtes <a href="#RUNTIME-CONFIG-QUERY-GEQO" class="id_link">#</a></h3></div></div></div><p>
+  L'optimiseur génétique de requête (GEQO) est un algorithme qui fait la
+  planification d'une requête en utilisant une recherche heuristique. Cela
+  réduit le temps de planification pour les requêtes complexes (celles qui
+  joignent de nombreuses relations), au prix de plans qui sont quelques
+  fois inférieurs à ceux trouvés par un algorithme exhaustif. Pour plus
+  d'informations, voir <a class="xref" href="geqo.html" title="Chapitre 60. Optimiseur génétique de requêtes (Genetic Query Optimizer)">Chapitre 60</a>.
+ </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-GEQO"><span class="term"><code class="varname">geqo</code> (<code class="type">boolean</code>)</span> <a href="#GUC-GEQO" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.4.3.1.2.1" class="indexterm"></a><a id="id-1.6.6.10.4.3.1.2.2" class="indexterm"></a><a id="id-1.6.6.10.4.3.1.2.3" class="indexterm"></a><p>
+     Active ou désactive l'optimisation génétique des requêtes. Activé par
+     défaut. Il est généralement préférable de ne pas le désactiver sur un
+     serveur en production. La variable <code class="varname">geqo_threshold</code>
+     fournit un moyen plus granulaire de désactiver le GEQO.
+    </p></dd><dt id="GUC-GEQO-THRESHOLD"><span class="term"><code class="varname">geqo_threshold</code> (<code class="type">integer</code>)</span> <a href="#GUC-GEQO-THRESHOLD" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.4.3.2.2.1" class="indexterm"></a><p>
+     L'optimisation génétique des requêtes est utilisée pour planifier les
+     requêtes si, au minimum, ce nombre d'éléments est impliqué dans la clause
+     <code class="literal">FROM</code> (une construction <code class="literal">FULL OUTER JOIN</code>
+     ne compte que pour un élément du <code class="literal">FROM</code>). La valeur par
+     défaut est 12. Pour des requêtes plus simples, il est préférable d'utiliser
+     le planificateur standard, à recherche exhaustive. Par contre, pour les requêtes
+     avec un grand nombre de tables, la recherche exhaustive prend trop de temps,
+     souvent plus de temps que la pénalité à l'utilisation d'un plan non optimal.
+     Du coup, une limite sur la taille de la requête est un moyen simple de gérer
+     l'utilisation de GEQO.
+    </p></dd><dt id="GUC-GEQO-EFFORT"><span class="term"><code class="varname">geqo_effort</code>
+    (<code class="type">integer</code>)</span> <a href="#GUC-GEQO-EFFORT" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.4.3.3.2.1" class="indexterm"></a><p>
+     Contrôle le compromis entre le temps de planification et l'efficacité
+     du plan de requête dans GEQO. Cette variable est un entier
+     entre 1 et 10. La valeur par défaut est de cinq. Des valeurs plus
+     importantes augmentent le temps passé à la planification de
+     la requête mais aussi la probabilité qu'un plan de
+     requête efficace soit choisi.
+    </p><p>
+     <code class="varname">geqo_effort</code> n'a pas d'action directe ;
+     il est simplement utilisé pour calculer les
+     valeurs par défaut des autres variables influençant le
+     comportement de GEQO (décrites ci-dessous). Il est également
+     possible de les configurer manuellement.
+    </p></dd><dt id="GUC-GEQO-POOL-SIZE"><span class="term"><code class="varname">geqo_pool_size</code> (<code class="type">integer</code>)</span> <a href="#GUC-GEQO-POOL-SIZE" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.4.3.4.2.1" class="indexterm"></a><p>
+     
+     Contrôle la taille de l'ensemble utilisé par GEQO. C'est-à-dire
+     le nombre d'individus au sein d'une population génétique. Elle
+     doit être au minimum égale à deux, les valeurs utiles étant
+     généralement comprises entre 100 et 1000. Si elle est configurée
+     à zéro (valeur par défaut), alors une valeur convenable est choisie
+     en fonction de <code class="varname">geqo_effort</code> et du nombre de
+     tables dans la requête.
+    </p></dd><dt id="GUC-GEQO-GENERATIONS"><span class="term"><code class="varname">geqo_generations</code> (<code class="type">integer</code>)</span> <a href="#GUC-GEQO-GENERATIONS" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.4.3.5.2.1" class="indexterm"></a><p>
+     Contrôle le nombre de générations utilisées par GEQO.
+     C'est-à-dire le nombre d'itérations de l'algorithme. Il doit être au
+     minimum de un, les valeurs utiles se situent dans la même plage que la
+     taille de l'ensemble. S'il est configuré à zéro (valeur par
+     défaut), alors une valeur convenable est choisie en fonction de
+     <code class="varname">geqo_pool_size</code>.
+    </p></dd><dt id="GUC-GEQO-SELECTION-BIAS"><span class="term"><code class="varname">geqo_selection_bias</code> (<code class="type">floating point</code>)</span> <a href="#GUC-GEQO-SELECTION-BIAS" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.4.3.6.2.1" class="indexterm"></a><p>
+     Contrôle le biais de sélection utilisé par GEQO. C'est-à-dire la
+     pression de sélectivité au sein de la population. Les valeurs
+     s'étendent de 1.50 à 2.00 (valeur par défaut).
+    </p></dd><dt id="GUC-GEQO-SEED"><span class="term"><code class="varname">geqo_seed</code> (<code class="type">floating point</code>)</span> <a href="#GUC-GEQO-SEED" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.4.3.7.2.1" class="indexterm"></a><p>
+     Contrôle la valeur initiale du générateur de nombres aléatoires
+     utilisé par GEQO pour sélectionner des chemins au hasard dans l'espace
+     de recherche des ordres de jointures. La valeur peut aller de zéro
+     (valeur par défaut) à un. Varier la valeur modifie l'ensemble des
+     chemins de jointure explorés et peut résulter en des chemins meilleurs
+     ou pires.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-QUERY-OTHER"><div class="titlepage"><div><div><h3 class="title">19.7.4. Autres options du planificateur <a href="#RUNTIME-CONFIG-QUERY-OTHER" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-DEFAULT-STATISTICS-TARGET"><span class="term"><code class="varname">default_statistics_target</code> (<code class="type">integer</code>)</span> <a href="#GUC-DEFAULT-STATISTICS-TARGET" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.5.2.1.2.1" class="indexterm"></a><p>
+     Initialise la cible de statistiques par défaut pour les colonnes de
+     table pour lesquelles aucune cible de colonne spécifique n'a été configurée via
+     <code class="command">ALTER TABLE SET STATISTICS</code>. Des valeurs élevées
+     accroissent le temps nécessaire à l'exécution
+     d'<code class="command">ANALYZE</code> mais peuvent permettre d'améliorer la
+     qualité des estimations du planificateur. La valeur par
+     défaut est 100. Pour plus d'informations sur l'utilisation des
+     statistiques par le planificateur de requêtes, se référer à la
+     <a class="xref" href="planner-stats.html" title="14.2. Statistiques utilisées par le planificateur">Section 14.2</a>.
+    </p></dd><dt id="GUC-CONSTRAINT-EXCLUSION"><span class="term"><code class="varname">constraint_exclusion</code> (<code class="type">enum</code>)</span> <a href="#GUC-CONSTRAINT-EXCLUSION" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.5.2.2.2.1" class="indexterm"></a><a id="id-1.6.6.10.5.2.2.2.2" class="indexterm"></a><p>
+     Contrôle l'utilisation par le planificateur de requête des contraintes
+     pour optimiser les requêtes.
+     Les valeurs autorisées de <code class="varname">constraint_exclusion</code> sont
+     <code class="literal">on</code> (examiner les contraintes pour toutes les tables),
+     <code class="literal">off</code> (ne jamais examiner les contraintes) et
+     <code class="literal">partition</code> (n'examiner les contraintes que pour les
+     tables enfants d'un héritage et pour les sous-requêtes <code class="literal">UNION ALL</code>).
+     <code class="literal">partition</code> est la valeur par défaut. C'est souvent
+     utilisé avec les tables héritées pour améliorer les performances.
+    </p><p>
+     Quand ce paramètre l'autorise pour une table particulière, le planificateur
+     compare les conditions de la requête avec les contraintes <code class="literal">CHECK</code>
+     sur la table, et omet le parcourt des tables pour lesquelles les
+     conditions contredisent les contraintes. Par exemple :
+
+     </p><pre class="programlisting">CREATE TABLE parent(clef integer, ...);
+CREATE TABLE fils1000(check (clef between 1000 and 1999)) INHERITS(parent);
+CREATE TABLE fils2000(check (clef between 2000 and 2999)) INHERITS(parent);
+...
+SELECT * FROM parent WHERE clef = 2400;</pre><p>
+
+	Avec l'activation de l'exclusion par contraintes, ce <code class="command">SELECT</code>
+	ne parcourt pas <code class="structname">fils1000</code>, ce qui améliore les
+	performances.
+       </p><p>
+        À l'heure actuelle, l'exclusion de contraintes est activée par défaut
+        seulement pour les cas souvent utilisés pour implémenter le
+        partitionnement de tables via les arbres d'héritage. L'activer pour
+        toutes les tables impose une surcharge de planification qui est
+        visible pour de simples requêtes, sans apporter de bénéfices pour ces
+        requêtes. Si vous n'avez pas de tables partitionnées utilisant
+        l'héritage traditionnel, vous pourriez vouloir le désactiver. (Notez
+        que la fonctionnalité équivalente pour les tables partitionnées est
+        contrôlée par un paramètre séparé, <a class="xref" href="runtime-config-query.html#GUC-ENABLE-PARTITION-PRUNING">enable_partition_pruning</a>.)
+       </p><p>
+        Reportez vous à <a class="xref" href="ddl-partitioning.html#DDL-PARTITIONING-CONSTRAINT-EXCLUSION" title="5.12.5. Partitionnement et contrainte d'exclusion">Section 5.12.5</a>
+        pour plus d'informations sur l'utilisation d'exclusion de contraintes
+        pour implémenter le partitionnement.
+       </p></dd><dt id="GUC-CURSOR-TUPLE-FRACTION"><span class="term"><code class="varname">cursor_tuple_fraction</code> (<code class="type">floating point</code>)</span> <a href="#GUC-CURSOR-TUPLE-FRACTION" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.5.2.3.2.1" class="indexterm"></a><p>
+        Positionne la fraction, estimée par le planificateur, d'enregistrements
+        d'un curseur qui sera récupérée.
+        La valeur par défaut est 0.1. Des valeurs plus petites de ce paramètre
+        rendent le planificateur plus enclin à choisir des plans à démarrage
+        rapide (<span class="quote">« <span class="quote">fast start</span> »</span>), qui récupèreront les premiers
+        enregistrements rapidement, tout en mettant peut être un temps plus long
+        à récupérer tous les enregistrements. Des valeurs plus grandes mettent
+        l'accent sur le temps total estimé. À la valeur maximum 1.0 du paramètre,
+        les curseurs sont planifiés exactement comme des requêtes classiques,
+        en ne prenant en compte que le temps total estimé et non la vitesse à
+        laquelle les premiers enregistrements seront fournis.
+       </p></dd><dt id="GUC-FROM-COLLAPSE-LIMIT"><span class="term"><code class="varname">from_collapse_limit</code> (<code class="type">integer</code>)</span> <a href="#GUC-FROM-COLLAPSE-LIMIT" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.5.2.4.2.1" class="indexterm"></a><p>
+        Le planificateur assemble les sous-requêtes dans des requêtes
+	supérieures si la liste <code class="literal">FROM</code> résultante contient
+	au plus ce nombre d'éléments. Des valeurs faibles réduisent le temps
+	de planification mais conduisent à des plans de requêtes inférieurs.
+	La valeur par défaut est de 8. Pour plus d'informations, voir <a class="xref" href="explicit-joins.html" title="14.3. Contrôler le planificateur avec des clauses JOIN explicites">Section 14.3</a>.
+       </p><p>
+        Configurer cette valeur à <a class="xref" href="runtime-config-query.html#GUC-GEQO-THRESHOLD">geqo_threshold</a> ou plus
+	pourrait déclencher l'utilisation du planificateur GEQO, ce qui pourrait
+	aboutir à la génération de plans non optimaux. Voir <a class="xref" href="runtime-config-query.html#RUNTIME-CONFIG-QUERY-GEQO" title="19.7.3. Optimiseur génétique de requêtes">Section 19.7.3</a>.
+       </p></dd><dt id="GUC-JIT"><span class="term"><code class="varname">jit</code> (<code class="type">boolean</code>)
+      <a id="id-1.6.6.10.5.2.5.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-JIT" class="id_link">#</a></dt><dd><p>
+        Détermine si la compilation <acronym class="acronym">JIT</acronym> peut être utilisée
+        par <span class="productname">PostgreSQL</span>, quand elle est disponible
+        (voir <a class="xref" href="jit.html" title="Chapitre 30. JIT (compilation à la volée)">Chapitre 30</a>). La valeur par défaut est
+        <code class="literal">on</code>.
+       </p></dd><dt id="GUC-JOIN-COLLAPSE-LIMIT"><span class="term"><code class="varname">join_collapse_limit</code> (<code class="type">integer</code>)</span> <a href="#GUC-JOIN-COLLAPSE-LIMIT" class="id_link">#</a></dt><dd><a id="id-1.6.6.10.5.2.6.2.1" class="indexterm"></a><p>
+          Le planificateur réécrit les constructions <code class="literal">JOIN</code>
+	  explicites (à l'exception de <code class="literal">FULL JOIN</code>) en une
+	  liste d'éléments <code class="literal">FROM</code> à chaque fois qu'il n'en
+	  résulte qu'une liste ne contenant pas plus de ce nombre
+	  d'éléments. Des valeurs faibles réduisent le temps de
+	  planification mais conduisent à des plans de requêtes inférieurs.
+        </p><p>
+	  Par défaut, cette variable a la même valeur que
+	  <code class="varname">from_collapse_limit</code>, valeur adaptée à la
+	  plupart des utilisations. Configurer cette variable à 1
+	  empêche le réordonnancement des <code class="literal">JOIN</code>tures explicites.
+	  De ce fait, l'ordre des jointures explicites indiqué dans la requête
+	  est l'ordre réel dans lequel les relations
+	  sont jointes. Le planificateur de la requête ne choisit pas toujours
+	  l'ordre de jointure optimal ; les utilisateurs aguerris peuvent
+	  choisir d'initialiser temporairement cette variable à 1 et
+	  d'indiquer explicitement l'ordre de jointure souhaité.
+	  Pour plus d'informations, voir <a class="xref" href="explicit-joins.html" title="14.3. Contrôler le planificateur avec des clauses JOIN explicites">Section 14.3</a>.
+        </p><p>
+        Configurer cette valeur à <a class="xref" href="runtime-config-query.html#GUC-GEQO-THRESHOLD">geqo_threshold</a> ou plus
+	pourrait déclencher l'utilisation du planificateur GEQO, ce qui pourrait
+	aboutir à la génération de plans non optimaux. Voir <a class="xref" href="runtime-config-query.html#RUNTIME-CONFIG-QUERY-GEQO" title="19.7.3. Optimiseur génétique de requêtes">Section 19.7.3</a>.
+       </p></dd><dt id="GUC-RECURSIVE-WORKTABLE-FACTOR"><span class="term"><code class="varname">recursive_worktable_factor</code> (<code class="type">floating point</code>)
+      <a id="id-1.6.6.10.5.2.7.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-RECURSIVE-WORKTABLE-FACTOR" class="id_link">#</a></dt><dd><p>
+        Configure l'estimation du planificateur sur la taille moyenne de la
+        table de travail d'une <a class="link" href="queries-with.html#QUERIES-WITH-RECURSIVE" title="7.8.2. Requêtes récursives">requête
+        récursive</a>, sous la forme d'un multiple de la taille estimée du
+        terme initial non récursif de la requête. Ceci aide le planificateur à
+        choisir la méthode la plus appropriée pour joindre la table de travail
+        avec les autres tables de la requête.  La valeur par défaut est
+        <code class="literal">10.0</code>. Une valeur plus petite, telle que
+        <code class="literal">1.0</code>, peut être utile quand la récursion a un petit
+        <span class="quote">« <span class="quote">fan-out</span> »</span> d'une étape à une autre, comme par exemple dans
+        les requêtes au chemin court. Les requêtes d'analyse de graphes
+        pourraient bénéficier de valeurs plus importantes que celle par défaut.
+       </p></dd><dt id="GUC-PLAN-CACHE_MODE"><span class="term"><code class="varname">plan_cache_mode</code> (<code class="type">enum</code>)
+      <a id="id-1.6.6.10.5.2.8.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-PLAN-CACHE_MODE" class="id_link">#</a></dt><dd><p>
+        Les requêtes préparées (soit explicitement préparées soit
+        implicitement générées, par exemple dans PL/pgSQL) peuvent être
+        exécutées en utilisant des plans personnalisés ou génériques. Les
+        plans personnalisés sont de nouveau créés à chaque exécution en
+        utilisant son ensemble spécifique de valeurs de paramètres, alors que
+        les plans génériques ne se basent pas sur les valeurs des paramètres
+        et peuvent être ré-utilisés au fil des exécutions. De ce fait,
+        l'utilisation d'un plan générique permet d'éviter de gâcher du temps
+        de planification mais si le plan idéal dépend fortement des valeurs de
+        paramètres, alors un plan générique pourrait être inefficace. Le choix
+        entre ces options est généralement fait automatiquement mais il peut
+        être forcé avec le paramètre <code class="varname">plan_cache_mode</code>. Les
+        valeurs autorisées sont <code class="literal">auto</code> (valeur par défaut),
+        <code class="literal">force_custom_plan</code> et
+        <code class="literal">force_generic_plan</code>. Ce paramètre est considéré
+        quand un plan en cache va être exécuté, et non pas quand il va être
+        préparé. Pour plus d'informations, voir <a class="xref" href="sql-prepare.html" title="PREPARE"><span class="refentrytitle">PREPARE</span></a>.
+       </p></dd></dl></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-query.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+</html>

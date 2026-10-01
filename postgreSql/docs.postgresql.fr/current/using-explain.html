@@ -1,0 +1,948 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/using-explain.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>14.1. Utiliser EXPLAIN</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="performance-tips.html" title="Chapitre 14. Conseils sur les performances" /><link rel="next" href="planner-stats.html" title="14.2. Statistiques utilisées par le planificateur" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/using-explain.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/using-explain.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/using-explain.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/using-explain.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/using-explain.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/using-explain.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/using-explain.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/using-explain.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/using-explain.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/using-explain.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="performance-tips.html">Conseils sur les performances</a></span> » <span class="breadcrumb-node">Utiliser <code class="command">EXPLAIN</code></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="performance-tips.html" title="Chapitre 14. Conseils sur les performances">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="performance-tips.html" title="Chapitre 14. Conseils sur les performances">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="planner-stats.html" title="14.2. Statistiques utilisées par le planificateur">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Chapitre 14. Conseils sur les performances </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 14.2. Statistiques utilisées par le planificateur</td></tr></table></div><div class="sect1" id="USING-EXPLAIN"><div class="titlepage"><div><div><h2 class="title" style="clear: both">14.1. Utiliser <code class="command">EXPLAIN</code> <a href="#USING-EXPLAIN" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="using-explain.html#USING-EXPLAIN-BASICS">14.1.1. Concepts d'<code class="command">EXPLAIN</code></a></span></dt><dt><span class="sect2"><a href="using-explain.html#USING-EXPLAIN-ANALYZE">14.1.2. <code class="command">EXPLAIN ANALYZE</code></a></span></dt><dt><span class="sect2"><a href="using-explain.html#USING-EXPLAIN-CAVEATS">14.1.3. Avertissements</a></span></dt></dl></div><a id="id-1.5.13.4.2" class="indexterm"></a><a id="id-1.5.13.4.3" class="indexterm"></a><p>
+   <span class="productname">PostgreSQL</span> réalise un <em class="firstterm">plan de
+   requête</em> pour chaque requête qu'il reçoit. Choisir le bon plan
+   correspondant à la structure de la requête et aux propriétés des données
+   est absolument critique pour de bonnes performances, donc le système
+   inclut un <em class="firstterm">planificateur</em> ou
+   <em class="firstterm">optimiseur</em> complexe qui tente de choisir les bons
+   plans. Vous pouvez utiliser la commande <a class="link" href="sql-explain.html" title="EXPLAIN"><code class="command">EXPLAIN</code></a> pour voir quel
+   plan de requête le planificateur crée pour une requête particulière. La
+   lecture du plan est un art qui requiert de l'expérience pour le maîtriser,
+   mais cette section essaie de couvrir les bases.
+  </p><p>
+   Les exemples dans cette section sont tirés de la base de données pour les
+   tests de régression après avoir effectué un <code class="command">VACUUM
+   ANALYZE</code>, avec les sources de la version de développement v17.
+   Vous devriez obtenir des résultats similaires si vous essayez les exemples
+   vous-même, mais vos estimations de coût et de nombre de lignes pourraient
+   légèrement varier parce que les statistiques d'<code class="command">ANALYZE</code>
+   sont basées sur des échantillons aléatoires, et parce que les coûts sont
+   dépendants de la plateforme utilisée.
+  </p><p>
+   Les exemples utilisent le format de sortie par défaut
+   (<span class="quote">« <span class="quote">text</span> »</span>) d'<code class="command">EXPLAIN</code>, qui est compact et
+   pratique pour la lecture. Si vous voulez utiliser la sortie
+   d'<code class="command">EXPLAIN</code> avec un programme pour une analyse
+   ultérieure, vous devriez utiliser un des formats de sortie au format
+   machine (XML, JSON ou YAML) à la place.
+  </p><div class="sect2" id="USING-EXPLAIN-BASICS"><div class="titlepage"><div><div><h3 class="title">14.1.1. Concepts d'<code class="command">EXPLAIN</code> <a href="#USING-EXPLAIN-BASICS" class="id_link">#</a></h3></div></div></div><p>
+    La structure d'un plan de requête est un arbre de <em class="firstterm">nœuds
+    de plan</em>. Les nœuds de bas niveau sont les nœuds
+    de parcours : ils renvoient les lignes brutes d'une table. Il existe
+    différents types de nœuds de parcours pour les différentes méthodes
+    d'accès aux tables : parcours séquentiel, parcours d'index et
+    parcours d'index bitmap. Il y a également des ensembles de lignes qui ne
+    proviennent pas de tables, avec par exemple des clauses
+    <code class="literal">VALUES</code> ainsi que des fonctions renvoyant des ensembles
+    dans un <code class="literal">FROM</code>, qui ont leurs propres types de
+    nœuds de parcours. Si la requête requiert des jointures,
+    agrégations, tris ou d'autres opérations sur les lignes brutes, ce seront
+    des nœuds supplémentaires au-dessus des nœuds de parcours
+    pour réaliser ces opérations. Encore une fois, il existe plus d'une façon
+    de réaliser ces opérations, donc différents types de nœuds peuvent
+    aussi apparaître ici. La sortie d'<code class="command">EXPLAIN</code> comprend une
+    ligne pour chaque nœud dans l'arbre du plan, montrant le type de
+    nœud basique avec les estimations de coût que le planificateur a
+    faites pour l'exécution de ce nœud du plan. Des lignes
+    supplémentaires peuvent apparaître, indentées par rapport à la ligne de
+    résumé du nœud, pour montrer les propriétés supplémentaires du
+    nœud. La première ligne (le nœud tout en haut) comprend le
+    coût d'exécution total estimé pour le plan ; c'est ce nombre que le
+    planificateur cherche à minimiser.
+   </p><p>
+    Voici un exemple trivial, juste pour montrer à quoi ressemble
+    l'affichage.
+
+    </p><pre class="screen">EXPLAIN SELECT * FROM tenk1;
+
+                         QUERY PLAN
+-------------------------------------------------------------
+ Seq Scan on tenk1  (cost=0.00..445.00 rows=10000 width=244)</pre><p>
+   </p><p>
+    Puisque la requête n'a pas de clause <code class="literal">WHERE</code>, il faut
+    parcourir toutes les lignes de la table, c'est pourquoi le planificateur
+    a choisi d'utiliser un plan avec un simple parcours séquentiel. Les
+    nombres affichés entre parenthèses sont (de gauche à droite) :
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Coût estimé du lancement. Cela correspond au temps passé avant que
+       l'affichage de la sortie ne commence, par exemple le temps de faire un
+       tri dans un nœud de tri ;
+      </p></li><li class="listitem"><p>
+       Coût total estimé. Cela suppose que le nœud du plan d'exécution est
+       exécuté entièrement, c'est-à-dire que toutes les lignes disponibles
+       sont récupérées. En pratique, un nœud parent peut arrêter la
+       récupération de toutes les lignes disponibles avant la fin
+       (voir l'exemple <code class="literal">LIMIT</code> ci-dessous) ;
+      </p></li><li class="listitem"><p>
+       Nombre de lignes estimé en sortie par ce nœud de plan. Encore une fois,
+       on suppose que le nœud est exécuté entièrement.
+      </p></li><li class="listitem"><p>
+       Largeur moyenne estimée (en octets) des lignes en sortie par ce nœud du
+       plan.
+      </p></li></ul></div><p>
+   </p><p>
+    Les coûts sont mesurés en unités arbitraires déterminées par les
+    paramètres de coût du planificateur (voir <a class="xref" href="runtime-config-query.html#RUNTIME-CONFIG-QUERY-CONSTANTS" title="19.7.2. Constantes de coût du planificateur">Section 19.7.2</a>). La pratique habituelle est
+    de mesurer les coûts en unité de récupération de pages disque ;
+    autrement dit, <a class="xref" href="runtime-config-query.html#GUC-SEQ-PAGE-COST">seq_page_cost</a> est initialisé à
+    <code class="literal">1.0</code> par convention et les autres paramètres de coût
+    sont relatifs à cette valeur. Les exemples de cette section sont exécutés
+    avec les paramètres de coût par défaut.
+   </p><p>
+    Il est important de comprendre que le coût d'un nœud de haut niveau inclut
+    le coût de tous les nœuds fils. Il est aussi important de réaliser que le
+    coût reflète seulement les éléments d'importance pour le planificateur.
+    En particulier, le coût ne considère pas le temps passé à convertir les
+    valeurs en entrée vers le format texte ou à les transmettre au client.
+    Les deux pourraient être des facteurs importants du temps réel
+    passé ; mais l'optimiseur ignore ces coûts parce qu'il ne peut pas
+    les changer sans modifier le plan. (Chaque plan correct renverra le
+    même ensemble de ligne.)
+   </p><p>
+    La valeur <code class="literal">rows</code> est un peu difficile car il ne s'agit
+    pas du nombre de lignes traitées ou parcourues par le plan de nœuds, mais
+    plutôt le nombre émis par le nœud. C'est habituellement moins, reflétant
+    la sélectivité estimée des conditions de la clause
+    <code class="literal">WHERE</code> qui sont appliquées au nœud. Idéalement, les
+    estimations des lignes de haut niveau seront une approximation des
+    nombres de lignes déjà renvoyées, mises à jour, supprimées par la
+    requête.
+   </p><p>
+    Quand un <code class="command">UPDATE</code>, un <code class="command">DELETE</code> ou un
+    <code class="command">MERGE</code> affecte une table partitionnée ou
+    une hiérarchie d'héritage, la sortie pourrait ressembler à ceci :
+
+    </p><pre class="screen">+EXPLAIN UPDATE gtest_parent SET f1 = CURRENT_DATE WHERE f2 = 101;
+
+                                       QUERY PLAN
+-------------------------------------------------------------------​---------------------
+ Update on gtest_parent  (cost=0.00..3.06 rows=0 width=0)
+   Update on gtest_child gtest_parent_1
+   Update on gtest_child2 gtest_parent_2
+   Update on gtest_child3 gtest_parent_3
+   -&gt;  Append  (cost=0.00..3.06 rows=3 width=14)
+         -&gt;  Seq Scan on gtest_child gtest_parent_1  (cost=0.00..1.01 rows=1 width=14)
+               Filter: (f2 = 101)
+         -&gt;  Seq Scan on gtest_child2 gtest_parent_2  (cost=0.00..1.01 rows=1 width=14)
+               Filter: (f2 = 101)
+         -&gt;  Seq Scan on gtest_child3 gtest_parent_3  (cost=0.00..1.01 rows=1 width=14)
+               Filter: (f2 = 101)</pre><p>
+
+    Dans cet exemple, le nœud Update doit prendre en compte les trois tables
+    filles mais pas la table partitionnée mentionnée à l'origine (tout
+    simplement parce qu'elle ne contient aucune données). Donc il y a
+    trois sous-plans de parcours en entrée, un par table. Pour plus de
+    clarté, le nœud Update est annoté pour afficher les tables cibles
+    spécifiques à mettre à jour, dans le même ordre que les sous-plans
+    correspondants.
+   </p><p>
+    Le <code class="literal">Temps de planification (Planning time)</code> affiché est
+    le temps qu'il a fallu pour générer le plan d'exécution de la requête
+    analysée et pour l'optimiser. Cela n'inclut ni le temps de réécriture ni
+    le temps d'analyse.
+   </p><p>
+    Pour revenir à notre exemple :
+
+    </p><pre class="screen">EXPLAIN SELECT * FROM tenk1;
+
+                         QUERY PLAN
+-------------------------------------------------------------
+ Seq Scan on tenk1  (cost=0.00..445.00 rows=10000 width=244)</pre><p>
+   </p><p>
+    Ces nombres sont directement dérivés. Si vous faites :
+
+    </p><pre class="screen">SELECT relpages, reltuples FROM pg_class WHERE relname = 'tenk1';</pre><p>
+
+    vous trouverez que <code class="classname">tenk1</code> a 345 blocs disque et
+    10000 lignes. Le coût estimé est calculé avec (nombre de blocs lus *
+    <a class="xref" href="runtime-config-query.html#GUC-SEQ-PAGE-COST">seq_page_cost</a>) + (lignes parcourues * <a class="xref" href="runtime-config-query.html#GUC-CPU-TUPLE-COST">cpu_tuple_cost</a>). Par défaut,
+    <code class="varname">seq_page_cost</code> vaut 1,0 et
+    <code class="varname">cpu_tuple_cost</code> vaut 0,01. Donc le coût estimé est de
+    (345 * 1,0) + (10000 * 0,01), soit 445.
+   </p><p>
+    Maintenant, modifions la requête originale pour ajouter une condition
+    <code class="literal">WHERE</code> :
+
+    </p><pre class="screen">EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 7000;
+
+                         QUERY PLAN
+------------------------------------------------------------
+ Seq Scan on tenk1  (cost=0.00..470.00 rows=7000 width=244)
+   Filter: (unique1 &lt; 7000)</pre><p>
+
+    Notez que l'affichage d'<code class="command">EXPLAIN</code> montre la clause
+    <code class="literal">WHERE</code> appliquée comme une condition de
+    <span class="quote">« <span class="quote">filtre</span> »</span> rattachée au nœud de parcours séquentiel ;
+    ceci signifie que le nœud de plan vérifie la condition pour chaque ligne
+    qu'il parcourt et ne conserve que celles qui satisfont la condition.
+    L'estimation des lignes en sortie a baissé à cause de la clause
+    <code class="literal">WHERE</code>. Néanmoins, le parcours devra toujours visiter
+    les 10000 lignes, donc le coût n'a pas baissé ; en fait, il a un peu
+    augmenté(par 10000 * <a class="xref" href="runtime-config-query.html#GUC-CPU-OPERATOR-COST">cpu_operator_cost</a> pour être
+    exact) dans le but de refléter le temps CPU supplémentaire dépensé pour
+    vérifier la condition <code class="literal">WHERE</code>.
+   </p><p>
+    Le nombre réel de lignes que cette requête sélectionnera est 7000, mais
+    l'estimation <code class="literal">rows</code> est approximative. Si vous tentez de
+    dupliquer cette expérience, vous obtiendrez probablement une estimation
+    légèrement différente ; de plus, elle changera après chaque commande
+    <code class="command">ANALYZE</code> parce que les statistiques produites par
+    <code class="command">ANALYZE</code> sont prises à partir d'un extrait au hasard de
+    la table.
+   </p><p>
+    Maintenant, rendons la condition plus restrictive :
+
+    </p><pre class="screen">EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 100;
+
+                                  QUERY PLAN
+------------------------------------------------------------------------------
+ Bitmap Heap Scan on tenk1  (cost=5.06..224.98 rows=100 width=244)
+   Recheck Cond: (unique1 &lt; 100)
+   -&gt;  Bitmap Index Scan on tenk1_unique1  (cost=0.00..5.04 rows=100 width=0)
+         Index Cond: (unique1 &lt; 100)</pre><p>
+
+    Ici, le planificateur a décidé d'utiliser un plan en deux étapes : le
+    nœud en bas du plan visite un index pour trouver l'emplacement des lignes
+    correspondant à la condition de l'index, puis le nœud du plan du dessus
+    récupère réellement ces lignes de la table. Récupérer séparément les
+    lignes est bien plus coûteux que de les lire séquentiellement, mais comme
+    toutes les pages de la table n'ont pas à être visitées, cela revient
+    toujours moins cher qu'un parcours séquentiel (la raison de l'utilisation
+    d'un plan à deux niveaux est que le nœud du plan du dessus trie les
+    emplacements des lignes identifiées par l'index dans l'ordre physique
+    avant de les lire pour minimiser les coûts des récupérations séparées. Le
+    <span class="quote">« <span class="quote">bitmap</span> »</span> mentionné dans les noms de nœuds est le mécanisme
+    qui s'occupe du tri).
+   </p><p>
+    Maintenant, ajoutons une autre condition à la clause
+    <code class="literal">WHERE</code> :
+
+    </p><pre class="screen">EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 100 AND stringu1 = 'xxx';
+
+                                  QUERY PLAN
+------------------------------------------------------------------------------
+ Bitmap Heap Scan on tenk1  (cost=5.04..225.20 rows=1 width=244)
+   Recheck Cond: (unique1 &lt; 100)
+   Filter: (stringu1 = 'xxx'::name)
+   -&gt;  Bitmap Index Scan on tenk1_unique1  (cost=0.00..5.04 rows=100 width=0)
+         Index Cond: (unique1 &lt; 100)</pre><p>
+
+    L'ajout de la condition <code class="literal">stringu1 = 'xxx'</code> réduit
+    l'estimation du nombre de lignes renvoyées, mais pas son coût, car il
+    faut toujours parcourir le même ensemble de lignes. C'est dû fait que la clause
+    <code class="literal">stringu1</code> ne peut être appliquée comme une condition
+    d'index car l'index ne porte que sur la colonne
+    <code class="literal">unique1</code>. À la place, un filtre a été appliqué sur les
+    lignes récupérées en utilisant l'index. C'est pourquoi le coût a légèrement
+    augmenté pour refléter la vérification supplémentaire.
+   </p><p>
+
+    Dans certains cas, le planificateur préfèrera un plan
+    <span class="quote">« <span class="quote">simple</span> »</span> d'index :
+
+    </p><pre class="screen">EXPLAIN SELECT * FROM tenk1 WHERE unique1 = 42;
+
+                                 QUERY PLAN
+-----------------------------------------------------------------------------
+ Index Scan using tenk1_unique1 on tenk1  (cost=0.29..8.30 rows=1 width=244)
+   Index Cond: (unique1 = 42)</pre><p>
+
+    Dans ce type de plan, les lignes de la table sont récupérées dans l'ordre
+    de l'index, ce qui les rend encore plus coûteuses à récupérer, mais il y
+    en a tellement peu que le coût supplémentaire pour trier l'ordre des
+    lignes n'est pas rentable. Vous verrez principalement ce type de plan
+    pour les requêtes qui ne récupèrent qu'une seule ligne, ou pour les
+    requêtes qui ont une condition <code class="literal">ORDER BY</code> qui correspond
+    à l'ordre de l'index, car cela ne nécessite aucune étape supplémentaire
+    pour satisfaire l'<code class="literal">ORDER BY</code>. Dans cet exemple, ajouter
+    <code class="literal">ORDER BY unique1</code> ferait que l'optimiseur utilise le
+    même plan parce que l'index fournit déjà implicitement le tri requis.
+   </p><p>
+    L'optimiseur peut exécuter une clause <code class="literal">ORDER BY</code> de
+    plusieurs façons. L'exemple ci-dessus montre qu'une clause de tri peut
+    être effectué implicitement. L'optimiseur peut aussi ajouter une étape de
+    tri (<code class="literal">Sort</code>) explicite :
+
+    </p><pre class="screen">EXPLAIN SELECT * FROM tenk1 ORDER BY unique1;
+                            QUERY PLAN
+-------------------------------------------------------------------
+ Sort  (cost=1109.39..1134.39 rows=10000 width=244)
+   Sort Key: unique1
+   -&gt;  Seq Scan on tenk1  (cost=0.00..445.00 rows=10000 width=244)</pre><p>
+
+    Si une partie du plan garantit un ordre sur un préfixe des clés de tri
+    requises, alors l'optimiseur peut décider à la place d'utiliser une étape
+    de tri incrémental (<code class="literal">Incremental Sort</code>) :
+
+    </p><pre class="screen">EXPLAIN SELECT * FROM tenk1 ORDER BY hundred, ten LIMIT 100;
+                                              QUERY PLAN
+-------------------------------------------------------------------​-----------------------------
+ Limit  (cost=19.35..39.49 rows=100 width=244)
+   -&gt;  Incremental Sort  (cost=19.35..2033.39 rows=10000 width=244)
+         Sort Key: hundred, ten
+         Presorted Key: hundred
+         -&gt;  Index Scan using tenk1_hundred on tenk1  (cost=0.29..1574.20 rows=10000 width=244)</pre><p>
+
+    Comparé aux tris habituels, le tri incrémental permet de renvoyer les
+    lignes avant que l'ensemble du résultat ne soit trié, ce qui permet en
+    particulier des optimisations avec les requêtes utilisant la clause
+    <code class="literal">LIMIT</code>. Il peut aussi réduire l'utilisation de la
+    mémoire et la probabilité d'envoyer des tris sur disque, mais cela a un
+    coût : une surcharge pour répartir l'ensemble de lignes résultats
+    dans plusieurs groupes de tri.
+   </p><p>
+    S'il y a des index sur plusieurs colonnes référencées dans la clause
+    <code class="literal">WHERE</code>, le planificateur pourrait choisir d'utiliser
+    une combinaison binaire (AND et OR) des index :
+
+    </p><pre class="screen">EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 100 AND unique2 &gt; 9000;
+
+                                      QUERY PLAN
+ -------------------------------------------------------------------------------------
+ Bitmap Heap Scan on tenk1  (cost=25.07..60.11 rows=10 width=244)
+    Recheck Cond: ((unique1 &lt; 100) AND (unique2 &gt; 9000))
+   -&gt;  BitmapAnd  (cost=25.07..25.07 rows=10 width=0)
+         -&gt;  Bitmap Index Scan on tenk1_unique1  (cost=0.00..5.04 rows=100 width=0)
+                Index Cond: (unique1 &lt; 100)
+         -&gt;  Bitmap Index Scan on tenk1_unique2  (cost=0.00..19.78 rows=999 width=0)
+                Index Cond: (unique2 &gt; 9000)</pre><p>
+
+    Mais ceci requiert de visiter plusieurs index, donc ce n'est pas
+    nécessairement un gain comparé à l'utilisation d'un seul index et au
+    traitement de l'autre condition par un filtre. Si vous variez les
+    échelles de valeurs impliquées, vous vous apercevrez que le plan change
+    en accord.
+   </p><p>
+    Voici un exemple montrant les effets d'un <code class="literal">LIMIT</code> :
+
+    </p><pre class="screen">EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 100 AND unique2 &gt; 9000 LIMIT 2;
+
+                                     QUERY PLAN
+-------------------------------------------------------------------------------------
+ Limit  (cost=0.29..14.28 rows=2 width=244)
+   -&gt;  Index Scan using tenk1_unique2 on tenk1  (cost=0.29..70.27 rows=10 width=244)
+         Index Cond: (unique2 &gt; 9000)
+         Filter: (unique1 &lt; 100)</pre><p>
+   </p><p>
+    C'est la même requête qu'au-dessus, mais avec l'ajout de
+    <code class="literal">LIMIT</code>, ce qui fait que toutes les lignes ne seront pas
+    récupérées, et donc que le planificateur change sa façon de procéder.
+    Notez que le coût total ainsi que le nombre de lignes du nœud de parcours
+    d'index sont affichés comme si le nœud devait être exécuté entièrement.
+    Cependant, le nœud Limit s'attend à s'arrêter après avoir récupéré
+    seulement un cinquième de ces lignes, c'est pourquoi son coût total n'est
+    qu'un cinquième du coût précédent, ce qui est le vrai coût estimé de la
+    requête. Ce plan est préférable à l'ajout d'un nœud Limit au plan
+    précédent, car le Limit ne pourrait pas empêcher le coût de départ du
+    parcours d'index Bitmap, ce qui augmenterait le coût d'environ 25 unités
+    avec cette approche.
+   </p><p>
+    Maintenant, essayons de joindre deux tables, en utilisant les colonnes
+    dont nous avons discuté :
+
+</p><pre class="screen">EXPLAIN SELECT *
+FROM tenk1 t1, tenk2 t2
+WHERE t1.unique1 &lt; 10 AND t1.unique2 = t2.unique2;
+
+                                       QUERY PLAN
+ --------------------------------------------------------------------------------------
+ Nested Loop  (cost=4.65..118.50 rows=10 width=488)
+   -&gt;  Bitmap Heap Scan on tenk1 t1  (cost=4.36..39.38 rows=10 width=244)
+         Recheck Cond: (unique1 &lt; 10)
+         -&gt;  Bitmap Index Scan on tenk1_unique1  (cost=0.00..4.36 rows=10 width=0)
+               Index Cond: (unique1 &lt; 10)
+   -&gt;  Index Scan using tenk2_unique2 on tenk2 t2  (cost=0.29..7.90 rows=1 width=244)
+          Index Cond: (unique2 = t1.unique2)</pre><p>
+   </p><p>
+    Dans ce plan, nous avons un nœud de jointure en boucle imbriquée sur deux
+    parcours de tables en entrée. L'indentation des lignes de sommaire des
+    nœuds reflète la structure en arbre du plan. Le premier nœud, ou nœud
+    <span class="quote">« <span class="quote">externe</span> »</span>, utilise le même parcours de bitmap que celui vu
+    précédemment, et donc ses coût et nombre de lignes sont les mêmes que ce
+    que l'on aurait obtenu avec <code class="literal">SELECT ... WHERE unique1 &lt;
+    10</code>, car la même clause <code class="literal">WHERE</code>
+    <code class="literal">unique1 &lt; 10</code> est appliquée à ce nœud. La clause
+    <code class="literal">t1.unique2 = t2.unique2</code> n'a pas encore d'intérêt, elle
+    n'affecte donc pas le nombre de lignes du parcours externe. Le nœud de
+    jointure en boucle imbriquée s'exécutera sur le deuxième nœud, ou nœud
+    <span class="quote">« <span class="quote">interne</span> »</span>, pour chaque ligne obtenue du nœud externe. Les
+    valeurs de colonne de la ligne externe courante peuvent être utilisées
+    dans le parcours interne ; ici, la valeur
+    <code class="literal">t1.unique2</code> de la ligne externe est disponible, et on
+    peut obtenir un plan et un coût similaires à ce que l'on a vu plus haut
+    pour le cas simple <code class="literal">SELECT ... WHERE t2.unique2 =
+    <em class="replaceable"><code>constant</code></em></code>.(Le coût estimé est ici un
+    peu plus faible que celui vu précédemment, en prévision de la mise en
+    cache des données durant les parcours d'index répétés sur
+    <code class="literal">t2</code>.) Les coûts du nœud correspondant à la boucle sont
+    ensuite initialisés sur la base du coût du parcours externe, avec une
+    répétition du parcours interne pour chaque ligne externe (ici 10 * 7,90),
+    plus un petit temps CPU pour traiter la jointure.
+   </p><p>
+    Dans cet exemple, le nombre de lignes en sortie de la jointure est
+    identique au nombre de lignes des deux parcours, mais ce n'est pas vrai
+    en règle générale car vous pouvez avoir des clauses
+    <code class="literal">WHERE</code> mentionnant les deux tables et qui, donc,
+    peuvent seulement être appliquées au point de jointure, et non pas aux
+    parcours d'index. Voici un exemple :
+
+    </p><pre class="screen">EXPLAIN SELECT *
+FROM tenk1 t1, tenk2 t2
+WHERE t1.unique1 &lt; 10 AND t2.unique2 &lt; 10 AND t1.hundred &lt; t2.hundred;
+
+                                      QUERY PLAN
+--------------------------------------------------------------------------------------
+ Nested Loop  (cost=4.65..49.36 rows=33 width=488)
+   Join Filter: (t1.hundred &lt; t2.hundred)
+   -&gt;  Bitmap Heap Scan on tenk1 t1  (cost=4.36..39.38 rows=10 width=244)
+         Recheck Cond: (unique1 &lt; 10)
+         -&gt;  Bitmap Index Scan on tenk1_unique1  (cost=0.00..4.36 rows=10 width=0)
+               Index Cond: (unique1 &lt; 10)
+   -&gt;  Materialize  (cost=0.29..8.51 rows=10 width=244)
+         -&gt;  Index Scan using tenk2_unique2 on tenk2 t2  (cost=0.29..8.46 rows=10 width=244)
+               Index Cond: (unique2 &lt; 10)</pre><p>
+
+    La condition <code class="literal">t1.hundred &lt; t2.hundred</code> ne peut être
+    testée dans l'index <code class="literal">tenk2_unique2</code>, elle est donc
+    appliquée au nœud de jointure. Cela réduit l'estimation du nombre de
+    lignes dans le nœud de jointure, mais ne change aucun parcours d'entrée.
+   </p><p>
+    Notez qu'ici le planificateur a choisi de matérialiser la relation interne
+    de la jointure en plaçant un nœud Materialize au-dessus. Cela signifie
+    que le parcours d'index de <code class="literal">t2</code> ne sera réalisé qu'une
+    seule fois, même si le nœud de jointure par boucle imbriquée va lire dix
+    fois les données, une fois par ligne de la relation externe. Le nœud
+    Materialize conserve les données en mémoire lors de leur première
+    lecture, puis renvoie les données depuis la mémoire à chaque lecture
+    supplémentaire.
+   </p><p>
+    Quand vous utilisez des jointures externes, vous pouvez voir des nœuds de
+    plan de jointure avec à la fois des conditions <span class="quote">« <span class="quote">Join Filter</span> »</span>
+    et <span class="quote">« <span class="quote">Filter</span> »</span> simples attachées. Les conditions <span class="quote">« <span class="quote">Join
+    Filter</span> »</span> viennent des clauses de jointures externes
+    <code class="literal">ON</code>, pour qu'une ligne ne satisfaisant pas la condition
+    <span class="quote">« <span class="quote">Join Filter</span> »</span> puisse toujours être récupérée comme une ligne
+    NULL. Mais une condition <span class="quote">« <span class="quote">Filter</span> »</span> simple est appliquée après
+    la règle de jointure externe et supprime donc les lignes de manière
+    inconditionnelle. Dans une jointure interne, il n'y a pas de différence
+    sémantique entre ces types de filtres.
+   </p><p>
+    Si nous changeons un peu la sélectivité de la requête, on pourrait obtenir
+    un plan de jointure très différent :
+
+    </p><pre class="screen">EXPLAIN SELECT *
+FROM tenk1 t1, tenk2 t2
+WHERE t1.unique1 &lt; 100 AND t1.unique2 = t2.unique2;
+
+                                        QUERY PLAN
+------------------------------------------------------------------------------------------
+ Hash Join  (cost=226.23..709.73 rows=100 width=488)
+    Hash Cond: (t2.unique2 = t1.unique2)
+    -&gt;  Seq Scan on tenk2 t2  (cost=0.00..445.00 rows=10000 width=244)
+    -&gt;  Hash  (cost=224.98..224.98 rows=100 width=244)
+          -&gt;  Bitmap Heap Scan on tenk1 t1  (cost=5.06..224.98 rows=100 width=244)
+                Recheck Cond: (unique1 &lt; 100)
+               -&gt;  Bitmap Index Scan on tenk1_unique1  (cost=0.00..5.04 rows=100 width=0)
+                     Index Cond: (unique1 &lt; 100)</pre><p>
+   </p><p>
+    Ici, le planificateur a choisi d'utiliser une jointure de hachage, dans
+    laquelle les lignes d'une table sont entrées dans une table de hachage en
+    mémoire, après quoi l'autre table est parcourue et la table de hachage
+    est sondée pour faire correspondre chaque ligne. Notez encore une fois
+    comment l'indentation reflète la structure du plan : le parcours
+    d'index bitmap sur <code class="literal">tenk1</code> est l'entrée du nœud de
+    hachage, qui construit la table de hachage. C'est alors retourné au nœud
+    de jointure de hachage, qui lit les lignes depuis le plan du fils externe
+    et cherche dans la table de hachage pour chaque ligne.
+   </p><p>
+    Un autre type de jointure possible est la jointure d'assemblage, illustrée
+    ici :
+
+    </p><pre class="screen">EXPLAIN SELECT *
+FROM tenk1 t1, onek t2
+WHERE t1.unique1 &lt; 100 AND t1.unique2 = t2.unique2;
+
+                                        QUERY PLAN
+------------------------------------------------------------------------------------------
+ Merge Join  (cost=0.56..233.49 rows=10 width=488)
+   Merge Cond: (t1.unique2 = t2.unique2)
+   -&gt;  Index Scan using tenk1_unique2 on tenk1 t1  (cost=0.29..643.28 rows=100 width=244)
+         Filter: (unique1 &lt; 100)
+   -&gt;  Index Scan using onek_unique2 on onek t2  (cost=0.28..166.28 rows=1000 width=244)
+</pre><p>
+   </p><p>
+    La jointure d'assemblage nécessite que les données en entrée soient triées
+    sur la clé de jointure. Dans cet exemple, chaque entrée est triée en
+    utilisant un parcours d'index pour visiter les lignes dans le bon
+    ordre ; un parcours séquentiel suivi d'un tri pourraient aussi être
+    utilisés.
+    (Un parcours séquentiel suivi d'un tri bat fréquemment un parcours
+    d'index pour trier de nombreuses lignes, du fait des accès disques non
+    séquentiels requis par le parcours d'index.)
+   </p><p>
+    Une façon de rechercher des plans différents est de forcer le
+    planificateur à oublier certaines stratégies qu'il aurait trouvées moins
+    coûteuses en utilisant les options d'activation (enable)/désactivation
+    (disable) décrites dans la <a class="xref" href="runtime-config-query.html#RUNTIME-CONFIG-QUERY-ENABLE" title="19.7.1. Configuration de la méthode du planificateur">Section 19.7.1</a>
+    (c'est un outil complexe, mais utile ; voir aussi la <a class="xref" href="explicit-joins.html" title="14.3. Contrôler le planificateur avec des clauses JOIN explicites">Section 14.3</a>). Par exemple, si nous n'étions pas convaincus
+    que la jointure d'assemblage soit le meilleur type de jointure
+    dans l'exemple précédent, nous pourrions essayer
+
+    </p><pre class="screen">SET enable_mergejoin = off;
+EXPLAIN SELECT *
+FROM tenk1 t1, onek t2
+ WHERE t1.unique1 &lt; 100 AND t1.unique2 = t2.unique2;
+
+                                         QUERY PLAN
+ ------------------------------------------------------------------------------------------
+ Hash Join  (cost=226.23..344.08 rows=10 width=488)
+   Hash Cond: (t2.unique2 = t1.unique2)
+   -&gt;  Seq Scan on onek t2  (cost=0.00..114.00 rows=1000 width=244)
+   -&gt;  Hash  (cost=224.98..224.98 rows=100 width=244)
+         -&gt;  Bitmap Heap Scan on tenk1 t1  (cost=5.06..224.98 rows=100 width=244)
+               Recheck Cond: (unique1 &lt; 100)
+               -&gt;  Bitmap Index Scan on tenk1_unique1  (cost=0.00..5.04 rows=100 width=0)
+                     Index Cond: (unique1 &lt; 100)</pre><p>
+
+    ce qui montre que le planificateur pense que la jointure par hachage
+    serait pratiquement 50% plus coûteuse qu'une jointure par assemblage dans
+    ce cas. Bien
+    sûr, la question suivante est de savoir s'il a raison sur ce point. Nous
+    pourrions vérifier cela en utilisant <code class="command">EXPLAIN ANALYZE</code>,
+    comme expliqué <a class="link" href="using-explain.html#USING-EXPLAIN-ANALYZE" title="14.1.2. EXPLAIN ANALYZE">ci-dessous</a>.
+   </p><p>
+    <a id="id-1.5.13.4.7.31.1" class="indexterm"></a>
+    Certains plans de requête impliquent des
+    <em class="firstterm">sous-plans</em>, qui viennent des
+    sous-<code class="literal">SELECT</code> de la requête originale. De telles requêtes
+    peuvent parfois être transformés en jointures ordinaires mais, quand
+    ce n'est pas possible, nous obtenons des plans de ce type :
+
+</p><pre class="screen">
+EXPLAIN VERBOSE SELECT unique1
+FROM tenk1 t
+WHERE t.ten &lt; ALL (SELECT o.ten FROM onek o WHERE o.four = t.four);
+
+                               QUERY PLAN
+-------------------------------------------------------------------​------
+ Seq Scan on public.tenk1 t  (cost=0.00..586095.00 rows=5000 width=4)
+   Output: t.unique1
+   Filter: (ALL (t.ten &lt; (SubPlan 1).col1))
+   SubPlan 1
+     -&gt;  Seq Scan on public.onek o  (cost=0.00..116.50 rows=250 width=4)
+           Output: o.ten
+           Filter: (o.four = t.four)
+</pre><p>
+
+    Cet exemple assez artificiel sert à illustrer un ensemble de
+    points : les valeurs au niveau du plan externe sont passées
+    au sous-plan (ici, il s'agit de <code class="literal">t.four</code>) et les
+    résultats de la sous-requête sont disponibles sur le plan externe.
+    Ces valeurs de résultat sont affichées par <code class="command">EXPLAIN</code>
+    avec des notations comme
+    <code class="literal">(<em class="replaceable"><code>nom_sousplan</code></em>).col<em class="replaceable"><code>N</code></em></code>,
+    qui fait référence à la <em class="replaceable"><code>N</code></em>-ième colonne en
+    sortie du sous-<code class="literal">SELECT</code>.
+   </p><p>
+    <a id="id-1.5.13.4.7.32.1" class="indexterm"></a>
+    Dans l'exemple ci-dessus, l'opérateur <code class="literal">ALL</code> exécute
+    le sous-plan pour chaque ligne de la requête externe (ce qui explique
+    le coût estimé très fort). Certaines requêtes peuvent utiliser un
+    <em class="firstterm">sous-plan haché</em> pour éviter cela :
+
+</p><pre class="screen">
+EXPLAIN SELECT *
+FROM tenk1 t
+WHERE t.unique1 NOT IN (SELECT o.unique1 FROM onek o);
+
+                                         QUERY PLAN
+-------------------------------------------------------------------​-------------------------
+ Seq Scan on tenk1 t  (cost=61.77..531.77 rows=5000 width=244)
+   Filter: (NOT (ANY (unique1 = (hashed SubPlan 1).col1)))
+   SubPlan 1
+     -&gt;  Index Only Scan using onek_unique1 on onek o  (cost=0.28..59.27 rows=1000 width=4)
+(4 rows)
+</pre><p>
+
+    Ici, le sous-plan est lancé une seule fois et le résultat est chargé
+    dans une table de hachage en mémoire, qui est ensuite interrogée par
+    l'opérateur externe <code class="literal">ANY</code>. Ceci nécessite que le
+    sous-<code class="literal">SELECT</code> ne référence pas de variables de la
+    requête externe, et que l'opérateur de comparaison <code class="literal">ANY</code>
+    puisse utiliser le hachage.
+   </p><p>
+    <a id="id-1.5.13.4.7.33.1" class="indexterm"></a>
+    Si, en plus de ne pas référencer les variables de la requête externe, le
+    sous-<code class="literal">SELECT</code> ne peut pas renvoyer plus d'une ligne, il
+    pourrait être implémenté à la place comme un
+    <em class="firstterm">initplan</em> :
+
+</p><pre class="screen">
+EXPLAIN VERBOSE SELECT unique1
+FROM tenk1 t1 WHERE t1.ten = (SELECT (random() * 10)::integer);
+
+                             QUERY PLAN
+------------------------------------------------------------​--------
+ Seq Scan on public.tenk1 t1  (cost=0.02..470.02 rows=1000 width=4)
+   Output: t1.unique1
+   Filter: (t1.ten = (InitPlan 1).col1)
+   InitPlan 1
+     -&gt;  Result  (cost=0.00..0.02 rows=1 width=4)
+           Output: ((random() * '10'::double precision))::integer
+</pre><p>
+
+    Un initplan est exécuté une seule fois par exécution du plan externe,
+    et les résultats sont sauvegardés pour une ré-utilisation par les lignes
+    suivantes du plan externe. Donc dans cet exemple,
+    <code class="literal">random()</code> est évalué seulement une fois et toutes les
+    valeurs de <code class="literal">t1.ten</code> sont comparées au même entier
+    choisi au hasard. C'est très différent de ce qui serait survenu sans la
+    construction du sous-<code class="literal">SELECT</code>.
+   </p></div><div class="sect2" id="USING-EXPLAIN-ANALYZE"><div class="titlepage"><div><div><h3 class="title">14.1.2. <code class="command">EXPLAIN ANALYZE</code> <a href="#USING-EXPLAIN-ANALYZE" class="id_link">#</a></h3></div></div></div><p>
+    Il est possible de vérifier l'exactitude des estimations du planificateur
+    en utilisant l'option <code class="literal">ANALYZE</code> de
+    <code class="command">EXPLAIN</code>. Avec cette option, <code class="command">EXPLAIN</code>
+    exécute vraiment la requête, puis affiche le vrai nombre de lignes et les
+    vrais temps passés dans chaque nœud, avec ceux estimés par un simple
+    <code class="command">EXPLAIN</code>. Par exemple, nous pourrions avoir un résultat
+    tel que :
+
+    </p><pre class="screen">EXPLAIN ANALYZE SELECT *
+FROM tenk1 t1, tenk2 t2
+WHERE t1.unique1 &lt; 10 AND t1.unique2 = t2.unique2;
+
+                                                           QUERY PLAN
+---------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=4.65..118.50 rows=10 width=488) (actual time=0.017..0.051 rows=10 loops=1)
+   -&gt;  Bitmap Heap Scan on tenk1 t1  (cost=4.36..39.38 rows=10 width=244) (actual time=0.009..0.017 rows=10 loops=1)
+          Recheck Cond: (unique1 &lt; 10)
+          Heap Blocks: exact=10
+          -&gt;  Bitmap Index Scan on tenk1_unique1  (cost=0.00..4.36 rows=10 width=0) (actual time=0.004..0.004 rows=10 loops=1)
+                Index Cond: (unique1 &lt; 10)
+   -&gt;  Index Scan using tenk2_unique2 on tenk2 t2  (cost=0.29..7.90 rows=1 width=244) (actual time=0.003..0.003 rows=1 loops=10)
+          Index Cond: (unique2 = t1.unique2)
+ Planning Time: 0.485 ms
+ Execution Time: 0.073 ms</pre><p>
+
+    Notez que les valeurs <span class="quote">« <span class="quote">temps réel</span> »</span> sont en millisecondes
+    alors que les estimations de <span class="quote">« <span class="quote">coût</span> »</span> sont exprimées dans des
+    unités arbitraires ; il y a donc peu de chances qu'elles
+    correspondent. L'information qu'il faut généralement rechercher est si le
+    nombre de lignes estimées est raisonnablement proche de la réalité. Dans
+    cet exemple, les estimations étaient toutes rigoureusement exactes, mais
+    c'est en pratique plutôt inhabituel.
+   </p><p>
+    Dans certains plans de requête, il est possible qu'un nœud de sous-plan
+    soit exécuté plus d'une fois. Par exemple, le parcours d'index interne
+    est exécuté une fois par ligne externe dans le plan de boucle imbriquée
+    ci-dessus. Dans de tels cas, la valeur <code class="literal">loops</code> renvoie
+    le nombre total d'exécutions du nœud, et le temps réel et les valeurs des
+    lignes affichées sont une moyenne par exécution. Ceci est fait pour que
+    les nombres soient comparables avec la façon dont les estimations de
+    coûts sont affichées. Multipliez par la valeur de
+    <code class="literal">loops</code> pour obtenir le temps total réellement passé
+    dans le nœud. Dans l'exemple précédent, le parcours d'index sur
+    <code class="literal">tenk2</code> a pris un total de 0,030 milliseconde.
+   </p><p>
+    Dans certains cas, <code class="command">EXPLAIN ANALYZE</code> affiche des
+    statistiques d'exécution supplémentaires après le temps et le nombre de
+    lignes de l'exécution d'un nœud du plan. Par exemple, les nœuds de tri et
+    de hachage fournissent des informations supplémentaires :
+
+    </p><pre class="screen">EXPLAIN ANALYZE SELECT *
+FROM tenk1 t1, tenk2 t2
+WHERE t1.unique1 &lt; 100 AND t1.unique2 = t2.unique2 ORDER BY t1.fivethous;
+
+                                                                 QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=713.05..713.30 rows=100 width=488) (actual time=2.995..3.002 rows=100 loops=1)
+    Sort Key: t1.fivethous
+   Sort Method: quicksort  Memory: 74kB
+   -&gt;  Hash Join  (cost=226.23..709.73 rows=100 width=488) (actual time=0.515..2.920 rows=100 loops=1)
+          Hash Cond: (t2.unique2 = t1.unique2)
+         -&gt;  Seq Scan on tenk2 t2  (cost=0.00..445.00 rows=10000 width=244) (actual time=0.026..1.790 rows=10000 loops=1)
+         -&gt;  Hash  (cost=224.98..224.98 rows=100 width=244) (actual time=0.476..0.477 rows=100 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 35kB
+               -&gt;  Bitmap Heap Scan on tenk1 t1  (cost=5.06..224.98 rows=100 width=244) (actual time=0.030..0.450 rows=100 loops=1)
+                      Recheck Cond: (unique1 &lt; 100)
+                     Heap Blocks: exact=90
+                     -&gt;  Bitmap Index Scan on tenk1_unique1  (cost=0.00..5.04 rows=100 width=0) (actual time=0.013..0.013 rows=100 loops=1)
+                            Index Cond: (unique1 &lt; 100)
+ Planning Time: 0.187 ms
+ Execution Time: 3.036 ms</pre><p>
+
+    Le nœud de tri donne la méthode de tri utilisée (en particulier, si le tri
+    s'est effectué en mémoire ou sur disque) ainsi que la quantité de mémoire
+    ou d'espace disque requis. Le nœud de hachage montre le nombre de paquets
+    de hachage, le nombre de lots ainsi la quantité maximale de mémoire
+    utilisée pour la table de hachage (si le nombre de lots est supérieur à
+    un, il y aura également l'utilisation de l'espace disque impliqué, mais
+    cela n'est pas montré dans cet exemple).
+   </p><p>
+    Un autre type d'information supplémentaire est le nombre de lignes
+    supprimées par une condition de filtrage :
+
+    </p><pre class="screen">EXPLAIN ANALYZE SELECT * FROM tenk1 WHERE ten &lt; 7;
+
+                                                QUERY PLAN
+----------------------------------------------------------------------------------------------------------
+ Seq Scan on tenk1  (cost=0.00..470.00 rows=7000 width=244) (actual time=0.030..1.995 rows=7000 loops=1)
+   Filter: (ten &lt; 7)
+   Rows Removed by Filter: 3000
+ Planning Time: 0.102 ms
+ Execution Time: 2.145 ms</pre><p>
+
+    Ces nombres peuvent être particulièrement précieux pour les conditions de
+    filtres appliquées aux nœuds de jointure. La ligne <span class="quote">« <span class="quote">Rows
+    Removed</span> »</span> n'apparaît que si au moins une ligne parcourue, ou une
+    ligne potentiellement appairée dans le cas d'un nœud de jointure, est
+    rejetée par la condition de filtre.
+   </p><p>
+    Un cas similaire aux conditions de filtre apparaît avec des parcours
+    d'index <span class="quote">« <span class="quote">avec perte</span> »</span>. Par exemple, regardez cette recherche
+    de polygone contenant un point spécifique :
+
+    </p><pre class="screen">EXPLAIN ANALYZE SELECT * FROM polygon_tbl WHERE f1 @&gt; polygon '(0.5,2.0)';
+
+                                              QUERY PLAN
+------------------------------------------------------------------------------------------------------
+ Seq Scan on polygon_tbl  (cost=0.00..1.09 rows=1 width=85) (actual time=0.023..0.023 rows=0 loops=1)
+   Filter: (f1 @&gt; '((0.5,2))'::polygon)
+   Rows Removed by Filter: 7
+ Planning Time: 0.039 ms
+ Execution Time: 0.033 ms</pre><p>
+
+    Le planificateur pense (plutôt correctement) que cette table d'échantillon
+    est trop petite pour s'embêter avec un parcours d'index, et utilise donc
+    un parcours séquentiel dans lequel toutes les lignes sont rejetées par la
+    condition de filtre. Mais si nous forçons l'utilisation d'un parcours
+    d'index, nous voyons :
+
+    </p><pre class="screen">SET enable_seqscan TO off;
+
+EXPLAIN ANALYZE SELECT * FROM polygon_tbl WHERE f1 @&gt; polygon '(0.5,2.0)';
+
+                                                        QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------
+ Index Scan using gpolygonind on polygon_tbl  (cost=0.13..8.15 rows=1 width=85) (actual time=0.074..0.074 rows=0 loops=1)
+   Index Cond: (f1 @&gt; '((0.5,2))'::polygon)
+   Rows Removed by Index Recheck: 1
+ Planning Time: 0.039 ms
+ Execution Time: 0.098 ms</pre><p>
+
+    L'index retourne une ligne candidate, qui est ensuite rejetée par une
+    deuxième vérification de la condition de l'index. Cela arrive car un
+    index GiST est <span class="quote">« <span class="quote">avec perte</span> »</span> pour les tests de contenance de
+    polygone : il retourne en fait les lignes pour lesquelles les
+    polygones chevauchent la cible, ce qui nécessite après coup un test de
+    contenance exacte sur ces lignes.
+   </p><p>
+    <code class="command">EXPLAIN</code> a une option <code class="literal">BUFFERS</code> qui
+    peut être utilisée avec <code class="literal">ANALYZE</code> pour obtenir encore
+    plus de statistiques d'exécution:
+
+    </p><pre class="screen">EXPLAIN (ANALYZE, BUFFERS) SELECT * FROM tenk1 WHERE unique1 &lt; 100 AND unique2 &gt; 9000;
+
+                                                           QUERY PLAN
+---------------------------------------------------------------------------------------------------------------------------------
+ Bitmap Heap Scan on tenk1  (cost=25.07..60.11 rows=10 width=244) (actual time=0.105..0.114 rows=10 loops=1)
+    Recheck Cond: ((unique1 &lt; 100) AND (unique2 &gt; 9000))
+   Heap Blocks: exact=10
+   Buffers: shared hit=14 read=3
+   -&gt;  BitmapAnd  (cost=25.07..25.07 rows=10 width=0) (actual time=0.100..0.101 rows=0 loops=1)
+         Buffers: shared hit=4 read=3
+         -&gt;  Bitmap Index Scan on tenk1_unique1  (cost=0.00..5.04 rows=100 width=0) (actual time=0.027..0.027 rows=100 loops=1)
+                Index Cond: (unique1 &lt; 100)
+                Buffers: shared hit=2
+         -&gt;  Bitmap Index Scan on tenk1_unique2  (cost=0.00..19.78 rows=999 width=0) (actual time=0.070..0.070 rows=999 loops=1)
+                Index Cond: (unique2 &gt; 9000)
+               Buffers: shared hit=2 read=3
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.162 ms
+ Execution Time: 0.143 ms</pre><p>
+
+    Les nombres fournis par <code class="literal">BUFFERS</code> aident à identifier les
+    parties de la requête les plus intensives en termes d'entrées sorties.
+   </p><p>
+    Il faut garder en tête que comme <code class="command">EXPLAIN ANALYZE</code>
+    exécute vraiment la requête, tous les effets secondaires se produiront
+    comme d'habitude, même si, quel que soit l'affichage de la requête, il
+    est remplacé par la sortie des données d'<code class="command">EXPLAIN</code>. Si
+    vous voulez analyser une requête modifiant les données sans changer les
+    données en table, vous pouvez annuler les modifications après, par
+    exemple :
+
+    </p><pre class="screen">BEGIN;
+EXPLAIN ANALYZE UPDATE tenk1 SET hundred = hundred + 1 WHERE unique1 &lt; 100;
+
+                                                           QUERY PLAN
+--------------------------------------------------------------------------------------------------------------------------------
+ Update on tenk1  (cost=5.06..225.23 rows=0 width=0) (actual time=1.634..1.635 rows=0 loops=1)
+   -&gt;  Bitmap Heap Scan on tenk1  (cost=5.06..225.23 rows=100 width=10) (actual time=0.065..0.141 rows=100 loops=1)
+        Recheck Cond: (unique1 &lt; 100)
+        Heap Blocks: exact=90
+         -&gt;  Bitmap Index Scan on tenk1_unique1  (cost=0.00..5.04 rows=100 width=0) (actual time=0.031..0.031 rows=100 loops=1)
+               Index Cond: (unique1 &lt; 100)
+ Planning Time: 0.151 ms
+ Execution Time: 1.856 ms
+
+
+ROLLBACK;</pre><p>
+   </p><p>
+    Comme vous pouvez le voir dans cet exemple, quand la requête contient une
+    commande <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+    <code class="command">DELETE</code> ou <code class="command">MERGE</code>, l'application des changements est faite au
+    niveau du nœud principal Insert, Update, Delete ou Merge du plan. Les nœuds du
+    plan sous celui-ci effectuent le travail de recherche des anciennes
+    lignes et/ou le calcul des nouvelles données. Ainsi, au-dessus, on peut
+    voir les mêmes tris de parcours de bitmap déjà vus précédemment, et leur
+    sortie est envoyée à un nœud de mise à jour qui stocke les lignes
+    modifiées. Il est intéressant de noter que bien que le nœud de
+    modification de données puisse prendre une part considérable sur le temps
+    d'exécution (ici, c'est la partie la plus gourmande), le planificateur
+    n'ajoute rien au coût estimé pour considérer ce travail. C'est dû au fait
+    que le travail à effectuer est le même pour chaque plan de requête
+    correct, et n'affecte donc pas les décisions du planificateur.
+   </p><p>
+    La phrase <code class="literal">Planning time</code> affichée par <code class="command">EXPLAIN
+    ANALYZE</code> correspond au temps pris pour générer et optimiser le
+    plan de requêtes à partir de la requête analysée. Cela n'inclut pas
+    l'analyse syntaxique et la réécriture.
+   </p><p>
+
+    Le <code class="literal">Temps total d'exécution</code> donné par <code class="command">EXPLAIN
+    ANALYZE</code> inclut le temps de démarrage et d'arrêt de l'exécuteur,
+    ainsi que le temps d'exécution de tous les triggers pouvant être
+    déclenchés, mais n'inclut pas les temps d'analyse, de réécriture ou de
+    planification. Le temps passé à exécuter les triggers
+    <code class="literal">BEFORE</code>, s'il y en a, est inclus dans le temps passé à
+    l'exécution des nœuds Insert, Update ou Delete associés, mais le temps
+    passé à exécuter les triggers <code class="literal">AFTER</code> n'est pas compté,
+    car les triggers <code class="literal">AFTER</code> sont déclenchés après
+    l'achèvement du plan entier. Le temps total passé dans chaque trigger
+    (que ce soit <code class="literal">BEFORE</code> ou <code class="literal">AFTER</code>) est
+    affiché séparément. Notez que les triggers de contrainte ne seront pas
+    exécutés avant la fin de la transaction et par conséquent ne seront pas
+    affichés du tout par <code class="command">EXPLAIN ANALYZE</code>.
+   </p><p>
+    Le temps affiché sur le premier nœud n'inclut pas le temps nécessaire
+    pour convertir les données en sortie de la requête en leur forme
+    affichable et ne les envoie pas au client. Bien que <code class="command">EXPLAIN
+    ANALYZE</code> n'enverra jamais les données au client, il est possible
+    de lui demander de convertir les données en sortie de la requête en
+    leur forme affichable et de mesurer le temps nécessaire pour ce faire,
+    grâce à l'option <code class="literal">SERIALIZE</code>. Ce temps sera affiché
+    séparément, et il sera aussi inclus dans le total de <code class="literal">Execution
+    time</code>.
+   </p></div><div class="sect2" id="USING-EXPLAIN-CAVEATS"><div class="titlepage"><div><div><h3 class="title">14.1.3. Avertissements <a href="#USING-EXPLAIN-CAVEATS" class="id_link">#</a></h3></div></div></div><p>
+    Il existe deux raisons importantes pour lesquelles les temps d'exécution
+    mesurés par <code class="command">EXPLAIN ANALYZE</code> peuvent dévier de
+    l'exécution normale de la même requête. Tout d'abord, comme aucune ligne
+    n'est réellement envoyée au client, les coûts de conversion réseau
+    ne sont pas inclus. Les coûts de conversion des entrées/sorties disque
+    ne sont pas non plus inclus sauf si l'option <code class="literal">SERIALIZE</code>
+    est demandée. Ensuite, le
+    surcoût de mesure induit par <code class="command">EXPLAIN ANALYZE</code> peut être
+    significatif, plus particulièrement sur les machines avec un appel
+    système <code class="function">gettimeofday()</code> lent. Vous pouvez utiliser
+    l'outil <a class="xref" href="pgtesttiming.html" title="pg_test_timing"><span class="refentrytitle"><span class="application">pg_test_timing</span></span></a> pour mesurer le surcoût du calcul
+    du temps sur votre système.
+   </p><p>
+    Les résultats de <code class="command">EXPLAIN</code> ne devraient pas être
+    extrapolés pour des situations autres que celles de vos tests en
+    cours ; par exemple, les résultats sur une petite table ne peuvent
+    être appliqués à des tables bien plus volumineuses. Les estimations de
+    coût du planificateur ne sont pas linéaires et, du coup, il pourrait bien
+    choisir un plan différent pour une table plus petite ou plus grande. Un
+    exemple extrême est celui d'une table occupant une page disque. Vous
+    obtiendrez pratiquement toujours un parcours séquentiel, que des index
+    soient disponibles ou non. Le planificateur réalise que cela va
+    nécessiter la lecture d'un seul bloc disque pour traiter la table dans
+    ce cas, il n'y a donc pas d'intérêt à étendre des lectures de blocs
+    supplémentaires pour un index. (Nous voyons cela arriver dans l'exemple
+    <code class="literal">polygon_tbl</code> au-dessus.)
+   </p><p>
+    Ici, ce sont des cas dans lesquels les valeurs réelles et estimées ne
+    correspondent pas vraiment, mais qui ne sont pas non plus totalement
+    fausses. Un tel cas peut se produire quand un nœud d'exécution d'un plan
+    est arrêté par un <code class="literal">LIMIT</code> ou autre chose avec un effet
+    similaire. Par exemple, dans la requête <code class="literal">LIMIT</code>
+    utilisée précédemment,
+
+    </p><pre class="screen">EXPLAIN ANALYZE SELECT * FROM tenk1 WHERE unique1 &lt; 100 AND unique2 &gt; 9000 LIMIT 2;
+
+                                                          QUERY PLAN
+-------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.29..14.33 rows=2 width=244) (actual time=0.051..0.071 rows=2 loops=1)
+   -&gt;  Index Scan using tenk1_unique2 on tenk1  (cost=0.29..70.50 rows=10 width=244) (actual time=0.051..0.070 rows=2 loops=1)
+         Index Cond: (unique2 &gt; 9000)
+         Filter: (unique1 &lt; 100)
+         Rows Removed by Filter: 287
+ Planning Time: 0.077 ms
+ Execution Time: 0.086 ms</pre><p>
+
+    les estimations de coût et de nombre de lignes pour le nœud de parcours
+    d'index sont affichées comme s'ils devaient s'exécuter jusqu'à la fin.
+    Mais en réalité le nœud Limit arrête la récupération des lignes après la
+    deuxième ligne récupérée, et donc le vrai nombre de lignes n'est que de 2
+    et le temps d'exécution est moindre que ne le suggérait le coût estimé.
+    Ce n'est pas une erreur d'estimation, juste une contradiction entre la
+    façon dont l'estimation et les valeurs réelles sont affichées.
+   </p><p>
+    Les jointures d'assemblage ont également leurs artefacts de mesure qui
+    peuvent embrouiller une personne non avertie. Une jointure d'assemblage
+    arrêtera la lecture d'une entrée si l'autre entrée est épuisée et que la
+    prochaine valeur clé dans la première entrée est supérieure à la dernière
+    valeur clé de l'autre entrée ; dans un cas comme ça, il ne peut plus
+    y avoir de correspondance et il est donc inutile de parcourir le reste de
+    la première entrée. Cela a donc pour conséquence de ne pas lire
+    entièrement un des fils, avec des résultats similaires à ceux mentionnés
+    pour <code class="literal">LIMIT</code>. De même, si le fils externe (premier fils)
+    contient des lignes avec des valeurs de clé dupliquées, le fils externe
+    (second fils) est sauvegardé et les lignes correspondant à cette valeur
+    clé sont parcourues de nouveau. <code class="command">EXPLAIN ANALYZE</code> compte
+    ces émissions répétées de mêmes lignes internes comme si elles étaient de
+    vraies lignes supplémentaires. Quand il y a de nombreux doublons
+    externes, le nombre réel de lignes affiché pour le nœud de plan du fils
+    interne peut être significativement plus grand que le nombre de lignes
+    qu'il y a vraiment dans la relation interne.
+   </p><p>
+    Les nœuds BitmapAnd et BitmapOr affichent toujours un nombre de lignes
+    réelles à 0, du fait des limitations d'implémentation.
+   </p><p>
+    Habituellement, la sortie d'<code class="command">EXPLAIN</code> affichera chaque
+    nœud de plan généré par le planificateur de requêtes. Néanmoins, il
+    existe des cas où l'exécuteur peut déterminer que certains nœuds n'ont
+    pas besoin d'être exécutés car ils ne produisent aucune ligne.
+    (Actuellement, ceci peut n'arriver qu'aux nœuds enfants du nœud
+    <code class="literal">Append</code> qui parcourt une table partitionnée.) Quand
+    cela arrive, ces nœuds sont omis de la sortie de la commande
+    <code class="command">EXPLAIN</code> et une annotation <code class="literal">Subplans Removed:
+    <em class="replaceable"><code>N</code></em></code> apparaît à la place.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/using-explain.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+</html>

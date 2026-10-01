@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/pgcrypto.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.26. pgcrypto -- fonctions de chiffrement</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="pgbuffercache.html" title="F.25. pg_buffercache -- inspecter l'état du cache disque de PostgreSQL" /><link rel="next" href="pgfreespacemap.html" title="F.27. pg_freespacemap -- examiner la carte des espaces libres" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/pgcrypto.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/pgcrypto.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/pgcrypto.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/pgcrypto.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/pgcrypto.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/pgcrypto.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/pgcrypto.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/pgcrypto.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/pgcrypto.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/pgcrypto.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/pgcrypto.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/pgcrypto.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/pgcrypto.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/pgcrypto.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/pgcrypto.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/pgcrypto.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/pgcrypto.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/pgcrypto.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/pgcrypto.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="appendixes.html">Annexes</a></span> » <span class="breadcrumb-link"><a href="contrib.html">Modules et extensions supplémentaires fournis</a></span> » <span class="breadcrumb-node">pgcrypto  --  fonctions de chiffrement</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pgbuffercache.html" title="F.25. pg_buffercache  --  inspecter l'état du cache disque de &#10;  PostgreSQL">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="pgfreespacemap.html" title="F.27. pg_freespacemap  --  examiner la carte des espaces libres">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">F.25. pg_buffercache  --  inspecter l'état du cache disque de 
+  <span class="productname">PostgreSQL</span> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> F.27. pg_freespacemap  --  examiner la carte des espaces libres</td></tr></table></div><div class="sect1" id="PGCRYPTO"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.26. pgcrypto  --  fonctions de chiffrement <a href="#PGCRYPTO" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="pgcrypto.html#PGCRYPTO-GENERAL-HASHING-FUNCS">F.26.1. Fonctions de hachage généralistes</a></span></dt><dt><span class="sect2"><a href="pgcrypto.html#PGCRYPTO-PASSWORD-HASHING-FUNCS">F.26.2. Fonctions de hachage de mot de passe</a></span></dt><dt><span class="sect2"><a href="pgcrypto.html#PGCRYPTO-PGP-ENC-FUNCS">F.26.3. Fonctions de chiffrement PGP</a></span></dt><dt><span class="sect2"><a href="pgcrypto.html#PGCRYPTO-RAW-ENC-FUNCS">F.26.4. Fonctions de chiffrement brut (Raw)</a></span></dt><dt><span class="sect2"><a href="pgcrypto.html#PGCRYPTO-RANDOM-DATA-FUNCS">F.26.5. Fonctions d'octets au hasard</a></span></dt><dt><span class="sect2"><a href="pgcrypto.html#PGCRYPTO-NOTES">F.26.6. Notes</a></span></dt><dt><span class="sect2"><a href="pgcrypto.html#PGCRYPTO-AUTHOR">F.26.7. Auteur</a></span></dt></dl></div><a id="id-1.11.7.37.2" class="indexterm"></a><a id="id-1.11.7.37.3" class="indexterm"></a><p>
+  Le module <code class="filename">pgcrypto</code> propose des fonctions de
+  cryptographie pour <span class="productname">PostgreSQL</span>.
+ </p><p>
+  Ce module est considéré comme <span class="quote">« <span class="quote">trusted</span> »</span>, ce qui signifie qu'il
+  peut être installé par des utilisateurs simples (sans attribut
+  <code class="literal">SUPERUSER</code>) et qui ont l'attribut <code class="literal">CREATE</code>
+  sur la base de données courante.
+ </p><p>
+  <code class="filename">pgcrypto</code> requiert OpenSSL et ne sera pas installé si le
+  support d'OpenSSL n'a pas été sélectionné lors de la construction de
+  PostgreSQL.
+ </p><div class="sect2" id="PGCRYPTO-GENERAL-HASHING-FUNCS"><div class="titlepage"><div><div><h3 class="title">F.26.1. Fonctions de hachage généralistes <a href="#PGCRYPTO-GENERAL-HASHING-FUNCS" class="id_link">#</a></h3></div></div></div><div class="sect3" id="PGCRYPTO-GENERAL-HASHING-FUNCS-DIGEST"><div class="titlepage"><div><div><h4 class="title">F.26.1.1. <code class="function">digest()</code> <a href="#PGCRYPTO-GENERAL-HASHING-FUNCS-DIGEST" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.37.7.2.2" class="indexterm"></a><pre class="synopsis">
+    digest(data text, type text) returns bytea
+    digest(data bytea, type text) returns bytea
+   </pre><p>
+    Calcule un hachage binaire de <em class="parameter"><code>data</code></em>.
+    <em class="parameter"><code>type</code></em> est l'algorithme utilisé. Les algorithmes
+    standards sont <code class="literal">md5</code>, <code class="literal">sha1</code>,
+    <code class="literal">sha224</code>, <code class="literal">sha256</code>,
+    <code class="literal">sha384</code> et <code class="literal">sha512</code>.  De plus, tout
+    algorithme digest que <span class="productname">OpenSSL</span> accepte est
+    automatiquement pris en compte.
+   </p><p>
+    Si vous voulez en résultat une chaîne hexadécimale, utilisez
+    <code class="function">encode()</code> sur le résultat. Par exemple :
+   </p><pre class="programlisting">
+    CREATE OR REPLACE FUNCTION sha1(bytea) returns text AS $$
+      SELECT encode(digest($1, 'sha1'), 'hex')
+    $$ LANGUAGE SQL STRICT IMMUTABLE;
+   </pre></div><div class="sect3" id="PGCRYPTO-GENERAL-HASHING-FUNCS-HMAC"><div class="titlepage"><div><div><h4 class="title">F.26.1.2. <code class="function">hmac()</code> <a href="#PGCRYPTO-GENERAL-HASHING-FUNCS-HMAC" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.37.7.3.2" class="indexterm"></a><pre class="synopsis">
+    hmac(data text, key text, type text) returns bytea
+    hmac(data bytea, key bytea, type text) returns bytea
+   </pre><p>
+    Calcule un MAC haché sur <em class="parameter"><code>data</code></em> avec la clé
+    <em class="parameter"><code>key</code></em>.
+    <em class="parameter"><code>type</code></em> est identique à <code class="function">digest()</code>.
+   </p><p>
+    C'est similaire à <code class="function">digest()</code> mais le hachage peut être
+    recalculé en connaissant seulement la clé. Ceci évite le scénario où
+    quelqu'un modifie les données et le hachage en même temps.
+   </p><p>
+    Si la clé est plus grosse que le bloc haché, il sera tout d'abord haché
+    puis le résultat sera utilisé comme clé.
+   </p></div></div><div class="sect2" id="PGCRYPTO-PASSWORD-HASHING-FUNCS"><div class="titlepage"><div><div><h3 class="title">F.26.2. Fonctions de hachage de mot de passe <a href="#PGCRYPTO-PASSWORD-HASHING-FUNCS" class="id_link">#</a></h3></div></div></div><p>
+   Les fonctions <code class="function">crypt()</code> et
+   <code class="function">gen_salt()</code> sont spécialement conçues pour hacher les
+   mots de passe.
+   <code class="function">crypt()</code> s'occupe du hachage et
+   <code class="function">gen_salt()</code> prépare les paramètres de l'algorithme pour
+   ça.
+  </p><p>
+   Les algorithmes de <code class="function">crypt()</code> diffèrent des algorithmes
+   de hachage habituels comme MD5 ou SHA1 :
+  </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>
+     Ils sont lents. Comme la quantité de données est petite, c'est le seul
+     moyen de rendre difficile la découverte par la force des mots de passe.
+    </p></li><li class="listitem"><p>
+     Ils incluent une valeur aléatoire appelée sel (<em class="firstterm">salt</em>
+     en anglais) avec le résultat, pour que les utilisateurs qui ont le même mot
+     de passe puissent avoir des mots de passe chiffrés différents. C'est
+     aussi une défense supplémentaire comme l'inversion de l'algorithme.
+    </p></li><li class="listitem"><p>
+     Ils incluent le type de l'algorithme dans le résultat pour que les mots
+     de passe hachés avec différents algorithmes puissent co-exister.
+    </p></li><li class="listitem"><p>
+     Certains s'adaptent. Cela signifie que, une fois que les ordinateurs
+     iront plus vite, vous pourrez configurer l'algorithme pour qu'il soit
+     plus lent, ceci sans introduire d'incompatibilité avec les mots de
+     passe existant.
+    </p></li></ol></div><p>
+   <a class="xref" href="pgcrypto.html#PGCRYPTO-CRYPT-ALGORITHMS" title="Tableau F.17. Algorithmes supportés par crypt()">Tableau F.17</a> liste les algorithmes
+   supportés par la fonction <code class="function">crypt()</code>.
+  </p><div class="table" id="PGCRYPTO-CRYPT-ALGORITHMS"><p class="title"><strong>Tableau F.17. Algorithmes supportés par <code class="function">crypt()</code></strong></p><div class="table-contents"><table class="table" summary="Algorithmes supportés par crypt()" border="1"><colgroup><col /><col /><col /><col /><col /><col /></colgroup><thead><tr><th>Algorithme</th><th>Longueur maximum du mot de passe</th><th>Adaptif ?</th><th>Bits sel</th><th>Longueur de la sortie</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">bf</code></td><td>72</td><td>oui</td><td>128</td><td>60</td><td>Basé sur Blowfish, variante 2a</td></tr><tr><td><code class="literal">md5</code></td><td>unlimited</td><td>non</td><td>48</td><td>34</td><td>crypt() basé sur MD5</td></tr><tr><td><code class="literal">xdes</code></td><td>8</td><td>oui</td><td>24</td><td>20</td><td>DES étendu</td></tr><tr><td><code class="literal">des</code></td><td>8</td><td>non</td><td>12</td><td>13</td><td>crypt original UNIX</td></tr></tbody></table></div></div><br class="table-break" /><div class="sect3" id="PGCRYPTO-PASSWORD-HASHING-FUNCS-CRYPT"><div class="titlepage"><div><div><h4 class="title">F.26.2.1. <code class="function">crypt()</code> <a href="#PGCRYPTO-PASSWORD-HASHING-FUNCS-CRYPT" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.37.8.7.2" class="indexterm"></a><pre class="synopsis">
+    crypt(password text, salt text) returns text
+   </pre><p>
+    Calcule un hachage de mot de passe (<em class="parameter"><code>password</code></em>)
+    d'après crypt(3) UN*X. Lors du stockage d'un nouveau mot de passe, vous
+    devez utiliser la fonction <code class="function">gen_salt()</code> pour générer
+    un nouveau sel (<em class="parameter"><code>salt</code></em>). Lors de la vérification de
+    mot de passe, passez la valeur hachée stockée <em class="parameter"><code>salt</code></em>,
+    et testez si le résultat correspond à la valeur stockée.
+   </p><p>
+    Exemple d'ajout d'un nouveau mot de passe :
+   </p><pre class="programlisting">
+    UPDATE ... SET pswhash = crypt('new password', gen_salt('md5'));
+   </pre><p>
+    Exemple d'authentification :
+   </p><pre class="programlisting">
+    SELECT (pswhash = crypt('entered password', pswhash)) AS pswmatch FROM ... ;
+   </pre><p>
+    Ceci renvoie <code class="literal">true</code> si le mot de passe saisi est correct.
+   </p></div><div class="sect3" id="PGCRYPTO-PASSWORD-HASHING-FUNCS-GEN-SALT"><div class="titlepage"><div><div><h4 class="title">F.26.2.2. <code class="function">gen_salt()</code> <a href="#PGCRYPTO-PASSWORD-HASHING-FUNCS-GEN-SALT" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.37.8.8.2" class="indexterm"></a><pre class="synopsis">
+    gen_salt(type text [, iter_count integer ]) returns text
+   </pre><p>
+    Génère une nouvelle valeur aléatoire sel pour son utilisation avec
+    <code class="function">crypt()</code>.
+    La chaîne sel indique aussi à <code class="function">crypt()</code> l'algorithme à
+    utiliser.
+   </p><p>
+    Le paramètre <em class="parameter"><code>type</code></em> précise l'algorithme de hachage.
+    Les types acceptés sont : <code class="literal">des</code>,
+    <code class="literal">xdes</code>, <code class="literal">md5</code> et <code class="literal">bf</code>.
+   </p><p>
+    Le paramètre <em class="parameter"><code>iter_count</code></em> laisse l'utilisateur
+    indiquer le nombre d'itération, pour les algorithmes qui en ont. Plus le
+    nombre est important, plus le hachage du mot de passe prendra du temps,
+    et du coup plus le craquage du mot de passe prendre du temps. Cela étant
+    dit, un nombre trop important rend pratiquement impossible le calcul du
+    hachage. Si le paramètre <em class="parameter"><code>iter_count</code></em> est omis,
+    le nombre d'itération par défaut est utilisé. Les valeurs autorisées pour
+    <em class="parameter"><code>iter_count</code></em> dépendent de l'algorithme et sont
+    affichées dans <a class="xref" href="pgcrypto.html#PGCRYPTO-ICFC-TABLE" title="Tableau F.18. Nombre d'itération pour crypt()">Tableau F.18</a>.
+   </p><div class="table" id="PGCRYPTO-ICFC-TABLE"><p class="title"><strong>Tableau F.18. Nombre d'itération pour <code class="function">crypt()</code></strong></p><div class="table-contents"><table class="table" summary="Nombre d'itération pour crypt()" border="1"><colgroup><col /><col /><col /><col /></colgroup><thead><tr><th>Algorithme</th><th>Par défaut</th><th>Min</th><th>Max</th></tr></thead><tbody><tr><td><code class="literal">xdes</code></td><td>725</td><td>1</td><td>16777215</td></tr><tr><td><code class="literal">bf</code></td><td>6</td><td>4</td><td>31</td></tr></tbody></table></div></div><br class="table-break" /><p>
+    Pour <code class="literal">xdes</code>, il existe une limite supplémentaire qui fait
+    que ce nombre doit être un nombre impair.
+   </p><p>
+    Pour utiliser un nombre d'itération approprié, pensez que la fonction
+    crypt DES original a été conçu pour avoir la vitesse de quatre hachages
+    par seconde sur le matériel de l'époque. Plus lent que quatre hachages par
+    secondes casserait probablement la facilité d'utilisation. Plus rapide que
+    cent hachages à la seconde est probablement trop rapide.
+   </p><p>
+    <a class="xref" href="pgcrypto.html#PGCRYPTO-HASH-SPEED-TABLE" title="Tableau F.19. Vitesse de l'algorithm de hachage">Tableau F.19</a> donne un aperçu de la lenteur relative de
+    différents algorithmes de hachage. La table montre le temps que prendrait
+    le calcul de toutes les combinaisons réalisables pour un mot de passe sur
+    huit caractères, en supposant que le mot de passe contient soit que des
+    lettres minuscules, soit des lettres minuscules et majuscules et des
+    chiffres. Dans les entrées <code class="literal">crypt-bf</code>, le nombre après
+    un slash est le paramètre <em class="parameter"><code>iter_count</code></em> de
+    <code class="function">gen_salt</code>.
+   </p><div class="table" id="PGCRYPTO-HASH-SPEED-TABLE"><p class="title"><strong>Tableau F.19. Vitesse de l'algorithm de hachage</strong></p><div class="table-contents"><table class="table" summary="Vitesse de l'algorithm de hachage" border="1"><colgroup><col /><col /><col /><col /><col /></colgroup><thead><tr><th>Algorithme</th><th>Hachages/sec</th><th>Pour <code class="literal">[a-z]</code></th><th>Pour <code class="literal">[A-Za-z0-9]</code></th><th>Durée par rapport à <code class="literal">md5 hash</code></th></tr></thead><tbody><tr><td><code class="literal">crypt-bf/8</code></td><td>1792</td><td>4 années</td><td>3927 années</td><td>100k</td></tr><tr><td><code class="literal">crypt-bf/7</code></td><td>3648</td><td>2 années</td><td>1929 années</td><td>50k</td></tr><tr><td><code class="literal">crypt-bf/6</code></td><td>7168</td><td>1 année</td><td>982 années</td><td>25k</td></tr><tr><td><code class="literal">crypt-bf/5</code></td><td>13504</td><td>188 années</td><td>521 années</td><td>12.5k</td></tr><tr><td><code class="literal">crypt-md5</code></td><td>171584</td><td>15 jours</td><td>41 années</td><td>1k</td></tr><tr><td><code class="literal">crypt-des</code></td><td>23221568</td><td>157.5 minutes</td><td>108 jours</td><td>7</td></tr><tr><td><code class="literal">sha1</code></td><td>37774272</td><td>90 minutes</td><td>68 jours</td><td>4</td></tr><tr><td><code class="literal">md5</code> (hash)</td><td>150085504</td><td>22.5 minutes</td><td>17 jours</td><td>1</td></tr></tbody></table></div></div><br class="table-break" /><p>
+    Lorsqu'elle est compilée avec <span class="productname">OpenSSL</span> 3.0.0 ou
+    une version ultérieure, le fournisseur hérité doit être activé dans le
+    fichier de configuration <code class="filename">openssl.cnf</code> pour utiliser
+    les anciens chiffrements tels que DES or Blowfish.
+   </p><p>
+    Notes :
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      La machine utilisée est un Intel Mobile Core i3.
+     </p></li><li class="listitem"><p>
+      Les numéros des algorithmes <code class="literal">crypt-des</code> et
+      <code class="literal">crypt-md5</code> sont pris de la sortie
+      du -test de John the Ripper v1.6.38.
+     </p></li><li class="listitem"><p>
+      Les nombres hachés <code class="literal">md5</code> font partie de mdcrack 1.2.
+     </p></li><li class="listitem"><p>
+      Les nombres <code class="literal">sha1</code> font partie de lcrack-20031130-beta.
+     </p></li><li class="listitem"><p>
+      Les nombres <code class="literal">crypt-bf</code> sont pris en utilisant le
+      programme simple qui boucle sur 1000 mots de passe de huit caractères.
+      De cette façon, la vitesse avec les différents nombres
+      de tours peut se voir. Pour référence : <code class="literal">john -test</code> affiche 13506
+      tours/sec pour <code class="literal">crypt-bf/5</code>. (La petite différence dans
+      les résultats est dû au fait que l'implémentation de
+      <code class="literal">crypt-bf</code> dans <code class="filename">pgcrypto</code> est la
+      même que celle utilisée dans John the Ripper.)
+     </p></li></ul></div><p>
+    Notez que <span class="quote">« <span class="quote">tenter toutes les combinaisons</span> »</span> n'est pas un
+    exercice réaliste. Habituellement, craquer les mots de passe se fait avec
+    l'aide de dictionnaires contenant les mots standards et différentes
+    variantes. Donc, même des mots de passe qui ressemblent vaguement à des
+    mots peuvent être craqués plus rapidement que les nombres ci-dessus le
+    suggèrent alors qu'un mot de passe sur six caractères qui ne ressemble pas
+    à un mot pourrait ne pas être craqué.
+   </p></div></div><div class="sect2" id="PGCRYPTO-PGP-ENC-FUNCS"><div class="titlepage"><div><div><h3 class="title">F.26.3. Fonctions de chiffrement PGP <a href="#PGCRYPTO-PGP-ENC-FUNCS" class="id_link">#</a></h3></div></div></div><p>
+   Les fonctions implémentent la partie chiffrement du standard OpenPGP
+   (<a class="ulink" href="https://datatracker.ietf.org/doc/html/rfc4880" target="_top">RFC 4880</a>).
+   Les chiffrements à clés symétriques et publiques sont supportés.
+  </p><p>
+   Un message PGP chiffré consiste en deux parties ou
+   <em class="firstterm">paquets</em> :
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+     Un paquet contenant la clé de session  --  soit une clé symétrique
+     soit une clé publique chiffrée.
+    </p></li><li class="listitem"><p>
+     Paquet contenant les données chiffrées avec la clé de session.
+    </p></li></ul></div><p>
+   Lors du chiffrement avec une clé symétrique (par exemple, un mot de
+   passe) :
+  </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>
+     Le mot de passe est haché en utilisant l'algorithme String2Key (S2K).
+     C'est assez similaire à l'algorithme <code class="function">crypt()</code>  -- 
+     lenteur voulue et nombre aléatoire pour le sel  --  mais il produit
+     une clé binaire de taille complète.
+    </p></li><li class="listitem"><p>
+     Si une clé de session séparée est demandée, une nouvelle clé sera générée
+     au hasard. Sinon une clé S2K sera utilisée directement en tant que clé de
+     session.
+    </p></li><li class="listitem"><p>
+     Si une clé S2K est à utiliser directement, alors seuls les paramètres S2K
+     sont placés dans le paquet de session. Sinon la clé de session sera
+     chiffrée avec la clé S2K et placée dans le paquet de session.
+    </p></li></ol></div><p>
+   Lors du chiffrement avec une clé publique :
+  </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>
+     Une nouvelle clé de session est générée au hasard.
+    </p></li><li class="listitem"><p>
+     Elle est chiffrée en utilisant la clé public et placée dans
+     le paquet de session.
+    </p></li></ol></div><p>
+   Dans les deux cas, les données à chiffrer sont traitées ainsi :
+  </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>
+     Manipulation optionnelle des données : compression, conversion vers
+     UTF-8, conversion de retours à la ligne.
+    </p></li><li class="listitem"><p>
+     Les données sont préfixées avec un bloc d'octets pris au hasard. C'est
+     identique à l'utilisation de <span class="foreignphrase"><em class="foreignphrase">random IV</em></span>.
+    </p></li><li class="listitem"><p>
+     Un hachage SHA1 d'un préfixe et de données au hasard est ajouté.
+    </p></li><li class="listitem"><p>
+     Tout ceci est chiffré avec la clé de la session et placé dans la paquet
+     de données.
+    </p></li></ol></div><div class="sect3" id="PGCRYPTO-PGP-ENC-FUNCS-PGP-SYM-ENCRYPT"><div class="titlepage"><div><div><h4 class="title">F.26.3.1. <code class="function">pgp_sym_encrypt()</code> <a href="#PGCRYPTO-PGP-ENC-FUNCS-PGP-SYM-ENCRYPT" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.37.9.11.2" class="indexterm"></a><a id="id-1.11.7.37.9.11.3" class="indexterm"></a><pre class="synopsis">
+    pgp_sym_encrypt(data text, psw text [, options text ]) returns bytea
+    pgp_sym_encrypt_bytea(data bytea, psw text [, options text ]) returns bytea
+   </pre><p>
+    Chiffre <em class="parameter"><code>data</code></em> avec une clé PGP symétrique
+    <em class="parameter"><code>psw</code></em>.
+    Le paramètre <em class="parameter"><code>options</code></em> peut contenir des options
+    décrites ci-dessous.
+   </p></div><div class="sect3" id="PGCRYPTO-PGP-ENC-FUNCS-PGP-SYM-DECRYPT"><div class="titlepage"><div><div><h4 class="title">F.26.3.2. <code class="function">pgp_sym_decrypt()</code> <a href="#PGCRYPTO-PGP-ENC-FUNCS-PGP-SYM-DECRYPT" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.37.9.12.2" class="indexterm"></a><a id="id-1.11.7.37.9.12.3" class="indexterm"></a><pre class="synopsis">
+    pgp_sym_decrypt(msg bytea, psw text [, options text ]) returns text
+    pgp_sym_decrypt_bytea(msg bytea, psw text [, options text ]) returns bytea
+   </pre><p>
+    Déchiffre un message PGP chiffré avec une clé symétrique.
+   </p><p>
+    Déchiffrer des données <code class="type">bytea</code> avec <code class="function">pgp_sym_decrypt</code>
+    est interdit.
+    Ceci a pour but d'éviter la sortie de données de type caractère invalides.
+    Déchiffrer des données textuelles avec
+    <code class="function">pgp_sym_decrypt_bytea</code> ne pose pas de problème.
+   </p><p>
+    Le paramètre <em class="parameter"><code>options</code></em> peut contenir les paramètres
+    décrits ci-dessous.
+   </p></div><div class="sect3" id="PGCRYPTO-PGP-ENC-FUNCS-PGP-PUB-ENCRYPT"><div class="titlepage"><div><div><h4 class="title">F.26.3.3. <code class="function">pgp_pub_encrypt()</code> <a href="#PGCRYPTO-PGP-ENC-FUNCS-PGP-PUB-ENCRYPT" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.37.9.13.2" class="indexterm"></a><a id="id-1.11.7.37.9.13.3" class="indexterm"></a><pre class="synopsis">
+    pgp_pub_encrypt(data text, key bytea [, options text ]) returns bytea
+    pgp_pub_encrypt_bytea(data bytea, key bytea [, options text ]) returns bytea
+   </pre><p>
+    Chiffre <em class="parameter"><code>data</code></em> avec la clé PGP publique
+    <em class="parameter"><code>key</code></em>.
+    Avec cette fonction, une clé privée renverra une erreur.
+   </p><p>
+    Le paramètre <em class="parameter"><code>options</code></em> peut contenir des options
+    décrites ci-dessous.
+   </p></div><div class="sect3" id="PGCRYPTO-PGP-ENC-FUNCS-PGP-PUB-DECRYPT"><div class="titlepage"><div><div><h4 class="title">F.26.3.4. <code class="function">pgp_pub_decrypt()</code> <a href="#PGCRYPTO-PGP-ENC-FUNCS-PGP-PUB-DECRYPT" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.37.9.14.2" class="indexterm"></a><a id="id-1.11.7.37.9.14.3" class="indexterm"></a><pre class="synopsis">
+    pgp_pub_decrypt(msg bytea, key bytea [, psw text [, options text ]]) returns text
+    pgp_pub_decrypt_bytea(msg bytea, key bytea [, psw text [, options text ]]) returns bytea
+   </pre><p>
+    Déchiffre un message chiffré avec une clé publique.
+    <em class="parameter"><code>key</code></em> doit être la clé secrète correspondant à la
+    clé publique utilisée pour chiffrer. Si la clé secrète est protégée par
+    un mot de passe, vous devez saisir le mot de passe dans
+    <em class="parameter"><code>psw</code></em>. S'il n'y a pas de mot de passe mais que vous
+    devez indiquer des options, vous devez saisir un mot de passe vide.
+   </p><p>
+    Déchiffrer des données <code class="type">bytea</code> avec <code class="function">pgp_pub_decrypt</code> est
+    interdit. Ceci a pour but d'éviter la sortie de données de type caractère
+    invalides. Déchiffrer des données textuelles avec
+    <code class="function">pgp_pub_decrypt_bytea</code> ne pose pas de problème.
+   </p><p>
+    Le paramètre <em class="parameter"><code>options</code></em> peut contenir des options
+    décrites ci-dessous.
+   </p></div><div class="sect3" id="PGCRYPTO-PGP-ENC-FUNCS-PGP-KEY-ID"><div class="titlepage"><div><div><h4 class="title">F.26.3.5. <code class="function">pgp_key_id()</code> <a href="#PGCRYPTO-PGP-ENC-FUNCS-PGP-KEY-ID" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.37.9.15.2" class="indexterm"></a><pre class="synopsis">
+    pgp_key_id(bytea) returns text
+   </pre><p>
+    <code class="function">pgp_key_id</code> extrait l'identifiant de la clé pour
+    une clé PGP publique ou secrète. Ou il donne l'identifiant de la clé
+    utilisé pour chiffrer les données si un message chiffré est fourni.
+   </p><p>
+    Elle peut renvoyer deux identifiants de clés spéciaux :
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      <code class="literal">SYMKEY</code>
+     </p><p>
+      Le message est chiffré avec une clé symétrique.
+     </p></li><li class="listitem"><p>
+      <code class="literal">ANYKEY</code>
+     </p><p>
+      La donnée est chiffrée avec une clé publique mais l'identifiant de la clé
+      est effacé. Cela signifie que vous avez besoin d'essayer toutes les clés
+      secrètes pour voir laquelle la déchiffre. <code class="filename">pgcrypto</code>
+      ne réalise pas lui-même de tels messages.
+     </p></li></ul></div><p>
+    Notez que des clés différentes peuvent avoir le même identifiant. C'est
+    rare mais normal. L'application client doit alors essayer de déchiffer avec
+    chacune d'elle pour voir laquelle correspond  --  ce qui revient à la
+    gestion de <code class="literal">ANYKEY</code>.
+   </p></div><div class="sect3" id="PGCRYPTO-PGP-ENC-FUNCS-ARMOR"><div class="titlepage"><div><div><h4 class="title">F.26.3.6. <code class="function">armor()</code>, <code class="function">dearmor()</code> <a href="#PGCRYPTO-PGP-ENC-FUNCS-ARMOR" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.37.9.16.2" class="indexterm"></a><a id="id-1.11.7.37.9.16.3" class="indexterm"></a><pre class="synopsis">
+    armor(data bytea [ , keys text[], values text[] ]) returns text
+    dearmor(data text) returns bytea
+   </pre><p>
+    Ces fonctions enveloppent les données dans une armure ASCII PGP qui est
+    basiquement en Base64 avec CRC et un formatage supplémentaire.
+   </p><p>
+    Si les tableaux <em class="parameter"><code>keys</code></em> et
+    <em class="parameter"><code>values</code></em> sont précisées, un <em class="firstterm">entête
+     d'armure</em> est ajouté au format standard pour chaque paire
+    clé/valeur. Les deux tableaux doivent avoir une seule dimension, et ils
+    doivent avoir la même longueur. Les clés et valeurs ne peuvent pas
+    contenir de caractères non ASCII.
+   </p></div><div class="sect3" id="PGCRYPTO-PGP-ENC-FUNCS-PGP-ARMOR-HEADERS"><div class="titlepage"><div><div><h4 class="title">F.26.3.7. <code class="function">pgp_armor_headers</code> <a href="#PGCRYPTO-PGP-ENC-FUNCS-PGP-ARMOR-HEADERS" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.37.9.17.2" class="indexterm"></a><pre class="synopsis">
+pgp_armor_headers(data text, key out text, value out text) returns setof record
+   </pre><p>
+    <code class="function">pgp_armor_headers()</code> extrait les en-têtes d'armure à
+    partir de <em class="parameter"><code>data</code></em>. La valeur de retour est un ensemble
+    de lignes avec deux colonnes, une clé et une valeur. Si les clés ou
+    valeurs contiennent des caractères non ASCII, ils sont traités avec
+    l'encodage UTF-8.
+   </p></div><div class="sect3" id="PGCRYPTO-PGP-ENC-FUNCS-OPTS"><div class="titlepage"><div><div><h4 class="title">F.26.3.8. Options pour les fonctions PGP <a href="#PGCRYPTO-PGP-ENC-FUNCS-OPTS" class="id_link">#</a></h4></div></div></div><p>
+    Les options sont nommées de façon similaires à GnuPG. Les valeurs sont
+    fournies après un signe d'égalité ; les options sont séparées par
+    des virgules. Par exemple :
+   </p><pre class="programlisting">
+    pgp_sym_encrypt(data, psw, 'compress-algo=1, cipher-algo=aes256')
+   </pre><p>
+    Toutes les options en dehors de <code class="literal">convert-crlf</code>
+    s'appliquent seulement aux fonctions de chiffrement. Les fonctions de
+    déchiffrement obtiennent des paramètres des données PGP.
+   </p><p>
+    Les options les plus intéressantes sont probablement
+    <code class="literal">compression-algo</code> et <code class="literal">unicode-mode</code>.
+    Le reste doit avoir des valeurs par défaut raisonnables.
+   </p><div class="sect4" id="PGCRYPTO-PGP-ENC-FUNCS-OPTS-CIPHER-ALGO"><div class="titlepage"><div><div><h5 class="title">F.26.3.8.1. cipher-algo <a href="#PGCRYPTO-PGP-ENC-FUNCS-OPTS-CIPHER-ALGO" class="id_link">#</a></h5></div></div></div><p>
+     Quel algorithme de chiffrement à utiliser.
+    </p><div class="literallayout"><p><br />
+     Valeurs : bf, aes128, aes192, aes256, 3des, cast5<br />
+     Par défaut : aes128<br />
+     Applique à : pgp_sym_encrypt, pgp_pub_encrypt<br />
+    </p></div></div><div class="sect4" id="PGCRYPTO-PGP-ENC-FUNCS-OPTS-COMPRESS-ALGO"><div class="titlepage"><div><div><h5 class="title">F.26.3.8.2. compress-algo <a href="#PGCRYPTO-PGP-ENC-FUNCS-OPTS-COMPRESS-ALGO" class="id_link">#</a></h5></div></div></div><p>
+     Algorithme de compression à utiliser. Seulement disponible si
+     <span class="productname">PostgreSQL</span> a été construit avec zlib.
+    </p><div class="literallayout"><p><br />
+     Valeurs :<br />
+     0 - sans compression<br />
+     1 - compression ZIP<br />
+     2 -  compression ZLIB [=ZIP plus meta-data and block-CRC's]<br />
+     Par défaut : 0<br />
+     S'applique à : pgp_sym_encrypt, pgp_pub_encrypt<br />
+    </p></div></div><div class="sect4" id="PGCRYPTO-PGP-ENC-FUNCS-OPTS-COMPRESS-LEVEL"><div class="titlepage"><div><div><h5 class="title">F.26.3.8.3. compress-level <a href="#PGCRYPTO-PGP-ENC-FUNCS-OPTS-COMPRESS-LEVEL" class="id_link">#</a></h5></div></div></div><p>
+     Niveau de compression. Les grands niveaux compressent mieux mais sont plus
+     lents. 0 désactive la compression.
+    </p><div class="literallayout"><p><br />
+     Valeurs : 0, 1-9<br />
+     Par défaut : 6<br />
+     S'applique à : pgp_sym_encrypt, pgp_pub_encrypt<br />
+    </p></div></div><div class="sect4" id="PGCRYPTO-PGP-ENC-FUNCS-OPTS-CONVERT-CRLF"><div class="titlepage"><div><div><h5 class="title">F.26.3.8.4. convert-crlf <a href="#PGCRYPTO-PGP-ENC-FUNCS-OPTS-CONVERT-CRLF" class="id_link">#</a></h5></div></div></div><p>
+     Précise si <code class="literal">\n</code> doit être converti en
+     <code class="literal">\r\n</code> lors du chiffrement et <code class="literal">\r\n</code> en
+     <code class="literal">\n</code>  lors du déchiffrement. La <acronym class="acronym">RFC</acronym>
+     4880 spécifie que
+     les données texte doivent être stockées en utilisant les retours chariot
+     <code class="literal">\r\n</code>. Utilisez cette option pour obtenir un comportement
+     respectant la RFC.
+    </p><div class="literallayout"><p><br />
+     Valeurs : 0, 1<br />
+     Par défaut : 0<br />
+     S'applique à : pgp_sym_encrypt, pgp_pub_encrypt, pgp_sym_decrypt,<br />
+     pgp_pub_decrypt<br />
+    </p></div></div><div class="sect4" id="PGCRYPTO-PGP-ENC-FUNCS-OPTS-DISABLE-MDC"><div class="titlepage"><div><div><h5 class="title">F.26.3.8.5. disable-mdc <a href="#PGCRYPTO-PGP-ENC-FUNCS-OPTS-DISABLE-MDC" class="id_link">#</a></h5></div></div></div><p>
+     Ne protège pas les données avec SHA-1. La seule bonne raison pour utiliser
+     cette option est d'avoir une compatibilité avec les anciens produits PGP
+     précédant l'ajout de paquets protégés SHA-1 dans la <acronym class="acronym">RFC</acronym>
+     4880. Les versions
+     récentes des logiciels de gnupg.org et pgp.com le supportent.
+    </p><div class="literallayout"><p><br />
+     Valeurs : 0, 1<br />
+     Par défaut : 0<br />
+     S'applique à : pgp_sym_encrypt, pgp_pub_encrypt<br />
+    </p></div></div><div class="sect4" id="PGCRYPTO-PGP-ENC-FUNCS-OPTS-SESS-KEY"><div class="titlepage"><div><div><h5 class="title">F.26.3.8.6. sess-key <a href="#PGCRYPTO-PGP-ENC-FUNCS-OPTS-SESS-KEY" class="id_link">#</a></h5></div></div></div><p>
+     Utilise la clé de session séparée. Le chiffrement par clé publique utilise
+     toujours une clé de session séparée, c'est pour le chiffrement de clé
+     symétrique, qui utilise directement par défaut S2K.
+    </p><div class="literallayout"><p><br />
+     Valeurs : 0, 1<br />
+     Par défaut : 0<br />
+     S'applique à : pgp_sym_encrypt<br />
+    </p></div></div><div class="sect4" id="PGCRYPTO-PGP-ENC-FUNCS-OPTS-S2K-MODE"><div class="titlepage"><div><div><h5 class="title">F.26.3.8.7. s2k-mode <a href="#PGCRYPTO-PGP-ENC-FUNCS-OPTS-S2K-MODE" class="id_link">#</a></h5></div></div></div><p>
+     Algorithme S2K à utiliser.
+    </p><div class="literallayout"><p><br />
+     Valeurs :<br />
+     0 - Sans sel. Dangereux !<br />
+     1 - Avec sel mais avec un décompte fixe des itérations.<br />
+     3 - Décompte variables des itérations.<br />
+     Par défaut : 3<br />
+     S'applique à : pgp_sym_encrypt<br />
+    </p></div></div><div class="sect4" id="PGCRYPTO-PGP-ENC-FUNCS-OPTS-S2K-COUNT"><div class="titlepage"><div><div><h5 class="title">F.26.3.8.8. s2k-count <a href="#PGCRYPTO-PGP-ENC-FUNCS-OPTS-S2K-COUNT" class="id_link">#</a></h5></div></div></div><p>
+     Le nombre d'itérations de l'algorithme S2K à utiliser. La valeur doit être
+     comprise entre 1024 et 65011712, valeurs incluses.
+    </p><div class="literallayout"><p><br />
+     Par défaut : Une valeur aléatoire entre 65536 et 253952<br />
+     S'applique à : pgp_sym_encrypt, seulement avec s2k-mode=3<br />
+    </p></div></div><div class="sect4" id="PGCRYPTO-PGP-ENC-FUNCS-OPTS-S2K-DIGEST-ALGO"><div class="titlepage"><div><div><h5 class="title">F.26.3.8.9. s2k-digest-algo <a href="#PGCRYPTO-PGP-ENC-FUNCS-OPTS-S2K-DIGEST-ALGO" class="id_link">#</a></h5></div></div></div><p>
+     Algorithme digest à utiliser dans le calcul S2K.
+    </p><div class="literallayout"><p><br />
+     Valeurs : md5, sha1<br />
+     Par défaut : sha1<br />
+     S'applique à : pgp_sym_encrypt<br />
+    </p></div></div><div class="sect4" id="PGCRYPTO-PGP-ENC-FUNCS-OPTS-S2K-CIPHER-ALGO"><div class="titlepage"><div><div><h5 class="title">F.26.3.8.10. s2k-cipher-algo <a href="#PGCRYPTO-PGP-ENC-FUNCS-OPTS-S2K-CIPHER-ALGO" class="id_link">#</a></h5></div></div></div><p>
+     Chiffrement à utiliser pour le chiffrage de la clé de session séparée.
+    </p><div class="literallayout"><p><br />
+     Valeurs : bf, aes, aes128, aes192, aes256<br />
+     Par défaut : use cipher-algo<br />
+     S'applique à : pgp_sym_encrypt<br />
+    </p></div></div><div class="sect4" id="PGCRYPTO-PGP-ENC-FUNCS-OPTS-UNICODE-MODE"><div class="titlepage"><div><div><h5 class="title">F.26.3.8.11. unicode-mode <a href="#PGCRYPTO-PGP-ENC-FUNCS-OPTS-UNICODE-MODE" class="id_link">#</a></h5></div></div></div><p>
+     Sélection de la conversion des données texte à partir de l'encodage interne
+     de la base vers l'UTF-8 et inversement. Si votre base de données est déjà
+     en UTF-8, aucune conversion ne sera réalisée, seules les données seront
+     marquées comme étant en UTF-8. Sans cette option, cela ne se fera pas.
+    </p><div class="literallayout"><p><br />
+     Valeurs : 0, 1<br />
+     Par défaut : 0<br />
+     S'applique à : pgp_sym_encrypt, pgp_pub_encrypt<br />
+    </p></div></div></div><div class="sect3" id="PGCRYPTO-PGP-ENC-FUNCS-GNUPG"><div class="titlepage"><div><div><h4 class="title">F.26.3.9. Générer des clés PGP avec GnuPG <a href="#PGCRYPTO-PGP-ENC-FUNCS-GNUPG" class="id_link">#</a></h4></div></div></div><p>
+    Pour générer une nouvelle clé :
+   </p><pre class="programlisting">
+   gpg --gen-key
+   </pre><p>
+    Le type de clé préféré est <span class="quote">« <span class="quote">DSA and Elgamal</span> »</span>.
+   </p><p>
+    Pour le chiffrement RSA, vous devez créer soit une clé de signature seulement
+    DSA ou RSA en tant que maître, puis ajouter la sous-clé de chiffrement RSA
+    avec <code class="literal">gpg --edit-key</code>.
+   </p><p>
+    Pour lister les clés :
+   </p><pre class="programlisting">
+   gpg --list-secret-keys
+   </pre><p>
+    Pour exporter une clé publique dans un format armure ASCII :
+   </p><pre class="programlisting">
+   gpg -a --export KEYID &gt; public.key
+   </pre><p>
+    Pour exporter une clé secrète dans un format armure ASCII :
+   </p><pre class="programlisting">
+   gpg -a --export-secret-keys KEYID &gt; secret.key
+   </pre><p>
+    Vous avez besoin d'utiliser la fonction <code class="function">dearmor()</code> sur
+    ces clés avant de les passer aux fonctions PGP. Ou si vous gérez des données
+    binaires, vous pouvez supprimer l'option <code class="literal">-a</code> pour la
+    commande.
+   </p><p>
+    Pour plus de détails, voir la <code class="literal">page de référence de gpg</code>,
+    le <a class="ulink" href="https://www.gnupg.org/gph/en/manual.html" target="_top">livre « GNU
+     Privacy Handbook »</a> et d'autres documents sur le
+    <a class="ulink" href="https://www.gnupg.org/" target="_top">site gnupg.org</a>.
+   </p></div><div class="sect3" id="PGCRYPTO-PGP-ENC-FUNCS-LIMITATIONS"><div class="titlepage"><div><div><h4 class="title">F.26.3.10. Limites du code PGP <a href="#PGCRYPTO-PGP-ENC-FUNCS-LIMITATIONS" class="id_link">#</a></h4></div></div></div><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Pas de support des signatures. Cela signifie aussi qu'on ne peut pas
+      vérifier si la sous-clé de chiffrage appartient bien à la clé maître.
+     </p></li><li class="listitem"><p>
+      Pas de support de la clé de chiffrement en tant que clé maître. Cela ne
+      devrait pas être un problème étant donné que cette pratique n'est pas
+      encouragée.
+     </p></li><li class="listitem"><p>
+      Pas de support pour plusieurs sous-clés. Ceci peut être un problème car
+      c'est une pratique courante. D'un autre côté, vous ne devez pas utiliser
+      vos clés GPG/PGP habituelles avec <code class="filename">pgcrypto</code>, mais en
+      créer de nouvelles car l'utilisation est assez différente.
+     </p></li></ul></div></div></div><div class="sect2" id="PGCRYPTO-RAW-ENC-FUNCS"><div class="titlepage"><div><div><h3 class="title">F.26.4. Fonctions de chiffrement brut (Raw) <a href="#PGCRYPTO-RAW-ENC-FUNCS" class="id_link">#</a></h3></div></div></div><p>
+   Ces fonctions exécutent directement un calcul des données ; ils n'ont
+   pas de fonctionnalités avancées de chiffrement PGP. Du coup, ils ont les
+   problèmes majeurs suivant :
+  </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>
+     Elles utilisent directement la clé de l'utilisateur comme clé de calcul.
+    </p></li><li class="listitem"><p>
+     Elles ne fournissent pas une vérification de l'intégrité pour savoir si
+     les données chiffrées ont été modifiées.
+    </p></li><li class="listitem"><p>
+     Elles s'attendent à ce que les utilisateurs gèrent eux-même tous les
+     paramètres du chiffrement, même IV.
+    </p></li><li class="listitem"><p>
+     Elles ne gèrent pas le texte.
+    </p></li></ol></div><p>
+   Donc, avec l'introduction du chiffrement PGP, l'utilisation des fonctions
+   de chiffrement brut n'est pas encouragée.
+  </p><a id="id-1.11.7.37.10.5" class="indexterm"></a><a id="id-1.11.7.37.10.6" class="indexterm"></a><a id="id-1.11.7.37.10.7" class="indexterm"></a><a id="id-1.11.7.37.10.8" class="indexterm"></a><pre class="synopsis">
+    encrypt(data bytea, key bytea, type text) returns bytea
+    decrypt(data bytea, key bytea, type text) returns bytea
+
+    encrypt_iv(data bytea, key bytea, iv bytea, type text) returns bytea
+    decrypt_iv(data bytea, key bytea, iv bytea, type text) returns bytea
+  </pre><p>
+   Chiffrer/déchiffrer les données en utilisant la méthode de calcul spécifiée
+   par <em class="parameter"><code>type</code></em>. La syntaxe de la chaîne
+   <em class="parameter"><code>type</code></em> est :
+  </p><pre class="synopsis">
+   <em class="replaceable"><code>algorithm</code></em> [<span class="optional"> <code class="literal">-</code> <em class="replaceable"><code>mode</code></em> </span>] [<span class="optional"> <code class="literal">/pad:</code> <em class="replaceable"><code>padding</code></em> </span>]
+  </pre><p>
+   où <em class="replaceable"><code>algorithm</code></em> fait partie de :
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p><code class="literal">bf</code>  --  Blowfish</p></li><li class="listitem"><p><code class="literal">aes</code>  --  AES (Rijndael-128, -192 ou -256)</p></li></ul></div><p>
+   et <em class="replaceable"><code>mode</code></em> fait partie de :
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+     <code class="literal">cbc</code>  --  le bloc suivant dépend du précédent. (par
+     défaut)
+    </p></li><li class="listitem"><p>
+     <code class="literal">ecb</code>  --  chaque bloc est chiffré séparément.
+     (seulement pour les tests)
+    </p></li></ul></div><p>
+   et <em class="replaceable"><code>padding</code></em> fait partie de :
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+     <code class="literal">pkcs</code>  --  les données peuvent avoir n'importe quelle
+     longueur (par défaut)
+    </p></li><li class="listitem"><p>
+     <code class="literal">none</code>  --  les données doivent être des multiples de
+     la taille du bloc de calcul.
+    </p></li></ul></div><p>
+   Donc, pour exemple, ces derniers sont équivalents :
+  </p><pre class="programlisting">
+   encrypt(data, 'fooz', 'bf')
+   encrypt(data, 'fooz', 'bf-cbc/pad:pkcs')
+  </pre><p>
+   Dans <code class="function">encrypt_iv</code> et <code class="function">decrypt_iv</code>, le
+   paramètre <em class="parameter"><code>iv</code></em> est la valeur initiale pour le mode
+   CBC ; elle est ignorée pour ECB. Elle est remplie de zéro pour
+   l'alignement si la taille de données ne correspond à un multiple de la
+   taille du bloc. Elle a pour valeur par défaut que des zéros dans les
+   fonctions sans ce paramètre.
+  </p></div><div class="sect2" id="PGCRYPTO-RANDOM-DATA-FUNCS"><div class="titlepage"><div><div><h3 class="title">F.26.5. Fonctions d'octets au hasard <a href="#PGCRYPTO-RANDOM-DATA-FUNCS" class="id_link">#</a></h3></div></div></div><a id="id-1.11.7.37.11.2" class="indexterm"></a><pre class="synopsis">
+   gen_random_bytes(count integer) returns bytea
+  </pre><p>
+   Renvoie <em class="parameter"><code>count</code></em>) octets pour un chiffrement fort.
+   Il peut y avoir au maximum 1024 octets extrait à un instant t, ceci pour
+   éviter de vider le contenu du générateur de nombres aléatoires.
+  </p><a id="id-1.11.7.37.11.5" class="indexterm"></a><pre class="synopsis">
+gen_random_uuid() returns uuid
+  </pre><p>
+   Retourne un UUID de version 4 (aléatoire). (Obsolète, cette fonction appelle
+   en interne la <a class="link" href="functions-uuid.html" title="9.14. Fonctions UUID">fonction native </a> du même
+   nom.)
+  </p></div><div class="sect2" id="PGCRYPTO-NOTES"><div class="titlepage"><div><div><h3 class="title">F.26.6. Notes <a href="#PGCRYPTO-NOTES" class="id_link">#</a></h3></div></div></div><div class="sect3" id="PGCRYPTO-NOTES-CONFIG"><div class="titlepage"><div><div><h4 class="title">F.26.6.1. Configuration <a href="#PGCRYPTO-NOTES-CONFIG" class="id_link">#</a></h4></div></div></div><p>
+    <code class="filename">pgcrypto</code> se configure lui-même suivant les
+    découvertes du script <code class="literal">configure</code> principal de PostgreSQL.
+    Les options qui l'affectent sont <code class="literal">--with-zlib</code> et
+    <code class="literal">--with-ssl=openssl</code>.
+   </p><p>
+    Quand il est compilé avec zlib, les fonctions de chiffrement PGP peuvent
+    compresser les données avant chiffrement.
+   </p><p>
+    <code class="filename">pgcrypto</code> requiert <span class="productname">OpenSSL</span>.
+    Sinon, il ne sera ni construit ni installé.
+   </p><p>
+    Lorsqu'il est compilé avec la version 3.0.0 ou ultérieure
+    d'<span class="productname">OpenSSL</span>, l'ancien fournisseur doit être
+    activé dans le fichier de configuration <code class="filename">openssl.cnf</code>
+    pour utiliser les chiffrements les plus anciens comme DES ou Blowfish.
+   </p></div><div class="sect3" id="PGCRYPTO-NOTES-NULL-HANDLING"><div class="titlepage"><div><div><h4 class="title">F.26.6.2. Gestion des NULL <a href="#PGCRYPTO-NOTES-NULL-HANDLING" class="id_link">#</a></h4></div></div></div><p>
+    Comme le standard SQL le demande, toutes les fonctions renvoient NULL si
+    un des arguments est NULL. Cela peut permettre une faille de sécurité si
+    c'est utilisé sans précaution.
+   </p></div><div class="sect3" id="PGCRYPTO-NOTES-SEC-LIMITS"><div class="titlepage"><div><div><h4 class="title">F.26.6.3. Limites de la sécurité <a href="#PGCRYPTO-NOTES-SEC-LIMITS" class="id_link">#</a></h4></div></div></div><p>
+    Toutes les fonctions de <code class="filename">pgcrypto</code> sont exécutées au
+    sein du serveur de bases de données. Cela signifie que toutes les données
+    et les mots de passe sont passés entre <code class="filename">pgcrypto</code> et
+    l'application client en texte clair. Donc, vous devez :
+   </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>Vous connecter localement ou utiliser des connexions
+      SSL ;</p></li><li class="listitem"><p>Faire confiance à votre administrateur système et de base de
+      données.</p></li></ol></div><p>
+    Si vous ne le pouvez pas, alors il est préférable de chiffrer directement
+    au sein de l'application client.
+   </p><p>
+    L'implémentation ne résiste pas à des <a class="ulink" href="https://en.wikipedia.org/wiki/Side-channel_attack" target="_top">attaques par canal
+     auxiliaire</a>. Par exemple, le temps requis pour terminer l'exécution
+    d'une fonction de déchiffrement de <code class="filename">pgcrypto</code> varie
+    suivant les texts de déchiffrement d'une certaine taille.
+   </p></div></div><div class="sect2" id="PGCRYPTO-AUTHOR"><div class="titlepage"><div><div><h3 class="title">F.26.7. Auteur <a href="#PGCRYPTO-AUTHOR" class="id_link">#</a></h3></div></div></div><p>
+   Marko Kreen <code class="email">&lt;<a class="email" href="mailto:markokr@gmail.com">markokr@gmail.com</a>&gt;</code>
+  </p><p>
+   <code class="filename">pgcrypto</code> utilise du code provenant des sources
+   suivantes :
+  </p><div class="informaltable"><table class="informaltable" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Algorithme</th><th>Auteur</th><th>Origine du source</th></tr></thead><tbody><tr><td>DES crypt</td><td>David Burren and others</td><td>FreeBSD libcrypt</td></tr><tr><td>MD5 crypt</td><td>Poul-Henning Kamp</td><td>FreeBSD libcrypt</td></tr><tr><td>Blowfish crypt</td><td>Solar Designer</td><td>www.openwall.com</td></tr></tbody></table></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/pgcrypto.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+</html>

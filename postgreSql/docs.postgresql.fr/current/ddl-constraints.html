@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/ddl-constraints.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:23 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>5.5. Contraintes</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="ddl-generated-columns.html" title="5.4. Colonnes générées" /><link rel="next" href="ddl-system-columns.html" title="5.6. Colonnes système" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/ddl-constraints.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/ddl-constraints.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/ddl-constraints.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/ddl-constraints.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/ddl-constraints.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/ddl-constraints.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/ddl-constraints.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/ddl-constraints.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/ddl-constraints.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/ddl-constraints.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/ddl-constraints.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/ddl-constraints.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/ddl-constraints.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/ddl-constraints.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/ddl-constraints.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/ddl-constraints.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/ddl-constraints.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/ddl-constraints.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/ddl-constraints.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/ddl-constraints.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/ddl-constraints.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="ddl.html">Définition des données</a></span> » <span class="breadcrumb-node">Contraintes</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ddl-generated-columns.html" title="5.4. Colonnes générées">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="ddl.html" title="Chapitre 5. Définition des données">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="ddl-system-columns.html" title="5.6. Colonnes système">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">5.4. Colonnes générées </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 5.6. Colonnes système</td></tr></table></div><div class="sect1" id="DDL-CONSTRAINTS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">5.5. Contraintes <a href="#DDL-CONSTRAINTS" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="ddl-constraints.html#DDL-CONSTRAINTS-CHECK-CONSTRAINTS">5.5.1. Contraintes de vérification</a></span></dt><dt><span class="sect2"><a href="ddl-constraints.html#DDL-CONSTRAINTS-NOT-NULL">5.5.2. Contraintes non NULL</a></span></dt><dt><span class="sect2"><a href="ddl-constraints.html#DDL-CONSTRAINTS-UNIQUE-CONSTRAINTS">5.5.3. Contraintes d'unicité</a></span></dt><dt><span class="sect2"><a href="ddl-constraints.html#DDL-CONSTRAINTS-PRIMARY-KEYS">5.5.4. Clés primaires</a></span></dt><dt><span class="sect2"><a href="ddl-constraints.html#DDL-CONSTRAINTS-FK">5.5.5. Clés étrangères</a></span></dt><dt><span class="sect2"><a href="ddl-constraints.html#DDL-CONSTRAINTS-EXCLUSION">5.5.6. Contraintes d'exclusion</a></span></dt></dl></div><a id="id-1.5.4.7.2" class="indexterm"></a><p>
+   Les types de données sont un moyen de restreindre la nature des données qui
+   peuvent être stockées dans une table. Pour beaucoup d'applications,
+   toutefois, la contrainte fournie par ce biais est trop grossière. Par
+   exemple, une colonne qui contient le prix d'un produit ne doit accepter
+   que des valeurs positives. Mais il n'existe pas de type de données natif
+   qui n'accepte que des valeurs positives. Un autre problème peut provenir
+   de la volonté de contraindre les données d'une colonne par rapport aux
+   autres colonnes ou lignes. Par exemple, dans une table contenant des
+   informations de produit, il ne peut y avoir qu'une ligne par numéro de
+   produit.
+  </p><p>
+   Pour cela, SQL permet de définir des contraintes sur les colonnes et les
+   tables. Les contraintes donnent autant de contrôle sur les données des
+   tables qu'un utilisateur peut le souhaiter. Si un utilisateur tente de
+   stocker des données dans une colonne en violation d'une contrainte, une
+   erreur est levée. Cela s'applique même si la valeur vient de la définition
+   de la valeur par défaut.
+  </p><div class="sect2" id="DDL-CONSTRAINTS-CHECK-CONSTRAINTS"><div class="titlepage"><div><div><h3 class="title">5.5.1. Contraintes de vérification <a href="#DDL-CONSTRAINTS-CHECK-CONSTRAINTS" class="id_link">#</a></h3></div></div></div><a id="id-1.5.4.7.5.2" class="indexterm"></a><a id="id-1.5.4.7.5.3" class="indexterm"></a><p>
+    La contrainte de vérification est la contrainte la plus générique qui
+    soit. Elle permet d'indiquer que la valeur d'une colonne particulière
+    doit satisfaire une expression booléenne (valeur de vérité). Par exemple,
+    pour obliger les prix des produits à être positifs, on peut
+    utiliser :
+
+    </p><pre class="programlisting">CREATE TABLE produits (
+    no_produit integer,
+    nom text,
+    prix numeric <span class="emphasis"><strong>CHECK (prix &gt; 0)</strong></span>
+);</pre><p>
+   </p><p>
+
+    La définition d'une contrainte vient après le type de données, comme pour
+    les définitions de valeur par défaut. Les valeurs par défaut et les
+    contraintes peuvent être données dans n'importe quel ordre. Une
+    contrainte de vérification s'utilise avec le mot-clé
+    <code class="literal">CHECK</code> suivi d'une expression entre parenthèses.
+    L'expression de la contrainte implique habituellement la colonne à
+    laquelle elle s'applique, la contrainte n'ayant dans le cas contraire que
+    peu de sens.
+   </p><a id="id-1.5.4.7.5.6" class="indexterm"></a><p>
+    La contrainte peut prendre un nom distinct. Cela clarifie les messages
+    d'erreur et permet de faire référence à la contrainte lorsqu'elle doit
+    être modifiée. La syntaxe est :
+
+    </p><pre class="programlisting">CREATE TABLE produits (
+    no_produit integer,
+    nom text,
+    prix numeric <span class="emphasis"><strong>CONSTRAINT prix_positif</strong></span> CHECK (prix &gt; 0)
+);</pre><p>
+
+    Pour indiquer une contrainte nommée, on utilise le mot-clé
+    <code class="literal">CONSTRAINT</code> suivi d'un identifiant et de la définition
+    de la contrainte (si aucun nom n'est précisé, le système en choisit un).
+   </p><p>
+    Une contrainte de vérification peut aussi faire référence à plusieurs
+    colonnes. Dans le cas d'un produit, on peut vouloir stocker le prix
+    normal et un prix réduit en s'assurant que le prix réduit soit bien
+    inférieur au prix normal.
+
+    </p><pre class="programlisting">CREATE TABLE produits (
+    no_produit integer,
+    nom text,
+    prix numeric CHECK (prix &gt; 0),
+    prix_promotion numeric CHECK (prix_promotion &gt; 0),
+    <span class="emphasis"><strong>CHECK (prix &gt; prix_promotion)</strong></span>
+);</pre><p>
+   </p><p>
+    Si les deux premières contraintes n'offrent pas de nouveauté, la troisième
+    utilise une nouvelle syntaxe. Elle n'est pas attachée à une colonne
+    particulière, mais apparaît comme un élément distinct dans la liste des
+    colonnes. Les définitions de colonnes et ces définitions de contraintes
+    peuvent être définies dans un ordre quelconque.
+   </p><p>
+
+    Les deux premières contraintes sont appelées contraintes de colonne,
+    tandis que la troisième est appelée contrainte de table parce qu'elle est
+    écrite séparément d'une définition de colonne particulière. Les
+    contraintes de colonne peuvent être écrites comme des contraintes de
+    table, mais l'inverse n'est pas forcément possible puisqu'une contrainte
+    de colonne est supposée ne faire référence qu'à la colonne à laquelle
+    elle est attachée (<span class="productname">PostgreSQL</span> ne vérifie pas
+    cette règle, mais il est préférable de la suivre pour s'assurer que les
+    définitions de tables fonctionnent avec d'autres systèmes de bases de
+    données). L'exemple ci-dessus peut aussi s'écrire :
+
+    </p><pre class="programlisting">CREATE TABLE produits (
+    no_produit integer,
+    nom text,
+    prix numeric,
+    CHECK (prix &gt; 0),
+    prix_promotion numeric,
+    CHECK (prix_promotion &gt; 0),
+    CHECK (prix &gt; prix_promotion)
+);</pre><p>
+
+    ou même :
+
+</p><pre class="programlisting">CREATE TABLE produits (
+    no_produit integer,
+    nom text,
+    prix numeric CHECK (prix &gt; 0),
+    prix_promotion numeric,
+    CHECK (prix_promotion &gt; 0 AND prix &gt; prix_promotion)
+);</pre><p>
+
+    C'est une question de goût.
+   </p><p>
+    Les contraintes de table peuvent être nommées, tout comme les contraintes
+    de colonne :
+
+    </p><pre class="programlisting">CREATE TABLE produits (
+    no_produit integer,
+    nom text,
+    prix numeric,
+    CHECK (prix &gt; 0),
+    prix_promotion numeric,
+    CHECK (prix_promotion &gt; 0),
+    <span class="emphasis"><strong>CONSTRAINT promo_valide</strong></span> CHECK (prix &gt; prix_promotion)
+);</pre><p>
+   </p><a id="id-1.5.4.7.5.12" class="indexterm"></a><p>
+    Une contrainte de vérification est satisfaite si l'expression est évaluée
+    vraie ou NULL. Puisque la plupart des expressions sont évaluées NULL si
+    l'un des opérandes vaut NULL, elles n'interdisent pas les valeurs NULL
+    dans les colonnes contraintes. Pour s'assurer qu'une colonne ne contient
+    pas de valeurs NULL, la contrainte NOT NULL décrite dans la section
+    suivante peut être utilisée.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     <span class="productname">PostgreSQL</span> ne gère pas les contraintes
+     <code class="literal">CHECK</code> référençant des données situées ailleurs que
+     dans la ligne vérifiée, nouvelle ou mise à jour. Bien qu'une contrainte
+     <code class="literal">CHECK</code> violant cette règle puisse sembler fonctionner
+     dans des tests simples, on ne peut garantir que la base de données
+     n'atteindra pas un état dans lequel la condition de contrainte serait
+     fausse (suite à des changements sur d'autres lignes impliquées). Cela
+     entraînerait l'échec d'une restauration de sauvegarde logique. Elle
+     échouerait même si l'état de la base entière était cohérent avec la
+     contrainte, à cause des lignes non encore chargées dans un ordre qui
+     satisferait la contrainte. Si possible, utilisez les contraintes
+     <code class="literal">UNIQUE</code>, <code class="literal">EXCLUDE</code> ou
+     <code class="literal">FOREIGN KEY</code> pour exprimer des restrictions entre
+     lignes ou entre tables.
+    </p><p>
+     Si vous recherchez une vérification uniquement à l'insertion de la ligne
+     par rapport à d'autres lignes, et non une garantie de cohérence à
+     maintenir en permanence, vous pouvez utiliser un <a class="link" href="triggers.html" title="Chapitre 37. Triggers (triggers)">trigger</a> personnalisé. (Cette approche évite le
+     problème de la restauration logique car
+     <span class="application">pg_dump</span> ne réinstalle pas les triggers avant
+     d'avoir fini de recharger les données ; ainsi la vérification ne
+     sera pas appliquée à la restauration.)
+    </p></div><div class="note"><h3 class="title">Note</h3><p>
+     <span class="productname">PostgreSQL</span> suppose que les conditions des
+     contraintes <code class="literal">CHECK</code> sont immutables, c'est-à-dire
+     qu'elles donneront toujours le même résultat pour la même ligne en
+     entrée. Ainsi on s'autorise à n'examiner les contraintes
+     <code class="literal">CHECK</code> qu'à l'insertion ou la suppression des lignes,
+     et pas à d'autres moments. (L'avertissement ci-dessus sur la référence
+     aux données d'autres tables n'est qu'un cas particulier de cette
+     restriction.)
+    </p><p>
+     Un exemple d'une manière courante de passer outre cette supposition est
+     de faire référence à une fonction utilisateur dans l'expression d'un
+     <code class="literal">CHECK</code>, puis de changer le comportement de cette
+     fonction. <span class="productname">PostgreSQL</span> ne l'interdit pas, mais
+     il ne remarquera pas qu'il y a des lignes dans la table qui violent à
+     présent la contrainte <code class="literal">CHECK</code>. Cela provoquerait
+     l'échec d'une sauvegarde/restauration logique subséquente. La manière
+     recommandée pour traiter un tel changement est de supprimer la
+     contrainte (avec <code class="command">ALTER TABLE</code>), d'ajuster la
+     définition de la fonction et de ré-appliquer la contrainte, la
+     revalidant ainsi sur toutes les lignes de la table.
+    </p></div></div><div class="sect2" id="DDL-CONSTRAINTS-NOT-NULL"><div class="titlepage"><div><div><h3 class="title">5.5.2. Contraintes non NULL <a href="#DDL-CONSTRAINTS-NOT-NULL" class="id_link">#</a></h3></div></div></div><a id="id-1.5.4.7.6.2" class="indexterm"></a><a id="id-1.5.4.7.6.3" class="indexterm"></a><p>
+    Une contrainte NOT NULL indique simplement qu'une colonne ne peut pas
+    prendre la valeur NULL. Par exemple :
+
+</p><pre class="programlisting">CREATE TABLE produits (
+    no_produit integer <span class="emphasis"><strong>NOT NULL</strong></span>,
+    nom text <span class="emphasis"><strong>NOT NULL</strong></span>,
+    prix numeric
+);</pre><p>
+   </p><p>
+    Une contrainte NOT NULL est toujours écrite comme une contrainte de
+    colonne. Elle est fonctionnellement équivalente à la création d'une
+    contrainte de vérification <code class="literal">CHECK
+    (<em class="replaceable"><code>nom_colonne</code></em> IS NOT NULL)</code>.
+    Toutefois, dans <span class="productname">PostgreSQL</span>, il est plus
+    efficace de créer explicitement une contrainte NOT NULL. L'inconvénient
+    est que les contraintes de non-nullité ainsi créées ne peuvent pas être
+    explicitement nommées.
+   </p><p>
+    Une colonne peut évidemment avoir plusieurs contraintes. Il suffit
+    d'écrire les contraintes les unes après les autres :
+
+    </p><pre class="programlisting">CREATE TABLE produits (
+    no_produit integer NOT NULL,
+    nom text NOT NULL,
+    prix numeric NOT NULL CHECK (prix &gt; 0)
+);</pre><p>
+
+    L'ordre n'a aucune importance. Il ne détermine pas l'ordre de vérification
+    des contraintes.
+   </p><p>
+    La contrainte <code class="literal">NOT NULL</code> a un contraire ; la
+    contrainte <code class="literal">NULL</code>. Elle ne signifie pas que la colonne
+    doit être NULL, ce qui est assurément inutile, mais sélectionne le
+    comportement par défaut, à savoir que la colonne peut être NULL. La
+    contrainte <code class="literal">NULL</code> n'est pas présente dans le standard
+    SQL et ne doit pas être utilisée dans des applications portables(elle n'a
+    été ajoutée dans <span class="productname">PostgreSQL</span> que pour assurer
+    la compatibilité avec d'autres bases de données). Certains utilisateurs
+    l'apprécient néanmoins, car elle permet de basculer aisément d'une
+    contrainte à l'autre dans un fichier de script. On peut, par exemple,
+    commencer avec :
+
+</p><pre class="programlisting">CREATE TABLE produits (
+    no_produit integer NULL,
+    nom text NULL,
+    prix numeric NULL
+);</pre><p>
+
+    puis insérer le mot-clé <code class="literal">NOT</code> en fonction des besoins.
+   </p><div class="tip"><h3 class="title">Astuce</h3><p>
+     Dans la plupart des bases de données, il est préférable que la majorité
+     des colonnes soient marquées NOT NULL.
+    </p></div></div><div class="sect2" id="DDL-CONSTRAINTS-UNIQUE-CONSTRAINTS"><div class="titlepage"><div><div><h3 class="title">5.5.3. Contraintes d'unicité <a href="#DDL-CONSTRAINTS-UNIQUE-CONSTRAINTS" class="id_link">#</a></h3></div></div></div><a id="id-1.5.4.7.7.2" class="indexterm"></a><a id="id-1.5.4.7.7.3" class="indexterm"></a><p>
+    Les contraintes d'unicité garantissent l'unicité des données contenues
+    dans une colonne ou un groupe de colonnes par rapport à toutes les lignes
+    de la table. La syntaxe est :
+
+    </p><pre class="programlisting">CREATE TABLE produits (
+    no_produit integer <span class="emphasis"><strong>UNIQUE</strong></span>,
+    nom text,
+    prix numeric
+);</pre><p>
+
+    lorsque la contrainte est écrite comme contrainte de colonne et :
+
+    </p><pre class="programlisting">CREATE TABLE produits (
+    no_produit integer,
+    nom text,
+    prix numeric,
+    <span class="emphasis"><strong>UNIQUE (no_produit)</strong></span>
+);</pre><p>
+
+    lorsqu'elle est écrite comme contrainte de table.
+   </p><p>
+    Pour définir une contrainte d'unicité pour un groupe de colonnes,
+    saisissez-la en tant que contrainte de table avec les noms des colonnes
+    séparés par des virgules :
+
+    </p><pre class="programlisting">CREATE TABLE exemple (
+    a integer,
+    b integer,
+    c integer,
+    <span class="emphasis"><strong>UNIQUE (a, c)</strong></span>
+);</pre><p>
+
+    Cela précise que la combinaison de valeurs dans les colonnes indiquées est
+    unique sur toute la table. Sur une colonne prise isolément, ce n'est pas
+    nécessairement le cas (et habituellement, cela ne l'est pas).
+   </p><p>
+    Une contrainte d'unicité peut être nommée, de la façon habituelle :
+
+    </p><pre class="programlisting">CREATE TABLE produits (
+    no_produit integer <span class="emphasis"><strong>CONSTRAINT doit_etre_different</strong></span> UNIQUE,
+    nom text,
+    prix numeric
+);</pre><p>
+   </p><p>
+    Ajouter une contrainte d'unicité va automatiquement créer un index unique
+    B-tree sur la colonne ou le groupe de colonnes listées dans la
+    contrainte. Une restriction d'unicité couvrant seulement certaines lignes
+    ne peut pas être écrite comme une contrainte d'unicité, mais il est
+    possible de forcer ce type de restriction en créant un <a class="link" href="indexes-partial.html" title="11.8. Index partiels">index partiel</a> unique.
+   </p><a id="id-1.5.4.7.7.8" class="indexterm"></a><p>
+    En général, une contrainte d'unicité est violée si plus d'une ligne de la
+    table possède des valeurs identiques sur toutes les colonnes de la
+    contrainte. Par défaut, deux valeurs NULL ne sont jamais considérées
+    égales. Cela signifie qu'il est possible de stocker des lignes dupliquées
+    contenant une valeur NULL dans au moins une des colonnes contraintes.
+    Ce comportement peut être modifié en ajoutant la clause <code class="literal">NULLS
+    NOT DISTINCT</code>, comme :
+</p><pre class="programlisting">
+CREATE TABLE products (
+    product_no integer UNIQUE <span class="emphasis"><strong>NULLS NOT DISTINCT</strong></span>,
+    name text,
+    price numeric
+);
+</pre><p>
+    ou :
+</p><pre class="programlisting">
+CREATE TABLE products (
+    product_no integer,
+    name text,
+    price numeric,
+    UNIQUE <span class="emphasis"><strong>NULLS NOT DISTINCT</strong></span> (product_no)
+);
+</pre><p>
+    Le comportement par défaut peut être spécifié explicitement en utilisant
+    <code class="literal">NULLS DISTINCT</code>. Le traitement par défaut des NULL dans
+    les contraintes d'unicité est défini par l'implémentation suivant le
+    standard SQL, alors que d'autres implémentations ont un comportement
+    différent. Donc faites attention quand vous développez des applications
+    qui ont pour but d'être portables.
+   </p></div><div class="sect2" id="DDL-CONSTRAINTS-PRIMARY-KEYS"><div class="titlepage"><div><div><h3 class="title">5.5.4. Clés primaires <a href="#DDL-CONSTRAINTS-PRIMARY-KEYS" class="id_link">#</a></h3></div></div></div><a id="id-1.5.4.7.8.2" class="indexterm"></a><a id="id-1.5.4.7.8.3" class="indexterm"></a><p>
+    Une contrainte de type clé primaire indique qu'une colonne, ou un groupe
+    de colonnes, peuvent être utilisés comme un identifiant unique de ligne
+    pour cette table. Ceci nécessite que les valeurs soient à la fois uniques
+    et non NULL. Les définitions de table suivantes acceptent de ce fait les
+    mêmes données :
+
+    </p><pre class="programlisting">CREATE TABLE produits (
+	no_produit integer UNIQUE NOT NULL,
+	nom text,
+	prix numeric
+);</pre><p>
+
+    </p><pre class="programlisting">CREATE TABLE produits (
+	no_produit integer <span class="emphasis"><strong>PRIMARY KEY</strong></span>,
+	nom text,
+	prix numeric
+);</pre><p>
+   </p><p>
+	Les clés primaires peuvent également contraindre plusieurs colonnes ; la
+    syntaxe est semblable aux contraintes d'unicité :
+
+    </p><pre class="programlisting">CREATE TABLE exemple (
+	a integer,
+	b integer,
+	c integer,
+	<span class="emphasis"><strong>PRIMARY KEY (a, c)</strong></span>
+);</pre><p>
+   </p><p>
+    Ajouter une clé primaire créera automatiquement un index unique B-tree sur
+    la colonne ou le groupe de colonnes listés dans la clé primaire, et
+    forcera les colonnes à être marquées <code class="literal">NOT NULL</code>.
+   </p><p>
+    L'ajout d'une clé primaire créera automatiquement un index B-tree unique
+    sur la colonne ou le groupe de colonnes utilisé dans la clé primaire.
+   </p><p>
+	Une table a, au plus, une clé primaire. (Le nombre de contraintes UNIQUE NOT
+    NULL, qui assurent pratiquement la même fonction, n'est pas limité, mais
+    une seule peut être identifiée comme clé primaire.) La théorie des bases
+    de données relationnelles impose que chaque table ait une clé primaire.
+    Cette règle n'est pas forcée par <span class="productname">PostgreSQL</span>,
+    mais il est préférable de la respecter.
+   </p><p>
+    Les clés primaires sont utiles pour la documentation et pour les
+    applications clientes. Par exemple, une application graphique qui permet
+    de modifier des valeurs des lignes a probablement besoin de connaître la
+    clé primaire d'une table pour être capable d'identifier les lignes de
+    façon unique. Le système de bases de données utilise une clé primaire de
+    différentes façons. Par exemple, la clé primaire définit les colonnes
+    cibles par défaut pour les clés étrangères référençant cette table.
+   </p></div><div class="sect2" id="DDL-CONSTRAINTS-FK"><div class="titlepage"><div><div><h3 class="title">5.5.5. Clés étrangères <a href="#DDL-CONSTRAINTS-FK" class="id_link">#</a></h3></div></div></div><a id="id-1.5.4.7.9.2" class="indexterm"></a><a id="id-1.5.4.7.9.3" class="indexterm"></a><a id="id-1.5.4.7.9.4" class="indexterm"></a><p>
+	Une contrainte de clé étrangère stipule que les valeurs d'une colonne (ou
+    d'un groupe de colonnes) doivent correspondre aux valeurs qui apparaissent
+    dans les lignes d'une autre table. On dit que cela maintient
+    l'<em class="firstterm">intégrité référentielle</em> entre les deux tables.
+   </p><p>
+	Soit la table de produits, déjà utilisée plusieurs fois :
+
+    </p><pre class="programlisting">CREATE TABLE produits (
+	no_produit integer PRIMARY KEY,
+	nom text,
+	prix numeric
+);</pre><p>
+
+	Soit également une table qui stocke les commandes de ces produits. Il est
+    intéressant de s'assurer que la table des commandes ne contient que des
+    commandes de produits qui existent réellement. Pour cela, une contrainte
+    de clé étrangère est définie dans la table des commandes qui référence la
+    table <span class="quote">« <span class="quote">produits</span> »</span> :
+
+    </p><pre class="programlisting">CREATE TABLE commandes (
+	id_commande integer PRIMARY KEY,
+	no_produit integer <span class="emphasis"><strong>REFERENCES produits (no_produit)</strong></span>,
+	quantite integer
+);</pre><p>
+
+	Il est désormais impossible de créer des commandes pour lesquelles les
+    valeurs non NULL de <code class="structfield">no_produit</code> n'apparaissent
+    pas dans la table <span class="quote">« <span class="quote">produits</span> »</span>.
+   </p><p>
+    Dans cette situation, on dit que la table des commandes est la table
+    <em class="firstterm">qui référence</em> et la table des produits est la
+    table <em class="firstterm">référencée</em>. De la même façon, il y a des
+    colonnes qui référencent et des colonnes référencées.
+   </p><p>
+    La commande précédente peut être raccourcie en
+
+    </p><pre class="programlisting">CREATE TABLE commandes (
+	id_commande integer PRIMARY KEY,
+	no_produit integer <span class="emphasis"><strong>REFERENCES produits</strong></span>,
+	quantite integer
+);</pre><p>
+
+	parce qu'en l'absence de liste de colonnes, la clé primaire de la table de
+    référence est utilisée comme colonne de référence.
+   </p><p>
+    Une contrainte de clé étrangère peut être nommée de la façon habituelle.
+   </p><p>
+	Une clé étrangère peut aussi contraindre et référencer un groupe de colonnes.
+    Comme cela a déjà été évoqué, il faut alors l'écrire sous forme d'une
+    contrainte de table. Exemple de syntaxe :
+
+    </p><pre class="programlisting">CREATE TABLE t1 (
+      a integer PRIMARY KEY,
+      b integer,
+      c integer,
+      <span class="emphasis"><strong>FOREIGN KEY (b, c) REFERENCES autre_table (c1, c2)</strong></span>
+);</pre><p>
+
+	Le nombre et le type des colonnes contraintes doivent correspondre au nombre
+    et au type des colonnes référencées.
+   </p><a id="id-1.5.4.7.9.11" class="indexterm"></a><p>
+    Parfois, il est utile que l'<span class="quote">« <span class="quote">autre table</span> »</span> d'une clé étrangère
+    soit la même table ; elle est alors appelée une clé étrangère
+    <em class="firstterm">auto-référencée</em>. Par exemple, si vous voulez que
+    les lignes d'une table représentent les nœuds d'une structure en arbre,
+    vous pouvez écrire
+
+    </p><pre class="programlisting">
+CREATE TABLE tree (
+    node_id integer PRIMARY KEY,
+    parent_id integer REFERENCES tree,
+    name text,
+    ...
+);</pre><p>
+
+    Un nœud racine aura la colonne <code class="structfield">parent_id</code> à
+    NULL, et les enregistrements non NULL de
+    <code class="structfield">parent_id</code> seront contraints de référencer des
+    enregistrements valides de la table.
+   </p><p>
+	Une table peut contenir plusieurs contraintes de clé étrangère. Les relations
+    n-n entre tables sont implémentées ainsi. Soit des tables qui contiennent
+    des produits et des commandes, avec la possibilité d'autoriser une
+    commande à contenir plusieurs produits (ce que la structure ci-dessus ne
+    permet pas). On peut pour cela utiliser la structure de table
+    suivante :
+
+    </p><pre class="programlisting">CREATE TABLE produits (
+	no_produit integer PRIMARY KEY,
+	nom text,
+	prix numeric
+);
+
+CREATE TABLE commandes (
+	id_commande integer PRIMARY KEY,
+	adresse_de_livraison text,
+	...
+);
+
+CREATE TABLE commande_produits (
+	no_produit integer REFERENCES produits,
+	id_commande integer REFERENCES commandes,
+	quantite integer,
+	PRIMARY KEY (no_produit, id_commande)
+);</pre><p>
+
+	La clé primaire de la dernière table recouvre les clés étrangères.
+   </p><a id="id-1.5.4.7.9.14" class="indexterm"></a><a id="id-1.5.4.7.9.15" class="indexterm"></a><p>
+	Les clés étrangères interdisent désormais la création de commandes qui ne
+    sont pas liées à un produit. Qu'arrive-t-il si un produit est supprimé
+    alors qu'une commande y fait référence ? SQL permet aussi de le
+    gérer. Intuitivement, plusieurs options existent :
+
+	</p><div class="itemizedlist"><ul class="itemizedlist compact" style="list-style-type: disc; "><li class="listitem"><p>interdire d'effacer un produit référencé ;</p></li><li class="listitem"><p>effacer aussi les commandes ;</p></li><li class="listitem"><p>autre chose ?</p></li></ul></div><p>
+   </p><p>
+	Pour illustrer ce cas, la politique suivante est implémentée sur l'exemple de
+    relations n-n évoqué plus haut :
+	</p><div class="itemizedlist"><ul class="itemizedlist compact" style="list-style-type: disc; "><li class="listitem"><p>
+       quand quelqu'un veut retirer un produit qui est encore référencé par
+       une commande(au travers de <code class="literal">commande_produits</code>), on
+       l'interdit ;
+      </p></li><li class="listitem"><p>
+       si quelqu'un supprime une commande, les éléments de la commande sont
+       aussi supprimés.
+      </p></li></ul></div><p>
+
+    </p><pre class="programlisting">CREATE TABLE produits (
+	no_produit integer PRIMARY KEY,
+	nom text,
+	prix numeric
+);
+
+CREATE TABLE commandes (
+	id_commande integer PRIMARY KEY,
+	adresse_de_livraison text,
+	...
+);
+
+CREATE TABLE commande_produits (
+	no_produit integer REFERENCES produits <span class="emphasis"><strong>ON DELETE RESTRICT</strong></span>,
+	id_commande integer REFERENCES commandes <span class="emphasis"><strong>ON DELETE CASCADE</strong></span>,
+	quantite integer,
+	PRIMARY KEY (no_produit, id_commande)
+);</pre><p>
+   </p><p>
+    Restreindre les suppressions et les réaliser en cascade sont les deux
+    options les plus communes. <code class="literal">RESTRICT</code> empêche la
+    suppression d'une ligne référencée. <code class="literal">NO ACTION</code> impose
+    la levée d'une erreur si des lignes référençant existent lors de la
+    vérification de la contrainte. Il s'agit du comportement par défaut en
+    l'absence de précision. La différence entre <code class="literal">RESTRICT</code>
+    et <code class="literal">NO ACTION</code> est l'autorisation par <code class="literal">NO
+    ACTION</code> du report de la vérification à la fin de la transaction,
+    ce que <code class="literal">RESTRICT</code> ne permet pas.
+    <code class="literal">CASCADE</code> indique que, lors de la suppression d'une
+    ligne référencée, les lignes la référençant doivent être automatiquement
+    supprimées. Il existe deux autres options : <code class="literal">SET
+    NULL</code> et <code class="literal">SET DEFAULT</code>. Celles-ci imposent que
+    les colonnes qui référencent dans les lignes référencées soient
+    réinitialisées à NULL ou à leur valeur par défaut, respectivement, lors
+    de la suppression d'une ligne référencée. Elles ne dispensent pas pour
+    autant d'observer les contraintes. Par exemple, si une action précise
+    <code class="literal">SET DEFAULT</code>, mais que la valeur par défaut ne
+    satisfait pas la clé étrangère, l'opération échoue.
+   </p><p>
+    Le choix approprié de l'action <code class="literal">ON DELETE</code> dépend du type
+    d'objets que les tables ciblées représentent. Quand la table référençante
+    représente quelque chose qui est un composant de ce qui est représenté par
+    la table référencée et ne peut pas exister indépendamment, alors
+    <code class="literal">CASCADE</code> pourrait être approprié. Si les deux tables
+    représentent des objets indépendants, alors <code class="literal">RESTRICT</code> ou
+    <code class="literal">NO ACTION</code> est plus approprié ; une application qui
+    souhaite réellement supprimer les deux objets devra être explicite là-dessus
+    et exécuter les deux commandes de suppression. Dans l'exemple ci-dessus, les
+    éléments d'une commande font partie de cette commande, et il est pratique
+    qu'ils soient supprimés automatiquement si une commande est supprimée. Mais
+    les produits et les commandes sont deux choses différentes, et de ce fait,
+    faire en sorte que supprimer un produit cause la suppression automatique de
+    certains éléments de commandes peut être considéré comme problématique. Les
+    actions <code class="literal">SET NULL</code> ou <code class="literal">SET DEFAULT</code>
+    peuvent être appropriées si la relation d'une clé étrangère représente des
+    informations supplémentaires.  Par exemple, si la table produits contenait
+    une référence à un gestionnaire de produit et que l'enregistrement
+    correspondant à ce gestionnaire était supprimé, alors configurer le
+    gestionnaire du produit à NULL ou à une valeur par défaut pourrait être
+    utile.
+   </p><p>
+    Les actions <code class="literal">SET NULL</code> et <code class="literal">SET DEFAULT</code>
+    peuvent prendre une liste de colonnes pour spécifier les colonnes à
+    configurer. Normalement, toutes les colonnes de la clé étrangère sont
+    configurés ; configurer uniquement un sous-ensemble est utile dans
+    quelques cas spéciaux.  Considérez l'exemple suivant :
+</p><pre class="programlisting">
+CREATE TABLE tenants (
+    tenant_id integer PRIMARY KEY
+);
+
+CREATE TABLE users (
+    tenant_id integer REFERENCES tenants ON DELETE CASCADE,
+    user_id integer NOT NULL,
+    PRIMARY KEY (tenant_id, user_id)
+);
+
+CREATE TABLE posts (
+    tenant_id integer REFERENCES tenants ON DELETE CASCADE,
+    post_id integer NOT NULL,
+    author_id integer,
+    PRIMARY KEY (tenant_id, post_id),
+    FOREIGN KEY (tenant_id, author_id) REFERENCES users ON DELETE SET NULL <span class="emphasis"><strong>(author_id)</strong></span>
+);
+</pre><p>
+    Sans la spécification de la colonne, la clé étrangère aurait aussi
+    configurer la colonne <code class="literal">tenant_id</code> à null, mais la valeur de
+    cette colonne est toujours essentielle, vu qu'elle fait partie de la clé
+    primaire.
+   </p><p>
+    À l'instar de <code class="literal">ON DELETE</code>, il existe <code class="literal">ON
+    UPDATE</code>, évoqué lorsqu'une colonne référencée est modifiée
+    (actualisée). Les actions possibles sont les mêmes, sauf que les listes de
+    colonnes ne peuvent pas être utilisées avec <code class="literal">SET NULL</code> et
+    <code class="literal">SET DEFAULT</code>. Dans ce cas, <code class="literal">CASCADE</code>
+    signifie que les valeurs mises à jour dans la colonne référencée doivent
+    être copiées dans les lignes de référence.
+   </p><p>
+    Habituellement, une ligne de référence n'a pas besoin de satisfaire la clé
+    étrangère si une de ses colonnes est NULL. Si la clause <code class="literal">MATCH
+    FULL</code> est ajoutée à la déclaration de la clé étrangère, une
+    ligne de référence échappe à la clé étrangère seulement si toutes ses
+    colonnes de référence sont NULL (donc un mélange de valeurs NULL et non
+    NULL échoue forcément sur une contrainte <code class="literal">MATCH FULL</code>).
+    Si vous ne voulez pas que les lignes de référence soient capables
+    d'empêcher la satisfaction de la clé étrangère, déclarez les colonnes de
+    référence comme <code class="literal">NOT NULL</code>.
+   </p><p>
+    Une clé étrangère doit référencer les colonnes qui soit sont une clé
+    primaire, soit forment une contrainte d'unicité, soit sont les colonnes d'un
+    index d'unicité non partiel. Cela signifie que les
+    colonnes référencées ont toujours un index pour permettre des recherches
+    efficaces pour savoir si une ligne référençante a une correspondance.
+    Comme la suppression d'une ligne de la
+    table référencée ou la mise à jour d'une colonne référencée nécessitera
+    un parcours de la table référée pour trouver les lignes correspondant à
+    l'ancienne valeur, il est souvent intéressant d'indexer les colonnes
+    référencées. Comme cela n'est pas toujours nécessaire et qu'il y a du
+    choix sur la façon d'indexer, l'ajout d'une contrainte de clé étrangère
+    ne crée pas automatiquement un index sur les colonnes référencées.
+   </p><p>
+    Le <a class="xref" href="dml.html" title="Chapitre 6. Manipulation de données">Chapitre 6</a> contient de plus amples informations sur
+    l'actualisation et la suppression de données. Voir aussi la description
+    de la syntaxe des clés étrangères dans la documentation de référence sur
+    <a class="xref" href="sql-createtable.html" title="CREATE TABLE"><span class="refentrytitle">CREATE TABLE</span></a>.
+   </p><p>
+    Une clé étrangère peut faire référence à des colonnes qui constituent une
+    clé primaire ou forment une contrainte d'unicité. Si la clé étrangère
+    référence une contrainte d'unicité, des possibilités supplémentaires sont
+    offertes concernant la correspondance des valeurs NULL. Celles-ci sont
+    expliquées dans la documentation de référence de <a class="xref" href="sql-createtable.html" title="CREATE TABLE"><span class="refentrytitle">CREATE TABLE</span></a>.
+   </p></div><div class="sect2" id="DDL-CONSTRAINTS-EXCLUSION"><div class="titlepage"><div><div><h3 class="title">5.5.6. Contraintes d'exclusion <a href="#DDL-CONSTRAINTS-EXCLUSION" class="id_link">#</a></h3></div></div></div><a id="id-1.5.4.7.10.2" class="indexterm"></a><a id="id-1.5.4.7.10.3" class="indexterm"></a><p>
+    Les contraintes d'exclusion vous assurent que si deux lignes sont
+    comparées sur les colonnes ou expressions spécifiées en utilisant les
+    opérateurs indiqués, au moins une de ces comparaisons d'opérateurs
+    renverra false ou NULL. La syntaxe est :
+
+    </p><pre class="programlisting">CREATE TABLE cercles (
+    c circle,
+    EXCLUDE USING gist (c WITH &amp;&amp;)
+);</pre><p>
+   </p><p>
+    Voir aussi <a class="link" href="sql-createtable.html#SQL-CREATETABLE-EXCLUDE"><code class="command">CREATE
+    TABLE ... CONSTRAINT ... EXCLUDE</code></a> pour plus de détails.
+   </p><p>
+    L'ajout d'une contrainte d'exclusion créera automatiquement un index du
+    type spécifié dans la déclaration de la contrainte.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/ddl-constraints.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:23 GMT -->
+</html>

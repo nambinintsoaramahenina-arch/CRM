@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/xaggr.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:42 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>36.12. Agrégats utilisateur</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="xfunc-optimization.html" title="36.11. Informations d'optimisation de fonction" /><link rel="next" href="xtypes.html" title="36.13. Types utilisateur" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/xaggr.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/xaggr.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/xaggr.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/xaggr.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/xaggr.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/xaggr.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/xaggr.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/xaggr.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/xaggr.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/xaggr.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/xaggr.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/xaggr.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/xaggr.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/xaggr.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/xaggr.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/xaggr.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/xaggr.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/xaggr.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/xaggr.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/xaggr.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/xaggr.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="extend.html">Étendre <acronym class="acronym">SQL</acronym></a></span> » <span class="breadcrumb-node">Agrégats utilisateur</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="xfunc-optimization.html" title="36.11. Informations d'optimisation de fonction">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="extend.html" title="Chapitre 36. Étendre SQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="xtypes.html" title="36.13. Types utilisateur">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">36.11. Informations d'optimisation de fonction </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 36.13. Types utilisateur</td></tr></table></div><div class="sect1" id="XAGGR"><div class="titlepage"><div><div><h2 class="title" style="clear: both">36.12. Agrégats utilisateur <a href="#XAGGR" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="xaggr.html#XAGGR-MOVING-AGGREGATES">36.12.1. Mode d'agrégat en déplacement</a></span></dt><dt><span class="sect2"><a href="xaggr.html#XAGGR-POLYMORPHIC-AGGREGATES">36.12.2. Agrégats polymorphiques et variadiques</a></span></dt><dt><span class="sect2"><a href="xaggr.html#XAGGR-ORDERED-SET-AGGREGATES">36.12.3. Agrégats d'ensemble trié</a></span></dt><dt><span class="sect2"><a href="xaggr.html#XAGGR-PARTIAL-AGGREGATES">36.12.4. Agrégation partielle</a></span></dt><dt><span class="sect2"><a href="xaggr.html#XAGGR-SUPPORT-FUNCTIONS">36.12.5. Fonctions de support pour les agrégats</a></span></dt></dl></div><a id="id-1.8.3.15.2" class="indexterm"></a><p>
+  Dans <span class="productname">PostgreSQL</span>, les fonctions d'agrégat sont
+  exprimées comme des <em class="firstterm">valeurs d'état</em> et des
+  <em class="firstterm">fonctions de transition d'état</em>. C'est-à-dire qu'un
+  agrégat opère en utilisant une valeur d'état qui est mis à jour à chaque
+  ligne traitée. Pour définir une nouvelle fonction d'agrégat, on choisit un
+  type de donnée pour la valeur d'état, une valeur initiale pour l'état et une
+  fonction de transition d'état. La fonction de transition d'état prend la
+  valeur d'état précédente et les valeurs en entrée de l'agrégat pour la ligne
+  courante, et renvoie une nouvelle valeur d'état. Une <em class="firstterm">fonction
+   finale</em> peut également être spécifiée pour le cas où le résultat
+  désiré comme agrégat est différent des données conservées comme valeur d'état
+  courant. La fonction finale prend la dernière valeur de l'état, et renvoie
+  ce qui est voulu comme résultat de l'agrégat. En principe, les fonctions de
+  transition et finale sont des fonctions ordinaires qui pourraient aussi être
+  utilisées en dehors du contexte de l'agrégat. (En pratique, il est souvent
+  utile pour des raisons de performance de créer des fonctions de transition
+  spécialisées qui ne peuvent fonctionner que quand elles sont appelées
+  via l'agrégat.)
+ </p><p>
+  Ainsi, en plus des types de données d'argument et de résultat vus par
+  l'utilisateur, il existe un type de données pour la valeur d'état interne qui
+  peut être différent des deux autres.</p><p>
+  Un agrégat qui n'utilise pas de fonction finale est un agrégat qui utilise
+  pour chaque ligne une fonction dépendante des valeurs de colonnes.
+  <code class="function">sum</code> en est un exemple.
+  <code class="function">sum</code> débute à zéro et ajoute la valeur de la ligne
+  courante à son total en cours. Par exemple, pour obtenir un agrégat
+  <code class="function">sum</code> qui opère sur un type de données de nombres
+  complexes, il suffira de décrire la fonction d'addition pour ce type de donnée.
+  La définition de l'agrégat sera :
+  </p><pre class="programlisting">CREATE AGGREGATE somme (complex)
+(
+    sfunc = ajout_complexe,
+    stype = complexe,
+    initcond = '(0,0)'
+);
+  </pre><p>
+
+  que nous pourrions utiliser ainsi :
+
+  </p><pre class="programlisting">
+SELECT somme(a) FROM test_complexe;
+
+   somme
+-----------
+ (34,53.9)
+  </pre><p>
+
+  (Notez que nous nous reposons sur une surcharge de fonction : il existe
+  plus d'un agrégat nommé <code class="function">sum</code> mais
+  <span class="productname">PostgreSQL</span> trouve le type de somme s'appliquant à
+  une colonne de type <code class="type">complex</code>.)
+ </p><p>
+  La définition précédente de <code class="function">sum</code> retournera zéro (la
+  condition d'état initial) s'il n'y a que des valeurs d'entrée NULL.
+  Dans ce cas, on peut souhaiter qu'elle retourne NULL  --  le
+  standard SQL prévoit que la fonction <code class="function">sum</code> se comporte
+  ainsi. Cela peut être obtenu par l'omission de l'instruction
+  <code class="literal">initcond</code>, de sorte que la condition d'état initial soit
+  NULL.
+  Dans ce cas, <code class="literal">sfunc</code> vérifie l'entrée d'une condition
+  d'état NULL mais, pour <code class="function">sum</code> et quelques
+  autres agrégats simples comme <code class="function">max</code> et <code class="function">min</code>, il
+  suffit d'insérer la première valeur d'entrée non NULL dans la variable d'état
+  et d'appliquer la fonction de transition d'état à partir de la
+  seconde valeur non NULL.
+  <span class="productname">PostgreSQL</span> fait cela automatiquement si la
+  condition initiale est NULL et si la fonction de transition est marquée
+  <span class="quote">« <span class="quote">strict</span> »</span> (elle n'est pas appelée pour les entrées NULL).
+ </p><p>
+  Par défaut également, pour les fonctions de transition <span class="quote">« <span class="quote">strict</span> »</span>,
+  la valeur d'état précédente reste inchangée pour une entrée NULL.
+  Les valeurs NULL sont ainsi ignorées.
+  Pour obtenir un autre comportement, il suffit de ne
+  pas déclarer la fonction de transition <span class="quote">« <span class="quote">strict</span> »</span>. À la place,
+  codez-la de façon à ce qu'elle vérifie et traite les entrées NULL.
+ </p><p>
+  <code class="function">avg</code> (average = moyenne) est un exemple plus complexe d'agrégat.
+  Il demande deux états courants : la somme des entrées et le
+  nombre d'entrées. Le résultat final est obtenu en divisant ces quantités. La
+  moyenne est typiquement implémentée en utilisant comme valeur d'état un
+  tableau. Par exemple, l'implémentation intégrée de
+  <code class="function">avg(float8)</code> ressemble à :
+
+  </p><pre class="programlisting">CREATE AGGREGATE avg (float8)
+(
+    sfunc = float8_accum,
+    stype = float8[],
+    finalfunc = float8_avg,
+    initcond = '{0,0,0}'
+);
+  </pre><p>
+ </p><div class="note"><h3 class="title">Note</h3><p>
+   <code class="function">float8_accum</code> nécessite un tableau à trois éléments,
+   et non pas seulement deux, car il accumule la somme des carrés, ainsi que
+   la somme et le nombre des entrées. Cela permet son utilisation pour
+   d'autres agrégats que <code class="function">avg</code>.
+  </p></div><p>
+  Les appels de fonctions d'agrégat en SQL autorisent les options
+  <code class="literal">DISTINCT</code> et <code class="literal">ORDER BY</code> qui contrôlent
+  les lignes envoyées à la fonction de transition de l'agrégat et leur ordre.
+  Ces options sont implémentées en arrière-plan et ne concernent pas les
+  fonctions de support de l'agrégat.
+ </p><p>
+  Pour plus de détails, voir la commande <a class="xref" href="sql-createaggregate.html" title="CREATE AGGREGATE"><span class="refentrytitle">CREATE AGGREGATE</span></a>.
+ </p><div class="sect2" id="XAGGR-MOVING-AGGREGATES"><div class="titlepage"><div><div><h3 class="title">36.12.1. Mode d'agrégat en déplacement <a href="#XAGGR-MOVING-AGGREGATES" class="id_link">#</a></h3></div></div></div><a id="id-1.8.3.15.12.2" class="indexterm"></a><a id="id-1.8.3.15.12.3" class="indexterm"></a><p>
+   Les fonctions d'agrégat peuvent accepter en option un <em class="firstterm">mode
+    d'agrégat en déplacement</em>, qui autorise une exécution bien plus
+   rapide des fonctions d'agrégats pour les fenêtres dont le point de démarrage
+   se déplace.
+   (Voir <a class="xref" href="tutorial-window.html" title="3.5. Fonctions de fenêtrage">Section 3.5</a> et
+   <a class="xref" href="sql-expressions.html#SYNTAX-WINDOW-FUNCTIONS" title="4.2.8. Appels de fonction de fenêtrage">Section 4.2.8</a> pour des informations sur
+   l'utilisation des fonctions d'agrégats en tant que fonctions de fenêtrage.)
+   L'idée de base est qu'en plus d'une fonction de transition <span class="quote">« <span class="quote">en
+    avant</span> »</span>, l'agrégat doit fournir une <em class="firstterm">fonction de transition
+    inverse</em>, qui permet aux lignes d'être supprimées de la valeur
+   d'état de l'agrégat quand elles quittent l'étendue de la fenêtre. Par
+   exemple, un agrégat <code class="function">sum</code> qui utilise l'addition comme
+   fonction de transition en avant pourrait utiliser la soustraction comme
+   fonction de transition inverse. Sans fonction de transition inverse, le
+   mécanisme de fonction de fenêtrage doit recalculer l'agrégat à partir du
+   début à chaque fois que le point de départ de la fenêtre est déplacé, ce
+   qui a pour effet d'augmenter la durée d'exécution proportionnellement au
+   nombre de lignes en entrée multiplié par la longueur moyenne de la fenêtre.
+   Avec une fonction de transition inverse, la durée d'exécution est uniquement
+   proportionnelle au nombre de lignes en entrée.
+  </p><p>
+   La fonction de transition inverse se voit fournie la valeur de l'état courant
+   et les valeurs en entrée de l'agrégat pour la première ligne inclus dans
+   l'état courant. Il doit reconstruire la valeur d'état telle qu'elle aurait
+   été si la ligne en entrée n'avait pas été agrégé, mais seulement les lignes
+   suivantes. Ceci demande parfois que la fonction de transition en avant
+   conserve plus d'informations sur l'état que ce qui était nécessaire
+   auparavant. De ce fait, le mode d'agrégat en déplacement utilise une
+   implémentation complètement séparée du mode standard : il a son propre
+   type de données d'état, sa propre fonction de transition en avant, et sa
+   propre fonction finale si nécessaire. Ils peuvent être les mêmes que le
+   type de données et les fonctions du mode standard si rien de particulier
+   n'est nécessaire.
+  </p><p>
+   Comme exemple, nous pouvons étendre l'agrégat <code class="function">sum</code> donné
+   ci-dessus pour supporter le mode d'agrégat en déplacement, comme ceci :
+
+   </p><pre class="programlisting">
+CREATE AGGREGATE somme (complex)
+(
+    sfunc = ajout_complexe,
+    stype = complexe,
+    initcond = '(0,0)',
+    msfunc = ajout_complexe,
+    minvfunc = retire_complexe,
+    mstype = complexe,
+    minitcond = '(0,0)'
+);
+   </pre><p>
+
+   Les paramètres dont les noms commencent par un <code class="literal">m</code> définissent
+   l'implémentation des agrégats en mouvement. En dehors de la fonction de
+   transition inverse <code class="literal">minvfunc</code>, ils correspondent aux
+   paramètres des agrégats standards sans <code class="literal">m</code>.
+  </p><p>
+   La fonction de transition en avant pour le mode d'agrégat en déplacement
+   n'est pas autorisée à renvoyer NULL comme nouvelle valeur d'état. Si la
+   fonction de transition inverse renvoie NULL, c'est pris comme indication
+   que la fonction ne peut pas inverser le calcul de l'état sur ce point
+   particulier, et donc le calcul d'agrégat sera refait à partir de rien pour
+   la position de début actuelle. Cette convention permet au mode d'agrégat
+   par déplacement à être utilisé dans des situations où il existe quelques cas
+   rares où réaliser l'inverse de la fonction de transition n'est pas
+   possible. La fonction de transition inverse peut ne pas fonctionner sur ces
+   cas, et être toujours utilisée pour la plupart des cas où elle est
+   fonctionnelle. Comme exemple, un agrégat travaillant avec des nombres à
+   virgules flottantes pourrait choisir de ne pas fonctionner quand une entrée
+   <code class="literal">NaN</code> doit être supprimée de la valeur d'état en cours.
+  </p><p>
+   Lors de l'écriture des fonctions de support d'un agrégat en déplacement, il
+   est important d'être certain que la fonction de transition inverse peut
+   reconstruire exactement la valeur d'état correct. Sinon, il pourrait y avoir
+   des différences visibles pour l'utilisateur dans les résultats, suivant que
+   le mode d'agrégat en déplacement est utilisé ou pas. Un exemple d'agrégat
+   pour lequel ajouter une fonction de transition inverse semble facile au premier
+   coup d'œil, mais où les prérequis ne peuvent pas être assurés, est la fonction
+   is <code class="function">sum</code> sur des entrées de type <code class="type">float4</code> ou
+   <code class="type">float8</code>. Une déclaration naïve de
+   <code class="function">sum(<code class="type">float8</code>)</code> pourrait être :
+
+   </p><pre class="programlisting">
+CREATE AGGREGATE unsafe_sum (float8)
+(
+    stype = float8,
+    sfunc = float8pl,
+    mstype = float8,
+    msfunc = float8pl,
+    minvfunc = float8mi
+);
+   </pre><p>
+
+   Cependant, cet agrégat peut renvoyer des résultats très différents qu'il ne
+   l'aurait fait sans fonction de transition inverse. Considérez par exemple :
+
+   </p><pre class="programlisting">
+SELECT
+  unsafe_sum(x) OVER (ORDER BY n ROWS BETWEEN CURRENT ROW AND 1 FOLLOWING)
+FROM (VALUES (1, 1.0e20::float8),
+             (2, 1.0::float8)) AS v (n,x);
+   </pre><p>
+
+   Cette requête renvoie <code class="literal">0</code> en deuxième résultat, plutôt que
+   la réponse attendue, <code class="literal">1</code>. La raison vient de la précision
+   limitée des valeurs en virgule flottante : ajouter <code class="literal">1</code>
+   à <code class="literal">1e20</code> renvoie de nouveau <code class="literal">1e20</code>, alors
+   qu'y soustraire <code class="literal">1e20</code> renvoie <code class="literal">0</code>, et
+   non pas <code class="literal">1</code>. Notez que c'est une limitation générale des
+   opérations de calcul sur des nombres en virgule flottante, pas une limitation
+   spécifique de <span class="productname">PostgreSQL</span>.
+  </p></div><div class="sect2" id="XAGGR-POLYMORPHIC-AGGREGATES"><div class="titlepage"><div><div><h3 class="title">36.12.2. Agrégats polymorphiques et variadiques <a href="#XAGGR-POLYMORPHIC-AGGREGATES" class="id_link">#</a></h3></div></div></div><a id="id-1.8.3.15.13.2" class="indexterm"></a><a id="id-1.8.3.15.13.3" class="indexterm"></a><p>
+   Les fonctions d'agrégat peuvent utiliser des fonctions d'état transitionnelles
+   ou des fonctions finales polymorphes. De cette façon, les mêmes fonctions
+   peuvent être utilisées pour de multiples agrégats. Voir la <a class="xref" href="extend-type-system.html#EXTEND-TYPES-POLYMORPHIC" title="36.2.5. Types et fonctions polymorphes">Section 36.2.5</a> pour une explication des fonctions polymorphes.
+   La fonction d'agrégat elle-même peut être
+   spécifiée avec un type de base et des types d'état polymorphes, ce qui permet
+   ainsi à une unique définition de fonction de servir pour de multiples types
+   de données en entrée. Voici un exemple d'agrégat polymorphe :
+
+   </p><pre class="programlisting">CREATE AGGREGATE array_accum (anycompatible)
+(
+    sfunc = array_append,
+    stype = anycompatiblearray,
+    initcond = '{}'
+);
+   </pre><p>
+
+   Dans ce cas, le type d'état effectif pour tout appel d'agrégat est le type
+   tableau avec comme éléments le type effectif d'entrée. Le comportement de
+   l'agrégat est de concaténer toutes les entrées dans un tableau de ce type.
+   (Note : l'agrégat <code class="function">array_agg</code> fournit une
+   fonctionnalité similaire, avec de meilleures performances que ne pourrait
+   avoir cette définition.)
+  </p><p>
+   Voici le résultat pour deux types de données différents en arguments :
+   </p><pre class="programlisting">SELECT attrelid::regclass, array_accum(attname)
+FROM pg_attribute WHERE attnum &gt; 0
+AND attrelid = 'pg_tablespace'::regclass GROUP BY attrelid;
+   attrelid    |              array_accum
+---------------+---------------------------------------
+ pg_tablespace | {spcname,spcowner,spcacl,spcoptions}
+(1 row)
+
+SELECT attrelid::regclass, array_accum(atttypid::regtype)
+    FROM pg_attribute
+    WHERE attnum &gt; 0 AND attrelid = 'pg_tablespace'::regclass
+    GROUP BY attrelid;
+
+   attrelid    |        array_accum
+---------------+---------------------------
+ pg_tablespace | {name,oid,aclitem[],text[]}
+(1 row)
+   </pre><p>
+  </p><p>
+   D'habitude, une fonction d'agrégat avec un type de résultat polymorphique
+   a un type d'état polymorphique, comme dans l'exemple ci-dessus. C'est
+   nécessaire, sinon la fonction finale ne peut pas être déclarée correctement.
+   Elle devrait avoir un type de résultat polymorphique mais pas d'argument
+   polymorphique, ce que <code class="command">CREATE FUNCTION</code> rejetera sur la base
+   que le type en résultat ne peut pas être déduit de cet appel. Parfois,
+   il est inconfortable d'utiliser un type d'état polymorphique.
+   Le cas le plus fréquent arrive quand les fonctions de support de l'agrégat
+   sont à écrire en C et que le type d'état doit être déclaré comme
+   <code class="type">internal</code> parce qu'il n'existe pas d'équivalent SQL pour lui.
+   Dans ce cas, il est possible de déclarer la fonction finale comme prenant
+   des arguments <span class="quote">« <span class="quote">inutiles</span> »</span> qui correspondent aux arguments en
+   entrée de l'agrégat. Ce type d'argument est toujours passé avec une valeur
+   NULL car aucune valeur spécifique n'est disponible quand la fonction finale
+   est appelée. Leur seule utilisée est de permettre à un type de résultat
+   d'une fonction finale polymorphique d'être connecté au type de données en
+   entrée de l'agrégat. Par exemple, la définition de l'agrégat interne
+   <code class="function">array_agg</code> est équivalent à :
+
+   </p><pre class="programlisting">
+CREATE FUNCTION array_agg_transfn(internal, anynonarray)
+  RETURNS internal ...;
+CREATE FUNCTION array_agg_finalfn(internal, anynonarray)
+  RETURNS anyarray ...;
+
+CREATE AGGREGATE array_agg (anynonarray)
+(
+    sfunc = array_agg_transfn,
+    stype = internal,
+    finalfunc = array_agg_finalfn,
+    finalfunc_extra
+);
+   </pre><p>
+
+   Dans cet exemple, l'option <code class="literal">finalfunc_extra</code> spécifie que
+   la fonction finale reçoit, en plus de la valeur d'état, tout argument
+   supplémentaire correspondant aux arguments en entrée de l'agrégat.
+   L'argument supplémentaire <code class="type">anynonarray</code> permet que la déclaration
+   de <code class="function">array_agg_finalfn</code> soit valide.
+  </p><p>
+   Il est possible de créer une fonction d'agrégat qui accepte un nombre variable
+   d'arguments en déclarant ses derniers arguments dans un tableau
+   <code class="literal">VARIADIC</code>, un peu de la même façon que les fonctions
+   standards ; voir <a class="xref" href="xfunc-sql.html#XFUNC-SQL-VARIADIC-FUNCTIONS" title="36.5.6. Fonctions SQL avec un nombre variables d'arguments">Section 36.5.6</a>. La
+   fonction de transition de l'agrégat doit avoir le même type tableau que leur
+   dernier argument. Les fonctions de transition seront typiquement marquées
+   comme <code class="literal">VARIADIC</code>, mais cela n'est pas requis.
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    Les agrégats variadiques sont facilement mal utilisés avec l'option
+    <code class="literal">ORDER BY</code> (voir <a class="xref" href="sql-expressions.html#SYNTAX-AGGREGATES" title="4.2.7. Expressions d'agrégat">Section 4.2.7</a>), car
+    l'analyseur ne peut pas dire si le nombre d'arguments réels donnés était
+    bon ou pas. Gardez à l'esprit que toutes les expressions à droite de
+    <code class="literal">ORDER BY</code> sont la clé de tri, pas un argument de
+    l'agrégat. Par exemple, dans :
+    </p><pre class="programlisting">
+SELECT mon_agregat(a ORDER BY a, b, c) FROM ...
+    </pre><p>
+    l'analyseur verra cela comme un seul argument pour la fonction d'agrégat,
+    et trois clés de tri. Alors que l'utilisateur pouvait vouloir dire :
+    </p><pre class="programlisting">
+SELECT myaggregate(a, b, c ORDER BY a) FROM ...
+    </pre><p>
+    Si <code class="literal">mon_agregat</code> est variadique, ces deux appels peuvent
+    être parfaitement valides.
+   </p><p>
+    Pour la même raison, il est conseillé d'y réfléchir à deux fois avant de créer
+    des fonctions d'agrégat avec les mêmes noms et différents nombres d'arguments
+    standards.
+   </p></div></div><div class="sect2" id="XAGGR-ORDERED-SET-AGGREGATES"><div class="titlepage"><div><div><h3 class="title">36.12.3. Agrégats d'ensemble trié <a href="#XAGGR-ORDERED-SET-AGGREGATES" class="id_link">#</a></h3></div></div></div><a id="id-1.8.3.15.14.2" class="indexterm"></a><p>
+   Les agrégats que nous avons décrit jusqu'à maintenant sont des agrégats
+   <span class="quote">« <span class="quote">normaux</span> »</span>. <span class="productname">PostgreSQL</span> accepte aussi
+   les <em class="firstterm">agrégats d'ensemble trié</em>, qui diffèrent des
+   agrégats normaux de deux façons. Tout d'abord, en plus des arguments
+   standards d'agrégats qui sont évalués une fois par ligne en entrée, un
+   agrégat d'ensemble trié peut avoir des arguments <span class="quote">« <span class="quote">directs</span> »</span>
+   qui sont évalués seulement une fois par opération d'agrégation. Ensuite,
+   la syntaxe pour les arguments standards agrégés indique un ordre de
+   tri explicitement pour eux. Un agrégat d'ensemble de tri est habituellement
+   utilisé pour ajouter un calcul dépendant d'un ordre spécifique des lignes,
+   par exemple le rang ou le centile. Par exemple, la définition interne de
+   <code class="function">percentile_disc</code> est équivalent à :
+
+   </p><pre class="programlisting">
+CREATE FUNCTION ordered_set_transition(internal, anyelement)
+  RETURNS internal ...;
+CREATE FUNCTION percentile_disc_final(internal, float8, anyelement)
+  RETURNS anyelement ...;
+
+CREATE AGGREGATE percentile_disc (float8 ORDER BY anyelement)
+(
+    sfunc = ordered_set_transition,
+    stype = internal,
+    finalfunc = percentile_disc_final,
+    finalfunc_extra
+);
+   </pre><p>
+
+   Cet agrégat prend un argument direct <code class="type">float8</code> (la fraction du
+   percentile) et une entrée agrégée qui peut être de toute type de données
+   triées. Il pourrait être utilisé pour obtenir le revenu médian des ménages
+   comme ceci :
+
+   </p><pre class="programlisting">
+SELECT percentile_disc(0.5) WITHIN GROUP (ORDER BY revenu) FROM menages;
+ percentile_disc
+-----------------
+           50489
+   </pre><p>
+
+   Ici, <code class="literal">0.5</code> est un argument direct ; cela n'aurait pas
+   de sens que la fraction de centile soit une valeur variant suivant les
+   lignes.
+  </p><p>
+   Contrairement aux agrégats normaux, le tri des lignes en entrée pour un
+   agrégat d'ensemble trié n'est <span class="emphasis"><em>pas</em></span> fait de façon
+   caché mais est la responsabilité des fonctions de support de l'agrégat.
+   L'approche typique de l'implémentation est de conserver une référence
+   à l'objet <span class="quote">« <span class="quote">tuplesort</span> »</span> dans la valeur d'état de l'agrégat,
+   d'alimenter cet objet par les lignes en entrée, et de terminer le tri
+   et de lire les données dans la fonction finale. Ce design permet à la
+   fonction finale de réaliser des opérations spéciales comme l'injection
+   de lignes supplémentaires <span class="quote">« <span class="quote">hypothétiques</span> »</span> dans les données
+   à trier. Alors que les agrégats normaux peuvent souvent être implémentés
+   avec les fonctions de support écrites en
+   <span class="application">PL/pgSQL</span> ou dans un autre langage PL, les
+   agrégats d'ensemble trié doivent généralement être écrit en C car leurs
+   valeurs d'état ne sont pas définissables sous la forme de type de données
+   SQL. (Dans l'exemple ci-dessus, notez que la valeur d'état est déclarée
+   en tant que <code class="type">internal</code>  --  c'est typique.)
+   De plus, comme la fonction finale réalise le tri, il n'est pas possible de
+   continuer à ajouter des lignes en entrée en exécutant de nouveau la
+   fonction de transition. Ceci signifie que la fonction finale n'est pas
+   <code class="literal">READ_ONLY</code> ; elle doit être exécutée dans
+   <a class="link" href="sql-createaggregate.html" title="CREATE AGGREGATE"><code class="command">CREATE AGGREGATE</code></a>
+   en <code class="literal">READ_WRITE</code> ou en
+   <code class="literal">SHAREABLE</code> s'il est possible que des appels
+   supplémentaires à la fonction finale utilisent l'état déjà triée.
+  </p><p>
+   La fonction de transition d'état pour un agrégat d'ensemble trié reçoit la
+   valeur d'état courante ainsi que les valeurs agrégées en entrée pour chaque
+   ligne. Elle renvoie la valeur d'état mise à jour. Il s'agit de la même
+   définition que pour les agrégats normaux mais notez que les arguments
+   directs (si présents) ne sont pas fournis. La fonction finale reçoit la
+   valeur du dernier état, les valeurs des arguments directs si présents et
+   (si <code class="literal">finalfunc_extra</code> est indiqué) des valeurs NULL
+   correspondant aux entrées agrégées. Comme avec les agrégats normaux,
+   <code class="literal">finalfunc_extra</code> est seulement réellement utile si
+   l'agrégat est polymorphique ; alors les arguments inutiles
+   supplémentaires sont nécessaires pour connecter le type de résultat de
+   la fonction finale au type de l'entrée de l'agrégat.
+  </p><p>
+   Actuellement, les agrégats d'ensemble trié ne peuvent pas être utilisé comme
+   fonctions de fenêtrage, et du coup, il n'est pas nécessaire qu'ils supportent
+   le mode d'agrégat en déplacement.
+  </p></div><div class="sect2" id="XAGGR-PARTIAL-AGGREGATES"><div class="titlepage"><div><div><h3 class="title">36.12.4. Agrégation partielle <a href="#XAGGR-PARTIAL-AGGREGATES" class="id_link">#</a></h3></div></div></div><a id="id-1.8.3.15.15.2" class="indexterm"></a><p>
+   En option, une fonction d'agrégat peut supporter une <em class="firstterm">agrégation
+    partielle</em>. L'idée d'agrégation partielle est d'exécuter la
+   fonction de transition d'état de l'agrégat sur différents sous-ensembles
+   des données en entrée de façon indépendante, puis de combiner les valeurs
+   d'état provenant de ces sous-ensembles pour produire la même valeur d'état
+   que ce qui aurait résultat du parcours de toutes les entrées en une seule
+   opération. Ce mode peut être utilisé pour l'agrégation parallèle en ayant
+   différents processus parallèles parcourant des portions différentes d'une
+   table. Chaque processus produit une valeur d'état partiel et, à la fin, ces
+   valeurs d'état sont combinées pour produire une valeur d'état finale. (Dans
+   le futur, ce mode pourrait aussi être utilisé dans d'autres cas comme
+   l'agrégation combinée sur des tables locales et externes ; mais ce
+   n'est pas encore implémenté.)
+  </p><p>
+   Pour supporter une agrégation partielle, la définition de l'agrégat doit
+   fournir une <em class="firstterm">fonction de combinaison</em>, qui prend deux
+   valeurs du type de l'état d'agrégat (représentant les résultats de
+   l'agrégat sur deux sous-ensembles de lignes en entrée) et produit une
+   nouvelle valeur du type de l'état, représentant l'état qu'on aurait eu en
+   réalisant l'agrégat sur la combinaison de ces deux ensembles de données.
+   L'ordre relatif des lignes entrées n'est pas spécifié pour les deux
+   ensembles de données. Ceci signifie qu'il est habituellement impossible de
+   définir une fonction de combinaison utile pour les agrégats sensibles à
+   l'ordre des lignes en entrée.
+  </p><p>
+   Comme exemples simples, les agrégats <code class="literal">MAX</code> et
+   <code class="literal">MIN</code> peuvent supporter l'agrégation partielle en
+   indiquant la fonction de combinaison comme étant la même fonction plus-
+   grand-que ou plus-petit-que que celle utilisée comme fonction de transition
+   function. L'agrégat <code class="literal">SUM</code> a besoin d'une fonction
+   supplémentaire comme fonction de combinaison. (Encore une fois, c'est la
+   même que leur fonction de transition, sauf si la valeur d'état est plus
+   grand que le type de données en entrée.)
+  </p><p>
+   La fonction de combinaison est traitée un peu comme une fonction de
+   transition qui prend une valeur du type d'état, pas de celle du type
+   d'entrée sous-jacent, comme deuxième argument. En particulier, les règles
+   pour gérer les valeurs nulles et les fonctions strictes sont similaires. De
+   plus, si la définition de l'agrégat indique un <code class="literal">initcond</code>
+   non nul, gardez en tête que ce sera utilisé non seulement comme état
+   initial pour chaque exécution de l'agrégat partiel, mais aussi comme état
+   initiale de la fonction de combinaison, qui sera appelée pour combiner
+   chaque résultat partiel dans cet état.
+  </p><p>
+   Si le type d'état de l'agrégat est déclaré comme <code class="type">internal</code>, il
+   est de la responsabilité de la fonction de combinaison que son résultat
+   soit alloué dans le contexte mémoire correct pour les valeurs d'état de
+   l'agrégat. Ceci signifie en particulier que, quand la première entrée est
+   <code class="literal">NULL</code>, il est invalide de renvoyer simplement la deuxième
+   entrée car cette valeur sera dans le mauvais contexte et n'aura pas une
+   durée de vie suffisante.
+  </p><p>
+   Quand le type d'état de l'agrégat est déclaré comme <code class="type">internal</code>,
+   il est aussi habituellement approprié que la définition de l'agrégat
+   fournisse une <em class="firstterm">fonction de sérialisation</em> et une
+   <em class="firstterm">fonction de désérialisation</em>, qui permet qu'une telle
+   valeur d'état soit copiée d'un processus à un autre. Sans ces fonctions,
+   l'agrégation parallèle ne peut pas être réalisée, et les applications
+   futures telles que l'agrégation locale/distante ne fonctionnera
+   probablement pas non plus.
+  </p><p>
+   Une fonction de sérialisation doit prendre un seul argument de type
+   <code class="type">internal</code> et renvoyer un résultat de type <code class="type">bytea</code>,
+   qui représente la valeur d'état packagé en un paquet plat d'octets. De la
+   même façon, une fonction de désérialisation inverse cette conversion. Elle
+   doit prendre deux arguments de type <code class="type">bytea</code> et
+   <code class="type">internal</code>, et renvoyer un résultat de type
+   <code class="type">internal</code>. (Le deuxième argument n'est pas utilisé et vaut
+   toujours zéro, mais il est requis pour des raisons de sécurité du type.) Le
+   résultat de la fonction de désérialisation doit simplement être alloué dans
+   le contexte mémoire courant car, contrairement au résultat de la fonction
+   de combinaison, il ne vit pas longtemps.
+  </p><p>
+   Il est bon de noter aussi que, pour qu'un agrégat soit exécuté en
+   parallèle, l'agrégat lui-même doit être marqué <code class="literal">PARALLEL
+    SAFE</code>. Les marques de parallélisation sur les fonctions de support
+   ne sont pas consultées.
+  </p></div><div class="sect2" id="XAGGR-SUPPORT-FUNCTIONS"><div class="titlepage"><div><div><h3 class="title">36.12.5. Fonctions de support pour les agrégats <a href="#XAGGR-SUPPORT-FUNCTIONS" class="id_link">#</a></h3></div></div></div><a id="id-1.8.3.15.16.2" class="indexterm"></a><p>
+   Une fonction écrite en C peut détecter si elle est appelée en tant que
+   fonction de support d'un agrégat en
+   appelant <code class="function">AggCheckCallContext</code>, par exemple :
+   </p><pre class="programlisting">
+        if (AggCheckCallContext(fcinfo, NULL))
+   </pre><p>
+   Une raison de surveiller ceci est que, si le retour de cette fonction
+   vaut true, la première valeur doit être
+   une valeur de transition temporaire et peut du coup être modifiée en toute
+   sûreté sans avoir à allouer une nouvelle copie. Voir
+   <code class="function">int8inc()</code> pour un exemple.
+   (Alors que les fonctions de transition des agrégats sont toujours autorisées
+   à modifier en ligne la valeur de transition, les fonctions finales des
+   agrégats ne sont généralement pas encouragées à le faire ; si elles le
+   font, le comportement doit être déclaré lors de la création de l'agrégat. Voir
+   <a class="xref" href="sql-createaggregate.html" title="CREATE AGGREGATE"><span class="refentrytitle">CREATE AGGREGATE</span></a> pour plus de détails.)
+  </p><p>
+   Le deuxième argument de <code class="function">AggCheckCallContext</code> peut être
+   utilisé pour récupérer le contexte mémoire dans lequel les valeurs d'état
+   de l'agrégat sont conservées. Ceci est utile pour que les fonctions de
+   transition qui souhaitent utiliser les objets <span class="quote">« <span class="quote">étendus</span> »</span> (voir
+   <a class="xref" href="xtypes.html#XTYPES-TOAST" title="36.13.1. Considérations sur les TOAST">Section 36.13.1</a>) comme leurs valeurs d'état. Au premier
+   appel, la fonction de transition doit renvoyer un objet étendu dont le
+   contexte mémoire est un enfant du contexte d'état de l'agrégat. Puis, pour
+   les appels suivants, il doit renvoyer le même objet étendu. Voir
+   <code class="function">array_append()</code> pour un exemple.
+   (<code class="function">array_append()</code> n'est pas la fonction de transition
+   d'un agrégat interne mais il est écrit pour se comporter efficacement
+   lorsqu'elle est utilisée comme fonction de transition d'un agrégat
+   personnalisé.)
+  </p><p>
+   Une autre routine de support disponible pour les fonctions d'agrégat écrites
+   en langage C est <code class="function">AggGetAggref</code>, qui renvoie le nœud
+   d'analyse <code class="literal">Aggref</code> qui définit l'appel d'agrégat. Ceci est
+   particulièrement utile pour les agrégats d'ensemble trié, qui peuvent
+   inspecter la sous-structure du nœud <code class="literal">Aggref</code> pour trouver
+   l'ordre de tri qu'elles sont supposées implémenter. Des exemples sont
+   disponibles dans le fichier <code class="filename">orderedsetaggs.c</code> du code
+   source de <span class="productname">PostgreSQL</span>.
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/xaggr.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:42 GMT -->
+</html>

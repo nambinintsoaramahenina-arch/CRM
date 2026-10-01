@@ -1,0 +1,602 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/transaction-iso.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:23 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>13.2. Isolation des transactions</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="mvcc-intro.html" title="13.1. Introduction" /><link rel="next" href="explicit-locking.html" title="13.3. Verrouillage explicite" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/transaction-iso.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/transaction-iso.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/transaction-iso.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/transaction-iso.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/transaction-iso.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/transaction-iso.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/transaction-iso.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/transaction-iso.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/transaction-iso.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/transaction-iso.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/transaction-iso.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/transaction-iso.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/transaction-iso.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/transaction-iso.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/transaction-iso.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/transaction-iso.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/transaction-iso.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/transaction-iso.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/transaction-iso.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/transaction-iso.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/transaction-iso.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="mvcc.html">Contrôle d'accès simultané</a></span> » <span class="breadcrumb-node">Isolation des transactions</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="mvcc-intro.html" title="13.1. Introduction">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="mvcc.html" title="Chapitre 13. Contrôle d'accès simultané">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="explicit-locking.html" title="13.3. Verrouillage explicite">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">13.1. Introduction </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 13.3. Verrouillage explicite</td></tr></table></div><div class="sect1" id="TRANSACTION-ISO"><div class="titlepage"><div><div><h2 class="title" style="clear: both">13.2. Isolation des transactions <a href="#TRANSACTION-ISO" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="transaction-iso.html#XACT-READ-COMMITTED">13.2.1. Niveau d'isolation Read committed (lecture uniquement des données validées)</a></span></dt><dt><span class="sect2"><a href="transaction-iso.html#XACT-REPEATABLE-READ">13.2.2. Niveau d'isolation Repeatable Read</a></span></dt><dt><span class="sect2"><a href="transaction-iso.html#XACT-SERIALIZABLE">13.2.3. Niveau d'Isolation Serializable</a></span></dt></dl></div><a id="id-1.5.12.5.2" class="indexterm"></a><p>
+   Le standard <acronym class="acronym">SQL</acronym> définit quatre niveaux d'isolation de
+   transaction.
+   Le plus strict est Serializable, qui est défini par le standard dans
+   un paragraphe qui déclare que toute exécution concurrente d'un jeu
+   de transactions sérialisables doit apporter la garantie de produire
+   le même effet que l'exécution consécutive de chacune d'entre elles
+   dans un certain ordre. Les trois autres niveaux sont définis en termes
+   de phénomènes résultant de l'interaction entre les transactions
+   concurrentes, qui ne doivent pas se produire à chaque niveau. Le
+   standard note qu'en raison de la définition de Serializable, aucun
+   de ces phénomènes n'est possible à ce niveau. (Cela n'a rien de
+   surprenant -- si l'effet des transactions doit être cohérent avec
+   l'exécution consécutive de chacune d'entre elles, comment pourriez-vous
+   voir un phénomène causé par des interactions?).
+  </p><p>
+   Les phénomènes qui sont interdits à chaque niveau sont:
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">
+      lecture sale
+      <a id="id-1.5.12.5.4.1.1.1.1" class="indexterm"></a>
+     </span></dt><dd><p>
+       Une transaction lit des données écrites par une transaction concurrente
+       non validée (dirty read).
+      </p></dd><dt><span class="term">
+      lecture non reproductible
+      <a id="id-1.5.12.5.4.1.2.1.1" class="indexterm"></a>
+     </span></dt><dd><p>
+       Une transaction relit des données qu'elle a lues
+       précédemment et trouve que les données ont été modifiées par une autre
+       transaction (validée depuis la lecture initiale) (non repeatable read).
+      </p></dd><dt><span class="term">
+      lecture fantôme
+      <a id="id-1.5.12.5.4.1.3.1.1" class="indexterm"></a>
+     </span></dt><dd><p>
+       Une transaction réexécute une requête renvoyant un ensemble de lignes
+       satisfaisant une condition de recherche et trouve que l'ensemble des
+       lignes satisfaisant la condition a changé du fait d'une autre transaction
+       récemment validée (phantom read).
+      </p></dd><dt><span class="term">
+      anomalie de sérialisation
+      <a id="id-1.5.12.5.4.1.4.1.1" class="indexterm"></a>
+     </span></dt><dd><p>
+       Le résultat de la validation réussie d'un groupe de transactions
+       est incohérent avec tous les ordres possibles d'exécutions de ces
+       transactions, une par une.
+      </p></dd></dl></div><p>
+  </p><p>
+   <a id="id-1.5.12.5.5.1" class="indexterm"></a>
+   Les niveaux d'isolation des transactions proposés par le standard SQL
+   et implémentés par PostgreSQL sont décrits dans le <a class="xref" href="transaction-iso.html#MVCC-ISOLEVEL-TABLE" title="Tableau 13.1. Niveaux d'isolation des transactions">Tableau 13.1</a>.
+  </p><div class="table" id="MVCC-ISOLEVEL-TABLE"><p class="title"><strong>Tableau 13.1. Niveaux d'isolation des transactions</strong></p><div class="table-contents"><table class="table" summary="Niveaux d'isolation des transactions" border="1"><colgroup><col /><col /><col /><col /><col /></colgroup><thead><tr><th>
+       Niveau d'isolation
+      </th><th>
+       Lecture sale
+      </th><th>
+       Lecture non reproductible
+      </th><th>
+       Lecture fantôme
+      </th><th>
+       Anomalie de sérialisation
+      </th></tr></thead><tbody><tr><td>
+       Read Uncommited (en français, <span class="quote">« <span class="quote">Lecture de données non validées</span> »</span>)
+      </td><td>
+       Autorisé, mais pas dans PostgreSQL
+      </td><td>
+       Possible
+      </td><td>
+       Possible
+      </td><td>
+       Possible
+      </td></tr><tr><td>
+       Read Commited (en français, <span class="quote">« <span class="quote">Lecture de données validées</span> »</span>)
+      </td><td>
+       Impossible
+      </td><td>
+       Possible
+      </td><td>
+       Possible
+      </td><td>
+       Possible
+      </td></tr><tr><td>
+       Repeatable Read (en français, <span class="quote">« <span class="quote">Lecture répétée</span> »</span>)
+      </td><td>
+       Impossible
+      </td><td>
+       Impossible
+      </td><td>
+       Autorisé, mais pas dans PostgreSQL
+      </td><td>
+       Possible
+      </td></tr><tr><td>
+       Serializable (en français, <span class="quote">« <span class="quote">Sérialisable</span> »</span>)
+      </td><td>
+       Impossible
+      </td><td>
+       Impossible
+      </td><td>
+       Impossible
+      </td><td>
+       Impossible
+      </td></tr></tbody></table></div></div><br class="table-break" /><p>
+   Dans <span class="productname">PostgreSQL</span>, vous pouvez demander un des
+   quatre niveaux standards d'isolation des transactions, mais seuls trois
+   niveaux distincts sont implémentés (le mode Read Uncommited de PostgreSQL
+   se comporte comme le mode Read Commited). Ceci est dû au fait qu'il
+   s'agit de la seule façon logique de faire correspondre les niveaux
+   d'isolation standards à l'architecture de contrôle de la concurrence de
+   PostgreSQL.
+  </p><p>
+   Le tableau montre aussi que l'implémentation Repeatable Read de PostgreSQL
+   n'autorise pas les lectures fantômes.
+   C'est acceptable d'après le standard SQL car le standard SQL indique les
+   anomalies qui ne doivent <span class="emphasis"><em>pas</em></span> survenir à certains niveaux
+   d'isolation ; des garanties plus fortes sont acceptables.
+   Le comportement des niveaux d'isolation disponibles est détaillé dans les
+   sous-sections suivantes.
+  </p><p>
+   Pour initialiser le niveau d'isolation d'une transaction, utilisez la
+   commande <a class="xref" href="sql-set-transaction.html" title="SET TRANSACTION"><span class="refentrytitle">SET TRANSACTION</span></a>.
+  </p><div class="important"><h3 class="title">Important</h3><p>
+    Certains types de données et certaines fonctions de
+    <span class="productname">PostgreSQL</span> ont des règles spéciales sur le
+    comportement des transactions. En particulier, les modifications réalisées
+    sur une séquence (et du coup sur le compteur d'une
+    colonne déclarée <code class="type">serial</code>) sont immédiatement visibles
+    de toutes les autres transactions et ne sont pas annulées si la transaction
+    qui a fait la modification est annulée. Voir
+    <a class="xref" href="functions-sequence.html" title="9.17. Fonctions de manipulation de séquence">Section 9.17</a> et <a class="xref" href="datatype-numeric.html#DATATYPE-SERIAL" title="8.1.4. Types seriés">Section 8.1.4</a>.
+   </p></div><div class="sect2" id="XACT-READ-COMMITTED"><div class="titlepage"><div><div><h3 class="title">13.2.1. Niveau d'isolation Read committed (lecture uniquement des données validées) <a href="#XACT-READ-COMMITTED" class="id_link">#</a></h3></div></div></div><a id="id-1.5.12.5.11.2" class="indexterm"></a><a id="id-1.5.12.5.11.3" class="indexterm"></a><p>
+    <em class="firstterm">Read Committed</em> est le niveau d'isolation par défaut
+    dans <span class="productname">PostgreSQL</span>. Quand une transaction utilise
+    ce niveau d'isolation, une requête <code class="command">SELECT</code> (sans clause
+    <code class="literal">FOR UPDATE/SHARE</code>) voit seulement les données validées
+    avant le début de la requête ; il ne voit jamais les données non
+    validées et les modifications validées par les transactions concurrentes
+    pendant l'exécution de la requête. En effet, une requête
+    <code class="command">SELECT</code> voit une image de la base de données datant du
+    moment où l'exécution de la requête commence. Néanmoins,
+    <code class="command">SELECT</code> voit les effets de mises à jour précédentes
+    exécutées dans sa propre transaction, même si celles-ci n'ont pas encore
+    été validées. De plus, notez que deux commandes <code class="command">SELECT</code>
+    successives peuvent voir des données différentes, même si elles sont
+    exécutées dans la même transaction si d'autres transactions valident des
+    modifications après que le premier <code class="command">SELECT</code> a démarré
+    et avant que le second <code class="command">SELECT</code> ne commence.
+   </p><p>
+    Les commandes <code class="command">UPDATE</code>, <code class="command">DELETE</code>,
+    <code class="command">SELECT FOR UPDATE</code> et <code class="command">SELECT FOR SHARE</code>
+    se comportent de la même façon que
+    <code class="command">SELECT</code> en ce qui concerne la recherche des lignes
+    cibles : elles ne trouveront que les lignes cibles qui ont été validées
+    avant le début de la commande. Néanmoins, une telle ligne cible pourrait
+    avoir déjà été mise à jour (ou supprimée ou verrouillée) par
+    une autre transaction concurrente au moment où elle est découverte. Dans ce
+    cas, le processus de mise à jour attendra que la première transaction
+    soit validée ou annulée (si elle est toujours en cours). Si la
+    première mise à jour est annulée, alors ses effets sont niés et le
+    deuxième processus peut exécuter la mise à jour des lignes originellement
+    trouvées. Si la première mise à jour est validée, la deuxième mise à jour
+    ignorera la ligne si la première mise à jour l'a supprimée, sinon elle
+    essaiera d'appliquer son opération à la version mise à jour de la ligne. La
+    condition de la recherche de la commande (la clause <code class="literal">WHERE</code>) est
+    réévaluée pour savoir si la version mise à jour de la ligne correspond
+    toujours à la condition de recherche. Dans ce cas, la deuxième mise à jour
+    continue son opération en utilisant la version mise à jour de la
+    ligne. Dans le cas des commandes <code class="command">SELECT FOR UPDATE</code> et
+    <code class="command">SELECT FOR SHARE</code>, cela signifie que la version mise à
+    jour de la ligne est verrouillée et renvoyée au client.
+   </p><p>
+    <code class="command">INSERT</code> avec une clause <code class="literal">ON CONFLICT DO
+     UPDATE</code> se comporte de la même façon. Dans le mode Read Committed,
+    chaque ligne proposée à l'insertion sera soit insérée soit mise à jour. Sauf
+    s'il y a des erreurs sans rapport, une des deux solutions est garantie. Si
+    un conflit survient d'une autre transaction dont les effets ne sont pas
+    encore visibles à <code class="command">INSERT</code>, la clause
+    <code class="command">UPDATE</code> affectera cette ligne, même s'il est possible
+    qu'il n'existe <span class="emphasis"><em>pas</em></span> de version de cette ligne visible
+    à cette commande.
+   </p><p>
+    <code class="command">INSERT</code> avec une clause <code class="literal">ON CONFLICT DO
+     NOTHING</code> pourrait avoir une insertion non terminée pour une ligne
+    à cause du résultat d'une autre transaction dont les effets ne sont pas
+    visibles à l'image de base de la commande <code class="command">INSERT</code>. Là
+    encore, c'est seulement le cas du mode Read Committed.
+   </p><p>
+    <code class="command">MERGE</code> permet à l'utilisateur d'indiquer plusieurs
+    combinaisons de sous-commandes <code class="command">INSERT</code>,
+    <code class="command">UPDATE</code> et <code class="command">DELETE</code>. Une commande
+    <code class="command">MERGE</code> avec à fois des sous-commandes
+    <code class="command">INSERT</code> et <code class="command">UPDATE</code> ressemble à un
+    <code class="command">INSERT</code> avec une clause <code class="literal">ON CONFLICT DO
+    UPDATE</code> mais ne garantie pas que soit un <code class="command">INSERT</code>
+    soit un <code class="command">UPDATE</code> arrivera.  Si un <code class="command">MERGE</code>
+    tente un <code class="command">UPDATE</code> ou un <code class="command">DELETE</code> et que la
+    ligne est mise à jour en même temps mais que la condition de jointure passe
+    toujours pour la cible en cours et pour la ligne source en cours, alors
+    <code class="command">MERGE</code> se comportera de la même façon que les commandes
+    <code class="command">UPDATE</code> ou <code class="command">DELETE</code> et réalisera son
+    action sur la version mise à jour de la ligne.  Néanmoins, comme
+    <code class="command">MERGE</code> peut indiquer plusieurs actions et qu'elles peuvent
+    être conditionnelles, les conditions de chaque action sont ré-évaluées sur
+    la version mise à jour de la ligne, dès la première action, même si l'action
+    qui a initialement été comparée apparaît plus tard dans la liste des
+    actions.
+    D'un autre côté, si la ligne est mise à jour parallèlement d'une façon
+    qui fait échouer la condition de jointure, alors
+    <code class="command">MERGE</code> évaluera les actions
+    <code class="literal">NOT MATCHED BY SOURCE</code> et
+    <code class="literal">NOT MATCHED [BY TARGET]</code> de la commande après, et exécutera la première de chaque type qui réussit.
+    Si la ligne est mise à jour en parallèle, alors <code class="command">MERGE</code>
+    évaluera les actions <code class="literal">NOT MATCHED [BY TARGET]</code> de
+    la commande et exécutera la première qui réussit.
+    Si <code class="command">MERGE</code> tente un
+    <code class="command">INSERT</code> et qu'un index d'unicité est présent, et qu'une
+    ligne dupliquée est insérée en même temps, alors une erreur de violation de
+    l'unicité est levée ; <code class="command">MERGE</code> ne tente pas d'éviter de
+    telles erreurs en recommençant l'évaluation des conditions du
+    <code class="literal">MATCHED</code>.
+   </p><p>
+    À cause des règles ci-dessus, une commande de mise à jour a la
+    possibilité de voir une image non cohérente : elle peut voir les effets
+    de commandes de mises à jour concurrentes sur les mêmes lignes que
+    celles qu'elle essaie de mettre à jour, mais elle ne voit pas les effets de
+    ces commandes sur les autres lignes de la base de données. Ce comportement
+    rend le mode de lecture validée non convenable pour les commandes qui
+    impliquent des conditions de recherche complexes ; néanmoins, il est
+    intéressant pour
+    les cas simples. Par exemple, considérons la mise à jour de balances de
+    banque avec des transactions comme :
+
+    </p><pre class="screen">BEGIN;
+UPDATE comptes SET balance = balance + 100.00 WHERE no_compte = 12345;
+UPDATE comptes SET balance = balance - 100.00 WHERE no_compte = 7534;
+COMMIT;</pre><p>
+
+    Si deux transactions comme celle-ci essaient de modifier en même temps la balance du
+    compte 12345, nous voulons clairement que la deuxième transaction commence à
+    partir de la version mise à jour de la ligne du compte. Comme chaque commande
+    n'affecte qu'une ligne prédéterminée, la laisser voir la
+    version mise à jour de la ligne ne crée pas de soucis de cohérence.
+   </p><p>
+    Des utilisations plus complexes peuvent produire des résultats non désirés
+    dans le mode Read Committed. Par exemple, considérez une commande
+    <code class="command">DELETE</code> opérant sur des données qui sont à la fois ajoutées
+    et supprimées du critère de restriction par une autre commande. Supposons que
+    <code class="literal">website</code> est une table sur deux lignes avec
+    <code class="literal">website.hits</code> valant <code class="literal">9</code> et
+    <code class="literal">10</code> :
+
+</p><pre class="screen">
+BEGIN;
+UPDATE website SET hits = hits + 1;
+-- exécuté par une autre session :  DELETE FROM website WHERE hits = 10;
+COMMIT;
+    </pre><p>
+
+    La commande <code class="command">DELETE</code> n'aura pas d'effet même s'il existe
+    une ligne <code class="literal">website.hits = 10</code> avant et après la commande
+    <code class="command">UPDATE</code>. Cela survient parce que la valeur
+    <code class="literal">9</code> de la ligne avant mise à jour est ignorée et que
+    lorsque l'<code class="command">UPDATE</code> termine et que <code class="command">DELETE</code>
+    obtient un verrou, la nouvelle valeur de la ligne n'est plus
+    <code class="literal">10</code>, mais <code class="literal">11</code>, ce qui ne correspond
+    plus au critère.
+   </p><p>
+    Comme le mode Read Committed commence chaque commande avec une nouvelle
+    image qui inclut toutes les transactions validées jusqu'à cet instant,
+    les commandes suivantes dans la même transaction verront les effets de
+    la transaction validée en parallèle dans tous les cas. Le problème en
+    question est de savoir si une <span class="emphasis"><em>seule</em></span> commande voit
+    une vue absolument cohérente ou non de la base de données.
+   </p><p>
+    L'isolation partielle des transactions fournie par le mode Read Committed
+    est adéquate pour de nombreuses applications, et ce mode est rapide et
+    simple à utiliser. Néanmoins, il n'est pas suffisant dans tous les cas.
+    Les applications qui exécutent des requêtes et des mises à jour complexes
+    pourraient avoir besoin d'une vue plus rigoureusement cohérente de la base
+    de données, une vue que le mode Read Committed ne fournit pas.
+   </p></div><div class="sect2" id="XACT-REPEATABLE-READ"><div class="titlepage"><div><div><h3 class="title">13.2.2. Niveau d'isolation Repeatable Read <a href="#XACT-REPEATABLE-READ" class="id_link">#</a></h3></div></div></div><a id="id-1.5.12.5.12.2" class="indexterm"></a><a id="id-1.5.12.5.12.3" class="indexterm"></a><p>
+    Le niveau d'isolation <em class="firstterm">Repeatable Read</em> ne
+    voit que les données validées avant que la transaction ait démarré; il ne
+    voit jamais ni les données non validées, ni les données validées par les
+    transactions concurrentes
+    pendant l'exécution de la requête. (Toutefois, la requête
+    voit les effets de mises à jour précédentes effectuées dans sa propre
+    transaction, bien qu'elles ne soient pas encore validées). C'est une
+    garantie plus élevée que celle requise par le standard <acronym class="acronym">SQL</acronym>
+    pour ce niveau d'isolation, et elle évite le phénomène décrit dans
+    <a class="xref" href="transaction-iso.html#MVCC-ISOLEVEL-TABLE" title="Tableau 13.1. Niveaux d'isolation des transactions">Tableau 13.1</a> sauf pour les anomalies de
+    sérialisation. Comme mentionné plus haut, c'est
+    permis par le standard, qui ne définit que la protection
+    <span class="emphasis"><em>minimale</em></span> que chaque niveau d'isolation doit fournir.
+   </p><p>
+    Ce niveau est différent de Read Committed parce qu'une requête dans
+    une transaction repeatable read voit un instantané au début de la
+    <span class="emphasis"><em>transaction</em></span>,
+    et non pas du début de la requête en cours à l'intérieur de la transaction.
+    Du coup, les commandes <code class="command">SELECT</code> successives à l'intérieur
+    d'une <span class="emphasis"><em>seule</em></span> transaction voient toujours les mêmes données,
+    c'est-à-dire qu'elles ne voient jamais les modifications faites par les autres
+    transactions qui ont été validées après le début de leur propre transaction.
+   </p><p>
+    Les applications utilisant ce niveau d'isolation doivent être préparées
+    à retenter des transactions à cause d'échecs de sérialisation.
+   </p><p>
+    Les commandes <code class="command">UPDATE</code>, <code class="command">DELETE</code>,
+    <code class="command">MERGE</code>, <code class="command">SELECT FOR UPDATE</code> et
+    <code class="command">SELECT FOR SHARE</code> se comportent de la même façon que
+    <code class="command">SELECT</code> en ce qui concerne la recherche de lignes
+    cibles : elles trouveront seulement les lignes cibles qui ont été
+    validées avant le début de la transaction. Néanmoins, une telle ligne cible
+    pourrait avoir été mise à jour (ou supprimée ou verrouillée)
+    par une autre transaction concurrente au moment où elle est utilisée. Dans
+    ce cas, la transaction repeatable read attendra que la première transaction de
+    mise à jour soit validée ou annulée (si celle-ci est toujours en
+    cours). Si la première mise à jour est annulée, les effets sont inversés et
+    la transaction repeatable read peut continuer avec la mise à jour de la ligne
+    trouvée à l'origine. Mais si la mise à jour est validée (et que
+    la ligne est mise à jour ou supprimée, pas simplement verrouillée),
+    alors la transaction repeatable read sera annulée avec le message
+
+    </p><pre class="screen">ERROR:  could not serialize access due to concurrent update</pre><p>
+
+    parce qu'une transaction sérialisable ne peut pas modifier ou verrouiller
+    les lignes changées par d'autres transactions après que la transaction
+    sérialisable a commencé.
+   </p><p>
+    Quand une application reçoit ce message d'erreurs, elle devrait annuler la
+    transaction actuelle et réessayer la transaction complète. La seconde fois,
+    la transaction voit les modifications déjà validées comme faisant partie de
+    sa vue initiale de la base de données, donc il n'y a pas de conflit logique
+    en utilisant la nouvelle version de la ligne comme point de départ pour la
+    mise à jour de la nouvelle transaction.
+   </p><p>
+    Notez que seules les transactions de modifications ont besoin d'être
+    tentées de nouveau ; les transactions en lecture seule n'auront jamais
+    de conflits de sérialisation.
+   </p><p>
+    Le mode Repeatable Read fournit une garantie rigoureuse que chaque
+    transaction voit un état complètement stable de la base de données. Toutefois
+    cette vue ne sera pas nécessairement toujours cohérente avec l'exécution sérielle
+    (un à la fois) de transactions concurrentes du même niveau d'isolation.
+    Par exemple, même une transaction en lecture seule à ce niveau
+    pourrait voir un enregistrement de contrôle mis à jour pour indiquer qu'un
+    traitement par lot a été terminé, mais <span class="emphasis"><em>ne pas</em></span> voir un
+    des enregistrements de détail qui est une partie logique du traitement par lot
+    parce qu'il a lu une ancienne version de l'enregistrement de contrôle.
+    L'implémentation correcte de règles de gestion par des transactions
+    s'exécutant à ce niveau d'isolation risque de ne pas marcher correctement
+    sans une utilisation prudente de verrouillages explicites qui bloquent
+    les transactions en conflit.
+   </p><p>
+    Le niveau d'isolation Repeatable Read est implémenté en utilisant une
+    technique connue dans la littérature académique des bases de données et
+    dans certains autres produits de bases de données comme
+    l'<em class="firstterm">isolation de snapshots</em> (<span class="foreignphrase"><em class="foreignphrase">Snapshot
+    Isolation</em></span>). Les différences en comportement et performance
+    peuvent être observées en comparant avec les systèmes utilisant une
+    technique traditionnelle de verrouillage qui réduit la concurrence.
+    Certains autres systèmes offrent même les niveaux Repeatable Read et
+    Snapshot Isolation comme des niveaux d'isolation distinct avec des
+    comportements différents. Le phénomène qui permet cette distinction des
+    deux techniques n'a pas été formalisé par les chercheurs en base de
+    données jusqu'au développement du standard SQL et sont en dehors du
+    périmètre de ce manuel. Pour un traitement complet, merci de lire <a class="xref" href="biblio.html#BERENSON95">[berenson95]</a>.
+   </p><p>
+    Avant la version 9.1 de <span class="productname">PostgreSQL</span>, une
+    demande d'isolation de transaction Serializable fournissait exactement
+    le comportement décrit ici. Pour maintenir l'ancien niveau Serializable,
+    il faudra maintenant demander Repeatable Read.
+   </p></div><div class="sect2" id="XACT-SERIALIZABLE"><div class="titlepage"><div><div><h3 class="title">13.2.3. Niveau d'Isolation Serializable <a href="#XACT-SERIALIZABLE" class="id_link">#</a></h3></div></div></div><a id="id-1.5.12.5.13.2" class="indexterm"></a><a id="id-1.5.12.5.13.3" class="indexterm"></a><a id="id-1.5.12.5.13.4" class="indexterm"></a><a id="id-1.5.12.5.13.5" class="indexterm"></a><p>
+    Le niveau d'isolation <em class="firstterm">Serializable</em> fournit
+    le niveau d'isolation le plus strict. Ce niveau émule l'exécution
+    sérielle de transactions pour toutes les transactions validées, comme si
+    les transactions avaient été
+    exécutées les unes après les autres, séquentiellement, plutôt
+    que simultanément. Toutefois, comme pour le niveau Repeatable Read,
+    les applications utilisant ce niveau d'isolation doivent être prêtes
+    à répéter leurs transactions en cas d'échec de sérialisation. En
+    fait, ce niveau d'isolation fonctionne exactement comme Repeatable
+    Read, excepté qu'il surveille aussi les conditions qui pourraient amener
+    l'exécution d'un jeu de transactions concurrentes à se comporter
+    d'une manière incompatible avec les exécutions séquentielles (une à
+    la fois) de toutes ces transactions. Cette surveillance n'introduit
+    aucun blocage supplémentaire par rapport à repeatable read, mais il
+    y a un coût à cette surveillance, et la détection des conditions
+    pouvant amener une <em class="firstterm">anomalie de sérialisation</em>
+    déclenchera un <em class="firstterm">échec de sérialisation</em>.
+   </p><p>
+      Comme exemple, considérons
+      la table <code class="structname">ma_table</code>, contenant initialement :
+   </p><pre class="screen"> classe | valeur
+--------+-------
+     1  |    10
+     1  |    20
+     2  |   100
+     2  |   200</pre><p>
+      Supposons que la transaction sérialisable A calcule :
+   </p><pre class="screen">SELECT SUM(valeur) FROM ma_table WHERE classe = 1;</pre><p>
+      puis insère le résultat (30) comme <code class="structfield">valeur</code>
+      dans une nouvelle ligne avec <code class="structfield">classe</code>
+      <code class="literal">= 2</code>.
+      En même temps, la transaction sérialisable B calcule :
+</p><pre class="screen">SELECT SUM(valeur) FROM ma_table WHERE classe = 2;</pre><p>
+      et obtient le résultat 300, qu'elle insère dans une nouvelle ligne avec
+      <code class="structfield">classe</code> <code class="literal">= 1</code>.
+      Puis, les deux transactions essaient de valider.
+      Si l'une des transactions fonctionnait au niveau d'isolation Repeatable Read,
+      les deux seraient autorisées à valider ;
+      mais puisqu'il n'y a pas d'ordre d'exécution séquentiel cohérent
+      avec le résultat, l'utilisation de transactions Serializable
+      permettra à une des deux transactions de valider,
+      et annulera l'autre avec ce message :
+
+</p><pre class="screen">
+ERREUR:  n'a pas pu sérialiser un accès à cause d'une mise à jour en parallèle"
+    </pre><p>
+
+    En effet, si A avait été exécuté avant B, B aurait trouvé la somme 330, et non pas 300.
+    De façon similaire, l'autre ordre aurait eu comme résultat une somme
+    différente pour le calcul par A.
+   </p><p>
+    Si on se fie aux transactions sérialisées pour empêcher les anomalies, il
+    est important que toute donnée lue depuis une table utilisateur
+    permanente ne soit pas considérée comme valide,
+    et ce jusqu'à ce que la transaction qui l'a lue
+    soit validée avec succès. Ceci est vrai même pour les transactions en
+    lecture, sauf pour les données lues dans une transaction en lecture seule
+    et <em class="firstterm">déferrable</em>, dont les données sont considérées
+    valides dès leur lecture. En effet, une telle transaction,
+    avant de lire quoi que ce soit, attend jusqu'à
+    l'obtention d'une image garantie libre de tout problème.
+    Dans tous les autres cas, les applications ne doivent pas dépendre des
+    lectures d'une transaction annulée par la suite. Elles doivent plutôt
+    retenter la transaction jusqu'à ce qu'elle réussisse.
+   </p><p>
+    Pour garantir une vraie sérialisation
+    <span class="productname">PostgreSQL</span> utilise le
+    <em class="firstterm">verrouillage de prédicats</em>, ce qui signifie
+    qu'il conserve des verrous qui lui permettent de déterminer si
+    une écriture aurait eu un impact sur le résultat d'une lecture
+    antérieure par une transaction concurrente, si elle s'était
+    exécutée d'abord. Dans <span class="productname">PostgreSQL</span>,
+    ces verrous ne causent pas de blocage, et ne peuvent donc
+    <span class="emphasis"><em>pas</em></span> jouer un rôle dans un
+    verrou mortel (deadlock). Ces verrous sont utilisés pour identifier et
+    marquer les dépendances entre des transactions sérialisables
+    concurrentes qui, dans certaines combinaisons, peuvent entraîner des
+    anomalies de sérialisation. Par contraste, une transaction Read
+    Committed ou Repeatable Read qui voudrait garantir la cohérence
+    des données devra prendre un verrou sur la table entière, ce
+    qui pourrait bloquer d'autres utilisateurs voulant utiliser cette
+    table, ou pourrait utiliser <code class="literal">SELECT FOR UPDATE</code> ou
+    <code class="literal">SELECT FOR SHARE</code> qui non seulement peut bloquer
+    d'autres transactions, mais entraîne un accès au disque.
+   </p><p>
+    Les verrous de prédicats dans <span class="productname">PostgreSQL</span>,
+    comme dans la plupart des autres systèmes de bases de données,
+    s'appuient sur les données réellement accédées par une
+    transaction. Ils seront visibles dans la vue système <a class="link" href="view-pg-locks.html" title="52.12. pg_locks"><code class="structname">pg_locks</code></a> avec
+    un <code class="literal">mode</code> de <code class="literal">SIReadLock</code>. Les
+    verrous acquis pendant l'exécution d'une requête dépendront
+    du plan utilisé par la requête, et plusieurs verrous fins (par
+    exemple des verrous d'enregistrement) peuvent être combinés en
+    verrous plus grossiers (comme des verrous de page) pendant le
+    déroulement de la transaction, pour éviter d'épuiser la mémoire
+    utilisée par le suivi des verrous. Une transaction <code class="literal">READ
+     ONLY</code> peut libérer ses verrous SIRead avant sa fin, si
+    elle détecte que ne peut plus se produire un conflit
+    qui entraînerait une anomalie de sérialisation. En fait,
+    les transactions <code class="literal">READ ONLY</code> seront souvent capables
+    d'établir ce fait dès leur démarrage, et ainsi éviteront
+    de prendre des verrous de prédicat. Si vous demandez explicitement
+    une transaction <code class="literal">SERIALIZABLE READ ONLY DEFERRABLE</code>,
+    elle bloquera jusqu'à ce qu'elle puisse établir ce fait. (C'est le
+    <span class="emphasis"><em>seul</em></span> cas où une transaction Serializable bloque,
+    mais pas une transaction Repeatable Read.) D'autre part, les verrous
+    SIRead doivent souvent être gardés après la fin d'une transaction,
+    jusqu'à ce que toutes les lectures-écritures s'étant déroulées
+    simultanément soient terminées.
+   </p><p>
+    L'utilisation systématique de transactions Serializable peut
+    simplifier le développement. La garantie que tout ensemble de
+    transactions sérialisées, concurrentes, et validées avec succès,
+    aura le même effet que si elles avaient été exécutées une
+    par une signifie que, si vous pouvez démontrer qu'une
+    transaction exécutée seule est correcte, alors
+    vous pouvez être certain qu'elle le restera dans tout
+    mélange de transactions sérialisées, même sans informations sur
+    ce que font les autres transactions, ou qu'elle ne sera pas validée.
+    Il est important qu'un environnement
+    qui utilise cette technique ait une méthode générale pour
+    traiter les erreurs de sérialisation (qui retournent toujours
+    un SQLSTATE valant '40001'). En effet, il sera très difficile de
+    prédire correctement quelles transactions pourront contribuer à des
+    dépendances lecture/écriture, et auront besoin d'être annulées
+    pour éviter les anomalies de sérialisation. La surveillance des
+    dépendances lecture/écriture a un coût, tout comme la répétition
+    des transactions annulées pour un échec de sérialisation.
+    Mais les transactions sérialisables sont le meilleur
+    choix en termes de performances pour certains environnements,
+    en regard du coût et du blocage de verrous explicites,
+    de <code class="literal">SELECT FOR UPDATE</code> ou de <code class="literal">SELECT
+     FOR SHARE</code>, .
+   </p><p>
+    Bien que le niveau d'isolation Serializable de
+    <span class="productname">PostgreSQL</span> ne permette à des transactions
+    parallèles de valider leurs modifications que s'il est prouvé qu'une
+    exécution dans l'ordre produirait le même résultat, il n'empêche pas
+    toujours la levée d'erreurs qui ne surviendraient pas dans une véritable
+    exécution en série. En particulier, il est possible de voir des violations
+    de contraintes uniques suite à des conflits entre transactions
+    Serializable qui se surchargent, même vérification explicite que
+    la clé n'est pas présente avant de tenter de l'insérer. Ceci peut
+    s'éviter en s'assurant que <span class="emphasis"><em>toutes</em></span> les transactions
+    Serializable qui peuvent insérer des clés en conflit vérifient
+    explicitement avant si elles peuvent l'insérer. Par exemple, imaginez une
+    application qui demande à un utilisateur une nouvelle clé, puis vérifie si
+    elle n'existe pas déjà en cherchant à la lire d'abord,
+    ou génère une nouvelle clé en sélectionnant la clé pré-existante
+    la plus grande puis en ajoutant un. Si certaines
+    transactions Serializable insèrent de nouvelles clés directement sans
+    suivre ce protocole, des violations de contraintes uniques peuvent être
+    rapportées, même dans des cas où elles ne pourraient pas survenir dans le
+    cas d'une exécution en série de transactions concurrentes.
+   </p><p>
+    Pour une performance optimale quand on s'appuie sur les transactions
+    Serializable pour le contrôle de la concurrence, ces points doivent
+    être pris en considération :
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Déclarer les transactions comme <code class="literal">READ ONLY</code> quand
+       c'est possible.
+      </p></li><li class="listitem"><p>
+       Contrôler le nombre de connexions actives, au besoin en utilisant un pool de
+       connexions. C'est toujours un point important pour les
+       performances, mais cela peut être particulièrement important pour un
+       système chargé qui utilise des transactions Serializable.
+      </p></li><li class="listitem"><p>
+       Ne mettez pas plus dans une transaction seule qu'il n'est nécessaire
+       pour l'intégrité.
+      </p></li><li class="listitem"><p>
+       Ne laissez pas des connexions traîner en <span class="quote">« <span class="quote">idle in transaction</span> »</span>
+       plus longtemps que nécessaire. Le paramètre de configuration
+       <a class="xref" href="runtime-config-client.html#GUC-IDLE-IN-TRANSACTION-SESSION-TIMEOUT">idle_in_transaction_session_timeout</a> peut être
+       utilisé pour déconnecter automatiquement les sessions persistantes.
+      </p></li><li class="listitem"><p>
+       Supprimez les verrous explicites, <code class="literal">SELECT FOR UPDATE</code>, et
+       <code class="literal">SELECT FOR SHARE</code>, quand ils ne sont plus nécessaires grâce
+       aux protections fournies automatiquement par les transactions Serializable.
+      </p></li><li class="listitem"><p>
+       Quand le système est forcé à combiner plusieurs verrous de prédicat
+       de niveau page en un seul verrou de niveau relation
+       (parce que la table des verrous de prédicat est à court de mémoire), une
+       augmentation du taux d'échecs de sérialisation peut survenir. Vous
+       pouvez éviter ceci en augmentant <a class="xref" href="runtime-config-locks.html#GUC-MAX-PRED-LOCKS-PER-TRANSACTION">max_pred_locks_per_transaction</a>,
+       <a class="xref" href="runtime-config-locks.html#GUC-MAX-PRED-LOCKS-PER-RELATION">max_pred_locks_per_relation</a>, et/ou
+       <a class="xref" href="runtime-config-locks.html#GUC-MAX-PRED-LOCKS-PER-PAGE">max_pred_locks_per_page</a>.
+      </p></li><li class="listitem"><p>
+       Un parcours séquentiel nécessitera toujours un verrou de prédicat
+       au niveau relation. Ceci peut résulter en un taux plus important
+       d'échecs de sérialisation. Il peut être utile d'encourager
+       l'utilisation de parcours d'index en diminuant <a class="xref" href="runtime-config-query.html#GUC-RANDOM-PAGE-COST">random_page_cost</a> et/ou en augmentant <a class="xref" href="runtime-config-query.html#GUC-CPU-TUPLE-COST">cpu_tuple_cost</a>. Assurez-vous de bien mettre en balance
+       toute diminution du nombre d'annulations et de redémarrages de transactions
+       et l'évolution globale du temps d'exécution des requêtes.
+      </p></li></ul></div><p>
+   </p><p>
+    Le niveau d'isolation Serializable est implémenté en utilisant une
+    technique connue sous le nom de <span class="foreignphrase"><em class="foreignphrase">
+     Serializable Snapshot Isolation</em></span>
+    dans la littérature académique des bases de données. Elle se base
+    sur l'isolation par snapshot et ajoute des vérifications pour les
+    anomalies de sérialisation. Quelques différences de comportement et de
+    performance peuvent être observées lors de la comparaison avec d'autres
+    systèmes qui utilisent une technique de verrouillage traditionnelle. Merci
+    de lire <a class="xref" href="biblio.html#PORTS12">[ports12]</a> pour des informations détaillées.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/transaction-iso.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:23 GMT -->
+</html>

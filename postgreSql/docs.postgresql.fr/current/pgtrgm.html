@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/pgtrgm.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.33. pg_trgm -- support de la similarité de texte en utilisant la correspondance de trigrammes</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="pgsurgery.html" title="F.32. pg_surgery -- réaliser des opérations bas niveau sur les données des relations" /><link rel="next" href="pgvisibility.html" title="F.34. pg_visibility -- informations et outils sur la carte de visibilité" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/pgtrgm.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/pgtrgm.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/pgtrgm.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/pgtrgm.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/pgtrgm.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/pgtrgm.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/pgtrgm.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/pgtrgm.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/pgtrgm.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/pgtrgm.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/pgtrgm.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/pgtrgm.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/pgtrgm.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/pgtrgm.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/pgtrgm.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/pgtrgm.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/pgtrgm.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/pgtrgm.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/pgtrgm.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="appendixes.html">Annexes</a></span> » <span class="breadcrumb-link"><a href="contrib.html">Modules et extensions supplémentaires fournis</a></span> » <span class="breadcrumb-node">pg_trgm  -- 
+  support de la similarité de texte en utilisant la correspondance de trigrammes</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pgsurgery.html" title="F.32. pg_surgery  --  réaliser des opérations bas niveau sur les données&#10;  des relations">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="pgvisibility.html" title="F.34. pg_visibility  --  informations et outils sur la carte de visibilité">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">F.32. pg_surgery  --  réaliser des opérations bas niveau sur les données
+  des relations </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> F.34. pg_visibility  --  informations et outils sur la carte de visibilité</td></tr></table></div><div class="sect1" id="PGTRGM"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.33. pg_trgm  -- 
+  support de la similarité de texte en utilisant la correspondance de trigrammes <a href="#PGTRGM" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="pgtrgm.html#PGTRGM-CONCEPTS">F.33.1. Concepts du trigramme (ou trigraphe)</a></span></dt><dt><span class="sect2"><a href="pgtrgm.html#PGTRGM-FUNCS-OPS">F.33.2. Fonctions et opérateurs</a></span></dt><dt><span class="sect2"><a href="pgtrgm.html#PGTRGM-GUC">F.33.3. Paramètres GUC</a></span></dt><dt><span class="sect2"><a href="pgtrgm.html#PGTRGM-INDEX">F.33.4. Support des index</a></span></dt><dt><span class="sect2"><a href="pgtrgm.html#PGTRGM-TEXT-SEARCH">F.33.5. Intégration à la recherche plein texte</a></span></dt><dt><span class="sect2"><a href="pgtrgm.html#PGTRGM-REFERENCES">F.33.6. Références</a></span></dt><dt><span class="sect2"><a href="pgtrgm.html#PGTRGM-AUTHORS">F.33.7. Auteurs</a></span></dt></dl></div><a id="id-1.11.7.44.2" class="indexterm"></a><p>
+  Le module <code class="filename">pg_trgm</code> fournit des fonctions et
+  opérateurs qui permettent de déterminer des similarités de textes
+  alphanumériques en fonction de correspondances de trigrammes. Il
+  fournit également des classes d'opérateurs accélérant les recherches de
+  chaînes similaires.
+ </p><p>
+  Ce module est considéré comme <span class="quote">« <span class="quote">trusted</span> »</span>, c'est-à-dire qu'il
+  peut être installé par des utilisateurs simples (sans attribut
+  <code class="literal">SUPERUSER</code>) possédant l'attribut <code class="literal">CREATE</code>
+  sur la base de données courante.
+ </p><div class="sect2" id="PGTRGM-CONCEPTS"><div class="titlepage"><div><div><h3 class="title">F.33.1. Concepts du trigramme (ou trigraphe) <a href="#PGTRGM-CONCEPTS" class="id_link">#</a></h3></div></div></div><p>
+   Un trigramme est un groupe de trois caractères consécutifs pris dans une
+   chaîne. Nous pouvons mesurer la similarité de deux chaînes en comptant le
+   nombre de trigrammes qu'elles partagent. Cette idée simple est
+   très efficace pour mesurer la similarité des mots dans la plupart des
+   langues.
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    <code class="filename">pg_trgm</code> ignore les caractères qui ne forment pas
+    de mots (donc non alphanumériques) lors de l'extraction des trigrammes
+    d'une chaîne de caractères.
+    Chaque mot est considéré avoir deux espaces en préfixe et un espace en
+    suffixe lors de la détermination de l'ensemble de trigrammes contenu dans
+    la chaîne. Par exemple, l'ensemble des trigrammes dans la chaîne
+    <span class="quote">« <span class="quote"><code class="literal">cat</code></span> »</span> est
+    <span class="quote">« <span class="quote"><code class="literal">  c</code></span> »</span>,
+    <span class="quote">« <span class="quote"><code class="literal"> ca</code></span> »</span>,
+    <span class="quote">« <span class="quote"><code class="literal">cat</code></span> »</span> et
+    <span class="quote">« <span class="quote"><code class="literal">at </code></span> »</span>.
+    L'ensemble de trigrammes dans la chaîne
+    <span class="quote">« <span class="quote"><code class="literal">foo|bar</code></span> »</span> est
+    <span class="quote">« <span class="quote"><code class="literal">  f</code></span> »</span>,
+    <span class="quote">« <span class="quote"><code class="literal"> fo</code></span> »</span>,
+    <span class="quote">« <span class="quote"><code class="literal">foo</code></span> »</span>,
+    <span class="quote">« <span class="quote"><code class="literal">oo </code></span> »</span>,
+    <span class="quote">« <span class="quote"><code class="literal">  b</code></span> »</span>,
+    <span class="quote">« <span class="quote"><code class="literal"> ba</code></span> »</span>,
+    <span class="quote">« <span class="quote"><code class="literal">bar</code></span> »</span> et
+    <span class="quote">« <span class="quote"><code class="literal">ar </code></span> »</span>.
+
+   </p></div></div><div class="sect2" id="PGTRGM-FUNCS-OPS"><div class="titlepage"><div><div><h3 class="title">F.33.2. Fonctions et opérateurs <a href="#PGTRGM-FUNCS-OPS" class="id_link">#</a></h3></div></div></div><p>
+   Les fonctions fournies par le module <code class="filename">pg_trgm</code>
+   sont affichées dans <a class="xref" href="pgtrgm.html#PGTRGM-FUNC-TABLE" title="Tableau F.25. Fonctions de pg_trgm">Tableau F.25</a> alors que
+   les opérateurs sont indiqués dans <a class="xref" href="pgtrgm.html#PGTRGM-OP-TABLE" title="Tableau F.26. Opérateurs de pg_trgm">Tableau F.26</a>.
+  </p><div class="table" id="PGTRGM-FUNC-TABLE"><p class="title"><strong>Tableau F.25. Fonctions de <code class="filename">pg_trgm</code></strong></p><div class="table-contents"><table class="table" summary="Fonctions de pg_trgm" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+        Fonction
+       </p>
+       <p>
+        Description
+       </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.44.6.3.2.2.1.1.1.1" class="indexterm"></a>
+        <code class="function">similarity</code> ( <code class="type">text</code>, <code class="type">text</code> )
+        → <code class="returnvalue">real</code>
+       </p>
+       <p>
+        Renvoie un nombre indiquant la similarité des deux arguments.
+        L'échelle du résultat va de zéro (indiquant que les deux chaînes sont
+        complètement différentes) à un (indiquant que les deux chaînes sont
+        identiques).
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.44.6.3.2.2.2.1.1.1" class="indexterm"></a>
+        <code class="function">show_trgm</code> ( <code class="type">text</code> )
+        → <code class="returnvalue">text[]</code>
+       </p>
+       <p>
+        Renvoie un tableau de tous les trigrammes d'une chaîne donnée. (En
+        pratique, ceci est peu utile, sauf pour le débogage.)
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.44.6.3.2.2.3.1.1.1" class="indexterm"></a>
+        <code class="function">word_similarity</code> ( <code class="type">text</code>, <code class="type">text</code> )
+        → <code class="returnvalue">real</code>
+       </p>
+       <p>
+        Renvoie un nombre qui indique la plus grande similarité entre
+        l'ensemble de trigrammes dans la première chaîne et toute étendue
+        continue d'un ensemble trié de trigrammes dans la deuxième chaîne.
+        Pour les détails, voir l'explication ci-dessous.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.44.6.3.2.2.4.1.1.1" class="indexterm"></a>
+        <code class="function">strict_word_similarity</code> ( <code class="type">text</code>, <code class="type">text</code> )
+        → <code class="returnvalue">real</code>
+       </p>
+       <p>
+        Identique à <code class="function">word_similarity(text, text)</code>, mais
+        force à étendre les limites pour correspondre aux limites du mot. Comme
+        nous n'avons pas de trigrammes sur plusieurs mots, cette fonction
+        renvoie en fait la plus grande similarité entre la première chaîne et
+        toute étendue continue de mots de la deuxième chaîne.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.44.6.3.2.2.5.1.1.1" class="indexterm"></a>
+        <code class="function">show_limit</code> ()
+        → <code class="returnvalue">real</code>
+       </p>
+       <p>
+        Renvoie la limite de similarité utilisée par l'opérateur
+        <code class="literal">%</code>. Ceci configure la similarité minimale entre deux
+        mots pour qu'ils soient considérés suffisamment proches pour être des
+        fautes d'orthographe l'un de l'autre
+        (<span class="emphasis"><em>obsolète</em></span> ; utilisez à la place
+        <code class="command">SHOW</code>
+        <code class="varname">pg_trgm.similarity_threshold</code>.).
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.44.6.3.2.2.6.1.1.1" class="indexterm"></a>
+        <code class="function">set_limit</code> ( <code class="type">real</code> )
+        → <code class="returnvalue">real</code>
+       </p>
+       <p>
+        Configure la limite de similarité actuelle utilisée par l'opérateur
+        <code class="literal">%</code>. La limite doit valoir entre 0 et 1
+        (le défaut est 0,3).
+        (<span class="emphasis"><em>obsolète</em></span> ; utilisez à la place
+        <code class="command">SET</code>
+        <code class="varname">pg_trgm.similarity_threshold</code>.).
+       </p></td></tr></tbody></table></div></div><br class="table-break" /><p>
+   Prenons l'exemple suivant :
+
+   </p><pre class="programlisting">
+# SELECT word_similarity('word', 'two words');
+ word_similarity
+-----------------
+             0.8
+(1 row)
+   </pre><p>
+
+   Dans la première chaîne, l'ensemble de trigrammes est
+   <code class="literal">{"  w"," wo","ord","wor","rd "}</code>. Dans la seconde chaîne,
+   l'ensemble trié de trigrammes est
+   <code class="literal">{"  t"," tw","two","wo ","  w"," wo","wor","ord","rds","ds "}</code>.
+   L'étendue la plus similaire d'un ensemble trié de trigrammes dans la
+   seconde chaîne est <code class="literal">{"  w"," wo","wor","ord"}</code>, et la
+   similarité est <code class="literal">0.8</code>.
+  </p><p>
+   Cette fonction renvoie une valeur qui peut être comprise approximativement
+   comme la plus grande similarité entre la première chaîne et toute
+   sous-chaîne de la deuxième chaîne. Néanmoins, cette fonction n'ajoute pas
+   de remplissage aux limites de l'étendue. De ce fait, le nombre de
+   caractères supplémentaires présents dans la deuxième chaîne n'est pas
+   considéré, sauf pour les limites de mots sans correspondance.
+  </p><p>
+   En même temps, <code class="function">strict_word_similarity</code>
+   sélectionne une étendue de mots dans la deuxième chaîne. Dans l'exemple
+   ci-dessus, <code class="function">strict_word_similarity</code>
+   sélectionnerait l'étendue d'un mot seul <code class="literal">'words'</code>, dont
+   l'ensemble de trigrammes est
+   <code class="literal">{"  w"," wo","wor","ord","rds","ds"}</code>.
+
+   </p><pre class="programlisting">
+# SELECT strict_word_similarity('word', 'two words'), similarity('word', 'words');
+ strict_word_similarity | similarity
+------------------------+------------
+               0.571429 |   0.571429
+(1 row)
+   </pre><p>
+  </p><p>
+   De ce fait, la fonction <code class="function">strict_word_similarity</code> est
+   utile pour trouver la similarité de mots entiers,
+   alors que <code class="function">word_similarity</code> est plus
+   intéressant pour trouver la similarité de parties de mots.
+  </p><div class="table" id="PGTRGM-OP-TABLE"><p class="title"><strong>Tableau F.26. Opérateurs de <code class="filename">pg_trgm</code></strong></p><div class="table-contents"><table class="table" summary="Opérateurs de pg_trgm" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+        Opérateur
+       </p>
+       <p>
+        Description
+       </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">text</code> <code class="literal">%</code> <code class="type">text</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Renvoie <code class="literal">true</code> si les arguments ont une similarité
+        supérieure à la limite configurée par
+        <code class="varname">pg_trgm.similarity_threshold</code>.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">text</code> <code class="literal">&lt;%</code> <code class="type">text</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Renvoie <code class="literal">true</code> si la similarité entre l'ensemble de
+        trigrammes du premier argument et une étendue continue d'un ensemble
+        trié de trigrammes dans le second argument est plus grande que la
+        limite de similarité actuelle, telle qu'elle est configurée avec le
+        paramètre <code class="varname">pg_trgm.word_similarity_threshold</code>.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">text</code> <code class="literal">%&gt;</code> <code class="type">text</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Inverse de l'opérateur <code class="literal">&lt;&lt;%</code>.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">text</code> <code class="literal">&lt;&lt;%</code> <code class="type">text</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Renvoie <code class="literal">true</code> si son second argument
+        possède une étendue continue d'un ensemble de trigrammes trié
+        correspondant aux limites de mots, et que sa similarité avec
+        l'ensemble de trigrammes du premier argument est plus grand
+        que la limite de similarité stricte de mot strict courante,
+        telle que configurée par le paramètre
+        <code class="varname">pg_trgm.strict_word_similarity_threshold</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">text</code> <code class="literal">%&gt;&gt;</code> <code class="type">text</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Inverse de l'opérateur <code class="literal">&lt;&lt;%</code>.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">text</code> <code class="literal">&lt;-&gt;</code> <code class="type">text</code>
+        → <code class="returnvalue">real</code>
+       </p>
+       <p>
+        Retourne la <span class="quote">« <span class="quote">distance</span> »</span> entre les arguments,
+        c'est-à-dire un moins la valeur de <code class="function">similarity()</code>.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">text</code> <code class="literal">&lt;&lt;-&gt;</code> <code class="type">text</code>
+        → <code class="returnvalue">real</code>
+       </p>
+       <p>
+        Retourne la <span class="quote">« <span class="quote">distance</span> »</span> entre les arguments,
+        c'est-à-dire un moins la valeur de <code class="function">word_similarity()</code>.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">text</code> <code class="literal">&lt;-&gt;&gt;</code> <code class="type">text</code>
+        → <code class="returnvalue">real</code>
+       </p>
+       <p>
+        Inverse de l'opérateur <code class="literal">&lt;&lt;-&gt;</code>.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">text</code> <code class="literal">&lt;&lt;&lt;-&gt;</code> <code class="type">text</code>
+        → <code class="returnvalue">real</code>
+       </p>
+       <p>
+        Retourne la <span class="quote">« <span class="quote">distance</span> »</span> entre les arguments,
+        c'est-à-dire un moins la valeur de <code class="function">strict_word_similarity()</code>.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">text</code> <code class="literal">&lt;-&gt;&gt;&gt;</code> <code class="type">text</code>
+        → <code class="returnvalue">real</code>
+       </p>
+       <p>
+        Inverse de l'opérateur <code class="literal">&lt;&lt;&lt;-&gt;</code>.
+       </p></td></tr></tbody></table></div></div><br class="table-break" /></div><div class="sect2" id="PGTRGM-GUC"><div class="titlepage"><div><div><h3 class="title">F.33.3. Paramètres GUC <a href="#PGTRGM-GUC" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-PGTRGM-SIMILARITY-THRESHOLD"><span class="term">
+     <code class="varname">pg_trgm.similarity_threshold</code> (<code class="type">real</code>)
+     <a id="id-1.11.7.44.7.2.1.1.3" class="indexterm"></a>
+    </span> <a href="#GUC-PGTRGM-SIMILARITY-THRESHOLD" class="id_link">#</a></dt><dd><p>
+      Configure la limite de similarité utilisée par l'opérateur
+      <code class="literal">%</code>. La limite doit se situer entre 0 et 1 (la valeur
+      par défaut est 0,3).
+     </p></dd><dt id="GUC-PGTRGM-WORD-SIMILARITY-THRESHOLD"><span class="term">
+     <code class="varname">pg_trgm.word_similarity_threshold</code> (<code class="type">real</code>)
+     <a id="id-1.11.7.44.7.2.2.1.3" class="indexterm"></a>
+    </span> <a href="#GUC-PGTRGM-WORD-SIMILARITY-THRESHOLD" class="id_link">#</a></dt><dd><p>
+      Configure la limite de similarité de mot utilisée par les opérateurs
+      <code class="literal">&lt;%</code> et <code class="literal">%&gt;</code>. La limite doit être
+      comprise entre 0 et 1 (la valeur par défaut est 0,6).
+     </p></dd><dt id="GUC-PGTRGM-STRICT-WORD-SIMILARITY-THRESHOLD"><span class="term">
+     <code class="varname">pg_trgm.strict_word_similarity_threshold</code> (<code class="type">real</code>)
+     <a id="id-1.11.7.44.7.2.3.1.3" class="indexterm"></a>
+    </span> <a href="#GUC-PGTRGM-STRICT-WORD-SIMILARITY-THRESHOLD" class="id_link">#</a></dt><dd><p>
+      Configure la limite de similarité de mot stricte utilisée par les opérateurs
+      <code class="literal">&lt;&lt;%</code> et <code class="literal">%&gt;&gt;</code>. La limite doit être
+      comprise entre 0 et 1 (la valeur par défaut est 0,5).
+     </p></dd></dl></div></div><div class="sect2" id="PGTRGM-INDEX"><div class="titlepage"><div><div><h3 class="title">F.33.4. Support des index <a href="#PGTRGM-INDEX" class="id_link">#</a></h3></div></div></div><p>
+   Le module <code class="filename">pg_trgm</code> fournit des classes d'opérateurs
+   pour les index GiST et GIN qui vous permettent de créer un index sur une
+   colonne de type text dans le but d'accélérer les recherches de similarité.
+   Ces types d'index supportent les opérateurs de similarité décrits
+   ci-dessus et supportent de plus les recherches basées sur des trigrammes
+   pour les requêtes <code class="literal">LIKE</code>, <code class="literal">ILIKE</code>,
+   <code class="literal">~</code>, <code class="literal">~*</code> et <code class="literal">=</code>.
+   Les comparaisons de similarité ne sont pas sensibles à la casse dans une
+   construction par défaut de <code class="filename">pg_trgm</code>.
+   Les opérateurs d'inégalité ne sont pas supportés. Notez que ces index peuvent
+   ne pas être aussi efficaces que les index B-Tree pour l'opérateur
+   d'égalité.
+  </p><p>
+   Exemple :
+
+   </p><pre class="programlisting">
+CREATE TABLE test_trgm (t text);
+CREATE INDEX trgm_idx ON test_trgm USING GIST (t gist_trgm_ops);
+   </pre><p>
+   ou
+   </p><pre class="programlisting">
+CREATE INDEX trgm_idx ON test_trgm USING GIN (t gin_trgm_ops);
+   </pre><p>
+  </p><p>
+   L'opérateur de classe GiST <code class="literal">gist_trgm_ops</code>
+   assimile un ensemble de trigrammes à une signature bitmap.
+   Son paramètre entier optionnel <code class="literal">siglen</code> détermine
+   la longueur de la signature en octets.
+   La valeur par défaut est de 12 octets.
+   Les valeurs valides vont de 1 à 2024 octets.
+   Les signatures plus longues mènent à une recherche plus précise
+   (parcourant une plus petite fraction de l'index
+   et moins de pages de la table), au prix d'un index plus gros.
+  </p><p>
+   Exemple de création d'un tel index avec une longueur de signature
+   de 32 octets :
+  </p><pre class="programlisting">
+CREATE INDEX trgm_idx ON test_trgm USING GIST (t gist_trgm_ops(siglen=32));
+  </pre><p>
+   À ce point, vous aurez un index sur la colonne <code class="structfield">t</code>
+   que vous pouvez utiliser pour une recherche de similarité. Une requête
+   typique est :
+  </p><pre class="programlisting">
+SELECT t, similarity(t, '<em class="replaceable"><code>word</code></em>') AS sml
+  FROM test_trgm
+  WHERE t % '<em class="replaceable"><code>word</code></em>'
+  ORDER BY sml DESC, t;
+  </pre><p>
+   Ceci renverra toutes les valeurs dans la colonne texte suffisamment
+   similaires à <em class="replaceable"><code>word</code></em>, triées de la meilleure
+   correspondance à la pire. L'index sera utilisé pour accélérer l'opération
+   même sur un grand ensemble de données.
+  </p><p>
+   Une variante de la requête ci-dessus est
+   </p><pre class="programlisting">
+SELECT t, t &lt;-&gt; '<em class="replaceable"><code>word</code></em>' AS dist
+  FROM test_trgm
+  ORDER BY dist LIMIT 10;
+   </pre><p>
+   Ceci peut être implémenté assez efficacement par des index GiST, mais pas
+   par des index GIN. Cela battra généralement la première formulation quand
+   on demande juste un petit nombre de correspondances proches.
+  </p><p>
+   De plus, vous pouvez utiliser un index sur la colonne
+   <code class="structfield">t</code> pour la similarité, stricte ou pas, entre mots.
+   Des requêtes typiques sont :
+   </p><pre class="programlisting">
+SELECT t, strict_word_similarity('<em class="replaceable"><code>word</code></em>', t) AS sml
+  FROM test_trgm
+  WHERE '<em class="replaceable"><code>word</code></em>' &lt;&lt;% t
+  ORDER BY sml DESC, t;
+   </pre><p>
+   et
+   </p><pre class="programlisting">
+SELECT t, word_similarity('<em class="replaceable"><code>word</code></em>', t) AS sml
+  FROM test_trgm
+  WHERE '<em class="replaceable"><code>word</code></em>' &lt;% t
+  ORDER BY sml DESC, t;
+   </pre><p>
+   Ceci renverra toutes les valeurs dans la colonne texte pour lesquelles il
+   existe une étendue continue de l'ensemble ordonné de trigrammes
+   suffisamment similaire à l'ensemble de trigrammes de
+   <em class="replaceable"><code>word</code></em>, trié de la meilleure correspondance à la
+   pire. L'index sera utilisé pour accélérer l'opération, y compris sur de
+   très gros ensembles de données.
+  </p><p>
+   Les variations possibles des requêtes ci-dessus sont :
+   </p><pre class="programlisting">
+SELECT t, '<em class="replaceable"><code>word</code></em>' &lt;&lt;-&gt; t AS dist
+  FROM test_trgm
+  ORDER BY dist LIMIT 10;
+   </pre><p>
+   et
+   </p><pre class="programlisting">
+SELECT t, '<em class="replaceable"><code>word</code></em>' &lt;&lt;&lt;-&gt; t AS dist
+  FROM test_trgm
+  ORDER BY dist LIMIT 10;
+   </pre><p>
+   Ceci peut être implémenté assez efficacement par des index GiST, mais pas
+   par des index GIN.
+  </p><p>
+   À partir de <span class="productname">PostgreSQL</span> 9.1, ces types d'index
+   supportent aussi les recherches d'index pour <code class="literal">LIKE</code> et
+   <code class="literal">ILIKE</code>, par exemple
+   </p><pre class="programlisting">
+SELECT * FROM test_trgm WHERE t LIKE '%foo%bar';
+   </pre><p>
+   La recherche par index fonctionne par extraction des trigrammes à partir
+   de la chaîne recherchée, puis en les recherchant dans l'index. Plus le
+   nombre de trigrammes dans la recherche est important, plus efficace sera la
+   recherche.
+   Contrairement à des recherches basées sur les B-tree, la chaîne
+   de recherche n'a pas besoin d'un signe pourcentage sur le côté gauche.
+  </p><p>
+   À partir de <span class="productname">PostgreSQL</span> 9.3, ces types d'index
+   supportent aussi les recherches de correspondances
+   d'expressions rationnelles (opérateurs <code class="literal">~</code> et
+   <code class="literal">~*</code>). Par exemple
+   </p><pre class="programlisting">
+SELECT * FROM test_trgm WHERE t ~ '(foo|bar)';
+   </pre><p>
+   La recherche dans l'index fonctionne en extrayant les trigrammes de
+   l'expression rationnelle, puis en les recherchant dans l'index. Plus il est
+   possible d'extraire de trigrammes de l'expression rationnelle, plus la
+   recherche dans l'index sera efficace.
+   Contrairement à des recherches basées sur les B-tree, la chaîne
+   de recherche n'a pas besoin d'un signe pourcentage sur le côté gauche.
+  </p><p>
+   Pour les recherches <code class="literal">LIKE</code> comme avec des
+   expressions rationnelles, gardez en tête qu'un motif sans trigramme extractible
+   dégénérera en parcours complet de l'index.
+  </p><p>
+   Le choix d'un indexage GiST ou GIN dépend de leurs caractéristiques
+   de performance relatives, qui sont discutées ailleurs.
+  </p></div><div class="sect2" id="PGTRGM-TEXT-SEARCH"><div class="titlepage"><div><div><h3 class="title">F.33.5. Intégration à la recherche plein texte <a href="#PGTRGM-TEXT-SEARCH" class="id_link">#</a></h3></div></div></div><p>
+   La correspondance de trigrammes est un outil très utile lorsqu'il est
+   utilisé en conjonction avec un index plein texte. En particulier, il peut
+   aider à la reconnaissance des mots mal orthographiés,
+   pour lesquels le mécanisme de recherche plein texte ne trouvera pas de
+   correspondance.
+  </p><p>
+   La première étape est la génération d'une table auxiliaire contenant tous
+   les mots uniques dans les documents :
+  </p><pre class="programlisting">
+CREATE TABLE words AS SELECT word FROM
+        ts_stat('SELECT to_tsvector(''simple'', bodytext) FROM documents');
+  </pre><p>
+   où <code class="structname">documents</code> est une table avec un champ texte
+   <code class="structfield">bodytext</code>, où nous voulons faire nos recherches.
+   La raison de l'utilisation de la configuration <code class="literal">simple</code>
+   dans la fonction <code class="function">to_tsvector</code>
+   est que nous voulons une liste des mots originaux (non réduits à leur racine),
+   plutôt qu'une configuration spécifique à la langue.
+  </p><p>
+   Ensuite, nous créons un index trigramme sur la colonne word :
+  </p><pre class="programlisting">
+CREATE INDEX words_idx ON words USING GIN(word gin_trgm_ops);
+  </pre><p>
+   Maintenant, une requête <code class="command">SELECT</code>, similaire à l'exemple
+   précédent, peut être utilisée pour suggérer des mots mal orthographiés
+   dans la recherche de l'utilisateur.
+   Un test utile supplémentaire est de demander aussi
+   que les mots sélectionnés soient d'une longueur similaire au mot
+   mal orthographié.
+  </p><div class="note"><h3 class="title">Note</h3><p>
+    Comme la table <code class="structname">words</code> a été générée comme une table
+    statique, séparée, il sera nécessaire de la régénérer périodiquement,
+    afin qu'elle reste raisonnablement à jour avec la collection des
+    documents. Il n'est pas nécessaire, généralement, qu'elle soit
+    en permanence totalement à jour.
+   </p></div></div><div class="sect2" id="PGTRGM-REFERENCES"><div class="titlepage"><div><div><h3 class="title">F.33.6. Références <a href="#PGTRGM-REFERENCES" class="id_link">#</a></h3></div></div></div><p>
+   <a class="ulink" href="http://www.sai.msu.su/~megera/postgres/gist/" target="_top">Site de
+    développement de GiST</a>
+  </p><p>
+   <a class="ulink" href="http://www.sai.msu.su/~megera/postgres/gist/tsearch/V2/" target="_top">Site de
+    développement de TSearch2</a>
+  </p></div><div class="sect2" id="PGTRGM-AUTHORS"><div class="titlepage"><div><div><h3 class="title">F.33.7. Auteurs <a href="#PGTRGM-AUTHORS" class="id_link">#</a></h3></div></div></div><p>
+   Oleg Bartunov <code class="email">&lt;<a class="email" href="mailto:oleg@sai.msu.su">oleg@sai.msu.su</a>&gt;</code>, Moscou, Université de Moscou,
+   Russie
+  </p><p>
+   Teodor Sigaev <code class="email">&lt;<a class="email" href="mailto:teodor@sigaev.ru">teodor@sigaev.ru</a>&gt;</code>, Moscou, Delta-Soft Ltd.,
+   Russie
+  </p><p>
+   Alexander Korotkov <code class="email">&lt;<a class="email" href="mailto:a.korotkov@postgrespro.ru">a.korotkov@postgrespro.ru</a>&gt;</code>, Moscou, Postgres Professional, Russie
+  </p><p>
+   Documentation : Christopher Kings-Lynne
+  </p><p>
+   Ce module est sponsorisé par Delta-Soft Ltd., Moscou, Russie.
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/pgtrgm.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+</html>

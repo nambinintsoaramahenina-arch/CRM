@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/pgprewarm.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.28. pg_prewarm -- précharger les données des relations dans le cache disque de PostgreSQL</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="pgfreespacemap.html" title="F.27. pg_freespacemap -- examiner la carte des espaces libres" /><link rel="next" href="pgrowlocks.html" title="F.29. pgrowlocks -- afficher des informations sur le verrouillage d'une table" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/pgprewarm.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/pgprewarm.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/pgprewarm.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/pgprewarm.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/pgprewarm.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/pgprewarm.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/pgprewarm.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/pgprewarm.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/pgprewarm.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/pgprewarm.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/pgprewarm.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/pgprewarm.html">9.4</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/pgprewarm.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="appendixes.html">Annexes</a></span> » <span class="breadcrumb-link"><a href="contrib.html">Modules et extensions supplémentaires fournis</a></span> » <span class="breadcrumb-node">pg_prewarm  --  précharger les données des relations dans le cache
+  disque de PostgreSQL</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pgfreespacemap.html" title="F.27. pg_freespacemap  --  examiner la carte des espaces libres">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="pgrowlocks.html" title="F.29. pgrowlocks  --  afficher des informations sur le verrouillage&#10;  d'une table">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">F.27. pg_freespacemap  --  examiner la carte des espaces libres </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> F.29. pgrowlocks  --  afficher des informations sur le verrouillage
+  d'une table</td></tr></table></div><div class="sect1" id="PGPREWARM"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.28. pg_prewarm  --  précharger les données des relations dans le cache
+  disque de PostgreSQL <a href="#PGPREWARM" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="pgprewarm.html#PGPREWARM-FUNCS">F.28.1. Fonctions</a></span></dt><dt><span class="sect2"><a href="pgprewarm.html#PGPREWARM-CONFIG-PARAMS">F.28.2. Paramètres de configuration</a></span></dt><dt><span class="sect2"><a href="pgprewarm.html#PGPREWARM-AUTHOR">F.28.3. Auteur</a></span></dt></dl></div><a id="id-1.11.7.39.2" class="indexterm"></a><p>
+  Le module <code class="filename">pg_prewarm</code> fournit un moyen pratique
+  de charger des données des relations dans le cache de données du système
+  d'exploitation ou dans le cache de données de
+  <span class="productname">PostgreSQL</span>. Ce préchargement
+  peut être lancé manuellement avec la fonction <code class="filename">pg_prewarm</code>,
+  ou automatiquement en incluant <code class="literal">pg_prewarm</code> dans
+  <a class="xref" href="runtime-config-client.html#GUC-SHARED-PRELOAD-LIBRARIES">shared_preload_libraries</a>.
+  Dans ce dernier cas, le système exécutera un processus d'arrière-plan
+  (<span class="foreignphrase"><em class="foreignphrase">background worker</em></span>)
+  qui enregistrera périodiquement le contenu des shared buffers
+  dans un fichier nommé <code class="filename">autoprewarm.blocks</code> puis,
+  après un redémarrage rechargera ces blocs en utilisant deux
+  <span class="foreignphrase"><em class="foreignphrase">background workers</em></span>.
+ </p><div class="sect2" id="PGPREWARM-FUNCS"><div class="titlepage"><div><div><h3 class="title">F.28.1. Fonctions <a href="#PGPREWARM-FUNCS" class="id_link">#</a></h3></div></div></div><pre class="synopsis">
+pg_prewarm(regclass, mode text default 'buffer', fork text default 'main',
+           first_block int8 default null,
+           last_block int8 default null) RETURNS int8
+  </pre><p>
+   Le premier argument est la relation qui doit être préchargée. Le
+   second est la méthode de préchargement à utiliser,
+   comme décrit plus bas. Le troisième argument correspond au type de
+   fichier à précharger (généralement <code class="literal">main</code>). Le quatrième
+   argument est le numéro du premier bloc à précharger
+   (<code class="literal">NULL</code> est accepté comme synonyme de zéro). Le cinquième
+   argument correspond au dernier numéro de bloc à précharger
+   (<code class="literal">NULL</code> signifie que l'on précharge jusqu'au dernier bloc
+   dans la relation). La valeur retournée correspond au nombre de blocs
+   préchargés.
+  </p><p>
+   Il y a trois méthodes de préchargement disponibles.
+   <code class="literal">prefetch</code> envoie une requête de prélecture asynchrone au
+   système d'exploitation si celui-ci le supporte ou sinon renvoie une erreur.
+   <code class="literal">read</code> lit l'intervalle de blocs demandé. Contrairement à
+   <code class="literal">prefetch</code>, toutes les plateformes et options de compilation
+   le supportent, mais cette méthode peut être plus lente.
+   <code class="literal">buffer</code> lit l'intervalle de blocs demandé pour le charger
+   dans le cache de données de la base.
+  </p><p>
+   Il est à noter qu'avec n'importe laquelle de ces méthodes, tenter de
+   précharger plus de blocs qu'il n'est possible de mettre en cache  --  par
+   le système d'exploitation en utilisant <code class="literal">prefetch</code> ou
+   <code class="literal">read</code>, ou par <span class="productname">PostgreSQL</span> en
+   utilisant <code class="literal">buffer</code>  --  aura probablement pour effet
+   d'expulser du cache les blocs des numéros inférieurs au fur et à mesure que
+   les blocs des numéros supérieurs seront lus. De plus, les données
+   préchargées ne bénéficient d'aucune protection spécifique contre l'éviction
+   du cache. Il est donc possible que d'autres activités du
+   système d'exploitation puissent évincer du cache les données fraîchement
+   préchargées peu après leur lecture. Pour toutes ces
+   raisons, le préchargement est typiquement plus utile au démarrage, quand
+   les caches sont majoritairement vides.
+  </p><pre class="synopsis">
+autoprewarm_start_worker() RETURNS void
+  </pre><p>
+   Lance autoprewarm, le worker principal. Normalement cela est automatique,
+   mais ce peut être utile si le préchauffage automatique n'était pas configuré au
+   démarrage du serveur et que vous voulez démarrer le worker plus tard.
+  </p><pre class="synopsis">
+autoprewarm_dump_now() RETURNS int8
+  </pre><p>
+   Met à jour <code class="filename">autoprewarm.blocks</code> immédiatement. Ce peut
+   être utile si le worker autoprewarm worker ne fonctionne pas mais que vous
+   prévoyez de le lancer après le prochain redémarrage.
+   La valeur retournée est le nombre d'enregistrements écrits dans
+   <code class="filename">autoprewarm.blocks</code>.
+  </p></div><div class="sect2" id="PGPREWARM-CONFIG-PARAMS"><div class="titlepage"><div><div><h3 class="title">F.28.2. Paramètres de configuration <a href="#PGPREWARM-CONFIG-PARAMS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt><span class="term">
+     <code class="varname">pg_prewarm.autoprewarm</code> (<code class="type">boolean</code>)
+     <a id="id-1.11.7.39.5.2.1.1.3" class="indexterm"></a>
+    </span></dt><dd><p>
+      Contrôle si le serveur doit lancer le worker autoprewarm.
+      La valeur par défaut est « on ». Ce paramètre ne peut être positionné
+      qu'au démarrage du serveur.
+     </p></dd></dl></div><div class="variablelist"><dl class="variablelist"><dt><span class="term">
+     <code class="varname">pg_prewarm.autoprewarm_interval</code> (<code class="type">integer</code>)
+     <a id="id-1.11.7.39.5.3.1.1.3" class="indexterm"></a>
+    </span></dt><dd><p>
+      Il s'agit de l'intervalle entre les mises à jour de
+      <code class="literal">autoprewarm.blocks</code>.
+      La valeur par défaut est de 300 secondes. Si la valeur est 0, le fichier
+      ne sera pas écrit à intervalles réguliers, mais seulement à l'extinction
+      du serveur.
+     </p></dd></dl></div><p>
+   Ces paramètres doivent être configurés dans le fichier
+   <code class="filename">postgresql.conf</code>. Un cas d'usage typique serait :
+  </p><pre class="programlisting">
+# postgresql.conf
+shared_preload_libraries = 'pg_prewarm'
+
+pg_prewarm.autoprewarm = true
+pg_prewarm.autoprewarm_interval = 300s
+  </pre></div><div class="sect2" id="PGPREWARM-AUTHOR"><div class="titlepage"><div><div><h3 class="title">F.28.3. Auteur <a href="#PGPREWARM-AUTHOR" class="id_link">#</a></h3></div></div></div><p>
+   Robert Haas <code class="email">&lt;<a class="email" href="mailto:rhaas@postgresql.org">rhaas@postgresql.org</a>&gt;</code>
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/pgprewarm.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+</html>

@@ -1,0 +1,911 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/install-make.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:31 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>17.3. Complilation et installation avec Autoconf et Make</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="install-getsource.html" title="17.2. Obtenir les sources" /><link rel="next" href="install-meson.html" title="17.4. Compilation et installation avec Meson" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/install-make.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/install-make.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/install-make.html">16</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/install-make.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="installation.html">Procédure d'installation depuis le code source</a></span> » <span class="breadcrumb-node">Complilation et installation avec Autoconf et Make</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="install-getsource.html" title="17.2. Obtenir les sources">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="installation.html" title="Chapitre 17. Procédure d'installation depuis le code source">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="install-meson.html" title="17.4. Compilation et installation avec Meson">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">17.2. Obtenir les sources </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 17.4. Compilation et installation avec Meson</td></tr></table></div><div class="sect1" id="INSTALL-MAKE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">17.3. Complilation et installation avec Autoconf et Make <a href="#INSTALL-MAKE" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="install-make.html#INSTALL-SHORT-MAKE">17.3.1. Version courte</a></span></dt><dt><span class="sect2"><a href="install-make.html#INSTALL-PROCEDURE-MAKE">17.3.2. Procédure d'installation</a></span></dt><dt><span class="sect2"><a href="install-make.html#CONFIGURE-OPTIONS">17.3.3. Options de <code class="filename">configure</code></a></span></dt><dt><span class="sect2"><a href="install-make.html#CONFIGURE-ENVVARS">17.3.4. Variables d'environnement de <code class="filename">configure</code></a></span></dt></dl></div><div class="sect2" id="INSTALL-SHORT-MAKE"><div class="titlepage"><div><div><h3 class="title">17.3.1. Version courte <a href="#INSTALL-SHORT-MAKE" class="id_link">#</a></h3></div></div></div><p>
+</p><pre class="synopsis">
+./configure
+make
+su
+make install
+adduser postgres
+mkdir -p /usr/local/pgsql/data
+chown postgres /usr/local/pgsql/data
+su - postgres
+/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data
+/usr/local/pgsql/bin/pg_ctl -D /usr/local/pgsql/data -l logfile start
+/usr/local/pgsql/bin/createdb test
+/usr/local/pgsql/bin/psql test
+</pre><p>
+   La version longue correspond au reste de cette <span class="phrase">section</span>.
+  </p></div><div class="sect2" id="INSTALL-PROCEDURE-MAKE"><div class="titlepage"><div><div><h3 class="title">17.3.2. Procédure d'installation <a href="#INSTALL-PROCEDURE-MAKE" class="id_link">#</a></h3></div></div></div><div class="procedure"><ol class="procedure" type="1"><li class="step" id="CONFIGURE"><p class="title"><strong>Configuration</strong></p><a id="id-1.6.4.6.3.2.1.2" class="indexterm"></a><p>
+    La première étape de la procédure d'installation est de configurer
+    l'arborescence système et de choisir les options qui vous intéressent.
+    Cela se fait en exécutant le script <code class="filename">configure</code>. Pour une
+    installation par défaut, entrer simplement
+</p><pre class="screen"><strong class="userinput"><code>./configure</code></strong></pre><p>
+    Ce script exécutera de nombreux tests afin de déterminer les valeurs
+    de certaines variables dépendantes du système, et de détecter certaines
+    spécificités de votre système d'exploitation. Il créera divers
+    fichiers dans l'arborescence de compilation pour enregistrer ce qui a été
+    trouvé.
+   </p><p>
+    Pour garder une arborescence de compilation séparée de celle des sources,
+    <code class="filename">configure</code> peut être exécuté à
+    partir d'un répertoire hors de l'arborescence des sources,
+    où la compilation s'effectuera.
+    Cette procédure est aussi appelée une compilation de type
+    <a id="id-1.6.4.6.3.2.1.4.2" class="indexterm"></a><em class="firstterm">VPATH</em>.
+    Voici comment faire :
+</p><pre class="screen">
+<strong class="userinput"><code>mkdir build_dir</code></strong>
+<strong class="userinput"><code>cd build_dir</code></strong>
+<strong class="userinput"><code>/path/to/source/tree/configure [les options vont ici]</code></strong>
+<strong class="userinput"><code>make</code></strong>
+   </pre><p>
+  </p><p>
+   La configuration par défaut compilera le serveur et les outils,
+   ainsi que toutes les applications clientes et les interfaces ne nécessitant
+   qu'un compilateur C.
+   Tous les fichiers seront installés par défaut
+   sous <code class="filename">/usr/local/pgsql</code>.
+  </p><p>
+   Les processus de compilation et d'installation peuvent être personnalisés
+   en fournissant une ou plusieurs options de ligne de commande à
+   <code class="filename">configure</code>.
+   Généralement, vous allez personnaliser l'endroit de l'installation,
+   ou la liste des fonctionnalités optionnelles à compiler.
+   <code class="filename">configure</code> a beaucoup d'options, décrites dans
+   <a class="xref" href="install-make.html#CONFIGURE-OPTIONS" title="17.3.3. Options de configure">Section 17.3.3</a>.
+  </p><p>
+   <code class="filename">configure</code> tient aussi compte de certaines
+   variables d'environnement, comme décrit dans <a class="xref" href="install-make.html#CONFIGURE-ENVVARS" title="17.3.4. Variables d'environnement de configure">Section 17.3.4</a>.
+   Elle offre d'autres moyens de personnaliser la configuration.
+  </p></li><li class="step" id="BUILD"><p class="title"><strong>Compilation</strong></p><p>
+   Pour démarrer la compilation, entrez l'un de ces ordres :
+   </p><pre class="screen">
+<strong class="userinput"><code>make</code></strong>
+<strong class="userinput"><code>make all</code></strong>
+   </pre><p>
+   (Rappelez-vous qu'il faut <acronym class="acronym">GNU</acronym> <span class="application">make</span>.)
+   La durée de la compilation sera de quelques minutes, et dépend de votre matériel.
+  </p><p>
+   Si vous voulez compiler tout ce qui peut l'être,
+   dont la documentation (HTML et pages de manuel)
+   et les modules optionnels (<code class="filename">contrib</code>),
+   entrez plutôt :
+   </p><pre class="screen">
+<strong class="userinput"><code>make world</code></strong>
+   </pre><p>
+   La dernière ligne affichée doit être :
+   </p><pre class="screen">
+PostgreSQL, contrib, and documentation successfully made. Ready to install.
+</pre><p>
+   </p><p>
+   Si vous voulez compiler tout ce qui peut être compilé, en incluant les
+   modules supplémentaires (<code class="filename">contrib</code>), mais sans la
+   documentation, saisissez à la place :
+</p><pre class="screen">
+<strong class="userinput"><code>make world-bin</code></strong>
+   </pre><p>
+  </p><p>
+   Si vous voulez lancer la compilation depuis un autre makefile
+   plutôt que manuellement, vous devez désactiver la variable
+   <code class="varname">MAKELEVEL</code> ou la mettre à zéro, par exemple ainsi :
+   </p><pre class="programlisting">
+build-postgresql:
+        $(MAKE) -C postgresql MAKELEVEL=0 all
+   </pre><p>
+   L'oublier peut mener à d'étranges messages d'erreur,
+   typiquement sur des fichiers d'en-tête manquants.
+  </p></li><li class="step"><p class="title"><strong>Tests de régression</strong></p><a id="id-1.6.4.6.3.2.3.2" class="indexterm"></a><p>
+   Si, avant de l'installer, vous voulez tester ce serveur nouvellement compilé,
+   vous devez lancer les tests de régression maintenant.
+   Il s'agit d'une suite de tests pour vérifier que <span class="productname">PostgreSQL</span>
+   fonctionne sur votre machine de la manière prévue par ses développeurs.
+   Entrez :
+   </p><pre class="screen">
+<strong class="userinput"><code>make check</code></strong>
+   </pre><p>
+   (Cela ne fonctionnera pas en tant que root ; faites-le en tant
+   qu'utilisateur non privilégié.)
+   Voir <a class="xref" href="regress.html" title="Chapitre 31. Tests de régression">Chapitre 31</a> pour des informations détaillées sur
+   l'interprétation des résultats des tests.
+   Vous pouvez répéter ces tests n'importe quand par la suite en
+   entrant la même commande.
+  </p></li><li class="step" id="INSTALL"><p class="title"><strong>Installer les fichiers</strong></p><div class="note"><h3 class="title">Note</h3><p>
+    Si vous mettez à jour un système existant, assurez-vous
+    de lire
+    <a class="xref" href="upgrading.html" title="18.6. Mise à jour d'une instance PostgreSQL">Section 18.6</a>,
+    qui contient des instructions sur la mise à jour d'une instance.
+   </p></div><p>
+   Pour installer <span class="productname">PostgreSQL</span>, entrez :
+   </p><pre class="screen">
+<strong class="userinput"><code>make install</code></strong>
+   </pre><p>
+   Cela installera les fichiers dans les répertoires spécifiés dans
+   <a class="xref" href="install-make.html#CONFIGURE" title="Configuration">Étape 1</a>. Assurez-vous que vous avez les
+   droits nécessaires pour y écrire.
+   Normalement, vous devez faire cela en tant que root.
+   Une alternative est de créer les répertoires cibles par avance,
+   et de vous arranger pour obtenir les permissions adéquates.
+  </p><p>
+    Si vous voulez tout construire, sauf la documentation, saisissez à la
+    place :
+</p><pre class="screen">
+<strong class="userinput"><code>make install-world-bin</code></strong>
+</pre><p>
+   </p><p>
+   Pour installer la documentation (HTML et pages de manuel),
+   entrez :
+   </p><pre class="screen">
+<strong class="userinput"><code>make install-docs</code></strong>
+   </pre><p>
+  </p><p>
+   Si vous avez entré <code class="literal">make world</code> plus haut,
+   entrez plutôt :
+   </p><pre class="screen">
+<strong class="userinput"><code>make install-world</code></strong>
+   </pre><p>
+   Cela va installer aussi la documentation.
+  </p><p>
+   Vous pouvez aussi utiliser <code class="literal">make install-strip</code>
+   au lieu de <code class="literal">make install</code> pour débarrasser
+   les fichiers exécutables et les bibliothèques de leurs
+   informations de débogage lors de l'installation.
+   Cela économisera un peu d'espace disque.
+   Dans une compilation avec le support du débogage, cette purge
+   va supprimer ce support ; ce n'est donc à faire que s'il n'y a
+   plus besoin de débogage.
+   <code class="literal">install-strip</code> réussit assez bien à économiser de
+   l'espace, mais ne sait pas toujours effacer
+   le moindre octet inutile d'un exécutable ;
+   pour récupérer tout l'espace disque possible, vous devrez donc
+   terminer manuellement.
+  </p><p>
+   L'installation standard fournit tous les fichiers d'en-tête nécessaires au
+   développement d'applications clientes, comme pour celui côté serveur,
+   par exemple pour des fonctions spécifiques ou des types de données codés en C.
+  </p><p><strong>Installation cliente : </strong>
+    Si vous voulez installer uniquement les applications clientes
+    et les bibliothèques d'interface, vous pouvez utiliser ces commandes :
+    </p><pre class="screen">
+<strong class="userinput"><code>make -C src/bin install</code></strong>
+<strong class="userinput"><code>make -C src/include install</code></strong>
+<strong class="userinput"><code>make -C src/interfaces install</code></strong>
+<strong class="userinput"><code>make -C doc install</code></strong>
+    </pre><p>
+    <code class="filename">src/bin</code> contient quelques binaires
+    utilisables uniquement sur le serveur, mais ils sont petits.
+   </p></li></ol></div><p><strong>Désinstallation : </strong>
+  Pour annuler l'installation, utilisez la commande
+  <code class="command">make uninstall</code>.
+  Cependant, cela ne supprimera pas tous les répertoires qui ont été créés.
+ </p><p><strong>Nettoyage : </strong>
+  Après l'installation, vous pouvez libérer de l'espace disque en supprimant
+  les fichiers compilés de l'arborescence des sources avec la commande
+  <code class="command">make clean</code>.
+  Cela préservera les fichiers créés par <code class="command">configure</code>,
+  pour que vous puissiez tout recompiler plus tard avec <code class="command">make</code>.
+  Pour réinitialiser l'arbre des sources dans l'état où il est distribué,
+  utilisez <code class="command">make distclean</code>.
+  Si vous voulez compiler pour plusieurs plateformes au sein de la même
+  arborescence, vous devez le lancer et reconfigurer pour chaque
+  plateforme.
+  (Une alternative est d'utiliser une arborescence pour chaque plateforme,
+  pour qu'elles ne soient pas modifiées.)
+ </p><p>
+ Si, après compilation, vous découvrez que vos options à <code class="command">configure</code>
+ étaient fausses, ou si vous changez quelque chose que <code class="command">configure</code>
+ a pris en compte (par exemple, par une mise à jour logicielle),
+ il est conseillé de faire <code class="command">make distclean</code> avant de reconfigurer
+ et recompiler. Sans cela, vos choix de configuration pourraient ne pas se
+ propager à tous les endroits nécessaires.
+</p></div><div class="sect2" id="CONFIGURE-OPTIONS"><div class="titlepage"><div><div><h3 class="title">17.3.3. Options de <code class="filename">configure</code> <a href="#CONFIGURE-OPTIONS" class="id_link">#</a></h3></div></div></div><a id="id-1.6.4.6.4.2" class="indexterm"></a><p>
+  Les paramètres en ligne de commande à <code class="command">configure</code>
+  sont expliqués ci-dessous.
+  Cette liste n'est pas exhaustive (utilisez <code class="literal">./configure --help</code>
+  pour en avoir une qui le soit). Les options non évoquées ici sont
+  destinées à des utilisations avancées, comme la compilation croisée,
+  et figurent dans la documentation standard d'Autoconf.
+ </p><div class="sect3" id="CONFIGURE-OPTIONS-LOCATIONS"><div class="titlepage"><div><div><h4 class="title">17.3.3.1. Emplacements de l'installation <a href="#CONFIGURE-OPTIONS-LOCATIONS" class="id_link">#</a></h4></div></div></div><p>
+   Ces options contrôlent où <code class="literal">make install</code> va poser
+   les fichiers.
+   L'option <code class="option">--prefix</code> est suffisante dans la plupart des cas.
+   Pour des besoins spécifiques, vous pouvez personnaliser les sous-répertoires
+   d'installation avec d'autres options décrites dans cette section.
+   Attention : changer les emplacements relatifs des différents sous-répertoires
+   peut rendre l'installation non déplaçable,  
+   c'est-à-dire que vous ne pourrez
+   plus la déplacer par la suite.
+   (Les emplacements pour <code class="literal">man</code> et <code class="literal">doc</code>
+   ne sont pas concernés par cette restriction.)
+   Pour obtenir des installations déplaçables, vous pouvez utiliser
+   l'option <code class="literal">--disable-rpath</code> décrite plus bas.
+  </p><div class="variablelist"><dl class="variablelist"><dt id="CONFIGURE-OPTION-PREFIX"><span class="term"><code class="option">--prefix=<em class="replaceable"><code>PREFIX</code></em></code></span> <a href="#CONFIGURE-OPTION-PREFIX" class="id_link">#</a></dt><dd><p>
+      Installe tous les fichiers dans le répertoire <em class="replaceable"><code>PREFIX</code></em>
+      au lieu du répertoire <code class="filename">/usr/local/pgsql</code>.
+      Les fichiers eux-mêmes seront installés dans divers
+      sous-répertoires ; aucun fichier ne sera directement installé
+      sous <em class="replaceable"><code>PREFIX</code></em>.
+     </p></dd><dt id="CONFIGURE-OPTION-EXEC-PREFIX"><span class="term"><code class="option">--exec-prefix=<em class="replaceable"><code>EXEC-PREFIX</code></em></code></span> <a href="#CONFIGURE-OPTION-EXEC-PREFIX" class="id_link">#</a></dt><dd><p>
+      Les fichiers qui dépendent de l'architecture peuvent être installés dans
+      un répertoire avec un préfixe différent, <em class="replaceable"><code>EXEC-PREFIX</code></em>,
+      différent de celui donné par <em class="replaceable"><code>PREFIX</code></em>.
+      Cela peut être utile pour partager entre plusieurs machines
+      les fichiers indépendants de l'architecture.
+      S'il est omis, <em class="replaceable"><code>EXEC-PREFIX</code></em> est égal à
+      <em class="replaceable"><code>PREFIX</code></em>, et les fichiers dépendants seront installés
+      sous la même arborescence que les fichiers indépendants de
+      l'architecture, ce qui est probablement le but recherché.
+     </p></dd><dt id="CONFIGURE-OPTION-BINDIR"><span class="term"><code class="option">--bindir=<em class="replaceable"><code>REPERTOIRE</code></em></code></span> <a href="#CONFIGURE-OPTION-BINDIR" class="id_link">#</a></dt><dd><p>
+      Indique le répertoire des exécutables. Par défaut, il s'agit de
+      <code class="filename"><em class="replaceable"><code>EXEC-PREFIX</code></em>/bin</code>, ce
+      qui signifie <code class="filename">/usr/local/pgsql/bin</code>.
+     </p></dd><dt id="CONFIGURE-OPTION-SYSCONFDIR"><span class="term"><code class="option">--sysconfdir=<em class="replaceable"><code>REPERTOIRE</code></em></code></span> <a href="#CONFIGURE-OPTION-SYSCONFDIR" class="id_link">#</a></dt><dd><p>
+      Précise le répertoire de divers fichiers de configuration,
+      par défaut <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/etc</code>.
+     </p></dd><dt id="CONFIGURE-OPTION-LIBDIR"><span class="term"><code class="option">--libdir=<em class="replaceable"><code>REPERTOIRE</code></em></code></span> <a href="#CONFIGURE-OPTION-LIBDIR" class="id_link">#</a></dt><dd><p>
+      Précise le répertoire d'installation des bibliothèques et des
+      modules chargeables dynamiquement. Par défaut, il s'agit de
+      <code class="filename"><em class="replaceable"><code>EXEC-PREFIX</code></em>/lib</code>.
+     </p></dd><dt id="CONFIGURE-OPTION-INCLUDEDIR"><span class="term"><code class="option">--includedir=<em class="replaceable"><code>REPERTOIRE</code></em></code></span> <a href="#CONFIGURE-OPTION-INCLUDEDIR" class="id_link">#</a></dt><dd><p>
+      Précise le répertoire d'installation des fichiers d'en-tête C et C++. Par défaut, il
+      s'agit de <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/include</code>.
+     </p></dd><dt id="CONFIGURE-OPTION-DATAROOTDIR"><span class="term"><code class="option">--datarootdir=<em class="replaceable"><code>REPERTOIRE</code></em></code></span> <a href="#CONFIGURE-OPTION-DATAROOTDIR" class="id_link">#</a></dt><dd><p>
+      Indique le répertoire racine de différents types de fichiers de données
+      en lecture seule. Cela ne sert qu'à paramétrer des valeurs par
+      défaut pour certaines des options suivantes. La valeur par défaut est
+      <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/share</code>.
+     </p></dd><dt id="CONFIGURE-OPTION-DATADIR"><span class="term"><code class="option">--datadir=<em class="replaceable"><code>REPERTOIRE</code></em></code></span> <a href="#CONFIGURE-OPTION-DATADIR" class="id_link">#</a></dt><dd><p>
+      Indique le répertoire pour les fichiers de données en lecture seule
+      utilisés par les programmes installés. La valeur par défaut est
+      <code class="filename"><em class="replaceable"><code>DATAROOTDIR</code></em></code>.
+      NB : cela n'a aucun rapport avec l'endroit où les fichiers de base de données
+      seront placés.
+     </p></dd><dt id="CONFIGURE-OPTION-LOCALEDIR"><span class="term"><code class="option">--localedir=<em class="replaceable"><code>REPERTOIRE</code></em></code></span> <a href="#CONFIGURE-OPTION-LOCALEDIR" class="id_link">#</a></dt><dd><p>
+      Indique le répertoire pour installer les données de localisation, en
+      particulier les fichiers des catalogues de traduction des messages. La
+      valeur par défaut est
+      <code class="filename"><em class="replaceable"><code>DATAROOTDIR</code></em>/locale</code>.
+     </p></dd><dt id="CONFIGURE-OPTION-MANDIR"><span class="term"><code class="option">--mandir=<em class="replaceable"><code>REPERTOIRE</code></em></code></span> <a href="#CONFIGURE-OPTION-MANDIR" class="id_link">#</a></dt><dd><p>
+      Les pages de manuel fournies avec <span class="productname">PostgreSQL</span> seront
+      installées sous ce répertoire, dans leur sous-répertoire
+      <code class="filename">man<em class="replaceable"><code>x</code></em></code> respectif.
+      Par défaut, il s'agit de <code class="filename"><em class="replaceable"><code>DATAROOTDIR</code></em>/man</code>.
+     </p></dd><dt id="CONFIGURE-OPTION-DOCDIR"><span class="term"><code class="option">--docdir=<em class="replaceable"><code>RÉPERTOIRE</code></em></code></span> <a href="#CONFIGURE-OPTION-DOCDIR" class="id_link">#</a></dt><dd><p>
+      Configure le répertoire racine pour installer les fichiers de documentation,
+      sauf les pages <span class="quote">« <span class="quote">man</span> »</span>. Ceci ne positionne la valeur par défaut
+      que pour les options suivantes. La valeur par défaut pour cette option est
+      <code class="filename"><em class="replaceable"><code>DATAROOTDIR</code></em>/doc/postgresql</code>.
+     </p></dd><dt id="CONFIGURE-OPTION-HTMLDIR"><span class="term"><code class="option">--htmldir=<em class="replaceable"><code>RÉPERTOIRE</code></em></code></span> <a href="#CONFIGURE-OPTION-HTMLDIR" class="id_link">#</a></dt><dd><p>
+      La documentation de <span class="productname">PostgreSQL</span>, formatée en HTML,
+      sera installée dans ce répertoire. La valeur par défaut est
+      <code class="filename"><em class="replaceable"><code>DATAROOTDIR</code></em></code>.
+     </p></dd></dl></div><div class="note"><h3 class="title">Note</h3><p>
+    Une attention toute particulière a été prise afin de rendre possible
+    l'installation de <span class="productname">PostgreSQL</span> dans des répertoires
+    partagés (comme <code class="filename">/usr/local/include</code>), sans
+    interférer avec l'espace de noms du reste du système.
+    En premier lieu, le mot <span class="quote">« <span class="quote"><code class="literal">/postgresql</code></span> »</span>
+    est automatiquement ajouté aux répertoires <code class="varname">datadir</code>,
+    <code class="varname">sysconfdir</code> et <code class="varname">docdir</code>,
+    à moins que le nom du répertoire à partir de la racine ne contienne déjà
+    le mot <span class="quote">« <span class="quote"><code class="literal">postgres</code></span> »</span> ou
+    <span class="quote">« <span class="quote"><code class="literal">pgsql</code></span> »</span>. Par exemple, si
+    <code class="filename">/usr/local</code> est choisi comme préfixe,
+    la documentation sera installée dans
+    <code class="filename">/usr/local/doc/postgresql</code> ; mais si le
+    préfixe est <code class="filename">/opt/postgres</code>, alors ce sera dans
+    <code class="filename">/opt/postgres/doc</code>. Les fichiers d'en-tête
+    C publics pour les interfaces clientes sont installés sous
+    <code class="varname">includedir</code>, et sont indépendants de l'espace
+    de noms du système. Les fichiers d'en-tête internes et
+    ceux du serveur sont installés dans des répertoires
+    privés sous <code class="varname">includedir</code>.
+    Voir la documentation de chaque interface pour savoir comment obtenir
+    ces fichiers d'en-tête.
+    Enfin, si nécessaire, un répertoire privé sera aussi créé sous
+    <code class="varname">libdir</code>, pour les modules chargeables dynamiquement.
+   </p></div></div><div class="sect3" id="CONFIGURE-OPTIONS-FEATURES"><div class="titlepage"><div><div><h4 class="title">17.3.3.2. Fonctionnalités de <span class="productname">PostgreSQL</span> <a href="#CONFIGURE-OPTIONS-FEATURES" class="id_link">#</a></h4></div></div></div><p>
+   Les options décrites dans cette section permettent d'ajouter
+   diverses fonctionnalités de <span class="productname">PostgreSQL</span>
+   qui ne sont pas compilées par défaut ; pour la plupart à cause du
+   besoin d'autres logiciels, comme décrit dans
+   <a class="xref" href="install-requirements.html" title="17.1. Prérequis">Section 17.1</a>.
+  </p><div class="variablelist"><dl class="variablelist"><dt id="CONFIGURE-OPTION-ENABLE-NLS"><span class="term"><code class="option">--enable-nls[<span class="optional">=<em class="replaceable"><code>LANGUES</code></em></span>]</code></span> <a href="#CONFIGURE-OPTION-ENABLE-NLS" class="id_link">#</a></dt><dd><p>
+      Active le support des langues natives
+      (<acronym class="acronym">NLS</acronym>), c'est-à-dire la capacité d'afficher les messages
+      d'un programme dans une langue autre que l'anglais.
+      <em class="replaceable"><code>LANGUES</code></em> est une liste optionnelle des codes
+      de langue que vous voulez supporter, séparés par une espace ; par
+      exemple, <code class="literal">--enable-nls='de fr'</code> (l'intersection entre la
+      liste et l'ensemble des langues traduites actuellement sera calculée
+      automatiquement). En l'absence de liste, toutes les
+      traductions disponibles seront installées.
+     </p><p>
+      Pour utiliser cette option, une implémentation de
+      l'API <span class="application">Gettext</span> est nécessaire.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-PERL"><span class="term"><code class="option">--with-perl</code></span> <a href="#CONFIGURE-OPTION-WITH-PERL" class="id_link">#</a></dt><dd><p>
+      Permet la compilation du langage côté serveur <span class="application">PL/Perl</span>
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-PYTHON"><span class="term"><code class="option">--with-python</code></span> <a href="#CONFIGURE-OPTION-WITH-PYTHON" class="id_link">#</a></dt><dd><p>
+      Permet la compilation du langage côté serveur <span class="application">PL/Python</span>.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-TCL"><span class="term"><code class="option">--with-tcl</code></span> <a href="#CONFIGURE-OPTION-WITH-TCL" class="id_link">#</a></dt><dd><p>
+      Permet la compilation du langage côté serveur <span class="application">PL/Tcl</span>.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-TCLCONFIG"><span class="term"><code class="option">--with-tclconfig=<em class="replaceable"><code>REPERTOIRE</code></em></code></span> <a href="#CONFIGURE-OPTION-WITH-TCLCONFIG" class="id_link">#</a></dt><dd><p>
+      Tcl installe le fichier <code class="filename">tclConfig.sh</code>, qui contient
+      des informations de configuration nécessaires pour compiler le
+      module d'interfaçage avec Tcl.
+      Ce fichier est normalement trouvé automatiquement à un emplacement connu,
+      mais pour utiliser une version différente de Tcl, il faut indiquer le
+      répertoire où chercher <code class="filename">tclConfig.sh</code>.
+     </p></dd><dt id="CONFIGURE-WITH-LLVM"><span class="term"><code class="option">--with-llvm</code></span> <a href="#CONFIGURE-WITH-LLVM" class="id_link">#</a></dt><dd><p>
+      Compile avec le support de <acronym class="acronym">JIT</acronym>, basé sur
+      <span class="productname">LLVM</span> (voir <a class="xref" href="jit.html" title="Chapitre 30. JIT (compilation à la volée)">Chapitre 30</a>).
+      Ceci nécessite l'installation de la bibliothèque <span class="productname">LLVM</span>.
+      Sa version minimale requise est actuellement la 10.
+     </p><p>
+      <code class="command">llvm-config</code><a id="id-1.6.4.6.4.5.3.6.2.2.2" class="indexterm"></a>
+      sera utilisé pour trouver les options de compilation nécessaires.
+      <code class="command">llvm-config</code> sera cherché dans votre
+      <code class="envar">PATH</code>. Au cas où le bon programme n'est pas trouvé, il
+      faut utiliser la variable <code class="envar">LLVM_CONFIG</code> pour spécifier le
+      chemin du bon <code class="command">llvm-config</code>. Par exemple :
+      </p><pre class="programlisting">
+./configure ... --with-llvm LLVM_CONFIG='/path/to/llvm/bin/llvm-config'
+      </pre><p>
+     </p><p>
+      Le support de <span class="productname">LLVM</span> nécessite un compilateur
+      <code class="command">clang</code> compatible (à spécifier, si nécessaire,
+      avec la variable d'environnement <code class="envar">CLANG</code>),
+      et un compilateur C++ fonctionnel (à spécifier, si nécessaire,
+      avec la variable d'environnement <code class="envar">CXX</code>).
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-LZ4"><span class="term"><code class="option">--with-lz4</code></span> <a href="#CONFIGURE-OPTION-WITH-LZ4" class="id_link">#</a></dt><dd><p>
+      Compile avec le support de la compression
+      <span class="productname">LZ4</span>.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-ZSTD"><span class="term"><code class="option">--with-zstd</code></span> <a href="#CONFIGURE-OPTION-WITH-ZSTD" class="id_link">#</a></dt><dd><p>
+      Compile avec le support de la compression
+      <span class="productname">Zstandard</span>.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-SSL"><span class="term"><code class="option">--with-ssl=<em class="replaceable"><code>LIBRARY</code></em></code></span> <a href="#CONFIGURE-OPTION-WITH-SSL" class="id_link">#</a></dt><dd><a id="id-1.6.4.6.4.5.3.9.2.1" class="indexterm"></a><p>
+      Compile avec le support pour les connexions <acronym class="acronym">SSL</acronym>
+      (avec chiffrement). Le seul <em class="replaceable"><code>LIBRARY</code></em> supporté
+      est <code class="option">openssl</code>. Ceci nécessite que le paquet
+      <span class="productname">OpenSSL</span> soit installé.
+      <code class="filename">configure</code> vérifiera les fichiers d'en-tête et les
+      bibliothèques pour s'assurer que votre installation
+      d'<span class="productname">OpenSSL</span> est suffisante avant de
+      continuer.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-OPENSSL"><span class="term"><code class="option">--with-openssl</code></span> <a href="#CONFIGURE-OPTION-WITH-OPENSSL" class="id_link">#</a></dt><dd><p>
+      Équivalent obsolète de <code class="literal">--with-ssl=openssl</code>.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-GSSAPI"><span class="term"><code class="option">--with-gssapi</code></span> <a href="#CONFIGURE-OPTION-WITH-GSSAPI" class="id_link">#</a></dt><dd><p>
+      Compile avec le support de l'authentification GSSAPI.
+      MIT Kerberos doit être installé pour GSSAPI.
+      Sur beaucoup d'environnements, le système GSSAPI
+      (une partie de l'installation MIT Kerberos)
+      n'est pas installé dans un endroit recherché par défaut
+      (par exemple <code class="filename">/usr/include</code> ou
+      <code class="filename">/usr/lib</code>) ; vous devez donc
+      ajouter aussi les options
+      <code class="option">--with-includes</code> et <code class="option">--with-libraries</code>.
+      <code class="filename">configure</code> vérifiera les fichiers d'en-tête
+      et les bibliothèques pour s'assurer que votre
+      installation de GSSAPI est suffisante avant de continuer.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-LDAP"><span class="term"><code class="option">--with-ldap</code></span> <a href="#CONFIGURE-OPTION-WITH-LDAP" class="id_link">#</a></dt><dd><p>
+      Compile avec le support de
+      <acronym class="acronym">LDAP</acronym><a id="id-1.6.4.6.4.5.3.12.2.1.2" class="indexterm"></a>
+      pour l'authentification et la recherche des paramètres de connexion
+      (voir <span id="INSTALL-LDAP-LINKS" class="phrase"><a class="xref" href="libpq-ldap.html" title="32.18. Recherche LDAP des paramètres de connexion">Section 32.18</a> et
+      <a class="xref" href="auth-ldap.html" title="20.10. Authentification LDAP">Section 20.10</a></span> pour plus d'informations).
+      Sur Unix, cela requiert l'installation du paquet
+      <span class="productname">OpenLDAP</span>. Sur Windows, la bibliothèque
+      <span class="productname">WinLDAP</span> est utilisée par défaut.
+      <code class="filename">configure</code> vérifiera l'existence des fichiers d'en-tête
+      et des bibliothèques nécessaires pour s'assurer que votre installation
+      d'<span class="productname">OpenLDAP</span> est suffisante avant de continuer.
+
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-PAM"><span class="term"><code class="option">--with-pam</code></span> <a href="#CONFIGURE-OPTION-WITH-PAM" class="id_link">#</a></dt><dd><p>
+      Compile avec le support de
+      <acronym class="acronym">PAM</acronym><a id="id-1.6.4.6.4.5.3.13.2.1.2" class="indexterm"></a>
+      (<span class="foreignphrase"><em class="foreignphrase">Pluggable Authentication Modules</em></span>).
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-BSD-AUTH"><span class="term"><code class="option">--with-bsd-auth</code></span> <a href="#CONFIGURE-OPTION-WITH-BSD-AUTH" class="id_link">#</a></dt><dd><p>
+      Compile avec le support de l'authentification BSD.
+      (Le framework BSD Authentication n'est actuellement
+      disponible que sur OpenBSD.)
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-SYSTEMD"><span class="term"><code class="option">--with-systemd</code></span> <a href="#CONFIGURE-OPTION-WITH-SYSTEMD" class="id_link">#</a></dt><dd><p>
+      Compile avec le support du système de notifications
+      <span class="application">systemd</span><a id="id-1.6.4.6.4.5.3.15.2.1.2" class="indexterm"></a>.
+      Ceci améliore l'intégration si le serveur est démarré par
+      <span class="application">systemd</span>, mais n'a pas d'impact sinon ;
+      voir <a class="xref" href="server-start.html" title="18.3. Lancer le serveur de bases de données">Section 18.3</a> pour plus d'informations
+      <span class="application">libsystemd</span> et les fichiers d'en-tête associés
+      doivent être installés pour utiliser cette option.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-BONJOUR"><span class="term"><code class="option">--with-bonjour</code></span> <a href="#CONFIGURE-OPTION-WITH-BONJOUR" class="id_link">#</a></dt><dd><p>
+      Compile avec le support du service de découverte automatique
+      Bonjour.
+      Cela nécessite le support de Bonjour dans votre système
+      d'exploitation. Recommandé sur macOS.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-UUID"><span class="term"><code class="option">--with-uuid=<em class="replaceable"><code>LIBRARY</code></em></code></span> <a href="#CONFIGURE-OPTION-WITH-UUID" class="id_link">#</a></dt><dd><p>
+      Compile le module <a class="xref" href="uuid-ossp.html" title="F.47. uuid-ossp -- un générateur d'UUID">uuid-ossp</a> (qui fournit des
+      fonctions pour générer des UUID), en utilisant la bibliothèque UUID
+      spécifiée.
+      <em class="replaceable"><code>LIBRARY</code></em> doit correspondre à une de ces
+      valeurs :
+     </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+        <code class="option">bsd</code> pour utiliser les fonctions UUID trouvées dans
+        FreeBSD et d'autres systèmes dérivés de BSD
+       </p></li><li class="listitem"><p>
+        <code class="option">e2fs</code> pour utiliser la bibliothèque UUID créée par
+        le projet <code class="literal">e2fsprogs</code> ; cette bibliothèque est
+        présente sur la plupart des systèmes Linux et sur macOS, et peut
+        être obtenue sur d'autres plateformes également
+       </p></li><li class="listitem"><p>
+        <code class="option">ossp</code> pour utiliser la <a class="ulink" href="http://www.ossp.org/pkg/lib/uuid/" target="_top">bibliothèque OSSP UUID</a>
+       </p></li></ul></div></dd><dt id="CONFIGURE-OPTION-WITH-OSSP-UUID"><span class="term"><code class="option">--with-ossp-uuid</code></span> <a href="#CONFIGURE-OPTION-WITH-OSSP-UUID" class="id_link">#</a></dt><dd><p>
+      Équivalent obsolète de <code class="literal">--with-uuid=ossp</code>.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-LIBXML"><span class="term"><code class="option">--with-libxml</code></span> <a href="#CONFIGURE-OPTION-WITH-LIBXML" class="id_link">#</a></dt><dd><p>
+      Compile avec libxml2, activant ainsi le support de SQL/XML. Une
+      version 2.6.23 ou ultérieure de libxml2 est requise pour cette
+      fonctionnalité.
+     </p><p>
+      Pour détecter les options requises pour le compilateur et l'éditeur de
+      liens, PostgreSQL va demander à <code class="command">pkg-config</code>, s'il est
+      installé et s'il connaît libxml2. Sinon, le programme
+      <code class="command">xml2-config</code>, qui est installé par libxml2, sera
+      utilisé s'il est trouvé. L'utilisation de <code class="command">pkg-config</code>
+      est préférée, parce qu'elle gère mieux les installations
+      multiarchitectures.
+     </p><p>
+      Pour utiliser une installation libxml2 située dans un emplacement
+      inhabituel, vous pouvez configurer les variables d'environnement
+      relatives à <code class="command">pkg-config</code> (voir sa documentation), ou
+      configurer la variable d'environnement <code class="envar">XML2_CONFIG</code> pour
+      qu'elle pointe sur le programme <code class="command">xml2-config</code>
+      appartenant à l'installation libxml2, ou configurer les variables
+      <code class="envar">XML2_CFLAGS</code> et <code class="envar">XML2_LIBS</code>. (Si
+      <code class="command">pkg-config</code> est installé, alors, pour surcharger son
+      idée de l'emplacement de libxml2, vous devez renseigner soit
+      <code class="envar">XML2_CONFIG</code>, soit <code class="envar">XML2_CFLAGS</code> et
+      <code class="envar">XML2_LIBS</code>, avec des chaînes non vides.)
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-LIBXSLT"><span class="term"><code class="option">--with-libxslt</code></span> <a href="#CONFIGURE-OPTION-WITH-LIBXSLT" class="id_link">#</a></dt><dd><p>
+      Compile avec libxslt, activant le module
+      <a class="xref" href="xml2.html" title="F.48. xml2 -- fonctionnalités de requêtage XPath et XSLT">xml2</a> pour opérer des transformations XSL sur du XML.
+      <code class="option">--with-libxml</code> doit être spécifié aussi.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-SEPGSQL"><span class="term"><code class="option">--with-selinux</code></span> <a href="#CONFIGURE-OPTION-WITH-SEPGSQL" class="id_link">#</a></dt><dd><p>
+      Compile avec SElinux, activant l'extension <a class="xref" href="sepgsql.html" title="F.38. sepgsql -- module de sécurité SELinux pour le contrôle d'accès basé sur les labels">sepgsql</a>.
+     </p></dd></dl></div></div><div class="sect3" id="CONFIGURE-OPTIONS-ANTI-FEATURES"><div class="titlepage"><div><div><h4 class="title">17.3.3.3. Anti-fonctionnalités <a href="#CONFIGURE-OPTIONS-ANTI-FEATURES" class="id_link">#</a></h4></div></div></div><p>
+   Les options décrites dans cette section permettent de désactiver
+   certaines fonctionnalités de <span class="productname">PostgreSQL</span>
+   compilées par défaut, mais que vous pouvez désactiver si ne sont pas
+   disponibles un logiciel ou des fonctionnalités système nécessaires.
+   L'utilisation de ces options n'est pas recommandée si ce n'est pas
+   vraiment nécessaire.
+  </p><div class="variablelist"><dl class="variablelist"><dt id="CONFIGURE-OPTION-WITHOUT-ICU"><span class="term"><code class="option">--without-icu</code></span> <a href="#CONFIGURE-OPTION-WITHOUT-ICU" class="id_link">#</a></dt><dd><p>
+      Compile sans support des bibliothèques
+      <span class="productname">ICU</span><a id="id-1.6.4.6.4.6.3.1.2.1.2" class="indexterm"></a>,
+      désactivant l'utilisation de la fonctionnalité des collations ICU
+      (voir <a class="xref" href="collation.html" title="23.2. Support des collations">Section 23.2</a>).
+     </p></dd><dt id="CONFIGURE-OPTION-WITHOUT-READLINE"><span class="term"><code class="option">--without-readline</code></span> <a href="#CONFIGURE-OPTION-WITHOUT-READLINE" class="id_link">#</a></dt><dd><p>
+      Empêche l'utilisation de la bibliothèque <span class="application">Readline</span>
+      (et <span class="application">libedit</span> par la même occasion).
+      Cette option désactive l'édition de la ligne de commande et l'historique dans
+      <span class="application">psql</span>.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-LIBEDIT-PREFERRED"><span class="term"><code class="option">--with-libedit-preferred</code></span> <a href="#CONFIGURE-OPTION-WITH-LIBEDIT-PREFERRED" class="id_link">#</a></dt><dd><p>
+      Favorise l'utilisation de la bibliothèque <span class="application">libedit</span>
+      (licence BSD). Cette option n'est importante que si vous avez les deux
+      librairies installées ; le défaut dans ce cas est d'utiliser
+      <span class="application">Readline</span>.
+     </p></dd><dt id="CONFIGURE-OPTION-WITHOUT-ZLIB"><span class="term"><code class="option">--without-zlib</code></span> <a href="#CONFIGURE-OPTION-WITHOUT-ZLIB" class="id_link">#</a></dt><dd><p>
+      <a id="id-1.6.4.6.4.6.3.4.2.1.1" class="indexterm"></a>
+      Empêche l'utilisation de la bibliothèque <span class="application">Zlib</span>.
+      Cela désactive le support des archives compressées dans
+      <span class="application">pg_dump</span> et <span class="application">pg_restore</span>.
+     </p></dd><dt id="CONFIGURE-OPTION-DISABLE-SPINLOCKS"><span class="term"><code class="option">--disable-spinlocks</code></span> <a href="#CONFIGURE-OPTION-DISABLE-SPINLOCKS" class="id_link">#</a></dt><dd><p>
+      Autorise le succès de la compilation même si
+      <span class="productname">PostgreSQL</span> n'a
+      pas le support des spinlocks pour le CPU de la plateforme. Ce manque de support
+      entraînera des performances très faibles ; du coup, cette option
+      ne devra être utilisée que si la compilation échoue et vous informe
+      du manque de support des spinlocks sur votre plateforme. Si cette option
+      est nécessaire pour y compiler <span class="productname">PostgreSQL</span>,
+      merci de rapporter le problème à ses développeurs.
+     </p></dd><dt id="CONFIGURE-OPTION-DISABLE-ATOMICS"><span class="term"><code class="option">--disable-atomics</code></span> <a href="#CONFIGURE-OPTION-DISABLE-ATOMICS" class="id_link">#</a></dt><dd><p>
+      Désactive l'utilisation des opérations atomiques sur le CPU.
+      Cette option ne fait rien sur les plateformes qui n'ont pas
+      ces opérations. Sur celles qui l'ont, cela entraînera de
+      mauvaises performances. Cette option n'est utile que pour le
+      débogage ou pour des comparatifs de performance.
+     </p></dd></dl></div></div><div class="sect3" id="CONFIGURE-OPTIONS-BUILD-PROCESS"><div class="titlepage"><div><div><h4 class="title">17.3.3.4. Détails du processus de compilation <a href="#CONFIGURE-OPTIONS-BUILD-PROCESS" class="id_link">#</a></h4></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="CONFIGURE-OPTION-WITH-INCLUDES"><span class="term"><code class="option">--with-includes=<em class="replaceable"><code>RÉPERTOIRES</code></em></code></span> <a href="#CONFIGURE-OPTION-WITH-INCLUDES" class="id_link">#</a></dt><dd><p>
+      <em class="replaceable"><code>RÉPERTOIRES</code></em> est une liste de répertoires,
+      séparés par le caractère deux points (:), qui seront ajoutés à la liste de ceux
+      où le compilateur recherche des fichiers d'en-tête.
+      Si vous avez des paquets optionnels (comme
+      GNU <span class="application">Readline</span>) installés dans un
+      emplacement non conventionnel, vous devez utiliser cette option,
+      et probablement aussi l'option correspondante
+      <code class="option">--with-libraries</code>.
+     </p><p>
+      Exemple : <code class="literal">--with-includes=/opt/gnu/include:/usr/sup/include</code>.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-LIBRARIES"><span class="term"><code class="option">--with-libraries=<em class="replaceable"><code>RÉPERTOIRES</code></em></code></span> <a href="#CONFIGURE-OPTION-WITH-LIBRARIES" class="id_link">#</a></dt><dd><p>
+      <em class="replaceable"><code>RÉPERTOIRES</code></em> est une liste de répertoires,
+      séparés par le caractère deux points (:),
+      où chercher des bibliothèques de fonctions.
+      Si vous avez des paquets installés dans des
+      emplacements non conventionnels, vous devez utiliser cette option
+      (et probablement aussi l'option correspondante
+      <code class="option">--with-includess</code>).
+     </p><p>
+      Exemple : <code class="literal">--with-libraries=/opt/gnu/lib:/usr/sup/lib</code>.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-SYSTEM-TZDATA"><span class="term"><code class="option">--with-system-tzdata=<em class="replaceable"><code>RÉPERTOIRE</code></em></code></span> <a href="#CONFIGURE-OPTION-WITH-SYSTEM-TZDATA" class="id_link">#</a></dt><dd><a id="id-1.6.4.6.4.7.2.3.2.1" class="indexterm"></a><p>
+      <span class="productname">PostgreSQL</span> inclut sa propre base de données
+      des fuseaux horaires, nécessaire pour les opérations sur les dates et
+      les heures. Cette base de données est en fait compatible avec la base
+      de fuseaux horaires IANA fournie par de nombreux
+      systèmes d'exploitation comme FreeBSD, Linux et Solaris, donc il semble
+      redondant de l'installer une nouvelle fois. Quand cette option est
+      utilisée, la base des fuseaux horaires fournie par le système, dans
+      <em class="replaceable"><code>RÉPERTOIRE</code></em>, est utilisée à la place de celle
+      incluse dans la distribution des sources de PostgreSQL.
+      <em class="replaceable"><code>RÉPERTOIRE</code></em> doit être indiqué avec un chemin
+      absolu. <code class="filename">/usr/share/zoneinfo</code> est un répertoire
+      courant sur certains systèmes d'exploitation. Notez que la routine
+      d'installation ne détectera pas les données de fuseau horaire différentes
+      ou erronées. Si vous utilisez cette option, il est conseillé de
+      lancer les tests de régression pour vérifier que les données de fuseau
+      horaire que vous pointez fonctionnent correctement avec
+      <span class="productname">PostgreSQL</span>.
+     </p><a id="id-1.6.4.6.4.7.2.3.2.3" class="indexterm"></a><p>
+      Cette option est surtout destinée aux distributeurs de paquets binaires,
+      qui connaissent bien leur système d'exploitation.
+      Le principal avantage de cette option est que le paquet de PostgreSQL
+      n'aura pas besoin de mise à jour à chaque changement des règles des fuseaux
+      horaires. Un autre avantage est que PostgreSQL peut être
+      cross-compilé<a id="id-1.6.4.6.4.7.2.3.2.4.1" class="indexterm"></a>
+      plus simplement si les fichiers des fuseaux horaires n'ont pas besoin
+      d'être construits lors de l'installation.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-EXTRA-VERSION"><span class="term"><code class="option">--with-extra-version=<em class="replaceable"><code>CHAÎNE</code></em></code></span> <a href="#CONFIGURE-OPTION-WITH-EXTRA-VERSION" class="id_link">#</a></dt><dd><p>
+      Ajoute <em class="replaceable"><code>CHAÎNE</code></em> au numéro de version de PostgreSQL.
+      Par exemple, vous pouvez utiliser cela pour marquer des binaires compilés
+      depuis des snapshots Git, ou contenant des patchs, avec une chaîne
+      supplémentaire, comme un identifiant <code class="command">git describe</code>
+      ou un numéro de version de distribution du paquet.
+     </p></dd><dt id="CONFIGURE-OPTION-DISABLE-RPATH"><span class="term"><code class="option">--disable-rpath</code></span> <a href="#CONFIGURE-OPTION-DISABLE-RPATH" class="id_link">#</a></dt><dd><p>
+      N'indique pas aux exécutables de <span class="productname">PostgreSQL</span>
+      qu'ils doivent chercher les bibliothèques partagées dans le
+      répertoire des bibliothèques de l'installation
+      (voir <code class="option">--libdir</code>).
+      Sur la plupart des plateformes, cette indication utilise un
+      chemin absolu vers le répertoire des bibliothèques,
+      et sera inutile si vous déplacez l'installation plus tard.
+      Cependant, vous devrez alors fournir aux exécutables
+      un autre moyen pour trouver les bibliothèques partagées.
+      Typiquement, cela implique de configurer l'éditeur de liens
+      du système d'exploitation pour les rechercher ;
+      voir <a class="xref" href="install-post.html#INSTALL-POST-SHLIBS" title="17.5.1. Bibliothèques partagées">Section 17.5.1</a> pour plus de détails.
+     </p></dd></dl></div></div><div class="sect3" id="CONFIGURE-OPTIONS-MISC"><div class="titlepage"><div><div><h4 class="title">17.3.3.5. Divers <a href="#CONFIGURE-OPTIONS-MISC" class="id_link">#</a></h4></div></div></div><p>
+   Il est assez courant, particulièrement pour les compilations de test,
+   de modifier le numéro de port avec l'option <code class="option">--with-pgport</code>.
+   Les autres options de cette section ne sont recommandées que pour
+   les utilisateurs avancés.
+  </p><div class="variablelist"><dl class="variablelist"><dt id="CONFIGURE-OPTION-WITH-PGPORT"><span class="term"><code class="option">--with-pgport=<em class="replaceable"><code>PORT</code></em></code></span> <a href="#CONFIGURE-OPTION-WITH-PGPORT" class="id_link">#</a></dt><dd><p>
+      Positionne <em class="replaceable"><code>PORT</code></em> comme numéro de port
+      pour les serveurs et les clients. Le défaut est 5432.
+      Le port peut toujours être changé plus tard ; mais, si vous le
+      spécifiez ici, serveur et clients auront le même défaut dès la
+      compilation, ce qui peut être très pratique.
+      D'habitude, la seule bonne raison de sélectionner une autre valeur
+      que le défaut est si vous avez l'intention de faire
+      tourner plusieurs serveurs <span class="productname">PostgreSQL</span>
+      sur la même machine.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-KRB-SRVNAM"><span class="term"><code class="option">--with-krb-srvnam=<em class="replaceable"><code>NOM</code></em></code></span> <a href="#CONFIGURE-OPTION-WITH-KRB-SRVNAM" class="id_link">#</a></dt><dd><p>
+      Le nom par défaut du service principal Kerberos utilisé par GSSAPI.
+      <code class="literal">postgres</code> est le défaut.
+      D'habitude, il n'y a aucune raison de changer cela, à moins que
+      vous ne compiliez pour un environnement Windows  auquel cas
+      ce doit être, en majuscules, <code class="literal">POSTGRES</code>.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-SEGSIZE"><span class="term"><code class="option">--with-segsize=<em class="replaceable"><code>SEGSIZE</code></em></code></span> <a href="#CONFIGURE-OPTION-WITH-SEGSIZE" class="id_link">#</a></dt><dd><p>
+      Définit la taille d'un segment (<em class="firstterm">segment size</em>),
+      en gigaoctets.
+      Au niveau du système d'exploitation, les grandes tables sont divisées
+      en plusieurs fichiers, chacun d'une taille égale à la taille d'un segment.
+      Cela évite des problèmes avec les limites de taille de fichiers
+      qui existent sur beaucoup de plateformes.
+      La taille par défaut, 1 gigaoctet, est une valeur
+      sûre pour toutes les plateformes supportées.
+      Si votre système d'exploitation supporte les fichiers de
+      grande taille (<span class="quote">« <span class="quote">largefile</span> »</span>), et la plupart le font, de nos jours,
+      vous pouvez utiliser une plus grande taille de segment.
+      Ce peut être utile pour réduire le nombre de descripteurs de fichiers
+      consommés en travaillant avec de très grandes tables.
+      Mais faites attention à ne pas choisir une valeur plus large que ce
+      qui est supporté par votre plateforme et les systèmes de fichiers
+      que vous voulez utiliser.
+      D'autres outils que vous pourriez vouloir utiliser, comme
+      <span class="application">tar</span>, peuvent aussi poser des limites
+      sur la taille de fichier utilisable.
+      Il est recommandé que cette valeur soit une puissance de 2,
+      même si ce n'est pas absolument nécessaire.
+      Notez que changer cette valeur casse la compatibilité entre bases
+      au niveau fichier, ce qui veut dire que vous ne pouvez pas utiliser
+      <code class="command">pg_upgrade</code> pour mettre à jour vers une
+      version compilée avec une taille de segment différente.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-BLOCKSIZE"><span class="term"><code class="option">--with-blocksize=<em class="replaceable"><code>TAILLEBLOC</code></em></code></span> <a href="#CONFIGURE-OPTION-WITH-BLOCKSIZE" class="id_link">#</a></dt><dd><p>
+      Définit la taille de bloc (<em class="firstterm">block size</em>), en kilooctets.
+      C'est l'unité de stockage et d'entrée-sortie dans les tables.
+      Le défaut, 8 kilooctets, est adéquat pour la plupart des situations ;
+      mais d'autres valeurs peuvent être utiles dans certains cas.
+      La valeur peut être une puissance de 2 entre 1 et 32 (kilooctets).
+      Notez que changer cette valeur casse la compatibilité entre bases
+      au niveau fichier, ce qui veut dire que vous ne pouvez pas utiliser
+      <code class="command">pg_upgrade</code> pour mettre à jour vers une
+      version compilée avec une taille de bloc différente.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-WAL-BLOCKSIZE"><span class="term"><code class="option">--with-wal-blocksize=<em class="replaceable"><code>TAILLEBLOC</code></em></code></span> <a href="#CONFIGURE-OPTION-WITH-WAL-BLOCKSIZE" class="id_link">#</a></dt><dd><p>
+      Définit la taille de bloc dans les journaux de transaction
+      (<em class="firstterm">WAL block size</em>), en kilooctets.
+      C'est l'unité de stockage et d'entrée-sortie en leur sein.
+      Le défaut, 8 kilooctets, convient pour la plupart des situations ;
+      mais d'autres valeurs peuvent être utiles dans certains cas.
+      La valeur doit être une puissance de 2 entre 1 et 64 (kilooctets).
+      Notez que changer cette valeur casse la compatibilité entre bases
+      au niveau fichier, ce qui veut dire que vous ne pouvez pas utiliser
+      <code class="command">pg_upgrade</code> pour mettre à jour vers une
+      version compilée avec une taille de bloc de WAL différente.
+     </p></dd></dl></div></div><div class="sect3" id="CONFIGURE-OPTIONS-DEVEL"><div class="titlepage"><div><div><h4 class="title">17.3.3.6. Options pour les développeurs <a href="#CONFIGURE-OPTIONS-DEVEL" class="id_link">#</a></h4></div></div></div><p>
+   La plupart des options de cette section n'ont d'intérêt
+   que pour développer ou déboguer <span class="productname">PostgreSQL</span>.
+   Elles ne sont pas recommandées pour la production, sauf
+   <code class="option">--enable-debug</code>, qui peut être utile pour
+   obtenir des rapports de bugs détaillés, dans l'éventualité
+   malheureuse où vous rencontriez un bug.
+   Sur les plateformes supportant DTrace, <code class="option">--enable-dtrace</code>
+   peut raisonnablement être utilisé en production.
+  </p><p>
+   Pour compiler une installation destinée à développer du code
+   au sein du serveur, il est recommandé d'utiliser au moins
+   les options <code class="option">--enable-debug</code>
+   et <code class="option">--enable-cassert</code>.
+  </p><div class="variablelist"><dl class="variablelist"><dt id="CONFIGURE-OPTION-ENABLE-DEBUG"><span class="term"><code class="option">--enable-debug</code></span> <a href="#CONFIGURE-OPTION-ENABLE-DEBUG" class="id_link">#</a></dt><dd><p>
+      Compile tous les programmes et bibliothèques
+      avec les symboles de débogage.
+      Cela signifie que vous pouvez exécuter les programmes au sein d'un
+      débogueur pour analyser les problèmes. Cela augmente considérablement
+      la taille des exécutables et, avec des compilateurs autres que GCC,
+      désactive habituellement les optimisations du compilateur,
+      provoquant des ralentissements. Cependant, avoir les symboles en place est
+      extrêmement utile pour traiter d'éventuels problèmes. Actuellement, cette
+      option n'est recommandée pour les installations en production que
+      si vous utilisez GCC. Néanmoins, vous devriez toujours l'utiliser si vous
+      développez, ou si vous utilisez une version bêta.
+     </p></dd><dt id="CONFIGURE-OPTION-ENABLE-CASSERT"><span class="term"><code class="option">--enable-cassert</code></span> <a href="#CONFIGURE-OPTION-ENABLE-CASSERT" class="id_link">#</a></dt><dd><p>
+      Active les vérifications des assertions (<em class="firstterm">assertion</em>)
+      dans le serveur, qui testent de nombreuses conditions qui
+      <span class="quote">« <span class="quote">ne peuvent pas arriver</span> »</span>.
+      C'est inestimable pour le développement du code, mais les tests
+      peuvent ralentir le serveur considérablement.
+      Activer ces tests ne va pas améliorer la stabilité de votre
+      serveur ! Les tests des assertions ne sont pas triés par
+      sévérité, et un petit bug relativement inoffensif,
+      s'il déclenche un échec d'assertion,
+      peut mener à des redémarrages du serveur !
+      Cette option n'est pas recommandée en production, mais vous devriez
+      l'avoir en développement, ou en utilisant une version bêta.
+     </p></dd><dt id="CONFIGURE-OPTION-ENABLE-TAP-TESTS"><span class="term"><code class="option">--enable-tap-tests</code></span> <a href="#CONFIGURE-OPTION-ENABLE-TAP-TESTS" class="id_link">#</a></dt><dd><p>
+      Active les tests avec les outils TAP de Perl.
+      Cela nécessite une installation de Perl et de son module
+      <code class="literal">IPC::Run</code>.
+      Voir <a class="xref" href="regress-tap.html" title="31.4. Tests TAP">Section 31.4</a> pour plus d'information.
+     </p></dd><dt id="CONFIGURE-OPTION-ENABLE-DEPEND"><span class="term"><code class="option">--enable-depend</code></span> <a href="#CONFIGURE-OPTION-ENABLE-DEPEND" class="id_link">#</a></dt><dd><p>
+      Active le suivi automatique des dépendances.
+      Avec cette option, les makefiles sont conçus pour que
+      tous les fichiers objets soient recompilés si n'importe
+      quel fichier d'en-tête change.
+      C'est utile si vous faites du développement, mais n'est que
+      gaspillage si vous ne devez compiler qu'une fois pour
+      installer.
+      Pour le moment, cette option ne fonctionne qu'avec GCC.
+     </p></dd><dt id="CONFIGURE-OPTION-ENABLE-COVERAGE"><span class="term"><code class="option">--enable-coverage</code></span> <a href="#CONFIGURE-OPTION-ENABLE-COVERAGE" class="id_link">#</a></dt><dd><p>
+      Si vous utilisez GCC, tous les programmes et bibliothèques sont compilés avec
+      de l'instrumentation de test de couverture de code. Quand ils sont exécutés,
+      ils génèrent des fichiers dans le répertoire de compilation avec des
+      métriques de couverture de code.
+      Voir <a class="xref" href="regress-coverage.html" title="31.5. Examen de la couverture des tests">Section 31.5</a> pour davantage d'informations.
+      Cette option ne doit être utilisée qu'avec GCC
+      et en développement.
+     </p></dd><dt id="CONFIGURE-OPTION-ENABLE-PROFILING"><span class="term"><code class="option">--enable-profiling</code></span> <a href="#CONFIGURE-OPTION-ENABLE-PROFILING" class="id_link">#</a></dt><dd><p>
+      En cas d'utilisation de GCC, tous les programmes et bibliothèques
+      sont compilés pour pouvoir être profilés. À la sortie du
+      processus serveur, un sous-répertoire sera créé pour contenir le
+      fichier <code class="filename">gmon.out</code> contenant les données de profilage.
+      Cette option n'est à utiliser qu'avec GCC et en développement.
+     </p></dd><dt id="CONFIGURE-OPTION-ENABLE-DTRACE"><span class="term"><code class="option">--enable-dtrace</code></span> <a href="#CONFIGURE-OPTION-ENABLE-DTRACE" class="id_link">#</a></dt><dd><p>
+      <a id="id-1.6.4.6.4.9.4.7.2.1.1" class="indexterm"></a>
+      Compile <span class="productname">PostgreSQL</span> avec le support de l'outil
+      de trace dynamique, DTrace.
+      Voir <a class="xref" href="dynamic-trace.html" title="27.5. Traces dynamiques">Section 27.5</a> pour plus d'informations.
+     </p><p>
+      Pour pointer vers le programme <code class="command">dtrace</code>, la variable
+      d'environnement <code class="envar">DTRACE</code> peut être configurée. Ce sera
+      souvent nécessaire, car <code class="command">dtrace</code> est typiquement
+      installé sous <code class="filename">/usr/sbin</code>, qui peut ne pas être
+      dans votre <code class="envar">PATH</code>.
+     </p><p>
+      Des options supplémentaires en ligne de commande
+      pour <code class="command">dtrace</code>
+      peuvent être indiquées dans la variable d'environnement
+      <code class="envar">DTRACEFLAGS</code> pour le programme <code class="command">dtrace</code>.
+      Sur Solaris, pour inclure le support de DTrace dans un exécutable 64 bits, ajoutez
+      l'option <code class="literal">DTRACEFLAGS="-64"</code>. Par
+      exemple, en utilisant le compilateur GCC :
+      </p><pre class="screen">./configure CC='gcc -m64' --enable-dtrace DTRACEFLAGS='-64' ...
+      </pre><p>
+      En utilisant le compilateur de Sun :
+      </p><pre class="screen">./configure CC='/opt/SUNWspro/bin/cc -xtarget=native64' --enable-dtrace DTRACEFLAGS='-64' ...
+      </pre><p>
+     </p></dd><dt id="CONFIGURE-OPTION-ENABLE-INJECTION-POINTS"><span class="term"><code class="option">--enable-injection-points</code></span> <a href="#CONFIGURE-OPTION-ENABLE-INJECTION-POINTS" class="id_link">#</a></dt><dd><p>
+      Compile <span class="productname">PostgreSQL</span> avec le support des points
+      d'injection dans le serveur. Les points d'injection permettent d'exécuter
+      du code utilisateur à l'intérieur du serveur pour des chemins de code
+      prédéfinis. Ceci aide aux tests et à l'investigation de scénarios
+      parallélisés d'une façon contrôlé. Cette option est désactivée par défaut.
+      Voir <a class="xref" href="xfunc-c.html#XFUNC-ADDIN-INJECTION-POINTS" title="36.10.13. Points d'injection">Section 36.10.13</a> pour plus de détails.
+      Cette option a pour but d'être utilisée uniquement pour les tests des
+      développeurs.
+     </p></dd><dt id="CONFIGURE-OPTION-WITH-SEGSIZE-BLOCKS"><span class="term"><code class="option">--with-segsize-blocks=SEGSIZE_BLOCKS</code></span> <a href="#CONFIGURE-OPTION-WITH-SEGSIZE-BLOCKS" class="id_link">#</a></dt><dd><p>
+      Précise la taille des segments des relations en blocs. Si
+      <code class="option">--with-segsize</code> et cette option sont toutes les deux
+      précisées, cette option l'emporte. Cette option est seulement pour les
+      développeurs, pour tester le code en relation aux segments.
+     </p></dd></dl></div></div></div><div class="sect2" id="CONFIGURE-ENVVARS"><div class="titlepage"><div><div><h3 class="title">17.3.4. Variables d'environnement de <code class="filename">configure</code> <a href="#CONFIGURE-ENVVARS" class="id_link">#</a></h3></div></div></div><a id="id-1.6.4.6.5.2" class="indexterm"></a><p>
+  En plus des options de ligne de commande ordinaires décrites
+  plus haut, <code class="filename">configure</code> répond à nombre
+  de variables d'environnement.
+  Vous pouvez les spécifier sur la ligne de commande de
+  <code class="filename">configure</code>, par exemple ainsi :
+  </p><pre class="screen">
+<strong class="userinput"><code>./configure CC=/opt/bin/gcc CFLAGS='-O2 -pipe'</code></strong>
+  </pre><p>
+  Dans ce cas, une variable d'environnement est peu différente d'une
+  option de ligne de commande.
+  Vous pouvez aussi les placer au préalable :
+  </p><pre class="screen">
+<strong class="userinput"><code>export CC=/opt/bin/gcc</code></strong>
+<strong class="userinput"><code>export CFLAGS='-O2 -pipe'</code></strong>
+<strong class="userinput"><code>./configure</code></strong>
+  </pre><p>
+  Cette utilisation peut être pratique parce que les scripts de
+  configuration de beaucoup de programmes répondent à ces
+  variables de manière similaire.
+ </p><p>
+  Les plus utilisées de ces variables d'environnement sont
+  <code class="envar">CC</code> et <code class="envar">CFLAGS</code>.
+  Si vous préférez utiliser un compilateur C différent de celui choisi par
+  <code class="filename">configure</code>, positionnez la variable
+  <code class="envar">CC</code> vers le compilateur de votre choix.
+  Par défaut, <code class="filename">configure</code> choisira
+  <code class="filename">gcc</code> s'il est disponible, et sinon celui par
+  défaut sur la plateforme (habituellement <code class="filename">cc</code>).
+  De façon similaire, vous pouvez repositionner les options par défaut du
+  compilateur à l'aide de la variable <code class="envar">CFLAGS</code>.
+ </p><p>
+  Voici une liste des variables importantes qui sont configurables de cette
+  façon :
+ </p><p>
+  </p><div class="variablelist"><dl class="variablelist"><dt id="CONFIGURE-ENVVARS-BISON"><span class="term"><code class="envar">BISON</code></span> <a href="#CONFIGURE-ENVVARS-BISON" class="id_link">#</a></dt><dd><p>
+      programme Bison
+     </p></dd><dt id="CONFIGURE-ENVVARS-CC"><span class="term"><code class="envar">CC</code></span> <a href="#CONFIGURE-ENVVARS-CC" class="id_link">#</a></dt><dd><p>
+      compilateur C
+     </p></dd><dt id="CONFIGURE-ENVVARS-CFLAGS"><span class="term"><code class="envar">CFLAGS</code></span> <a href="#CONFIGURE-ENVVARS-CFLAGS" class="id_link">#</a></dt><dd><p>
+      options à passer au compilateur C
+     </p></dd><dt id="CONFIGURE-ENVVARS-CLANG"><span class="term"><code class="envar">CLANG</code></span> <a href="#CONFIGURE-ENVVARS-CLANG" class="id_link">#</a></dt><dd><p>
+      chemin vers le programme <code class="command">clang</code> utilisé pour
+      optimiser le code source lors de la compilation avec
+      <code class="literal">--with-llvm</code>
+     </p></dd><dt id="CONFIGURE-ENVVARS-CPP"><span class="term"><code class="envar">CPP</code></span> <a href="#CONFIGURE-ENVVARS-CPP" class="id_link">#</a></dt><dd><p>
+      préprocesseur C
+     </p></dd><dt id="CONFIGURE-ENVVARS-CPPFLAGS"><span class="term"><code class="envar">CPPFLAGS</code></span> <a href="#CONFIGURE-ENVVARS-CPPFLAGS" class="id_link">#</a></dt><dd><p>
+      options à passer au préprocesseur C
+     </p></dd><dt id="CONFIGURE-ENVVARS-CXX"><span class="term"><code class="envar">CXX</code></span> <a href="#CONFIGURE-ENVVARS-CXX" class="id_link">#</a></dt><dd><p>
+      compilateur C++
+     </p></dd><dt id="CONFIGURE-ENVVARS-CXXFLAGS"><span class="term"><code class="envar">CXXFLAGS</code></span> <a href="#CONFIGURE-ENVVARS-CXXFLAGS" class="id_link">#</a></dt><dd><p>
+      options à passer au compilateur C++
+     </p></dd><dt id="CONFIGURE-ENVVARS-DTRACE"><span class="term"><code class="envar">DTRACE</code></span> <a href="#CONFIGURE-ENVVARS-DTRACE" class="id_link">#</a></dt><dd><p>
+      emplacement du programme <code class="command">dtrace</code>
+     </p></dd><dt id="CONFIGURE-ENVVARS-DTRACEFLAGS"><span class="term"><code class="envar">DTRACEFLAGS</code></span> <a href="#CONFIGURE-ENVVARS-DTRACEFLAGS" class="id_link">#</a></dt><dd><p>
+      options à passer au programme <code class="command">dtrace</code>
+     </p></dd><dt id="CONFIGURE-ENVVARS-FLEX"><span class="term"><code class="envar">FLEX</code></span> <a href="#CONFIGURE-ENVVARS-FLEX" class="id_link">#</a></dt><dd><p>
+      programme Flex
+     </p></dd><dt id="CONFIGURE-ENVVARS-LDFLAGS"><span class="term"><code class="envar">LDFLAGS</code></span> <a href="#CONFIGURE-ENVVARS-LDFLAGS" class="id_link">#</a></dt><dd><p>
+      options à utiliser lors de l'édition des liens des exécutables et des
+      bibliothèques partagées
+     </p></dd><dt id="CONFIGURE-ENVVARS-LDFLAGS-EX"><span class="term"><code class="envar">LDFLAGS_EX</code></span> <a href="#CONFIGURE-ENVVARS-LDFLAGS-EX" class="id_link">#</a></dt><dd><p>
+      options supplémentaires valables uniquement lors de l'édition des
+      liens des exécutables
+     </p></dd><dt id="CONFIGURE-ENVVARS-LDFLAGS-SL"><span class="term"><code class="envar">LDFLAGS_SL</code></span> <a href="#CONFIGURE-ENVVARS-LDFLAGS-SL" class="id_link">#</a></dt><dd><p>
+      options supplémentaires valables uniquement lors de l'édition des
+      liens des bibliothèques partagées
+     </p></dd><dt id="CONFIGURE-ENVVARS-LLVM-CONFIG"><span class="term"><code class="envar">LLVM_CONFIG</code></span> <a href="#CONFIGURE-ENVVARS-LLVM-CONFIG" class="id_link">#</a></dt><dd><p>
+      programme <code class="command">llvm-config</code> à utiliser pour localiser
+      l'installation <span class="productname">LLVM</span>.
+     </p></dd><dt id="CONFIGURE-ENVVARS-MSGFMT"><span class="term"><code class="envar">MSGFMT</code></span> <a href="#CONFIGURE-ENVVARS-MSGFMT" class="id_link">#</a></dt><dd><p>
+      programme <code class="command">msgfmt</code> pour le support des langues
+     </p></dd><dt id="CONFIGURE-ENVVARS-PERL"><span class="term"><code class="envar">PERL</code></span> <a href="#CONFIGURE-ENVVARS-PERL" class="id_link">#</a></dt><dd><p>
+      programme interpréteur Perl. Il sera utilisé pour déterminer les
+      dépendances pour la compilation de PL/Perl. La valeur par défaut est
+      <code class="command">perl</code>.
+     </p></dd><dt id="CONFIGURE-ENVVARS-PYTHON"><span class="term"><code class="envar">PYTHON</code></span> <a href="#CONFIGURE-ENVVARS-PYTHON" class="id_link">#</a></dt><dd><p>
+      chemin complet vers l'interpréteur Python. Il sera utilisé pour déterminer
+      les dépendances pour la compilation de PL/Python. S'il n'est pas
+      configuré, les chemins suivants sont testés dans cet ordre :
+      <code class="literal">python3 python</code>.
+     </p></dd><dt id="CONFIGURE-ENVVARS-TCLSH"><span class="term"><code class="envar">TCLSH</code></span> <a href="#CONFIGURE-ENVVARS-TCLSH" class="id_link">#</a></dt><dd><p>
+      programme interpréteur Tcl. Il sera utilisé pour déterminer
+      les dépendances pour la compilation de PL/Tcl.
+      Si ce paramètre n'est pas en place, seront testés dans cet ordre :
+      <code class="literal">tclsh tcl tclsh8.6 tclsh86 tclsh8.5 tclsh85
+      tclsh8.4 tclsh84</code>.
+     </p></dd><dt id="CONFIGURE-ENVVARS-XML2-CONFIG"><span class="term"><code class="envar">XML2_CONFIG</code></span> <a href="#CONFIGURE-ENVVARS-XML2-CONFIG" class="id_link">#</a></dt><dd><p>
+      programme <code class="command">xml2-config</code> utilisé pour trouver
+      l'emplacement de l'installation de libxml2.
+     </p></dd></dl></div><p>
+ </p><p>
+  Parfois, ajouter des options de compilation après coup à celles
+  choisies par <code class="filename">configure</code> peut se révéler utile.
+  Un exemple parlant
+  concerne l'option <code class="option">-Werror</code> de
+  <span class="application">gcc</span>, qui ne peut pas être incluse dans la
+  variable <code class="envar">CFLAGS</code> passée à <code class="filename">configure</code>,
+  car elle casserait un grand nombre de tests internes de
+  <code class="filename">configure</code>. Pour ajouter de telles options, incluez-les
+  dans la variable d'environnement <code class="envar">COPT</code> lors de
+  l'exécution de <code class="filename">make</code>. Le contenu de
+  <code class="envar">COPT</code> est ajouté aux variables <code class="envar">CFLAGS</code> et
+  <code class="envar">LDFLAGS</code> configurées par <code class="filename">configure</code>.
+  Par exemple, vous pouvez faire :
+</p><pre class="screen">
+<strong class="userinput"><code>make COPT='-Werror'</code></strong>
+  </pre><p>
+  ou
+  </p><pre class="screen">
+<strong class="userinput"><code>export COPT='-Werror'</code></strong>
+<strong class="userinput"><code>make</code></strong>
+  </pre><p>
+ </p><div class="note"><h3 class="title">Note</h3><p>
+   Si vous utilisez GCC, il est préférable de compiler avec un niveau
+   d'optimisation d'au moins <code class="option">-O1</code>, parce que l'absence
+   d'optimisation (<code class="option">-O0</code>) désactive aussi certains
+   messages importants du compilateur (comme l'utilisation de variables
+   non initialisées). Néanmoins, les niveaux d'optimisations peuvent
+   compliquer le débogage : un pas-à-pas sur le code
+   compilé ne correspondra pas forcément directement aux lignes de code.
+   Si vous avez du mal à déboguer du code optimisé, recompilez les fichiers
+   qui vous intéressent avec <code class="option">-O0</code>.
+   Une façon simple de le faire est
+   de passer une option à <span class="application">make</span>:
+   <code class="command">make PROFILE=-O0 file.o</code>.
+  </p><p>
+   En fait, les variables d'environnement <code class="envar">COPT</code> et
+   <code class="envar">PROFILE</code> sont gérées de façon identique par les
+   makefiles de <span class="productname">PostgreSQL</span>. Laquelle utiliser est
+   une affaire de préférence, mais l'usage parmi les développeurs
+   est d'utiliser <code class="envar">PROFILE</code> pour les ajustements ponctuels,
+   alors que <code class="envar">COPT</code> peut être conservée en permanence.
+  </p></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/install-make.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:31 GMT -->
+</html>

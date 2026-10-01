@@ -1,0 +1,809 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/postgres-fdw.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.36. postgres_fdw -- accéder à des données enregistrées dans des serveurs PostgreSQL externes</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="pgwalinspect.html" title="F.35. pg_walinspect -- inspection bas niveau des journaux de transactions" /><link rel="next" href="seg.html" title="F.37. seg -- un type de données pour les segments de ligne et pour les intervalles en virgule flottante" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/postgres-fdw.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/postgres-fdw.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/postgres-fdw.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/postgres-fdw.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/postgres-fdw.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/postgres-fdw.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/postgres-fdw.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/postgres-fdw.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/postgres-fdw.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/postgres-fdw.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/postgres-fdw.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/postgres-fdw.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/postgres-fdw.html">9.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/postgres-fdw.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="appendixes.html">Annexes</a></span> » <span class="breadcrumb-link"><a href="contrib.html">Modules et extensions supplémentaires fournis</a></span> » <span class="breadcrumb-node">postgres_fdw  -- 
+   accéder à des données enregistrées dans des serveurs <span class="productname">PostgreSQL</span>
+   externes</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pgwalinspect.html" title="F.35. pg_walinspect  --  inspection bas niveau des journaux de&#10;  transactions">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="seg.html" title="F.37. seg  --  un type de données pour les segments de ligne et pour&#10; les intervalles en virgule flottante">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">F.35. pg_walinspect  --  inspection bas niveau des journaux de
+  transactions </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> F.37. seg  --  un type de données pour les segments de ligne et pour
+ les intervalles en virgule flottante</td></tr></table></div><div class="sect1" id="POSTGRES-FDW"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.36. postgres_fdw  -- 
+   accéder à des données enregistrées dans des serveurs <span class="productname">PostgreSQL</span>
+   externes <a href="#POSTGRES-FDW" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="postgres-fdw.html#POSTGRES-FDW-OPTIONS">F.36.1. Options FDW de postgres_fdw</a></span></dt><dt><span class="sect2"><a href="postgres-fdw.html#POSTGRES-FDW-FUNCTIONS">F.36.2. Fonctions</a></span></dt><dt><span class="sect2"><a href="postgres-fdw.html#POSTGRES-FDW-CONNECTION-MANAGEMENT">F.36.3. Gestion des connexions</a></span></dt><dt><span class="sect2"><a href="postgres-fdw.html#POSTGRES-FDW-TRANSACTION-MANAGEMENT">F.36.4. Gestion des transactions</a></span></dt><dt><span class="sect2"><a href="postgres-fdw.html#POSTGRES-FDW-REMOTE-QUERY-OPTIMIZATION">F.36.5. Optimisation des requêtes distantes</a></span></dt><dt><span class="sect2"><a href="postgres-fdw.html#POSTGRES-FDW-REMOTE-QUERY-EXECUTION-ENVIRONMENT">F.36.6. Environnement d'exécution de requêtes distantes</a></span></dt><dt><span class="sect2"><a href="postgres-fdw.html#POSTGRES-FDW-CROSS-VERSION-COMPATIBILITY">F.36.7. Compatibilité entre versions</a></span></dt><dt><span class="sect2"><a href="postgres-fdw.html#POSTGRES-FDW-WAIT-EVENTS">F.36.8. Événements d'attente</a></span></dt><dt><span class="sect2"><a href="postgres-fdw.html#POSTGRES-FDW-CONFIGURATION-PARAMETERS">F.36.9. Paramètres de configuration</a></span></dt><dt><span class="sect2"><a href="postgres-fdw.html#POSTGRES-FDW-EXAMPLES">F.36.10. Exemples</a></span></dt><dt><span class="sect2"><a href="postgres-fdw.html#POSTGRES-FDW-AUTHOR">F.36.11. Auteur</a></span></dt></dl></div><a id="id-1.11.7.47.2" class="indexterm"></a><p>
+  Le module <code class="filename">postgres_fdw</code> fournit le wrapper de données
+  distantes <code class="literal">postgres_fdw</code>, dont le but est de donner accès
+  à des données enregistrées dans des serveurs
+  <span class="productname">PostgreSQL</span> externes.
+ </p><p>
+  Les fonctionnalités proposées par ce module sont à peu près les mêmes que
+  celles proposées par le module <a class="xref" href="dblink.html" title="F.11. dblink -- se connecter à d'autres bases de données PostgreSQL">dblink</a>. Mais
+  <code class="filename">postgres_fdw</code> fournit une syntaxe plus transparente et
+  respectant les standards pour l'accès à des tables distantes. Elle peut
+  aussi donner de meilleures performances dans beaucoup de cas.
+ </p><p>
+  Pour préparer un accès distant en utilisant <code class="filename">postgres_fdw</code> :
+  </p><div class="orderedlist"><ol class="orderedlist compact" type="1"><li class="listitem"><p>
+     Installez l'extension  <code class="filename">postgres_fdw</code> en utilisant
+     <a class="xref" href="sql-createextension.html" title="CREATE EXTENSION"><span class="refentrytitle">CREATE EXTENSION</span></a>.
+    </p></li><li class="listitem"><p>
+     Créez un objet serveur distant en utilisant <a class="xref" href="sql-createserver.html" title="CREATE SERVER"><span class="refentrytitle">CREATE SERVER</span></a>,
+     pour représenter chaque base distante à laquelle vous souhaitez vous
+     connecter. Indiquez les informations de connexions, sauf
+     <code class="literal">user</code> et <code class="literal">password</code>, comme options de
+     l'objet serveur.
+    </p></li><li class="listitem"><p>
+     Créez une correspondance d'utilisateur avec <a class="xref" href="sql-createusermapping.html" title="CREATE USER MAPPING"><span class="refentrytitle">CREATE USER MAPPING</span></a> pour chaque utilisateur de la base que
+     vous voulez autoriser à accéder à un serveur distant. Indiquez le nom
+     et le mot de passe de l'utilisateur distant avec les options
+     <code class="literal">user</code> et <code class="literal">password</code> de la correspondance
+     d'utilisateur.
+    </p></li><li class="listitem"><p>
+     Créez une table distante avec <a class="xref" href="sql-createforeigntable.html" title="CREATE FOREIGN TABLE"><span class="refentrytitle">CREATE FOREIGN TABLE</span></a>
+     ou <a class="xref" href="sql-importforeignschema.html" title="IMPORT FOREIGN SCHEMA"><span class="refentrytitle">IMPORT FOREIGN SCHEMA</span></a>
+     pour chaque table distante que vous voulez utiliser. Les colonnes de la
+     table distante doit correspondre aux colonnes de la table sur le serveur
+     distant. Néanmoins, vous pouvez utiliser un nom de table et des noms de
+     colonne différents de ceux de la table sur le serveur distant si vous
+     indiquez les bons noms de colonne en options de la table distante.
+    </p></li></ol></div><p>
+ </p><p>
+  Maintenant, vous avez seulement besoin de <code class="command">SELECT</code> sur la
+  table distante pour accéder aux données de la table du serveur distant. Vous
+  pouvez aussi modifier la table sur le serveur distant en utilisant les
+  commandes <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+  <code class="command">DELETE</code>, <code class="command">COPY</code> et <code class="command">TRUNCATE</code>.
+  (Bien sûr, l'utilisateur distant que vous avez spécifié dans vos
+  correspondances d'utilisateur doit avoir les droits pour réaliser ces
+  actions.)
+ </p><p>
+  Notez que l'option <code class="literal">ONLY</code> spécifiée dans
+  <code class="command">SELECT</code>, <code class="command">UPDATE</code>,
+  <code class="command">DELETE</code> ou <code class="command">TRUNCATE</code> n'a pas d'effet
+  lors des accès ou modifications d'une table distante.
+ </p><p>
+  Notez que <code class="filename">postgres_fdw</code> n'a pour l'instant pas de
+  support pour les instructions <code class="command">INSERT</code> avec une clause
+  <code class="literal">ON CONFLICT DO UPDATE</code>. Néanmoins, la clause <code class="literal">ON
+   CONFLICT DO NOTHING</code> est supportée, si la spécification de l'index
+  unique est omise. Notez aussi que <code class="filename">postgres_fdw</code> supporte
+  le déplacement de ligne demandé par des instructions
+  <code class="command">UPDATE</code> exécutées sur des tables partitionnées, mais il ne
+  gère pas le cas où une partition distante choisir pour insérer une ligne est
+  aussi une partition cible d'<code class="command">UPDATE</code> qui sera mise à jour
+  ailleurs dans la même commande.
+ </p><p>
+  Il est généralement recommandé que les colonnes d'une table distante soient
+  déclarées avec exactement les mêmes types de données et le même collationnement
+  que celles utilisées pour les colonnes référencées dans la table du serveur
+  distant. Bien que <code class="filename">postgres_fdw</code> soit actuellement assez
+  lâche sur les conversions de type de données, des anomalies sémantiques
+  surprenantes peuvent survenir quand les types ou les collationnements ne
+  correspondent pas dans le cas où le serveur distant interprète légèrement
+  différemment les conditions de la requête.
+ </p><p>
+  Notez qu'une table distante peut être déclarée avec moins de colonnes ou avec
+  les colonnes dans un ordre différent. La correspondance des colonnes sur
+  la table du serveur distant se fait par nom, et non pas par position.
+ </p><div class="sect2" id="POSTGRES-FDW-OPTIONS"><div class="titlepage"><div><div><h3 class="title">F.36.1. Options FDW de postgres_fdw <a href="#POSTGRES-FDW-OPTIONS" class="id_link">#</a></h3></div></div></div><div class="sect3" id="POSTGRES-FDW-OPTIONS-CONNECTION"><div class="titlepage"><div><div><h4 class="title">F.36.1.1. Options de connexions <a href="#POSTGRES-FDW-OPTIONS-CONNECTION" class="id_link">#</a></h4></div></div></div><p>
+    Un serveur distant utilisant le wrapper de données distantes
+    <code class="filename">postgres_fdw</code> peut avoir les mêmes options que celles
+    acceptées par <span class="application">libpq</span> dans les chaînes de connexion
+    comme décrit dans <a class="xref" href="libpq-connect.html#LIBPQ-PARAMKEYWORDS" title="32.1.2. Mots clés de la chaîne de connexion">Section 32.1.2</a>. Cependant, ces
+    options ne sont pas autorisées ou sont gérées d'une façon spéciale :
+
+    </p><div class="itemizedlist"><ul class="itemizedlist compact" style="list-style-type: disc; "><li class="listitem"><p>
+       <code class="literal">user</code>, <code class="literal">password</code> et
+       <code class="literal">sslpassword</code> (spécifiez-les au
+       niveau de la correspondance d'utilisateur, ou utilisez un
+       fichier service)
+      </p></li><li class="listitem"><p>
+       <code class="literal">client_encoding</code> (ceci est configuré automatiquement à
+       partir de l'encodage du serveur local)
+      </p></li><li class="listitem"><p>
+       <code class="literal">application_name</code> - ceci pourrait apparaître dans
+       <span class="emphasis"><em>une ou les deux</em></span> connexion et
+       <a class="xref" href="postgres-fdw.html#GUC-PGFDW-APPLICATION-NAME">postgres_fdw.application_name</a>.
+       Si les deux sont présents, <code class="varname">postgres_fdw.application_name</code>
+       surcharge le paramètre de connexion.
+       Contrairement à <span class="application">libpq</span>,
+       <code class="filename">postgres_fdw</code> permet à
+       <code class="varname">application_name</code> d'inclure des
+       <span class="quote">« <span class="quote">séquences d'échappement</span> »</span>.
+       Voir <a class="xref" href="postgres-fdw.html#GUC-PGFDW-APPLICATION-NAME">postgres_fdw.application_name</a> pour les détails.
+      </p></li><li class="listitem"><p>
+       <code class="literal">fallback_application_name</code> (toujours configuré à
+       <code class="literal">postgres_fdw</code>)
+      </p></li><li class="listitem"><p>
+       <code class="literal">sslkey</code> et <code class="literal">sslcert</code> - ils peuvent
+       apparaître soit dans une connexion, soit dans la correspondance
+       d'utilisateur soit dans les deux. Si ce dernier cas est vrai, la
+       configuration de la correspondance d'utilisateur surcharge la
+       configuration de la connexion.
+      </p></li></ul></div><p>
+   </p><p>
+    Des utilisateurs non-superutilisateur peuvent se connecter à des
+    serveurs distants en utilisant l'authentification par mot de passe
+    ou les pouvoirs délégués GSSAPI, donc indiquez l'option
+    <code class="literal">password</code> pour la correspondance d'utilisateur
+    appartenant à de non-superutilisateurs où l'authentification par mot de
+    passe est requise.
+   </p><p>
+    Seuls les superutilisateurs peuvent se connecter à un serveur distant sans
+    authentification par mot de passe. Donc spécifiez toujours l'option
+    <code class="literal">password</code> pour les correspondances d'utilisateur
+    appartenant aux utilisateurs simples.
+   </p><p>
+    Un superutilisateur peut dépasser cette vérification sur une base
+    par-correspondance-utilisateur en configurant l'option
+    <code class="literal">password_required 'false'</code>, par exemple :
+    </p><pre class="programlisting">
+ALTER USER MAPPING FOR some_non_superuser SERVER loopback_nopw
+OPTIONS (ADD password_required 'false');
+    </pre><p>
+    Pour empêcher des utilisateurs sans droit d'exploiter les droits
+    d'authentification de l'utilisateur unix utilisé par le serveur PostgreSQL
+    pour escalader vers des droits superutilisateur, seul le superutilisateur
+    peut configurer cette option sur une correspondance d'utilisateur.
+   </p><p>
+    Une grande attention est nécessaire pour s'assurer que cela n'autorise pas
+    l'utilisateur à se connecter comme un superutilisateur sur la base de
+    données distante d'après les CVE-2007-3278 et CVE-2007-6601. Ne configurez
+    pas <code class="literal">password_required=false</code> sur le rôle
+    <code class="literal">public</code>. Gardez en tête que l'utilisateur peut
+    potentiellement utiliser tout certificat client, le fichier
+    <code class="filename">.pgpass</code>, le fichier
+    <code class="filename">.pg_service.conf</code>, et les autres fichiers se trouvant
+    dans le répertoire personnel unix de l'utilisateur système qui exécute le
+    serveur PostgreSQL. Ils peuvent aussi utiliser toute relation de confiance
+    autorisée par les modes d'authentification comme <code class="literal">peer</code>
+    et <code class="literal">ident</code>.
+   </p></div><div class="sect3" id="POSTGRES-FDW-OPTIONS-OBJECT-NAME"><div class="titlepage"><div><div><h4 class="title">F.36.1.2. Options pour le nom de l'objet <a href="#POSTGRES-FDW-OPTIONS-OBJECT-NAME" class="id_link">#</a></h4></div></div></div><p>
+    Ces options peuvent être utilisées pour contrôler les noms utilisés dans
+    les requêtes SQL envoyées au serveur <span class="productname">PostgreSQL</span>
+    distant. Ces options sont nécessaires lorsqu'une table distante est créée
+    avec des noms différents de ceux de la table du serveur distant.
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">schema_name</code> (<code class="type">string</code>)</span></dt><dd><p>
+       Cette option, qui peut être indiquée pour une table distante, donne le
+       nom du schéma à utiliser pour la table du serveur distant. Si cette
+       option est omise, le nom du schéma de la table distante est utilisé.
+      </p></dd><dt><span class="term"><code class="literal">table_name</code> (<code class="type">string</code>)</span></dt><dd><p>
+       Cette option, qui peut être indiquée pour une table distante, donne le
+       nom de la table à utiliser pour la table du serveur distant. Si cette
+       option est omise, le nom de la table distante est utilisé.
+      </p></dd><dt><span class="term"><code class="literal">column_name</code> (<code class="type">string</code>)</span></dt><dd><p>
+       Cette option, qui peut être indiquée pour une colonne d'une table distante,
+       donne le nom de la colonne à utiliser pour la colonne de la table du serveur
+       distant. Si cette option est omise, le nom de la colonne de la table
+       distante est utilisé.
+      </p></dd></dl></div></div><div class="sect3" id="POSTGRES-FDW-OPTIONS-COST-ESTIMATION"><div class="titlepage"><div><div><h4 class="title">F.36.1.3. Options d'estimation du coût <a href="#POSTGRES-FDW-OPTIONS-COST-ESTIMATION" class="id_link">#</a></h4></div></div></div><p>
+    <code class="filename">postgres_fdw</code> récupère des données distantes en exécutant
+    des requêtes sur des serveurs distants. Idéalement, le coût estimé du parcours
+    d'une table distante devrait être celui occasionné par le parcours de la
+    table sur le serveur distant, et un supplément causé par la communication entre
+    le serveur local et le serveur distant. Le moyen le plus fiable d'obtenir
+    une telle estimation est de demander au serveur distant, puis d'ajouter
+    quelque chose pour le supplément. Pour des requêtes simples, cela ne vaut
+    pas le coût d'une requête supplémentaire vers le serveur distant. Donc
+    <code class="filename">postgres_fdw</code> propose les options suivantes pour
+    contrôler la façon dont l'estimation de coût est faite :
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">use_remote_estimate</code> (<code class="type">boolean</code>)</span></dt><dd><p>
+       Cette option, qui peut être indiquée pour une table distante ou pour
+       un serveur distant, contrôle si <code class="filename">postgres_fdw</code>
+       exécute des commandes <code class="command">EXPLAIN</code> distantes pour obtenir
+       les estimations de coût. Une configuration sur la table distante surcharge
+       celle sur le serveur, mais seulement pour cette table. La valeur par
+       défaut est <code class="literal">false</code>.
+      </p></dd><dt><span class="term"><code class="literal">fdw_startup_cost</code> (<code class="type">floating point</code>)</span></dt><dd><p>
+       Cette option, qui peut être indiquée pour un serveur distant, est une
+       valeur numérique qui est ajoutée au coût de démarrage estimé de tout
+       parcours de table distante sur ce serveur. Cela représente le coût
+       supplémentaire causé par l'établissement d'une connexion, l'analyse et
+       la planification de la requête du côté du serveur distant, etc. La valeur
+       par défaut est <code class="literal">100</code>.
+      </p></dd><dt><span class="term"><code class="literal">fdw_tuple_cost</code> (<code class="type">floating point</code>)</span></dt><dd><p>
+       Cette option, qui peut être indiquée pour un serveur distant, est une
+       valeur en virgule flottante qui est utilisée comme coût supplémentaire
+       par ligne
+       pour les parcours de la table distante sur ce serveur. Cela représente
+       le coût supplémentaire associé au transfert de données entre les
+       serveurs. Vous pouvez augmenter ou réduire ce nombre pour refléter
+       les latences réseau vers le serveur distant. La valeur par défaut est
+       <code class="literal">0.2</code>.
+      </p></dd></dl></div><p>
+    Quand <code class="literal">use_remote_estimate</code> est vrai,
+    <code class="filename">postgres_fdw</code> obtient le nombre de lignes et les
+    estimations de coût à partir du serveur distant. Il ajoute
+    <code class="literal">fdw_startup_cost</code> et <code class="literal">fdw_tuple_cost</code>
+    aux estimations de coût. Quand <code class="literal">use_remote_estimate</code> est
+    faux, <code class="filename">postgres_fdw</code> réalise le décompte local des lignes
+    ainsi que l'estimation de coût, puis ajoute <code class="literal">fdw_startup_cost</code>
+    et <code class="literal">fdw_tuple_cost</code> aux estimations de coût. Cette
+    estimation locale a peu de chances d'être précise sauf si des copies locales
+    des statistiques de la table distante sont disponibles. Exécuter
+    <a class="xref" href="sql-analyze.html" title="ANALYZE"><span class="refentrytitle" id="SQL-ANALYZE-TITLE">ANALYZE</span></a> sur la table distante permet de mettre à jour
+    les statistiques locales ; cela exécute un parcours sur la table
+    distante, puis calcule et enregistre les statistiques comme si la table
+    était locale. Garder des statistiques locales peut être utile pour réduire
+    la surcharge de planification par requête pour une table distante mais, si
+    la table distante est fréquemment mise à jour, les statistiques locales
+    seront rapidement obsolètes.
+   </p><p>
+    L'option suivante contrôle comme une telle opération
+    <code class="command">ANALYZE</code> se comporte :
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">analyze_sampling</code> (<code class="type">string</code>)</span></dt><dd><p>
+       Cette option, qui peut être indiquée pour une table distante ou pour un
+       serveur distant, détermine si <code class="command">ANALYZE</code> sur une table
+       distante échantillonne les données du côté distant, ou lit et transfert
+       toutes les données, et réalise l'échantillonnage localement. Les valeurs
+       acceptées sont <code class="literal">off</code>, <code class="literal">random</code>,
+       <code class="literal">system</code>, <code class="literal">bernoulli</code>
+       et <code class="literal">auto</code>. <code class="literal">off</code> désactive
+       l'échantillonnage à distance, donc toutes les données sont transférées
+       et échantillonnées localement. <code class="literal">random</code> réalise un
+       échantillonnage à distance en utilisant la fonction
+       <code class="literal">random()</code> pour choisir les lignes renvoyées,
+       alors que <code class="literal">system</code> et <code class="literal">bernoulli</code> se
+       basent sur les méthodes <code class="literal">TABLESAMPLE</code> natives du même
+       nom. <code class="literal">random</code> fonctionne sur toutes les versions de
+       serveur distant, alors que <code class="literal">TABLESAMPLE</code> n'est accepté
+       qu'à partir de la version 9.5. <code class="literal">auto</code> (la valeur par
+       défaut) sélectionne l'échantillonnage recommandée automatiquement ;
+       actuellement, cela signifie soit <code class="literal">bernoulli</code> soit
+       <code class="literal">random</code> suivant la version du serveur distant.
+      </p></dd></dl></div></div><div class="sect3" id="POSTGRES-FDW-OPTIONS-REMOTE-EXECUTION"><div class="titlepage"><div><div><h4 class="title">F.36.1.4. Options d'exécution à distance <a href="#POSTGRES-FDW-OPTIONS-REMOTE-EXECUTION" class="id_link">#</a></h4></div></div></div><p>
+    Par défaut, seules les clauses <code class="literal">WHERE</code> utilisant des
+    opérateurs et des fonctions intégrés sont considérés pour une exécution
+    sur le serveur distant. Les clauses impliquant des fonctions non intégrées
+    sont vérifiées localement une fois les lignes récupérées. Si ces fonctions
+    sont disponibles sur le serveur distant et peuvent produire les mêmes
+    résultats que localement, les performances peuvent être améliorées en
+    envoyant ces clauses <code class="literal">WHERE</code> pour une exécution distante.
+    Ce comportement peut être contrôlé en utilisant l'option suivante :
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">extensions</code> (<code class="type">string</code>)</span></dt><dd><p>
+       Cette option est une liste de noms d'extensions
+       <span class="productname">PostgreSQL</span>, séparés par des
+       virgules, installées dans des versions compatibles sur les serveurs
+       local et distant. Les fonctions et opérateurs immutables et appartenant
+       à une extension listée seront considérées pour une exécution sur le
+       serveur distant. Cette option peut seulement être spécifiée sur les
+       serveurs distants, et non pas par table.
+      </p><p>
+       Lors de l'utilisation de l'option <code class="literal">extensions</code>,
+       <span class="emphasis"><em>il est de la responsabilité de l'utilisateur</em></span> que
+       les extensions listées existent bien et se comportent de façon identique
+       sur les serveurs local et distant. Dans le cas contraire, les requêtes
+       pourraient échouer ou se comporter de façon inattendue.
+      </p></dd><dt><span class="term"><code class="literal">fetch_size</code> (<code class="type">integer</code>)</span></dt><dd><p>
+       Cette option indique le nombre de lignes que
+       <code class="filename">postgres_fdw</code> doit récupérer à chaque opération
+       de lecture. Cette option est disponible au niveau serveur et table.
+       Une configuration spécifiée sur une table surcharge celle du serveur.
+       La valeur par défaut est <code class="literal">100</code>.
+      </p></dd><dt><span class="term"><code class="literal">batch_size</code> (<code class="type">integer</code>)</span></dt><dd><p>
+       Cette option spécifie le nombre de lignes que
+       <code class="filename">postgres_fdw</code> doit insérer à chaque opération
+       d'insertion. Elle est disponible au niveau serveur et/ou table
+       distante. L'option spécifiée sur une table surcharge celle spécifiée
+       sur le serveur. La valeur par défaut est <code class="literal">1</code>.
+      </p><p>
+       Notez que le nombre réel de lignes qu'insère
+       <code class="filename">postgres_fdw</code> en une fois dépend du nombre de
+       colonnes et de la valeur fournie pour <code class="literal">batch_size</code>.
+       Le batch est exécuté comme une seule requête, et le protocole libpq
+       (qu'utilise <code class="filename">postgres_fdw</code> pour se connecter au
+       serveur distant) limitent le nombre de paramètres dans une seule
+       requête à 65535. Quand le nombre de colonne *
+       <code class="literal">batch_size</code> dépasse la limite, le paramètre
+       <code class="literal">batch_size</code> sera ajusté pour éviter une erreur.
+      </p><p>
+       Cette option s'applique aussi lors de la copie dans des tables distantes.
+       Dans ce cas, le nombre réel de lignes que
+       <code class="filename">postgres_fdw</code> copie à la fois est déterminé d'une
+       façon similaire au cas de l'insertion, mais c'est limité à au plus 1000
+       du fait des restrictions d'implémentation de la commande
+       <code class="command">COPY</code>.
+      </p></dd></dl></div></div><div class="sect3" id="POSTGRES-FDW-OPTIONS-ASYNCHRONOUS-EXECUTION"><div class="titlepage"><div><div><h4 class="title">F.36.1.5. Options d'exécution asynchrone <a href="#POSTGRES-FDW-OPTIONS-ASYNCHRONOUS-EXECUTION" class="id_link">#</a></h4></div></div></div><p>
+    <code class="filename">postgres_fdw</code> supporte les exécutions asynchrones, qui
+    exécutent plusieurs parties d'un nœud <code class="structname">Append</code> de
+    manière concurrente plutôt qu'en série pour améliorer les performances.
+    L'exécution peut être contrôlée en utilisant l'option suivante :
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">async_capable</code> (<code class="type">boolean</code>)</span></dt><dd><p>
+       Cette option contrôle si <code class="filename">postgres_fdw</code> permet de
+       parcourir de manière concurrente les tables distantes pour les
+       exécutions asynchrones. Elle est configurable au niveau du serveur
+       distant et/ou de la table distante. L'option spécifiée au niveau table
+       surcharge l'option au niveau serveur. La valeur par défaut est
+       <code class="literal">false</code>.
+      </p><p>
+       Pour s'assurer que les données retournées depuis un serveur distant
+       sont cohérentes, <code class="filename">postgres_fdw</code> n'ouvrira qu'une
+       seule connexion pour un serveur distant et exécutera les requêtes sur
+       ce serveur séquentiellement même si de nombreuses tables distantes
+       sont impliquées, sauf si ces tables sont sujettes à différentes
+       correspondances d'utilisateur. Dans ce cas, il peut être plus
+       performant de désactiver cette option pour éliminer la surcharge
+       associée à l'exécution asynchrone des requêtes.
+      </p><p>
+       Une exécution asynchrone est réalisée quand un nœud
+       <code class="structname">Append</code> contient aussi bien un ou des
+       sous-plans exécutés de manière synchrone que un ou des sous-plans
+       exécutés de manière asynchrone. Dans un tel cas, si les sous-plans
+       asynchones sont ceux traités par <code class="filename">postgres_fdw</code>,
+       les lignes des sous-plans asynchrones ne sont pas retournés avant
+       qu'au moins un sous-plan synchrone retourne toutes ses lignes, car ce
+       sous-plan est exécuté pendant que les sous-plans aynchrones attendent
+       les résultats des requêtes asynchrones envoyées au serveur distant. Ce
+       comportement pourrait changer dans une version future.
+      </p></dd></dl></div></div><div class="sect3" id="POSTGRES-FDW-OPTIONS-TRANSACTION-MANAGEMENT"><div class="titlepage"><div><div><h4 class="title">F.36.1.6. Options de gestion de la transaction <a href="#POSTGRES-FDW-OPTIONS-TRANSACTION-MANAGEMENT" class="id_link">#</a></h4></div></div></div><p>
+    Comme décrit dans la section sur la gestion des transactions, avec
+    <code class="filename">postgres_fdw</code>, les transactions sont gérées en créant
+    des transactions distantes correspondantes et les sous-transactions sont
+    gérées par la création de sous-transactions distantes correspondantes.
+    Lorsque plusieurs transactions distantes sont impliquées dans la transaction
+    locale courante, par défaut, <code class="filename">postgres_fdw</code> valide ou
+    annule les transactions distantes en série quand la transaction locale est
+    validée ou annulée. Lorsque plusieurs sous-transactions distantes sont
+    impliquées dans la sous-transaction locale courante, par défaut,
+    <code class="filename">postgres_fdw</code> valide ou annule ces sous-transactions
+    distantes en série quand la sous-transaction locale est validée ou annulée.
+    Les performances peuvent être améliorées avec les options suivantes :
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">parallel_commit</code> (<code class="type">boolean</code>)</span></dt><dd><p>
+       Cette option contrôle si <code class="filename">postgres_fdw</code> valide en
+       parallèle des transactions distantes ouvertes à partir d'un serveur
+       distant dans une transaction locale quand la transaction locale est
+       validée. Ce paramètre s'applique aussi aux sous-transactions locales et
+       distantes.  Cette option peut seulement être données aux serveurs
+       distants, et non pas par table.  La valeur par défaut est
+       <code class="literal">false</code>.
+      </p></dd><dt><span class="term"><code class="literal">parallel_abort</code> (<code class="type">boolean</code>)</span></dt><dd><p>
+       Cette option contrôle si <code class="filename">postgres_fdw</code> annule,
+       en parallèle, des transactions distantes ouvertes sur un serveur
+       distant dans une transaction locale quand la transaction locale est
+       annulée. Cette configuration s'applique aussi aux sous-transactions
+       distantes et locales. Cette option peut seulement être indiquée pour
+       les serveurs distants, et non par table. La valeur par défaut est
+       <code class="literal">false</code>.
+      </p></dd></dl></div><p>
+    Si plusieurs serveurs distants avec ces options activées sont impliqués
+    dans une transaction locale, plusieurs transactions distantes sur ces
+    serveurs distants sont validées ou annulées en parallèle à travers ces
+    serveurs distants quand la transaction locale est validée ou annulée.
+   </p><p>
+    Quand ces options sont activées, un serveur distant avec plusieurs
+    transactions distantes pourrait voir un impact négatif sur les
+    performances quand la transaction locale est validée ou annulée.
+   </p></div><div class="sect3" id="POSTGRES-FDW-OPTIONS-UPDATABILITY"><div class="titlepage"><div><div><h4 class="title">F.36.1.7. Options de mise à jour <a href="#POSTGRES-FDW-OPTIONS-UPDATABILITY" class="id_link">#</a></h4></div></div></div><p>
+    Par défaut, toutes les tables distantes utilisant <code class="filename">postgres_fdw</code>
+    sont supposées comme étant modifiables. Cela peut se surcharger en utilisant
+    l'option suivante :
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">updatable</code> (<code class="type">boolean</code>)</span></dt><dd><p>
+       Cette option contrôle si <code class="filename">postgres_fdw</code> autorise les
+       tables distantes à être modifiées en utilisant les commandes
+       <code class="command">INSERT</code>, <code class="command">UPDATE</code> et
+       <code class="command">DELETE</code>. Cette option est utilisable sur une table
+       distante ou sur un serveur distant. La configuration de cette option au
+       niveau table surcharge celle au niveau serveur. La valeur par défaut
+       est <code class="literal">true</code>.
+      </p><p>
+       Bien sûr, si la table distante n'est pas modifiable, une erreur surviendra
+       malgré tout. L'utilisation de cette option permet principalement que
+       l'erreur soit renvoyée localement, sans avoir à tenter l'exécution sur
+       le serveur distant. Notez néanmoins que les vues
+       <code class="literal">information_schema</code> indiqueront que la table distante
+       est modifiable ou pas, suivant la configuration de cette option, et donc
+       sans vérification du serveur distant.
+      </p></dd></dl></div></div><div class="sect3" id="POSTGRES-FDW-OPTIONS-TRUNCATABILITY"><div class="titlepage"><div><div><h4 class="title">F.36.1.8. Options de troncabilité <a href="#POSTGRES-FDW-OPTIONS-TRUNCATABILITY" class="id_link">#</a></h4></div></div></div><p>
+    Par défaut, toutes les tables distantes utilisant
+    <code class="filename">postgres_fdw</code> sont considérées comme troncable. Ceci
+    peut être surchargé en utilisant l'option suivante :
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">truncatable</code> (<code class="type">boolean</code>)</span></dt><dd><p>
+       Cette option contrôle si <code class="filename">postgres_fdw</code> permet aux
+       tables distantes d'être tronquées en utilisant la commande
+       <code class="command">TRUNCATE</code>. Elle est disponible au niveau du server
+       distant ainsi qu'à celui de la table distante. L'option au niveau
+       table surcharge l'option au niveau serveur. La valeur par défaut est
+       <code class="literal">true</code>.
+      </p><p>
+       Bien sûr, si la table distante n'est en fait pas troncable, une erreur
+       se produira de toute façon. L'utilisation principale de cette option
+       permet que l'erreur soit déclenchée localement sans requêter le
+       serveur distant.
+      </p></dd></dl></div></div><div class="sect3" id="POSTGRES-FDW-OPTIONS-IMPORTING"><div class="titlepage"><div><div><h4 class="title">F.36.1.9. Options d'import <a href="#POSTGRES-FDW-OPTIONS-IMPORTING" class="id_link">#</a></h4></div></div></div><p>
+    <code class="filename">postgres_fdw</code> est capable d'importer les définitions
+    des tables distantes en utilisant <a class="xref" href="sql-importforeignschema.html" title="IMPORT FOREIGN SCHEMA"><span class="refentrytitle">IMPORT FOREIGN SCHEMA</span></a>. Cette commande crée les définitions
+    des tables distantes sur le serveur local, correspondant aux tables et
+    vues présentes sur le serveur distant. Si les tables distantes à importer
+    ont des colonnes de type défini par des utilisateurs, le serveur local
+    doit avoir des types compatibles de même nom.
+   </p><p>
+    Le comportement de l'import est personnalisable avec les options suivantes
+    (à fournir à la commande <code class="command">IMPORT FOREIGN SCHEMA</code>) :
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">import_collate</code> (<code class="type">boolean</code>)</span></dt><dd><p>
+       Cette option contrôle si les options <code class="literal">COLLATE</code> d'une
+       colonne sont inclus dans les définitions des tables distantes
+       importées à partir d'un serveur distant. La valeur par défaut est
+       <code class="literal">true</code>. Vous pourriez avoir besoin de la désactiver
+       si le serveur distant possède un ensemble de noms de collation
+       différent de celui du serveur local, ce qui risque d'être le cas s'il
+       utilise un autre système d'exploitation. Néanmoins, si vous le faites,
+       il existe un risque réel que les collations importées dans colonnes de
+       la table ne correspondent pas aux données sous-jacentes, résultant en
+       un comportement anormal des requêtes.
+      </p><p>
+       Même quand ce paramètre est configuré à <code class="literal">true</code>,
+       l'import des colonnes dont la collation est la valeur par défaut du
+       serveur distant peut êre risqué. Elles seront importées avec
+       <code class="literal">COLLATE "default"</code>, ce qui sélectionnera la
+       collation par défaut du serveur local, qui pourrait être différent.
+      </p></dd><dt><span class="term"><code class="literal">import_default</code> (<code class="type">boolean</code>)</span></dt><dd><p>
+       Cette option contrôle si les expressions <code class="literal">DEFAULT</code>
+       d'une colonne sont incluses dans les définitions des tables distantes
+       importées d'un serveur distant. La valeur par défaut est
+       <code class="literal">false</code>. Si vous activez cette option, faites
+       attention au fait que les valeurs par défaut pourraient être calculées
+       différemment sur le serveur local et sur le serveur distant ; par
+       exemple, <code class="function">nextval()</code> est une source habituelle de
+       problèmes. La commande <code class="command">IMPORT</code> échouera si une
+       expression par défaut importée utilise une fonction ou un opérateur qui
+       n'existe pas localement.
+      </p></dd><dt><span class="term"><code class="literal">import_generated</code> (<code class="type">boolean</code>)</span></dt><dd><p>
+       Cette option contrôle si les expressions <code class="literal">GENERATED</code>
+       de colonnes sont incluses dans les définitions des tables distantes
+       importées à partir d'un serveur distant. La valeur par défaut est
+       <code class="literal">true</code>. La commande <code class="command">IMPORT</code>
+       échouera si une expression importée utilise une fonction ou un
+       opérateur qui n'existe pas localement.
+      </p></dd><dt><span class="term"><code class="literal">import_not_null</code> (<code class="type">boolean</code>)</span></dt><dd><p>
+       Cette option contrôle si les contraintes <code class="literal">NOT NULL</code>
+       des colonnes sont incluses dans les définitions des tables distantes
+       importées à partir d'un serveur distant. La valeur par défaut est
+       <code class="literal">true</code>.
+      </p></dd></dl></div><p>
+    Notez que les contraintes autres que <code class="literal">NOT NULL</code> ne seront
+    jamais importées des tables distantes. Bien que
+    <span class="productname">PostgreSQL</span> supporte les contraintes
+    <code class="literal">CHECK</code> sur les tables distantes, rien n'existe pour les
+    importer automatiquement à cause du risque qu'une expression de contrainte
+    puisse être évaluée différemment entre les serveurs local et distant.
+    Toute incohérence du comportement d'une contrainte
+    <code class="literal">CHECK</code> pourrait amener des erreurs difficile à détecter
+    dans l'optimisation des requêtes. Donc, si vous souhaitez importer les
+    contraintes <code class="literal">CHECK</code>, vous devez le faire manuellement et
+    vous devez vérifier la sémantique de chaque contrainte avec attention.
+    Pour plus de détails sur le traitement des contraintes
+    <code class="literal">CHECK</code> sur les tables distantes, voir <a class="xref" href="sql-createforeigntable.html" title="CREATE FOREIGN TABLE"><span class="refentrytitle">CREATE FOREIGN TABLE</span></a>.
+   </p><p>
+    Les tables ou tables distantes qui sont des partitions d'autres tables sont
+    imported only when they are explicitly specified in
+    <code class="literal">LIMIT TO</code> clause.  Otherwise they are automatically
+    excluded from <a class="xref" href="sql-importforeignschema.html" title="IMPORT FOREIGN SCHEMA"><span class="refentrytitle">IMPORT FOREIGN SCHEMA</span></a>.
+    Since all data can be accessed through the partitioned table
+    which is the root of the partitioning hierarchy, importing only
+    partitioned tables should allow access to all the data without
+    creating extra objects.
+   </p></div><div class="sect3" id="POSTGRES-FDW-OPTIONS-CONNECTION-MANAGEMENT"><div class="titlepage"><div><div><h4 class="title">F.36.1.10. Options de gestion de connexions <a href="#POSTGRES-FDW-OPTIONS-CONNECTION-MANAGEMENT" class="id_link">#</a></h4></div></div></div><p>
+     Par défaut, toutes les connexions que <code class="filename">postgres_fdw</code>
+     établit au serveur distant sont conservées ouvertes en session locale
+     pour une réutilisation.
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">keep_connections</code> (<code class="type">boolean</code>)</span></dt><dd><p>
+        Cette option contrôle si <code class="filename">postgres_fdw</code> conserve
+        les connexions au serveur distant ouvertes, permettant aux requêtes
+        ultérieures de les réutiliser. Elle n'est disponible qu'au niveau
+        serveur distant. La valeur par défaut est <code class="literal">on</code>. Si
+        elle est configurée à <code class="literal">off</code>, toutes les connexions à
+        ce serveur distant seront supprimées à la fin de chaque transaction.
+      </p></dd></dl></div></div></div><div class="sect2" id="POSTGRES-FDW-FUNCTIONS"><div class="titlepage"><div><div><h3 class="title">F.36.2. Fonctions <a href="#POSTGRES-FDW-FUNCTIONS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="function">postgres_fdw_get_connections(OUT server_name text, OUT valid boolean) retourne un setof record</code></span></dt><dd><p>
+      Cette fonction renvoie les noms des serveurs distants de toutes les
+      connexions ouvertes que <code class="filename">postgres_fdw</code> a établies.
+      Elle renvoie aussi la validité ou non de chaque connexion.
+      <code class="literal">false</code> est retourné si la connexion au serveur
+      distant est utilisé dans la transaction courante locale sauf si le
+      serveur distant ou les correspondances d'utilisateur sont modifiées ou
+      supprimées(notez que le nom de serveur d'une connexion invalide sera
+      <code class="literal">NULL</code> si le serveur est supprimé), et ainsi de telles
+      connexions invalides seront fermées à la fin de cette transaction.
+      <code class="literal">true</code> est retournée dans les autres cas. S'il n'y a
+      pas de connexions ouvertes, aucun enregistrement n'est retourné.
+      Exemple d'utilisation de cette fonction :
+
+      </p><pre class="screen">postgres=# SELECT * FROM postgres_fdw_get_connections() ORDER BY 1;
+
+ server_name | valid
+-------------+-------
+ loopback1   | t
+ loopback2   | f</pre><p>
+     </p></dd><dt><span class="term"><code class="function">postgres_fdw_disconnect(server_name text) retourne un boolean</code></span></dt><dd><p>
+      Cette fonction supprime les connexions ouvertes qui sont établies par
+      <code class="filename">postgres_fdw</code> depuis une session locale à un
+      serveur distant avec un nom donné. Notez qu'il peut y avoir de
+      multiples connexions au serveur distant donné en utilisant différentes
+      correspondances d'utilisateur. Si les connexions sont utilisées dans la
+      transaction courante locale, elles ne sont pas déconnectées et des
+      messages d'alerte sont affichés. La fonction retourne
+      <code class="literal">true</code> si elle déconnecte au moins une connexion,
+      sinon <code class="literal">false</code>. Si aucun serveur distant avec un nom
+      donné n'est trouvé, une erreur est affichée. Exemple d'utilisation de
+      la fonction :
+
+      </p><pre class="screen">postgres=# SELECT postgres_fdw_disconnect('loopback1');
+
+ postgres_fdw_disconnect
+-------------------------
+ t
+</pre><p>
+     </p></dd><dt><span class="term"><code class="function">postgres_fdw_disconnect_all() retourne un boolean</code></span></dt><dd><p>
+      La fonction supprime toutes les connexions ouvertes établies par
+      <code class="filename">postgres_fdw</code> depuis la session locale au serveur
+      distant. Si les connexions sont utilisées dans la transaction locale
+      courante, elles ne sont pas déconnectées et des messages d'alerte sont
+      affichés. La fonction retourne <code class="literal">true</code> si elle
+      déconnecte au moins une connexion, sinon <code class="literal">false</code>.
+      Exemple d'utilisation de la fonction :
+
+      </p><pre class="screen">postgres=# SELECT postgres_fdw_disconnect_all();
+
+ postgres_fdw_disconnect_all
+-----------------------------
+ t
+</pre><p>
+     </p></dd></dl></div></div><div class="sect2" id="POSTGRES-FDW-CONNECTION-MANAGEMENT"><div class="titlepage"><div><div><h3 class="title">F.36.3. Gestion des connexions <a href="#POSTGRES-FDW-CONNECTION-MANAGEMENT" class="id_link">#</a></h3></div></div></div><p>
+   <code class="filename">postgres_fdw</code> établit une connexion au serveur distant
+   lors de la première requête qui utilise une table distante associée avec
+   le serveur distant. Par défaut cette connexion est conservée et
+   ré-utilisée pour les requêtes suivantes dans la même session. Ce
+   comportement peut être contrôlé en utilisant l'option
+   <code class="literal">keep_connections</code> pour un serveur distant. Si plusieurs
+   correspondances d'utilisateur sont utilisées pour accéder au serveur
+   distant, une connexion est établie pour chaque correspondance
+   d'utilisateur.
+  </p><p>
+   Lors de changement de la définition ou suppression d'un serveur distant ou
+   de correspondances d'utilisateur, les connexions associées sont fermées.
+   Mais notez que si des connexions sont utilisées dans la transaction locale
+   courante, elles sont conservées jusqu'à la fin de transaction. Les
+   connexions fermées seront ré-établies quand cela sera nécessaire par les
+   futures requêtes utilisant une table distante.
+  </p><p>
+   Une fois qu'une connexion à un serveur distant a été établie, elle est par
+   défaut conservée jusqu'à ce que la session locale ou distante
+   correspondante termine. Pour déconnecter une connexion explicitement,
+   l'option <code class="literal">keep_connections</code> pour un serveur distant peut
+   être désactivée. Il est possible aussi d'utiliser les fonctions
+   <code class="function">postgres_fdw_disconnect</code> et
+   <code class="function">postgres_fdw_disconnect_all</code>. Par exemple, ces
+   dernières sont utiles pour fermer les connexions qui ne sont plus
+   nécessaires, libérant ainsi les connexions sur le serveur distant.
+  </p></div><div class="sect2" id="POSTGRES-FDW-TRANSACTION-MANAGEMENT"><div class="titlepage"><div><div><h3 class="title">F.36.4. Gestion des transactions <a href="#POSTGRES-FDW-TRANSACTION-MANAGEMENT" class="id_link">#</a></h3></div></div></div><p>
+   Lorsqu'une requête référence des tables sur un serveur distant,
+   <code class="filename">postgres_fdw</code> ouvre une transaction sur le serveur
+   distant si une transaction n'est pas déjà ouverte pour la transaction
+   locale en cours. La transaction distante est validée ou annulée suivant
+   que la transaction locale est validée ou annulée. Les points de
+   sauvegardes sont gérés de la même façon en créant les points de
+   sauvegarde correspondants.
+  </p><p>
+   La transaction distante utilise le niveau d'isolation
+   <code class="literal">SERIALIZABLE</code> quand la transaction locale a le niveau
+   <code class="literal">SERIALIZABLE</code>. Dans les cas contraires, elle utilise le
+   niveau <code class="literal">REPEATABLE READ</code>. Ce choix assure que, si une requête
+   réalise plusieurs parcours de table sur le serveur distant, elle obtiendra
+   des résultats cohérents pour tous les parcours. Une conséquence est que les
+   requêtes successives à l'intérieur d'une seule transaction verront les mêmes
+   données provenant du serveur distant, même si des mises à jour sont réalisées
+   en même temps avec l'activité standard du serveur. Ce comportement serait
+   attendue de toute façon si la transaction locale utilise le niveau d'isolation
+   <code class="literal">SERIALIZABLE</code> ou <code class="literal">REPEATABLE READ</code> mais
+   elle pourrait surprendre pour une transaction locale en niveau <code class="literal">READ
+    COMMITTED</code>. Une prochaine version de
+   <span class="productname">PostgreSQL</span> pourrait modifier ce comportement.
+  </p><p>
+   Notez que <code class="filename">postgres_fdw</code> ne supporte pas actuellement de
+   préparer la transaction distante pour une validation en deux phases (2PC).
+  </p></div><div class="sect2" id="POSTGRES-FDW-REMOTE-QUERY-OPTIMIZATION"><div class="titlepage"><div><div><h3 class="title">F.36.5. Optimisation des requêtes distantes <a href="#POSTGRES-FDW-REMOTE-QUERY-OPTIMIZATION" class="id_link">#</a></h3></div></div></div><p>
+   <code class="filename">postgres_fdw</code> tente d'optimiser les requêtes distantes
+   pour réduire la quantité de données transférées depuis les serveurs distants.
+   Cela se fait en envoyant les clauses <code class="literal">WHERE</code> au serveur
+   distant pour exécution, et en ne récupérant que les colonnes nécessaires
+   pour la requête courante. Pour réduire le risque de mauvaise exécution des
+   requêtes, les clauses <code class="literal">WHERE</code> ne sont pas envoyées au serveur
+   distant sauf si elles utilisent seulement des types de données, opérateurs
+   et fonctions intégrées ou appartenant à une extension listée dans l'option
+   <code class="literal">extensions</code> du serveur distant. Les opérateurs et fonctions
+   dans ce type de clause doivent aussi être <code class="literal">IMMUTABLE</code>. Pour
+   une requête <code class="command">UPDATE</code> ou <code class="command">DELETE</code>,
+   <code class="filename">postgres_fdw</code> tente d'optimiser l'exécution de la requête
+   en envoyant la requête complète au serveur distant s'il n'existe pas de
+   clauses <code class="literal">WHERE</code> pouvant être envoyées au serveur distant, pas
+   de jointures locales pour la requête, pas de triggers <code class="literal">BEFORE</code>
+   ou <code class="literal">AFTER</code> au niveau ligne ou de colonnes calculées
+   automatiquement sur la table cible, et pas de
+   contraintes <code class="literal">CHECK OPTION</code> pour les vues parentes. Dans un
+   <code class="command">UPDATE</code>, les expressions à affecter aux colonnes cibles
+   doivent seulement utiliser les types de données intégrées, les opérateurs ou les
+   fonctions <code class="literal">IMMUTABLE</code> pour réduire le risque de mauvaise
+   exécution de la requête.
+  </p><p>
+   Quand <code class="filename">postgres_fdw</code> rencontre une jointure entre des
+   tables externes sur le même serveur distant, il envoie la jointure entière
+   au serveur distant, sauf s'il pense qu'il sera plus efficace de récupérer
+   les lignes de chaque table individuellement ou si les références de table
+   sont sujet à des correspondances d'utilisateur différentes. Lors de l'envoi
+   des clauses <code class="literal">JOIN</code>, il prend les mêmes précautions que
+   mentionnées ci-dessus pour les clauses <code class="literal">WHERE</code>.
+
+  </p><p>
+   La requête envoyée au serveur distant pour exécution peut être examinée en
+   utilisant <code class="command">EXPLAIN VERBOSE</code>.
+  </p></div><div class="sect2" id="POSTGRES-FDW-REMOTE-QUERY-EXECUTION-ENVIRONMENT"><div class="titlepage"><div><div><h3 class="title">F.36.6. Environnement d'exécution de requêtes distantes <a href="#POSTGRES-FDW-REMOTE-QUERY-EXECUTION-ENVIRONMENT" class="id_link">#</a></h3></div></div></div><p>
+   Dans les sessions distantes ouvertes par <code class="filename">postgres_fdw</code>,
+   le paramètre <a class="xref" href="runtime-config-client.html#GUC-SEARCH-PATH">search_path</a> est configuré à
+   <code class="literal">pg_catalog</code>, pour que seuls les objets internes soient
+   visibles, sauf utilisant d'un nom de schéma. Ceci n'est pas un problème
+   pour les requêtes générées par <code class="filename">postgres_fdw</code> lui-même
+   car il fournit toujours ce type de qualification. Néanmoins, cela peut se
+   révéler problématique pour les fonctions exécutées sur le serveur distant
+   via des triggers ou des règles sur les tables distantes. Par exemple, si
+   une table distante est en fait une vue, toute fonction utilisée dans cette
+   vue sera exécutée avec le chemin de recherche restreint. Il est recommandé
+   de qualifier tous les noms dans ce type de fonctions ou de leur attacher
+   une option <code class="literal">SET search_path</code> (voir <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle">CREATE FUNCTION</span></a>) pour établir le chemin de recherche
+   attendu.
+  </p><p>
+   De même, <code class="filename">postgres_fdw</code> établie une configuration des
+   sessions distantes pour différents paramètres :
+   </p><div class="itemizedlist"><ul class="itemizedlist compact" style="list-style-type: disc; "><li class="listitem"><p>
+      <a class="xref" href="runtime-config-client.html#GUC-TIMEZONE">TimeZone</a> est positionné à <code class="literal">UTC</code>
+     </p></li><li class="listitem"><p>
+      <a class="xref" href="runtime-config-client.html#GUC-DATESTYLE">datestyle</a> est positionné à <code class="literal">ISO</code>
+     </p></li><li class="listitem"><p>
+      <a class="xref" href="runtime-config-client.html#GUC-INTERVALSTYLE">IntervalStyle</a> est positionné à <code class="literal">postgres</code>
+     </p></li><li class="listitem"><p>
+      <a class="xref" href="runtime-config-client.html#GUC-EXTRA-FLOAT-DIGITS">extra_float_digits</a> est positionné à
+      <code class="literal">3</code> pour les serveurs distants de version 9.0 et après et
+      est positionné à <code class="literal">2</code> pour les versions plus anciennes
+     </p></li></ul></div><p>
+   Ces paramètres sont moins à même d'être problématique que
+   <code class="varname">search_path</code>, mais ils peuvent être gérés avec les options
+   de fonction <code class="literal">SET</code> si le besoin devait se faire sentir.
+  </p><p>
+   Il n'est <span class="emphasis"><em>pas</em></span> recommandé de surcharger ce comportement
+   en modifiant la configuration de la session pour ces paramètres. Cela peut
+   être la cause d'un mauvais fonctionnement de
+   <code class="filename">postgres_fdw</code>.
+  </p></div><div class="sect2" id="POSTGRES-FDW-CROSS-VERSION-COMPATIBILITY"><div class="titlepage"><div><div><h3 class="title">F.36.7. Compatibilité entre versions <a href="#POSTGRES-FDW-CROSS-VERSION-COMPATIBILITY" class="id_link">#</a></h3></div></div></div><p>
+   <code class="filename">postgres_fdw</code> peut être utilisé avec les serveurs distants
+   de version 8.3 et ultérieures. En lecture seule, il est possible d'aller aussi
+   loin que la 8.1. Néanmoins, une limitation est que
+   <code class="filename">postgres_fdw</code> assume généralement que les fonctions et
+   opérateurs internes immutables sont sûrs pour être envoyés au serveur distant
+   pour exécution s'ils apparaissent dans une clause <code class="literal">WHERE</code> de
+   la table distante. Du coup, une fonction interne ajoutée depuis la sortie du
+   serveur distant pourrait être envoyée pour exécution, résultant en un
+   message d'erreur indiquant que la fonction n'existe pas (<span class="quote">« <span class="quote">function does
+    not exist</span> »</span>) ou une erreur similaire. Ce type d'échec peut être
+   contourné en réécrivant la requête, par exemple en embarquant la table
+   distance dans un sous-<code class="literal">SELECT</code> avec <code class="literal">OFFSET 0</code>
+   comme optimisation, et plaçant la fonction ou l'opérateur problématique
+   en dehors du sous-<code class="literal">SELECT</code>.
+  </p></div><div class="sect2" id="POSTGRES-FDW-WAIT-EVENTS"><div class="titlepage"><div><div><h3 class="title">F.36.8. Événements d'attente <a href="#POSTGRES-FDW-WAIT-EVENTS" class="id_link">#</a></h3></div></div></div><p>
+   <code class="filename">postgres_fdw</code> peut indiquer les attentes d'événement
+   suivants sous le type <code class="literal">Extension</code>.:
+  </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">PostgresFdwCleanupResult</code></span></dt><dd><p>
+      En attente de l'annulation de la transaction sur le serveur distant.
+     </p></dd><dt><span class="term"><code class="literal">PostgresFdwConnect</code></span></dt><dd><p>
+      En attente de l'établissement d'une connexion vers un serveur distant.
+     </p></dd><dt><span class="term"><code class="literal">PostgresFdwGetResult</code></span></dt><dd><p>
+      En attente de la réception des résultats d'une requête à partir du
+      serveur distant.
+     </p></dd></dl></div></div><div class="sect2" id="POSTGRES-FDW-CONFIGURATION-PARAMETERS"><div class="titlepage"><div><div><h3 class="title">F.36.9. Paramètres de configuration <a href="#POSTGRES-FDW-CONFIGURATION-PARAMETERS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-PGFDW-APPLICATION-NAME"><span class="term">
+     <code class="varname">postgres_fdw.application_name</code> (<code class="type">string</code>)
+     <a id="id-1.11.7.47.19.2.1.1.3" class="indexterm"></a>
+    </span> <a href="#GUC-PGFDW-APPLICATION-NAME" class="id_link">#</a></dt><dd><p>
+      Donne une valeur pour le paramètre de configuration <a class="xref" href="runtime-config-logging.html#GUC-APPLICATION-NAME">application_name</a> utilisé quand
+      <code class="filename">postgres_fdw</code> établie une connexion vers un serveur
+      distant. Elle surcharge l'option <code class="varname">application_name</code> de
+      l'objet serveur.  Notez que la modification de ce paramètre n'affecte pas
+      les connexions existantes jusqu'à ce qu'elles soient ré-établies.
+     </p><p>
+      <code class="varname">postgres_fdw.application_name</code> peut être toute chaîne,
+      quelque soit sa longueur, et peut même contenir des caractères non ASCII.
+      Néanmoins, quand il est passé et utilisé comme dans un serveur distant,
+      notez qu'il sera tronqué à moins que <code class="symbol">NAMEDATALEN</code>
+      caractères. Tout caractère autre que les caractères ASCII affichables
+      sera remplacé par des <a class="link" href="sql-syntax-lexical.html#SQL-SYNTAX-STRINGS-ESCAPE" title="4.1.2.2. Constantes chaîne avec des échappements de style C">échappements hexadécimaux du style
+      langage C</a>. Voir
+      <a class="xref" href="runtime-config-logging.html#GUC-APPLICATION-NAME">application_name</a> pour les détails.
+     </p><p>
+      Le caractère <code class="literal">%</code> commence une <span class="quote">« <span class="quote">séquence
+      d'échappement</span> »</span> qui est remplacé par une information de statut comme
+      indiqué ci-dessous.  Les échappements non reconnus sont ignorés. Les
+      autres caractères sont recopiés directement dans le nom de l'application.
+      Notez qu'il n'est pas autorisé d'indiquer un signe plus/moins ou un
+      littéral numérique après le <code class="literal">%</code> et avant l'option, pour de
+      l'alignement ou du remplissage.
+     </p><div class="informaltable"><table class="informaltable" border="1"><colgroup><col /><col /></colgroup><thead><tr><th>Échappement</th><th>Effet</th></tr></thead><tbody><tr><td><code class="literal">%a</code></td><td>Nom de l'application sur le serveur local</td></tr><tr><td><code class="literal">%c</code></td><td>
+          Identifiant de session sur le serveur local
+          (voir <a class="xref" href="runtime-config-logging.html#GUC-LOG-LINE-PREFIX">log_line_prefix</a> pour plus de détails)
+         </td></tr><tr><td><code class="literal">%C</code></td><td>
+          Nom de l'instance sur le serveur local
+          (voir <a class="xref" href="runtime-config-logging.html#GUC-CLUSTER-NAME">cluster_name</a> pour plus de détails)
+         </td></tr><tr><td><code class="literal">%u</code></td><td>Nom de l'utilisateur sur le serveur local</td></tr><tr><td><code class="literal">%d</code></td><td>Nom de la base sur le serveur local</td></tr><tr><td><code class="literal">%p</code></td><td>Identifiant du processus sur le serveur local</td></tr><tr><td><code class="literal">%%</code></td><td>Caractère %</td></tr></tbody></table></div><p>
+      Par exemple, supposons que l'utilisateur <code class="literal">local_user</code>
+      établisse une connexion à partir de la base <code class="literal">local_db</code>
+      vers <code class="literal">foreign_db</code> en tant qu'utilisateur
+      <code class="literal">foreign_user</code>, la configuration <code class="literal">'db=%d,
+      user=%u'</code> est remplacée par <code class="literal">'db=local_db,
+      user=local_user'</code>.
+     </p></dd></dl></div></div><div class="sect2" id="POSTGRES-FDW-EXAMPLES"><div class="titlepage"><div><div><h3 class="title">F.36.10. Exemples <a href="#POSTGRES-FDW-EXAMPLES" class="id_link">#</a></h3></div></div></div><p>
+   Voici un exemple de création d'une table distante avec
+   <code class="literal">postgres_fdw</code>. Tout d'abord, il faut installer l'extension :
+  </p><pre class="programlisting">
+CREATE EXTENSION postgres_fdw;
+  </pre><p>
+   Ensuite, il faut créer un serveur distant avec <a class="xref" href="sql-createserver.html" title="CREATE SERVER"><span class="refentrytitle">CREATE SERVER</span></a>.
+   Dans cet exemple, nous souhaitons nous connecter à un serveur
+   <span class="productname">PostgreSQL</span> sur l'hôte <code class="literal">192.83.123.89</code>
+   écoutant sur le port <code class="literal">5432</code>.  La base de données sur le
+   serveur distant sur laquelle la connexion est faite s'appelle
+   <code class="literal">foreign_db</code> :
+
+   </p><pre class="programlisting">
+CREATE SERVER foreign_server
+        FOREIGN DATA WRAPPER postgres_fdw
+        OPTIONS (host '192.83.123.89', port '5432', dbname 'foreign_db');
+   </pre><p>
+  </p><p>
+   Une correspondance d'utilisateur, définie avec <a class="xref" href="sql-createusermapping.html" title="CREATE USER MAPPING"><span class="refentrytitle">CREATE USER MAPPING</span></a>,
+   est également nécessaire pour identifier le rôle qui sera utilisé sur le
+   serveur distant :
+
+   </p><pre class="programlisting">
+CREATE USER MAPPING FOR local_user
+        SERVER foreign_server
+        OPTIONS (user 'foreign_user', password 'password');
+   </pre><p>
+  </p><p>
+   Il est maintenant possible de créer une table distante avec <a class="xref" href="sql-createforeigntable.html" title="CREATE FOREIGN TABLE"><span class="refentrytitle">CREATE FOREIGN TABLE</span></a>.  Dans cet exemple, nous souhaitons
+   accéder à la table nommée <code class="structname">some_schema.some_table</code>
+   sur le serveur distant. Le nom local pour celle-ci sera
+   <code class="structname">foreign_table</code> :
+
+   </p><pre class="programlisting">
+CREATE FOREIGN TABLE foreign_table (
+        id integer NOT NULL,
+        data text
+)
+        SERVER foreign_server
+        OPTIONS (schema_name 'some_schema', table_name 'some_table');
+   </pre><p>
+
+   Il est essentiel que les types de données et autres propriétés des colonnes
+   déclarées dans <code class="command">CREATE FOREIGN TABLE</code> correspondent à la
+   vraie table distante. Les noms des colonnes doivent également correspondre,
+   à moins que des options <code class="literal">column_name</code> soient attachées aux
+   colonnes individuelles pour montrer comment elles sont nommées sur la table
+   distante.
+   Dans de nombreux cas, l'utilisation de <a class="link" href="sql-importforeignschema.html" title="IMPORT FOREIGN SCHEMA"><code class="command">IMPORT FOREIGN SCHEMA</code></a>
+   est préférable à la construction manuelle des tables distantes.
+  </p></div><div class="sect2" id="POSTGRES-FDW-AUTHOR"><div class="titlepage"><div><div><h3 class="title">F.36.11. Auteur <a href="#POSTGRES-FDW-AUTHOR" class="id_link">#</a></h3></div></div></div><p>
+   Shigeru Hanada <code class="email">&lt;<a class="email" href="mailto:shigeru.hanada@gmail.com">shigeru.hanada@gmail.com</a>&gt;</code>
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/postgres-fdw.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+</html>

@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/amcheck.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:20 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.1. amcheck -- outils pour vérifier la cohérence des tables et index</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis" /><link rel="next" href="auth-delay.html" title="F.2. auth_delay" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/amcheck.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/amcheck.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/amcheck.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/amcheck.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/amcheck.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/amcheck.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/amcheck.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/amcheck.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/amcheck.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/amcheck.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="appendixes.html">Annexes</a></span> » <span class="breadcrumb-link"><a href="contrib.html">Modules et extensions supplémentaires fournis</a></span> » <span class="breadcrumb-node">amcheck  --  outils pour vérifier la cohérence des tables et index</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="auth-delay.html" title="F.2. auth_delay">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Annexe F. Modules et extensions supplémentaires fournis </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> F.2. auth_delay</td></tr></table></div><div class="sect1" id="AMCHECK"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.1. amcheck  --  outils pour vérifier la cohérence des tables et index <a href="#AMCHECK" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="amcheck.html#AMCHECK-FUNCTIONS">F.1.1. Fonctions</a></span></dt><dt><span class="sect2"><a href="amcheck.html#AMCHECK-OPTIONAL-HEAPALLINDEXED-VERIFICATION">F.1.2. Vérification optionnelle <em class="parameter"><code>heapallindexed</code></em></a></span></dt><dt><span class="sect2"><a href="amcheck.html#AMCHECK-USING-AMCHECK-EFFECTIVELY">F.1.3. Utiliser <code class="filename">amcheck</code> efficacement</a></span></dt><dt><span class="sect2"><a href="amcheck.html#AMCHECK-REPAIRING-CORRUPTION">F.1.4. Réparer une corruption</a></span></dt></dl></div><a id="id-1.11.7.12.2" class="indexterm"></a><p>
+  Le module <code class="filename">amcheck</code> fournit des fonctions vous permettant
+  de vérifier la cohérence logique de la structure des relations.
+ </p><p>
+  Les fonctions spécifiques aux B-Tree vérifient diverses <span class="emphasis"><em>propriétés
+  invariantes</em></span> dans la structure de la représentation de certaines
+  relations. La justesse des fonctions d'accès aux données durant les
+  parcours d'index et d'autres opérations importantes reposent sur le fait
+  que ces propriétés invariantes sont toujours vraies. Par exemple, certaines
+  fonctions vérifient, entre autres choses, que tous les blocs d'index B-Tree
+  ont leurs éléments dans un ordre <span class="quote">« <span class="quote">logique</span> »</span> (par exemple, pour
+  des index B-Tree sur un type  <code class="type">text</code>, les lignes de l'index
+  devraient être triées dans l'ordre alphabétique défini par la collation).
+  Si, pour une raison ou une autre, cette propriété invariante spécifique
+  n'est plus vérifiée, il faut s'attendre à ce que des recherches binaires
+  sur la page affectée renseignent de manière erronée les parcours d'index,
+  avec pour conséquence des résultats de requêtes SQL erronés. Si la
+  structure semble valide, aucune erreur n'est levée. Lors de l'exécution
+  de ces fonctions de vérification, le paramètre <a class="xref" href="runtime-config-client.html#GUC-SEARCH-PATH">search_path</a> est modifié temporairement en
+  <code class="literal">pg_catalog, pg_temp</code>.
+ </p><p>
+  La vérification est réalisée en utilisant les mêmes procédures que celles
+  utilisées par les parcours d'index eux-mêmes, qui peuvent très bien être du
+  code pour une classe d'opérateurs utilisateur. Par exemple, la vérification
+  d'index B-Tree s'appuie sur les comparaisons faites avec une ou plusieurs
+  routines pour la fonction de support 1. Voir <a class="xref" href="xindex.html#XINDEX-SUPPORT" title="36.16.3. Routines d'appui des méthodes d'indexation">Section 36.16.3</a> pour plus de détails sur les fonctions de support
+  des classes d'opérateurs.
+ </p><p>
+  À la différence des fonctions de vérification B-Tree qui rapportent la
+  corruption en remontant des erreurs, la fonction de vérification de table
+  <code class="function">verify_heapam</code> vérifie une table et tente de renvoyer
+  un ensemble de lignes, une par corruption détectée. Malgré tout, si des
+  installations, se reposant sur la fonction
+  <code class="function">verify_heapam</code>, sont elles-mêmes corrompues, la
+  fonction pourrait ne pas être capable de continuer et leverait une erreur.
+ </p><p>
+  Le droit d'exécuter les fonctions <code class="filename">amcheck</code> peut être
+  accordé aux utilisateurs normaux, sans attribut
+  <code class="literal">SUPERUSER</code>, mais avant de donner cette permission, de
+  prudentes considérations doivent être prises concernant la sécurité des
+  données et les problèmes de confidentialité. Bien que les rapports de
+  corruption générés par ces fonctions ne se focalisent pas tant sur le
+  contenu des données corrompues que sur la structure de ces données et la
+  nature de la corruption détectée, un attaquant qui gagnerait le droit
+  d'exécuter ces fonctions, tout particulièrement si l'attaquant peut aussi
+  causer de la corruption, pourrait être capable de déduire quelque chose des
+  données elles-mêmes dans les messages.
+ </p><div class="sect2" id="AMCHECK-FUNCTIONS"><div class="titlepage"><div><div><h3 class="title">F.1.1. Fonctions <a href="#AMCHECK-FUNCTIONS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt><span class="term">
+     <code class="function">bt_index_check(index regclass, heapallindexed boolean, checkunique boolean) returns void</code>
+     <a id="id-1.11.7.12.8.2.1.1.2" class="indexterm"></a>
+    </span></dt><dd><p>
+      <code class="function">bt_index_check</code> vérifie que sa cible, un index
+      B-Tree, respecte un éventail de propriétés invariables. Exemple
+      d'utilisation :
+
+      </p><pre class="screen">
+test=# SELECT bt_index_check(index =&gt; c.oid, heapallindexed =&gt; i.indisunique),
+               c.relname,
+               c.relpages
+FROM pg_index i
+JOIN pg_opclass op ON i.indclass[0] = op.oid
+JOIN pg_am am ON op.opcmethod = am.oid
+JOIN pg_class c ON i.indexrelid = c.oid
+JOIN pg_namespace n ON c.relnamespace = n.oid
+WHERE am.amname = 'btree' AND n.nspname = 'pg_catalog'
+-- Ignore les tables temporaires, qui peuvent appartenir à d'autres sessions
+AND c.relpersistence != 't'
+-- La fonction peut renvoyer une erreur si cela est omis :
+AND c.relkind = 'i' AND i.indisready AND i.indisvalid
+ORDER BY c.relpages DESC LIMIT 10;
+
+ bt_index_check |             relname             | relpages
+----------------+---------------------------------+----------
+                | pg_depend_reference_index       |       43
+                | pg_depend_depender_index        |       40
+                | pg_proc_proname_args_nsp_index  |       31
+                | pg_description_o_c_o_index      |       21
+                | pg_attribute_relid_attnam_index |       14
+                | pg_proc_oid_index               |       10
+                | pg_attribute_relid_attnum_index |        9
+                | pg_amproc_fam_proc_index        |        5
+                | pg_amop_opr_fam_index           |        5
+                | pg_amop_fam_strat_index         |        5
+(10 rows)
+</pre><p>
+
+      Cet exemple montre une session qui vérifie les 10 plus gros index du
+      catalogue de la base de données <span class="quote">« <span class="quote">test</span> »</span>. La vérification de
+      la présence des lignes de la table dans l'index est demandée pour le
+      sous-ensemble des index uniques. Puisqu'aucune erreur n'est retournée,
+      tous les index testés semblent être cohérents au niveau logique. Bien
+      évidemment, cette requête pourrait être facilement modifiée pour
+      appeler <code class="function">bt_index_check</code> sur chacun des index
+      présents dans la base de données pour lesquels la vérification est
+      supportée.
+     </p><p>
+      <code class="function">bt_index_check</code> acquiert un
+      <code class="literal">AccessShareLock</code> sur l'index cible ainsi que sur la
+      relation à laquelle il appartient. Ce niveau de verrouillage est le
+      même que celui acquis sur les relations lors d'une simple requête
+      <code class="literal">SELECT</code>. <code class="function">bt_index_check</code> ne
+      vérifie pas les propriétés invariantes qui englobent les relations
+      enfant/parent, mais vérifiera la présence de toutes les lignes de la
+      table et des lignes d'index à l'intérieur de l'index quand
+      <em class="parameter"><code>heapallindexed</code></em> vaut <code class="literal">true</code>.
+      Quand <em class="parameter"><code>checkunique</code></em> vaut <code class="literal">true</code>,
+      la fonction <code class="function">bt_index_check</code> vérifiera que pas
+      plus d'une entrée dupliquée n'est visible dans un index d'unicité.
+      Quand il faut lancer un test de recherche de corruption, de routine et
+      pas trop lourd, sur un environnement de production, l'utilisation de
+      <code class="function">bt_index_check</code> offre généralement le meilleur
+      compromis entre vérification minutieuse et impact limité sur les
+      performances et la disponibilité de l'application.
+     </p></dd><dt><span class="term">
+     <code class="function">bt_index_parent_check(index regclass, heapallindexed boolean, rootdescend boolean, checkunique boolean) returns void</code>
+     <a id="id-1.11.7.12.8.2.2.1.2" class="indexterm"></a>
+    </span></dt><dd><p>
+      <code class="function">bt_index_parent_check</code> teste que sa cible, un index
+      B-Tree, respecte un certain nombre de propriétés invariantes. En
+      option, quand l'argument <em class="parameter"><code>heapallindexed</code></em> vaut
+      <code class="literal">true</code>, la fonction vérifie la présence de toutes les
+      lignes dans la table.
+      Quand <em class="parameter"><code>checkunique</code></em> vaut <code class="literal">true</code>,
+      la fonction <code class="function">bt_index_parent_check</code> vérifiera que pas
+      plus d'une entrée dupliquée n'est visible dans un index d'unicité.
+      Quand l'argument optionnel
+      <em class="parameter"><code>rootdescend</code></em> vaut <code class="literal">true</code>, la
+      vérification recherche de nouveau les lignes au niveau des feuilles en
+      réalisant une nouvelle recherche à partir de la racine pour chaque
+      ligne. Les vérifications réalisables par
+      <code class="function">bt_index_parent_check</code> sont un surensemble des
+      vérifications réalisées par <code class="function">bt_index_check</code>. On
+      peut voir <code class="function">bt_index_parent_check</code> comme une version
+      plus minutieuse de <code class="function">bt_index_check</code> :
+      contrairement à <code class="function">bt_index_check</code>,
+      <code class="function">bt_index_parent_check</code> vérifie également les
+      propriétés invariantes qui englobent les relations parent/enfant, et la
+      présence de tous les liens dans la structure de l'index.
+      <code class="function">bt_index_parent_check</code> respecte la convention
+      habituelle qui consiste à renvoyer une erreur si une incohérence ou
+      tout autre problème est détecté.
+     </p><p>
+      Un verrou de type <code class="literal">ShareLock</code> est requis sur l'index
+      ciblé par <code class="function">bt_index_parent_check</code>
+      (un <code class="literal">ShareLock</code> est également acquis sur la relation
+      associée). Ces verrous empêchent des modifications concurrentes par des
+      commandes <code class="command">INSERT</code>, <code class="command">UPDATE</code> et
+      <code class="command">DELETE</code>. Les verrous empêchent également la relation
+      associée d'être traitée de manière concurrente par
+      <code class="command">VACUUM</code>, ainsi que toute autre commande
+      d'administration. Il est à noter que cette fonction ne conserve les
+      verrous que durant son exécution et non pas durant
+      l'intégralité de la transaction.
+     </p><p>
+      La vérification supplémentaire qu'opère
+      <code class="function">bt_index_parent_check</code> est plus apte à détecter
+      différents cas pathologiques. Ces cas peuvent impliquer une classe
+      d'opérateur B-Tree implémentée de manière incorrecte utilisée pour
+      l'index vérifié, ou, hypothétiquement, des bugs non encore découverts
+      dans le code de la méthode d'accès associée à cet index B-Tree. Il est
+      à noter que <code class="function">bt_index_parent_check</code> ne peut pas être
+      utilisé lorsque le mode Hot Standby est activé (c'est-à-dire, sur un
+      serveur secondaire disponible en lecture seule), contrairement à
+      <code class="function">bt_index_check</code>.
+     </p></dd></dl></div><div class="tip"><h3 class="title">Astuce</h3><p>
+    Les fonctions <code class="function">bt_index_check</code> et
+    <code class="function">bt_index_parent_check</code> journalisent toutes les deux
+    des messages sur la vérification, avec le niveau de sévérité
+    <code class="literal">DEBUG1</code> et <code class="literal">DEBUG2</code>. Ces messages
+    fournissent des informations détaillées sur la vérification, exploitables
+    par les développeurs <span class="productname">PostgreSQL</span>. Les
+    utilisateurs avancés peuvent aussi trouver ces informations utiles, car
+    elles fournissent du contexte additionnel si jamais la vérification
+    détecte une incohérence. Exécuter
+    </p><pre class="programlisting">
+SET client_min_messages = DEBUG1;
+</pre><p>
+    dans une session interactive, <span class="application">psql</span>, avant
+    d'exécuter une requête de vérification, va afficher les messages sur sa
+    progression avec un niveau de détail raisonnable.
+   </p></div><div class="variablelist"><dl class="variablelist"><dt><span class="term">
+     <code class="function">
+      verify_heapam(relation regclass,
+                    on_error_stop boolean,
+                    check_toast boolean,
+                    skip text,
+                    startblock bigint,
+                    endblock bigint,
+                    blkno OUT bigint,
+                    offnum OUT integer,
+                    attnum OUT integer,
+                    msg OUT text)
+      returns setof record
+     </code>
+    </span></dt><dd><p>
+      Vérifie une table, une séquence ou une vue matérialisée sur des
+      corruptions structurelles, où les pages de relation contiennent des
+      données au format invalide, et sur des corruptions logiques, où les pages
+      sont valides structurellement mais incohérentes avec le reste de
+      l'instance de base de données.
+     </p><p>
+      Les arguments optionnels suivants sont reconnus :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">on_error_stop</code></span></dt><dd><p>
+         Si true, la vérification de corruption s'arrête à la fin du premier
+         bloc dans lequel de la corruption est trouvée.
+        </p><p>
+         La valeur par défaut est false.
+        </p></dd><dt><span class="term"><code class="literal">check_toast</code></span></dt><dd><p>
+         Si true, les valeurs TOAST sont vérifiées sur la table TOAST de la
+         relation cible.
+        </p><p>
+         Cette option est connue pour être lente. Aussi, si une table TOAST ou
+         un de ses index est corrompu, vérifier les valeurs TOAST peut, en
+         théorie, faire tomber le serveur. Cependant dans la majorité des
+         cas, cela produira juste une erreur.
+        </p><p>
+         La valeur par défaut est false.
+        </p></dd><dt><span class="term"><code class="literal">skip</code></span></dt><dd><p>
+         Si ce paramètre n'est pas mis à <code class="literal">none</code>, la
+         vérification de corruption saute les blocs qui sont marqués tous
+         visibles ou tous gelés, comme définie par la valeur de l'option. Les
+         options valides sont <code class="literal">all-visible</code>,
+         <code class="literal">all-frozen</code> et <code class="literal">none</code>.
+        </p><p>
+         La valeur par défaut est <code class="literal">none</code>.
+        </p></dd><dt><span class="term"><code class="literal">startblock</code></span></dt><dd><p>
+         Si indiquée, la vérification de corruption commence au bloc spécifié,
+         sautant tous les blocs précédents. Si <em class="parameter"><code>startblock</code></em>
+         est spécifiée à une valeur en dehors de la plage des blocs de la
+         table cible, une erreur est renvoyée.
+        </p><p>
+         Par défaut, la vérification débute au premier bloc.
+        </p></dd><dt><span class="term"><code class="literal">endblock</code></span></dt><dd><p>
+         Si indiquée, la vérification de corruption termine à ce bloc,
+         ignorant tous les blocs restants. Spécifier un
+         <em class="parameter"><code>endblock</code></em> en dehors de la plage des blocs d'une
+         table cible renvoie une erreur.
+        </p><p>
+         Par défaut, tous les blocs sont vérifiés.
+        </p></dd></dl></div><p>
+      Pour chaque corruption détectée, <code class="function">verify_heapam</code>
+      renvoie une ligne avec les colonnes suivantes :
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">blkno</code></span></dt><dd><p>
+         Le numéro de bloc contenant le bloc corrompu.
+        </p></dd><dt><span class="term"><code class="literal">offnum</code></span></dt><dd><p>
+         Le décalage pour la ligne corrompue.
+        </p></dd><dt><span class="term"><code class="literal">attnum</code></span></dt><dd><p>
+         Le numéro d'attribut de la colonne corrompue dans la ligne, si la
+         corruption est spécifique à la colonne et non pas à la ligne en
+         entier.
+        </p></dd><dt><span class="term"><code class="literal">msg</code></span></dt><dd><p>
+         Un message décrivant le problème détecté.
+        </p></dd></dl></div></dd></dl></div></div><div class="sect2" id="AMCHECK-OPTIONAL-HEAPALLINDEXED-VERIFICATION"><div class="titlepage"><div><div><h3 class="title">F.1.2. Vérification optionnelle <em class="parameter"><code>heapallindexed</code></em> <a href="#AMCHECK-OPTIONAL-HEAPALLINDEXED-VERIFICATION" class="id_link">#</a></h3></div></div></div><p>
+   Quand l'argument <em class="parameter"><code>heapallindexed</code></em> des fonctions de
+   vérification des B-Tree est à <code class="literal">true</code>, une phase de
+   vérification supplémentaire est opérée sur la table associée à l'index
+   cible. Elle consiste en une opération <code class="command">CREATE INDEX CONCURRENTLY</code>
+   <span class="quote">« <span class="quote">bidon</span> »</span> qui vérifie la présence de tous les nouveaux
+   enregistrements hypothétiques d'index dans une structure de récapitulation
+   temporaire et en mémoire (elle est construite au besoin durant la première
+   phase de la vérification). Cette structure de récapitulation prend
+   l'<span class="quote">« <span class="quote">empreinte digitale</span> »</span> de chaque enregistrement rencontré
+   dans l'index cible. Le principe directeur derrière la vérification
+   <em class="parameter"><code>heapallindexed</code></em> est qu'un nouvel index équivalent à
+   l'index cible existant ne doit avoir que des entrées que l'on peut trouver
+   dans la structure existante.
+  </p><p>
+   La phase <em class="parameter"><code>heapallindexed</code></em> supplémentaire a un coût
+   significatif : typiquement, la vérification peut être plusieurs fois
+   plus longue. Cependant, il n'y a pas de changement quant aux verrous
+   acquis au niveau de la table quand on opère une vérification
+   <em class="parameter"><code>heapallindexed</code></em>.
+  </p><p>
+   La structure de récapitulation est limitée en taille par
+   <code class="varname">maintenance_work_mem</code>. Pour s'assurer que la probabilité
+   de rater une incohérence ne dépasse 2 % pour chaque enregistrement
+   qui devrait être dans l'index, il faut environ 2 octets de mémoire par
+   enregistrement. Quand moins de mémoire est disponible par enregistrement,
+   la probabilité de manquer une incohérence augmente lentement. Cette
+   approche limite significativement le coût de la vérification, tout en
+   réduisant légèrement la probabilité de détecter un problème,
+   particulièrement sur les installations où la vérification est traitée
+   comme une opération de maintenance de routine. Tout enregistrement absent
+   ou déformé a une nouvelle chance d'être détecté avec chaque lancement de
+   la vérification.
+  </p></div><div class="sect2" id="AMCHECK-USING-AMCHECK-EFFECTIVELY"><div class="titlepage"><div><div><h3 class="title">F.1.3. Utiliser <code class="filename">amcheck</code> efficacement <a href="#AMCHECK-USING-AMCHECK-EFFECTIVELY" class="id_link">#</a></h3></div></div></div><p>
+   <code class="filename">amcheck</code> peut être efficace pour détecter différents
+   types de modes d'échec que les <a class="link" href="app-initdb.html#APP-INITDB-DATA-CHECKSUMS"><span class="application">sommes de
+   contrôle</span></a> n'arriveront jamais à détecter. Cela
+   inclut :
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Les incohérences dans la structure causées par des implémentations
+      incorrectes de classe d'opérateurs.
+     </p><p>
+      Cela inclut également des problèmes causés par le changement des règles
+      de comparaison des collations du système d'exploitation. Les
+      comparaisons des données d'un type ayant une collation comme
+      <code class="type">text</code> doivent être immuables (tout comme toutes les autres
+      comparaisons utilisées pour les parcours d'index B-Tree doivent être
+      immuables), ce qui implique que les règles de collation du système
+      d'exploitation ne doivent jamais changer. Bien que cela soit rare, des
+      mises à jour des règles des collations du système d'exploitation
+      peuvent causer ces problèmes. Le plus souvent, c'est une incohérence
+      dans l'ordre de collation entre le serveur principal et son serveur de
+      secours qui est en cause, généralement due au fait que les versions
+      majeures du système d'exploitation utilisées ne sont pas les mêmes.
+      Plus généralement, une incohérence dans
+      l'ordre de collation entre un serveur primaire et son réplica est
+      impliquée, peut-être parce que la version <span class="emphasis"><em>majeure</em></span>
+      du système d'exploitation utilisée est différente. De telles
+      incohérences ne surviendront généralement que sur des serveurs
+      secondaires, et ne pourront par conséquent être détectées que là.
+     </p><p>
+      Si un tel problème survient, il se peut que cela n'affecte pas chaque
+      index qui utilise le tri d'une collation affectée, tout simplement
+      parce que les valeurs <span class="emphasis"><em>indexées</em></span> pourraient avoir le
+      même ordre de tri absolu indépendamment des incohérences
+      comportementales. Voir <a class="xref" href="locale.html" title="23.1. Support des locales">Section 23.1</a> et <a class="xref" href="collation.html" title="23.2. Support des collations">Section 23.2</a> pour plus de détails sur comment
+      <span class="productname">PostgreSQL</span> utilise les locales et collations
+      du système d'exploitation.
+     </p></li><li class="listitem"><p>
+      Les incohérences dans la structure entre les index et les tables
+      indexées (lorsque la vérification <em class="parameter"><code>heapallindexed</code></em>
+      est réalisée).
+     </p><p>
+      Il n'y a pas de vérification avec la table initiale en temps normal. Les
+      symptômes d'une corruption de la table peuvent être subtils.
+     </p></li><li class="listitem"><p>
+      La corruption causée par un hypothétique bug non encore découvert dans
+      le code de la méthode d'accès dans PostgreSQL, dans le code effectuant
+      le tri ou le code de gestion transactionnelle.
+     </p><p>
+
+      La vérification automatique de l'intégrité structurelle des index joue
+      un rôle dans les tests généraux des fonctionnalités de
+      <span class="productname">PostgreSQL</span>, nouvelles ou proposées, qui
+      pourraient possiblement permettre l'introduction d'incohérences
+      logiques. La vérification de la structure de la table et des
+      informations de visibilité et de statut des transactions associées joue
+      un rôle similaire. Une stratégie de test évidente est d'appeler les
+      fonctions d'<code class="filename">amcheck</code> de manière continue en même
+      temps que les tests de régression standards sont lancés. Voir <a class="xref" href="regress-run.html" title="31.1. Lancer les tests">Section 31.1</a> pour plus de détails sur comment lancer les
+      tests.
+
+     </p></li><li class="listitem"><p>
+      Les failles dans le système de fichiers ou dans le sous-système de
+      stockage quand les sommes de contrôles ne sont pas activées.
+     </p><p>
+      Il est à noter que <code class="filename">amcheck</code> n'examine une page que
+      telle qu'elle se présente dans un tampon en mémoire partagée lors de la
+      vérification, et qu'en accédant au bloc dans la mémoire partagée. Par
+      conséquent, <code class="filename">amcheck</code> n'examine pas forcément les
+      données lues depuis le système de fichiers au moment de la
+      vérification. Notez que si les sommes de contrôles sont activées,
+      <code class="filename">amcheck</code> peut lever une erreur de somme de contrôle
+      incorrecte quand un bloc corrompu est lu vers un tampon.
+     </p></li><li class="listitem"><p>
+      Les corruptions causées par une RAM défaillante, et plus largement le
+      sous-système mémoire et le système d'exploitation.
+     </p><p>
+      <span class="productname">PostgreSQL</span> ne protège pas contre les erreurs
+      mémoire corrigibles, et il est supposé que vous utilisez de la mémoire
+      RAM de standard industriel ECC (<span class="foreignphrase"><em class="foreignphrase">Error Correcting
+      Codes</em></span>) ou avec une meilleure protection. Cependant, la
+      mémoire ECC n'est typiquement immunisée que contre les erreurs d'un
+      seul bit, et il ne faut pas partir du principe que ce type de mémoire
+      fournit une protection <span class="emphasis"><em>absolue</em></span> contre les
+      défaillances provoquant une corruption de la mémoire.
+     </p><p>
+      Quand la vérification <em class="parameter"><code>heapallindexed</code></em> est
+      réalisée, il y a une chance fortement accrue de détecter des erreurs
+      d'un bit car l'égalité binaire stricte est testée et les attributs
+      indexés de la table sont testés.
+     </p></li></ul></div><p>
+  </p><p>
+   La corruption structurelle peut survenir par un stockage matériel
+   défectueux, ou par des fichiers de relation réécrits ou modifiés par un
+   logiciel sans rapport. Ce type de corruption peut aussi être détecté avec
+   les <a class="link" href="checksums.html" title="28.2. Sommes de contrôle pour les données"><span class="application">sommes de contrôle des fichiers
+   de données</span></a>.
+  </p><p>
+   Des pages de relation qui sont correctement formatées, internalement
+   cohérentes, et correctes par rapport à leurs propres sommes de contrôle
+   internes, peuvent encore contenir de la corruption logique. Par
+   conséquent, ce type de corruption ne peut pas être détecté avec
+   <span class="application">checksums</span>. Des exemples incluent les valeurs
+   TOAST dans la table principale pour lesquelles il manque l'entrée
+   correspondante dans la table TOAST, et les lignes dans la table principale
+   avec un identifiant de transaction plus ancien que le plus ancien
+   identifiant de transaction valide dans la base de données ou l'instance.
+  </p><p>
+   De multiples causes de corruption logique ont été observées sur des
+   systèmes en production, incluant des bugs dans le logiciel serveur
+   <span class="productname">PostgreSQL</span>, des erreurs ou de mauvaises
+   conceptions dans des outils de sauvegarde et restauration, et des erreurs
+   utilisateur.
+  </p><p>
+   Les relations corrompues sont plus préoccupantes sur des environnements de
+   production en cours, plus particulièrement ceux où les risques d'activités
+   fortes sont les moins tolérés. Pour cette raison,
+   <code class="function">verify_heapam</code> a été conçue pour diagnostiquer la
+   corruption sans risque. Elle ne peut pas protéger contre toutes les causes
+   de crash de processus serveur, car même exécuter la requête appelante
+   pourrait ne pas être sûr sur un système notablement corrompu. L'accès au
+   <a class="link" href="catalogs-overview.html" title="51.1. Aperçu">tables du catalogue</a> est effectué
+   et peut poser problème si le catalogue lui-même est corrompu.
+  </p><p>
+   De manière générale, <code class="filename">amcheck</code> ne peut que prouver la
+   présence d'une corruption ; il ne peut pas en prouver l'absence.
+  </p></div><div class="sect2" id="AMCHECK-REPAIRING-CORRUPTION"><div class="titlepage"><div><div><h3 class="title">F.1.4. Réparer une corruption <a href="#AMCHECK-REPAIRING-CORRUPTION" class="id_link">#</a></h3></div></div></div><p>
+   Aucune erreur concernant une corruption remontée par
+   <code class="filename">amcheck</code> ne devrait être un faux positif.
+   <code class="filename">amcheck</code> remonte des erreurs dans le cas où des
+   conditions, par définition, ne devraient jamais arriver, et par conséquent
+   une analyse minutieuse des erreurs remontées par
+   <code class="filename">amcheck</code> est souvent nécessaire.
+  </p><p>
+   Il n'y a pas de méthode générale pour réparer les problèmes que
+   <code class="filename">amcheck</code> détecte. Une explication de la cause
+   principale menant à ce que la propriété invariante soit violée devrait
+   être étudiée. <a class="xref" href="pageinspect.html" title="F.23. pageinspect -- inspection bas niveau des blocs d'une base de données">pageinspect</a> peut jouer un rôle utile dans
+   le diagnostic de la corruption qu'<code class="filename">amcheck</code> détecte. Un
+   <code class="command">REINDEX</code> peut échouer à réparer la corruption.
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/amcheck.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:20 GMT -->
+</html>

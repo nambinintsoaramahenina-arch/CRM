@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/storage-hot.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:19 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>65.7. Heap-Only Tuples (HOT)</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="storage-page-layout.html" title="65.6. Emplacement des pages de la base de données" /><link rel="next" href="transactions.html" title="Chapitre 66. Traitement des transactions" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/storage-hot.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/storage-hot.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/storage-hot.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/storage-hot.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/storage-hot.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/storage-hot.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/storage-hot.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/storage-hot.html">11</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/storage-hot.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="storage.html">Stockage physique de la base de données</a></span> » <span class="breadcrumb-node">Heap-Only Tuples (<acronym class="acronym">HOT</acronym>)</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="storage-page-layout.html" title="65.6. Emplacement des pages de la base de données">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="storage.html" title="Chapitre 65. Stockage physique de la base de données">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="transactions.html" title="Chapitre 66. Traitement des transactions">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">65.6. Emplacement des pages de la base de données </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 66. Traitement des transactions</td></tr></table></div><div class="sect1" id="STORAGE-HOT"><div class="titlepage"><div><div><h2 class="title" style="clear: both">65.7. Heap-Only Tuples (<acronym class="acronym">HOT</acronym>) <a href="#STORAGE-HOT" class="id_link">#</a></h2></div></div></div><p>
+  Pour permettre une haute concurrence, <span class="productname">PostgreSQL</span>
+  utilise un <a class="link" href="mvcc-intro.html" title="13.1. Introduction">système connu sous l'acronyme
+  <acronym class="acronym">MVCC</acronym></a> pour enregistrer les lignes. Néanmoins,
+  <acronym class="acronym">MVCC</acronym> a quelques inconvénients pour les requêtes de mise à
+  jour. Notamment, les mises à jour nécessitent que des nouvelles versions de
+  lignes soient ajoutées aux tables. Ceci peut aussi nécessiter l'ajout de
+  nouveaux enregistrements dans les index pour chaque ligne mise à jour, et la
+  suppression des anciennes versions de lignes et de leurs enregistrements dans
+  les index peut être coûteuse.
+ </p><p>
+  Pour aider à réduire la surcharge des mises à jour,
+  <span class="productname">PostgreSQL</span> dispose d'une optimisation appelée
+  heap-only tuples (<acronym class="acronym">HOT</acronym>). Cette optimisation est possible
+  quand :
+
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+     La mise à jour ne modifie aucune colonne références par les index de la
+     table, sans inclure les index par résumé. La seule méthode d'indexation
+     par résumé disponible dans <span class="productname">PostgreSQL</span> est
+     <a class="link" href="brin.html" title="64.5. Index BRIN">BRIN</a>.
+    </p></li><li class="listitem"><p>
+     Il y a suffisamment d'espace libre dans le bloc contenant l'ancienne ligne
+     pour y enregistrer la nouvelle ligne.
+    </p></li></ul></div><p>
+
+  Dans de tels cas, <span class="foreignphrase"><em class="foreignphrase">heap-only tuples</em></span> fournit
+  deux optimisations :
+
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+     Les nouveaux enregistrements dans les index ne sont pas nécessaires
+     pour représenter les lignes mises à jour. Cependant, les index par
+     résumé pourraient avoir besoin d'être mis à jour.
+    </p></li><li class="listitem"><p>
+     Quand une ligne est mise à jour plusieurs fois, les versions de ligne
+     autres que la plus ancienne et la plus récente peuvent être complètement
+     supprimées lors d'opérations standards comme <code class="command">SELECT</code>,
+     plutôt que d'attendre une opération de nettoyage périodique.
+     (Les index font toujours référence à l'<a class="link" href="storage-page-layout.html" title="65.6. Emplacement des pages de la base de données">identifiant de l'élément du bloc</a>
+     correspondant à la version originale de la ligne. Les données de la ligne
+     associées avec cette version de ligne sont supprimées et son identifiant
+     de ligne est converti en redirection pointant vers la version la plus
+     ancienne toujours visible à au moins une transaction. Les versions
+     de ligne intermédiaites qui ne sont plus visibles par qui que ce soit
+     sont complètement supprimées, et les identifiants d'élément de bloc
+     associés sont disponibles pour une réutilisation.)
+    </p></li></ul></div><p>
+ </p><p>
+  Vous pouvez augmenter la possibilité d'avoir suffisamment
+  d'espace dans les blocs pour les mises à jour <acronym class="acronym">HOT</acronym> en
+  diminuant la valeur du paramètre <a class="link" href="sql-createtable.html" title="CREATE TABLE"><code class="literal">fillfactor</code></a> d'une table.
+  Si vous ne le faites pas, les mises à jour <acronym class="acronym">HOT</acronym> se feront
+  tout de même parce que les nouvelles lignes iront naturellement vers de
+  nouveaux blocs et des blocs existants avec suffisamment d'espace ligne pour
+  les nouvelles versions de lignes. La vue système <a class="link" href="monitoring-stats.html#MONITORING-PG-STAT-ALL-TABLES-VIEW" title="27.2.19. pg_stat_all_tables">pg_stat_all_tables</a> permet
+  de superviser l'occurrence des mises à jour HOT et non HOT.
+ </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/storage-hot.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:19 GMT -->
+</html>

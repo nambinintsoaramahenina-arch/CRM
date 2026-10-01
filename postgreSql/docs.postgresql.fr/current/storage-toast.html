@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/storage-toast.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:17 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>65.2. TOAST</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="storage-file-layout.html" title="65.1. Emplacement des fichiers de la base de données" /><link rel="next" href="storage-fsm.html" title="65.3. Carte des espaces libres" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/storage-toast.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/storage-toast.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/storage-toast.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/storage-toast.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/storage-toast.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/storage-toast.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/storage-toast.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/storage-toast.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/storage-toast.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/storage-toast.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/storage-toast.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/storage-toast.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/storage-toast.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/storage-toast.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/storage-toast.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/storage-toast.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/storage-toast.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/storage-toast.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/storage-toast.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/storage-toast.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/storage-toast.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="storage.html">Stockage physique de la base de données</a></span> » <span class="breadcrumb-node">TOAST</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="storage-file-layout.html" title="65.1. Emplacement des fichiers de la base de données">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="storage.html" title="Chapitre 65. Stockage physique de la base de données">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="storage-fsm.html" title="65.3. Carte des espaces libres">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">65.1. Emplacement des fichiers de la base de données </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 65.3. Carte des espaces libres</td></tr></table></div><div class="sect1" id="STORAGE-TOAST"><div class="titlepage"><div><div><h2 class="title" style="clear: both">65.2. TOAST <a href="#STORAGE-TOAST" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="storage-toast.html#STORAGE-TOAST-ONDISK">65.2.1. Stockage TOAST sur disque</a></span></dt><dt><span class="sect2"><a href="storage-toast.html#STORAGE-TOAST-INMEMORY">65.2.2. Stockage TOAST en mémoire, hors-ligne</a></span></dt></dl></div><a id="id-1.10.18.4.2" class="indexterm"></a><a id="id-1.10.18.4.3" class="indexterm"></a><p>
+   Cette section fournit un aperçu de <acronym class="acronym">TOAST</acronym> (<span class="foreignphrase"><em class="foreignphrase">The
+    Oversized-Attribute Storage Technique</em></span>, la technique de
+   stockage des attributs trop grands).
+  </p><p>
+   Puisque <span class="productname">PostgreSQL</span> utilise une taille de page fixe
+   (habituellement 8 ko) et n'autorise pas qu'une ligne s'étende sur plusieurs
+   pages. Du coup, il n'est pas possible de stocker de grandes valeurs directement
+   dans les champs. Pour dépasser cette limitation, les valeurs de champ
+   volumineuses sont compressées et/ou divisées en plusieurs lignes physiques. Ceci
+   survient de façon transparente pour l'utilisateur, avec seulement un petit
+   impact sur le code du serveur. Cette technique est connue sous l'acronyme
+   affectueux de <acronym class="acronym">TOAST</acronym> (ou <span class="quote">« <span class="quote">the best thing since sliced
+    bread</span> »</span>). L'infrastructure <acronym class="acronym">TOAST</acronym> est aussi utilisé pour
+   améliorer la gestion des valeurs de grande taille en mémoire.
+  </p><p>
+   Seuls certains types de données supportent <acronym class="acronym">TOAST</acronym>  -- 
+   il n'est pas nécessaire d'imposer cette surcharge sur les types de données
+   qui ne produisent pas de gros volumes. Pour supporter
+   <acronym class="acronym">TOAST</acronym>, un type de données doit avoir une représentation
+   (<em class="firstterm">varlena</em>) à longueur variable, dans laquelle,
+   généralement, le premier mot de quatre octets contient la longueur totale
+   de la valeur en octets (en incluant ce mot). <acronym class="acronym">TOAST</acronym> ne
+   restreint pas le reste de la représentation de la donnée. Les
+   représentations spéciales appelées collectivement <em class="firstterm">valeurs
+    <acronym class="acronym">TOAST</acronym>ées</em> fonctionnent en modifiant et en
+   ré-interprétant ce mot de longueur initial. De ce fait, les fonctions C
+   supportant un type de données <acronym class="acronym">TOAST</acronym>-able doivent faire
+   attention à la façon dont elles gèrent les valeurs en entrées
+   potentiellement <acronym class="acronym">TOAST</acronym>ées : une entrée pourrait ne
+   pas consister en un mot longueur de quatre octets et son contenu situé
+   après tant qu'elle n'a pas été <em class="firstterm">dé-toastée</em>. (Ceci se
+   fait habituellement en appelant <code class="function">PG_DETOAST_DATUM</code> avant
+   toute action sur une valeur en entrée, mais dans certains cas, des
+   approches plus efficaces sont possibles. Voir <a class="xref" href="xtypes.html#XTYPES-TOAST" title="36.13.1. Considérations sur les TOAST">Section 36.13.1</a> pour plus de détails.)
+  </p><p>
+   <acronym class="acronym">TOAST</acronym> récupère deux bits du mot contenant la longueur
+   d'un varlena (ceux de poids fort sur les machines big-endian, ceux de poids
+   faible sur les machines little endian), limitant du coup la taille logique
+   de toute valeur d'un type de données <acronym class="acronym">TOAST</acronym> à 1 Go
+   (2<sup>30</sup> - 1 octets). Quand les deux bits sont à
+   zéro, la valeur est une valeur non <acronym class="acronym">TOAST</acronym>é du type de
+   données et les bits restants dans le mot contenant la longueur indiquent la
+   taille totale du datum (incluant ce mot) en octets. Quand le bit de poids
+   fort (ou de poids faible) est à un, la valeur a un en-tête de seulement un
+   octet alors qu'un en-tête normal en fait quatre. Les bits restants donnent
+   la taille totale du datum (incluant ce mot) en octets. Cette alternative
+   supporte un stockage efficace en espace de valeurs plus petites que 127
+   octets, tout en permettant au type de données de grossir jusqu'à 1 Go si
+   besoin. Les valeurs avec un en-tête sur un octet ne sont pas alignées par
+   rapport à une limite particulière, alors que les valeurs avec des en-têtes
+   à quatre octets sont au moins alignées sur une limite de quatre
+   octets ; la suppression de cet alignement permet de gagner encore un
+   peu d'espace supplémentaire qui est significatif quand on le compare au
+   stockage d'une petite valeur. Voici un cas particulier. Si les bits
+   restants d'un en-tête sur un octet sont tous à zéro (ce qui serait
+   impossible pour une longueur auto-inclue), la valeur est un pointeur vers
+   la donnée sur disque, avec d'autres alternatives décrites ci-dessous. Le
+   type et la taille d'un tel <em class="firstterm">pointeur TOAST</em> sont
+   déterminés par le code enregistré dans le deuxième octet du datum. Enfin,
+   quand le premier ou dernier bit vaut 0 mais que le bit adjacent vaut 1, le
+   contenu du datum a été compressé et doit être décompressé avant de pouvoir
+   être utilisé. Dans ce cas, les bits restants du mot longueur de quatre
+   octets donnent une taille totale du datum compressé, pas celles des données
+   au départ. Notez que la compression est aussi possible pour les données de
+   la table TOAST mais l'en-tête varlena n'indique pas si c'est le cas
+    --  le contenu du pointeur <acronym class="acronym">TOAST</acronym> le précise.
+  </p><p>
+   La technique de compression utilisée soit pour les données en ligne ou hors
+   ligne est sélectionnable pour chaque colonne en configurant l'option de
+   colonne <code class="literal">COMPRESSION</code> avec les commandes <code class="command">CREATE
+   TABLE</code> et <code class="command">ALTER TABLE</code>. La valeur par défaut
+   pour les colonnes sans paramétrage spécifique correspond à la valeur du
+   paramètre <a class="xref" href="runtime-config-client.html#GUC-DEFAULT-TOAST-COMPRESSION">default_toast_compression</a> au moment où la
+   donnée est insérée.
+  </p><p>
+   Comme mentionné, il existe plusieurs types de pointeurs
+   <acronym class="acronym">TOAST</acronym>. Le type le plus ancien et le plus commun est un
+   pointeur vers des données disques stockées dans une <em class="firstterm">table
+    <acronym class="acronym">TOAST</acronym></em> qui est séparée, bien qu'associée, de
+   la table contenant le pointeur <acronym class="acronym">TOAST</acronym>. Ces pointeurs
+   <em class="firstterm">sur disque</em> sont créés par le code de gestion des
+   <acronym class="acronym">TOAST</acronym> (dans
+   <code class="filename">access/common/toast_internals.c</code>) quand un enregistrement à
+   stocker sur disque est trop gros pour être stocké comme d'habitude. Plus de
+   détails sont disponibles dans <a class="xref" href="storage-toast.html#STORAGE-TOAST-ONDISK" title="65.2.1. Stockage TOAST sur disque">Section 65.2.1</a>.
+   Alternativement, un pointeur <acronym class="acronym">TOAST</acronym> peut contenir un
+   pointeur vers des données hors-ligne qui apparaissent ailleurs en mémoire.
+   De tels datums ont une vie courte, et n'iront jamais sur disque. Elles sont
+   cependant utiles pour éviter de copier et de traiter plusieurs fois de
+   grosses données. <a class="xref" href="storage-toast.html#STORAGE-TOAST-INMEMORY" title="65.2.2. Stockage TOAST en mémoire, hors-ligne">Section 65.2.2</a> fournit plus de
+   détails.
+  </p><div class="sect2" id="STORAGE-TOAST-ONDISK"><div class="titlepage"><div><div><h3 class="title">65.2.1. Stockage TOAST sur disque <a href="#STORAGE-TOAST-ONDISK" class="id_link">#</a></h3></div></div></div><p>
+    Si une des colonnes d'une table est <acronym class="acronym">TOAST</acronym>-able, la table
+    aura une table <acronym class="acronym">TOAST</acronym> associée, dont l'OID est enregistré
+    dans la colonne
+    <code class="structname">pg_class</code>.<code class="structfield">reltoastrelid</code>
+    pour cette table. Les valeurs <acronym class="acronym">TOAST</acronym>ées sur disque sont
+    conservées dans la table <acronym class="acronym">TOAST</acronym>, comme décrit en détails
+    ci-dessous.
+   </p><p>
+    Les valeurs hors-ligne sont divisées (après compression si nécessaire) en
+    morceaux d'au plus <code class="literal">TOAST_MAX_CHUNK_SIZE</code> octets
+    (par défaut, cette valeur est choisie pour que quatre morceaux de ligne
+    tiennent sur une page, d'où les 2000 octets). Chaque morceau est stocké
+    comme une ligne séparée dans la table <acronym class="acronym">TOAST</acronym> de la
+    table propriétaire. Chaque table <acronym class="acronym">TOAST</acronym> contient les
+    colonnes <code class="structfield">chunk_id</code> (un OID identifiant la
+    valeur <acronym class="acronym">TOAST</acronym>ée particulière),
+    <code class="structfield">chunk_seq</code> (un numéro de séquence pour le
+    morceau de la valeur) et <code class="structfield">chunk_data</code> (la donnée
+    réelle du morceau). Un index unique sur
+    <code class="structfield">chunk_id</code> et
+    <code class="structfield">chunk_seq</code> offre une récupération rapide des
+    valeurs. Un pointeur datum représentant une valeur
+    <acronym class="acronym">TOAST</acronym>ée hors-ligne a par conséquent besoin de stocker
+    l'OID de la table <acronym class="acronym">TOAST</acronym> dans laquelle chercher et
+    l'OID de la valeur spécifique (son <code class="structfield">chunk_id</code>).
+    Par commodité, les pointeurs datums stockent aussi la taille logique du
+    datum (taille de la donnée originale non compressée), la taille stockée
+    réelle (différente si la compression a été appliquée), et la méthode de
+    compression utilisée, si nécessaire. À partir des octets d'en-tête
+    varlena, la taille totale d'un pointeur datum <acronym class="acronym">TOAST</acronym>
+    est par conséquent de 18 octets quelle que soit la taille réelle de la
+    valeur représentée.
+   </p><p>
+    Le code <acronym class="acronym">TOAST</acronym> est déclenché seulement quand une valeur de ligne
+    à stocker dans une table est plus grande que <code class="symbol">TOAST_TUPLE_THRESHOLD</code> octets (habituellement
+    2 ko). Le code <acronym class="acronym">TOAST</acronym> compressera et/ou déplacera les valeurs
+    de champ hors la ligne jusqu'à ce que la valeur de la ligne soit plus petite que
+    <code class="symbol">TOAST_TUPLE_TARGET</code> octets  (habituellement là-aussi
+    2 ko) ou que plus aucun gain ne puisse être réalisé.
+    Lors d'une opération UPDATE, les valeurs des champs non modifiées sont habituellement
+    préservées telles quelles ; donc un UPDATE sur une ligne avec des valeurs hors
+    ligne n'induit pas de coûts à cause de <acronym class="acronym">TOAST</acronym> si aucune des valeurs
+    hors-ligne n'est modifiée.
+   </p><p>
+    Le code <acronym class="acronym">TOAST</acronym> connaît quatre stratégies différentes pour stocker
+    les colonnes <acronym class="acronym">TOAST</acronym>-ables :
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       <code class="literal">PLAIN</code> empêche soit la compression soit le stockage
+       hors-ligne. Ceci est la seule stratégie possible
+       pour les colonnes des types de données non
+       <acronym class="acronym">TOAST</acronym>-ables.
+      </p></li><li class="listitem"><p>
+       <code class="literal">EXTENDED</code> permet à la fois la compression et le
+       stockage hors-ligne. Ceci est la valeur par défaut de la plupart des
+       types de données <acronym class="acronym">TOAST</acronym>-ables. La compression sera tentée en
+       premier, ensuite le stockage hors-ligne si la ligne est toujours trop
+       grande.
+      </p></li><li class="listitem"><p>
+       <code class="literal">EXTERNAL</code> autorise le stockage hors-ligne mais pas la
+       compression. L'utilisation d'<code class="literal">EXTERNAL</code> rendra plus rapides les
+       opérations sur des sous-chaînes d'importantes colonnes de type
+       <code class="type">text</code> et <code class="type">bytea</code> (au dépens d'un
+       espace de stockage accrus) car ces opérations sont optimisées pour
+       récupérer seulement les parties requises de la valeur hors-ligne
+       lorsqu'elle n'est pas compressée.
+      </p></li><li class="listitem"><p>
+       <code class="literal">MAIN</code> autorise la compression mais pas le stockage
+       hors-ligne. (En réalité le stockage hors-ligne sera toujours réalisé
+       pour de telles colonnes mais seulement en dernier ressort s'il n'existe
+       aucune autre solution pour diminuer suffisamment la taille de la ligne
+       pour qu'elle tienne sur une page.)
+      </p></li></ul></div><p>
+
+    Chaque type de données <acronym class="acronym">TOAST</acronym>-able spécifie une stratégie par défaut
+    pour les colonnes de ce type de donnée, mais la stratégie pour une colonne d'une table
+    donnée peut être modifiée avec <a class="link" href="sql-altertable.html" title="ALTER TABLE"><code class="command">ALTER
+      TABLE ... SET STORAGE</code></a>.
+   </p><p>
+    <code class="symbol">TOAST_TUPLE_TARGET</code> peut être ajusté pour chaque table en
+    utilisant <a class="link" href="sql-altertable.html" title="ALTER TABLE"><code class="command">ALTER TABLE ... SET
+      (toast_tuple_target = N)</code></a>
+   </p><p>
+    Cette combinaison a de nombreux avantages comparés à une approche plus directe
+    comme autoriser le stockage des valeurs de lignes sur plusieurs pages. En
+    supposant que les requêtes sont habituellement qualifiées par comparaison avec
+    des valeurs de clé relativement petites, la grosse partie du travail de
+    l'exécuteur sera réalisée en utilisant l'entrée principale de la ligne. Les
+    grandes valeurs des attributs <acronym class="acronym">TOAST</acronym>és seront seulement récupérées
+    (si elles sont sélectionnées) au moment où l'ensemble de résultats est
+    envoyé au client. Ainsi, la table principale est bien plus petite
+    et un plus grand nombre de ses lignes tiennent dans le cache du tampon partagé,
+    ce qui ne serait pas le cas sans aucun stockage hors-ligne.
+    Le tri l'utilise aussi, et les tris seront plus souvent réalisés entièrement
+    en mémoire. Un petit test a montré qu'une table contenant des pages HTML
+    typiques ainsi que leurs URL étaient stockées en à peu près la moitié de la
+    taille des données brutes en incluant la table <acronym class="acronym">TOAST</acronym> et que la
+    table principale contenait moins de 10 % de la totalité des données (les
+    URL et quelques petites pages HTML). Il n'y avait pas de différence à l'exécution
+    en comparaison avec une table non <acronym class="acronym">TOAST</acronym>ée, dans laquelle toutes les
+    pages HTLM avaient été coupées à 7 ko pour tenir.
+   </p></div><div class="sect2" id="STORAGE-TOAST-INMEMORY"><div class="titlepage"><div><div><h3 class="title">65.2.2. Stockage TOAST en mémoire, hors-ligne <a href="#STORAGE-TOAST-INMEMORY" class="id_link">#</a></h3></div></div></div><p>
+    Les pointeurs <acronym class="acronym">TOAST</acronym> peuvent pointer vers des données
+    qui ne sont pas sur disque, mais ailleurs, dans la mémoire du processus
+    serveur en cours d'exécution. De toute évidence, de tels pointeurs ont
+    une durée de vie courte, mais ils n'en restent pas moins utiles. Il
+    existe actuellement deux cas : les pointeurs vers des données
+    <em class="firstterm">indirectes</em> et les pointeurs vers des données
+    <em class="firstterm">étendues</em>.
+   </p><p>
+    Les pointeurs <acronym class="acronym">TOAST</acronym> indirectes pointent simplement vers
+    une valeur varlena dite <span class="foreignphrase"><em class="foreignphrase">non-indirect</em></span> en
+    mémoire. Ce cas a été créé à la base comme un PoC (<span class="foreignphrase"><em class="foreignphrase">Proof of
+     Concept</em></span>), mais il est actuellement utilisé lors du
+    décodage logique pour éviter d'avoir potentiellement à créer des
+    enregistrements physiques dépassant 1 Go (ce que le déplacement des
+    valeurs hors-ligne du champ dans l'enregistrement pourrait faire).
+    L'intérêt est limité car le création du datum pointeur est totalement
+    responsable de la survie de la donnée référencée tant que le pointeur
+    existe, et aucune infrastructure n'a été mise en place pour aider à ça.
+   </p><p>
+    Les pointeurs <acronym class="acronym">TOAST</acronym> étendus sont utiles pour les types
+    de données complexes dont la représentation sur disque n'est pas
+    particulièrement adaptée pour un traitement. Par exemple, la représentation
+    varlena standard d'un tableau <span class="productname">PostgreSQL</span> inclut
+    des informations sur les dimensions, un champ de bits pour les éléments
+    NULL s'il y en a, et enfin les valeurs de tous les éléments dans l'ordre.
+    Quand l'élément est lui-même de longueur variable, la seule façon de
+    trouver l'élément <em class="replaceable"><code>N</code></em> est de parcourir tous les
+    éléments précédents. Cette représentation est appropriée pour le stockage
+    sur disque car elle prend peu de place mais pour le traitement du tableau,
+    il est mieux d'avoir une représentation <span class="quote">« <span class="quote">étendue</span> »</span> ou
+    <span class="quote">« <span class="quote">déconstruite</span> »</span> pour laquelle l'emplacement de chaque élément
+    est identifié. Le mécanisme du pointeur <acronym class="acronym">TOAST</acronym> supporte
+    ce besoin en autorisant un Datum passé par référencer à pointer vers soit
+    une valeur varlena standard (la représentation sur disque) soit un pointeur
+    <acronym class="acronym">TOAST</acronym> vers une représentation étendue quelque part en
+    mémoire. Les détails de cette représentation étendue sont à la discrétion
+    du type de données, bien qu'elle doive avoir un en-tête standard et
+    accepter les autres prérequis de l'API indiqués dans
+    <code class="filename">src/include/utils/expandeddatum.h</code>. Les fonctions C
+    travaillant avec le type de données doivent choisir de gérer une ou l'autre
+    représentation. Les fonctions qui ne connaissant pas la représentation
+    étendue, et qui de ce fait appliquent <code class="function">PG_DETOAST_DATUM</code>
+    à leurs données en entrée, recevront automatiquement la représentation
+    varlena traditionnelle. De ce fait, le support d'une représentation étendue
+    peut se faire petit à petit, une fonction à la fois.
+   </p><p>
+    Les pointeurs <acronym class="acronym">TOAST</acronym> vers des valeurs étendues sont
+    encore divisés en pointeurs <em class="firstterm">read-write</em>
+    (lecture/écriture) et <em class="firstterm">read-only</em> (lecture seule). La
+    représentation pointée est la même dans les deux cas, mais une fonction
+    qui reçoit un pointeur read-write est autorisée à modifier directement la
+    valeur référencée alors qu'une fonction qui reçoit un pointeur read-only
+    ne l'est pas ; elle doit tout d'abord créer une copie si elle veut
+    avoir une version modifiée de la valeur. Cette distinction et certaines
+    conventions associées rendent possible d'éviter des copies inutiles de
+    valeurs étendues pendant l'exécution de la requête.
+   </p><p>
+    Pour tous les types de pointeurs <acronym class="acronym">TOAST</acronym> en mémoire, le
+    code de gestion des <acronym class="acronym">TOAST</acronym> s'assurer qu'aucun datum
+    pointeur ne puisse être enregistré par erreur sur disque. Les pointeurs
+    <acronym class="acronym">TOAST</acronym> en mémoire sont automatiquement étendus en des
+    valeurs varlena en ligne tout à fait standards avant leur enregistrement
+     --  puis potentiellement convertis en pointeurs
+    <acronym class="acronym">TOAST</acronym> sur disque si l'enregistrement devient trop gros.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/storage-toast.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:17 GMT -->
+</html>

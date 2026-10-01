@@ -1,0 +1,721 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/install-meson.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:31 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>17.4. Compilation et installation avec Meson</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="install-make.html" title="17.3. Complilation et installation avec Autoconf et Make" /><link rel="next" href="install-post.html" title="17.5. Initialisation post-installation" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/install-meson.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/install-meson.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/install-meson.html">16</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/install-meson.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="installation.html">Procédure d'installation depuis le code source</a></span> » <span class="breadcrumb-node">Compilation et installation avec Meson</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="install-make.html" title="17.3. Complilation et installation avec Autoconf et Make">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="installation.html" title="Chapitre 17. Procédure d'installation depuis le code source">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="install-post.html" title="17.5. Initialisation post-installation">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">17.3. Complilation et installation avec Autoconf et Make </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 17.5. Initialisation post-installation</td></tr></table></div><div class="sect1" id="INSTALL-MESON"><div class="titlepage"><div><div><h2 class="title" style="clear: both">17.4. Compilation et installation avec Meson <a href="#INSTALL-MESON" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="install-meson.html#INSTALL-SHORT-MESON">17.4.1. Version courte</a></span></dt><dt><span class="sect2"><a href="install-meson.html#INSTALL-PROCEDURE-MESON">17.4.2. Procédure d'installation</a></span></dt><dt><span class="sect2"><a href="install-meson.html#MESON-OPTIONS">17.4.3. Options de <code class="literal">meson setup</code></a></span></dt><dt><span class="sect2"><a href="install-meson.html#TARGETS-MESON">17.4.4. Cibles de construction <code class="literal">meson</code></a></span></dt></dl></div><div class="sect2" id="INSTALL-SHORT-MESON"><div class="titlepage"><div><div><h3 class="title">17.4.1. Version courte <a href="#INSTALL-SHORT-MESON" class="id_link">#</a></h3></div></div></div><p>
+</p><pre class="synopsis">
+meson setup build --prefix=/usr/local/pgsql
+cd build
+ninja
+su
+ninja install
+adduser postgres
+mkdir -p /usr/local/pgsql/data
+chown postgres /usr/local/pgsql/data
+su - postgres
+/usr/local/pgsql/bin/initdb -D /usr/local/pgsql/data
+/usr/local/pgsql/bin/pg_ctl -D /usr/local/pgsql/data -l logfile start
+/usr/local/pgsql/bin/createdb test
+/usr/local/pgsql/bin/psql test
+</pre><p>
+   La version longue correspond au reste de cette <span class="phrase">section</span>.
+  </p></div><div class="sect2" id="INSTALL-PROCEDURE-MESON"><div class="titlepage"><div><div><h3 class="title">17.4.2. Procédure d'installation <a href="#INSTALL-PROCEDURE-MESON" class="id_link">#</a></h3></div></div></div><div class="procedure"><ol class="procedure" type="1"><li class="step" id="MESON-CONFIGURE"><p class="title"><strong>Configuration</strong></p><p>
+    La première étape de la procédure d'installation est de configurer le
+    répertoire de compilation pour votre système et de choisir les options que
+    vous souhaitez. Pour créer et configurer le répertoire de compilation, vous
+    pouvez démarrer avec la commande <code class="literal">meson setup</code>.
+</p><pre class="screen">
+<strong class="userinput"><code>meson setup build</code></strong>
+</pre><p>
+    Cette commande d'initialisation prend comme argument un <code class="literal">builddir</code>
+    et un <code class="literal">srcdir</code>. Si aucun <code class="literal">srcdir</code> n'est fourni, Meson
+    va déduire le <code class="literal">srcdir</code> en se basant sur le répertoire courant et la
+    location de <code class="literal">meson.build</code>. Le <code class="literal">builddir</code> est obligatoire.
+   </p><p>
+    Exécuter <code class="literal">meson setup</code> charge le fichier de configuration
+    généré et initialise le répertoire de compilation. De plus, vous pouvez
+    aussi passer de nombreuses options de compilation à Meson. Certaines les
+    plus communément utilisées sont mentionnées dans les sections suivantes. Par
+    exemple :
+
+</p><pre class="screen">
+# configure avec un préfixe d'installation différent :
+meson setup build --prefix=/home/user/pg-install
+
+# configure pour une compilation de débug :
+meson setup build --buildtype=debug
+
+# configure pour une compilation avec support OpenSSL :
+meson setup build -Dssl=openssl
+</pre><p>
+   </p><p>
+    Initialiser le répertoire de compilation est une étape qui s'effectue une
+    fois seulement. Pour reconfigurer une nouvelle compilation, vous pouvez
+    simplement utiliser la commande <code class="literal">meson configure</code>.
+</p><pre class="screen">
+meson configure -Dcassert=true
+</pre><p>
+    Les options en ligne de commande de <code class="command">meson configure</code> les
+    plus communément utilisées sont expliquées dans <a class="xref" href="install-meson.html#MESON-OPTIONS" title="17.4.3. Options de meson setup">Section 17.4.3</a>.
+   </p></li><li class="step" id="MESON-BUILD"><p class="title"><strong>Compilation</strong></p><p>
+    Par défaut, <span class="productname">Meson</span> utilise l'outil de compilation
+    <a class="ulink" href="https://ninja-build.org/" target="_top">Ninja</a>. Pour compiler
+    <span class="productname">PostgreSQL</span> depuis les sources en utilisant Meson,
+    vous devez simplement utiliser la commande <code class="literal">ninja</code> dans
+    le répertoire de compilation.
+</p><pre class="screen">
+ninja
+</pre><p>
+    Ninja va automatiquement détecter le nombre de CPU dans votre ordinateur et
+    paralléliser lui-même en conséquence. Vous pouvez surcharger le nombre de
+    processus parallèles utilisés avec l'argument de ligne de commande
+    <code class="literal">-j</code>.
+   </p><p>
+    Prenez note qu'après l'étape initiale de configuration, <code class="command">ninja</code>
+    est la seule commande que vous aurez besoin de saisir pour compiler.
+    Quelque soit la façon dont vous modifiez l'arborescence source (à moins de la
+    déplacer vers un emplacement complètement nouveau), Meson va détecter les
+    changements et se régénérer lui-même en conséquence. Ceci est particulièrement pratique
+    si vous avez de multiples répertoires de compilation. Souvent, l'un d'eux est
+    utilisé pour le développement (la compilation en mode « debug ») et les autres
+    seulement de temps en temps (telle que la compilation en mode « analyse statique »).
+    N'importe quelle configuration peut être compilée juste en se déplaçant via cd dans
+    le répertoire correspondant puis en exécutant Ninja.
+   </p><p>
+    Si vous souhaitez compiler avec un autre outil que ninja, vous pouvez
+    utiliser configure avec l'option <code class="option">--backend</code> pour
+    sélectionner celui que vous voulez utiliser et compiler en utilisant
+    <code class="literal">meson compile</code>. Pour en savoir plus sur ces outils et les
+    autres arguments que vous pouvez fournir à ninja, vous pouvez vous référer à
+    la <a class="ulink" href="https://mesonbuild.com/Running-Meson.html#building-from-the-source" target="_top">
+    documentation de Meson</a>.
+   </p></li><li class="step"><p class="title"><strong>Tests de régression</strong></p><a id="id-1.6.4.7.3.2.3.2" class="indexterm"></a><p>
+    Si vous voulez tester la nouvelle compilation du serveur avant de
+    l'installer, vous pouvez exécuter des tests de régression à ce point. Les
+    tests de régression sont une suite de test vérifiant que
+    <span class="productname">PostgreSQL</span> s'exécute sur votre machine de la
+    façon dont les développeurs l'attendent.  Saisissez :
+</p><pre class="screen">
+<strong class="userinput"><code>meson test</code></strong>
+</pre><p>
+    (Cela ne fonctionnera pas en tant que root ; exécutez-le avec un
+    utilisateur non privilégié.) Voir <a class="xref" href="regress.html" title="Chapitre 31. Tests de régression">Chapitre 31</a> pour des
+    informations détaillées sur l'interprétation des résultats des tests. Vous
+    pouvez répéter ce test plus tard en exécutant la même commande.
+   </p><p>
+    Pour exécuter les tests pg_regress et pg_isolation_regress sur une instance
+    postgres démarrée, préciser <strong class="userinput"><code>--setup running</code></strong> comme
+    argument à <strong class="userinput"><code>meson test</code></strong>.
+   </p></li><li class="step" id="MESON-INSTALL"><p class="title"><strong>Installer les fichiers</strong></p><div class="note"><h3 class="title">Note</h3><p>
+     Si vous mettez à jour un système existant, soyez sûr de lire
+     <a class="xref" href="upgrading.html" title="18.6. Mise à jour d'une instance PostgreSQL">Section 18.6</a>, qui indique les instructions pour
+     mettre à jour une instance.
+    </p></div><p>
+    Une fois que PostgreSQL est compilé, vous pouvez l'installer simplement en
+    exécutant la commande <code class="literal">ninja install</code>.
+</p><pre class="screen">
+ninja install
+</pre><p>
+   </p><p>
+    Ceci installera les fichiers dans les répertoires qui ont été spécifiés dans
+    <a class="xref" href="install-meson.html#MESON-CONFIGURE" title="Configuration">Étape 1</a>. Assurez-vous que vous disposez des droits
+    appropriés pour écrire dans ces zones. Vous pourriez avoir besoin de
+    l'exécuter sous root. Alternativement, vous pouvez créer les répertoires
+    cibles en avance et vous assurer de l'octroi des droits appropriées.
+    L'installation standard fournit les fichiers entête nécessaire pour le
+    développement d'application client aussi bien que le développement de
+    programme côté serveur, comme des fonctions personnalisées ou des types de
+    données écrits en C.
+   </p><p>
+    <code class="literal">ninja install</code> devrait fonctionner dans la plupart des
+    cas, mais si vous préférez plus d'options (telles que
+    <code class="option">--quiet</code> pour supprimer les sorties supplémentaires), vous
+    pouvez aussi utiliser à la place <code class="literal">meson install</code>. Vous
+    pouvez en apprendre plus sur <a class="ulink" href="https://mesonbuild.com/Commands.html#install" target="_top">meson install</a> et
+    ces options dans la documentation Meson.
+   </p></li></ol></div><p><strong>Désinstallation. </strong>
+    Pour annuler l'installation, vous pouvez utiliser la commande
+    <code class="command">ninja uninstall</code>.
+   </p><p><strong>Nettoyage. </strong>
+    Après l'installation, vous pouvez libérer l'espace disque en supprimant
+    les fichiers compilés depuis le répertoire source avec la commande
+    <code class="command">ninja clean</code>.
+   </p></div><div class="sect2" id="MESON-OPTIONS"><div class="titlepage"><div><div><h3 class="title">17.4.3. Options de <code class="literal">meson setup</code> <a href="#MESON-OPTIONS" class="id_link">#</a></h3></div></div></div><p>
+    Les options de la ligne de commande <code class="literal">meson setup</code> sont
+    explicitées ci-dessous. La liste n'est pas exhaustive (utiliser
+    <code class="literal">meson configure --help</code> pour obtenir l'exhaustivité). Les
+    options non couvertes ici sont destinées à des cas d'usage avancés, et sont
+    documentées dans la <a class="ulink" href="https://mesonbuild.com/Commands.html#configure" target="_top">documentation de
+    Meson</a>. Ces arguments peuvent être utilisés aussi bien avec
+    <code class="command">meson setup</code>.
+   </p><div class="sect3" id="MESON-OPTIONS-LOCATIONS"><div class="titlepage"><div><div><h4 class="title">17.4.3.1. Emplacements d'installation <a href="#MESON-OPTIONS-LOCATIONS" class="id_link">#</a></h4></div></div></div><p>
+      Ces options contrôlent où <code class="literal">ninja install</code> (ou
+      <code class="literal">meson install</code>) vont déposer les fichiers. L'option
+      <code class="option">--prefix</code> (exemple <a class="xref" href="install-meson.html#INSTALL-SHORT-MESON" title="17.4.1. Version courte">Section 17.4.1</a>)
+      est suffisante pour la plupart des cas.  Si vous avez des besoins
+      particuliers, vous pouvez personnaliser les sous-répertoires
+      d'installation avec les autres options décrites dans cette section.
+      Attention, cependant, que tout changement relatif aux emplacements des
+      différents sous-répertoires peut rendre l'installation non déplaçable,
+      signifiant que vous ne pourrez plus la déplacer après l'installation.
+      (Les emplacements <code class="literal">man</code> et <code class="literal">doc</code> ne sont
+      pas affectés par cette restriction.) Pour des installations déplaçables,
+      vous pouvez vouloir utiliser l'option <code class="literal">-Drpath=false</code>
+      décrite plus loin.
+     </p><div class="variablelist"><dl class="variablelist"><dt id="CONFIGURE-PREFIX-MESON"><span class="term"><code class="option">--prefix=<em class="replaceable"><code>PREFIX</code></em></code></span> <a href="#CONFIGURE-PREFIX-MESON" class="id_link">#</a></dt><dd><p>
+         Installe tous les fichier sous le répertoire
+         <em class="replaceable"><code>PREFIX</code></em> au lieu de
+         <code class="filename">/usr/local/pgsql</code> (sur les systèmes basés sur Unix)
+         ou
+         <code class="filename"><em class="replaceable"><code>lettre_lecteur_courant</code></em>:/usr/local/pgsql</code>
+         (sur Windows).  Les fichiers seront installés dans divers
+         sous-répertoires ; aucun fichier ne sera directement installé dans
+         le répertoire <em class="replaceable"><code>PREFIX</code></em>.
+        </p></dd><dt id="CONFIGURE-BINDIR-MESON"><span class="term"><code class="option">--bindir=<em class="replaceable"><code>DIRECTORY</code></em></code></span> <a href="#CONFIGURE-BINDIR-MESON" class="id_link">#</a></dt><dd><p>
+         Précise le répertoire pour des programmes exécutables. La valeur par
+         défaut est <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/bin</code>.
+        </p></dd><dt id="CONFIGURE-SYSCONFDIR-MESON"><span class="term"><code class="option">--sysconfdir=<em class="replaceable"><code>DIRECTORY</code></em></code></span> <a href="#CONFIGURE-SYSCONFDIR-MESON" class="id_link">#</a></dt><dd><p>
+         Précise le répertoire pour divers fichiers de configuration,
+         par défaut <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/etc</code> .
+        </p></dd><dt id="CONFIGURE-LIBDIR-MESON"><span class="term"><code class="option">--libdir=<em class="replaceable"><code>DIRECTORY</code></em></code></span> <a href="#CONFIGURE-LIBDIR-MESON" class="id_link">#</a></dt><dd><p>
+         Précise l'emplacement d'installation des bibliothèques et modules dynamiquement
+         chargeables. Le défaut est <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/lib</code>.
+        </p></dd><dt id="CONFIGURE-INCLUDEDIR-MESON"><span class="term"><code class="option">--includedir=<em class="replaceable"><code>DIRECTORY</code></em></code></span> <a href="#CONFIGURE-INCLUDEDIR-MESON" class="id_link">#</a></dt><dd><p>
+         Précise le répertoire pour installer les fichiers entêtes C et C++.
+         Le défaut est <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/include</code>.
+        </p></dd><dt id="CONFIGURE-DATADIR-MESON"><span class="term"><code class="option">--datadir=<em class="replaceable"><code>DIRECTORY</code></em></code></span> <a href="#CONFIGURE-DATADIR-MESON" class="id_link">#</a></dt><dd><p>
+         Précise le répertoire pour les fichiers de données en lecture seule utilisés
+         par les programmes installés. Le défaut est
+         <code class="filename"><em class="replaceable"><code>PREFIX</code></em>/share</code>. Notez qu'il n'a
+         rien à voir avec l'emplacement des fichiers de base de données.
+        </p></dd><dt id="CONFIGURE-LOCALEDIR-MESON"><span class="term"><code class="option">--localedir=<em class="replaceable"><code>DIRECTORY</code></em></code></span> <a href="#CONFIGURE-LOCALEDIR-MESON" class="id_link">#</a></dt><dd><p>
+         Précise le répertoire pour installer les données des locales, en particulier
+         les fichiers du catalogue de traduction des messages. Le défaut est
+         <code class="filename"><em class="replaceable"><code>DATADIR</code></em>/locale</code>.
+        </p></dd><dt id="CONFIGURE-MANDIR-MESON"><span class="term"><code class="option">--mandir=<em class="replaceable"><code>DIRECTORY</code></em></code></span> <a href="#CONFIGURE-MANDIR-MESON" class="id_link">#</a></dt><dd><p>
+         Les pages man qui viennent avec <span class="productname">PostgreSQL</span> seront
+         installées dans ce répertoire, dans leur sous-répertoires
+         <code class="filename">man<em class="replaceable"><code>x</code></em></code> respectifs.
+         Le défaut est <code class="filename"><em class="replaceable"><code>DATADIR</code></em>/man</code>.
+        </p></dd></dl></div><div class="note"><h3 class="title">Note</h3><p>
+       Des précautions ont été prises pour rendre possible l'installation de
+       <span class="productname">PostgreSQL</span> dans des emplacements d'installation
+       partagés (tels que <code class="filename">/usr/local/include</code>) sans
+       interférer avec l'espace de noms du reste du système. D'abord la chaîne
+       <span class="quote">« <span class="quote"><code class="literal">/postgresql</code></span> »</span> est automatiquement concaténée à
+       <code class="varname">datadir</code>, <code class="varname">sysconfdir</code>, et <code class="varname">docdir</code>,
+       à moins que le nom de répertoire pleinement étendu contienne déjà la chaîne
+       <span class="quote">« <span class="quote"><code class="literal">postgres</code></span> »</span> ou <span class="quote">« <span class="quote"><code class="literal">pgsql</code></span> »</span>.
+       Par exemple, si vous choisissez <code class="filename">/usr/local</code> comme préfixe,
+       la documentation sera installée dans <code class="filename">/usr/local/doc/postgresql</code>,
+       mais si le préfixe est <code class="filename">/opt/postgres</code>, alors cela sera dans
+       <code class="filename">/opt/postgres/doc</code>. Les fichiers entêtes C publiques des
+       interfaces clientes seront installés dans <code class="varname">includedir</code> et
+       sont propres à l'espace de noms. Les fichiers d'entête internes et les fichiers
+       d'entête serveur sont installés dans des répertoires privés sous <code class="varname">includedir</code>.
+       Voir la documentation pour chaque interface pour les informations d'accès aux
+       fichiers entêtes. Enfin, un sous-répertoire privé sera aussi créé, si cela est
+       approprié, sous <code class="varname">libdir</code> pour les modules dynamiquement
+       chargeables.
+      </p></div></div><div class="sect3" id="MESON-OPTIONS-FEATURES"><div class="titlepage"><div><div><h4 class="title">17.4.3.2. fonctionnalités de <span class="productname">PostgreSQL</span> <a href="#MESON-OPTIONS-FEATURES" class="id_link">#</a></h4></div></div></div><p>
+     Les options décrites dans cette section permettent la compilation de
+     diverses fonctionnalités obsolètes de <span class="productname">PostgreSQL</span>.
+     La plupart requièrent des logiciels additionnels, comme décrit dans
+     <a class="xref" href="install-requirements.html" title="17.1. Prérequis">Section 17.1</a>, et seront automatiquement activées
+     si le logiciel requis est trouvé. Vous pouvez changer ce comportement
+     en mettant manuellement ces fonctionnalités à <code class="literal">enabled</code>
+     pour les demander ou <code class="literal">disabled</code> pour ne pas les intégrer
+     à la compilation.
+    </p><p>
+     Pour préciser les options spécifiques de PostgreSQL, le nom de l'option
+     doit être préfixée par <code class="literal">-D</code>.
+    </p><div class="variablelist"><dl class="variablelist"><dt id="CONFIGURE-WITH-NLS-MESON"><span class="term"><code class="option">-Dnls={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-NLS-MESON" class="id_link">#</a></dt><dd><p>
+        Active ou désactive le support de language natif (Native Language Support <acronym class="acronym">NLS</acronym>),
+        qui est la possibilité d'afficher les messages d'un programme dans une langue autre
+        que l'anglais. Le défaut est auto et sera activé automatiquement si une
+        implémentation de l'<span class="application">API Gettext</span> est trouvée.
+       </p></dd><dt id="CONFIGURE-WITH-PLPERL-MESON"><span class="term"><code class="option">-Dplperl={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-PLPERL-MESON" class="id_link">#</a></dt><dd><p>
+        Compile le langage serveur <span class="application">PL/Perl</span>.
+        Le défaut est auto.
+       </p></dd><dt id="CONFIGURE-WITH-PLPYTHON-MESON"><span class="term"><code class="option">-Dplpython={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-PLPYTHON-MESON" class="id_link">#</a></dt><dd><p>
+        Compile le langage serveur <span class="application">PL/Python</span>.
+        Le défaut est auto.
+       </p></dd><dt id="CONFIGURE-WITH-PLTCL-MESON"><span class="term"><code class="option">-Dpltcl={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-PLTCL-MESON" class="id_link">#</a></dt><dd><p>
+        Compile le langage serveur <span class="application">PL/Tcl</span>.
+        Le défaut est auto.
+       </p></dd><dt id="CONFIGURE-WITH-TCL-VERSION-MESON"><span class="term"><code class="option">-Dtcl_version=<em class="replaceable"><code>TCL_VERSION</code></em></code></span> <a href="#CONFIGURE-WITH-TCL-VERSION-MESON" class="id_link">#</a></dt><dd><p>
+        Définit la version Tcl à utiliser lors de la compilation de PL/Tcl.
+       </p></dd><dt id="CONFIGURE-WITH-ICU-MESON"><span class="term"><code class="option">-Dicu={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-ICU-MESON" class="id_link">#</a></dt><dd><p>
+        Compile le support pour la bibliothèque
+        <span class="productname">ICU</span><a id="id-1.6.4.7.4.4.4.6.2.1.2" class="indexterm"></a>,
+        activant l'utilisation des fonctionnalités des collations ICU
+        (voir <a class="xref" href="collation.html" title="23.2. Support des collations">Section 23.2</a>). Le défaut est auto et demande que le
+        paquet <span class="productname">ICU4C</span> soit installé. La version minimale
+        requise de <span class="productname">ICU4C</span> est actuellement 4.2.
+       </p></dd><dt id="CONFIGURE-WITH-LLVM-MESON"><span class="term"><code class="option">-Dllvm={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-LLVM-MESON" class="id_link">#</a></dt><dd><p>
+        Compile avec le support pour <span class="productname">LLVM</span> basé sur
+        la compilation <acronym class="acronym">JIT</acronym> (voir <a class="xref" href="jit.html" title="Chapitre 30. JIT (compilation à la volée)">Chapitre 30</a>).
+        Cela nécessite d'installer la bibliothèque <span class="productname">LLVM</span>.
+        La version minimale de <span class="productname">LLVM</span> est actuellement 3.9.
+        Désactivé par défaut.
+       </p><p>
+        <code class="command">llvm-config</code><a id="id-1.6.4.7.4.4.4.7.2.2.2" class="indexterm"></a>
+        sera utilisée pour trouver les options de compilations requises.
+        <code class="command">llvm-config</code>, et ensuite,
+        pour toutes les versions supportées, <code class="command">llvm-config-$version</code> seront
+        recherchées dans votre <code class="envar">PATH</code>. Si cela ne donne pas le programme
+        souahité, utilisez <code class="envar">LLVM_CONFIG</code> pour définir un chemin vers le
+        <code class="command">llvm-config</code> correct.
+       </p></dd><dt id="CONFIGURE-WITH-LZ4-MESON"><span class="term"><code class="option">-Dlz4={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-LZ4-MESON" class="id_link">#</a></dt><dd><p>
+        Compile avec le support de compression <span class="productname">LZ4</span>.
+        Le défaut est auto.
+       </p></dd><dt id="CONFIGURE-WITH-ZSTD-MESON"><span class="term"><code class="option">-Dzstd={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-ZSTD-MESON" class="id_link">#</a></dt><dd><p>
+        Compile avec le support de compression <span class="productname">Zstandard</span>.
+        Le défault est auto.
+       </p></dd><dt id="CONFIGURE-WITH-SSL-MESON"><span class="term"><code class="option">-Dssl={ auto | <em class="replaceable"><code>LIBRARY</code></em> }</code>
+      <a id="id-1.6.4.7.4.4.4.10.1.2" class="indexterm"></a>
+      </span> <a href="#CONFIGURE-WITH-SSL-MESON" class="id_link">#</a></dt><dd><p>
+        Compile avec le support pour les connexions (chiffrées)
+        <acronym class="acronym">SSL</acronym>.  La seule <em class="replaceable"><code>LIBRARY</code></em>
+        supportée est <code class="option">openssl</code>.  Ceci nécessite que le paquet
+        <span class="productname">OpenSSL</span> soit installé.  Compiler avec cette
+        option implique de vérifier les fichiers d'entête et bibliothèques
+        requises pour être sûr que votre installation
+        <span class="productname">OpenSSL</span> soit suffisante avant exécution. Le
+        défaut pour cette option est auto.
+       </p></dd><dt id="CONFIGURE-WITH-GSSAPI-MESON"><span class="term"><code class="option">-Dgssapi={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-GSSAPI-MESON" class="id_link">#</a></dt><dd><p>
+        Compile avec le support de l'authentification GSSAPI. Il est nécessaire
+        que MIT Kerberos soit installé pour GSSAPI. Sur de nombreux systèmes, le
+        système GSSAPI (un sous-ensemble de l'installation MIT Kerberos) n'est
+        pas installé dans un emplacement recherché par défaut (i.e.
+        <code class="filename">/usr/include</code>, <code class="filename">/usr/lib</code>). Dans
+        ces cas, PostgreSQL va interroger <code class="command">pkg-config</code> pour
+        détecter le compilateur requis et les options de lien. Le défaut est
+        auto.  <code class="filename">meson configure</code> va vérifier pour les
+        fichiers d'entête et bibliothèques pour être sûr que votre installation
+        GSSAPI est suffisante avant exécution.
+       </p></dd><dt id="CONFIGURE-WITH-LDAP-MESON"><span class="term"><code class="option">-Dldap={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-LDAP-MESON" class="id_link">#</a></dt><dd><p>
+        Compile avec le support pour l'authentification
+        <acronym class="acronym">LDAP</acronym><a id="id-1.6.4.7.4.4.4.12.2.1.2" class="indexterm"></a> et
+        la recherche de paramètre de connexion (voir <span id="INSTALL-LDAP-LINKS-MESON" class="phrase"><a class="xref" href="libpq-ldap.html" title="32.18. Recherche LDAP des paramètres de connexion">Section 32.18</a> et <a class="xref" href="auth-ldap.html" title="20.10. Authentification LDAP">Section 20.10</a></span> pour plus d'information). Sous Unix, ceci
+        nécessite d'installer le paquet <span class="productname">OpenLDAP</span>.
+        Sous Windows, la bibliothèque <span class="productname">WinLDAP</span> est
+        utilisée par défaut. Le défaut est auto. <code class="filename">meson
+        configure</code> va vérifier les fichiers d'entête et bibliothèques
+        requises pour s'assurer que votre installation
+        <span class="productname">OpenLDAP</span> est suffisante avant exécution.
+       </p></dd><dt id="CONFIGURE-WITH-PAM-MESON"><span class="term"><code class="option">-Dpam={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-PAM-MESON" class="id_link">#</a></dt><dd><p>
+        Compile avec le support
+        <acronym class="acronym">PAM</acronym><a id="id-1.6.4.7.4.4.4.13.2.1.2" class="indexterm"></a>.
+        Le défaut est auto.
+       </p></dd><dt id="CONFIGURE-WITH-BSD-AUTH-MESON"><span class="term"><code class="option">-Dbsd_auth={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-BSD-AUTH-MESON" class="id_link">#</a></dt><dd><p>
+        Compile avec le support de l'authentification BSD. (Le système
+        d'authentification BSD n'est actuellement disponible que sur OpenBSD.) Le
+        défaut est auto.
+       </p></dd><dt id="CONFIGURE-WITH-SYSTEMD-MESON"><span class="term"><code class="option">-Dsystemd={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-SYSTEMD-MESON" class="id_link">#</a></dt><dd><p>
+        Compile avec le support de service de notifications
+        <span class="application">systemd</span><a id="id-1.6.4.7.4.4.4.15.2.1.2" class="indexterm"></a>.
+        Ceci améliore l'intégration si le serveur est démarré sous
+        <span class="application">systemd</span> mais n'a aucun impact autrement ;
+        voir <a class="xref" href="server-start.html" title="18.3. Lancer le serveur de bases de données">Section 18.3</a> pour plus d'information. Le défaut est
+        auto. <span class="application">libsystemd</span> et les fichiers d'entête
+        associés doivent être installés pour utiliser cette option.
+       </p></dd><dt id="CONFIGURE-WITH-BONJOUR-MESON"><span class="term"><code class="option">-Dbonjour={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-BONJOUR-MESON" class="id_link">#</a></dt><dd><p>
+        Compile avec le support pour le service de découverte automatique
+        Bonjour. Le défaut est auto et nécessite le support de Bonjour sur
+        votre système d'exploitation. Recommandé sur macOS.
+       </p></dd><dt id="CONFIGURE-WITH-UUID-MESON"><span class="term"><code class="option">-Duuid=<em class="replaceable"><code>LIBRARY</code></em></code></span> <a href="#CONFIGURE-WITH-UUID-MESON" class="id_link">#</a></dt><dd><p>
+        Compile le module <a class="xref" href="uuid-ossp.html" title="F.47. uuid-ossp -- un générateur d'UUID">uuid-ossp</a> (qui fournit les fonctions
+        de génération des UUID), utilisant la bibliothèque UUID spécifiée.
+        <a id="id-1.6.4.7.4.4.4.17.2.1.2" class="indexterm"></a>
+        <em class="replaceable"><code>LIBRARY</code></em> peut valoir :
+       </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+          <code class="option">none</code> pour ne pas compiler le module. C'est le défaut.
+         </p></li><li class="listitem"><p>
+          <code class="option">bsd</code> pour utiliser les fonctions UUID trouvées dans
+          FreeBSD, et dans certains systèmes dérivés de BSD.
+         </p></li><li class="listitem"><p>
+          <code class="option">e2fs</code> pour utiliser la bibliothèque UUID créée par le
+          projet <code class="literal">e2fsprogs</code> ; cette bibliothèque est
+          présente sur la plupart des systèmes Linux comme sur macOS, et peut
+          aussi bien être obtenue pour d'autres plateformes.
+         </p></li><li class="listitem"><p>
+          <code class="option">ossp</code> pour utiliser la <a class="ulink" href="http://www.ossp.org/pkg/lib/uuid/" target="_top">bibliothèque OSSP UUID</a>
+         </p></li></ul></div></dd><dt id="CONFIGURE-WITH-LIBXML-MESON"><span class="term"><code class="option">-Dlibxml={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-LIBXML-MESON" class="id_link">#</a></dt><dd><p>
+        Compile avec libxml2, activant le support de SQL/XML. Le défaut est
+        auto. La version 2.6.23 de libxml2 ou supérieure est nécessaire pour
+        cette fonctionnalité.
+       </p><p>
+        Pour utiliser une installation libxml2 dans un emplacement inhabituel,
+        vous pouvez définir les variables d'environnement
+        <code class="command">pkg-config</code> associées (voir sa documentation).
+       </p></dd><dt id="CONFIGURE-WITH-LIBXSLT-MESON"><span class="term"><code class="option">-Dlibxslt={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-LIBXSLT-MESON" class="id_link">#</a></dt><dd><p>
+        Compile avec lbxslt, activant le <a class="xref" href="xml2.html" title="F.48. xml2 -- fonctionnalités de requêtage XPath et XSLT">xml2</a>module de
+        transformation XSL du XML. L'option <code class="option">-Dlibxml</code> doit
+        aussi être définiée. Le défaut est auto.
+       </p></dd><dt id="CONFIGURE-WITH-SEPGSQL-MESON"><span class="term"><code class="option">-Dselinux={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-WITH-SEPGSQL-MESON" class="id_link">#</a></dt><dd><p>
+        Build with SElinux support, enabling the <a class="xref" href="sepgsql.html" title="F.38. sepgsql -- module de sécurité SELinux pour le contrôle d'accès basé sur les labels">sepgsql</a>
+        extension.  Defaults to auto.
+       </p></dd></dl></div></div><div class="sect3" id="MESON-OPTIONS-ANTI-FEATURES"><div class="titlepage"><div><div><h4 class="title">17.4.3.3. Anti-Fonctionnalités <a href="#MESON-OPTIONS-ANTI-FEATURES" class="id_link">#</a></h4></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="CONFIGURE-READLINE-MESON"><span class="term"><code class="option">-Dreadline={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-READLINE-MESON" class="id_link">#</a></dt><dd><p>
+        Permet l'utilisation de la bibliothèque
+        <span class="application">Readline</span> (et aussi
+        <span class="application">libedit</span>). Le défaut de l'option est auto et
+        active l'édition et historique de la ligne de commande avec
+        <span class="application">psql</span> et est fortement recommandée.
+       </p></dd><dt id="CONFIGURE-LIBEDIT-PREFERRED-MESON"><span class="term"><code class="option">-Dlibedit_preferred={ true | false }</code></span> <a href="#CONFIGURE-LIBEDIT-PREFERRED-MESON" class="id_link">#</a></dt><dd><p>
+        Mettre ces options à true favorise l'utilisation de la bibliothèque en
+        license BSD <span class="application">libedit</span> plutôt que la
+        bibliothèque en license GPL <span class="application">Readline</span>. Cette
+        option est pertinente seulement si vous avez les deux bibliothèque
+        installées ; le défaut est false, ce qui fait utiliser
+        <span class="application">Readline</span>.
+       </p></dd><dt id="CONFIGURE-ZLIB-MESON"><span class="term"><code class="option">-Dzlib={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-ZLIB-MESON" class="id_link">#</a></dt><dd><p>
+        <a id="id-1.6.4.7.4.5.2.3.2.1.1" class="indexterm"></a>
+        Active l'utilisation de la bibliothèque <span class="application">Zlib</span>.
+        Le défaut est auto et active le support des archives compressées dans
+        <span class="application">pg_dump</span>,
+        <span class="application">pg_restore</span> et
+        <span class="application">pg_basebackup</span>, ce qui est recommandée.
+       </p></dd><dt id="CONFIGURE-SPINLOCKS-MESON"><span class="term"><code class="option">-Dspinlocks={ true | false }</code></span> <a href="#CONFIGURE-SPINLOCKS-MESON" class="id_link">#</a></dt><dd><p>
+        Cette option vaut true par défaut ; l'affecter à false va permettre de
+        compiler avec succès même si <span class="productname">PostgreSQL</span> n'a
+        pas de support spinlock CPU pour la plateforme. L'absence de support
+        spinlock va donner de mauvaises performances ; par conséquent,
+        cette option ne devrait être changée que si la compilation échoue et
+        vous informe que la plateforme n'a pas de support spinlock. S'il faut
+        affecter cette option pour compiler
+        <span class="productname">PostgreSQL</span> sur votre plateforme, merci
+        d'indiquer le problème aux développeurs
+        <span class="productname">PostgreSQL</span>.
+       </p></dd><dt id="CONFIGURE-ATOMICS-MESON"><span class="term"><code class="option">-Datomics={ true | false }</code></span> <a href="#CONFIGURE-ATOMICS-MESON" class="id_link">#</a></dt><dd><p>
+        Cette option est mise à true par défaut ; l'affecter à false va
+        désactiver l'utilisation d'opérations atomiques CPU. Cette option ne
+        fait rien sur les plateformes qui n'ont pas ce genre d'opérations. Sur
+        les plateformes qui les ont, désactiver les opérations atomiques donnera
+        de mauvaises performances. Modifier cette option n'est seulement utile
+        que pour du debug ou pour faire des comparaisons de performances.
+       </p></dd></dl></div></div><div class="sect3" id="MESON-OPTIONS-BUILD-PROCESS"><div class="titlepage"><div><div><h4 class="title">17.4.3.4. Détails du processus de compilation <a href="#MESON-OPTIONS-BUILD-PROCESS" class="id_link">#</a></h4></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="CONFIGURE-AUTO-FEATURES-MESON"><span class="term"><code class="option">--auto-features={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-AUTO-FEATURES-MESON" class="id_link">#</a></dt><dd><p>
+        Affecter cette option permet d'écraser les valeurs de toutes les
+        fonctionnalités <span class="quote">« <span class="quote">auto</span> »</span> (les fonctionnalités qui sont
+        activées automatiquement si le logiciel requis est trouvé). Ceci peut
+        être utile quand vous souhaitez désactiver ou activer les
+        fonctionnalités <span class="quote">« <span class="quote">optionnelles</span> »</span> d'un coup sans le faire pour
+        chacune d'elle manuellement.  La valeur par défaut pour ce paramètre est
+        auto.
+       </p></dd><dt id="CONFIGURE-BACKEND-MESON"><span class="term"><code class="option">--backend=<em class="replaceable"><code>BACKEND</code></em></code></span> <a href="#CONFIGURE-BACKEND-MESON" class="id_link">#</a></dt><dd><p>
+        L'outil que Meson utilise par défaut est ninja et il devrait suffire
+        pour la plupart des cas. Cependant, si vous souhaitez complètement vous
+        intégrer avec Visual Studio, vous pouvez mettre
+        <em class="replaceable"><code>BACKEND</code></em> à <code class="command">vs</code>.
+       </p></dd><dt id="CONFIGURE-C-ARGS-MESON"><span class="term"><code class="option">-Dc_args=<em class="replaceable"><code>OPTIONS</code></em></code></span> <a href="#CONFIGURE-C-ARGS-MESON" class="id_link">#</a></dt><dd><p>
+        Cette option est utilisée pour passer des options supplémentaires pour
+        le compilateur C.
+       </p></dd><dt id="CONFIGURE-C-LINK-ARGS-MESON"><span class="term"><code class="option">-Dc_link_args=<em class="replaceable"><code>OPTIONS</code></em></code></span> <a href="#CONFIGURE-C-LINK-ARGS-MESON" class="id_link">#</a></dt><dd><p>
+        Cette option est utilisée pour passer des options complémentaires à
+        l'éditeur de liens C.
+       </p></dd><dt id="CONFIGURE-EXTRA-INCLUDE-DIRS-MESON"><span class="term"><code class="option">-Dextra_include_dirs=<em class="replaceable"><code>DIRECTORIES</code></em></code></span> <a href="#CONFIGURE-EXTRA-INCLUDE-DIRS-MESON" class="id_link">#</a></dt><dd><p>
+        <em class="replaceable"><code>DIRECTORIES</code></em> est une liste de répertoires
+        séparés par des virgules qui seront ajoutés dans la liste de recherche
+        du compilateur pour les fichiers d'entête. Si vous avez des paquets
+        optionnels (tels que GNU <span class="application">Readline</span>) installés
+        dans des emplacements non standard, vous devez utiliser cette option et
+        probablement aussi l'option correspondante
+        <code class="option">-Dextra_lib_dirs</code>.
+       </p><p>
+        Exemple : <code class="literal">-Dextra_include_dirs=/opt/gnu/include,/usr/sup/include</code>.
+       </p></dd><dt id="CONFIGURE-EXTRA-LIB-DIRS-MESON"><span class="term"><code class="option">-Dextra_lib_dirs=<em class="replaceable"><code>DIRECTORIES</code></em></code></span> <a href="#CONFIGURE-EXTRA-LIB-DIRS-MESON" class="id_link">#</a></dt><dd><p>
+        <em class="replaceable"><code>DIRECTORIES</code></em> est une liste de répertoires
+        séparés par des virgules pour rechercher les bibliothèques. Vous devrez
+        probablement utiliser cette option (et l'option correspondante
+        <code class="option">-Dextra_include_dirs</code>) si vous avez des paquets
+        installés dans des emplacements non standard.
+       </p><p>
+        Exemple : <code class="literal">-Dextra_lib_dirs=/opt/gnu/lib,/usr/sup/lib</code>.
+       </p></dd><dt id="CONFIGURE-SYSTEM-TZDATA-MESON"><span class="term"><code class="option">-Dsystem_tzdata=<em class="replaceable"><code>DIRECTORY</code></em></code>
+      <a id="id-1.6.4.7.4.6.2.7.1.2" class="indexterm"></a>
+      </span> <a href="#CONFIGURE-SYSTEM-TZDATA-MESON" class="id_link">#</a></dt><dd><p>
+        <span class="productname">PostgreSQL</span> inclut sa propre base de données
+        de fuseaux horaires, qui est requise pour les opérations sur les dates
+        et heures.  Cette base de données de fuseaux horaires est en fait
+        compatible avec la base de données de fuseaux horaires IANA fournie par
+        de nombreux systèmes d'exploitation tel que FreeBSD, Linux et Solaris.
+        Il serait ainsi redondant de l'installer à nouveau. Quand cette option
+        est utilisée, la base de données de fuseaux horaires fournie par le
+        système dans <em class="replaceable"><code>DIRECTORY</code></em> est utilisée au lieu
+        de celle incluse dans la distribution source PostgreSQL.
+        <em class="replaceable"><code>DIRECTORY</code></em> doit être spécifiée sous forme de
+        chemin absolu. <code class="filename">/usr/share/zoneinfo</code> est un
+        répertoire approprié sur certains systèmes d'exploitation. Notez que la
+        routine d'installation ne détectera pas les données de fuseaux horaires
+        non compatibles ou erronées. Si vous utilisez cette option, soyez avisé
+        d'exécuter des tests de régression pour vérifier que les données de
+        fuseaux horaires que vous indiquez fonctionnent correctement avec
+        <span class="productname">PostgreSQL</span>.
+       </p><a id="id-1.6.4.7.4.6.2.7.2.2" class="indexterm"></a><p>
+        Cette option vise principalement les distributeurs de paquets binaires
+        qui connaissent bien le système d'exploitation cible. Le principal
+        avantage d'utiliser cette option est que les paquets PostgreSQL n'ont
+        pas besoin d'être mis à jour dès qu'une des nombreuses règles locales
+        d'heure d'été change. Un autre avantage est que PostgreSQL peut être
+        compilé de manière croisée plus simplement si les fichiers de fuseaux
+        horaires n'ont pas à être compilés pour l'installation.
+       </p></dd><dt id="CONFIGURE-EXTRA-VERSION-MESON"><span class="term"><code class="option">-Dextra_version=<em class="replaceable"><code>STRING</code></em></code></span> <a href="#CONFIGURE-EXTRA-VERSION-MESON" class="id_link">#</a></dt><dd><p>
+        Ajoute <em class="replaceable"><code>STRING</code></em> au numéro de version
+        PostgreSQL. Vous pouvez avec cela, par exemple, marquer les binaires
+        compilés d'un instantané <span class="productname">Git</span> inédit ou
+        contenant des patchs personnalisés avec une chaîne supplémentaire de
+        version, telle qu'un identifiant <code class="command">git describe</code> ou un
+        numéro de livraison de paquets de distribution.
+       </p></dd><dt id="CONFIGURE-RPATH-MESON"><span class="term"><code class="option">-Drpath={ true | false }</code></span> <a href="#CONFIGURE-RPATH-MESON" class="id_link">#</a></dt><dd><p>
+        Cette option vaut true par défaut. Si mise à false, les exécutables
+        <span class="productname">PostgreSQL</span> ne sont pas marqués pour indiquer
+        qu'ils doivent chercher les bibliothèques partagées dans le répertoire
+        de bibliothèques de l'installation (voir <code class="option">--libdir</code>).
+        Sur la plupart des plateformes, ce marquage utilise un chemin absolu
+        vers les répertoires de bibliothèques, de sorte que cela ne sera
+        d'aucune utilité si vous déplacez l'installation plus tard. Dans ce cas,
+        vous devrez alors fournir une autre façon aux exécutables de trouver les
+        bibliothèques partagées.  Habituellement, cela demande de configurer
+        l'éditeur de liens dynamique du système d'exploitation pour pointer le
+        répertoire de bibliothèques ; voir <a class="xref" href="install-post.html#INSTALL-POST-SHLIBS" title="17.5.1. Bibliothèques partagées">Section 17.5.1</a> pour plus de détails.
+       </p></dd><dt id="CONFIGURE-BINARY-NAME-MESON"><span class="term"><code class="option">-D<em class="replaceable"><code>BINARY_NAME</code></em>=<em class="replaceable"><code>PATH</code></em></code></span> <a href="#CONFIGURE-BINARY-NAME-MESON" class="id_link">#</a></dt><dd><p>
+        Si un programme requis pour compiler PostgreSQL (avec ou sans drapeaux
+        optionnels) est stocké sur un chemin non standard, vous pouvez le
+        spécifier manuellement à <code class="literal">meson configure</code>. La liste
+        complète des programmes pour lesquels ceci est supporté peut être trouvé
+        en exécutant <code class="literal">meson configure</code>.
+        Exemple :
+</p><pre class="programlisting">meson configure -DBISON=PATH_TO_BISON</pre><p>
+       </p></dd></dl></div></div><div class="sect3" id="MESON-OPTIONS-DOCS"><div class="titlepage"><div><div><h4 class="title">17.4.3.5. Documentation <a href="#MESON-OPTIONS-DOCS" class="id_link">#</a></h4></div></div></div><p>
+     Voir <a class="xref" href="docguide-toolsets.html" title="J.2. Ensemble d'outils">Section J.2</a> pour les outils nécessaires pour
+     compiler la documentation.
+    </p><div class="variablelist"><dl class="variablelist"><dt id="CONFIGURE-DOCS-MESON"><span class="term"><code class="option">-Ddocs={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-DOCS-MESON" class="id_link">#</a></dt><dd><p>
+        Active la compilation de la documentation en format
+        <acronym class="acronym">HTML</acronym> et <acronym class="acronym">man</acronym>. Son défaut est auto.
+       </p></dd><dt id="CONFIGURE-DOCS-PDF-MESON"><span class="term"><code class="option">-Ddocs_pdf={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-DOCS-PDF-MESON" class="id_link">#</a></dt><dd><p>
+        Active la compilation de la documentation en format
+        <acronym class="acronym">PDF</acronym>. Son défaut est auto.
+       </p></dd><dt id="CONFIGURE-DOCS-HTML-STYLE"><span class="term"><code class="option">-Ddocs_html_style={ simple | website }</code></span> <a href="#CONFIGURE-DOCS-HTML-STYLE" class="id_link">#</a></dt><dd><p>
+        Contrôle quelle feuille de style <acronym class="acronym">CSS</acronym> est utilisée.
+        Le défaut est <code class="literal">simple</code>. Si mis à <code class="literal">website</code>,
+        la documentation HTML va référencer la feuille de style pour <a class="ulink" href="https://www.postgresql.org/docs/current/" target="_top">postgresql.org</a>.
+       </p></dd></dl></div></div><div class="sect3" id="MESON-OPTIONS-MISC"><div class="titlepage"><div><div><h4 class="title">17.4.3.6. Divers <a href="#MESON-OPTIONS-MISC" class="id_link">#</a></h4></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="CONFIGURE-PGPORT-MESON"><span class="term"><code class="option">-Dpgport=<em class="replaceable"><code>NUMBER</code></em></code></span> <a href="#CONFIGURE-PGPORT-MESON" class="id_link">#</a></dt><dd><p>
+        Affecte <em class="replaceable"><code>NUMBER</code></em> comme numéro de port par
+        défaut pour le serveur et les clients.  Le défaut est 5432. Le port peut
+        toujours être changé après, mais si vous le spécifiez ici alors le
+        serveur et les clients auront la même valeur compilée par défaut, ce qui
+        peut être très pratique. Habituellement la seule bonne raison de choisir
+        une valeur différente du défaut est si vous prévoyez d'exécuter
+        plusieurs serveurs <span class="productname">PostgreSQL</span> sur la même
+        machine.
+       </p></dd><dt id="CONFIGURE-KRB-SRVNAM-MESON"><span class="term"><code class="option">-Dkrb_srvnam=<em class="replaceable"><code>NAME</code></em></code></span> <a href="#CONFIGURE-KRB-SRVNAM-MESON" class="id_link">#</a></dt><dd><p>
+        Le nom par défaut du compte de service Kerberos utilisé par GSSAPI.
+        <code class="literal">postgres</code> est la valeur par défaut. Il n'y a,
+        habituellement, pas de raison de changer ceci sauf si vous compilez sur
+        un environnement Windows, et dans ce cas, il doit être en casse haute
+        <code class="literal">POSTGRES</code>.
+       </p></dd><dt id="CONFIGURE-SEGSIZE-MESON"><span class="term"><code class="option">-Dsegsize=<em class="replaceable"><code>SEGSIZE</code></em></code></span> <a href="#CONFIGURE-SEGSIZE-MESON" class="id_link">#</a></dt><dd><p>
+        Affecte la <em class="firstterm">taille du segment</em> en giga-octets. Les
+        tables volumineuses sont divisées en plusieurs fichiers sur le système
+        d'exploitation, chacune ayant la taille d'un segment. Ceci permet
+        d'éviter des problèmes dûs aux limites de taille de fichier qui existent
+        sur de nombreuses plateformes. La taille par défaut du segment, 1
+        giga-octet, est sûre sur toutes les plateformes supportées. Si votre
+        système d'exploitation a le support <span class="quote">« <span class="quote">largefile</span> »</span> (ce qui est
+        le cas pour la plupart, de nos jours), vous pouvez utiliser une taille
+        de segment plus large. Ceci peut être utile pour réduire le nombre de
+        descripteurs de fichiers utilisés lorsque vous travaillez sur des tables
+        volumineuses.  Mais soyez prudent de ne pas choisir une valeur plus
+        large que ne peut supporter votre plateforme et le système de fichiers
+        que vous prévoyez d'utiliser.  D'autres outils que vous pourriez
+        utiliser, tel que <span class="application">tar</span>, pourrait aussi limiter
+        la taille utilisable d'un fichier.  Il est recommandé, mais pas
+        absolument nécessaire, que cette value soit une puissance de 2.
+       </p></dd><dt id="CONFIGURE-BLOCKSIZE-MESON"><span class="term"><code class="option">-Dblocksize=<em class="replaceable"><code>BLOCKSIZE</code></em></code></span> <a href="#CONFIGURE-BLOCKSIZE-MESON" class="id_link">#</a></dt><dd><p>
+        Affecte la <em class="firstterm">taille de bloc</em>, en kilo-octets. Ceci
+        est l'unité de stockage et d'I/O à l'intérieur des tables. Le défaut, 8
+        kilo-octets, est approprié pour la majorité des situations ; mais
+        d'autres valeurs peuvent être utiles dans des cas spéciaux.  Cette
+        valeur doit être une puissance de 2 entre 1 et 32 (kilo-octets).
+       </p></dd><dt id="CONFIGURE-WAL-BLOCKSIZE-MESON"><span class="term"><code class="option">-Dwal_blocksize=<em class="replaceable"><code>BLOCKSIZE</code></em></code></span> <a href="#CONFIGURE-WAL-BLOCKSIZE-MESON" class="id_link">#</a></dt><dd><p>
+        Affecte la <em class="firstterm">taille de bloc d'un journal de
+        transactions</em>, en kilo-octets. C'est l'unité de stockage et
+        d'I/O à l'intérieur des journaux WAL. Le défaut, 8 kilo-octets, est
+        approprié pour la majorité des situations ; mais d'autres valeurs
+        peuvent être utiles dans des cas spéciaux.  Cette valeur doit être une
+        puissance de 2 entre 1 et 64 (kilo-octets).
+       </p></dd></dl></div></div><div class="sect3" id="MESON-OPTIONS-DEVEL"><div class="titlepage"><div><div><h4 class="title">17.4.3.7. Options développeur <a href="#MESON-OPTIONS-DEVEL" class="id_link">#</a></h4></div></div></div><p>
+     La plupart des options dans cette section sont seulement intéressantes pour
+     le développement ou le debug de <span class="productname">PostgreSQL</span>.
+     Elles ne sont pas recommandées pour les compilations de production, sauf
+     pour <code class="option">--debug</code>, qui peut être utile pour activer les
+     rapports de bug détaillés si vous avez l'infortune de rencontrer un bug.
+     Sur les plateformes supportant DTrace, l'option <code class="option">-Ddtrace</code>
+     pourrait aussi être raisonnablement utilisée en production.
+    </p><p>
+     Lorsque vous compilez une installation qui sera utilisé pour développer du
+     code serveur, il est recommandé d'utiliser au moins les options
+     <code class="option">--buildtype=debug</code> et <code class="option">-Dcassert</code>.
+    </p><div class="variablelist"><dl class="variablelist"><dt id="CONFIGURE-BUILDTYPE-MESON"><span class="term"><code class="option">--buildtype=<em class="replaceable"><code>BUILDTYPE</code></em></code></span> <a href="#CONFIGURE-BUILDTYPE-MESON" class="id_link">#</a></dt><dd><p>
+        Cette option peut être utilisée pour indiquer le type de compilation à
+        utiliser ; le défaut est <code class="option">debugoptimized</code>. Si vous
+        préférez un contrôle plus fin sur les symboles de debug et les niveaux
+        d'optimisation que cette option peut fournir, vous pouvez vous référer
+        aux drapeaux <code class="option">--debug</code> et
+        <code class="option">--optimization</code>.
+       </p><p>
+        Les types de compilation suivants sont principalement utilisés :
+        <code class="option">plain</code>, <code class="option">debug</code>,
+        <code class="option">debugoptimized</code> et <code class="option">release</code>. Plus
+        d'information à leur sujet peut être trouvé dans la <a class="ulink" href="https://mesonbuild.com/Running-Meson.html#configuring-the-build-directory" target="_top">documentation
+        Meson</a>.
+       </p></dd><dt id="CONFIGURE-DEBUG-MESON"><span class="term"><code class="option">--debug</code></span> <a href="#CONFIGURE-DEBUG-MESON" class="id_link">#</a></dt><dd><p>
+        Compile tous les programmes et bibliothèques avec les symboles de debug.
+        Cela signifie que vous pouvez exécuter les programmes dans une debugger
+        pour analyser les problèmes. Ceci augmente fortement la taille des
+        exécutables installés, et sur les compilateurs non GCC, désactive
+        habituellement aussi les optimisations compilateur, entrainant des
+        ralentissements. Cependant, avoir les symboles disponibles peut s'avérer
+        extrêmement utile pour gérer tous les problèmes qui peuvent survenir.
+        Actuellement, cette option est recommandée sur des installations de
+        production uniquement si vous utilisez GCC. Mais vous devrez toujours
+        l'avoir si vous effectuez des travaux de développement ou exécutez une
+        version bêta.
+       </p></dd><dt id="CONFIGURE-OPTIMIZATION-MESON"><span class="term"><code class="option">--optimization</code>=<em class="replaceable"><code>LEVEL</code></em></span> <a href="#CONFIGURE-OPTIMIZATION-MESON" class="id_link">#</a></dt><dd><p>
+        Indique le niveau d'optimisation. <code class="option">LEVEL</code> peut être
+        affecté à n'importe quelle valeur de {0,g,1,2,3,s}.
+       </p></dd><dt id="CONFIGURE-WERROR-MESON"><span class="term"><code class="option">--werror</code></span> <a href="#CONFIGURE-WERROR-MESON" class="id_link">#</a></dt><dd><p>
+        Activer cette option indique au compilateur de traiter les avertissements
+        comme des erreurs. Cela peut être utile pour du développement.
+       </p></dd><dt id="CONFIGURE-CASSERT-MESON"><span class="term"><code class="option">-Dcassert={ true | false }</code></span> <a href="#CONFIGURE-CASSERT-MESON" class="id_link">#</a></dt><dd><p>
+        Active les vérifications d'<em class="firstterm">assertion</em> sur le
+        serveur, qui testent de nombreuses conditions qui <span class="quote">« <span class="quote">ne peuvent se
+        produire</span> »</span>. Ceci est très appréciable dans le but de développer
+        du code, mais les tests ralentissent notablement le serveur. De plus,
+        avoir les tests activés ne va pas nécessairement améliorer la stabilité
+        de votre serveur ! Les vérifications d'assertion ne sont pas
+        catégorisées par sévérité, ainsi ce qui pourrait être un bug
+        relativement inoffensif peut entrainer un redémarrage de serveur s'il
+        déclenche un échec d'assertion. Cette option n'est pas recommandée pour
+        une utilisation en production, mais vous pouvez l'activer lors de
+        travaux de développement ou en testant une version bêta.
+       </p></dd><dt id="CONFIGURE-TAP-TESTS-MESON"><span class="term"><code class="option">-Dtap_tests={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-TAP-TESTS-MESON" class="id_link">#</a></dt><dd><p>
+        Active les tests utilisant les outils Perl TAP. Le défaut est auto et
+        nécessite une installation de Perl et du module Perl
+        <code class="literal">IPC::Run</code>. Voir
+        <a class="xref" href="regress-tap.html" title="31.4. Tests TAP">Section 31.4</a> pour plus d'information.
+       </p></dd><dt id="CONFIGURE-PG-TEST-EXTRA-MESON"><span class="term"><code class="option">-DPG_TEST_EXTRA=<em class="replaceable"><code>TEST_SUITES</code></em></code></span> <a href="#CONFIGURE-PG-TEST-EXTRA-MESON" class="id_link">#</a></dt><dd><p>
+        Active les suites de tests qui nécessitent un logiciel particulier pour
+        s'exécuter. Cette option accepte les arguments via une liste de valeurs
+        séparées par des espaces.  Voir <a class="xref" href="regress-run.html#REGRESS-ADDITIONAL" title="31.1.3. Suites supplémentaires de tests">Section 31.1.3</a>
+        pour plus de détails.
+       </p></dd><dt id="CONFIGURE-B-COVERAGE-MESON"><span class="term"><code class="option">-Db_coverage={ true | false }</code></span> <a href="#CONFIGURE-B-COVERAGE-MESON" class="id_link">#</a></dt><dd><p>
+        Si vous utilisez GCC, tous les programmes et bibliothèques seront
+        compilées avec une instrumentation de test de couverture de code.
+        Exécutés, ils généreront des fichiers dans le répertoire de debug avec
+        des mesures de couverture de code. Voir <a class="xref" href="regress-coverage.html" title="31.5. Examen de la couverture des tests">Section 31.5</a>
+        pour plus d'information. Cette option n'est utilisable qu'avec
+        GCC et pour effectuer des travaux de développement.
+       </p></dd><dt id="CONFIGURE-DTRACE-MESON"><span class="term"><code class="option">-Ddtrace={ auto | enabled | disabled }</code></span> <a href="#CONFIGURE-DTRACE-MESON" class="id_link">#</a></dt><dd><p>
+        <a id="id-1.6.4.7.4.9.4.9.2.1.1" class="indexterm"></a>
+        Activée, cette option compile <span class="productname">PostgreSQL</span> avec
+        le support pour l'outil de profilage dynamique DTrace. Voir <a class="xref" href="dynamic-trace.html" title="27.5. Traces dynamiques">Section 27.5</a> pour plus d'informations.
+       </p><p>
+        Pour pointer le programme <code class="command">dtrace</code>, l'option
+        <code class="option">DTRACE</code> peut être valuée. Ceci est souvent nécessaire
+        parce que <code class="command">dtrace</code> est habituellement installé sous
+        <code class="filename">/usr/sbin</code>, qui pourrait ne pas être dans votre
+        <code class="envar">PATH</code>.
+       </p></dd><dt id="CONFIGURE-INJECTION-POINTS-MESON"><span class="term"><code class="option">-Dinjection_points={ true | false }</code></span> <a href="#CONFIGURE-INJECTION-POINTS-MESON" class="id_link">#</a></dt><dd><p>
+        Compiles <span class="productname">PostgreSQL</span> with support for
+        injection points in the server. Injection points allow to run
+        user-defined code from within the server in pre-defined code paths.
+        This helps in testing and in the investigation of concurrency scenarios
+        in a controlled fashion. This option is disabled by default.  See
+        <a class="xref" href="xfunc-c.html#XFUNC-ADDIN-INJECTION-POINTS" title="36.10.13. Points d'injection">Section 36.10.13</a> for more details.  This
+        option is intended to be used only by developers for testing.
+       </p></dd><dt id="CONFIGURE-SEGSIZE-BLOCKS-MESON"><span class="term"><code class="option">-Dsegsize_blocks=SEGSIZE_BLOCKS</code></span> <a href="#CONFIGURE-SEGSIZE-BLOCKS-MESON" class="id_link">#</a></dt><dd><p>
+         Cette option est destinée aux développeurs pour tester le code en lien
+         aux segments. Indique la taille de segment d'une relation en blocs. Si
+         l'option <code class="option">-Dsegsize</code> et celle ci sont affectées, cette
+         option l'emporte.
+        </p></dd></dl></div></div></div><div class="sect2" id="TARGETS-MESON"><div class="titlepage"><div><div><h3 class="title">17.4.4. Cibles de construction <code class="literal">meson</code> <a href="#TARGETS-MESON" class="id_link">#</a></h3></div></div></div><p>
+    Des cibles individuelles de construction peuvent être construites en
+    utilisant <code class="command">ninja</code> <em class="replaceable"><code>cible</code></em>.
+
+    Quand aucune cible n'est indiquée, tout est construit sauf la documentation.
+    Les produits individuels de construction peuvent être construit en utilisant
+    le chemin/nom du fichier comme <em class="replaceable"><code>cible</code></em>.
+   </p><div class="sect3" id="TARGETS-MESON-CODE"><div class="titlepage"><div><div><h4 class="title">17.4.4.1. Cibles de code <a href="#TARGETS-MESON-CODE" class="id_link">#</a></h4></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="MESON-TARGET-ALL"><span class="term"><code class="option">all</code></span> <a href="#MESON-TARGET-ALL" class="id_link">#</a></dt><dd><p>
+      Construit tout sauf la documentation
+     </p></dd><dt id="MESON-TARGET-BACKEND"><span class="term"><code class="option">backend</code></span> <a href="#MESON-TARGET-BACKEND" class="id_link">#</a></dt><dd><p>
+      Construit le moteur et les modules relatifs
+     </p></dd><dt id="MESON-TARGET-BIN"><span class="term"><code class="option">bin</code></span> <a href="#MESON-TARGET-BIN" class="id_link">#</a></dt><dd><p>
+      Construit les clients
+     </p></dd><dt id="MESON-TARGET-CONTRIB"><span class="term"><code class="option">contrib</code></span> <a href="#MESON-TARGET-CONTRIB" class="id_link">#</a></dt><dd><p>
+      Construit les modules contrib
+     </p></dd><dt id="MESON-TARGET-PL"><span class="term"><code class="option">pl</code></span> <a href="#MESON-TARGET-PL" class="id_link">#</a></dt><dd><p>
+      Construit les langages de procédure
+     </p></dd></dl></div></div><div class="sect3" id="TARGETS-MESON-DEVELOPER"><div class="titlepage"><div><div><h4 class="title">17.4.4.2. Cibles de développement <a href="#TARGETS-MESON-DEVELOPER" class="id_link">#</a></h4></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="MESON-TARGET-REFORMAT-DAT-FILES"><span class="term"><code class="option">reformat-dat-files</code></span> <a href="#MESON-TARGET-REFORMAT-DAT-FILES" class="id_link">#</a></dt><dd><p>
+      Réécrit les fichiers de données des catalogues dans le format standard
+     </p></dd><dt id="MESON-TARGET-EXPAND-DAT-FILES"><span class="term"><code class="option">expand-dat-files</code></span> <a href="#MESON-TARGET-EXPAND-DAT-FILES" class="id_link">#</a></dt><dd><p>
+      Étend tous les fichiers de données pour inclure les défauts
+     </p></dd><dt id="MESON-TARGET-UPDATE-UNICODE"><span class="term"><code class="option">update-unicode</code></span> <a href="#MESON-TARGET-UPDATE-UNICODE" class="id_link">#</a></dt><dd><p>
+      Met à jour les données unicode vers la nouvelle version
+     </p></dd></dl></div></div><div class="sect3" id="TARGETS-MESON-DOCUMENTATION"><div class="titlepage"><div><div><h4 class="title">17.4.4.3. Cibles de documentation <a href="#TARGETS-MESON-DOCUMENTATION" class="id_link">#</a></h4></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="MESON-TARGET-HTML"><span class="term"><code class="option">html</code></span> <a href="#MESON-TARGET-HTML" class="id_link">#</a></dt><dd><p>
+      Construit la documentation dans un format multi-page HTML
+     </p></dd><dt id="MESON-TARGET-MAN"><span class="term"><code class="option">man</code></span> <a href="#MESON-TARGET-MAN" class="id_link">#</a></dt><dd><p>
+      Construit la documentation dans le format des pages man
+     </p></dd><dt id="MESON-TARGET-DOCS"><span class="term"><code class="option">docs</code></span> <a href="#MESON-TARGET-DOCS" class="id_link">#</a></dt><dd><p>
+      Construit la documentation dans le format multi-page HTML et page man
+     </p></dd><dt id="MESON-TARGET-DOC-SRC-SGML-POSTGRES-A4.PDF"><span class="term"><code class="option">doc/src/sgml/postgres-A4.pdf</code></span> <a href="#MESON-TARGET-DOC-SRC-SGML-POSTGRES-A4.PDF" class="id_link">#</a></dt><dd><p>
+      Construit la documentation au format PDF, avec des pages A4
+     </p></dd><dt id="MESON-TARGET-DOC-SRC-SGML-POSTGRES-US.PDF"><span class="term"><code class="option">doc/src/sgml/postgres-US.pdf</code></span> <a href="#MESON-TARGET-DOC-SRC-SGML-POSTGRES-US.PDF" class="id_link">#</a></dt><dd><p>
+      Construit la documentation au format PDF, avec des pages lettre US
+     </p></dd><dt id="MESON-TARGET-DOC-SRC-SGML-POSTGRES.HTML"><span class="term"><code class="option">doc/src/sgml/postgres.html</code></span> <a href="#MESON-TARGET-DOC-SRC-SGML-POSTGRES.HTML" class="id_link">#</a></dt><dd><p>
+      Construit la documentation au format HTML sur une seule page
+     </p></dd><dt id="MESON-TARGET-ALLDOCS"><span class="term"><code class="option">alldocs</code></span> <a href="#MESON-TARGET-ALLDOCS" class="id_link">#</a></dt><dd><p>
+      Construit la documentation dans tous les formats supportés
+     </p></dd></dl></div></div><div class="sect3" id="TARGETS-MESON-INSTALLATION"><div class="titlepage"><div><div><h4 class="title">17.4.4.4. Cibles d'installation <a href="#TARGETS-MESON-INSTALLATION" class="id_link">#</a></h4></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="MESON-TARGET-INSTALL"><span class="term"><code class="option">install</code></span> <a href="#MESON-TARGET-INSTALL" class="id_link">#</a></dt><dd><p>
+      Installe PostgreSQL, sauf la documentation
+     </p></dd><dt id="MESON-TARGET-INSTALL-DOCS"><span class="term"><code class="option">install-docs</code></span> <a href="#MESON-TARGET-INSTALL-DOCS" class="id_link">#</a></dt><dd><p>
+      Installe la documentation au format multi-page HTML et page man
+     </p></dd><dt id="MESON-TARGET-INSTALL-HTML"><span class="term"><code class="option">install-html</code></span> <a href="#MESON-TARGET-INSTALL-HTML" class="id_link">#</a></dt><dd><p>
+      Installe la documentation au format multi-page HTML
+     </p></dd><dt id="MESON-TARGET-INSTALL-MAN"><span class="term"><code class="option">install-man</code></span> <a href="#MESON-TARGET-INSTALL-MAN" class="id_link">#</a></dt><dd><p>
+      Installe la documentation au format page man
+     </p></dd><dt id="MESON-TARGET-INSTALL-QUIET"><span class="term"><code class="option">install-quiet</code></span> <a href="#MESON-TARGET-INSTALL-QUIET" class="id_link">#</a></dt><dd><p>
+      Comme "install", mais les fichiers installés ne sont pas affichés
+     </p></dd><dt id="MESON-TARGET-INSTALL-WORLD"><span class="term"><code class="option">install-world</code></span> <a href="#MESON-TARGET-INSTALL-WORLD" class="id_link">#</a></dt><dd><p>
+      Installe PostgreSQL, incluant la documentation au format multi-page HTML et page man
+     </p></dd><dt id="MESON-TARGET-UNINSTALL"><span class="term"><code class="option">uninstall</code></span> <a href="#MESON-TARGET-UNINSTALL" class="id_link">#</a></dt><dd><p>
+      Supprime les fichiers installés
+     </p></dd></dl></div></div><div class="sect3" id="TARGETS-MESON-OTHER"><div class="titlepage"><div><div><h4 class="title">17.4.4.5. Autres cibles <a href="#TARGETS-MESON-OTHER" class="id_link">#</a></h4></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="MESON-TARGET-CLEAN"><span class="term"><code class="option">clean</code></span> <a href="#MESON-TARGET-CLEAN" class="id_link">#</a></dt><dd><p>
+      Supprime tous les produits construits
+     </p></dd><dt id="MESON-TARGET-TEST"><span class="term"><code class="option">test</code></span> <a href="#MESON-TARGET-TEST" class="id_link">#</a></dt><dd><p>
+      Exécute tous les tests activés (incluant les modules contrib)
+     </p></dd><dt id="MESON-TARGET-WORLD"><span class="term"><code class="option">world</code></span> <a href="#MESON-TARGET-WORLD" class="id_link">#</a></dt><dd><p>
+      Construit tout, incluant la documentation
+     </p></dd><dt id="MESON-TARGET-HELP"><span class="term"><code class="option">help</code></span> <a href="#MESON-TARGET-HELP" class="id_link">#</a></dt><dd><p>
+      Liste les cibles importantes
+     </p></dd></dl></div></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/install-meson.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:31 GMT -->
+</html>

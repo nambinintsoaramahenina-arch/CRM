@@ -1,0 +1,641 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/hot-standby.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>26.4. Hot Standby</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="warm-standby-failover.html" title="26.3. Bascule (Failover)" /><link rel="next" href="monitoring.html" title="Chapitre 27. Superviser l'activité de la base de données" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/hot-standby.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/hot-standby.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/hot-standby.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/hot-standby.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/hot-standby.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/hot-standby.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/hot-standby.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/hot-standby.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/hot-standby.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/hot-standby.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/hot-standby.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/hot-standby.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/hot-standby.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/hot-standby.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/hot-standby.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/hot-standby.html">9.0</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/hot-standby.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="high-availability.html">Haute disponibilité, répartition de charge et réplication</a></span> » <span class="breadcrumb-node">Hot Standby</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="warm-standby-failover.html" title="26.3. Bascule (Failover)">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="high-availability.html" title="Chapitre 26. Haute disponibilité, répartition de charge et réplication">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="monitoring.html" title="Chapitre 27. Superviser l'activité de la base de données">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">26.3. Bascule (<span class="foreignphrase"><em class="foreignphrase">Failover</em></span>) </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 27. Superviser l'activité de la base de données</td></tr></table></div><div class="sect1" id="HOT-STANDBY"><div class="titlepage"><div><div><h2 class="title" style="clear: both">26.4. Hot Standby <a href="#HOT-STANDBY" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="hot-standby.html#HOT-STANDBY-USERS">26.4.1. Aperçu pour l'utilisateur</a></span></dt><dt><span class="sect2"><a href="hot-standby.html#HOT-STANDBY-CONFLICT">26.4.2. Gestion des conflits avec les requêtes</a></span></dt><dt><span class="sect2"><a href="hot-standby.html#HOT-STANDBY-ADMIN">26.4.3. Aperçu pour l'administrateur</a></span></dt><dt><span class="sect2"><a href="hot-standby.html#HOT-STANDBY-PARAMETERS">26.4.4. Référence des paramètres de Hot Standby</a></span></dt><dt><span class="sect2"><a href="hot-standby.html#HOT-STANDBY-CAVEATS">26.4.5. Avertissements</a></span></dt></dl></div><a id="id-1.6.13.19.2" class="indexterm"></a><p>
+   Hot Standby est le terme utilisé pour décrire la possibilité de se
+   connecter et d'exécuter des requêtes en lecture seule alors que le
+   serveur est en récupération d'archive ou mode standby. C'est
+   utile à la fois pour la réplication et pour restaurer
+   une sauvegarde à un état désiré avec une grande précision.
+   Le terme Hot Standby fait aussi référence à la capacité du serveur à passer
+   de la récupération au fonctionnement normal tandis-que les utilisateurs
+   continuent à exécuter des requêtes et/ou gardent leurs connexions ouvertes.
+  </p><p>
+   Exécuter des requêtes en mode hot standby est similaire au fonctionnement
+   normal des requêtes, bien qu'il y ait quelques différences d'utilisation
+   et d'administration notées ci-dessous.
+  </p><div class="sect2" id="HOT-STANDBY-USERS"><div class="titlepage"><div><div><h3 class="title">26.4.1. Aperçu pour l'utilisateur <a href="#HOT-STANDBY-USERS" class="id_link">#</a></h3></div></div></div><p>
+    Quand le paramètre <a class="xref" href="runtime-config-replication.html#GUC-HOT-STANDBY">hot_standby</a> est configuré à true
+    sur un serveur en attente, le serveur commencera à accepter les connexions
+    une fois que la restauration est parvenue à un état cohérent. Toutes les
+    connexions qui suivront seront des connexions en lecture seule ; même
+    les tables temporaires ne pourront pas être utilisées.
+   </p><p>
+    Les données sur le secondaire mettent un certain temps pour arriver du serveur
+    primaire, il y aura donc un délai mesurable entre primaire et secondaire. La même
+    requête exécutée presque simultanément sur le primaire et le secondaire pourrait par
+    conséquent retourner des résultats différents. On dit que la donnée est
+    <em class="firstterm">cohérente à terme</em> avec le primaire. Une fois que
+    l'enregistrement de validation (COMMIT) d'une transaction est rejoué sur
+    le serveur en attente, les modifications réalisées par cette transaction
+    seront visibles par toutes les images de bases obtenues par les transactions
+    en cours sur le serveur en attente. Ces images peuvent être prises au début
+    de chaque requête ou de chaque transaction, suivant le niveau d'isolation
+    des transactions utilisé à ce moment. Pour plus de détails, voir <a class="xref" href="transaction-iso.html" title="13.2. Isolation des transactions">Section 13.2</a>.
+   </p><p>
+    Les transactions exécutées pendant la période de restauration sur un
+    serveur en mode hot standby peuvent inclure les commandes suivantes :
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Accès par requête : <code class="command">SELECT</code>, <code class="command">COPY TO</code>
+      </p></li><li class="listitem"><p>
+       Commandes de curseur : <code class="command">DECLARE</code>, <code class="command">FETCH</code>, <code class="command">CLOSE</code>
+      </p></li><li class="listitem"><p>
+       Paramètres : <code class="command">SHOW</code>, <code class="command">SET</code>, <code class="command">RESET</code>
+      </p></li><li class="listitem"><p>
+       Commandes de gestion de transaction :
+       </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem"><p>
+          <code class="command">BEGIN</code>, <code class="command">END</code>, <code class="command">ABORT</code>, <code class="command">START TRANSACTION</code>
+         </p></li><li class="listitem"><p>
+          <code class="command">SAVEPOINT</code>, <code class="command">RELEASE</code>, <code class="command">ROLLBACK TO SAVEPOINT</code>
+         </p></li><li class="listitem"><p>
+          Blocs d'<code class="command">EXCEPTION</code> et autres sous-transactions internes
+         </p></li></ul></div><p>
+      </p></li><li class="listitem"><p>
+       <code class="command">LOCK TABLE</code>, mais seulement quand explicitement dans un de ces modes:
+       <code class="literal">ACCESS SHARE</code>, <code class="literal">ROW SHARE</code> ou <code class="literal">ROW EXCLUSIVE</code>.
+      </p></li><li class="listitem"><p>
+       Plans et ressources : <code class="command">PREPARE</code>, <code class="command">EXECUTE</code>,
+       <code class="command">DEALLOCATE</code>, <code class="command">DISCARD</code>
+      </p></li><li class="listitem"><p>
+       Plugins et extensions : <code class="command">LOAD</code>
+      </p></li><li class="listitem"><p>
+       <code class="command">UNLISTEN</code>
+      </p></li></ul></div><p>
+   </p><p>
+    Les transactions lancées pendant la restauration d'un serveur en hot standby
+    ne se verront jamais affectées un identifiant de transactions et ne peuvent
+    pas être écrites dans les journaux de transactions. Du coup, les actions
+    suivantes produiront des messages d'erreur :
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Langage de Manipulation de Données (LMD ou DML) : <code class="command">INSERT</code>,
+       <code class="command">UPDATE</code>, <code class="command">DELETE</code>, <code class="command">MERGE</code>,
+       <code class="command">COPY FROM</code>, <code class="command">TRUNCATE</code>.
+       Notez qu'il n'y a pas d'action autorisée qui entraînerait l'exécution d'un
+       trigger pendant la récupération. Cette restriction s'applique même pour
+       les tables temporaires car les lignes de ces tables ne peuvent être
+       lues et écrites s'il n'est pas possible d'affecter un identifiant de
+       transactions, ce qui n'est actuellement pas possible dans un
+       environnement Hot Standby.
+      </p></li><li class="listitem"><p>
+       Langage de Définition de Données (LDD ou DDL) : <code class="command">CREATE</code>,
+       <code class="command">DROP</code>, <code class="command">ALTER</code>, <code class="command">COMMENT</code>.
+       Cette restriction s'applique aussi aux tables temporaires car, pour
+       mener à bien ces opérations, cela nécessiterait de mettre à jour les
+       catalogues systèmes.
+      </p></li><li class="listitem"><p>
+       <code class="command">SELECT ... FOR SHARE | UPDATE</code>, car les verrous de
+       lignes ne peuvent pas être pris sans mettre à jour les fichiers de
+       données.
+      </p></li><li class="listitem"><p>
+       Règles sur des ordres <code class="command">SELECT</code> qui génèrent des commandes LMD.
+      </p></li><li class="listitem"><p>
+       <code class="command">LOCK</code> qui demandent explicitement un mode supérieur à <code class="literal">ROW EXCLUSIVE MODE</code>.
+      </p></li><li class="listitem"><p>
+       <code class="command">LOCK</code> dans sa forme courte par défaut, puisqu'il demande <code class="literal">ACCESS EXCLUSIVE MODE</code>.
+      </p></li><li class="listitem"><p>
+       Commandes de gestion de transaction qui positionnent explicitement un état n'étant pas en lecture-seule :
+       </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem"><p>
+          <code class="command">BEGIN READ WRITE</code>,
+          <code class="command">START TRANSACTION READ WRITE</code>
+         </p></li><li class="listitem"><p>
+          <code class="command">SET TRANSACTION READ WRITE</code>,
+          <code class="command">SET SESSION CHARACTERISTICS AS TRANSACTION READ WRITE</code>
+         </p></li><li class="listitem"><p>
+          <code class="command">SET transaction_read_only = off</code>
+         </p></li></ul></div><p>
+      </p></li><li class="listitem"><p>
+       Commandes de two-phase commit : <code class="command">PREPARE TRANSACTION</code>,
+       <code class="command">COMMIT PREPARED</code>, <code class="command">ROLLBACK PREPARED</code>
+       parce que même les transactions en lecture seule ont besoin d'écrire dans le WAL
+       durant la phase de préparation (la première des deux phases du two-phase commit).
+      </p></li><li class="listitem"><p>
+       Mise à jour de séquence : <code class="function">nextval()</code>, <code class="function">setval()</code>
+      </p></li><li class="listitem"><p>
+       <code class="command">LISTEN</code>, <code class="command">NOTIFY</code>
+      </p></li></ul></div><p>
+   </p><p>
+    Dans le cadre normal, les transactions <span class="quote">« <span class="quote">en lecture seule</span> »</span>
+    permettent l'utilisation des instructions
+    <code class="command">LISTEN</code> et
+    <code class="command">NOTIFY</code>, donc les sessions Hot Standby ont des
+    restrictions légèrement inférieures à celles de sessions en lecture seule
+    ordinaires. Il est possible que certaines des restrictions soient encore
+    moins importantes dans une prochaine version.
+   </p><p>
+    Lors du fonctionnement en serveur hot standby, le paramètre
+    <code class="varname">transaction_read_only</code> est toujours à true et ne peut
+    pas être modifié. Tant qu'il n'y a pas de tentative de modification sur
+    la base de données, les connexions sur un serveur en hot standby se
+    comportent de façon pratiquement identiques à celles sur un serveur normal.
+    Quand une bascule (<span class="foreignphrase"><em class="foreignphrase">failover</em></span> ou
+    <span class="foreignphrase"><em class="foreignphrase">switchover</em></span>) survient, la base de données
+    bascule dans le mode de traitement normal. Les sessions resteront
+    connectées pendant le changement de mode. Quand le mode hot standby est
+    terminé, il sera possible de lancer des transactions en lecture/écriture,
+    y compris pour les sessions connectées avant la bascule.
+   </p><p>
+    Les utilisateurs peuvent déterminer si le Hot Standby est actuellement
+    actif pour leur session en exécutant <code class="command">SHOW
+    in_hot_standby</code>. (Le paramètre <code class="varname">in_hot_standby</code>
+    n'existant pas avant la version 14, <code class="command">SHOW
+    transaction_read_only</code> est donc à utiliser sur les serveurs en
+    version plus ancienne.) De plus, un jeu de fonctions
+    (<a class="xref" href="functions-admin.html#FUNCTIONS-RECOVERY-INFO-TABLE" title="Tableau 9.96. Fonctions d'information sur la restauration">Tableau 9.96</a>) permettent aux
+    utilisateurs d'accéder à des informations à propos du serveur secondaire.
+    Ceci vous permet d'écrire des programmes qui sont conscients de
+    l'état actuel de la base. Vous pouvez vous en servir pour superviser
+    l'avancement de la récupération, ou pour écrire des programmes complexes
+    qui restaurent la base dans des états particuliers.
+   </p></div><div class="sect2" id="HOT-STANDBY-CONFLICT"><div class="titlepage"><div><div><h3 class="title">26.4.2. Gestion des conflits avec les requêtes <a href="#HOT-STANDBY-CONFLICT" class="id_link">#</a></h3></div></div></div><p>
+    Les nœuds primaire et secondaire sont faiblement couplés à bien des égards. Des
+    actions sur le primaire auront un effet sur le secondaire. Par conséquent, il y a
+    un risque d'interactions négatives ou de conflits entre eux. Le conflit le
+    plus simple à comprendre est la performance : si un gros chargement de données a
+    lieu sur le primaire, il générera un flux similaire d'enregistrements WAL sur le
+    secondaire, et les requêtes du secondaire pourrait entrer en compétition pour les ressources
+    systèmes, comme les entrées-sorties.
+   </p><p>
+    Il y a aussi d'autres types de conflits qui peuvent se produire avec le
+    Hot Standby. Ces conflits sont des <span class="emphasis"><em>conflits durs</em></span> dans
+    le sens où des requêtes pourraient devoir être annulées et, dans certains
+    cas, des sessions déconnectées, pour les résoudre. L'utilisateur dispose
+    de plusieurs moyens pour gérer ces conflits. Voici les différents cas de
+    conflits possibles :
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Des verrous en accès exclusif pris sur le serveur primaire, incluant à
+       la fois les commandes <code class="command">LOCK</code> exclusives et quelques
+       actions de type <acronym class="acronym">DDL</acronym>, entrent en conflit avec les
+       accès de table des requêtes en lecture seule.
+      </p></li><li class="listitem"><p>
+       La suppression d'un tablespace sur le serveur primaire entre en conflit
+       avec les requêtes sur le serveur secondaire qui utilisent ce tablespace
+       pour les fichiers temporaires.
+      </p></li><li class="listitem"><p>
+       La suppression d'une base de données sur le serveur primaire entre en
+       conflit avec les sessions connectées sur cette base de données sur
+       le serveur en attente.
+      </p></li><li class="listitem"><p>
+       La copie d'un enregistrement nettoyé par un VACUUM entre en conflit
+       avec les transactions sur le serveur en attente qui peuvent toujours
+       <span class="quote">« <span class="quote">voir</span> »</span> au moins une des lignes à supprimer.
+      </p></li><li class="listitem"><p>
+       La copie d'un enregistrement nettoyé par un VACUUM entre en conflit
+       avec les requêtes accédant à la page cible sur le serveur en attente,
+       qu'elles voient ou non les données à supprimer.
+      </p></li></ul></div><p>
+   </p><p>
+    Sur le serveur primaire, ces cas résultent en une attente
+    supplémentaire ; l'utilisateur peut choisir d'annuler une des actions
+    en conflit. Néanmoins, sur le serveur en attente, il n'y a pas de choix
+    possibles : l'action enregistrée dans les journaux de transactions
+    est déjà survenue sur le serveur primaire et le serveur secondaire doit
+    absolument réussir à l'appliquer. De plus, permettre que l'enregistrement
+    de l'action attende indéfiniment pourrait avoir des effets fortement non
+    désirables car le serveur en attente sera de plus en plus en retard par
+    rapport au primaire. Du coup, un mécanisme est fourni pour forcer
+    l'annulation des requêtes sur le serveur en attente qui entreraient en
+    conflit avec des enregistrements des journaux de transactions en attente.
+   </p><p>
+    Voici un exemple de problème type : un administrateur exécute un
+    <code class="command">DROP TABLE</code> sur une table du serveur primaire qui est
+    actuellement utilisé dans des requêtes du serveur en attente. Il est clair
+    que la requête ne peut pas continuer à s'exécuter si l'enregistrement
+    dans les journaux de transactions, correspondant au <code class="command">DROP
+     TABLE</code> est appliqué sur le serveur en attente. Si cette situation
+    survient sur le serveur primaire, l'instruction <code class="command">DROP TABLE</code>
+    attendra jusqu'à ce que l'autre requête se termine. Par contre, quand le
+    <code class="command">DROP TABLE</code> est exécuté sur le serveur primaire, ce dernier
+    ne sait pas les requêtes en cours d'exécution sur le serveur en attente,
+    donc il n'attendra pas la fin de l'exécution des requêtes sur le serveur
+    en attente. L'enregistrement de cette modification dans les journaux de
+    transactions arrivera au serveur en attente alors que la requête sur le
+    serveur en attente est toujours en cours d'exécution, causant un conflit.
+    Le serveur en attente doit soit retarder l'application des enregistrements
+    des journaux de transactions (et tous ceux qui sont après aussi) soit
+    annuler la requête en conflit, pour appliquer l'instruction <code class="command">DROP
+     TABLE</code>.
+   </p><p>
+    Quand une requête en conflit est courte, il est généralement préférable
+    d'attendre un peu pour l'application du journal de transactions. Mais un
+    délai plus long n'est généralement pas souhaitable. Donc, le mécanisme
+    d'annulation dans l'application des enregistrements de journaux de
+    transactions dispose de deux paramètres, <a class="xref" href="runtime-config-replication.html#GUC-MAX-STANDBY-ARCHIVE-DELAY">max_standby_archive_delay</a> et <a class="xref" href="runtime-config-replication.html#GUC-MAX-STANDBY-STREAMING-DELAY">max_standby_streaming_delay</a>, qui définissent le délai
+    maximum autorisé pour appliquer les enregistrements. Les requêtes en
+    conflit seront annulées si l'application des enregistrements prend plus de
+    temps que celui défini. Il existe deux paramètres pour que des délais
+    différents puissent être observés suivant le cas : lecture des
+    enregistrements à partir d'un journal archivé (par exemple lors de la
+    restauration initiale à partir d'une sauvegarde ou lors d'un
+    <span class="quote">« <span class="quote">rattrapage</span> »</span> si le serveur en attente accumulait du retard
+    par rapport au primaire) et lecture des enregistrements à partir de la
+    réplication en flux.
+   </p><p>
+    Pour un serveur en attente dont le but principal est la haute-disponibilité,
+    il est préférable de configurer des valeurs assez basses pour les
+    paramètres de délai, de façon à ce que le serveur en attente ne soit pas
+    trop en retard par rapport au serveur primaire à cause des délais suivis à
+    cause des requêtes exécutées sur le serveur en attente. Par contre, si
+    le serveur en attente doit exécuter des requêtes longues, alors une valeur
+    haute, voire infinie, du délai pourrait être préférable. Néanmoins, gardez
+    en tête qu'une requête mettant du temps à s'exécuter pourrait empêcher
+    les autres requêtes de voir les modifications récentes sur le serveur
+    primaire si elle retarde l'application des enregistrements de journaux
+    de transactions.
+   </p><p>
+    Une fois que le délai spécifié par
+    <code class="varname">max_standby_archive_delay</code> ou
+    <code class="varname">max_standby_streaming_delay</code> a été dépassé, toutes les
+    requêtes en conflit seront annulées. Ceci résulte habituellement en une
+    erreur d'annulation, bien que certains cas, comme un <code class="command">DROP
+     DATABASE</code>, peuvent occasionner l'arrêt complet de la connexion.
+    De plus, si le conflit intervient sur un verrou détenu par une transaction
+    en attente, la session en conflit sera terminée (ce comportement pourrait
+    changer dans le futur).
+   </p><p>
+    Les requêtes annulées peuvent être ré-exécutées immédiatement (après avoir
+    commencé une nouvelle transaction, bien sûr). Comme l'annulation des
+    requêtes dépend de la nature des enregistrements dans le journal de
+    transactions, une requête annulée pourrait très bien réussir si elle est
+    de nouveau exécutée.
+   </p><p>
+    Gardez en tête que les paramètres de délai sont comparés au temps passé
+    depuis que la donnée du journal de transactions a été reçue par le serveur
+    en attente. Du coup, la période de grâce accordée aux requêtes n'est jamais
+    supérieure au paramètre de délai, et peut être considérablement inférieure
+    si le serveur en attente est déjà en retard suite à l'attente de la fin
+    de l'exécution de requêtes précédentes ou suite à son impossibilité de
+    conserver le rythme d'une grosse mise à jour.
+   </p><p>
+    La raison la plus fréquente des conflits entre les requêtes en lecture
+    seule et le rejeu des journaux de transactions est le <span class="quote">« <span class="quote">nettoyage
+     avancé</span> »</span>. Habituellement, <span class="productname">PostgreSQL</span>
+    permet le nettoyage des anciennes versions de lignes quand aucune
+    transaction ne peut les voir pour s'assurer du respect des règles de MVCC.
+    Néanmoins, cette règle peut seulement s'appliquer sur les transactions
+    exécutées sur le serveur primaire. Donc il est possible que le nettoyage
+    effectué sur le primaire supprime des versions de lignes toujours visibles
+    sur une transaction exécutée sur le serveur en attente.
+   </p><p>
+    Le nettoyage des versions de ligne n'est pas la seule cause de conflits
+    avec les requêtes exécutées sur les secondaires. Tous les parcours
+    d'index seuls (ceci incluant ceux qui s'exécutent sur les secondaires)
+    doivent utiliser un snapshot <acronym class="acronym">MVCC</acronym> qui
+    <span class="quote">« <span class="quote">accepte</span> »</span> la carte de visibilité. Les conflits sont de ce fait
+    requis à chaque fois que <code class="command">VACUUM</code> <a class="link" href="routine-vacuuming.html#VACUUM-FOR-VISIBILITY-MAP" title="24.1.4. Mettre à jour la carte de visibilité">indique une page comme toutes-visibles
+     dans la carte de visibilité</a> contenant une ou plusieurs lignes
+    <span class="emphasis"><em>non</em></span> visibles pour toutes les requêtes du secondaire.
+    Donc même exécuter <code class="command">VACUUM</code> sur une table sans lignes mises
+    à jour ou supprimées nécessitant du nettoyage peut amener à des conflits.
+   </p><p>
+    Les utilisateurs doivent s'attendre à ce que les tables fréquemment mises
+    à jour sur le serveur primaire seront aussi fréquemment la cause de
+    requêtes annulées sur le serveur en attente. Dans un tel cas, le
+    paramétrage d'une valeur finie pour
+    <code class="varname">max_standby_archive_delay</code> ou
+    <code class="varname">max_standby_streaming_delay</code> peut être considéré comme
+    similaire à la configuration de <code class="varname">statement_timeout</code>.
+   </p><p>
+    Si le nombre d'annulations de requêtes sur le serveur en attente est
+    jugé inadmissible, quelques solutions existent. La première option est de définir la variable
+    <code class="varname">hot_standby_feedback</code> qui permet d'empêcher les conflits liés au nettoyage
+    opéré par la commande <code class="command">VACUUM</code> en lui interdisant de nettoyer les lignes récemment supprimées. Si
+    vous le faites, vous devez noter que cela retardera le nettoyage des
+    versions de lignes mortes sur le serveur primaire, ce qui pourrait résulter
+    en une fragmentation non désirée de la table. Néanmoins, cette situation
+    ne sera pas meilleure si les requêtes du serveur en attente s'exécutaient
+    directement sur le serveur primaire. Vous avez toujours le bénéfice de
+    l'exécution sur un serveur distant. Si des serveurs secondaires se
+    connectent et se déconnectent fréquemment, vous pourriez vouloir faire des
+    ajustements pour gérer la période durant laquelle <code class="varname">hot_standby_feedback</code>
+    n'est pas renvoyé. Par exemple, vous pouvez considérer l'augmentation de
+    <code class="varname">max_standby_archive_delay</code> pour que les requêtes ne
+    soient pas annulées rapidement par des conflits avec le journal de transactions
+    d'archive durant les périodes de déconnexion.  Vous pouvez également
+    considérer l'augmentation de <code class="varname">max_standby_streaming_delay</code>
+    pour éviter des annulations rapides par les nouvelles données de flux de
+    transaction après la reconnexion.
+   </p><p>
+    Le nombre de requêtes annulées et le motif de cette annulation peut être visualisé avec
+    la vue système <code class="structname">pg_stat_database_conflicts</code> sur le serveur
+    secondaire. La vue système <code class="structname">pg_stat_database</code> contient aussi
+    des informations synthétiques sur ce sujet.
+   </p><p>
+    Les utilisateurs peuvent contrôler si un message doit être écrit dans les
+    traces du serveur lorsque le rejeu des journaux de transactions est en
+    conflit depuis plus longtemps que <code class="varname">deadlock_timeout</code>.
+    Ce comportement est contrôlé par le paramètre
+    <a class="xref" href="runtime-config-logging.html#GUC-LOG-RECOVERY-CONFLICT-WAITS">log_recovery_conflict_waits</a>.
+   </p></div><div class="sect2" id="HOT-STANDBY-ADMIN"><div class="titlepage"><div><div><h3 class="title">26.4.3. Aperçu pour l'administrateur <a href="#HOT-STANDBY-ADMIN" class="id_link">#</a></h3></div></div></div><p>
+    Si <code class="varname">hot_standby</code> est positionné à <code class="literal">on</code>
+    dans <code class="filename">postgresql.conf</code> (valeur par défaut) et qu'un
+    fichier <a class="link" href="warm-standby.html#FILE-STANDBY-SIGNAL"><code class="filename">standby.signal</code></a><a id="id-1.6.13.19.7.2.5" class="indexterm"></a> est présent, le serveur
+    fonctionnera en mode Hot Standby.
+    Toutefois, il pourrait s'écouler du temps avant que les connections en
+    Hot Standby soient autorisées, parce que le serveur n'acceptera pas de connexions tant
+    que la récupération n'aura pas atteint un point garantissant un état cohérent permettant
+    aux requêtes de s'exécuter. Pendant cette période, les clients qui tentent de se connecter
+    seront rejetés avec un message d'erreur.
+    Pour confirmer que le serveur a démarré, vous pouvez soit tenter de vous connecter en
+    boucle, ou rechercher ces messages dans les journaux du serveur:
+
+    </p><pre class="programlisting">
+LOG:  entering standby mode
+
+... puis, plus loin ...
+
+LOG:  consistent recovery state reached
+LOG:  database system is ready to accept read-only connections
+    </pre><p>
+
+    L'information sur la cohérence est enregistrée une fois par checkpoint sur le primaire.
+    Il n'est pas possible d'activer le mode Hot Standby si on lit des WAL générés durant
+    une période pendant laquelle <code class="varname">wal_level</code> n'était pas positionné
+    à <code class="literal">replica</code> ou <code class="literal">logical</code> sur le primaire. L'arrivée à un état cohérent
+    peut aussi être retardée si ces deux conditions se présentent:
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Une transaction en écriture a plus de 64 sous-transactions
+      </p></li><li class="listitem"><p>
+       Des transactions en écriture ont une durée très importante
+      </p></li></ul></div><p>
+
+    Si vous effectuez du log shipping par fichier (<span class="foreignphrase"><em class="foreignphrase">warm standby</em></span>), vous pourriez
+    devoir attendre jusqu'à l'arrivée du prochain fichier de WAL, ce qui pourrait
+    être aussi long que le paramètre <code class="varname">archive_timeout</code> du primaire.
+   </p><p>
+    Certains paramètres déterminent la taille de la mémoire partagée pour le
+    suivi des identifiants de transaction, des verrous, et des transactions
+    préparées. Ces structures mémoires partagées ne peuvent pas être plus
+    petites sur le secondaire que sur le primaire pour s'assurer que le secondaire ne
+    tombera pas à court de mémoire partagée pendant la récupération. Par
+    exemple, si le primaire avait utilisé des transactions préparées mais que le
+    secondaire n'avait pas alloué de mémoire partagée pour suivre ces transactions
+    préparées, alors la récupération ne pourrait reprendre avant que la
+    configuration du secondaire ne soit adaptée. Les paramètres concernés sont:
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       <code class="varname">max_connections</code>
+      </p></li><li class="listitem"><p>
+       <code class="varname">max_prepared_transactions</code>
+      </p></li><li class="listitem"><p>
+       <code class="varname">max_locks_per_transaction</code>
+      </p></li><li class="listitem"><p>
+       <code class="varname">max_wal_senders</code>
+      </p></li><li class="listitem"><p>
+       <code class="varname">max_worker_processes</code>
+      </p></li></ul></div><p>
+
+    La façon la plus simple pour éviter que cela ne devienne un problème est
+    d'avoir tous ces paramètres définis sur les serveurs secondaires à des valeurs
+    égales ou supérieures que celles du primaire. C'est pourquoi, si vous voulez
+    augmenter ces valeurs, vous devez le faire d'abord sur tous les serveurs
+    secondaires avant de le faire sur le serveur primaire. De la même façon, si
+    vous voulez diminuer ces valeurs, vous devez d'abord le faire sur le serveur
+    primaire, puis sur tous les serveurs secondaires. Gardez également à l'esprit
+    que lorsqu'un secondaire est promu, il devient alors la nouvelle référence des
+    valeurs de ces paramètres pour les secondaires qui s'y raccrochent. De ce fait,
+    pour éviter que cela ne devienne un problème lors d'une bascule
+    (<span class="foreignphrase"><em class="foreignphrase">switchover</em></span> ou
+    <span class="foreignphrase"><em class="foreignphrase">failover</em></span>), il est recommandé de conserver ces
+    paramètres identiques sur tous les serveurs secondaires.
+   </p><p>
+    Les journaux de transactions tracent le changement de ces paramètres sur le
+    serveur primaire. Si un serveur hot standby rejoue un journal de
+    transactions qui indique que la valeur actuelle sur le primaire est plus
+    élevée que la sienne, un message d'avertissement sera écrit dans les traces
+    du serveur et le rejeu mis en pause. Par exemple :
+</p><pre class="screen">
+WARNING:  hot standby is not possible because of insufficient parameter settings
+DETAIL:  max_connections = 80 is a lower setting than on the primary server, where its value was 100.
+LOG:  recovery has paused
+DETAIL:  If recovery is unpaused, the server will shut down.
+HINT:  You can then restart the server after making the necessary configuration changes.
+</pre><p>
+    A ce stade, les paramètres du secondaire doivent être ajustés et l'instance
+    redémarrée avant que le rejeu ne puisse reprendre. Si le secondaire n'est pas
+    en mode hot standby alors, lorsqu'il rencontrera un changement de paramètre
+    incompatible, il s'éteindra immédiatement sans pause, puisqu'il serait
+    inutile de rester actif.
+   </p><p>
+    Il est important que l'administrateur sélectionne le paramétrage approprié
+    pour <a class="xref" href="runtime-config-replication.html#GUC-MAX-STANDBY-ARCHIVE-DELAY">max_standby_archive_delay</a> et <a class="xref" href="runtime-config-replication.html#GUC-MAX-STANDBY-STREAMING-DELAY">max_standby_streaming_delay</a>. Le meilleur choix varie les
+    priorités. Par exemple, si le serveur a comme tâche principale d'être un
+    serveur de haute-disponibilité, alors il est préférable d'avoir une
+    configuration assez basse, voire à zéro, de ces paramètres. Si le serveur
+    en attente est utilisé comme serveur supplémentaire pour des requêtes du
+    type décisionnel, il sera acceptable de mettre les paramètres de délai à
+    des valeurs allant jusqu'à plusieurs heures, voire même -1 (cette valeur
+    signifiant qu'il est possible d'attendre que les requêtes se terminent
+    d'elles-même).
+   </p><p>
+    Les "hint bits" (bits d'indices) écrits sur le primaire ne sont pas journalisés en WAL,
+    il est donc probable que les hint bits soient réécrits sur le secondaire. Ainsi,
+    le serveur secondaire fera toujours des écritures disques même si tous les utilisateurs
+    sont en lecture seule ; aucun changement ne se produira sur les données elles mêmes.
+    Les utilisateurs écriront toujours les fichiers temporaires pour les gros tris et
+    re-génèreront les fichiers d'information relcache, il n'y a donc pas de morceau de la base
+    qui soit réellement en lecture seule en mode hot standby.
+    Notez aussi que les écritures dans des bases distantes en utilisant le module
+    <span class="application">dblink</span>, et d'autres opérations en dehors de la base s'appuyant sur
+    des fonctions PL seront toujours possibles, même si la transaction est en lecture seule localement.
+   </p><p>
+    Les types suivants de commandes administratives ne sont pas acceptées
+    durant le mode de récupération:
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Langage de Définition de Données (LDD ou DDL) : comme <code class="command">CREATE INDEX</code>
+      </p></li><li class="listitem"><p>
+       Droits et propriété : <code class="command">GRANT</code>, <code class="command">REVOKE</code>,
+       <code class="command">REASSIGN</code>
+      </p></li><li class="listitem"><p>
+       Commandes de maintenance : <code class="command">ANALYZE</code>, <code class="command">VACUUM</code>,
+       <code class="command">CLUSTER</code>, <code class="command">REINDEX</code>
+      </p></li></ul></div><p>
+   </p><p>
+    Notez encore une fois que certaines de ces commandes sont en fait
+    autorisées durant les transactions en "lecture seule" sur le primaire.
+   </p><p>
+    Par conséquent, vous ne pouvez pas créer d'index supplémentaires qui existeraient
+    uniquement sur le secondaire, ni des statistiques qui n'existeraient que sur le secondaire.
+    Si ces commandes administratives sont nécessaires, elles doivent être exécutées
+    sur le primaire, et ces modifications se propageront à terme au secondaire.
+   </p><p>
+    <code class="function">pg_cancel_backend()</code> et
+    <code class="function">pg_terminate_backend()</code> fonctionneront sur les
+    processus utilisateurs, mais pas sur les processus de démarrage, qui
+    effectuent la récupération. <code class="structname">pg_stat_activity</code> ne
+    montre pas les transactions de récupération comme actives. Ainsi,
+    <code class="structname">pg_prepared_xacts</code> est toujours vide durant la
+    récupération. Si vous voulez traiter des transactions préparées douteuses,
+    interrogez <code class="structname">pg_prepared_xacts</code> sur le primaire, et
+    exécutez les commandes pour résoudre le problème à cet endroit ou
+    résolvez-les après la fin de la restauration.
+   </p><p>
+    <code class="structname">pg_locks</code> affichera les verrous posés par les processus,
+    comme en temps normal. <code class="structname">pg_locks</code> affiche aussi une transaction
+    virtuelle gérée par le processus de démarrage qui possède tous les
+    <code class="literal">AccessExclusiveLocks</code> posés par les transactions rejouées par la récupération.
+    Notez que le processus de démarrage n'acquiert pas de verrou pour effectuer les modifications à
+    la base, et que par conséquent les verrous autre que <code class="literal">AccessExclusiveLocks</code>
+    ne sont pas visibles dans <code class="structname">pg_locks</code> pour le processus de démarrage;
+    ils sont simplement censés exister.
+   </p><p>
+    Le plugin <span class="productname">Nagios</span> <span class="productname">check_pgsql</span> fonctionnera,
+    parce que les informations simples qu'il vérifie existent.
+    Le script de supervision <span class="productname">check_postgres</span> fonctionnera aussi,
+    même si certaines valeurs retournées pourraient être différentes ou sujettes à confusion.
+    Par exemple, la date de dernier vacuum ne sera pas mise à jour, puisqu’aucun vacuum ne se déclenche
+    sur le secondaire. Les vacuums s'exécutant sur le primaire envoient toujours leurs modifications
+    au secondaire.
+   </p><p>
+    Les options de contrôle des fichiers de WAL ne fonctionneront pas durant la récupération,
+    comme <code class="function">pg_backup_start</code>, <code class="function">pg_switch_wal</code>, etc...
+   </p><p>
+    Les modules à chargement dynamique fonctionnent, comme <code class="structname">pg_stat_statements</code>.
+   </p><p>
+    Les verrous consultatifs fonctionnent normalement durant la récupération,
+    y compris en ce qui concerne la détection des verrous mortels (deadlocks).
+    Notez que les verrous consultatifs ne sont jamais tracés dans les WAL, il est
+    donc impossible pour un verrou consultatif sur le primaire ou le secondaire
+    d'être en conflit avec la ré-application des WAL. Pas plus qu'il n'est
+    possible d'acquérir un verrou consultatif sur le primaire et que celui-ci
+    initie un verrou consultatif similaire sur le secondaire. Les verrous consultatifs
+    n'ont de sens que sur le serveur sur lequel ils sont acquis.
+   </p><p>
+    Les systèmes de réplications à base de triggers tels que <span class="productname">Slony</span>,
+    <span class="productname">Londiste</span> et <span class="productname">Bucardo</span>
+    ne fonctionneront pas sur le secondaire du tout, même s'ils fonctionneront sans problème
+    sur le serveur primaire tant que les modifications ne sont pas envoyées sur le serveur secondaire
+    pour y être appliquées. Le rejeu de WAL n'est pas à base de triggers, vous ne pouvez
+    donc pas utiliser le secondaire comme relais vers un système qui aurait besoin d'écritures supplémentaires
+    ou utilise des triggers.
+   </p><p>
+    Il n'est pas possible d'assigner de nouveaux OID, bien que des générateurs d'<acronym class="acronym">UUID</acronym>
+    puissent tout de même fonctionner, tant qu'ils n'ont pas besoin d'écrire un nouveau statut dans
+    la base.
+   </p><p>
+    À l'heure actuelle, la création de table temporaire n'est pas autorisée durant les
+    transactions en lecture seule, certains scripts existants pourraient donc
+    ne pas fonctionner correctement. Cette restriction pourrait être levée dans une
+    version ultérieure. Il s'agit à la fois d'un problème de respect des standards
+    et d'un problème technique.
+   </p><p>
+    <code class="command">DROP TABLESPACE</code> ne peut réussir que si le tablespace est vide.
+    Certains utilisateurs pourraient utiliser de façon active le tablespace via leur
+    paramètre <code class="varname">temp_tablespaces</code>. S'il y a des fichiers temporaires
+    dans le tablespace, toutes les requêtes actives sont annulées pour s'assurer que les
+    fichiers temporaires sont supprimés, afin de supprimer le tablespace et de continuer
+    l'application des WAL.
+   </p><p>
+    Exécuter <code class="command">DROP DATABASE</code> ou <code class="command">ALTER DATABASE ...
+     SET TABLESPACE</code> sur
+    le serveur primaire générera un enregistrement dans les journaux de
+    transactions qui causera la déconnexion de tous les utilisateurs
+    actuellement connectés à cette base de données. Cette action survient
+    immédiatement, quelque soit la valeur du paramètre
+    <code class="varname">max_standby_streaming_delay</code>. Notez que
+    <code class="command">ALTER DATABASE ... RENAME</code> ne déconnecte pas les
+    utilisateurs qui, dans la plupart des cas, ne s'en apercevront pas. Cela
+    peut néanmoins semer de la confusion pour un programme qui dépendrait du nom de la base.
+   </p><p>
+    En fonctionnement normal (pas en restauration), si vous exécutez
+    <code class="command">DROP USER</code> ou <code class="command">DROP ROLE</code>
+    pour un rôle ayant l'attribut LOGIN alors que cet utilisateur est toujours
+    connecté alors rien ne se produit pour cet utilisateur connecté  --  il reste connecté. L'utilisateur
+    ne peut toutefois pas se reconnecter. Ce comportement est le même en récupération, un
+    <code class="command">DROP USER</code> sur le primaire ne déconnecte donc pas cet utilisateur sur le secondaire.
+   </p><p>
+    Le système de statistiques cumulatives est actif pendant la restauration.
+    Tous les parcours, lectures, blocs, utilisations d'index, etc. seront
+    enregistrés normalement sur le standby. Néanmoins, le rejeu des journaux de
+    transactions n'incrémentera pas les compteurs spécifiques des relations et
+    des bases. Le rejeu n'incrémentera pas les colonnes de
+    <code class="structname">pg_stat_all_tables</code>
+    (comme <code class="structfield">n_tup_ins</code>), pas plus que les lectures et écritures réalisées par le
+    processus de démarrage ne seront tracées dans les vues <code class="structname">pg_statio_</code>, ou que les
+    colonnes associées de <code class="structname">pg_stat_database</code> ne seront incrémentées.
+   </p><p>
+    Autovacuum n'est pas actif durant la récupération, il démarrera normalement
+    à la fin de la récupération.
+   </p><p>
+    Les processus d'écriture en arrière plan (checkpointer et background
+    writer) sont actifs durant la restauration. Le processus checkpointer
+    process effectuera les restartpoints (similaires aux checkpoints sur le
+    primaire) et le processus background writer réalisera les activités
+    normales de nettoyage de blocs. Ceci peut inclure la mise à jour des
+    information de hint bit des données du serveur secondaire. La commande
+    <code class="command">CHECKPOINT</code> est acceptée pendant la récupération, bien
+    qu'elle déclenche un restartpoint et non un checkpoint.
+   </p></div><div class="sect2" id="HOT-STANDBY-PARAMETERS"><div class="titlepage"><div><div><h3 class="title">26.4.4. Référence des paramètres de Hot Standby <a href="#HOT-STANDBY-PARAMETERS" class="id_link">#</a></h3></div></div></div><p>
+    De nombreux paramètres ont été mentionnés ci-dessus dans
+    <a class="xref" href="hot-standby.html#HOT-STANDBY-CONFLICT" title="26.4.2. Gestion des conflits avec les requêtes">Section 26.4.2</a>
+    et <a class="xref" href="hot-standby.html#HOT-STANDBY-ADMIN" title="26.4.3. Aperçu pour l'administrateur">Section 26.4.3</a>.
+   </p><p>
+    Sur le primaire, le paramètre <a class="xref" href="runtime-config-wal.html#GUC-WAL-LEVEL">wal_level</a> peut être utilisé.
+    <a class="xref" href="runtime-config-replication.html#GUC-MAX-STANDBY-ARCHIVE-DELAY">max_standby_archive_delay</a> et <a class="xref" href="runtime-config-replication.html#GUC-MAX-STANDBY-STREAMING-DELAY">max_standby_streaming_delay</a> n'ont aucun effet sur le primaire.
+   </p><p>
+    Sur le serveur en attente, les paramètres <a class="xref" href="runtime-config-replication.html#GUC-HOT-STANDBY">hot_standby</a>,
+    <a class="xref" href="runtime-config-replication.html#GUC-MAX-STANDBY-ARCHIVE-DELAY">max_standby_archive_delay</a> et
+    <a class="xref" href="runtime-config-replication.html#GUC-MAX-STANDBY-STREAMING-DELAY">max_standby_streaming_delay</a> peuvent être utilisés.
+   </p></div><div class="sect2" id="HOT-STANDBY-CAVEATS"><div class="titlepage"><div><div><h3 class="title">26.4.5. Avertissements <a href="#HOT-STANDBY-CAVEATS" class="id_link">#</a></h3></div></div></div><p>
+    Il y a plusieurs limitations au Hot Standby.
+    Elles peuvent et seront probablement résolues dans des versions ultérieures:
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Une connaissance complète des transactions en cours d'exécution est nécessaire
+       avant de pouvoir déclencher des instantanés. Des transactions utilisant un
+       grand nombre de sous-transactions (à l'heure actuelle plus de 64) retarderont
+       le démarrage des connexions en lecture seule jusqu'à complétion de la plus
+       longue transaction en écriture. Si cette situation se produit, des messages
+       explicatifs seront envoyés dans la trace du serveur.
+      </p></li><li class="listitem"><p>
+       Des points de démarrage valides pour les requêtes du secondaire sont générés
+       à chaque checkpoint sur le primaire. Si le secondaire est éteint alors
+       que le primaire est déjà éteint, il est tout à fait possible ne pas pouvoir
+       repasser en Hot Standby tant que le primaire n'aura pas été redémarré, afin
+       qu'il génère de nouveaux points de démarrage dans les journaux WAL. Cette situation
+       n'est pas un problème dans la plupart des situations où cela pourrait se produire.
+       Généralement, si le primaire est éteint et plus disponible, c'est probablement
+       en raison d'un problème sérieux qui va de toutes façons forcer la conversion
+       du secondaire en primaire. Et dans des situations où le primaire est éteint
+       intentionnellement, la procédure standard est également de promouvoir le secondaire.
+      </p></li><li class="listitem"><p>
+       À la fin de la récupération, les <code class="literal">AccessExclusiveLocks</code> possédés
+       par des transactions préparées nécessiteront deux fois le nombre d'entrées normal dans la
+       table de verrous. Si vous pensez soit exécuter un grand nombre de transactions préparées
+       prenant des <code class="literal">AccessExclusiveLocks</code>, ou une grosse transaction prenant
+       beaucoup de <code class="literal">AccessExclusiveLocks</code>, il est conseillé d'augmenter la valeur
+       de <code class="varname">max_locks_per_transaction</code>, peut-être jusqu'à une valeur double
+       de celle du serveur primaire. Vous n'avez pas besoin de prendre ceci en compte
+       si votre paramètre <code class="varname">max_prepared_transactions</code> est 0.
+      </p></li><li class="listitem"><p>
+       Il n'est pas encore possible de passer une transaction en mode d'isolation sérialisable
+       tout en supportant le hot standby (voir <a class="xref" href="transaction-iso.html#XACT-SERIALIZABLE" title="13.2.3. Niveau d'Isolation Serializable">Section 13.2.3</a> et
+       <a class="xref" href="applevel-consistency.html#SERIALIZABLE-CONSISTENCY" title="13.4.1. Garantir la Cohérence avec des Transactions Serializable">Section 13.4.1</a> pour plus de détails).
+       Une tentative de modification du niveau d'isolation d'une transaction à sérialisable
+       en hot standby générera une erreur.
+      </p></li></ul></div><p>
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/hot-standby.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+</html>

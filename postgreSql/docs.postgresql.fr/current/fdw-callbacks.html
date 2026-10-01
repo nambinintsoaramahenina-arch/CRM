@@ -1,0 +1,1453 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/fdw-callbacks.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:14 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>57.2. Routines callback des wrappers de données distantes</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="fdw-functions.html" title="57.1. Fonctions d'un wrapper de données distantes" /><link rel="next" href="fdw-helpers.html" title="57.3. Fonctions d'aide pour les wrapper de données distantes" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/fdw-callbacks.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/fdw-callbacks.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/fdw-callbacks.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/fdw-callbacks.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/fdw-callbacks.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/fdw-callbacks.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/fdw-callbacks.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/fdw-callbacks.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/fdw-callbacks.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/fdw-callbacks.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/fdw-callbacks.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/fdw-callbacks.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/fdw-callbacks.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/fdw-callbacks.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/fdw-callbacks.html">9.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/fdw-callbacks.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="fdwhandler.html">Écrire un wrapper de données distantes</a></span> » <span class="breadcrumb-node">Routines callback des wrappers de données distantes</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="fdw-functions.html" title="57.1. Fonctions d'un wrapper de données distantes">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="fdwhandler.html" title="Chapitre 57. Écrire un wrapper de données distantes">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="fdw-helpers.html" title="57.3. Fonctions d'aide pour les wrapper de données distantes">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">57.1. Fonctions d'un wrapper de données distantes </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 57.3. Fonctions d'aide pour les wrapper de données distantes</td></tr></table></div><div class="sect1" id="FDW-CALLBACKS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">57.2. Routines callback des wrappers de données distantes <a href="#FDW-CALLBACKS" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="fdw-callbacks.html#FDW-CALLBACKS-SCAN">57.2.1. Routines des FDW pour parcourir les tables distantes</a></span></dt><dt><span class="sect2"><a href="fdw-callbacks.html#FDW-CALLBACKS-UPPER-PLANNING">57.2.2. Routines FDW pour optimiser le traitement après parcours/jointure</a></span></dt><dt><span class="sect2"><a href="fdw-callbacks.html#FDW-CALLBACKS-JOIN-SCAN">57.2.3. Routines des FDW pour le parcours des jointures distantes</a></span></dt><dt><span class="sect2"><a href="fdw-callbacks.html#FDW-CALLBACKS-UPDATE">57.2.4. Routines FDW pour la mise à jour des tables distantes</a></span></dt><dt><span class="sect2"><a href="fdw-callbacks.html#FDW-CALLBACKS-TRUNCATE">57.2.5. Routines FDW pour <code class="command">TRUNCATE</code></a></span></dt><dt><span class="sect2"><a href="fdw-callbacks.html#FDW-CALLBACKS-ROW-LOCKING">57.2.6. Routines FDW pour le verrouillage des lignes</a></span></dt><dt><span class="sect2"><a href="fdw-callbacks.html#FDW-CALLBACKS-EXPLAIN">57.2.7. Routines FDW pour <code class="command">EXPLAIN</code></a></span></dt><dt><span class="sect2"><a href="fdw-callbacks.html#FDW-CALLBACKS-ANALYZE">57.2.8. Routines FDW pour <code class="command">ANALYZE</code></a></span></dt><dt><span class="sect2"><a href="fdw-callbacks.html#FDW-CALLBACKS-IMPORT">57.2.9. Routines FDW pour <code class="command">IMPORT FOREIGN SCHEMA</code></a></span></dt><dt><span class="sect2"><a href="fdw-callbacks.html#FDW-CALLBACKS-PARALLEL">57.2.10. Routines FDW pour une exécution parallélisée</a></span></dt><dt><span class="sect2"><a href="fdw-callbacks.html#FDW-CALLBACKS-ASYNC">57.2.11. Routines FDW pour les exécutions asynchrones</a></span></dt><dt><span class="sect2"><a href="fdw-callbacks.html#FDW-CALLBACKS-REPARAMETERIZE-PATHS">57.2.12. Routines FDW pour la reparamétrisation des chemins</a></span></dt></dl></div><p>
+   La fonction de gestion d'une FDW renvoie une structure
+   <code class="structname">FdwRoutine</code> allouée avec palloc. Elle
+   contient des pointeurs vers les fonctions de callback décrites
+   ci-dessous. Les fonctions relatives aux parcours sont requises,
+   le reste est optionnel.
+  </p><p>
+   Le type de structure <code class="structname">FdwRoutine</code> est déclaré dans
+   <code class="filename">src/include/foreign/fdwapi.h</code>, où vous trouverez plus de
+   détails.
+  </p><div class="sect2" id="FDW-CALLBACKS-SCAN"><div class="titlepage"><div><div><h3 class="title">57.2.1. Routines des FDW pour parcourir les tables distantes <a href="#FDW-CALLBACKS-SCAN" class="id_link">#</a></h3></div></div></div><p>
+    </p><pre class="programlisting">
+void
+GetForeignRelSize (PlannerInfo *root,
+                   RelOptInfo *baserel,
+                   Oid foreigntableid);
+    </pre><p>
+
+    Obtient des estimations de la taille de la relation pour une table distante.
+    Elle est appelée au début de la planification d'une requête parcourant une
+    table distante. <code class="literal">root</code> est l'information globale du
+    planificateur sur la requête ; <code class="literal">baserel</code> est
+    l'information du planificateur sur la table ; et
+    <code class="literal">foreigntableid</code> est l'OID provenant de
+    <code class="structname">pg_class</code> pour cette table distante.
+    (<code class="literal">foreigntableid</code> pourrait être obtenu à partir de la
+    structure de données du planificateur mais il est directement fourni pour
+    ne pas avoir à faire cet effort.)
+   </p><p>
+    Cette fonction doit mettre à jour <code class="literal">baserel-&gt;rows</code> pour
+    que cela corresponde au nombre de lignes renvoyées par un parcours de table
+    après avoir pris en compte le filtre réalisé par les clauses de restriction.
+    La valeur initiale de <code class="literal">baserel-&gt;rows</code> est une estimation
+    par défaut, qui doit être remplacée si possible. La fonction pourrait aussi
+    choisir de mettre à jour <code class="literal">baserel-&gt;width</code> si elle
+    peut calculer une meilleure estimation de la largeur moyenne d'une ligne du
+    résultat.
+    (La valeur initiale est basée sur les types de données des colonnes et sur
+    les valeurs de largeur moyenne des colonnes, mesurées par le dernier
+    <code class="command">ANALYZE</code>.) De plus, cette fonction pourrait mettre à
+    jour <code class="literal">baserel-&gt;tuples</code> s'il peut calculer une
+    meilleure estimation du nombre total de lignes de ma table distante.
+    (La valeur initiale provient de
+    <code class="structname">pg_class</code>.<code class="structfield">reltuples</code>
+    qui représente le nombre total de lignes vues par le dernier
+    <code class="command">ANALYZE</code> ; ça sera <code class="literal">-1</code> si
+    aucun <code class="command">ANALYZE</code> n'a été exécuté sur la table distante.)
+   </p><p>
+    Voir <a class="xref" href="fdw-planning.html" title="57.4. Planification de la requête avec un wrapper de données distantes">Section 57.4</a> pour plus d'informations.
+   </p><p>
+    </p><pre class="programlisting">
+void
+GetForeignPaths (PlannerInfo *root,
+                 RelOptInfo *baserel,
+                 Oid foreigntableid);
+    </pre><p>
+
+    Crée les chemins d'accès possibles pour un parcours sur une table distante.
+    Cette fonction est appelée lors de la planification de la requête. Les
+    paramètres sont identiques à ceux de <code class="function">GetForeignRelSize</code>,
+    qui a déjà été appelée.
+   </p><p>
+    Cette fonction doit générer au moins un chemin d'accès (nœud
+    <code class="structname">ForeignPath</code>) pour un parcours sur une table
+    distante et doit appeler <code class="function">add_path</code> pour ajouter chaque
+    chemin à <code class="literal">baserel-&gt;pathlist</code>. Il est recommandé
+    d'utiliser <code class="function">create_foreignscan_path</code> pour construire les
+    nœuds <code class="structname">ForeignPath</code>. La fonction peut générer plusieurs
+    chemins d'accès, c'est-à-dire un chemin qui a un champ
+    <code class="literal">pathkeys</code> valide pour représenter un résultat pré-trié.
+    Chaque chemin d'accès doit contenir les estimations de coûts et peut contenir
+    toute information privée au FDW qui est nécessaire pour identifier la méthode
+    attendue du parcours spécifique.
+   </p><p>
+    Voir <a class="xref" href="fdw-planning.html" title="57.4. Planification de la requête avec un wrapper de données distantes">Section 57.4</a> pour plus d'informations.
+   </p><p>
+    </p><pre class="programlisting">
+ForeignScan *
+GetForeignPlan (PlannerInfo *root,
+                RelOptInfo *baserel,
+                Oid foreigntableid,
+                ForeignPath *best_path,
+                List *tlist,
+                List *scan_clauses,
+                Plan *outer_plan);
+    </pre><p>
+
+    Crée un nœud de plan <code class="structname">ForeignScan</code> à partir du chemin
+    d'accès distant sélectionné. Cette fonction est appelé à la fin de la
+    planification de la requête.
+    Les paramètres sont identiques à ceux de la fonction
+    <code class="function">GetForeignRelSize</code>, avec en plus le
+    <code class="structname">ForeignPath</code> sélectionné (précédemment produit par
+    <code class="function">GetForeignPaths</code>, <code class="function">GetForeignJoinPaths</code>
+    ou <code class="function">GetForeignUpperPaths</code>), la liste cible à émettre par le
+    nœud du plan, les clauses de restriction forcées par le nœud du plan,
+    et le sous-plan externe de <code class="structname">ForeignScan</code>, utilisé
+    pour les vérifications réalisées par <code class="function">RecheckForeignScan</code>.
+    (Si le chemin est pour une jointure plutôt qu'une relation de base,
+    <code class="literal">foreigntableid</code> est <code class="literal">InvalidOid</code>.)
+   </p><p>
+    Cette fonction doit créer et renvoyer un nœud <code class="structname">ForeignScan</code>.
+    Il est recommandé d'utiliser <code class="function">make_foreignscan</code> pour
+    construire le nœud <code class="structname">ForeignScan</code>.
+   </p><p>
+    Voir <a class="xref" href="fdw-planning.html" title="57.4. Planification de la requête avec un wrapper de données distantes">Section 57.4</a> pour plus d'informations.
+   </p></div><div class="sect2" id="FDW-CALLBACKS-UPPER-PLANNING"><div class="titlepage"><div><div><h3 class="title">57.2.2. Routines FDW pour optimiser le traitement après parcours/jointure <a href="#FDW-CALLBACKS-UPPER-PLANNING" class="id_link">#</a></h3></div></div></div><p>
+    Si un FDW supporte l'exécution distante de jointure après parcours, comme
+    une agrégation distante, il doit fournir cette fonction callback :
+   </p><p>
+    </p><pre class="programlisting">
+void
+GetForeignUpperPaths(PlannerInfo *root,
+                     UpperRelationKind stage,
+                     RelOptInfo *input_rel,
+                     RelOptInfo *output_rel,
+                     void *extra);
+    </pre><p>
+    Crée les chemins d'accès possibles pour le traitement <em class="firstterm">relation
+     de niveau supérieur</em>, qui est le terme de l'optimiseur pour tout
+    traitement après parcours/jointure, comme les agrégats, les fonctions de
+    fenêtrage, le tri et les mises à jour de table. Cette fonction optionnelle
+    est appelée lors de l'optimisation de la requête. Actuellement, elle est
+    seulement appelée si toutes les relations de base impliquées appartiennent
+    au même FDW. Cette fonction doit générer des chemins
+    <code class="structname">ForeignPath</code> pour tout traitement
+    post-parcours/jointure que le FDW sait réaliser à distance
+    (utilisez <code class="function">create_foreign_upper_path</code> pour les construire),
+    et appeler
+    <code class="function">add_path</code> pour ajouter ces chemins à la relation
+    indiquée du niveau supérieur. Tout comme
+    <code class="function">GetForeignJoinPaths</code>, il n'est pas nécessaire que
+    cette fonction réussisse à créer des chemins, étant donnée qu'il est
+    toujours possible d'utiliser des chemins de traitement local.
+   </p><p>
+    Le paramètre <code class="literal">stage</code> identifie l'étape post-
+    parcours/jointure est en cours de considération.
+    <code class="literal">output_rel</code> est la relation supérieure devant recevoir
+    les chemins représentation le traitement de cette étape, et
+    <code class="literal">input_rel</code> est la relation représentant la source de
+    cette étape. Le paramètre <code class="literal">extra</code> fournit des détails
+    supplémentaires. Pour le moment, il est uniquement positionné pour
+    <code class="literal">UPPERREL_PARTIAL_GROUP_AGG</code> ou
+    <code class="literal">UPPERREL_GROUP_AGG</code>, auquel cas il pointe vers une
+    structure <code class="literal">GroupPathExtraData</code> ;
+    ou pour <code class="literal">UPPERREL_FINAL</code>, auquel cas il pointe
+    vers une structure <code class="literal">FinalPathExtraData</code>.
+    (Notez que les chemins <code class="structname">ForeignPath</code>
+    ajoutés à <code class="literal">output_rel</code> n'auront typiquement pas de
+    dépendances directes avec les chemins de <code class="literal">input_rel</code> car
+    leur traitement se fait en externe. Néanmoins, examiner les chemins
+    précédemment générés pour l'étape de traitement précédente peut se
+    révéler utile pour éviter un travail redondant de planification.)
+   </p><p>
+    Voir <a class="xref" href="fdw-planning.html" title="57.4. Planification de la requête avec un wrapper de données distantes">Section 57.4</a> pour plus d'informations.
+   </p><p>
+    </p><pre class="programlisting">
+void
+BeginForeignScan (ForeignScanState *node,
+                  int eflags);
+    </pre><p>
+
+    Commence l'exécution d'un parcours distant. L'appel se fait lors du
+    démarrage de l'exécuteur. Cette fonction doit réaliser toutes les
+    initialisation nécessaires avant le démarrage du parcours, mais ne
+    doit pas commencer à exécuter le vrai parcours (cela se fera lors
+    du premier appel à <code class="function">IterateForeignScan</code>). Le
+    nœud <code class="structname">ForeignScanState</code> est déjà créé
+    mais son champ <code class="structfield">fdw_state</code> vaut toujours
+    NULL. Les informations sur la table à parcourir sont accessibles
+    via le nœud <code class="structname">ForeignScanState</code> (en
+    particulier à partir du nœud sous-jacent
+    <code class="structname">ForeignScan</code> qui contient toute information
+    privée au FDW fournie par <code class="function">GetForeignPlan</code>).
+    <code class="literal">eflags</code> contient les bits de drapeaux décrivant le
+    mode opératoire de l'exécuteur pour ce nœud du plan.
+   </p><p>
+    Notez que quand <code class="literal">(eflags &amp; EXEC_FLAG_EXPLAIN_ONLY)</code>
+    est vraie, cette fonction ne doit pas réaliser d'actions visibles
+    en externe. Elle doit seulement faire le minimum requis pour que
+    l'état du nœud soit valide pour
+    <code class="function">ExplainForeignScan</code> et
+    <code class="function">EndForeignScan</code>.
+   </p><p>
+    </p><pre class="programlisting">
+TupleTableSlot *
+IterateForeignScan (ForeignScanState *node);
+    </pre><p>
+
+    Récupère une ligne de la source distante, la renvoyant dans un
+    emplacement de ligne de table (le champ
+    <code class="structfield">ScanTupleSlot</code> du nœud doit être
+    utilisé dans ce but). Renvoie NULL s'il n'y a plus de lignes
+    disponibles. L'infrastructure d'emplacement de ligne de table permet
+    qu'une ligne physique ou virtuelle soit renvoyée. Dans la plupart
+    des cas, la deuxième possibilité (virtuelle), est préférable d'un
+    point de vue des performances. Notez que cette fonction est appelée
+    dans un contexte mémoire dont la durée de vie est très courte et
+    qui sera réinitialisé entre chaque appel. Créez un contexte mémoire
+    dans <code class="function">BeginForeignScan</code> si vous avez besoin d'un
+    stockage qui tient plus longtemps ou utilisez le champ
+    <code class="structfield">es_query_cxt</code> de <code class="structname">EState</code>.
+   </p><p>
+    Les lignes renvoyées doivent correspondre à la liste cible
+    <code class="structfield">fdw_scan_tlist</code> si elle a été fournie,
+    sinon elles doivent correspondre au type de ligne de la table distante
+    parcourue. Si vous choisissez d'optimiser en récupérant d'avance des
+    colonnes non nécessaires, vous devriez insérer des valeurs NULL
+    dans les positions de ces colonnes, ou sinon générer une liste
+    <code class="structfield">fdw_scan_tlist</code> avec ces colonnes omises.
+   </p><p>
+    Notez que l'exécuteur de <span class="productname">PostgreSQL</span> ne
+    se préoccupe pas de savoir si les lignes renvoyées violent
+    les contraintes définies sur la table distante  --  mais le
+    planificateur s'en préoccupe, et peut optimiser les requêtes
+    incorrectement si il y a des lignes visibles dans la table distante
+    qui ne satisfont pas une contrainte déclarée. Si une contrainte
+    est violée lorsque l'utilisateur a déclaré que la contrainte
+    devrait être vrai, il peut être approprié de lever une erreur
+    (de la même manière que vous devriez le faire dans le cas où les
+    types de données ne correspondent pas).
+   </p><p>
+    </p><pre class="programlisting">
+void
+ReScanForeignScan (ForeignScanState *node);
+    </pre><p>
+
+    Recommence le parcours depuis le début. Notez que les paramètres
+    dont dépent le parcours peuvent avoir changés de valeur, donc le
+    nouveau parcours ne va pas forcément renvoyer les mêmes lignes.
+   </p><p>
+    </p><pre class="programlisting">
+void
+EndForeignScan (ForeignScanState *node);
+    </pre><p>
+
+    Termine le parcours et relâche les ressources. Il n'est habituellement
+    pas nécessaire de relâcher la mémoire allouée via palloc. Par contre,
+    les fichiers ouverts et les connexions aux serveurs distants doivent
+    être nettoyés.
+   </p></div><div class="sect2" id="FDW-CALLBACKS-JOIN-SCAN"><div class="titlepage"><div><div><h3 class="title">57.2.3. Routines des FDW pour le parcours des jointures distantes <a href="#FDW-CALLBACKS-JOIN-SCAN" class="id_link">#</a></h3></div></div></div><p>
+    Si un FDW permet d'effectuer des jointures distantes (autrement
+    qu'en récupérant les données des deux tables et en faisant la
+    jointure localement), il devrait fournir cette fonction callback :
+   </p><p>
+    </p><pre class="programlisting">
+void
+GetForeignJoinPaths (PlannerInfo *root,
+                     RelOptInfo *joinrel,
+                     RelOptInfo *outerrel,
+                     RelOptInfo *innerrel,
+                     JoinType jointype,
+                     JoinPathExtraData *extra);
+    </pre><p>
+    Crée les chemins possibles d'accès pour une jointure de
+    deux (ou plus) tables distantes qui toutes proviennent du
+    même serveur distant. Cette fonction optionnelle est appelée
+    durant la planification de la requête. De la même façon que
+    <code class="function">GetForeignPaths</code>, cette fonction devrait
+    générer des chemins <code class="structname">ForeignPath</code> pour
+    le paramètre <code class="literal">joinrel</code> fourni
+    (utilisez <code class="function">create_foreign_join_path</code> pour les construire),
+    et appeler la
+    fonction <code class="function">add_path</code> pour ajouter ces chemins
+    à l'ensemble des chemins à considérer pour la jointure. Mais
+    contrairement à <code class="function">GetForeignPaths</code>, il n'est
+    pas nécessaire que cette fonction réussisse à créer au moins
+    un chemin, dans la mesure où des chemins entraînant des jointures
+    locales sont toujours possibles.
+   </p><p>
+    Notez que cette fonction sera invoquée de manière répétitive
+    pour la même jointure, avec des combinaisons différentes de
+    relations internes ou externes ; il est de la responsabilité du
+    FDW de minimiser les tâches dupliquées.
+   </p><p>
+    Notez aussi que l'ensemble des clauses de jointures à appliquer, passé
+    en tant que <code class="literal">extra-&gt;restrictlist</code>, varie suivant
+    la combinaison des relations interne et externe. Un chemin
+    <code class="structname">ForeignPath</code> généré pour
+    <code class="literal">joinrel</code> doit contenir l'ensemble des clauses de
+    jointure qu'il utilise, qui sera utilisé par l'optimiseur pour
+    convertir le chemin
+    <code class="structname">ForeignPath</code> en un plan, s'il est sélectionné
+    par l'optimiseur comme meilleur chemin pour <code class="literal">joinrel</code>.
+   </p><p>
+    Si un chemin <code class="structname">ForeignPath</code> est choisi
+    pour la jointure, il représentera l'ensemble du processus
+    de jointure ; les chemins générés pour les tables qui
+    la composent et les jointures auxiliaires ne seront pas
+    utilisés. Les traitements suivants des chemins de jointure
+    procèdent essentiellement de la même manière que pour un chemin
+    parcourant une simple table distante. Une différence est que le
+    <code class="structfield">scanrelid</code> résultant du nœud du plan
+    <code class="structname">ForeignScan</code> devrait être mis à zéro,
+    dans la mesure où il ne représente aucune relation simple ; à
+    la place, le champ <code class="structfield">fd_relids</code> du nœud
+    <code class="structname">ForeignScan</code> représente l'ensemble des
+    relations qui ont été jointes. (Le dernier champ est positionné
+    automatiquement par le code interne du planificateur, et n'a pas
+    besoin d'être rempli par le FDW.) Une autre différence est que,
+    comme la liste des colonnes pour une jointure distante ne peut
+    être trouvée dans les catalogues systèmes, le FDW doit remplir
+    <code class="structfield">fdw_scan_tlist</code> avec une liste appropriée
+    de nœuds <code class="structfield">TargetEntry</code>, représentant
+    l'ensemble des colonnes qu'il fournira à l'exécution dans les
+    lignes qu'il retournera.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     À partir de <span class="productname">PostgreSQL</span> 16,
+     <code class="structfield">fs_relids</code> inclut les index rangetable des
+     jointures externes, si une d'entre elles était impliquée dans cette
+     jointure. Le nouveau champ <code class="structfield">fs_base_relids</code>
+     inclut uniquement les index des relations de base et, de ce fait,
+     mimique les anciennes sémantiques de <code class="structfield">fs_relids</code>.
+    </p></div><p>
+    Voir <a class="xref" href="fdw-planning.html" title="57.4. Planification de la requête avec un wrapper de données distantes">Section 57.4</a> pour des informations supplémentaires.
+   </p></div><div class="sect2" id="FDW-CALLBACKS-UPDATE"><div class="titlepage"><div><div><h3 class="title">57.2.4. Routines FDW pour la mise à jour des tables distantes <a href="#FDW-CALLBACKS-UPDATE" class="id_link">#</a></h3></div></div></div><p>
+    Si un FDW supporte la modification des tables distantes, il doit fournir
+    certaines ou toutes les fonctions callback suivant les besoins et les
+    capacités du FDW :
+   </p><p>
+    </p><pre class="programlisting">
+void
+AddForeignUpdateTargets (PlannerInfo *root,
+                         Index rtindex,
+                         RangeTblEntry *target_rte,
+                         Relation target_relation);
+    </pre><p>
+
+    Les opérations <code class="command">UPDATE</code> et <code class="command">DELETE</code> sont
+    réalisées contre des lignes précédemment récupérées par des fonctions de
+    parcours de table. Le FDW peut avoir besoin d'informations supplémentaires,
+    comme l'identifiant de la ligne ou les valeurs des colonnes formant la clé
+    primaire pour s'assurer qu'il peut identifier la ligne exacte à mettre à
+    jour ou à supprimer. Pour supporter cela, cette fonction peut ajouter des
+    colonnes cibles supplémentaires cachées à la liste des colonnes qui doivent
+    être récupérées de la table distante pendant une opération
+    <code class="command">UPDATE</code> ou <code class="command">DELETE</code>.
+   </p><p>
+    Pour faire cela, construisez une <code class="structname">Var</code> représentant
+    une valeur supplémentaire dont vous avez besoin, et passez la à
+    <code class="function">add_row_identity_var</code>, avec un nom pour la colonne
+    cachée. (Vous pouvez effectuer cela plusieurs fois, si plusieurs colonnes
+    sont nécessaires.) Vous devez choisir une colonne cachée distincte pour
+    chaque <code class="structname">Var</code> différente dont vous avez besoin, à
+    l'exception des <code class="structname">Var</code> identiques, sauf pour le
+    champ <code class="structfield">varno</code>, qui peuvent, et doivent partager
+    un même nom de colonne. Le cœur du système utilise les colonnes cachées
+    nommées <code class="literal">tableoid</code> pour une colonne
+    <code class="structfield">tableoid</code> de table, <code class="literal">ctid</code> ou
+    <code class="literal">ctid<em class="replaceable"><code>N</code></em></code> pour
+    <code class="structfield">ctid</code>, <code class="literal">wholerow</code> pour une
+    <code class="structname">Var</code> de ligne entière marquée avec
+    <code class="structfield">vartype</code> = <code class="type">RECORD</code>, et
+    <code class="literal">wholerow<em class="replaceable"><code>N</code></em></code> pour une
+    <code class="structname">Var</code> de ligne entière avec
+    <code class="structfield">vartype</code> égal au type de ligne déclaré de la
+    table. Ré-utiliser ces noms quand vous le pouvez (le planificateur
+    combinera les demandes dupliquées pour les colonnes cachées identiques).
+    Si vous avez besoin d'autres type de colonnes cachées en dehors de
+    celles-ci, il est préférable de choisir un nom préfixé avec le nom de
+    votre extension pour éviter des conflits avec d'autres FDW.
+   </p><p>
+    Si le pointeur <code class="function">AddForeignUpdateTargets</code> est initialisé
+    à <code class="literal">NULL</code>, aucune expression cible supplémentaire ne sera
+    ajoutée.
+    (Ceci rend impossible l'implémentation des opérations
+    <code class="command">DELETE</code> bien que l'<code class="command">UPDATE</code> est toujours
+    faisable si le FDW se base sur une clé primaire ne changeant pas pour
+    identifier les lignes.)
+   </p><p>
+    </p><pre class="programlisting">
+List *
+PlanForeignModify (PlannerInfo *root,
+                   ModifyTable *plan,
+                   Index resultRelation,
+                   int subplan_index);
+    </pre><p>
+
+    Réalise toute opération supplémentaire de planification nécessaire pour
+    une insertion, mise à jour ou suppression sur une table distante. Cette
+    fonction génère l'information privée du FDW qui sera attachée au nœud
+    du plan <code class="structname">ModifyTable</code> qui réalise la mise à jour.
+    Cette information privée doit avoir la forme d'une
+    <code class="literal">List</code>, et sera réalisée par
+    <code class="function">BeginForeignModify</code> lors de l'exécution.
+   </p><p>
+    <code class="literal">root</code> est l'information globale du planificateur sur la
+    requête.
+    <code class="literal">plan</code> est le nœud du plan
+    <code class="structname">ModifyTable</code> qui est complet sauf pour le champ
+    <code class="structfield">fdwPrivLists</code>.
+    <code class="literal">resultRelation</code> identifie la table distante cible par son
+    index rangetable. <code class="literal">subplan_index</code> identifie la cible
+    du nœud de plan <code class="structname">ModifyTable</code> en comptant à
+    partir de zéro ; utilisez ceci si vous voulez indexer dans
+    les sous-structures <span class="quote">« <span class="quote">per-target-relation</span> »</span>
+    des nœuds du <code class="literal">plan</code>.
+   </p><p>
+    Voir <a class="xref" href="fdw-planning.html" title="57.4. Planification de la requête avec un wrapper de données distantes">Section 57.4</a> pour plus d'informations.
+   </p><p>
+    Si le pointeur <code class="function">PlanForeignModify</code> est initialisé à
+    <code class="literal">NULL</code>, aucune action supplémentaire n'est réalisée au
+    moment de la planification, et la liste <code class="literal">fdw_private</code>
+    renvoyée par <code class="function">BeginForeignModify</code> vaudra NIL.
+   </p><p>
+    </p><pre class="programlisting">
+void
+BeginForeignModify (ModifyTableState *mtstate,
+                    ResultRelInfo *rinfo,
+                    List *fdw_private,
+                    int subplan_index,
+                    int eflags);
+    </pre><p>
+
+    Commence l'exécution d'une opération de modification de la table distante.
+    Cette routine est appelée lors du démarrage de l'exécuteur. Elle doit
+    réaliser toute initialisation nécessaire avant de procéder aux
+    modifications de la table. En conséquence,
+    <code class="function">ExecForeignInsert/ExecForeignBatchInsert</code>,
+    <code class="function">ExecForeignUpdate</code> ou
+    <code class="function">ExecForeignDelete</code> seront appelées pour chaque ligne
+    à insérer, mettre à jour ou supprimer.
+   </p><p>
+    <code class="literal">mtstate</code> est l'état général du nœud de plan
+    <code class="structname">ModifyTable</code> en cours d'exécution ; les
+    données globales sur le plan et l'état d'exécution sont disponibles via
+    cette structure.
+    <code class="literal">rinfo</code> est la structure
+    <code class="structname">ResultRelInfo</code> décrivant la table distante cible.
+    (Le champ <code class="structfield">ri_FdwState</code> de
+    <code class="structname">ResultRelInfo</code> est disponible pour que le FDW
+    enregistre tout état privé dont il aurait besoin pour réaliser cette
+    opération.)
+    <code class="literal">fdw_private</code> contient les données privées générées par
+    <code class="function">PlanForeignModify</code>.
+    <code class="literal">subplan_index</code> identifie la cible du nœud de
+    plan <code class="structname">ModifyTable</code>.
+    <code class="literal">eflags</code> contient les bits de drapeaux décrivant le mode
+    opératoire de l'exécuteur pour ce nœud de plan.
+   </p><p>
+    Notez que quand <code class="literal">(eflags &amp; EXEC_FLAG_EXPLAIN_ONLY)</code>
+    est vrai, cette fonction ne devrait réaliser aucune action visible
+    externe ; il devrait seulement faire le minimum requis pour rendre
+    l'état du nœud valide pour
+    <code class="function">ExplainForeignModify</code> et
+    <code class="function">EndForeignModify</code>.
+   </p><p>
+    Si le pointeur <code class="function">BeginForeignModify</code> est initialisé à
+    <code class="literal">NULL</code>, aucune action n'est prise lors du démarrage
+    de l'exécuteur.
+   </p><p>
+    Notez que cette fonction est aussi appelée lors de l'insertion de lignes
+    déplacées dans une partition de type table distante ou lors de
+    l'exécution de <code class="command">COPY FROM</code> sur une table distante,
+    auquel cas elle est appelée d'une façon différente que dans le cas d'un
+    <code class="command">INSERT</code>. Voir les fonctions callback décrites
+    ci-dessous permettant au FDW de le supporter.
+   </p><p>
+    </p><pre class="programlisting">
+TupleTableSlot *
+ExecForeignInsert (EState *estate,
+                   ResultRelInfo *rinfo,
+                   TupleTableSlot *slot,
+                   TupleTableSlot *planSlot);
+    </pre><p>
+
+    Insère une ligne dans la table distante.
+    <code class="literal">estate</code> est un état global de l'exécution de la requête.
+    <code class="literal">rinfo</code> est la structure <code class="structname">ResultRelInfo</code>
+    décrivant la table distante cible.
+    <code class="literal">slot</code> contient la ligne à insérer ; ça correspondra
+    à la définition du type de la ligne de la table distante.
+    <code class="literal">planSlot</code> contient la ligne qui a été générée par le
+    sous-plan du nœud <code class="structname">ModifyTable</code> ; cela
+    diffère du <code class="literal">slot</code> qui contient aussi les colonnes
+    supplémentaires.
+    (Le <code class="literal">planSlot</code> a typiquement peu d'intérêt pour
+    <code class="command">INSERT</code> mais est fourni pour être complet.)
+   </p><p>
+    La valeur de retour est soit un emplacement contenant les données
+    effectivement insérées (elles peuvent différer des données fournies, par
+    exemple suite à l'action de triggers), soit NULL si aucune ligne
+    n'a été insérée (là aussi typiquement le résultat d'un trigger). Le
+    <code class="literal">slot</code> peut être ré-utilisé dans ce contexte.
+   </p><p>
+    Les données du slot retourné ne sont utilisées que si la commande
+    <code class="command">INSERT</code> a une clause <code class="literal">RETURNING</code>
+    ou implique une vue <code class="literal">WITH CHECK OPTION</code> ;
+    ou si la table étrangère a un trigger <code class="literal">AFTER ROW</code>.
+    Les triggers ont besoin de toutes les colonnes,
+    mais le FDW peut choisir d'optimiser en ne retournant que certaines colonnes,
+    voire aucune, selon la clause <code class="literal">RETURNING</code>
+    ou les contraintes <code class="literal">WITH CHECK OPTION</code>.
+    Cependant, un slot doit être retourné pour indiquer un succès, sinon le
+    nombre de lignes retournées rapporté par la requête sera faux.
+   </p><p>
+    Si le pointeur <code class="function">ExecForeignInsert</code> est initialisé à
+    <code class="literal">NULL</code>, les tentatives d'insertion dans la table distante
+    échoueront avec un message d'erreur.
+   </p><p>
+    Notez que cette fonction est aussi appelée à l'insertion de lignes
+    reroutées vers une partition qui est une table étrangère, ou à l'exécution
+    de <code class="command">COPY FROM</code> sur une table étrangère, auxquels cas
+    elle sera appelée d'une manière différente du cas d'un
+    <code class="command">INSERT</code>. Voir les fonctions callback décrites plus bas
+    qui permettent au FDW de supporter cela.
+   </p><p>
+    </p><pre class="programlisting">
+TupleTableSlot **
+ExecForeignBatchInsert(EState *estate,
+                       ResultRelInfo *rinfo,
+                       TupleTableSlot **slots,
+                       TupleTableSlot **planSlots,
+                       int *numSlots);
+</pre><p>
+
+     Insère plusieurs lignes en bloc dans la table distante. Les paramètres
+     sont les même que pour <code class="function">ExecForeignInsert</code> mis à part
+     que <code class="literal">slots</code> et <code class="literal">planSlots</code> contiennent
+     de plusieurs lignes et <code class="literal">*numSlots</code> spécifie le nombre
+     de lignes dans ces tableaux.
+    </p><p>
+     La valeur de retour est un tableau d'emplacements
+     (<span class="quote">« <span class="quote">slots</span> »</span>) contenant les données qui sont réellement
+     insérées (et peut différer des données fournies, par exemple avec le
+     résultat d'actions de trigger.) Les emplacements en entrée peuvent être
+     réutilisés à ce propos. Le nombre de lignes insérées avec succès est
+     retourné dans <code class="literal">*numSlots</code>.
+    </p><p>
+     Les données dans l'emplacement retour sont utilisés uniquement si
+     l'expression <code class="command">INSERT</code> implique une vue <code class="literal">WITH
+     CHECK OPTION</code> ou si une table distance a un trigger
+     <code class="literal">AFTER ROW</code>. Les triggers nécessitent toutes les
+     colonnes, mais le FDW peut choisir, par optimisation distante, de
+     retourner toutes ou quelques unes des colonnes, en fonction du contenu
+     des contraintes <code class="literal">WITH CHECK OPTION</code>.
+    </p><p>
+     Si les pointeurs <code class="function">ExecForeignBatchInsert</code> ou
+     <code class="function">GetForeignModifyBatchSize</code> sont mis à
+     <code class="literal">NULL</code>, les tentatives d'insérer dans la table distante
+     utiliseront <code class="function">ExecForeignInsert</code>. Cette fonction n'est
+     pas utilisée si l'expression <code class="command">INSERT</code> dispose de la
+     clause <code class="literal">RETURNING</code>.
+    </p><p>
+     Notez que cette fonction est aussi appelée lors de l'insertion de lignes
+     dirigées dans une partition de table distante ou lors de l'exécution de
+     <code class="command">COPY FROM</code> sur une table distante, auquel cas il est
+     appelé d'une façon différente que dans le cas d'un
+     <code class="command">INSERT</code>. Voir les fonctions
+     callback décrites ci-dessous qui permettent au FDW de supporter cela.
+    </p><p>
+</p><pre class="programlisting">
+int
+GetForeignModifyBatchSize(ResultRelInfo *rinfo);
+</pre><p>
+
+     Affiche le nombre maximum de lignes qu'un simple appel à
+     <code class="function">ExecForeignBatchInsert</code> peut gérer pour la table
+     distante spécifiée. L'exécuteur passe au plus le nombre donnée de lignes
+     à <code class="function">ExecForeignBatchInsert</code>. <code class="literal">rinfo</code>
+     est la structure <code class="structname">ResultRelInfo</code> décrivant la
+     cible de la table distante. Le FDW doit fournir le serveur distant et/ou
+     l'option de table distante pour que l'utilisateur affecte cette valeur
+     ou une valeur codée en dur.
+    </p><p>
+     Si le pointeur de <code class="function">ExecForeignBatchInsert</code> ou
+     <code class="function">GetForeignModifyBatchSize</code> est mis à
+     <code class="literal">NULL</code>, les tentatives d'insertion dans la table
+     distante utiliseront <code class="function">ExecForeignInsert</code>.
+    </p><p>
+</p><pre class="programlisting">
+TupleTableSlot *
+ExecForeignUpdate (EState *estate,
+                   ResultRelInfo *rinfo,
+                   TupleTableSlot *slot,
+                   TupleTableSlot *planSlot);
+    </pre><p>
+
+    Met à jour une ligne dans la table distante. <code class="literal">estate</code> est
+    l'état global de l'exécution de la requête. <code class="literal">rinfo</code> est
+    la structure <code class="structname">ResultRelInfo</code> décrivant la table
+    distante cible. <code class="literal">slot</code> contient les nouvelles données de
+    la ligne ; elles correspondront à la définition du type de ligne
+    pour la table distante. <code class="literal">planSlot</code> contient la ligne qui
+    a été générée par le sous-plan du nœud
+    <code class="structname">ModifyTable</code>. Contrairement au
+    <code class="literal">slot</code>, cette ligne contient seulement les nouvelles
+    valeurs pour les colonnes modifiées dans la requête. De ce fait, ne vous
+    appuyez pas sur les nombres d'attributs de la table distante à indexer
+    dans <code class="literal">planSlot</code>. De plus, <code class="literal">planSlot</code>
+    contient typiquement des colonnes <span class="quote">« <span class="quote">inutiles</span> »</span>
+    (<span class="foreignphrase"><em class="foreignphrase">junk</em></span>) supplémentaires. En particulier,
+    toutes les colonnes inutiles demandées par
+    <code class="function">AddForeignUpdateTargets</code> seront disponibles pour ce
+    slot.
+   </p><p>
+    La valeur de retour est soit un emplacement contenant la nouvelle ligne
+    modifiée (elle peut différer des données fournies suite, par exemple, à
+    l'exécution d'un trigger), ou NULL si aucune ligne n'a été réellement
+    mise à jour (là-encore typiquement l'action d'un trigger).
+    L'emplacement <code class="literal">slot</code> fourni peut être réutilisé dans
+    ce contexte.
+   </p><p>
+    Les données du slot retourné ne sont utilisées que si la commande
+    <code class="command">&gt;UPDATE</code> a une clause <code class="literal">RETURNING</code>
+    ou implique une vue <code class="literal">WITH CHECK OPTION</code> ;
+    ou si la table étrangère a un trigger <code class="literal">AFTER ROW</code>.
+    Les triggers ont besoin de toutes les colonnes,
+    mais le FDW peut choisir d'optimiser en ne retournant que certaines colonnes,
+    voire aucune, selon la clause <code class="literal">RETURNING</code>
+    ou les contraintes <code class="literal">WITH CHECK OPTION</code>.
+    Cependant, un slot doit être retourné pour indiquer un succès, sinon le
+    nombre de lignes retournées rapporté par la requête sera faux.
+   </p><p>
+    Si le pointeur <code class="function">ExecForeignUpdate</code> est initialisé à
+    <code class="literal">NULL</code>, les tentatives de mise à jour de la table
+    distante échoueront avec un message d'erreur.
+   </p><p>
+    </p><pre class="programlisting">
+TupleTableSlot *
+ExecForeignDelete (EState *estate,
+                   ResultRelInfo *rinfo,
+                   TupleTableSlot *slot,
+                   TupleTableSlot *planSlot);
+    </pre><p>
+
+    Supprime une ligne de la table distante.
+    <code class="literal">estate</code> est l'état global de l'exécution de la requête.
+    <code class="literal">rinfo</code> est la structure <code class="structname">ResultRelInfo</code>
+    décrivant la table distante cible.
+    <code class="literal">slot</code> ne contient rien d'utile à l'appel de la fonction
+    mais peut être utilisé pour contenir la ligne renvoyée.
+    <code class="literal">planSlot</code> contient la ligne générée par le sous-plan du
+    nœud du plan <code class="structname">ModifyTable</code> ; en particulier,
+    elle contient toute colonne supplémentaire réclamée par
+    <code class="function">AddForeignUpdateTargets</code>. Les colonnes supplémentaires
+    doivent être utilisées pour identifier la ligne à supprimer.
+   </p><p>
+    La valeur de retour est soit un slot contenant la ligne supprimée soit
+    NULL si aucune ligne n'a été supprimée (par exemple suite a déclenchement
+    d'un trigger). Le <code class="literal">slot</code> fourni en référence peut être
+    utilisé pour contenir la ligne à renvoyer.
+   </p><p>
+    Les données placées dans l'emplacement sont utilisées seulement si la
+    requête <code class="command">DELETE</code> dispose de la clause
+    <code class="literal">RETURNING</code> ou si la table externe a un trigger
+    <code class="literal">AFTER ROW</code>. Les triggers nécessitent toutes les colonnes
+    mais le FDW pourrait choisir d'optimiser en ne renvoyant que certaines
+    colonnes ou toutes suivant le contenu de la clause
+    <code class="literal">RETURNING</code>. Néanmoins, un slot doit être renvoyé pour
+    indiquer le succès. Dans le cas contraire, le nombre de lignes rapporté
+    par la requête sera faux.
+   </p><p>
+    Si le pointeur <code class="function">ExecForeignDelete</code> est initialisé à
+    <code class="literal">NULL</code>, les tentatives de suppression dans la table
+    distante échoueront avec un message d'erreur.
+   </p><p>
+    </p><pre class="programlisting">
+void
+EndForeignModify (EState *estate,
+                  ResultRelInfo *rinfo);
+    </pre><p>
+
+    Termine la mise à jour et libère les ressources. Il n'est normalement pas
+    importante de libérer la mémoire prise avec palloc mais, par exemple, les
+    fichiers ouverts et les connexions vers des serveurs distants doivent
+    être nettoyés.
+   </p><p>
+    Si le pointeur vers <code class="function">EndForeignModify</code> est initialisé
+    à <code class="literal">NULL</code>, aucune action n'a lieu pendant l'arrêt de
+    l'exécuteur.
+   </p><p>
+    Les lignes insérées dans une table partitionnée à l'aide
+    d'<code class="command">INSERT</code> ou <code class="command">COPY FROM</code> sont redirigées
+    vers les partitions. Si un FDW supporte la redirection des lignes pour
+    les partitions déclarées comme table distantes, il devra également
+    fournir les fonctions de callback suivantes. Ces fonctions sont également
+    appelées quand <code class="command">COPY FROM</code> est exécuté sur une table
+    distante.
+   </p><p>
+    </p><pre class="programlisting">
+void
+BeginForeignInsert(ModifyTableState *mtstate,
+                   ResultRelInfo *rinfo);
+    </pre><p>
+
+    Débute l'exécution d'une opération d'insertion sur une table distante.
+    Cette routine est appelée juste avant que la première ligne soit insérée
+    dans la table distante quand il s'agit de la partition choisie par la
+    redirection de ligne ou quand il s'agit de la cible spécifiée dans une
+    commande <code class="command">COPY FROM</code>.  Elle devrait effectuer toute
+    initialisation nécessaire avant l'insertion elle-même.  Ensuite,
+    <code class="function">ExecForeignInsert</code> ou
+    <code class="function">ExecForeignBatchInsert</code> seront appelées pour chaque
+    ligne devant être insérée dans la table distante.
+   </p><p>
+    <code class="literal">mtstate</code> est l'état général du nœud de plan
+    <code class="structname">ModifyTable</code> en cours d'exécution ;; les données
+    globales sur le plan et l'état d'exécution sont disponibles via cette
+    structure.
+    <code class="literal">rinfo</code> est la structure
+    <code class="structname">ResultRelInfo</code> décrivant la table distante cible.
+    (Le champ <code class="structfield">ri_FdwState</code> de
+    <code class="structname">ResultRelInfo</code> est disponible pour que le FDW
+    enregistre tout état privé dont il aurait besoin pour réaliser cette
+    opération.)
+   </p><p>
+    Quand elle est appelée par une commande <code class="command">COPY FROM</code>, les
+    données globales liées au plan contenues dans <code class="literal">mtstate</code>
+    ne sont pas fournies et le paramètre <code class="literal">planSlot</code> de
+    <code class="function">ExecForeignInsert/ExecForeignBatchInsert</code> appelée par
+    la suite pour chaque
+    ligne insérée vaut <code class="literal">NULL</code>, que la table distante soit la
+    partition choisie par la redirection de ligne ou que cela soit la cible
+    spécifiée dans la commande.
+   </p><p>
+    Si le pointeur <code class="function">BeginForeignInsert</code> est initialisé à
+    <code class="literal">NULL</code>, aucune action n'est faite pour l'initialisation.
+   </p><p>
+    Notez que si le FDW ne supporte pas les tables étrangères comme partitions
+    routables et/ou l'exécution de <code class="command">COPY FROM</code> sur des
+    tables étrangères, cette fonction, ou
+    <code class="function">ExecForeignInsert</code> appelée après, doivent renvoyer
+    une erreur si nécessaire.
+   </p><p>
+    </p><pre class="programlisting">
+void
+EndForeignInsert(EState *estate,
+                 ResultRelInfo *rinfo);
+    </pre><p>
+
+    Termine l'opération d'insertion et libère les ressources.  Il n'est
+    habituellement pas nécessaire de libérer la mémoire allouée via palloc.
+    Par contre, les fichiers ouverts et les connexions aux serveurs distants
+    doivent être libérés par exemple.
+   </p><p>
+    Si le pointeur <code class="function">EndForeignInsert</code> est initialisé à
+    <code class="literal">NULL</code>, aucune action n'est faite pour la fin de
+    l'opération d'insertion.
+   </p><p>
+    </p><pre class="programlisting">
+int
+IsForeignRelUpdatable (Relation rel);
+    </pre><p>
+
+    Indique les opérations de mise à jour supportées par la table distante
+    indiquée. La valeur de retour doit être un masque de bits correspondant
+    aux numéros d'événement des règles, indiquant les opérations supportées
+    par la table disante, en utilisant l'énumération <code class="literal">CmdType</code>.
+    Autrement dit
+    <code class="literal">(1 &lt;&lt; CMD_UPDATE) = 4</code> pour <code class="command">UPDATE</code>,
+    <code class="literal">(1 &lt;&lt; CMD_INSERT) = 8</code> pour <code class="command">INSERT</code> et
+    <code class="literal">(1 &lt;&lt; CMD_DELETE) = 16</code> pour <code class="command">DELETE</code>.
+   </p><p>
+    Si le pointeur <code class="function">IsForeignRelUpdatable</code> est configuré à
+    <code class="literal">NULL</code>, les tables distantes sont supposées accepter les
+    INSERT, UPDATE et DELETE si le connecteur FDW fournit respectivement les
+    fonctions <code class="function">ExecForeignInsert</code>,
+    <code class="function">ExecForeignUpdate</code> et
+    <code class="function">ExecForeignDelete</code>. Cette fonction est uniquement
+    nécessaire si le FDW supporte quelques tables modifiables et d'autres qui
+    ne le sont pas. (Et même là, il est possible de renvoyer une erreur dans la
+    routine d'exécution au lieu de vérifier avec cette fonction. Néanmoins, cette
+    fonction est utilisé pour déterminer l'état modifiable des tables qui sera
+    affiché dans les vues <code class="literal">information_schema</code>.)
+   </p><p>
+    Certaines insertions, mises à jour et suppressions vers des tables
+    distantes peuvent être optimisées en implémentant un ensemble alternatif
+    d'interfaces. Les interfaces habituelles pour les insertions, mises à
+    jour et suppressions récupèrent les lignes du serveur distant, puis
+    modifient les lignes, une par une. Dans certains cas, cette approche
+    ligne par ligne est nécessaire mais elle peut s'avérer inefficace. S'il
+    est possible pour le serveur distant de déterminer les lignes à modifier
+    sans avoir à les récupérer, et qu'il n'y a pas de structures locales qui
+    pourraient affecter l'opération (triggers locaux au niveau ligne,
+    colonnes calculées automatiquement ou contraintes <code class="literal">WITH CHECK OPTION</code>
+    provenant des vues parents), alors il est possible de s'arranger pour
+    que l'opération entière soit réalisée sur le serveur distant. Les
+    interfaces décrites ci-dessous rendent cela possible.
+   </p><p>
+    </p><pre class="programlisting">
+bool
+PlanDirectModify (PlannerInfo *root,
+                  ModifyTable *plan,
+                  Index resultRelation,
+                  int subplan_index);
+    </pre><p>
+
+    Décide si l'exécution d'une modification directement sur le serveur
+    distant est sûre. Dans ce cas, renvoie <code class="literal">true</code> après
+    avoir réalisé les actions d'optimisation nécessaire pour cela. Dans le
+    cas contraire, renvoie <code class="literal">false</code>. Cette fonction
+    optionnelle est appelée lors de la planification de la requête. Si cette
+    fonction réussit, <code class="function">BeginDirectModify</code>,
+    <code class="function">IterateDirectModify</code> et
+    <code class="function">EndDirectModify</code> seront appelées à l'étape
+    d'exécution. Dans le cas contraire, la modification de la table sera
+    exécutée en utilisant les fonctions de modification de la table décrites
+    ci-dessus. Les paramètres sont les mêmes que pour
+    <code class="function">PlanForeignModify</code>.
+   </p><p>
+    Pour exécuter la modification directe sur le serveur distant, cette
+    fonction doit ré-écrire le sous-plan cible avec un nœud de plan
+    <code class="structname">ForeignScan</code> qui exécute la modification directe
+    sur le serveur distant. Les champs <code class="structfield">operation</code>
+    et <code class="structfield">resultRelation</code> du
+    <code class="structname">ForeignScan</code> doivent être configurés de façon
+    approprié. <code class="structfield">operation</code> doit être affecté à la
+    valeur de l'énumération <code class="literal">CmdType</code> correspondante au type
+    d'expression (et qui est <code class="literal">CMD_UPDATE</code> pour
+    <code class="command">UPDATE</code>, <code class="literal">CMD_INSERT</code> pour
+    <code class="command">INSERT</code> et <code class="literal">CMD_DELETE</code> pour
+    <code class="command">DELETE</code>), et l'argument
+    <code class="literal">resultRelation</code> doit être copié dans le champ
+    <code class="structfield">resultRelation</code>.
+   </p><p>
+    Voir <a class="xref" href="fdw-planning.html" title="57.4. Planification de la requête avec un wrapper de données distantes">Section 57.4</a> pour plus d'informations.
+   </p><p>
+    Si le pointeur <code class="function">PlanDirectModify</code> est configuré à
+    <code class="literal">NULL</code>, aucune tentative ne sera réalisée pour exécuter
+    une modification directe sur le serveur distant.
+   </p><p>
+    </p><pre class="programlisting">
+void
+BeginDirectModify (ForeignScanState *node,
+                   int eflags);
+    </pre><p>
+
+    Prépare une exécution d'une modification directe sur le serveur distant.
+    Cette fonction est appelée lors du démarrage de l'exécuteur. Elle doit
+    réaliser toute initialisation nécessaire avant la modification directe,
+    qui doit être réalisée lors du premier appel à
+    <code class="function">IterateDirectModify</code>). Le nœud
+    <code class="structname">ForeignScanState</code> a déjà été créée mais son champ
+    <code class="structfield">fdw_state</code> vaut toujours NULL. Des informations
+    sur la table à modifier sont disponibles au travers du nœud
+    <code class="structname">ForeignScanState</code> (en particulier, à partir du
+    nœud <code class="structname">ForeignScan</code> sous-jacent, qui contient des
+    informations privées au FDW fournies par
+    <code class="function">PlanDirectModify</code>). <code class="literal">eflags</code>
+    contient des bits d'informations décrivant le mode d'opération de
+    l'exécuteur pour ce nœud de plan.
+   </p><p>
+    Notez que quand <code class="literal">(eflags &amp; EXEC_FLAG_EXPLAIN_ONLY)</code>
+    est vrai, cette fonction ne doit pas réaliser d'actions visibles
+    extérieurement ; elle doit seulement faire le minimum requis pour
+    rendre valide l'état du nœud pour
+    <code class="function">ExplainDirectModify</code> et
+    <code class="function">EndDirectModify</code>.
+   </p><p>
+    Si le pointeur <code class="function">BeginDirectModify</code> est configuré à
+    <code class="literal">NULL</code>, aucune tentative ne sera réalisée pour exécuter
+    une modification directe sur le serveur distant.
+   </p><p>
+    </p><pre class="programlisting">
+TupleTableSlot *
+IterateDirectModify (ForeignScanState *node);
+    </pre><p>
+
+    Quand la requête <code class="command">INSERT</code>, <code class="command">UPDATE</code> ou
+    <code class="command">DELETE</code> ne contient pas de clause
+    <code class="literal">RETURNING</code>, renvoie simplement NULL après une
+    modification directe sur le serveur distant. Quand la requête contient
+    cette clause, récupère un résultat contenant la donnée nécessaire pour le
+    traitement du <code class="literal">RETURNING</code>, le renvoyant dans un slot de
+    ligne de table (le champ <code class="structfield">ScanTupleSlot</code> du nœud
+    doit être utilisé pour cela). Les données insérées, mises à jour ou
+    supprimées doivent être enregistrées dans le champ
+    <code class="literal">node-&gt;resultRelInfo-&gt;ri_projectReturning-&gt;pi_exprContext-&gt;ecxt_scantuple</code>. Renvoie NULL s'il n'y a plus
+    de lignes disponibles. Notez que cette fonction est appelée dans un
+    contexte mémoire à court terme qui sera réinitialisée à chaque appel.
+    Créez un contexte mémoire dans <code class="function">BeginDirectModify</code> si
+    vous avez besoin d'un stockage d'une durée de vie plus importante ou
+    utilisez <code class="structfield">es_query_cxt</code> du champ
+    <code class="structname">EState</code> du nœud.
+   </p><p>
+    Les lignes renvoyées doivent correspondre à la liste cible
+    <code class="structfield">fdw_scan_tlist</code> si une liste a été fournie.
+    Sinon, elles doivent correspondre au type de ligne de la table externe en
+    cours de modification. Si vous choisissez d'optimiser la récupération des
+    colonnes inutiles pour le traitement de <code class="literal">RETURNING</code>,
+    vous devez placer des valeurs NULL à la position de ces colonnes ou
+    générer une liste <code class="structfield">fdw_scan_tlist</code> en omettant
+    les colonnes inutiles.
+   </p><p>
+    Que la requête ait la clause ou non, le nombre de lignes rapporté par la
+    requête doit être incrémenté par le FDW lui-même. Quand la requête n'a
+    pas de clause, le FDW doit aussi incrémenté le nombre de lignes pour le
+    nœud <code class="structname">ForeignScanState</code> dans le cas d'un
+    <code class="command">EXPLAIN ANALYZE</code> case.
+   </p><p>
+    Si le pointeur <code class="function">IterateDirectModify</code> est configuré à
+    <code class="literal">NULL</code>, aucune tentative ne sera réalisée pour exécuter
+    une modification directe sur le serveur distant.
+   </p><p>
+    </p><pre class="programlisting">
+void
+EndDirectModify (ForeignScanState *node);
+    </pre><p>
+
+    Nettoie après une modification directe sur le serveur distant. Il n'est
+    normalement pas important de relâcher la mémoire allouée avec palloc
+    mais, par exemple, des fichiers et des connexions ouvertes sur le serveur
+    distant doivent fermés.
+   </p><p>
+    Si le pointeur <code class="function">EndDirectModify</code> est configuré à
+    <code class="literal">NULL</code>, aucune tentative ne sera réalisée pour exécuter
+    une modification directe sur le serveur distant.
+   </p></div><div class="sect2" id="FDW-CALLBACKS-TRUNCATE"><div class="titlepage"><div><div><h3 class="title">57.2.5. Routines FDW pour <code class="command">TRUNCATE</code> <a href="#FDW-CALLBACKS-TRUNCATE" class="id_link">#</a></h3></div></div></div><p>
+</p><pre class="programlisting">
+void
+ExecForeignTruncate(List *rels,
+                    DropBehavior behavior,
+                    bool restart_seqs);
+</pre><p>
+
+    Tronque les tables distantes. Cette fonction est appelée quand <a class="xref" href="sql-truncate.html" title="TRUNCATE"><span class="refentrytitle">TRUNCATE</span></a> est exécuté sur une table distante.
+    <code class="literal">rels</code> est une liste de structure de données
+    <code class="structname">Relation</code> des table distantes à tronquer.
+   </p><p>
+    Le comportement est soit <code class="literal">DROP_RESTRICT</code>, soit
+    <code class="literal">DROP_CASCADE</code> indiquant que l'option
+    <code class="literal">RESTRICT</code> ou <code class="literal">CASCADE</code>,
+    respectivement, a été indiquée dans la commande
+    <code class="command">TRUNCATE</code> originelle.
+   </p><p>
+    Si <code class="literal">restart_seqs</code> vaut <code class="literal">true</code>, la
+    commande <code class="command">TRUNCATE</code> originelle a requis le comportement
+    <code class="literal">RESTART IDENTITY</code>, sinon le comportement
+    <code class="literal">CONTINUE IDENTITY</code> a été requis.
+   </p><p>
+    Notez que les options <code class="literal">ONLY</code> spécifiées dans la commande
+    <code class="command">TRUNCATE</code> originelle ne sont pas passées à
+    <code class="function">ExecForeignTruncate</code>. Ce comportement est similaire
+    aux fonctions callback des <code class="command">SELECT</code>,
+    <code class="command">UPDATE</code> et <code class="command">DELETE</code> sur une table
+    distante.
+   </p><p>
+    <code class="function">ExecForeignTruncate</code> est invoquée une fois par serveur
+    distant pour lequel des tables distantes sont tronquées. Cela signifie
+    que toutes les tables distantes incluses dans <code class="literal">rels</code>
+    doivent appartenir au même serveur.
+   </p><p>
+    Si le pointeur de <code class="function">ExecForeignTruncate</code> est mis à
+    <code class="literal">NULL</code>, les tentatives de tronquer des tables distantes
+    échoueront avec un message d'erreur.
+   </p></div><div class="sect2" id="FDW-CALLBACKS-ROW-LOCKING"><div class="titlepage"><div><div><h3 class="title">57.2.6. Routines FDW pour le verrouillage des lignes <a href="#FDW-CALLBACKS-ROW-LOCKING" class="id_link">#</a></h3></div></div></div><p>
+    Si un FDW veut supporter le <em class="firstterm">verrouillage
+     tardif de lignes</em> (comme décrit à <a class="xref" href="fdw-row-locking.html" title="57.5. Le verrouillage de ligne dans les wrappers de données distantes">Section 57.5</a>), il doit fournir les fonctions callbacks
+    suivantes :
+   </p><p>
+    </p><pre class="programlisting">
+RowMarkType
+GetForeignRowMarkType (RangeTblEntry *rte,
+                       LockClauseStrength strength);
+    </pre><p>
+
+    Indique quelle option de marquage de ligne utiliser pour
+    une table distante. <code class="literal">rte</code> est le nœud
+    <code class="structname">RangeTblEntry</code> pour la table et
+    <code class="literal">strength</code> décrit la force du verrou
+    requis par la clause <code class="literal">FOR UPDATE/SHARE</code>, si
+    applicable. Le résultat doit être un membre du type énumération
+    <code class="literal">RowMarkType</code>.
+   </p><p>
+    Cette fonction est appelée durant la planification de la
+    requête pour chaque table distante qui apparaît dans une
+    requête <code class="command">UPDATE</code>, <code class="command">DELETE</code>,
+    ou <code class="command">SELECT FOR UPDATE/SHARE</code> et n'est
+    pas la cible d'une commande <code class="command">UPDATE</code> ou
+    <code class="command">DELETE</code>.
+   </p><p>
+    Si le pointeur de fonction
+    <code class="function">GetForeignRowMarkType</code> est positionné à
+    <code class="literal">NULL</code>, l'option <code class="literal">ROW_MARK_COPY</code>
+    est toujours utilisée. (Ceci implique que la fonction
+    <code class="function">RefetchForeignRow</code> ne sera jamais appelée,
+    aussi elle n'a pas besoin d'être fournie non plus.)
+   </p><p>
+    Voir <a class="xref" href="fdw-row-locking.html" title="57.5. Le verrouillage de ligne dans les wrappers de données distantes">Section 57.5</a> pour plus d'informations.
+   </p><p>
+    </p><pre class="programlisting">
+void
+RefetchForeignRow (EState *estate,
+                   ExecRowMark *erm,
+                   Datum rowid,
+                   TupleTableSlot *slot,
+                   bool *updated);
+    </pre><p>
+
+    Récupère à nouveau une ligne à partir de
+    la table distante, après l'avoir verrouillée si
+    nécessaire. <code class="literal">estate</code> est l'état global
+    d'exécution de la requête. <code class="literal">erm</code> est la
+    structure <code class="structname">ExecRowMark</code> décrivant la
+    table distante cible et le type de verrou ligne (si applicable)
+    à prendre.
+    <code class="literal">rowid</code> identifie la ligne à récupérer.
+    <code class="literal">slot</code> ne contient rien d'utile lors de l'appel,
+    mais peut être utilisé pour retourner l'enregistrement renvoyé.
+    <code class="literal">updated</code> est un paramètre de sortie.
+   </p><p>
+    Cette fonction doit renvoyer l'enregistrement dans le slot fourni à cet effet,
+    ou l'effacer si le verrou sur la ligne ne peut être obtenu.
+    Le type de verrou de ligne à acquérir est défini par
+    <code class="literal">erm-&gt;markType</code>, qui est la valeur retournée
+    précédemment par la fonction <code class="function">GetForeignRowMarkType</code>.
+    (<code class="literal">ROW_MARK_REFERENCE</code> signifie qu'il faut juste
+    re-récupérer l'enregistrement sans poser aucun verrou,
+    et <code class="literal">ROW_MARK_COPY</code> ne sera jamais envoyé à cette
+    fonction.)
+   </p><p>
+    En complément, <code class="literal">*updated</code> devrait être positionné
+    à <code class="literal">true</code> si ce qui a été récupéré est une
+    version mise à jour de la ligne plutôt que la même version
+    obtenue précédemment. (Si le FDW ne peut être sûr à propos
+    de cette information, retourner toujours <code class="literal">true</code>
+    est recommandé.)
+   </p><p>
+    Notez que par défaut, l'échec pour prendre un verrou ligne devrait avoir
+    pour conséquence de lever une erreur ; renvoyer un emplacement vide
+    n'est approprié que si l'option <code class="literal">SKIP LOCKED</code> est
+    spécifiée par <code class="literal">erm-&gt;waitPolicy</code>.
+   </p><p>
+    <code class="literal">rowid</code> est la valeur de
+    <code class="structfield">ctid</code> précédemment lue pour la ligne
+    récupérée à nouveau. Bien que la valeur <code class="literal">rowid</code>
+    est envoyée comme type <code class="type">Datnum</code>, elle ne peut être
+    actuellement que de type <code class="type">tid</code>. L'API de la fonction est
+    choisie dans l'espoir qu'il sera possible d'autoriser d'autre types
+    de données pour les identifiants des lignes dans le futur.
+   </p><p>
+    Si le pointeur de fonction <code class="function">RefetchForeignRow</code>
+    est positionné sur <code class="literal">NULL</code>, les tentatives de
+    récupération à nouveau des lignes échoueront avec un message
+    d'erreur.
+   </p><p>
+    Voir <a class="xref" href="fdw-row-locking.html" title="57.5. Le verrouillage de ligne dans les wrappers de données distantes">Section 57.5</a> pour plus d'informations.
+   </p><p>
+    </p><pre class="programlisting">
+bool
+RecheckForeignScan (ForeignScanState *node, TupleTableSlot *slot);
+    </pre><p>
+    Vérifie à nouveau qu'une ligne retournée précédemment
+    correspond toujours au parcours et aux qualificatifs de jointures,
+    et éventuellement fournit une version modifiée de la
+    ligne. Pour les wrappers de données distantes qui ne supportent pas
+    les jointures (<span class="foreignphrase"><em class="foreignphrase">join push-down</em></span>), il
+    sera plus pratique de positionner ce pointeur de fonction à
+    <code class="literal">NULL</code> et, à la place, configurer
+    <code class="structfield">fdw_recheck_quals</code>
+    de manière appropriée. Cependant lorsque des jointures
+    externes sont poussées au serveur distant, il n'est pas suffisant d'appliquer à
+    nouveau les vérifications applicables à toutes les tables
+    de base à la ligne résultat, même si tous les attributs
+    nécessaires sont présents, parce que l'impossibilité de mettre
+    en correspondance certains qualificatifs pourrait résulter en la
+    mise à NULL de certaines colonnes, plutôt qu'aucune ligne ne soit
+    retournée. <code class="literal">RecheckForeignScan</code> peut vérifier
+    à nouveau les qualificatifs et renvoyer true si ils sont toujours
+    satisfaits et false dans le cas contraire, mais elle peut aussi
+    stocker une ligne de remplacement dans l'emplacement fourni.
+   </p><p>
+    Pour implémenter le support des jointures, un wrapper de données
+    distantes construira typiquement un plan alternatif local qui est
+    utilisé uniquement pour les revérifications ; celui-ci deviendra
+    le sous-plan externe de <code class="literal">ForeignScan</code>. Lorsqu'une
+    revérification est requise, ce sous-plan peut être exécuté
+    et la ligne résultante peut être stockée dans l'emplacement. Ce
+    plan n'a pas besoin d'être efficace car aucune table de base ne
+    retournera plus d'une ligne ; par exemple, il peut réaliser toutes
+    les jointures comme des boucles imbriquées.
+    La fonction <code class="literal">GetExistingLocalJoinPath</code> peut être utilisée
+    pour rechercher des chemins existants dans un chemin de jointure local
+    convenable, qui est utilisable comme plan de jointure local alternatif.
+    <code class="literal">GetExistingLocalJoinPath</code> recherche un chemin sans
+    paramètre dans la liste de chemins de la relation de jointure spécifiée
+    (si un tel chemin n'existe pas, elle renvoie NULL, ce qui fait que le FDW
+    pourrait construire un chemin local lui-même ou pourrait choisir de ne pas
+    créer de chemins d'accès pour cette jointure).
+   </p></div><div class="sect2" id="FDW-CALLBACKS-EXPLAIN"><div class="titlepage"><div><div><h3 class="title">57.2.7. Routines FDW pour <code class="command">EXPLAIN</code> <a href="#FDW-CALLBACKS-EXPLAIN" class="id_link">#</a></h3></div></div></div><p>
+    </p><pre class="programlisting">
+void
+ExplainForeignScan (ForeignScanState *node,
+                    ExplainState *es);
+    </pre><p>
+
+    Affiche une sortie <code class="command">EXPLAIN</code> supplémentaire pour un
+    parcours de table distante. Cette fonction peut faire appel à
+    <code class="function">ExplainPropertyText</code> et aux fonctions relatives pour
+    ajouter des champs à la sortie d'<code class="command">EXPLAIN</code>. Les champs
+    drapeaux dans <code class="literal">es</code> peuvent être utilisés pour déterminer
+    ce qui doit être affiché, et l'état du nœud
+    <code class="structname">ForeignScanState</code> peut être inspecté pour fournir
+    des statistiques d'exécution dans le cas du <code class="command">EXPLAIN
+     ANALYZE</code>.
+   </p><p>
+    Si le pointeur <code class="function">ExplainForeignScan</code> vaut
+    <code class="literal">NULL</code>, aucune information supplémentaire n'est affichée
+    lors de l'<code class="command">EXPLAIN</code>.
+   </p><p>
+    </p><pre class="programlisting">
+void
+ExplainForeignModify (ModifyTableState *mtstate,
+                      ResultRelInfo *rinfo,
+                      List *fdw_private,
+                      int subplan_index,
+                      struct ExplainState *es);
+    </pre><p>
+
+    Affiche une sortie supplémentaire pour <code class="command">EXPLAIN</code> lors
+    de la mise à jour d'une table distante. Cette fonction peut appeler
+    <code class="function">ExplainPropertyText</code> et les fonctions en relation
+    pour ajouter des champs à la sortie d'<code class="command">EXPLAIN</code>. Les champs
+    drapeaux de <code class="literal">es</code> peuvent être utilisés pour déterminer
+    quoi afficher, et l'état du nœud
+    <code class="structname">ModifyTableState</code> peut être inspecté pour fournir
+    des statistiques en exécution dans le cas du <code class="command">EXPLAIN
+     ANALYZE</code>. Les quatre premiers arguments sont les mêmes que pour
+    <code class="function">BeginForeignModify</code>.
+   </p><p>
+    Si le pointeur <code class="function">ExplainForeignModify</code> vaut
+    <code class="literal">NULL</code>, aucune information supplémentaire n'est affichée
+    lors de l'<code class="command">EXPLAIN</code>.
+   </p><p>
+    </p><pre class="programlisting">
+void
+ExplainDirectModify (ForeignScanState *node,
+                     ExplainState *es);
+    </pre><p>
+
+    Affiche une sortie <code class="command">EXPLAIN</code> supplémentaire pour une
+    modification directe sur le serveur distant. Cette fonction peut appeler
+    <code class="function">ExplainPropertyText</code> et les fonctions relatives pour
+    ajouter des champs à la sortie d'<code class="command">EXPLAIN</code>. Les champs
+    flag dans <code class="literal">es</code> peuvent être utilisés pour déterminer ce
+    qui doit être affiché, et l'état du nœud
+    <code class="structname">ForeignScanState</code> peut être inspecté pour fournir
+    des statistiques à l'exécution dans le cas d'un <code class="command">EXPLAIN
+     ANALYZE</code>.
+   </p><p>
+    Si le pointeur <code class="function">ExplainDirectModify</code> est configuré à
+    <code class="literal">NULL</code>, aucune information supplémentaire n'est affichée
+    pendant un <code class="command">EXPLAIN</code>.
+   </p></div><div class="sect2" id="FDW-CALLBACKS-ANALYZE"><div class="titlepage"><div><div><h3 class="title">57.2.8. Routines FDW pour <code class="command">ANALYZE</code> <a href="#FDW-CALLBACKS-ANALYZE" class="id_link">#</a></h3></div></div></div><p>
+    </p><pre class="programlisting">
+bool
+AnalyzeForeignTable (Relation relation,
+                     AcquireSampleRowsFunc *func,
+                     BlockNumber *totalpages);
+    </pre><p>
+
+    Cette fonction est appelée quand <a class="xref" href="sql-analyze.html" title="ANALYZE"><span class="refentrytitle" id="SQL-ANALYZE-TITLE">ANALYZE</span></a> est exécuté
+    sur une table distante. Si le wrapper de données distantes peut récupérer
+    des statistiques pour cette table distante, il doit renvoyer
+    <code class="literal">true</code>, et fournir un pointeur vers une fonction qui
+    récupérera un échantillon de lignes à partir de la table dans
+    <em class="parameter"><code>func</code></em>, ainsi que la taille estimée de la table en
+    blocs dans <em class="parameter"><code>totalpages</code></em>. Sinon, il doit renvoyer
+    <code class="literal">false</code>.
+   </p><p>
+    Si le wrapper de données distantes ne supporte
+    pas la récupération de statistiques quelque soit la table, le pointeur
+    <code class="function">AnalyzeForeignTable</code> doit être configuré à
+    <code class="literal">NULL</code>.
+   </p><p>
+    Si fourni, la fonction de récupération de l'échantillon doit avoir la
+    signature suivante :
+    </p><pre class="programlisting">
+int
+AcquireSampleRowsFunc(Relation relation,
+                      int elevel,
+                      HeapTuple *rows,
+                      int targrows,
+                      double *totalrows,
+                      double *totaldeadrows);
+    </pre><p>
+
+    Un échantillon récupéré au hasard et comprenant au plus
+    <em class="parameter"><code>targrows</code></em> lignes doit être récupéré à partir de la
+    table et stocké dans le tableau <em class="parameter"><code>rows</code></em> fourni par
+    l'appelant. Le nombre réel de lignes récupérées doit être renvoyé. De plus,
+    les estimations du nombre total de lignes vivantes et mortes doivent être
+    enregistrées dans les paramètres en sortie appelés
+    <em class="parameter"><code>totalrows</code></em> et <em class="parameter"><code>totaldeadrows</code></em>.
+    (Configurez <em class="parameter"><code>totaldeadrows</code></em> à zéro si le wrapper de
+    données distantes ne connaît pas le concept des lignes mortes.)
+   </p></div><div class="sect2" id="FDW-CALLBACKS-IMPORT"><div class="titlepage"><div><div><h3 class="title">57.2.9. Routines FDW pour <code class="command">IMPORT FOREIGN SCHEMA</code> <a href="#FDW-CALLBACKS-IMPORT" class="id_link">#</a></h3></div></div></div><p>
+    </p><pre class="programlisting">
+List *
+ImportForeignSchema (ImportForeignSchemaStmt *stmt, Oid serverOid);
+    </pre><p>
+
+    Obtient une liste des commandes de création de tables
+    distantes. Cette fonction est appelée lors de l'exécution de <a class="xref" href="sql-importforeignschema.html" title="IMPORT FOREIGN SCHEMA"><span class="refentrytitle">IMPORT FOREIGN SCHEMA</span></a>, et il lui est passé l'arbre
+    d'analyse pour cette instruction, ainsi que l'OID du serveur
+    distant à utiliser. Elle devrait renvoyer une liste de chaînes
+    C, chacune d'entre elles devant contenir une commande <a class="xref" href="sql-createforeigntable.html" title="CREATE FOREIGN TABLE"><span class="refentrytitle">CREATE FOREIGN TABLE</span></a>. Ces chaînes seront analysées
+    et exécutées par le serveur principal.
+   </p><p>
+    À l'intérieur de la structure
+    <code class="structname">ImportForeignSchemaStmt</code>,
+    <code class="structfield">remote_schema</code> est le nom
+    du schéma distant à partir duquel les tables sont à
+    importer. <code class="structfield">list_type</code> indique comment
+    filtrer les noms de tables : <code class="literal">FDW_IMPORT_SCHEMA_ALL</code>
+    signifie que toutes les tables dans le schéma distant devraient
+    être importées (dans ce cas, <code class="structfield">table_list</code>
+    est vide), <code class="literal">FDW_IMPORT_SCHEMA_LIMIT_TO</code>
+    signifie d'inclure seulement les tables listées
+    dans <code class="structfield">table_list</code>, et
+    <code class="literal">FDW_IMPORT_SCHEMA_EXCEPT</code> signifie d'exclure
+    les tables listées dans <code class="structfield">table_list</code>.
+    <code class="structfield">options</code> est une liste d'options utilisées
+    pour le processus d'import. La signification des options relève du
+    FDW. Par exemple, un FDW pourrait utiliser une option pour définir
+    si les attributs <code class="literal">NOT NULL</code> des colonnes devraient
+    être importés. Ces options n'ont pas besoin d'avoir une quelconque
+    relation avec celles supportées par le FDW pour les objets base
+    de données.
+   </p><p>
+    Le FDW peut ignorer le champ <code class="structfield">local_schema</code>
+    de <code class="structname">ImportForeignSchemaStmt</code>, parce que
+    le serveur principal insérera automatiquement ce nom dans les
+    commandes <code class="command">CREATE FOREIGN TABLE</code> analysées.
+   </p><p>
+    Le FDW n'a pas besoin de mettre en place lui-même le
+    filtrage spécifié par <code class="structfield">list_type</code>
+    et <code class="structfield">table_list</code>, dans la mesure où
+    le serveur principal ignorera automatiquement les commandes
+    renvoyées pour les tables exclues selon ces options. Cependant,
+    il est souvent utile d'éviter le travail de création des
+    commandes pour les tables exclues dès le départ. La fonction
+    <code class="function">IsImportableForeignTable()</code> peut être utile
+    pour tester si une table distante donnée passera ou pas le filtre.
+   </p><p>
+    Si le FDW ne supporte pas l'import de définition de tables,
+    le pointeur de fonction <code class="function">ImportForeignSchema</code>
+    peut être positionné à <code class="literal">NULL</code>.
+   </p></div><div class="sect2" id="FDW-CALLBACKS-PARALLEL"><div class="titlepage"><div><div><h3 class="title">57.2.10. Routines FDW pour une exécution parallélisée <a href="#FDW-CALLBACKS-PARALLEL" class="id_link">#</a></h3></div></div></div><p>
+    Un nœud <code class="structname">ForeignScan</code> peut, en option, supporter
+    une exécution parallélisée. Un <code class="structname">ForeignScan</code>
+    parallélisée sera exécutée par plusieurs processus et devra renvoyer
+    chaque ligne une fois seulement au travers de tous les processus
+    coopérant. Pour faire cela, les processus peuvent se coordonner avec des
+    ensembles de taille fixe de mémoire partagée dynamique. Cette mémoire
+    partagée n'est pas garantie d'être placée à la même adresse pour chaque
+    processus, donc il ne doit pas contenir de pointeurs. Les fonctions
+    suivantes sont toutes optionnelles généralement, mais elles sont requises si
+    une exécution parallèle doit être supportée.
+   </p><p>
+    </p><pre class="programlisting">
+bool
+IsForeignScanParallelSafe(PlannerInfo *root, RelOptInfo *rel,
+                          RangeTblEntry *rte);
+    </pre><p>
+    Teste si un parcours peut être réalisé avec un processus parallèle. Cette
+    fonction sera seulement appelée quand le planificateur pense qu'un plan
+    parallélisé est possible, et doit renvoyer true si un tel plan est sûr
+    pour ce parcours. Ceci ne sera généralement pas le cas si la source de
+    données distante a des sémantiques transactionnelles, sauf si la connexion
+    du processus supplémentaire peut être en quelque sorte partagée dans le
+    même contexte transactionnelle que celui du processus maître
+   </p><p>
+    Si ce callback n'est pas défini, il est supposé que le parcours doit avoir
+    lieu au niveau du processus maître. Notez que renvoyer true ne signifie
+    pas que le parcours sera parallélisé. Cela signifie seulement qu'il est
+    possible de l'effectuer avec des processus parallèles. De ce fait, il peut
+    être utile de définir cette méthode même quand l'exécution parallélisée
+    n'est pas supportée.
+   </p><p>
+    </p><pre class="programlisting">
+Size
+EstimateDSMForeignScan(ForeignScanState *node, ParallelContext *pcxt);
+    </pre><p>
+    Estime la quantité de mémoire partagée dynamique requis pour une opération
+    parallélisée. Cette valeur pourrait être supérieure à la quantité
+    réellement utilisée mais elle ne peut pas être inférieure. La valeur
+    renvoyée est en octets. Cette fonction est optionnelle et peut être omise
+    si elle n'est pas nécessaire. Mais si elle est omise, les trois fonctions
+    suivantes peuvent elles-aussi être omises parce qu'aucune mémoire partagée
+    ne sera allouée pour une utilisation avec le FDW.
+   </p><p>
+    </p><pre class="programlisting">
+void
+InitializeDSMForeignScan(ForeignScanState *node, ParallelContext *pcxt,
+                         void *coordinate);
+    </pre><p>
+    Initialise la mémoire partagée dynamique qui sera requise pour une
+    opération parallélisée ; <code class="literal">coordinate</code> pointe vers
+    une partie de mémoire partagée de même taille que la valeur de retour de
+    <code class="function">EstimateDSMForeignScan</code>. Cette fonction est
+    optionnelle et peut être omise si nécessaire.
+   </p><p>
+    </p><pre class="programlisting">
+void
+ReInitializeDSMForeignScan(ForeignScanState *node, ParallelContext *pcxt,
+                           void *coordinate);
+    </pre><p>
+    Ré-initialise la mémoire partagée dynamique requise pour les opérations
+    parallélisées quand le nœud du plan pour le parcours distant va être
+    ré-exécuté. Cette fonction est optionnelle et peut être omise si
+    nécessaire. La pratique recommandée est que cette fonction réinitialise
+    seulement l'état partagé alors que la fonction
+    <code class="function">ReScanForeignScan</code> réinitialise seulement l'état
+    local. Actuellement, cette fonction sera appelée avant
+    <code class="function">ReScanForeignScan</code> mais il est préférable de ne pas se
+    baser sur cet ordre.
+   </p><p>
+    </p><pre class="programlisting">
+void
+InitializeWorkerForeignScan(ForeignScanState *node, shm_toc *toc,
+                            void *coordinate);
+    </pre><p>
+    Initialise un état local d'un processus parallèle suivant l'état partagé
+    configuré dans le processus maître par
+    <code class="literal">InitializeDSMForeignScan</code>. Cette fonction est
+    optionnelle et peut être omise si nécessaire.
+   </p><p>
+    </p><pre class="programlisting">
+void
+ShutdownForeignScan(ForeignScanState *node);
+    </pre><p>
+    Libères les ressources quand il anticipé que le nœud ne sera pas exécuté
+    entièrement.  Cette fonction ne sera pas appelée dans tous les cas;
+    parfois, <code class="literal">EndForeignScan</code> peut être appelée sans que cette
+    fonction ait été appelée avant.  Puisque le segment DSM utilisé par les
+    requêtes parallèles est détruit juste après que ce callback soit appelé,
+    les wrappers de données distantes qui désirent effectuer des actions avant
+    que le segment DSM disparaissent devraient implémenter cette méthode.
+   </p></div><div class="sect2" id="FDW-CALLBACKS-ASYNC"><div class="titlepage"><div><div><h3 class="title">57.2.11. Routines FDW pour les exécutions asynchrones <a href="#FDW-CALLBACKS-ASYNC" class="id_link">#</a></h3></div></div></div><p>
+    Un nœud <code class="structname">ForeignScan</code> peut, optionellement,
+    supporter une exécution asynchrone tel que décrit dans
+    <code class="filename">src/backend/executor/README</code>. Les fonctions suivantes
+    sont toutes optionnelles, mais sont toutes requises si l'exécution
+    asynchrone doit être supportée.
+   </p><p>
+</p><pre class="programlisting">
+bool
+IsForeignPathAsyncCapable(ForeignPath *path);
+</pre><p>
+
+    Vérifie si un chemin <code class="structname">ForeignPath</code> donné peut
+    parcourir une relation distante sous-jacente asynchrone. Cette fonction
+    ne sera appelée uniquement à la fin d'une planification de requête quand
+    le chemin donné est un enfant direct du chemin
+    <code class="structname">AppendPath</code> et quand le planificateur estime que
+    l'exécution asynchrone améliore les performances, et devra retourner vrai
+    (<span class="quote">« <span class="quote">true</span> »</span>) si un chemin donné est capable de parcourir la
+    relation distante de façon asynchrone.
+   </p><p>
+    Si cette fonction n'est pas définie, il est assumé que le chemin donné
+    parcourt la relation distante en utilisant
+    <code class="function">IterateForeignScan</code>.(Ceci implique que les fonctions
+    callbacks décrites ci-dessous ne seront jamais appelées, et n'ont pas
+    besoin d'être fournies.)
+  </p><p>
+</p><pre class="programlisting">
+void
+ForeignAsyncRequest(AsyncRequest *areq);
+</pre><p>
+
+    Produit une ligne de manière asynchrone à partir du nœud
+    <code class="structname">ForeignScan</code>. <code class="literal">areq</code> est la
+    structure <code class="structname">AsyncRequest</code> décrivant le nœud
+    <code class="structname">ForeignScan</code> et le nœud parent
+    <code class="structname">Append</code> requis par les lignes qui en viennent.
+    Cette fonction doit conserver la ligne dans un slot spécifié par
+    <code class="literal">areq-&gt;result</code>, et défini avec
+    <code class="literal">areq-&gt;request_complete</code> mis à
+    <code class="literal">true</code> ; ou, s'il est nécessaire d'attendre un
+    événement extérieur au cœur du serveur, tel que des I/O réseau, et qu'une
+    ligne ne peut être générée immédiatement, le drapeau doit être mis à
+    <code class="literal">false</code>, et défini avec
+    <code class="literal">areq-&gt;callback_pending</code> mis à
+    <code class="literal">true</code> pour que le nœud
+    <code class="structname">ForeignScan</code> puisse recevoir un callback depuis
+    les fonctions callbacks décrites ci-dessous. S'il n'y a plus de lignes
+    diponibles, mettre le slot à NULL ou fournir un slot vide, et mettre le
+    drapeau <code class="literal">areq-&gt;request_complete</code> à
+    <code class="literal">true</code>. Il est recommandé d'utiliser
+    <code class="function">ExecAsyncRequestDone</code> ou
+    <code class="function">ExecAsyncRequestPending</code> pour affecter les paramètres
+    de sortie dans <code class="literal">areq</code>.
+   </p><p>
+</p><pre class="programlisting">
+void
+ForeignAsyncConfigureWait(AsyncRequest *areq);
+</pre><p>
+
+    Configure un événement de descripteur de fichier pour lequel le nœud
+    <code class="structname">ForeignScan</code> souhaite attendre. Cette fonction
+    sera appelée uniquement quand le nœud
+    <code class="structname">ForeignScan</code> a le drapeau
+    <code class="literal">areq-&gt;callback_pending</code> affecté, et devra ajouter
+    l'événement au <code class="structfield">as_eventset</code> du nœud parent
+    <code class="structname">Append</code> décrit par <code class="literal">areq</code>. Voir
+    les commentaires pour <code class="function">ExecAsyncConfigureWait</code> dans
+    <code class="filename">src/backend/executor/execAsync.c</code> pour des
+    informations additionnelles. Quand l'événement de descripteur de fichier
+    a lieu, <code class="function">ForeignAsyncNotify</code> sera appelée.
+   </p><p>
+</p><pre class="programlisting">
+void
+ForeignAsyncNotify(AsyncRequest *areq);
+</pre><p>
+
+    Traite un événement pertinent qui s'est déroulé, puis produit une ligne de
+    façon asynchrone à partir du nœud <code class="structname">ForeignScan</code>.
+    Cette fonction devra affecter les paramètres de sortie dans
+    <code class="literal">areq</code> de la même façon que
+    <code class="function">ForeignAsyncRequest</code>.
+   </p></div><div class="sect2" id="FDW-CALLBACKS-REPARAMETERIZE-PATHS"><div class="titlepage"><div><div><h3 class="title">57.2.12. Routines FDW pour la reparamétrisation des chemins <a href="#FDW-CALLBACKS-REPARAMETERIZE-PATHS" class="id_link">#</a></h3></div></div></div><p>
+    </p><pre class="programlisting">
+List *
+ReparameterizeForeignPathByChild(PlannerInfo *root, List *fdw_private,
+                                 RelOptInfo *child_rel);
+    </pre><p>
+    Cette fonction est appelée lors de la conversion d'un chemin paramétré par
+    le plus haut parent de la relation enfant <code class="literal">child_rel</code>
+    spécifiée devant être paramétrée avec la relation enfant.  Cette fonction
+    est utilisée pour reparamétrer n'importe quel chemin ou traduire n'importe
+    quel nœud d'expression enregistré dans le membre
+    <code class="literal">fdw_private</code> du <code class="structname">ForeignPath</code>
+    spécifié.  Le callback peut utiliser
+    <code class="literal">reparameterize_path_by_child</code>,
+    <code class="literal">adjust_appendrel_attrs</code> ou
+    <code class="literal">adjust_appendrel_attrs_multilevel</code> selon son besoin.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/fdw-callbacks.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:14 GMT -->
+</html>

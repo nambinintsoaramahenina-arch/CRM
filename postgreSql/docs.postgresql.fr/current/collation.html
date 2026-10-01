@@ -1,0 +1,683 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/collation.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>23.2. Support des collations</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="locale.html" title="23.1. Support des locales" /><link rel="next" href="multibyte.html" title="23.3. Support des jeux de caractères" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/collation.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/collation.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/collation.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/collation.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/collation.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/collation.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/collation.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/collation.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/collation.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/collation.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/collation.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/collation.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/collation.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/collation.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/collation.html">9.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/collation.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="charset.html">Localisation</a></span> » <span class="breadcrumb-node">Support des collations</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="locale.html" title="23.1. Support des locales">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="charset.html" title="Chapitre 23. Localisation">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="multibyte.html" title="23.3. Support des jeux de caractères">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">23.1. Support des locales </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 23.3. Support des jeux de caractères</td></tr></table></div><div class="sect1" id="COLLATION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">23.2. Support des collations <a href="#COLLATION" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="collation.html#COLLATION-CONCEPTS">23.2.1. Concepts</a></span></dt><dt><span class="sect2"><a href="collation.html#COLLATION-MANAGING">23.2.2. Gestion des collations</a></span></dt><dt><span class="sect2"><a href="collation.html#ICU-CUSTOM-COLLATIONS">23.2.3. Collations personalisées ICU</a></span></dt></dl></div><a id="id-1.6.10.4.2" class="indexterm"></a><p>
+   Cette fonctionnalité permet de définir par colonne, ou pour chaque requête,
+   la collation utilisée pour déterminer l'ordre de tri et le classement des
+   caractères.
+   Elle permet de lever la restriction sur les paramètres
+   <code class="symbol">LC_COLLATE</code> et <code class="symbol">LC_CTYPE</code> d'une base de
+   données, qui ne pouvaient pas être modifiés après sa création.
+</p><div class="sect2" id="COLLATION-CONCEPTS"><div class="titlepage"><div><div><h3 class="title">23.2.1. Concepts <a href="#COLLATION-CONCEPTS" class="id_link">#</a></h3></div></div></div><p>
+    Conceptuellement, toute expression d'un type de donnée supportant les
+    collations a une collation. (Les types de données intégrés supportant les
+    collations sont <code class="type">text</code>, <code class="type">varchar</code>, et
+    <code class="type">char</code>. Les types de données définis par l'utilisateur peuvent
+    aussi être marqués comme supportant les collations.  Bien entendu, un
+    <a class="glossterm" href="glossary.html#GLOSSARY-DOMAIN"><em class="glossterm"><a class="glossterm" href="glossary.html#GLOSSARY-DOMAIN" title="Domain">domaine</a></em></a> défini sur un type
+    de données supportant les collations les supporte aussi.) Si l'expression
+    est une référence de colonne, la collation de l'expression est déterminée
+    par la collation de la colonne. Si l'expression est une constante, la
+    collation sera celle par défaut du type de la constante. La collation d'une
+    expression plus complexe est déterminée à partir des différentes collations
+    de ses entrées, comme cela est décrit ci-dessous.
+   </p><p>
+    Une expression peut prendre la collation par défaut, <span class="quote">« <span class="quote">default</span> »</span>,
+    c'est-à-dire la collation définie au niveau de la base de données. Il est
+    possible que la collation d'une expression soit indéterminée. Dans un tel
+    cas, les tris et les autres opérations ayant besoin de connaître la
+    collation vont échouer.
+   </p><p>
+    Lorsque la base de données doit réaliser un tri ou classement de caractères,
+    elle utilise la collation de l'expression entrée. Ce cas se présentera, par
+    exemple, avec des clauses <code class="literal">ORDER BY</code>, ou des appels à des
+    fonctions ou opérateurs tels que <code class="literal">&lt;</code>.  La collation à
+    appliquer à une clause <code class="literal">ORDER BY</code> est simplement la
+    collation de la clé de tri. La collation à appliquer pour l'appel à une
+    fonction ou à un opérateur est dérivée des arguments, comme décrit plus bas.
+    En plus de s'appliquer aux opérateurs de comparaison, les collations sont
+    également prises en compte par les fonctions qui convertissent entre
+    minuscules et majuscules, comme <code class="function">lower</code>,
+    <code class="function">upper</code> et <code class="function">initcap</code>, par les
+    opérateurs de correspondance de motifs, et par <code class="function">to_char</code>
+    et les fonctions affiliées.
+   </p><p>
+    Pour un appel à une fonction ou un opérateur, la collation dérivée des
+    collations des arguments est utilisée à l'exécution de l'opération. Si le
+    type du résultat de la fonction ou de l'opérateur supporte les collations,
+    alors cette collation est utilisée dès l'analyse en tant que la collation de
+    la fonction ou de l'opérateur, au cas où une expression voisine
+    nécessiterait de la connaître.
+   </p><p>
+    Le <em class="firstterm">calcul de la collation</em> d'une expression est
+    réalisé implicitement ou explicitement. Cette distinction affecte la façon
+    dont les collations sont combinées entre elles quand plusieurs collations
+    différentes apparaissent dans une expression.  Une dérivation explicite
+    utilise la clause <code class="literal">COLLATE</code> ; dans tous les autres
+    cas, la dérivation de collation est implicite. Les règles suivantes
+    s'appliquent lorsque plusieurs collations doivent être utilisée en même
+    temps, par exemple dans un appel à une fonction :
+
+    </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>
+       Si une expression en entrée porte une dérivation de collation explicite,
+       alors toutes les collations explicitement dérivées des autres expressions
+       en entrée doivent être identiques, sinon une erreur est levée.  Si une
+       collation explicitement dérivée est présente, elle est le résultat de la
+       combinaison des collations.
+      </p></li><li class="listitem"><p>
+       Dans les autres cas, toutes les expressions en entrée doivent avoir la
+       même collation, qu'elle soit implicitement dérivée, ou celle par défaut.
+       Si est présente une collation autre que celle par défaut, alors elle est
+       aussi le résultat de la combinaison des collations. Sinon, le résultat
+       correspond à la collation par défaut.
+      </p></li><li class="listitem"><p>
+       S'il existe, parmi les expressions en entrée, des collations implicites,
+       qui ne sont pas celles par défaut, et qui entrent en conflit, alors la
+       combinaison ne peut aboutir qu'à une collation indéterminée. Ce n'est pas
+       une erreur, sauf si la fonction appelée requiert une application de la
+       collation. Dans ce cas, une erreur est renvoyée lors de l'exécution.
+      </p></li></ol></div><p>
+
+    Par exemple, considérez la table définie de la façon suivante:
+</p><pre class="programlisting">
+CREATE TABLE test1 (
+    a text COLLATE "de_DE",
+    b text COLLATE "es_ES",
+    ...
+);
+    </pre><p>
+
+    Ensuite, dans la requête
+    </p><pre class="programlisting">
+SELECT a &lt; 'foo' FROM test1;
+    </pre><p>
+    la comparaison <code class="literal">&lt;</code> est réalisée selon
+    les règles de la locale <code class="literal">de_DE</code>, car l'expression
+    combine une collation dérivée implicitement avec la collation par défaut.
+    Mais, dans la requête
+    </p><pre class="programlisting">
+	SELECT a &lt; ('foo' COLLATE "fr_FR") FROM test1;
+	</pre><p>
+	la comparaison est effectuée en utilisant les règles de la locale <code class="literal">fr_FR</code>,
+	parce que l'utilisation explicite de cette locale prévaut sur la locale
+	implicite.
+	De plus, avec la requête
+	</p><pre class="programlisting">
+	SELECT a &lt; b FROM test1;
+	</pre><p>
+	l'analyseur ne dispose pas des éléments pour déterminer quelle collation
+	employer, car les collations des colonnes <code class="structfield">a</code> et <code class="structfield">b</code>
+	sont différentes. Comme l'opérateur <code class="literal">&lt;</code> a besoin de savoir
+	la locale à utiliser, on obtiendra une erreur. Elle peut être résolue
+	en attachant une déclaration de collation explicite à l'une ou l'autre des expressions
+	d'entrées, soit :
+</p><pre class="programlisting">
+	SELECT a &lt; b COLLATE "de_DE" FROM test1;
+    </pre><p>
+    ou de manière équivalente
+    </p><pre class="programlisting">
+	SELECT a COLLATE "de_DE" &lt; b FROM test1;
+    </pre><p>
+
+    Toutefois, dans ce cas suivant, structurellement similaire,
+    </p><pre class="programlisting">
+SELECT a || b FROM test1;
+    </pre><p>
+    il n'y aura pas d'erreur, car l'opérateur <code class="literal">||</code> ne tient
+    pas compte des collations : son résultat sera le même quelle qu'elle soit.
+   </p><p>
+    La collation assignée à une fonction ou à une combinaison d'un
+    opérateur avec ses expressions d'entrées s'applique également au résultat
+    de la fonction ou de l'opérateur, si le résultat est d'un type supportant les collations.
+    Ainsi, dans la requête
+    </p><pre class="programlisting">
+	SELECT * FROM test1 ORDER BY a || 'foo';
+	</pre><p>
+	le tri sera réalisé en fonction des règles de la locale <code class="literal">de_DE</code>.
+	Mais cette requête :
+</p><pre class="programlisting">
+SELECT * FROM test1 ORDER BY a || b;
+    </pre><p>
+    retournera une erreur car, bien que l'opérateur <code class="literal">||</code> ne tienne pas
+    compte des collations de ses expressions, la clause <code class="literal">ORDER BY</code>, elle, en tient
+    compte. Comme précédemment, ce conflit peut être résolu par l'emploi d'une
+    déclaration explicite de la collation :
+    </p><pre class="programlisting">
+SELECT * FROM test1 ORDER BY a || b COLLATE "fr_FR";
+    </pre><p>
+   </p></div><div class="sect2" id="COLLATION-MANAGING"><div class="titlepage"><div><div><h3 class="title">23.2.2. Gestion des collations <a href="#COLLATION-MANAGING" class="id_link">#</a></h3></div></div></div><p>
+    Une collation est un objet du catalogue SQL qui associe un nom SQL à une
+    locale fournie par les bibliothèques installées sur le système. Une
+    définition de collation a un <em class="firstterm">fournisseur</em>, qui
+    spécifie quelle bibliothèque fournit les données locales. L'un des
+    fournisseurs standards est <code class="literal">libc</code>, qui utilise les locales
+    fournies par la bibliothèque C du système. Ce sont les locales utilisées par
+    la plupart des outils du système. Un autre fournisseur est
+    <code class="literal">icu</code>, qui utilise la bibliothèque externe
+    ICU<a id="id-1.6.10.4.5.2.4" class="indexterm"></a>. Les locales ICU ne peuvent
+    être utilisées que si le support d'ICU a été configuré lors de la
+    compilation de PostgreSQL.
+   </p><p>
+    Un objet de type collation fourni par la <code class="literal">libc</code> pointe sur
+    une combinaison de paramètres <code class="symbol">LC_COLLATE</code> et
+    <code class="symbol">LC_CTYPE</code>, comme acceptés par l'appel système
+    <code class="literal">setlocale()</code>.
+    (Comme le nom le suggère, le principal objectif d'une collation est de
+    positionner <code class="symbol">LC_COLLATE</code>, qui contrôle l'ordre de tri.
+    Dans la pratique, il est très rarement nécessaire de définir un
+    paramètre <code class="symbol">LC_CTYPE</code> différent de
+    <code class="symbol">LC_COLLATE</code>. Il est donc plus facile de
+    regrouper ces deux paramètres dans un même concept, que de créer
+    une infrastructure différente simplement pour pouvoir positionner
+    <code class="symbol">LC_CTYPE</code> pour chaque expression.) De la même façon, une
+    collation <code class="literal">libc</code> est liée à un encodage de jeu de caractère (voir <a class="xref" href="multibyte.html" title="23.3. Support des jeux de caractères">Section 23.3</a>).
+    Le même nom de collation peut exister pour différents encodages.
+   </p><p>
+    Un objet de type collation fourni par <code class="literal">icu</code> pointe sur un collateur nommé
+    fourni par la bibliothèque ICU. ICU ne permet pas de séparer
+    <span class="quote">« <span class="quote">collate</span> »</span> et <span class="quote">« <span class="quote">ctype</span> »</span>, ils sont donc
+    toujours les mêmes. De même, les collations ICU sont indépendantes de
+    l'encodage ; il n'y a donc toujours qu'une seule collation ICU pour un nom donné dans une
+    base de données.
+   </p><div class="sect3" id="COLLATION-MANAGING-STANDARD"><div class="titlepage"><div><div><h4 class="title">23.2.2.1. Standards de collations <a href="#COLLATION-MANAGING-STANDARD" class="id_link">#</a></h4></div></div></div><p>
+     Sur toutes les plateformes, les collations suivantes sont
+     acceptées :
+
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">unicode</code></span></dt><dd><p>
+         Cette collation trie en utilisant l'algorithme de collation Unicode avec
+         la table d'éléments de collation Unicode par défaut. Il est disponible
+         dans tous les encodages. Le support ICU est requis pour cette collation et le comportement pourrait changer si PostgreSQL
+         est construit avec une version différente de ICU.
+         (Cette collation a le même comportement que la locale racine ICU ; voir
+         <a class="xref" href="collation.html#COLLATION-MANAGING-PREDEFINED-ICU-UND-X-ICU"><code class="literal">und-x-icu</code> (pour <span class="quote">« <span class="quote">undefined</span> »</span>)</a>.)
+        </p></dd><dt><span class="term"><code class="literal">ucs_basic</code></span></dt><dd><p>
+         Cette collation du standard SQL trie en utilisant les valeurs des 
+         points de code plutôt que l'ordre naturel de la langue, et
+         seulement les lettres ASCII de
+         <span class="quote">« <span class="quote"><code class="literal">A</code></span> »</span> à
+         <span class="quote">« <span class="quote"><code class="literal">Z</code></span> »</span> sont traitées comme des lettres.
+         Ce comportement est efficace et stable entre toutes les versions.
+         Disponible uniquement pour l'encodage <code class="literal">UTF8</code>.
+         (Cette collation
+         a le même comportement que la spécification <code class="literal">C</code> de
+         la locale libc dans l'encodage <code class="literal">UTF8</code>).
+        </p></dd><dt><span class="term"><code class="literal">pg_c_utf8</code></span></dt><dd><p>
+         Cette collation trie par la valeur des points de code Unicode plutôt
+         que par l'ordre naturel de la langue. Pour les fonctions
+         <code class="function">lower</code>, <code class="function">initcap</code> et
+         <code class="function">upper</code>, il utilise la correspondance simple de
+         l'Unicode. Pour la recherche de motifs (incluant les expressions
+         rationnelles), il utilise une variante compatible POSIX des <a class="ulink" href="https://www.unicode.org/reports/tr18/#Compatibility_Properties" target="_top">Compatibility
+         Properties</a> d'Unicode. Ce comportement est efficace et stable
+         sur une version majeure de <span class="productname">Postgres</span>.
+         Cette collation est uniquement disponible pour l'encodage
+         <code class="literal">UTF8</code>.
+        </p></dd><dt><span class="term"><code class="literal">C</code> (equivalent to <code class="literal">POSIX</code>)</span></dt><dd><p>
+         Les collations <code class="literal">C</code> et <code class="literal">POSIX</code> sont
+         basées sur le comportement du <span class="quote">« <span class="quote">C traditionnel</span> »</span>. Elles
+         trient pas valeurs d'octet plutôt que par ordre naturel du langage,
+         et seules les lettres ASCII de <span class="quote">« <span class="quote"><code class="literal">A</code></span> »</span> à
+         <span class="quote">« <span class="quote"><code class="literal">Z</code></span> »</span> sont traitées comme des lettres.
+         Ce comportement est efficace et stable sur toutes les versions pour
+         un encodage donné de la base mais le comportement pourrait varier
+         entre des encodages de base différents.
+        </p></dd><dt><span class="term"><code class="literal">default</code></span></dt><dd><p>
+         La collation <code class="literal">default</code> sélectionne la locale
+         définie au moment de la création de la base.
+        </p></dd></dl></div><p>
+    </p><p>
+     Des collations supplémentaires peuvent être disponibles suivant le
+     support du système d'exploitation. Leur efficacité et stabilité dépendent
+     du fournisseur de locale, de la version du fournisseur et de la locale.
+    </p></div><div class="sect3" id="COLLATION-MANAGING-PREDEFINED"><div class="titlepage"><div><div><h4 class="title">23.2.2.2. Collations prédéfinies <a href="#COLLATION-MANAGING-PREDEFINED" class="id_link">#</a></h4></div></div></div><p>
+     Si le système d'exploitation permet de supporter plusieurs
+     locales dans un même programme (fonction <code class="function">newlocale</code> et fonctions conjointes),
+     ou si le support d'ICU est configuré, alors
+     <code class="command">initdb</code> peuplera le catalogue système <code class="literal">pg_collation</code>
+     avec toutes les locales trouvées sur le système d'exploitation
+     lors de l'initialisation de l'instance.
+    </p><p>
+     Pour inspecter les locales actuellement disponibles, utilisez la requête <code class="literal">SELECT
+      * FROM pg_collation</code>, ou la commande <code class="command">\dOS+</code>
+     dans <span class="application">psql</span>.
+    </p><div class="sect4" id="COLLATION-MANAGING-PREDEFINED-LIBC"><div class="titlepage"><div><div><h5 class="title">23.2.2.2.1. Collations libc <a href="#COLLATION-MANAGING-PREDEFINED-LIBC" class="id_link">#</a></h5></div></div></div><p>
+      Par exemple, le système
+      d'exploitation peut fournir une locale appelée <code class="literal">de_DE.utf8</code>.
+      <code class="command">initdb</code> créera alors une collation nommée
+      <code class="literal">de_DE.utf8</code> pour le jeu de caractère <code class="literal">UTF8</code>,
+      pour laquelle <code class="symbol">LC_COLLATE</code> et <code class="symbol">LC_CTYPE</code> seront
+      positionnés à <code class="literal">de_DE.utf8</code>.
+      Il créera aussi une collation avec un nom amputé de l'étiquette <code class="literal">.utf8</code>.
+      Ainsi, vous pourrez utiliser cette collation sous le nom <code class="literal">de_DE</code>,
+      plus facile à écrire, et moins dépendant du jeu
+      de caractères. Néanmoins, notez que l'ensemble initial des noms de collation
+      <code class="command">initdb</code> est dépendant de la plateforme.
+     </p><p>
+      Le jeu de collation par défaut fourni par <code class="literal">libc</code> pointe
+      directement vers les locales installées sur le système, qui peuvent être
+      listées avec la commande <code class="literal">locale -a</code>. Dans le cas
+      où l'on a besoin d'une collation <code class="literal">libc</code> avec des valeurs
+      <code class="symbol">LC_COLLATE</code> et <code class="symbol">LC_CTYPE</code> différentes, ou si de nouvelles
+      locales sont installées sur le système après l'initialisation de la base de données,
+      une nouvelle collation peut être créée par
+      la commande <a class="xref" href="sql-createcollation.html" title="CREATE COLLATION"><span class="refentrytitle">CREATE COLLATION</span></a>. On peut aussi importer
+      en masse de nouvelles locales du système d'exploitation avec
+      la fonction <a class="link" href="functions-admin.html#FUNCTIONS-ADMIN-COLLATION" title="Tableau 9.102. Fonctions de gestion des collations"><code class="function">pg_import_system_collations()</code></a>.
+     </p><p>
+      Dans une même base de données, seules les collations qui utilisent le
+      jeu de caractères de la base de données sont prises en compte. Les autres
+      entrées de <code class="literal">pg_collation</code> sont ignorées. Ainsi,
+      une collation au nom tronqué, comme <code class="literal">de_DE</code>,
+      peut être considérée unique au sein d'une base,
+      bien qu'elle ne le soit pas globalement.
+      L'utilisation de collations au nom tronqué est d'ailleurs
+      recommandée : ce sera une chose de moins à changer si vous avez besoin
+      de changer le jeu de caractères de la base de données. Notez toutefois que
+      les collations <code class="literal">default</code>, <code class="literal">C</code>, et
+      <code class="literal">POSIX</code> peuvent être utilisées sans se soucier de
+      l'encodage de la base de données.
+     </p><p>
+      <span class="productname">PostgreSQL</span> considère les collations comme des
+      objets distincts et incompatibles entre eux, même si elles possèdent des
+      propriétés identiques. Ainsi, par exemple,
+      </p><pre class="programlisting">
+SELECT a COLLATE "C" &lt; b COLLATE "POSIX" FROM test1;
+      </pre><p>
+      va afficher une erreur alors que les collations <code class="literal">C</code> et
+      <code class="literal">POSIX</code> possèdent des propriétés strictement identiques. Il n'est
+      donc pas recommandé de mélanger des collations dont le nom est complet
+      avec des collations dont le nom l'est pas.
+     </p></div><div class="sect4" id="COLLATION-MANAGING-PREDEFINED-ICU"><div class="titlepage"><div><div><h5 class="title">23.2.2.2.2. Collations ICU <a href="#COLLATION-MANAGING-PREDEFINED-ICU" class="id_link">#</a></h5></div></div></div><p>
+      Avec ICU, il n'est pas raisonnable d'énumérer tous les noms de locales
+      possibles. ICU utilise un système de nommage particulier pour les
+      locales, mais il y a plus de façons de nommer une locale qu'il n'y en a
+      réellement de distinctes. <code class="command">initdb</code>
+      utilise les API d'ICU pour extraire un jeu de locales distinctes, afin de
+      peupler le jeu initial de collations. Les collations fournies par ICU sont
+      créées dans l'environnement SQL avec des noms suivant le format d'étiquettes
+      
+      de langues BCP 47, plus une extension d'<span class="quote">« <span class="quote">utilisation privée</span> »</span>
+      <code class="literal">-x-icu</code>, ajoutée pour les distinguer des locales de libc.
+     </p><p>
+      Voici quelques exemples de collations pouvant être créées :
+
+      </p><div class="variablelist"><dl class="variablelist"><dt id="COLLATION-MANAGING-PREDEFINED-ICU-DE-X-ICU"><span class="term"><code class="literal">de-x-icu</code></span> <a href="#COLLATION-MANAGING-PREDEFINED-ICU-DE-X-ICU" class="id_link">#</a></dt><dd><p>Collation allemande, variante par défaut</p></dd><dt id="COLLATION-MANAGING-PREDEFINED-ICU-DE-AT-X-ICU"><span class="term"><code class="literal">de-AT-x-icu</code></span> <a href="#COLLATION-MANAGING-PREDEFINED-ICU-DE-AT-X-ICU" class="id_link">#</a></dt><dd><p>Collation allemande pour l'Autriche, variante par défaut</p><p>
+          (Il y a aussi, par exemple, <code class="literal">de-DE-x-icu</code> ou
+          <code class="literal">de-CH-x-icu</code> mais, au moment de l'écriture de ces lignes,
+          elles sont équivalentes à <code class="literal">de-x-icu</code>.)
+         </p></dd><dt id="COLLATION-MANAGING-PREDEFINED-ICU-UND-X-ICU"><span class="term"><code class="literal">und-x-icu</code> (pour <span class="quote">« <span class="quote">undefined</span> »</span>)</span> <a href="#COLLATION-MANAGING-PREDEFINED-ICU-UND-X-ICU" class="id_link">#</a></dt><dd><p>
+          Collation <span class="quote">« <span class="quote">racine</span> »</span> ICU. Utilisez ceci pour avoir un ordre de tri
+          raisonnable et linguistiquement agnostique.
+         </p></dd></dl></div><p>
+     </p><p>
+      Certains encodages (les moins fréquemment utilisés) ne sont pas
+      supportés par ICU. Si c'est le cas pour l'encodage de la base de données,
+      les enregistrements de collations ICU dans <code class="literal">pg_collation</code>
+      sont ignorés. Tenter d'en utiliser un renverra une erreur du type
+      <span class="quote">« <span class="quote">collation "de-x-icu" for encoding "WIN874" does not exist</span> »</span>.
+     </p></div></div><div class="sect3" id="COLLATION-CREATE"><div class="titlepage"><div><div><h4 class="title">23.2.2.3. Créer de nouveaux objets de collation <a href="#COLLATION-CREATE" class="id_link">#</a></h4></div></div></div><p>
+     Si les collations standards et prédéfinies ne sont pas suffisantes, les
+     utilisateurs peuvent créer leur propres objets de collation en utilisant la
+     commande SQL <a class="xref" href="sql-createcollation.html" title="CREATE COLLATION"><span class="refentrytitle">CREATE COLLATION</span></a>.
+    </p><p>
+     Les collations standards et prédéfinies sont dans le schéma
+     <code class="literal">pg_catalog</code>, comme tous les objets prédéfinis. Les
+     collations définies par les utilisateurs doivent être créées dans des
+     schémas utilisateurs. Ceci assure qu'elles seront sauvegardées par
+     <code class="command">pg_dump</code>.
+    </p><div class="sect4" id="COLLATION-MANAGING-CREATE-LIBC"><div class="titlepage"><div><div><h5 class="title">23.2.2.3.1. Collations libc <a href="#COLLATION-MANAGING-CREATE-LIBC" class="id_link">#</a></h5></div></div></div><p>
+      Les nouvelles collations libc peuvent être créées ainsi :
+      </p><pre class="programlisting">
+CREATE COLLATION german (provider = libc, locale = 'de_DE');
+      </pre><p>
+      Les valeurs exactes de la clause <code class="literal">locale</code>
+      acceptées par cette commande dépendent du système
+      d'exploitation. Sur les systèmes Unix, la commande <code class="literal">locale
+       -a</code> affichera une liste.
+     </p><p>
+      Comme les collations libc prédéfinies incluent déjà toutes les collations
+      définies dans le système d'exploitation au moment de l'initialisation de
+      l'instance, il n'est pas souvent nécessaire d'en créer de nouvelles.
+      Des raisons possibles sont l'utilisation d'un autre système
+      de nommage (auquel cas, voir aussi <a class="xref" href="collation.html#COLLATION-COPY" title="23.2.2.3.3. Copier les collations">Section 23.2.2.3.3</a>), ou
+      une mise à jour du système d'exploitation pour fournir les définitions
+      des nouvelles locales (auquel cas, voir aussi <a class="link" href="functions-admin.html#FUNCTIONS-ADMIN-COLLATION" title="Tableau 9.102. Fonctions de gestion des collations"><code class="function">pg_import_system_collations()</code></a>).
+     </p></div><div class="sect4" id="COLLATION-MANAGING-CREATE-ICU"><div class="titlepage"><div><div><h5 class="title">23.2.2.3.2. Collations ICU <a href="#COLLATION-MANAGING-CREATE-ICU" class="id_link">#</a></h5></div></div></div><p>
+      Les collations ICU peuvent être créées comme :
+
+</p><pre class="programlisting">
+CREATE COLLATION german (provider = icu, locale = 'de-DE');
+</pre><p>
+
+      Les locales ICU sont spécifiées comme une <a class="link" href="locale.html#ICU-LANGUAGE-TAG" title="23.1.5.3. Etiquette de langage">étiquette de langage</a> BCP 47, mais peuvent aussi
+      accepter la plupart des noms de locales en style libc. Si possible,
+      les noms de locales en style libc sont transformés en étiquettes de langage.
+     </p><p>
+      Les nouvelles collations ICU peuvent personnaliser le comportement de collation
+      de manière étendue en incluant des attributs de collation dans les étiquettes
+      de langage. Voir <a class="xref" href="collation.html#ICU-CUSTOM-COLLATIONS" title="23.2.3. Collations personalisées ICU">Section 23.2.3</a> pour les détails et exemples.
+     </p></div><div class="sect4" id="COLLATION-COPY"><div class="titlepage"><div><div><h5 class="title">23.2.2.3.3. Copier les collations <a href="#COLLATION-COPY" class="id_link">#</a></h5></div></div></div><p>
+      La commande <a class="xref" href="sql-createcollation.html" title="CREATE COLLATION"><span class="refentrytitle">CREATE COLLATION</span></a> peut également être utilisée pour
+      créer une nouvelle collation depuis une collation existante, ce qui peut être utile
+      pour utiliser une collation indépendante du système dans
+      les applications, de créer des noms compatibles, ou d'utiliser une collation fournie par ICU
+      avec un nom plus lisible. Par exemple :
+      </p><pre class="programlisting">
+CREATE COLLATION german FROM "de_DE";
+CREATE COLLATION french FROM "fr-x-icu";
+      </pre><p>
+     </p></div></div><div class="sect3" id="COLLATION-NONDETERMINISTIC"><div class="titlepage"><div><div><h4 class="title">23.2.2.4. Collations non déterministes <a href="#COLLATION-NONDETERMINISTIC" class="id_link">#</a></h4></div></div></div><p>
+     Une collation est soit <em class="firstterm">déterministe</em>, soit
+     <em class="firstterm">non déterministe</em>. Une collation déterministe utilise
+     des comparaisons déterministes, ce qui signifie qu'elle considère les chaînes
+     de caractères comme égales seulement si elles sont constituées des mêmes
+     séquences d'octets. Les comparaisons non déterministes peuvent considérer
+     des chaînes comme égales même si elles sont constituées d'octets différents.
+     Les cas d'usage typiques comprennent des comparaisons insensibles à la casse,
+     ou insensibles aux accents, de même que la comparaison de chaînes
+     dans différentes formes normales Unicode. C'est au fournisseur de collation
+     d'implémenter de telles comparaisons insensibles ; le drapeau
+     donnant la collation comme déterministe n'indique que si les chaînes égales
+     doivent être départagées ou non par une comparaison au niveau de l'octet.
+     Voir aussi <a class="ulink" href="https://www.unicode.org/reports/tr10" target="_top">Unicode Technical
+     Standard 10</a> pour plus d'information sur la terminologie.
+    </p><p>
+     Pour créer une collation non déterministe, spécifiez la propriété
+     <code class="literal">deterministic = false</code> à <code class="command">CREATE
+      COLLATION</code>, par exemple:
+     </p><pre class="programlisting">
+CREATE COLLATION ndcoll (provider = icu, locale = 'und', deterministic = false);
+     </pre><p>
+     Cet exemple utiliserait la collation Unicode standard d'une manière
+     non déterministe. En particulier, elle permettrait à des chaînes
+     exprimées dans différentes formes normales d'être comparées correctement.
+     D'autres exemples plus intéressants utilisent les facultés de personnalisation
+     d'ICU expliquées ci-dessus.
+
+     Par exemple :
+     </p><pre class="programlisting">
+CREATE COLLATION case_insensitive (provider = icu, locale = 'und-u-ks-level2', deterministic = false);
+CREATE COLLATION ignore_accents (provider = icu, locale = 'und-u-ks-level1-kc-true', deterministic = false);
+     </pre><p>
+    </p><p>
+     Toutes les collations standards et prédéfinies sont déterministes, et
+     toutes les collations définies par les utilisateurs sont déterministes
+     par défaut.
+     Bien que les collations non déterministes aient un comportement plus
+     <span class="quote">« <span class="quote">correct</span> »</span>, particulièrement considérant la puissance
+     d'Unicode et ses nombreux cas spécifiques, elles ont aussi quelques
+     inconvénients.
+     D'abord, leur utilisation génère une pénalité de performance.
+     Il est à noter en particulier qu'un B-tree ne peut pas utiliser
+     la déduplication dans les index utilisant une collation non déterministe.
+     Par ailleurs, certaines opérations ne sont pas possibles avec des
+     collations non déterministes, comme la recherche par motif.
+     Par conséquent, elles ne devraient être utilisées que dans les cas
+     où elles sont spécifiquement désirables.
+    </p><div class="tip"><h3 class="title">Astuce</h3><p>
+      Pour gérer du texte sous différentes formes de normalisation Unicode, il
+      est possible d'utiliser les fonctions ou expressions
+      <code class="function">normalize</code> et <code class="literal">is normalized</code> pour
+      prétraiter ou contrôler les chaînes de caractères, au lieu d'utiliser des
+      collations non déterministes. Il y a des avantages et inconvénients différents
+      à chaque approche.
+     </p></div></div></div><div class="sect2" id="ICU-CUSTOM-COLLATIONS"><div class="titlepage"><div><div><h3 class="title">23.2.3. Collations personalisées ICU <a href="#ICU-CUSTOM-COLLATIONS" class="id_link">#</a></h3></div></div></div><p>
+    ICU permet un contrôle étendu sur le comportement des collations en définissant
+    de nouvelles collations avec des paramètres de collation sous forme de partie d'étiquettes
+    de langage. Par exemple :
+
+</p><pre class="programlisting">
+-- Ignore les différences d'accents et de casse.
+CREATE COLLATION ignore_accent_case (provider = icu, deterministic = false, locale = 'und-u-ks-level1');
+SELECT 'Å' = 'A' COLLATE ignore_accent_case; -- vrai
+SELECT 'z' = 'Z' COLLATE ignore_accent_case; -- vrai
+
+-- Les lettres en majuscule sont triées avant celles en minuscule.
+CREATE COLLATION upper_first (provider = icu, locale = 'und-u-kf-upper');
+SELECT 'B' &lt; 'b' COLLATE upper_first; -- vrai
+
+-- Traite les chiffres en nombre et ignore la ponctuation
+CREATE COLLATION num_ignore_punct (provider = icu, deterministic = false, locale = 'und-u-ka-shifted-kn');
+SELECT 'id-45' &lt; 'id-123' COLLATE num_ignore_punct; -- vrai
+SELECT 'w;x*y-z' = 'wxyz' COLLATE num_ignore_punct; -- vrai
+</pre><p>
+
+    Les nombreuses options disponibles sont décrites dans
+    <a class="xref" href="collation.html#ICU-COLLATION-SETTINGS" title="23.2.3.2. Paramètres de collation pour une locale ICU">Section 23.2.3.2</a>, ou voir <a class="xref" href="collation.html#ICU-EXTERNAL-REFERENCES" title="23.2.3.5. Références externes pour ICU">Section 23.2.3.5</a>  pour plus de détails.
+   </p><div class="sect3" id="ICU-COLLATION-COMPARISON-LEVELS"><div class="titlepage"><div><div><h4 class="title">23.2.3.1. Niveaux de comparaison ICU <a href="#ICU-COLLATION-COMPARISON-LEVELS" class="id_link">#</a></h4></div></div></div><p>
+     La comparaison de deux chaînes (collation) en ICU est déterminée par un
+     processus multi-niveaux, où les fonctionnalités textuelles sont regroupées
+     en niveaux. Le traitement de chaque niveau est contrôlé par les
+     <a class="link" href="collation.html#ICU-COLLATION-SETTINGS-TABLE" title="Tableau 23.2. Paramètres de collation ICU">paramètres de collation</a>.
+     Les plus hauts niveaux correspondent aux fonctionnalités textuelles les plus fines.
+
+    </p><p>
+     <a class="xref" href="collation.html#ICU-COLLATION-LEVELS" title="Tableau 23.1. Niveaux de collation ICU">Tableau 23.1</a> indique quelles différences
+     de fonctionnalité textuelle sont considérées
+     significatives quand l'égalité est déterminée au niveau donné.
+     Le caractère unicode <code class="literal">U+2063</code> est un séparateur invisible, et
+     comme indiqué dans la table, est ignoré pour tous les niveaux de comparaison inférieur à
+    <code class="literal">identic</code>.
+    </p><p>
+     </p><div class="table" id="ICU-COLLATION-LEVELS"><p class="title"><strong>Tableau 23.1. Niveaux de collation ICU</strong></p><div class="table-contents"><table class="table" summary="Niveaux de collation ICU" border="1"><colgroup><col class="col1" /><col class="col2" /><col class="col3" /><col class="col4" /><col class="col5" /><col class="col6" /><col class="col7" /><col class="col8" /></colgroup><thead><tr><th>Niveau</th><th>Description</th><th><code class="literal">'f' = 'f'</code></th><th><code class="literal">'ab' = U&amp;'a\2063b'</code></th><th><code class="literal">'x-y' = 'x_y'</code></th><th><code class="literal">'g' = 'G'</code></th><th><code class="literal">'n' = 'ñ'</code></th><th><code class="literal">'y' = 'z'</code></th></tr></thead><tbody><tr><td>Niveau 1 (level1)</td><td>Caractère de base</td><td><code class="literal">vrai</code></td><td><code class="literal">vrai</code></td><td><code class="literal">vrai</code></td><td><code class="literal">vrai</code></td><td><code class="literal">vrai</code></td><td><code class="literal">faux</code></td></tr><tr><td>Niveau 2 (level2)</td><td>Accents</td><td><code class="literal">vrai</code></td><td><code class="literal">vrai</code></td><td><code class="literal">vrai</code></td><td><code class="literal">vrai</code></td><td><code class="literal">faux</code></td><td><code class="literal">faux</code></td></tr><tr><td>Niveau 3 (level3)</td><td>Casse/Variants</td><td><code class="literal">vrai</code></td><td><code class="literal">vrai</code></td><td><code class="literal">vrai</code></td><td><code class="literal">faux</code></td><td><code class="literal">faux</code></td><td><code class="literal">faux</code></td></tr><tr><td>Niveau 4 (level4)</td><td>Ponctuation<a href="#ftn.id-1.6.10.4.6.3.4.1.2.10.4.2.1" class="footnote"><sup class="footnote" id="id-1.6.10.4.6.3.4.1.2.10.4.2.1">[a]</sup></a></td><td><code class="literal">vrai</code></td><td><code class="literal">vrai</code></td><td><code class="literal">faux</code></td><td><code class="literal">faux</code></td><td><code class="literal">faux</code></td><td><code class="literal">faux</code></td></tr><tr><td>identique (identic)</td><td>Tous</td><td><code class="literal">vrai</code></td><td><code class="literal">faux</code></td><td><code class="literal">faux</code></td><td><code class="literal">faux</code></td><td><code class="literal">faux</code></td><td><code class="literal">faux</code></td></tr></tbody><tbody class="footnotes"><tr><td colspan="8"><div id="ftn.id-1.6.10.4.6.3.4.1.2.10.4.2.1" class="footnote"><p><a href="#id-1.6.10.4.6.3.4.1.2.10.4.2.1" class="para"><sup class="para">[a] </sup></a>seulement avec
+         <code class="literal">ka-shifted</code>  voir <a class="xref" href="collation.html#ICU-COLLATION-SETTINGS-TABLE" title="Tableau 23.2. Paramètres de collation ICU">Tableau 23.2</a></p></div></td></tr></tbody></table></div></div><p><br class="table-break" />
+
+     À chaque niveau, même en avec la normalisation complètement inactivée, la normalisation
+     de base est effectuée. Par exemple, <code class="literal">'á'</code> peut être composé
+     des points codes <code class="literal">U&amp;'\0061\0301'</code> ou du point code unique
+     <code class="literal">U&amp;'\00E1'</code>, et ces séquences seront considérées équivalentes
+     même au niveau <code class="literal">identic</code>. Pour traiter toute
+     différence de représentation en point code comme distincte, utilisez une
+     collation créée avec <code class="symbol">deterministic</code> mis à <code class="literal">vrai</code>.
+    </p><div class="sect4" id="ICU-COLLATION-LEVEL-EXAMPLES"><div class="titlepage"><div><div><h5 class="title">23.2.3.1.1. Exemples de niveau de collation <a href="#ICU-COLLATION-LEVEL-EXAMPLES" class="id_link">#</a></h5></div></div></div><p>
+
+</p><pre class="programlisting">
+CREATE COLLATION level3 (provider = icu, deterministic = false, locale = 'und-u-ka-shifted-ks-level3');
+CREATE COLLATION level4 (provider = icu, deterministic = false, locale = 'und-u-ka-shifted-ks-level4');
+CREATE COLLATION identic (provider = icu, deterministic = false, locale = 'und-u-ka-shifted-ks-identic');
+
+-- séparateur invisible ignoré à tous niveaux sauf identic
+SELECT 'ab' = U&amp;'a\2063b' COLLATE level4; -- vrai
+SELECT 'ab' = U&amp;'a\2063b' COLLATE identic; -- faux
+
+-- ponctuation ignorée à niveau 3 mais pas à niveau 4
+SELECT 'x-y' = 'x_y' COLLATE level3; -- vrai
+SELECT 'x-y' = 'x_y' COLLATE level4; -- faux
+</pre><p>
+
+     </p></div></div><div class="sect3" id="ICU-COLLATION-SETTINGS"><div class="titlepage"><div><div><h4 class="title">23.2.3.2. Paramètres de collation pour une locale ICU <a href="#ICU-COLLATION-SETTINGS" class="id_link">#</a></h4></div></div></div><p>
+     <a class="xref" href="collation.html#ICU-COLLATION-SETTINGS-TABLE" title="Tableau 23.2. Paramètres de collation ICU">Tableau 23.2</a> indique les paramètres de
+     collation disponibles, qui peuvent être utilisés
+     sous forme de partie d'étiquette de langage pour personnaliser une collation.
+    </p><p>
+     </p><div class="table" id="ICU-COLLATION-SETTINGS-TABLE"><p class="title"><strong>Tableau 23.2. Paramètres de collation ICU</strong></p><div class="table-contents"><table class="table" summary="Paramètres de collation ICU" border="1"><colgroup><col class="col1" /><col class="col2" /><col class="col3" /><col class="col4" /></colgroup><thead><tr><th>Clés</th><th>Valeurs</th><th>Défaut</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">co</code></td><td><code class="literal">emoji</code>, <code class="literal">phonebk</code>, <code class="literal">standard</code>, <em class="replaceable"><code>...</code></em></td><td><code class="literal">standard</code></td><td>
+          Type de collation. Voir <a class="xref" href="collation.html#ICU-EXTERNAL-REFERENCES" title="23.2.3.5. Références externes pour ICU">Section 23.2.3.5</a>
+          pour les options supplémentaires et détails.
+         </td></tr><tr><td><code class="literal">ka</code></td><td><code class="literal">noignore</code>, <code class="literal">shifted</code></td><td><code class="literal">noignore</code></td><td>
+          Si affecté à <code class="literal">shifted</code>, fait que certains caractères
+          (i.e. ponctuation ou espace) sont ignorés dans les comparaisons.
+          La clé <code class="literal">ks</code> doit être mise à <code class="literal">level3</code> ou
+          inférieure pour prendre effet. Affecter la clé <code class="literal">kv</code> pour
+          contrôler les classes de caractères à ignorer.
+         </td></tr><tr><td><code class="literal">kb</code></td><td><code class="literal">true</code>, <code class="literal">false</code></td><td><code class="literal">false</code></td><td>
+          Comparaisons descendantes pour les différences du niveau 2.
+          Par exemple, la locale <code class="literal">und-u-kb</code> trie
+          <code class="literal">'àe'</code> avant <code class="literal">'aé'</code>.
+         </td></tr><tr><td><code class="literal">kc</code></td><td><code class="literal">true</code>, <code class="literal">false</code></td><td><code class="literal">false</code></td><td>
+          <p>
+           Sépare la casse en un niveau 2.5 qui tombe entre les accents et
+           les autres fonctionnalités de niveau 3.
+          </p>
+          <p>
+           Si mis à <code class="literal">true</code> et <code class="literal">ks</code> est mis à
+           <code class="literal">level1</code>, alors les accents seront ignorés mais la casse
+           sera prise en compte.
+          </p>
+         </td></tr><tr><td><code class="literal">kf</code></td><td>
+          <code class="literal">upper</code>, <code class="literal">lower</code>,
+          <code class="literal">false</code>
+         </td><td><code class="literal">false</code></td><td>
+          Si mis à <code class="literal">upper</code>, la majuscule est triée avant la minuscule.
+          Si mis à <code class="literal">lower</code>, la minuscule est triée avant la majuscule.
+          Si mis à <code class="literal">false</code>, le tri dépend des règles de la locale.
+         </td></tr><tr><td><code class="literal">kn</code></td><td><code class="literal">true</code>, <code class="literal">false</code></td><td><code class="literal">false</code></td><td>
+          Si mis à <code class="literal">true</code>, les nombres à l'intérieur d'une chaîne sont
+          traités comme une valeur numérique unique plutôt qu'une séquence de chiffres.
+          Par exemple, <code class="literal">'id-45'</code> est trié avant <code class="literal">'id-123'</code>.
+         </td></tr><tr><td><code class="literal">kk</code></td><td><code class="literal">true</code>, <code class="literal">false</code></td><td><code class="literal">false</code></td><td>
+          <p>
+           Permet une normalisation complète ; peut affecter les performances.
+           La normalisation de base est effectuée quand ce paramètre vaut
+           <code class="literal">false</code>. Les locales pour les langages qui demandent
+           une normalisation complète l'active par défaut.
+          </p>
+          <p>
+           La normalisation complète est importante dans certains cas, tel que
+           lorsque plusieurs accents sont appliqués sur un seul caractère.
+           Par exemple, les séquences de code point <code class="literal">U&amp;'\0065\0323\0302'</code>
+           et <code class="literal">U&amp;'\0065\0302\0323'</code> représentent un
+           <code class="literal">e</code> avec un accent circonflexe et un accent point-inférieur
+           appliqués dans des ordres différents. Avec une normalisation complète,
+           ces séquences code point sont traitées comme identiques ; sinon, elles
+           sont vues comme différentes.
+          </p>
+         </td></tr><tr><td><code class="literal">kr</code></td><td>
+          <code class="literal">space</code>, <code class="literal">punct</code>,
+          <code class="literal">symbol</code>, <code class="literal">currency</code>,
+          <code class="literal">digit</code>, <em class="replaceable"><code>script-id</code></em>
+         </td><td> </td><td>
+          <p>
+           Affectez à une ou plusieurs de ces valeurs valides, ou n'importe
+           quel <em class="replaceable"><code>script-id</code></em> BCP 47, i.e.
+           <code class="literal">latn</code> ("Latin") ou <code class="literal">grek</code> ("Grec").
+           Les valeurs multiples sont séparées par "<code class="literal">-</code>".
+          </p>
+          <p>
+           Redéfinit l'ordonnancement des classes de caractères ; les caractères
+           d'une classe placée plus tôt dans cette liste sont triés avant les caractères
+           d'une classe placée après dans la liste. Par exemple,
+           la valeur <code class="literal">digit-currency-space</code> (en tant que partie
+           d'une étiquette de langage <code class="literal">und-u-kr-digit-currency-space</code>)
+           est triée avant les chiffres et espaces.
+          </p>
+         </td></tr><tr><td><code class="literal">ks</code></td><td><code class="literal">level1</code>, <code class="literal">level2</code>, <code class="literal">level3</code>, <code class="literal">level4</code>, <code class="literal">identic</code></td><td><code class="literal">level3</code></td><td>
+          Sensibilité (ou force) quand il faut déterminer l'égalité, avec
+          <code class="literal">level1</code> étant le moins sensible aux différences et
+          <code class="literal">identic</code> le plus sensible aux différences. Voir
+          <a class="xref" href="collation.html#ICU-COLLATION-LEVELS" title="Tableau 23.1. Niveaux de collation ICU">Tableau 23.1</a> pour les détails.
+         </td></tr><tr><td><code class="literal">kv</code></td><td>
+          <code class="literal">space</code>, <code class="literal">punct</code>,
+          <code class="literal">symbol</code>, <code class="literal">currency</code>
+         </td><td><code class="literal">punct</code></td><td>
+          Classes de caractères ignorés durant la comparaison au niveau 3. Affecter
+          ce paramètre à une valeur postérieure inclut déjà les valeurs précédentes ;
+          i.e. <code class="literal">symbol</code> inclut aussi
+          <code class="literal">punct</code> et <code class="literal">space</code> dans les caractères à
+          ignorés. La clé <code class="literal">ka</code> doit être affecté à
+          <code class="literal">shifted</code> et la clé  <code class="literal">ks</code> doit être
+          affectée à <code class="literal">level3</code> ou moins pour faire effet.
+         </td></tr></tbody></table></div></div><p><br class="table-break" />
+      Les défauts peuvent dépendre de la locale. La table ci-dessus n'a pas
+      vocation à être complète. Voir <a class="xref" href="collation.html#ICU-EXTERNAL-REFERENCES" title="23.2.3.5. Références externes pour ICU">Section 23.2.3.5</a>
+      pour des options supplémentaires et des détails.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Pour de nombreux paramètres de collation, vous devez créer la collation avec
+      <code class="option">deterministic</code> mis à <code class="literal">false</code> pour que
+      les paramètres puissent avoir l'effet désiré (voir <a class="xref" href="collation.html#COLLATION-NONDETERMINISTIC" title="23.2.2.4. Collations non déterministes">Section 23.2.2.4</a>). En plus, certains paramètres
+      ne prennent effet que si la clé <code class="literal">ka</code> est affectée à
+      <code class="literal">shifted</code> (voir <a class="xref" href="collation.html#ICU-COLLATION-SETTINGS-TABLE" title="Tableau 23.2. Paramètres de collation ICU">Tableau 23.2</a>).
+     </p></div></div><div class="sect3" id="ICU-LOCALE-EXAMPLES"><div class="titlepage"><div><div><h4 class="title">23.2.3.3. Exemples <a href="#ICU-LOCALE-EXAMPLES" class="id_link">#</a></h4></div></div></div><p>
+     </p><div class="variablelist"><dl class="variablelist"><dt id="COLLATION-MANAGING-CREATE-ICU-DE-U-CO-PHONEBK-X-ICU"><span class="term"><code class="literal">CREATE COLLATION "de-u-co-phonebk-x-icu" (provider = icu, locale = 'de-u-co-phonebk');</code></span> <a href="#COLLATION-MANAGING-CREATE-ICU-DE-U-CO-PHONEBK-X-ICU" class="id_link">#</a></dt><dd><p>Collation Allemande avec une collation de type agenda téléphonique</p></dd><dt id="COLLATION-MANAGING-CREATE-ICU-UND-U-CO-EMOJI-X-ICU"><span class="term"><code class="literal">CREATE COLLATION "und-u-co-emoji-x-icu" (provider = icu, locale = 'und-u-co-emoji');</code></span> <a href="#COLLATION-MANAGING-CREATE-ICU-UND-U-CO-EMOJI-X-ICU" class="id_link">#</a></dt><dd><p>
+         Collation racine avec une collation de type Emoji, pour le standard technique Unicode #51
+        </p></dd><dt id="COLLATION-MANAGING-CREATE-ICU-EN-U-KR-GREK-LATN"><span class="term"><code class="literal">CREATE COLLATION latinlast (provider = icu, locale = 'en-u-kr-grek-latn');</code></span> <a href="#COLLATION-MANAGING-CREATE-ICU-EN-U-KR-GREK-LATN" class="id_link">#</a></dt><dd><p>
+         Trie des lettres grecques avant les latines. (Le défaut est Latin avant Grec.)
+        </p></dd><dt id="COLLATION-MANAGING-CREATE-ICU-EN-U-KF-UPPER"><span class="term"><code class="literal">CREATE COLLATION upperfirst (provider = icu, locale = 'en-u-kf-upper');</code></span> <a href="#COLLATION-MANAGING-CREATE-ICU-EN-U-KF-UPPER" class="id_link">#</a></dt><dd><p>
+         Trie les lettres en majuscule avant les lettres en minuscule. (Le défaut est
+         les lettres en minuscule en premier.)
+        </p></dd><dt id="COLLATION-MANAGING-CREATE-ICU-EN-U-KF-UPPER-KR-GREK-LATN"><span class="term"><code class="literal">CREATE COLLATION special (provider = icu, locale = 'en-u-kf-upper-kr-grek-latn');</code></span> <a href="#COLLATION-MANAGING-CREATE-ICU-EN-U-KF-UPPER-KR-GREK-LATN" class="id_link">#</a></dt><dd><p>
+         Combine ensemble les deux options ci-dessus.
+        </p></dd></dl></div><p>
+    </p></div><div class="sect3" id="ICU-TAILORING-RULES"><div class="titlepage"><div><div><h4 class="title">23.2.3.4. ICU Tailoring Rules <a href="#ICU-TAILORING-RULES" class="id_link">#</a></h4></div></div></div><p>
+     If the options provided by the collation settings shown above are not
+     sufficient, the order of collation elements can be changed with tailoring
+     rules, whose syntax is detailed at <a class="ulink" href="https://unicode-org.github.io/icu/userguide/collation/customization/" target="_top">https://unicode-org.github.io/icu/userguide/collation/customization/</a>.
+    </p><p>
+     This small example creates a collation based on the root locale with a
+     tailoring rule:
+</p><pre class="programlisting">
+CREATE COLLATION custom (provider = icu, locale = 'und', rules = '&amp;V &lt;&lt; w &lt;&lt;&lt; W');
+</pre><p>
+     With this rule, the letter <span class="quote">« <span class="quote">W</span> »</span> is sorted after
+     <span class="quote">« <span class="quote">V</span> »</span>, but is treated as a secondary difference similar to an
+     accent.  Rules like this are contained in the locale definitions of some
+     languages.  (Of course, if a locale definition already contains the
+     desired rules, then they don't need to be specified again explicitly.)
+    </p><p>
+     Here is a more complex example.  The following statement sets up a
+     collation named <code class="literal">ebcdic</code> with rules to sort US-ASCII
+     characters in the order of the EBCDIC encoding.
+
+</p><pre class="programlisting">
+CREATE COLLATION ebcdic (provider = icu, locale = 'und',
+rules = $$
+&amp; ' ' &lt; '.' &lt; '&lt;' &lt; '(' &lt; '+' &lt; \|
+&lt; '&amp;' &lt; '!' &lt; '$' &lt; '*' &lt; ')' &lt; ';'
+&lt; '-' &lt; '/' &lt; ',' &lt; '%' &lt; '_' &lt; '&gt;' &lt; '?'
+&lt; '`' &lt; ':' &lt; '#' &lt; '@' &lt; \' &lt; '=' &lt; '"'
+&lt;*a-r &lt; '~' &lt;*s-z &lt; '^' &lt; '[' &lt; ']'
+&lt; '{' &lt;*A-I &lt; '}' &lt;*J-R &lt; '\' &lt;*S-Z &lt;*0-9
+$$);
+
+SELECT c
+FROM (VALUES ('a'), ('b'), ('A'), ('B'), ('1'), ('2'), ('!'), ('^')) AS x(c)
+ORDER BY c COLLATE ebcdic;
+ c
+---
+ !
+ a
+ b
+ ^
+ A
+ B
+ 1
+ 2
+</pre><p>
+    </p></div><div class="sect3" id="ICU-EXTERNAL-REFERENCES"><div class="titlepage"><div><div><h4 class="title">23.2.3.5. Références externes pour ICU <a href="#ICU-EXTERNAL-REFERENCES" class="id_link">#</a></h4></div></div></div><p>
+     La section (<a class="xref" href="collation.html#ICU-CUSTOM-COLLATIONS" title="23.2.3. Collations personalisées ICU">Section 23.2.3</a>) est seulement un bref
+     aperçu des comportements ICU et des étiquettes de langage.
+     Reférez vous aux documents suivants pour les détails techniques, options
+     supplémentaires et nouveaux comportements :
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       <a class="ulink" href="https://www.unicode.org/reports/tr35/tr35-collation.html" target="_top">Standard Technique Unicode
+       #35</a>
+      </p></li><li class="listitem"><p>
+       <a class="ulink" href="https://datatracker.ietf.org/doc/html/bcp47" target="_top">BCP 47</a>
+      </p></li><li class="listitem"><p>
+       <a class="ulink" href="https://github.com/unicode-org/cldr/blob/master/common/bcp47/collation.xml" target="_top">Dépôt CLDR
+       </a>
+      </p></li><li class="listitem"><p>
+       <a class="ulink" href="https://unicode-org.github.io/icu/userguide/locale/" target="_top">https://unicode-org.github.io/icu/userguide/locale/</a>
+      </p></li><li class="listitem"><p>
+       <a class="ulink" href="https://unicode-org.github.io/icu/userguide/collation/api.html" target="_top">https://unicode-org.github.io/icu/userguide/collation/api.html</a>
+      </p></li></ul></div></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/collation.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+</html>

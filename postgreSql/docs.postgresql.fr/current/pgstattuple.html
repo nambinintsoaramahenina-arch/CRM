@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/pgstattuple.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.31. pgstattuple -- obtenir des statistiques au niveau ligne</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="pgstatstatements.html" title="F.30. pg_stat_statements -- récupérer les statistiques de planification et d'exécution de requêtes SQL" /><link rel="next" href="pgsurgery.html" title="F.32. pg_surgery -- réaliser des opérations bas niveau sur les données des relations" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/pgstattuple.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/pgstattuple.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/pgstattuple.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/pgstattuple.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/pgstattuple.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/pgstattuple.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/pgstattuple.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/pgstattuple.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/pgstattuple.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/pgstattuple.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/pgstattuple.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/pgstattuple.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/pgstattuple.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/pgstattuple.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/pgstattuple.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/pgstattuple.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/pgstattuple.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/pgstattuple.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/pgstattuple.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="appendixes.html">Annexes</a></span> » <span class="breadcrumb-link"><a href="contrib.html">Modules et extensions supplémentaires fournis</a></span> » <span class="breadcrumb-node">pgstattuple  --  obtenir des statistiques au niveau ligne</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pgstatstatements.html" title="F.30. pg_stat_statements  --  récupérer les statistiques de planification&#10;  et d'exécution de requêtes SQL">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="pgsurgery.html" title="F.32. pg_surgery  --  réaliser des opérations bas niveau sur les données&#10;  des relations">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">F.30. pg_stat_statements  --  récupérer les statistiques de planification
+  et d'exécution de requêtes SQL </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> F.32. pg_surgery  --  réaliser des opérations bas niveau sur les données
+  des relations</td></tr></table></div><div class="sect1" id="PGSTATTUPLE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.31. pgstattuple  --  obtenir des statistiques au niveau ligne <a href="#PGSTATTUPLE" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="pgstattuple.html#PGSTATTUPLE-FUNCS">F.31.1. Fonctions</a></span></dt><dt><span class="sect2"><a href="pgstattuple.html#PGSTATTUPLE-AUTHORS">F.31.2. Auteurs</a></span></dt></dl></div><p>
+  Le module <code class="filename">pgstattuple</code> fournit plusieurs fonctions pour
+  obtenir des statistiques au niveau ligne.
+ </p><p>
+  Comme ces fonctions renvoient des informations détaillées au niveau page,
+  l'accès est restreint par défaut. Par défaut, seul le rôle
+  <code class="literal">pg_stat_scan_tables</code> a le droit
+  <code class="literal">EXECUTE</code>. Bien sûr, les superutilisateurs contournent
+  cette restriction. Après l'installation de l'extension, les utilisateurs
+  peuvent exécuter des commandes <code class="command">GRANT</code> pour modifier les
+  droits sur les fonctions, pour permettre à d'autres rôles de les exécuter.
+  Néanmoins, il serait préférable d'ajouter ces utilisateurs au rôle
+  <code class="literal">pg_stat_scan_tables</code>.
+ </p><div class="sect2" id="PGSTATTUPLE-FUNCS"><div class="titlepage"><div><div><h3 class="title">F.31.1. Fonctions <a href="#PGSTATTUPLE-FUNCS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt><span class="term">
+     <code class="function">pgstattuple(regclass) returns record</code>
+     <a id="id-1.11.7.42.4.2.1.1.2" class="indexterm"></a>
+    </span></dt><dd><p>
+      <code class="function">pgstattuple</code> renvoie la longueur physique d'une
+      relation, le pourcentage des lignes <span class="quote">« <span class="quote">mortes</span> »</span>, et d'autres
+      informations. Ceci peut aider les utilisateurs à déterminer si une
+      opération de VACUUM est nécessaire. L'argument est le nom de la relation
+      cible (qui peut être qualifié par le nom du schéma) ou l'OID.
+      Par exemple :
+      </p><pre class="programlisting">
+test=&gt; SELECT * FROM pgstattuple('pg_catalog.pg_proc');
+-[ RECORD 1 ]------+-------
+table_len          | 458752
+tuple_count        | 1470
+tuple_len          | 438896
+tuple_percent      | 95.67
+dead_tuple_count   | 11
+dead_tuple_len     | 3157
+dead_tuple_percent | 0.69
+free_space         | 8932
+free_percent       | 1.95
+      </pre><p>
+      Les colonnes en sortie sont décrites dans <a class="xref" href="pgstattuple.html#PGSTATTUPLE-COLUMNS" title="Tableau F.23. Colonnes de pgstattuple">Tableau F.23</a>.
+     </p><div class="table" id="PGSTATTUPLE-COLUMNS"><p class="title"><strong>Tableau F.23. Colonnes de <code class="function">pgstattuple</code></strong></p><div class="table-contents"><table class="table" summary="Colonnes de pgstattuple" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Colonne</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code class="structfield">table_len</code></td><td><code class="type">bigint</code></td><td>Longueur physique de la relation en octets</td></tr><tr><td><code class="structfield">tuple_count</code></td><td><code class="type">bigint</code></td><td>Nombre de lignes vivantes</td></tr><tr><td><code class="structfield">tuple_len</code></td><td><code class="type">bigint</code></td><td>Longueur totale des lignes vivantes en octets</td></tr><tr><td><code class="structfield">tuple_percent</code></td><td><code class="type">float8</code></td><td>Pourcentage des lignes vivantes</td></tr><tr><td><code class="structfield">dead_tuple_count</code></td><td><code class="type">bigint</code></td><td>Nombre de lignes mortes</td></tr><tr><td><code class="structfield">dead_tuple_len</code></td><td><code class="type">bigint</code></td><td>Longueur totale des lignes mortes en octets</td></tr><tr><td><code class="structfield">dead_tuple_percent</code></td><td><code class="type">float8</code></td><td>Pourcentage des lignes mortes</td></tr><tr><td><code class="structfield">free_space</code></td><td><code class="type">bigint</code></td><td>Espace libre total en octets</td></tr><tr><td><code class="structfield">free_percent</code></td><td><code class="type">float8</code></td><td>Pourcentage de l'espace libre</td></tr></tbody></table></div></div><br class="table-break" /><div class="note"><h3 class="title">Note</h3><p>
+       La valeur de la colonne <code class="literal">table_len</code> sera toujours
+       supérieure à la somme des colonnes <code class="literal">tuple_len</code>,
+       <code class="literal">dead_tuple_len</code> et <code class="literal">free_space</code>. La
+       différence correspond aux données systèmes comme la table de pointeurs
+       vers les lignes (une table par bloc) et aux octets d'alignements
+       permettant de s'assurer que les lignes sont correctement alignées.
+      </p></div><p>
+      <code class="function">pgstattuple</code> acquiert seulement un verrou en lecture
+      sur la relation. Les résultats ne reflètent donc pas une image
+      instantanée, des mises à jour en parallèle pouvant en effet les affecter.
+     </p><p>
+      <code class="function">pgstattuple</code> juge qu'une ligne est
+      <span class="quote">« <span class="quote">morte</span> »</span> si <code class="function">HeapTupleSatisfiesDirty</code> renvoie
+      false.
+     </p></dd><dt><span class="term">
+     <code class="function">pgstattuple(text) returns record</code>
+     <a id="id-1.11.7.42.4.2.2.1.2" class="indexterm"></a>
+    </span></dt><dd><p>
+      Identique à <code class="function">pgstattuple(regclass)</code>, sauf que la relation
+      cible est désignée en tant que TEXT.  Cette fonction est conservée pour
+      raison de compatibilité ascendante, et sera dépréciée dans une prochaine
+      version.
+     </p></dd><dt><span class="term">
+     <code class="function">pgstatindex(regclass) returns record</code>
+     <a id="id-1.11.7.42.4.2.3.1.2" class="indexterm"></a>
+    </span></dt><dd><p>
+      <code class="function">pgstatindex</code> renvoie un enregistrement affichant des
+      informations sur un index B-Tree. Par exemple :
+     </p><pre class="programlisting">
+test=&gt; SELECT * FROM pgstatindex('pg_cast_oid_index');
+-[ RECORD 1 ]------+------
+version            | 2
+tree_level         | 0
+index_size         | 16384
+root_block_no      | 1
+internal_pages     | 0
+leaf_pages         | 1
+empty_pages        | 0
+deleted_pages      | 0
+avg_leaf_density   | 54.27
+leaf_fragmentation | 0
+     </pre><p>
+      En voici les colonnes :
+     </p><div class="informaltable"><table class="informaltable" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Colonne</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code class="structfield">version</code></td><td><code class="type">integer</code></td><td>Numéro de version du B-tree</td></tr><tr><td><code class="structfield">tree_level</code></td><td><code class="type">integer</code></td><td>Niveau de l'arbre pour la page racine</td></tr><tr><td><code class="structfield">index_size</code></td><td><code class="type">bigint</code></td><td>Taille totale de l'index en octets</td></tr><tr><td><code class="structfield">root_block_no</code></td><td><code class="type">bigint</code></td><td>Emplacement du bloc racine (0 si aucun)</td></tr><tr><td><code class="structfield">internal_pages</code></td><td><code class="type">bigint</code></td><td>Nombre de pages <span class="quote">« <span class="quote">internes</span> »</span> (niveau
+          supérieur)</td></tr><tr><td><code class="structfield">leaf_pages</code></td><td><code class="type">bigint</code></td><td>Nombre de pages feuilles</td></tr><tr><td><code class="structfield">empty_pages</code></td><td><code class="type">bigint</code></td><td>Nombre de pages vides</td></tr><tr><td><code class="structfield">deleted_pages</code></td><td><code class="type">bigint</code></td><td>Nombre de pages supprimées</td></tr><tr><td><code class="structfield">avg_leaf_density</code></td><td><code class="type">float8</code></td><td>Densité moyenne des pages feuilles</td></tr><tr><td><code class="structfield">leaf_fragmentation</code></td><td><code class="type">float8</code></td><td>Fragmentation des pages feuilles</td></tr></tbody></table></div><p>
+      L'information <code class="literal">index_size</code> rapportée correspondra
+      normalement à un bloc de plus que ce qui est indiqué par la formule
+      <code class="literal">internal_pages + leaf_pages + empty_pages + deleted_pages</code>
+      car elle inclut aussi le bloc de méta-données de l'index.
+     </p><p>
+      Comme pour <code class="function">pgstattuple</code>, les résultats sont
+      accumulés page par page, et ne représentent pas forcément une image
+      instantanée de l'index complet.
+     </p></dd><dt><span class="term">
+     <code class="function">pgstatindex(text) returns record</code>
+    </span></dt><dd><p>
+      Identique à <code class="function">pgstatindex(regclass)</code>, sauf que l'index
+      cible est spécifié en tant que TEXT.  Cette fonction est conservée pour
+      raison de compatibilité ascendante, et sera dépréciée dans une prochaine
+      version.
+     </p></dd><dt><span class="term">
+     <a id="id-1.11.7.42.4.2.5.1.1" class="indexterm"></a>
+     <code class="function">pgstatginindex(regclass) returns record</code>
+    </span></dt><dd><p>
+      <code class="function">pgstatginindex</code> renvoie un enregistrement montrant
+      les informations sur un index GIN. Par exemple :
+      </p><pre class="programlisting">
+test=&gt; SELECT * FROM pgstatginindex('test_gin_index');
+-[ RECORD 1 ]--+--
+version        | 1
+pending_pages  | 0
+pending_tuples | 0
+      </pre><p>
+     </p><p>
+      Les colonnes en sortie sont :
+
+      </p><div class="informaltable"><table class="informaltable" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Colonne</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code class="structfield">version</code></td><td><code class="type">integer</code></td><td>Numéro de version GIN</td></tr><tr><td><code class="structfield">pending_pages</code></td><td><code class="type">integer</code></td><td>Nombre de pages dans la liste en attente</td></tr><tr><td><code class="structfield">pending_tuples</code></td><td><code class="type">bigint</code></td><td>Nombre de lignes dans la liste en attente</td></tr></tbody></table></div><p>
+     </p></dd><dt><span class="term">
+     <a id="id-1.11.7.42.4.2.6.1.1" class="indexterm"></a>
+     <code class="function">pgstathashindex(regclass) returns record</code>
+    </span></dt><dd><p>
+      <code class="function">pgstathashindex</code> retourne un enregistrement montrant
+      des informations à propos d'un index HASH. Par exemple :
+      </p><pre class="programlisting">
+test=&gt; select * from pgstathashindex('con_hash_index');
+-[ RECORD 1 ]--+-----------------
+version        | 4
+bucket_pages   | 33081
+overflow_pages | 0
+bitmap_pages   | 1
+unused_pages   | 32455
+live_items     | 10204006
+dead_items     | 0
+free_percent   | 61.8005949100872
+      </pre><p>
+     </p><p>
+      Les colonnes en sortie sont :
+
+      </p><div class="informaltable"><table class="informaltable" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Colonne</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code class="structfield">version</code></td><td><code class="type">integer</code></td><td>Numéro de version de HASH</td></tr><tr><td><code class="structfield">bucket_pages</code></td><td><code class="type">bigint</code></td><td>Nombre de pages bucket</td></tr><tr><td><code class="structfield">overflow_pages</code></td><td><code class="type">bigint</code></td><td>Nombre de pages overflow</td></tr><tr><td><code class="structfield">bitmap_pages</code></td><td><code class="type">bigint</code></td><td>Nombre de pages bitmap</td></tr><tr><td><code class="structfield">unused_pages</code></td><td><code class="type">bigint</code></td><td>Nombre de pages inutilisées</td></tr><tr><td><code class="structfield">live_items</code></td><td><code class="type">bigint</code></td><td>Nombre de lignes vivantes</td></tr><tr><td><code class="structfield">dead_tuples</code></td><td><code class="type">bigint</code></td><td>Nombre de lignes mortes</td></tr><tr><td><code class="structfield">free_percent</code></td><td><code class="type">float</code></td><td>Pourcentage d'espace libre</td></tr></tbody></table></div><p>
+     </p></dd><dt><span class="term">
+     <a id="id-1.11.7.42.4.2.7.1.1" class="indexterm"></a>
+     <code class="function">pg_relpages(regclass) returns bigint</code>
+    </span></dt><dd><p>
+      <code class="function">pg_relpages</code> renvoie le nombre de pages dans la
+      relation.
+     </p></dd><dt><span class="term">
+     <code class="function">pg_relpages(text) returns bigint</code>
+    </span></dt><dd><p>
+      Identique à <code class="function">pg_relpages(regclass)</code>, sauf que la
+      relation cible est spécifiée en tant que TEXT. Cette fonction est
+      conservée pour raison de compatibilité ascendante, et sera
+      dépréciée dans une prochaine version.
+     </p></dd><dt><span class="term">
+     <a id="id-1.11.7.42.4.2.9.1.1" class="indexterm"></a>
+     <code class="function">pgstattuple_approx(regclass) returns record</code>
+    </span></dt><dd><p>
+      <code class="function">pgstattuple_approx</code> est une alternative
+      plus rapide à <code class="function">pgstattuple</code> qui retourne des
+      estimations.
+      L'argument est le nom ou l'OID de la relation visée.
+      Par exemple :
+      </p><pre class="programlisting">
+test=&gt; SELECT * FROM pgstattuple_approx('pg_catalog.pg_proc'::regclass);
+-[ RECORD 1 ]--------+-------
+table_len            | 573440
+scanned_percent      | 2
+approx_tuple_count   | 2740
+approx_tuple_len     | 561210
+approx_tuple_percent | 97.87
+dead_tuple_count     | 0
+dead_tuple_len       | 0
+dead_tuple_percent   | 0
+approx_free_space    | 11996
+approx_free_percent  | 2.09
+      </pre><p>
+      Les colonnes en sortie sont décrites dans <a class="xref" href="pgstattuple.html#PGSTATAPPROX-COLUMNS" title="Tableau F.24. Colonnes de pgstattuple_approx">Tableau F.24</a>.
+     </p><p>
+      Alors que <code class="function">pgstattuple</code> effectue toujours un
+      parcours séquentiel complet de la table et renvoie un décompte
+      exact des lignes vivantes et supprimées (et de leur taille) ainsi
+      que de l'espace libre, <code class="function">pgstattuple_approx</code> essaie
+      d'éviter un parcours séquentiel complet et retourne un décompte
+      exact des lignes supprimées avec une approximation du nombre de
+      lignes et de la taille des lignes vivantes et de l'espace libre.
+     </p><p>
+      Il réalise ceci en sautant les pages qui n'ont que des lignes
+      visibles selon la carte de visibilité (si une page a son bit
+      positionné dans la carte de visibilité, elle est considérée
+      comme ne possédant pas de lignes supprimées). Pour ces pages, il
+      déduit l'espace libre correspondant à partir de la carte des
+      espaces libres, et suppose que le reste de la page est occupé
+      par des lignes vivantes.
+     </p><p>
+      Pour les pages qui ne sont pas sautées, il balaie chaque ligne,
+      en enregistrant son existence et sa taille dans les compteurs
+      correspondants, et ajoute l'espace libre de la page. À la fin,
+      il estime le nombre de lignes vivantes en se basant sur le nombre
+      de pages et de lignes visitées (de la même manière que VACUUM
+      estime pg_class.reltuples).
+     </p><div class="table" id="PGSTATAPPROX-COLUMNS"><p class="title"><strong>Tableau F.24. Colonnes de <code class="function">pgstattuple_approx</code></strong></p><div class="table-contents"><table class="table" summary="Colonnes de pgstattuple_approx" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Colonne</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code class="structfield">table_len</code></td><td><code class="type">bigint</code></td><td>Longueur physique de la relation en octets (exact)</td></tr><tr><td><code class="structfield">scanned_percent</code></td><td><code class="type">float8</code></td><td>Pourcentage parcouru de la table</td></tr><tr><td><code class="structfield">approx_tuple_count</code></td><td><code class="type">bigint</code></td><td>Nombre de lignes vivantes (estimé)</td></tr><tr><td><code class="structfield">approx_tuple_len</code></td><td><code class="type">bigint</code></td><td>Longueur totale des lignes vivantes en octets (estimé)</td></tr><tr><td><code class="structfield">approx_tuple_percent</code></td><td><code class="type">float8</code></td><td>Pourcentage des lignes vivantes</td></tr><tr><td><code class="structfield">dead_tuple_count</code></td><td><code class="type">bigint</code></td><td>Nombre de lignes mortes (exact)</td></tr><tr><td><code class="structfield">dead_tuple_len</code></td><td><code class="type">bigint</code></td><td>Longueur totale des lignes mortes en octets (exact)</td></tr><tr><td><code class="structfield">dead_tuple_percent</code></td><td><code class="type">float8</code></td><td>Pourcentage des lignes mortes</td></tr><tr><td><code class="structfield">approx_free_space</code></td><td><code class="type">bigint</code></td><td>Espace libre total en octets (estimé)</td></tr><tr><td><code class="structfield">approx_free_percent</code></td><td><code class="type">float8</code></td><td>Pourcentage de l'espace libre</td></tr></tbody></table></div></div><br class="table-break" /><p>
+      Dans la sortie ci-dessus, l'espace libre indiqué
+      peut ne pas correspondre exactement à la sortie de
+      <code class="function">pgstattuple</code> car la carte des espaces libres
+      donne un chiffre exact mais pas à l'octet près.
+     </p></dd></dl></div></div><div class="sect2" id="PGSTATTUPLE-AUTHORS"><div class="titlepage"><div><div><h3 class="title">F.31.2. Auteurs <a href="#PGSTATTUPLE-AUTHORS" class="id_link">#</a></h3></div></div></div><p>
+   Tatsuo Ishii, Satoshi Nagayasu et Abhijit Menon-Sen
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/pgstattuple.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+</html>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/logical-replication.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:41:36 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapitre 29. Réplication logique</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="wal-internals.html" title="28.6. Vue interne des journaux de transaction" /><link rel="next" href="logical-replication-publication.html" title="29.1. Publication" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/logical-replication.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/logical-replication.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/logical-replication.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/logical-replication.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/logical-replication.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/logical-replication.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/logical-replication.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/logical-replication.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/logical-replication.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/logical-replication.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-node">Réplication logique</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="wal-internals.html" title="28.6. Vue interne des journaux de transaction">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="admin.html" title="Partie III. Administration du serveur">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="logical-replication-publication.html" title="29.1. Publication">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">28.6. Vue interne des journaux de transaction </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 29.1. Publication</td></tr></table></div><div class="chapter" id="LOGICAL-REPLICATION"><div class="titlepage"><div><div><h2 class="title">Chapitre 29. Réplication logique</h2></div></div></div><div class="toc"><p><strong>Table des matières</strong></p><dl class="toc"><dt><span class="sect1"><a href="logical-replication-publication.html">29.1. Publication</a></span></dt><dt><span class="sect1"><a href="logical-replication-subscription.html">29.2. Abonnement</a></span></dt><dd><dl><dt><span class="sect2"><a href="logical-replication-subscription.html#LOGICAL-REPLICATION-SUBSCRIPTION-SLOT">29.2.1. Gestion des slots de réplication</a></span></dt><dt><span class="sect2"><a href="logical-replication-subscription.html#LOGICAL-REPLICATION-SUBSCRIPTION-EXAMPLES">29.2.2. Exemples : Mettre en place la réplication logique</a></span></dt><dt><span class="sect2"><a href="logical-replication-subscription.html#LOGICAL-REPLICATION-SUBSCRIPTION-EXAMPLES-DEFERRED-SLOT">29.2.3. Exemples : Création de slot de réplication différée</a></span></dt></dl></dd><dt><span class="sect1"><a href="logical-replication-failover.html">29.3. Failover en réplication logique</a></span></dt><dt><span class="sect1"><a href="logical-replication-row-filter.html">29.4. Filtres de lignes</a></span></dt><dd><dl><dt><span class="sect2"><a href="logical-replication-row-filter.html#LOGICAL-REPLICATION-ROW-FILTER-RULES">29.4.1. Règles des filtres de lignes</a></span></dt><dt><span class="sect2"><a href="logical-replication-row-filter.html#LOGICAL-REPLICATION-ROW-FILTER-RESTRICTIONS">29.4.2. Restrictions de l'expression</a></span></dt><dt><span class="sect2"><a href="logical-replication-row-filter.html#LOGICAL-REPLICATION-ROW-FILTER-TRANSFORMATIONS">29.4.3. Transformations d'un UPDATE</a></span></dt><dt><span class="sect2"><a href="logical-replication-row-filter.html#LOGICAL-REPLICATION-ROW-FILTER-PARTITIONED-TABLE">29.4.4. Tables partitionnées</a></span></dt><dt><span class="sect2"><a href="logical-replication-row-filter.html#LOGICAL-REPLICATION-ROW-FILTER-INITIAL-DATA-SYNC">29.4.5. Synchronisation initiale des données</a></span></dt><dt><span class="sect2"><a href="logical-replication-row-filter.html#LOGICAL-REPLICATION-ROW-FILTER-COMBINING">29.4.6. Combiner plusieurs filtres de lignes</a></span></dt><dt><span class="sect2"><a href="logical-replication-row-filter.html#LOGICAL-REPLICATION-ROW-FILTER-EXAMPLES">29.4.7. Exemples</a></span></dt></dl></dd><dt><span class="sect1"><a href="logical-replication-col-lists.html">29.5. Listes de colonnes</a></span></dt><dd><dl><dt><span class="sect2"><a href="logical-replication-col-lists.html#LOGICAL-REPLICATION-COL-LIST-EXAMPLES">29.5.1. Exemples</a></span></dt></dl></dd><dt><span class="sect1"><a href="logical-replication-conflicts.html">29.6. Conflits</a></span></dt><dt><span class="sect1"><a href="logical-replication-restrictions.html">29.7. Restrictions</a></span></dt><dt><span class="sect1"><a href="logical-replication-architecture.html">29.8. Architecture</a></span></dt><dd><dl><dt><span class="sect2"><a href="logical-replication-architecture.html#LOGICAL-REPLICATION-SNAPSHOT">29.8.1. Instantané initial</a></span></dt></dl></dd><dt><span class="sect1"><a href="logical-replication-monitoring.html">29.9. Supervision</a></span></dt><dt><span class="sect1"><a href="logical-replication-security.html">29.10. Sécurité</a></span></dt><dt><span class="sect1"><a href="logical-replication-config.html">29.11. Paramètres de configuration</a></span></dt><dd><dl><dt><span class="sect2"><a href="logical-replication-config.html#LOGICAL-REPLICATION-CONFIG-PUBLISHER">29.11.1. Publieurs</a></span></dt><dt><span class="sect2"><a href="logical-replication-config.html#LOGICAL-REPLICATION-CONFIG-SUBSCRIBER">29.11.2. Abonnés</a></span></dt></dl></dd><dt><span class="sect1"><a href="logical-replication-quick-setup.html">29.12. Démarrage rapide</a></span></dt></dl></div><p>
+  La réplication logique est une méthode permettant de répliquer des données au
+  niveau objet ainsi que les modifications apportées à ces objets, ceci basé sur
+  leur identité de réplication (habituellement la clé primaire). L'utilisation
+  du terme de <span class="quote">« <span class="quote">réplication logique</span> »</span> est faite en opposition à la
+  réplication physique, cette dernière utilisant l'adresse exacte des blocs couplée
+  avec une réplication octet par octet. PostgreSQL supporte ces deux méthodes,
+  référez-vous à l'article <a class="xref" href="high-availability.html" title="Chapitre 26. Haute disponibilité, répartition de charge et réplication">Chapitre 26</a>. La réplication
+  logique permet un contrôle fin des données au niveau de la réplication et de
+  la sécurité.
+ </p><p>
+  La réplication logique utilise un système de
+  <em class="firstterm">publication</em> / <em class="firstterm">abonnement</em> avec un
+  ou plusieurs <em class="firstterm">abonnés</em> qui s'abonnent à une ou plusieurs
+  <em class="firstterm">publications</em> d'un nœud particulier. Les abonnés
+  récupèrent les données des publications auxquelles ils sont abonnés et peuvent
+  éventuellement renvoyer ces informations, ce qui permet un système de
+  réplication en cascade dans le cas de configurations plus complexes.
+ </p><p>
+  La réplication logique d'une table commence en général en prenant un
+  instantané des données sur la base publiée et en le copiant vers la base
+  abonnée. Une fois cette étape réalisée, les changements sur la base publiée
+  sont envoyés à la base abonnée en temps réel. La base abonnée applique les
+  modifications dans le même ordre qu'elles auront été réalisées de façon à ce
+  que la cohérence transactionnelle soit garantie pour les publications d'un
+  seul abonnement. Cette méthode de réplication porte parfois le nom de
+  réplication transactionnelle.
+ </p><p>
+  Les cas typiques d'utilisation de la réplication logique peuvent être les
+  suivants :
+
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+     Envoyer immédiatement les changements réalisés sur une base de données, ou
+     sur un sous-ensemble de ces données, de façon incrémentale à une base de
+     données abonnée;
+    </p></li><li class="listitem"><p>
+     Déclencher des triggers pour des changements spécifiques lorsqu'ils
+     apparaissent sur la base de données abonnée ;
+    </p></li><li class="listitem"><p>
+     Réaliser la consolidation de plusieurs bases de données au sein d'une seule
+     (par exemple pour répondre à des problématiques analytiques) ;
+    </p></li><li class="listitem"><p>
+     Répliquer entre des versions majeures différentes de PostgreSQL ;
+    </p></li><li class="listitem"><p>
+     Répliquer des instances PostgreSQL sur des plateformes différentes (par
+     exemple de Linux à Windows) ;
+    </p></li><li class="listitem"><p>
+     Donner accès à des données répliquées à différents groupes d'utilisateurs ;
+    </p></li><li class="listitem"><p>
+     Partager un sous-ensemble de données entre plusieurs bases de données.
+    </p></li></ul></div><p>
+ </p><p>
+  Une base de données abonnée se comporte comme n'importe quelle autre base de
+  données d'une instance PostgreSQL et peut être utilisée comme base de données
+  de publication pour d'autres base de données en lui définissant ses propres
+  publications. Lorsque la base abonnée est considérée comme une base en
+  lecture seule par l'application, il ne va pas y avoir de problèmes de conflits.
+  D'un autre côté, s'il y a des écritures provenant soit de l'application soit
+  d'un autre abonnement sur le même ensemble de tables, des conflits peuvent
+  survenir.
+ </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/logical-replication.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:41:36 GMT -->
+</html>

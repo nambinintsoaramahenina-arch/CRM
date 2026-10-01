@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/fdw-row-locking.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:14 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>57.5. Le verrouillage de ligne dans les wrappers de données distantes</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="fdw-planning.html" title="57.4. Planification de la requête avec un wrapper de données distantes" /><link rel="next" href="tablesample-method.html" title="Chapitre 58. Écrire une méthode d'échantillonnage de table" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/fdw-row-locking.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/fdw-row-locking.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/fdw-row-locking.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/fdw-row-locking.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/fdw-row-locking.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/fdw-row-locking.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/fdw-row-locking.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/fdw-row-locking.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/fdw-row-locking.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/fdw-row-locking.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/fdw-row-locking.html">9.5</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/fdw-row-locking.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="fdwhandler.html">Écrire un wrapper de données distantes</a></span> » <span class="breadcrumb-node">Le verrouillage de ligne dans les wrappers de données distantes</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="fdw-planning.html" title="57.4. Planification de la requête avec un wrapper de données distantes">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="fdwhandler.html" title="Chapitre 57. Écrire un wrapper de données distantes">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="tablesample-method.html" title="Chapitre 58. Écrire une méthode d'échantillonnage de table">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">57.4. Planification de la requête avec un wrapper de données distantes </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 58. Écrire une méthode d'échantillonnage de table</td></tr></table></div><div class="sect1" id="FDW-ROW-LOCKING"><div class="titlepage"><div><div><h2 class="title" style="clear: both">57.5. Le verrouillage de ligne dans les wrappers de données distantes <a href="#FDW-ROW-LOCKING" class="id_link">#</a></h2></div></div></div><p>
+   Si le mécanisme de stockage sous-jacent à un FDW a un concept
+   de verrouillage individuel des lignes pour prévenir des mises
+   à jour concurrentes de ces lignes, il est généralement
+   intéressant pour le FDW d'effectuer des verrouillages de
+   niveau ligne avec une approximation aussi proche que possible
+   de la sémantique utilisée pour les tables ordinaires de
+   <span class="productname">PostgreSQL</span>. Ceci implique de multiples
+   considérations.
+  </p><p>
+   Une décision clef à prendre est si il vaut mieux
+   effectuer un <em class="firstterm">verrouillage précoce</em> ou un
+   <em class="firstterm">verrouillage tardif</em>. Dans le verrouillage
+   précoce, une ligne est verrouillée lorsqu'elle est récupérée
+   pour la première fois à partir du stockage sous-jacent, alors
+   qu'avec le verrouillage tardif, la ligne est verrouillée seulement
+   lorsque le besoin est connu et nécessaire. (La différence
+   survient parce que certaines lignes peuvent être abandonnées
+   par des restrictions vérifiées localement ou des conditions de
+   jointure.) Le verrouillage précoce est beaucoup plus simple et
+   évite des allers-retours supplémentaires vers le stockage distant,
+   mais il peut entraîner des verrouillages de lignes qui n'auraient pas
+   eu besoin de l'être, résultant en une réduction de la concurrence
+   voire même des deadlocks inattendus. De plus, le verrouillage tardif
+   n'est possible seulement que si la ligne à verrouiller peut être
+   identifiée de manière unique à nouveau plus tard. Idéalement,
+   l'identifiant de ligne devrait identifier une version spécifique
+   de la ligne, comme les TID de <span class="productname">PostgreSQL</span>
+   le font.
+  </p><p>
+   Par défaut, <span class="productname">PostgreSQL</span>
+   ignore les considérations de verrouillage lorsqu'il
+   s'interface avec les FDW, mais un FDW peut effectuer un
+   verrouillage précoce sans un support explicite du code du
+   serveur principal. Les fonctions de l'API décrites dans le <a class="xref" href="fdw-callbacks.html#FDW-CALLBACKS-ROW-LOCKING" title="57.2.6. Routines FDW pour le verrouillage des lignes">Section 57.2.6</a>, qui ont été ajoutées dans
+   la version 9.5 de <span class="productname">PostgreSQL</span>, autorise
+   un FDW à utiliser un verrouillage tardif si il le désire.
+  </p><p>
+   Une considération supplémentaire est que dans le
+   niveau d'isolation <code class="literal">READ COMMITTED</code>,
+   <span class="productname">PostgreSQL</span> peut avoir besoin de vérifier
+   à nouveau les restrictions et conditions de jointures avec une
+   version mise à jour de certaines lignes. Vérifier à nouveau
+   des conditions de jointure requiert d'obtenir à nouveau des
+   copies des lignes non ciblées qui étaient auparavant jointes
+   à la ligne cible. En travaillant avec des tables standards
+   <span class="productname">PostgreSQL</span>, ceci est effectué en
+   incluant les TID des tables non ciblées dans la liste des colonnes
+   projetées via la jointure, puis en récupérant à nouveau les
+   lignes non ciblées si nécessaire. Cette approche maintient
+   l'ensemble des données jointes compact, mais il demande une
+   capacité peu coûteuse de récupération à nouveau, ainsi qu'un TID
+   qui peut identifier de manière unique la version de la ligne à
+   récupérer à nouveau. Par défaut, donc, l'approche utilisée
+   avec les tables distantes est d'inclure une copie de la ligne
+   entière récupérée dans la liste de colonnes projetée via
+   la jointure. Ceci n'impose rien au FDW mais peut entraîner des
+   performances réduites des jointures par fusion ou hachage. Un FDW qui
+   remplit les conditions pour récupérer à nouveau peut choisir de
+   le faire.
+  </p><p>
+   Pour une commande <code class="command">UPDATE</code> ou
+   <code class="command">DELETE</code> sur une table distante, il est recommandé
+   que l'opération de <code class="literal">ForeignScan</code> sur la table cible
+   effectue un verrouillage précoce sur les lignes qu'elle récupère,
+   peut-être via un équivalent de la commande <code class="command">SELECT FOR
+    UPDATE</code>. Un FDW peut détecter si une table est la cible
+   d'une commande <code class="command">UPDATE</code>/<code class="command">DELETE</code>
+   lors de la planification en comparant son relid à
+   <code class="literal">root-&gt;parse-&gt;resultRelation</code>,
+   ou lors de l'exécution en utilisant la fonction
+   <code class="function">ExecRelationIsTargetRelation()</code>. Une possibilité
+   alternative est d'effectuer un verrouillage tardif à l'intérieur
+   des fonctions callback <code class="function">ExecForeignUpdate</code> ou
+   <code class="function">ExecForeignDelete</code>, mais aucun support spécial
+   n'est fourni pour cela.
+  </p><p>
+   Pour les tables distantes qui sont verrouillées par une
+   commande <code class="command">SELECT FOR UPDATE/SHARE</code>, l'opération
+   <code class="literal">ForeignScan</code> peut encore effectuer un verrouillage
+   précoce en récupérant des lignes avec l'équivalent de la commande
+   <code class="command">SELECT FOR UPDATE/SHARE</code>. Pour effectuer à la
+   place un verrouillage tardif, fournissez les fonctions callback
+   définies à <a class="xref" href="fdw-callbacks.html#FDW-CALLBACKS-ROW-LOCKING" title="57.2.6. Routines FDW pour le verrouillage des lignes">Section 57.2.6</a>. Dans
+   <code class="function">GetForeignRowMarkType</code>, sélectionner
+   l'option rowmark <code class="literal">ROW_MARK_EXCLUSIVE</code>,
+   <code class="literal">ROW_MARK_NOKEYEXCLUSIVE</code>,
+   <code class="literal">ROW_MARK_SHARE</code> ou
+   <code class="literal">ROW_MARK_KEYSHARE</code> en fonction de la force
+   du verrouillage demandé. (Le code du serveur principal agira
+   de la même manière indépendamment de l'option choisie parmi
+   ces quatre options.) Ailleurs, vous pouvez détecter si une
+   table distante a été verrouillée par ce type de commandes en
+   utilisant la fonction <code class="function">get_plan_rowmark</code> lors de
+   la planification ou la fonction <code class="function">ExecFindRowMark</code>
+   lors de l'exécution ; vous devez vérifier non seulement si une
+   structure rowmark non nulle est renvoyée, mais également que
+   son champ <code class="structfield">strength</code> n'est pas égal à
+   <code class="literal">LCS_NONE</code>.
+  </p><p>
+   Enfin, pour les tables distantes qui sont utilisées dans une
+   commande <code class="command">UPDATE</code>, <code class="command">DELETE</code>
+   ou <code class="command">SELECT FOR UPDATE/SHARE</code> sans demande
+   de verrouillage de ligne, vous pouvez passer outre le choix
+   par défaut de copier les lignes entières dans la fonction
+   <code class="function">GetForeignRowMarkType</code> en sélectionnant l'option
+   <code class="literal">ROW_MARK_REFERENCE</code> lorsqu'elle voit comme valeur
+   de puissance de verrouillage <code class="literal">LCS_NONE</code>. Ceci aura
+   pour conséquence d'appeler <code class="function">RefetchForeignRow</code>
+   avec cette valeur pour le champ <code class="structfield">markType</code> ;
+   elle devrait alors récupérer à nouveau la ligne sans
+   prendre aucun nouveau verrouillage. (Si vous avez une fonction
+   <code class="function">GetForeignRowMarkType</code> mais ne souhaitez
+   pas récupérer à nouveau des lignes non verrouillées,
+   sélectionnez l'option <code class="literal">ROW_MARK_COPY</code> pour
+   <code class="literal">LCS_NONE</code>.)
+  </p><p>
+   Voir les commentaires dans
+   <code class="filename">src/include/nodes/lockoptions.h</code>,
+   pour <code class="type">RowMarkType</code> et dans
+   <code class="filename">src/include/nodes/plannodes.h</code>
+   pour <code class="type">PlanRowMark</code>, et les
+   commentaires pour <code class="type">ExecRowMark</code> dans
+   <code class="filename">src/include/nodes/execnodes.h</code> pour des
+   informations complémentaires.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/fdw-row-locking.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:14 GMT -->
+</html>

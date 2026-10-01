@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/explicit-joins.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>14.3. Contrôler le planificateur avec des clauses JOIN explicites</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="planner-stats.html" title="14.2. Statistiques utilisées par le planificateur" /><link rel="next" href="populate.html" title="14.4. Remplir une base de données" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/explicit-joins.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/explicit-joins.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/explicit-joins.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/explicit-joins.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/explicit-joins.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/explicit-joins.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/explicit-joins.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/explicit-joins.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/explicit-joins.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/explicit-joins.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/explicit-joins.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/explicit-joins.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/explicit-joins.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/explicit-joins.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/explicit-joins.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/explicit-joins.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/explicit-joins.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/explicit-joins.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/explicit-joins.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/explicit-joins.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/explicit-joins.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="performance-tips.html">Conseils sur les performances</a></span> » <span class="breadcrumb-node">Contrôler le planificateur avec des clauses <code class="literal">JOIN</code>
+   explicites</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="planner-stats.html" title="14.2. Statistiques utilisées par le planificateur">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="performance-tips.html" title="Chapitre 14. Conseils sur les performances">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="populate.html" title="14.4. Remplir une base de données">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">14.2. Statistiques utilisées par le planificateur </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 14.4. Remplir une base de données</td></tr></table></div><div class="sect1" id="EXPLICIT-JOINS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">14.3. Contrôler le planificateur avec des clauses <code class="literal">JOIN</code>
+   explicites <a href="#EXPLICIT-JOINS" class="id_link">#</a></h2></div></div></div><a id="id-1.5.13.6.2" class="indexterm"></a><p>
+   Il est possible de contrôler le planificateur de requêtes jusqu'à un certain
+   point en utilisant une syntaxe <code class="literal">JOIN</code> explicite. Pour
+   voir en quoi ceci est important, nous avons besoin d'un peu de théorie.
+  </p><p>
+   Dans une simple requête de jointure, telle que :
+
+   </p><pre class="programlisting">SELECT * FROM a, b, c WHERE a.id = b.id AND b.ref = c.id;</pre><p>
+
+   le planificateur est libre de joindre dans n'importe quel ordre les tables indiquées.
+   Par exemple, il peut générer un plan de requête joignant
+   A à B par la condition <code class="literal">WHERE</code> <code class="literal">a.id =
+   b.id</code>, puis joignant C à cette table jointe par
+   l'autre condition <code class="literal">WHERE</code>. Ou il peut joindre B à C,
+   puis le résultat avec A. Ou il peut joindre A
+   à C, puis les joindre avec B, mais cela serait inefficace, puisque
+   le produit cartésien complet de A et C devra être formé alors qu'il n'y a
+   pas de condition applicable dans la clause <code class="literal">WHERE</code> pour
+   optimiser cette jointure. (Toutes les jointures dans
+   l'exécuteur <span class="productname">PostgreSQL</span> se produisent entre deux
+   tables, il est donc nécessaire de construire le résultat de
+   l'une ou de l'autre de ces façons). Le point important est que ces
+   différentes possibilités de jointures donnent des résultats sémantiquement
+   équivalents, mais peuvent avoir des coûts d'exécution extrêmement
+   différents. Le planificateur va donc toutes les explorer pour trouver
+   le plan de requête le plus efficace.
+  </p><p>
+   Quand une requête n'implique que deux ou trois tables, il y a peu
+   d'ordres de jointures à considérer. Mais le nombre d'ordres de jointures
+   possibles grandit de façon exponentielle quand le nombre
+   de tables augmente. Au-delà d'environ dix tables en entrée, il n'est plus
+   possible de faire une recherche exhaustive de toutes les possibilités, et
+   même la planification de six ou sept tables peut prendre une durée gênante.
+   Avec trop de tables en entrée, le planificateur
+   <span class="productname">PostgreSQL</span> basculera d'une recherche exhaustive
+   à une recherche <em class="firstterm">génétique</em> probabiliste depuis un
+   nombre limité de possibilités (la limite de bascule est définie par le
+   paramètre <a class="xref" href="runtime-config-query.html#GUC-GEQO-THRESHOLD">geqo_threshold</a>). La recherche
+   génétique prend moins de temps, mais elle ne trouvera pas nécessairement
+   le meilleur plan possible.
+  </p><p>
+   Quand la requête implique des jointures externes, le planificateur est
+   moins libre qu'avec des jointures internes. Par exemple,
+   considérez :
+
+   </p><pre class="programlisting">SELECT * FROM a LEFT JOIN (b JOIN c ON (b.ref = c.id)) ON (a.id = b.id);</pre><p>
+
+   Bien qu'à première vue les conditions de cette requête semblent
+   similaires à l'exemple précédent, les sémantiques sont différentes, car
+   une ligne doit être émise pour chaque ligne de A qui sans ligne
+   correspondante dans la jointure entre B et C. Le planificateur n'a alors
+   pas le choix dans l'ordre de la jointure  : ici, il doit joindre B
+   à C, puis joindre A au résultat. En conséquence, cette requête prend moins de
+   temps à planifier que la requête précédente. Dans d'autres cas, le
+   planificateur peut arriver à déterminer que plus d'un ordre de
+   jointure est sûr. Par exemple, étant donné :
+
+   </p><pre class="programlisting">SELECT * FROM a LEFT JOIN b ON (a.bid = b.id) LEFT JOIN c ON (a.cid = c.id);</pre><p>
+
+   il est valide de joindre A en premier soit à B, soit à C. Actuellement, seul
+   un <code class="literal">FULL JOIN</code> contraint complètement l'ordre de
+   jointure. En pratique, la plupart des cas impliquant un <code class="literal">LEFT
+   JOIN</code> ou un <code class="literal">RIGHT JOIN</code> peuvent être réarrangés
+   jusqu'à un certain degré.
+  </p><p>
+   Sémantiquement, la syntaxe d'une jointure interne explicite (<code class="literal">INNER JOIN</code>,
+   <code class="literal">CROSS JOIN</code> ou <code class="literal">JOIN</code>) revient
+   à lister les relations en entrée du
+   <code class="literal">FROM</code>, donc sans contraindre l'ordre de la jointure.
+  </p><p>
+   Même si la plupart des types de <code class="literal">JOIN</code> ne sont pas complètement
+   contraignantes pour l'ordre de jointure, il est possible de forcer le
+   planificateur de requête de <span class="productname">PostgreSQL</span>
+   de les considérer comme contraignantes.
+   Par exemple, ces trois
+   requêtes sont logiquement équivalentes :
+
+   </p><pre class="programlisting">SELECT * FROM a, b, c WHERE a.id = b.id AND b.ref = c.id;
+SELECT * FROM a CROSS JOIN b CROSS JOIN c WHERE a.id = b.id AND b.ref = c.id;
+SELECT * FROM a JOIN (b JOIN c ON (b.ref = c.id)) ON (a.id = b.id);</pre><p>
+
+   Mais si nous disons au planificateur d'honorer l'ordre des
+   <code class="literal">JOIN</code>, la deuxième et la troisième prendront moins de
+   temps à planifier que la première. Cet effet n'est pas inquiétant pour
+   seulement trois tables, mais cela pourrait bien nous aider avec un nombre
+   important de tables.
+  </p><p>
+   Pour forcer le planificateur à suivre l'ordre de jointure des
+   <code class="literal">JOIN</code> explicites, passez le paramètre
+   <a class="xref" href="runtime-config-query.html#GUC-JOIN-COLLAPSE-LIMIT">join_collapse_limit</a> à 1 (d'autres valeurs possibles
+   sont discutées plus bas).
+  </p><p>
+   Vous n'avez pas besoin de restreindre l'ordre de jointure pour diminuer le
+   temps de recherche car il est correct d'utiliser des opérateurs
+   <code class="literal">JOIN</code> parmi les éléments d'une liste
+   <code class="literal">FROM</code>. Par exemple, considérez :
+
+</p><pre class="programlisting">SELECT * FROM a CROSS JOIN b, c, d, e WHERE ...;</pre><p>
+
+   Avec <code class="varname">join_collapse_limit</code> = 1, le planificateur est
+   forcé de joindre A à B avant la jointure aux autres tables, mais
+   sans restreindre ses choix par ailleurs. Dans cet exemple, le nombre d'ordres de
+   jointures possibles est réduit par un facteur de cinq.
+  </p><p>
+   Cette technique pour restreindre la recherche du planificateur peut servir à
+   réduire les temps de planification et aiguiller le
+   planificateur vers un bon plan de requête. Si le planificateur choisit spontanément un
+   mauvais ordre de jointure, vous pouvez le forcer à choisir un
+   meilleur via la syntaxe <code class="literal">JOIN</code>  --  à supposer
+   que vous connaissiez un meilleur ordre. Il faut tester.
+  </p><p>
+   Un problème très proche et affectant le temps de planification est le
+   regroupement de sous-requêtes dans leurs requêtes parentes. Par exemple,
+   considérez :
+
+   </p><pre class="programlisting">SELECT *
+FROM x, y,
+    (SELECT * FROM a, b, c WHERE quelquechose) AS ss
+WHERE quelquechosedautre;</pre><p>
+
+   Cette situation peut apparaître lors de l'utilisation d'une vue contenant
+   une jointure ; la règle <code class="literal">SELECT</code> de la vue sera
+   insérée à la place de la référence de la vue, produisant une requête
+   comme celle ci-dessus. Normalement, le planificateur essaiera
+   de regrouper la sous-requête avec son parent, donnant :
+
+   </p><pre class="programlisting">SELECT * FROM x, y, a, b, c WHERE quelquechose AND quelquechosedautre;</pre><p>
+
+   Ceci donne généralement un meilleur plan que planifier séparément
+   la sous-requête. (Par exemple, grâce aux clauses <code class="literal">WHERE</code>
+   externes, joindre X à A peut éliminer d'entrée
+   un bon nombre de lignes de A, évitant ainsi le besoin de générer la
+   totalité de la sous-requête). Mais en même temps, nous avons accru le
+   temps de planification ; ici, nous avons un problème de jointure à
+   cinq tables remplaçant un problème de deux jointures séparées à trois
+   tables. À cause de l'augmentation exponentielle du nombre de possibilités,
+   ceci fait une grande différence. Le planificateur essaie d'éviter de se
+   retrouver coincé dans des problèmes de recherche de grosses jointures en
+   ne regroupant pas une sous-requête si plus de
+   <code class="varname">from_collapse_limit</code> éléments sont la résultante de la
+   requête parent. Vous pouvez arbitrer entre le temps de planification et la
+   qualité du plan en ajustant ce paramètre à la hausse ou à la baisse.
+  </p><p>
+   <a class="xref" href="runtime-config-query.html#GUC-FROM-COLLAPSE-LIMIT">from_collapse_limit</a> et <a class="xref" href="runtime-config-query.html#GUC-JOIN-COLLAPSE-LIMIT">join_collapse_limit</a> sont nommés de façon similaire car
+   ils font pratiquement la même chose : le premier contrôle le
+   moment où le planificateur <span class="quote">« <span class="quote">aplatira</span> »</span> les sous-requêtes, et
+   le second contrôle quand aplatir les jointures explicites.
+   Typiquement, vous définirez <code class="varname">join_collapse_limit</code>
+   à la même valeur que <code class="varname">from_collapse_limit</code> (de façon à ce que les
+   jointures explicites et les sous-requêtes agissent de la même façon) ou
+   vous affecterez <code class="varname">join_collapse_limit</code> à 1 (si vous
+   voulez contrôler l'ordre de jointure par des jointures explicites). Mais vous
+   pouvez les définir différemment en essayant de configurer
+   finement la relation entre le temps de planification et le temps
+   d'exécution.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/explicit-joins.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+</html>

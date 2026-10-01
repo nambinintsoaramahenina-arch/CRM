@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/executor.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:08 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>50.6. Exécuteur</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="planner-optimizer.html" title="50.5. Planificateur/Optimiseur" /><link rel="next" href="catalogs.html" title="Chapitre 51. Catalogues système" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/executor.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/executor.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/executor.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/executor.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/executor.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/executor.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/executor.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/executor.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/executor.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/executor.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/executor.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/executor.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/executor.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/executor.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/executor.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/executor.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/executor.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/executor.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/executor.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/executor.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/executor.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="overview.html">Présentation des mécanismes internes de PostgreSQL</a></span> » <span class="breadcrumb-node">Exécuteur</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="planner-optimizer.html" title="50.5. Planificateur/Optimiseur">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="overview.html" title="Chapitre 50. Présentation des mécanismes internes de PostgreSQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="catalogs.html" title="Chapitre 51. Catalogues système">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">50.5. Planificateur/Optimiseur </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 51. Catalogues système</td></tr></table></div><div class="sect1" id="EXECUTOR"><div class="titlepage"><div><div><h2 class="title" style="clear: both">50.6. Exécuteur <a href="#EXECUTOR" class="id_link">#</a></h2></div></div></div><p>
+   L'<em class="firstterm">exécuteur</em> prend le plan créé par le
+   planificateur/optimiseur et l'exécute récursivement pour extraire
+   l'ensemble requis de lignes. Il s'agit principalement d'un mécanisme de
+   pipeline en demande-envoi. Chaque fois qu'un nœud du plan est appelé,
+   il doit apporter une ligne supplémentaire ou indiquer qu'il a fini d'envoyer
+   des lignes.
+  </p><p>
+   Pour donner un exemple concret, on peut supposer que le nœud
+   supérieur est un nœud <code class="literal">MergeJoin</code>. Avant de pouvoir faire une
+   fusion, deux lignes doivent être récupérées (une pour chaque sous-plan).
+   L'exécuteur s'appelle donc récursivement pour exécuter les sous-plans (en
+   commençant par le sous-plan attaché à l'<code class="literal">arbre gauche</code>).
+   Le nouveau nœud supérieur (le nœud supérieur du sous-plan
+   gauche) est, par exemple, un nœud <code class="literal">Sort</code> (NdT : Tri)
+   et un appel récursif est une nouvelle fois nécessaire pour obtenir une ligne
+   en entrée. Le nœud fils de <code class="literal">Sort</code> pourrait être un
+   nœud <code class="literal">SeqScan</code>, représentant la lecture réelle d'une table.
+   L'exécution de ce nœud impose à l'exécuteur de récupérer une ligne à
+   partir de la table et de la retourner au nœud appelant. Le nœud
+   <code class="literal">Sort</code> appelle de façon répétée son fils pour obtenir
+   toutes les lignes à trier. Quand l'entrée est épuisée (indiqué par le
+   nœud fils renvoyant un NULL au lieu d'une ligne), le code de
+   <code class="literal">Sort</code> est enfin capable de renvoyer sa première ligne en
+   sortie, c'est-à-dire le premier suivant l'ordre de tri. Il conserve les
+   lignes restantes en mémoire de façon à les renvoyer dans le bon ordre en
+   réponse à des demandes ultérieures.
+  </p><p>
+   Le nœud <code class="literal">MergeJoin</code> demande de la même façon la
+   première ligne à partir du sous-plan droit. Ensuite, il compare les deux
+   lignes pour savoir si elles peuvent être jointes ; si c'est le cas, il
+   renvoie la ligne de jointure à son appelant. Au prochain appel, ou
+   immédiatement, s'il ne peut pas joindre la paire actuelle d'entrées, il
+   avance sur la prochaine ligne d'une des deux tables (suivant le résultat de
+   la comparaison), et vérifie à nouveau la correspondance. Éventuellement,
+   un des sous-plans est épuisé et le nœud <code class="literal">MergeJoin</code> renvoie
+   NULL pour indiquer qu'il n'y a plus de lignes jointes à former.
+  </p><p>
+   Les requêtes complexes peuvent nécessiter un grand nombre de niveaux de
+   nœuds pour les plans, mais l'approche générale est la même :
+   chaque nœud est exécuté et renvoie sa prochaine ligne en sortie à
+   chaque fois qu'il est appelé. Chaque nœud est responsable aussi de
+   l'application de toute expression de sélection ou de projection qui lui
+   a été confiée par le planificateur.
+  </p><p>
+   Le mécanisme de l'exécuteur est utilisé pour évaluer les cinq types de
+   requêtes de base en SQL : <code class="command">SELECT</code>,
+   <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+   <code class="command">DELETE</code> et <code class="command">MERGE</code>. Pour <code class="command">SELECT</code>, le code de
+   l'exécuteur de plus haut niveau a uniquement besoin d'envoyer chaque ligne
+   retournée par l'arbre plan de la requête vers le client. <code class="command">INSERT
+   ... SELECT</code>, <code class="command">UPDATE</code>,
+   <code class="command">DELETE</code> et <code class="command">MERGE</code> sont en réalité des <code class="command">SELECT</code>
+   sous un nœud de plan haut niveau appelé <code class="literal">ModifyTable</code>.
+  </p><p>
+   <code class="command">INSERT ... SELECT</code> remplit les lignes de
+   <code class="literal">ModifyTable</code> pour insertion. Pour
+   <code class="command">UPDATE</code>, l'optimiseur s'arrange pour que chaque ligne
+   traitée inclut toutes les valeurs mises à jour des colonnes, plus le
+   <em class="firstterm">TID</em> (<span class="foreignphrase"><em class="foreignphrase">tuple ID</em></span>, ou
+   identifiant de ligne) de la ligne cible originale ; cette donnée est
+   envoyée au nœud <code class="literal">ModifyTable</code>, qui utilise l'information
+   pour créer un nouveau nœud mis à jour et pour marquer l'ancienne ligne
+   comme supprimée. Pour <code class="command">DELETE</code>, la seule colonne qui est
+   réellement renvoyée par le plan est le TID, et le nœud
+   <code class="literal">ModifyTable</code> utilise simplement le TID pour visiter
+   chaque ligne cible et la marquer supprimée.
+   Pour <code class="command">MERGE</code>, l'optimiseur joint les relations source et
+   cible, et inclut toutes les valeurs de colonne requises par chaque clause
+   <code class="literal">WHEN</code>, plus le TID de la ligne cible ; cette donnée
+   est fournie au nœud <code class="literal">ModifyTable</code> qui utilise
+   l'information pour trouver la clause <code class="literal">WHEN</code> à exécuter, puis
+   insère, met à jour ou supprime la ligne cible, suivant le besoin exprimé.
+  </p><p>
+   Une simple commande <code class="command">INSERT ... VALUES</code> crée un arbre de
+   plan trivial consistant en un seul nœud <code class="literal">Result</code>, qui
+   calcule seulement une ligne résultat, en l'envoyant à
+   <code class="literal">ModifyTable</code> pour réaliser l'insertion.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/executor.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:08 GMT -->
+</html>

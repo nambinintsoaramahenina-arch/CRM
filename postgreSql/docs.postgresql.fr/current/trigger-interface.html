@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/trigger-interface.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>37.3. Écrire des fonctions triggers en C</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="trigger-datachanges.html" title="37.2. Visibilité des modifications des données" /><link rel="next" href="trigger-example.html" title="37.4. Un exemple complet de trigger" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/trigger-interface.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/trigger-interface.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/trigger-interface.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/trigger-interface.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/trigger-interface.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/trigger-interface.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/trigger-interface.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/trigger-interface.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/trigger-interface.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/trigger-interface.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/trigger-interface.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/trigger-interface.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/trigger-interface.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/trigger-interface.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/trigger-interface.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/trigger-interface.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/trigger-interface.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/trigger-interface.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/trigger-interface.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/trigger-interface.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/trigger-interface.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="triggers.html">Triggers (triggers)</a></span> » <span class="breadcrumb-node">Écrire des fonctions triggers en C</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="trigger-datachanges.html" title="37.2. Visibilité des modifications des données">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="triggers.html" title="Chapitre 37. Triggers (triggers)">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="trigger-example.html" title="37.4. Un exemple complet de trigger">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">37.2. Visibilité des modifications des données </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 37.4. Un exemple complet de trigger</td></tr></table></div><div class="sect1" id="TRIGGER-INTERFACE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">37.3. Écrire des fonctions triggers en C <a href="#TRIGGER-INTERFACE" class="id_link">#</a></h2></div></div></div><a id="id-1.8.4.7.2" class="indexterm"></a><a id="id-1.8.4.7.3" class="indexterm"></a><p>
+   Cette section décrit les détails de bas niveau de l'interface d'une fonction
+   trigger. Ces informations ne sont nécessaires que lors de l'écriture
+   d'une fonction trigger en C. Si vous utilisez un langage de plus haut
+   niveau, ces détails sont gérés pour vous. Dans la plupart des cas, vous
+   devez considérer l'utilisation d'un langage de procédure avant d'écrire
+   vos triggers en C. La documentation de chaque langage de procédures
+   explique comment écrire un trigger dans ce langage.
+  </p><p>
+   Les fonctions triggers doivent utiliser la <span class="quote">« <span class="quote">version 1</span> »</span> de
+   l'interface du gestionnaire de fonctions.
+  </p><p>
+   Quand une fonction est appelée par le gestionnaire de trigger, elle ne
+   reçoit aucun argument classique, mais un pointeur de <span class="quote">« <span class="quote">contexte</span> »</span>
+   pointant sur une structure <code class="structname">TriggerData</code>. Les fonctions C
+   peuvent vérifier si elles sont appelées par le gestionnaire de triggers
+   ou pas en exécutant la macro :
+   </p><pre class="programlisting">CALLED_AS_TRIGGER(fcinfo)
+   </pre><p>
+   qui se décompose en :
+   </p><pre class="programlisting">((fcinfo)-&gt;context != NULL &amp;&amp; IsA((fcinfo)-&gt;context, TriggerData))
+   </pre><p>
+   Si elle retourne la valeur vraie, alors il est bon de convertir
+   <code class="literal">fcinfo-&gt;context</code> en type <code class="literal">TriggerData *</code> et
+   de
+   faire usage de la structure pointée <code class="structname">TriggerData</code>. La fonction
+   <span class="emphasis"><em>ne</em></span> doit <span class="emphasis"><em>pas</em></span> modifier la
+   structure <code class="structname">TriggerData</code> ou une donnée quelconque vers laquelle
+   elle pointe.
+  </p><p>
+   <code class="structname">struct TriggerData</code> est définie dans
+   <code class="filename">commands/trigger.h</code> :
+
+   </p><pre class="programlisting">typedef struct TriggerData
+{
+    NodeTag          type;
+    TriggerEvent     tg_event;
+    Relation         tg_relation;
+    HeapTuple        tg_trigtuple;
+    HeapTuple        tg_newtuple;
+    Trigger         *tg_trigger;
+    TupleTableSlot  *tg_trigslot;
+    TupleTableSlot  *tg_newslot;
+    Tuplestorestate *tg_oldtable;
+    Tuplestorestate *tg_newtable;
+    const Bitmapset *tg_updatedcols;
+} TriggerData;
+   </pre><p>
+
+   où les membres sont définis comme suit :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="structfield">type</code></span></dt><dd><p>
+       Toujours <code class="literal">T_TriggerData</code>.
+      </p></dd><dt><span class="term"><code class="structfield">tg_event</code></span></dt><dd><p>
+       Décrit l'événement pour lequel la fonction est appelée. Vous pouvez utiliser
+       les macros suivantes pour examiner <code class="literal">tg_event</code> :
+
+       </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">TRIGGER_FIRED_BEFORE(tg_event)</code></span></dt><dd><p>
+           Renvoie vrai si le trigger est lancé avant l'opération.
+          </p></dd><dt><span class="term"><code class="literal">TRIGGER_FIRED_AFTER(tg_event)</code></span></dt><dd><p>
+           Renvoie vrai si le trigger est lancé après l'opération.
+          </p></dd><dt><span class="term"><code class="literal">TRIGGER_FIRED_INSTEAD(tg_event)</code></span></dt><dd><p>
+           Renvoie vrai si le trigger a été lancé à la place de l'opération.
+          </p></dd><dt><span class="term"><code class="literal">TRIGGER_FIRED_FOR_ROW(tg_event)</code></span></dt><dd><p>
+           Renvoie vrai si le trigger est lancé pour un événement en
+           mode ligne.
+          </p></dd><dt><span class="term"><code class="literal">TRIGGER_FIRED_FOR_STATEMENT(tg_event)</code></span></dt><dd><p>
+           Renvoie vrai si le trigger est lancé pour un événement en
+           mode instruction.
+          </p></dd><dt><span class="term"><code class="literal">TRIGGER_FIRED_BY_INSERT(tg_event)</code></span></dt><dd><p>
+           Retourne vrai si le trigger est lancé par une commande
+           <code class="command">INSERT</code>.
+          </p></dd><dt><span class="term"><code class="literal">TRIGGER_FIRED_BY_UPDATE(tg_event)</code></span></dt><dd><p>
+           Retourne vrai si le trigger est lancé par une commande
+           <code class="command">UPDATE</code>.
+          </p></dd><dt><span class="term"><code class="literal">TRIGGER_FIRED_BY_DELETE(tg_event)</code></span></dt><dd><p>
+           Retourne vrai si le trigger est lancé par une commande
+           <code class="command">DELETE</code>.
+          </p></dd><dt><span class="term"><code class="literal">TRIGGER_FIRED_BY_TRUNCATE(tg_event)</code></span></dt><dd><p>
+           Renvoie true si le trigger a été déclenché par une commande
+           <code class="command">TRUNCATE</code>.
+          </p></dd><dt><span class="term"><code class="structfield">tg_updatedcols</code></span></dt><dd><p>
+           Pour les triggers <code class="literal">UPDATE</code>, un champ bitmap
+           indique les colonnes mises à jour par la commande qui a déclenché
+           le trigger. Les fonctions des triggers génériques peuvent utiliser
+           ce champ pour optimiser les actions en n'ayant pas à s'occuper des
+           colonnes qui n'ont pas été modifiées.
+          </p><p>
+           Par exemple, pour déterminer si la colonne de numéro d'attribut
+           <code class="varname">attnum</code> (commençant à 1) est un membre de ce
+           champ, appelez <code class="literal">bms_is_member(attnum -
+            FirstLowInvalidHeapAttributeNumber,
+            trigdata-&gt;tg_updatedcols))</code>.
+          </p><p>
+           Pour les triggers autres que ceux en <code class="literal">UPDATE</code>, ce
+           champ sera à la valeur <code class="symbol">NULL</code>.
+          </p></dd></dl></div><p>
+      </p></dd><dt><span class="term"><code class="structfield">tg_relation</code></span></dt><dd><p>
+       Un pointeur vers une structure décrivant la relation pour laquelle le
+       trigger est lancé. Voir <code class="filename">utils/reltrigger.h</code> pour les détails
+       de cette structure. Les choses les plus intéressantes sont
+       <code class="literal">tg_relation-&gt;rd_att</code> (descripteur de nuplets de la
+       relation) et <code class="literal">tg_relation-&gt;rd_rel-&gt;relname</code> (nom de la
+       relation ;
+       le type n'est pas <code class="type">char*</code> mais <code class="type">NameData</code> ; utilisez
+       <code class="literal">SPI_getrelname(tg_relation)</code> pour obtenir un <code class="type">char*</code>
+       si vous avez besoin d'une copie du nom).
+      </p></dd><dt><span class="term"><code class="structfield">tg_trigtuple</code></span></dt><dd><p>
+       Un pointeur vers la ligne pour laquelle le trigger a été lancé. Il
+       s'agit de la ligne étant insérée, mise à jour ou effacée. Si ce
+       trigger a été lancé pour une commande <code class="command">INSERT</code> ou
+       <code class="command">DELETE</code>, c'est cette valeur que la fonction doit retourner si
+       vous ne voulez pas remplacer la ligne par une ligne différente (dans le
+       cas d'un <code class="command">INSERT</code>) ou sauter l'opération. Dans le cas de
+       triggers sur tables distantes, les valeurs des colonnes systèmes ne sont
+       pas spécifiées ici.
+      </p></dd><dt><span class="term"><code class="structfield">tg_newtuple</code></span></dt><dd><p>
+       Un pointeur vers la nouvelle version de la ligne, si le trigger a
+       été lancé pour un <code class="command">UPDATE</code> et <code class="symbol">NULL</code> si c'est
+       pour un <code class="command">INSERT</code> ou un <code class="command">DELETE</code>.
+       C'est ce que la fonction doit retourner si l'événement est un
+       <code class="command">UPDATE</code> et que vous ne voulez pas remplacer cette
+       ligne par une ligne différente ou bien sauter l'opération. Dans le cas de
+       triggers sur tables distantes, les valeurs des colonnes systèmes ne sont
+       pas spécifiées ici.
+      </p></dd><dt><span class="term"><code class="structfield">tg_trigger</code></span></dt><dd><p>
+       Un pointeur vers une structure de type <code class="structname">Trigger</code>, définie
+       dans <code class="filename">utils/rel.h</code> :
+
+       </p><pre class="programlisting">typedef struct Trigger
+{
+    Oid         tgoid;
+    char       *tgname;
+    Oid         tgfoid;
+    int16       tgtype;
+    char        tgenabled;
+    bool        tgisinternal;
+    bool        tgisclone;
+    Oid         tgconstrrelid;
+    Oid         tgconstrindid;
+    Oid         tgconstraint;
+    bool        tgdeferrable;
+    bool        tginitdeferred;
+    int16       tgnargs;
+    int16       tgnattr;
+    int16      *tgattr;
+    char      **tgargs;
+    char       *tgqual;
+    char       *tgoldtable;
+    char       *tgnewtable;
+} Trigger;
+       </pre><p>
+
+       où <code class="structfield">tgname</code> est le nom du trigger,
+       <code class="structfield">tgnargs</code> est le nombre d'arguments dans
+       <code class="structfield">tgargs</code> et <code class="structfield">tgargs</code> est un tableau de
+       pointeurs vers les arguments spécifiés dans l'expression contenant la
+       commande <code class="command">CREATE TRIGGER</code>. Les autres membres ne sont
+       destinés qu'à un usage interne.
+      </p></dd><dt><span class="term"><code class="structfield">tg_trigslot</code></span></dt><dd><p>
+       Le slot contenant <code class="structfield">tg_trigtuple</code>, ou un
+       pointeur <code class="symbol">NULL</code> si cette ligne n'existe pas.
+      </p></dd><dt><span class="term"><code class="structfield">tg_newslot</code></span></dt><dd><p>
+       Le slot contenant <code class="structfield">tg_newtuple</code>, ou un
+       pointeur <code class="symbol">NULL</code> si cette ligne n'existe pas.
+      </p></dd><dt><span class="term"><code class="structfield">tg_oldtable</code></span></dt><dd><p>
+       Un pointeur vers une structure de type
+       <code class="structname">Tuplestorestate</code> contenant zéro ou plusieurs
+       lignes dans le format spécifié par
+       <code class="structfield">tg_relation</code>, ou un pointeur
+       <code class="symbol">NULL</code> s'il n'y a pas de relation de transition
+       <code class="literal">OLD TABLE</code>.
+      </p></dd><dt><span class="term"><code class="structfield">tg_newtable</code></span></dt><dd><p>
+       Un pointeur vers une structure de type
+       <code class="structname">Tuplestorestate</code> contenant zéro ou plusieurs
+       lignes dans le format spécifié par
+       <code class="structfield">tg_relation</code>, ou un pointeur
+       <code class="symbol">NULL</code> s'il n'y a pas de relation de transition
+       <code class="literal">NEW TABLE</code>.
+      </p></dd></dl></div><p>
+  </p><p>
+   Pour permettre aux requêtes exécutées via SPI de référencer les tables de
+   transition, voir <a class="xref" href="spi-spi-register-trigger-data.html" title="SPI_register_trigger_data"><span class="refentrytitle">SPI_register_trigger_data</span></a>.
+  </p><p>
+   Une fonction trigger doit retourner soit un pointeur
+   <code class="structname">HeapTuple</code> soit un pointeur <code class="symbol">NULL</code> (<span class="emphasis"><em>pas</em></span>
+   une valeur SQL NULL, donc ne positionnez pas <em class="parameter"><code>isNull</code></em> à
+   true). Faites attention de renvoyer soit un
+   <code class="structfield">tg_trigtuple</code> soit un <code class="structfield">tg_newtuple</code>,
+   comme approprié, si vous ne voulez pas changer la ligne en cours de
+   modification.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/trigger-interface.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:43 GMT -->
+</html>

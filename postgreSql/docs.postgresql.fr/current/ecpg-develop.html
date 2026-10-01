@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/ecpg-develop.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:38 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>34.17. Fonctionnement Interne</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="ecpg-oracle-compat.html" title="34.16. Mode de compatibilité Oracle" /><link rel="next" href="information-schema.html" title="Chapitre 35. Schéma d'information" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/ecpg-develop.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/ecpg-develop.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/ecpg-develop.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/ecpg-develop.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/ecpg-develop.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/ecpg-develop.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/ecpg-develop.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/ecpg-develop.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/ecpg-develop.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/ecpg-develop.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/ecpg-develop.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/ecpg-develop.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/ecpg-develop.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/ecpg-develop.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/ecpg-develop.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/ecpg-develop.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/ecpg-develop.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/ecpg-develop.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/ecpg-develop.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/ecpg-develop.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/ecpg-develop.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="client-interfaces.html">Interfaces client</a></span> » <span class="breadcrumb-link"><a href="ecpg.html"><span class="application">ECPG</span>  --  <acronym class="acronym">SQL</acronym> embarqué en C</a></span> » <span class="breadcrumb-node">Fonctionnement Interne</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ecpg-oracle-compat.html" title="34.16. Mode de compatibilité Oracle">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="ecpg.html" title="Chapitre 34. ECPG  --  SQL embarqué en C">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="information-schema.html" title="Chapitre 35. Schéma d'information">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">34.16. Mode de compatibilité <span class="productname">Oracle</span> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 35. Schéma d'information</td></tr></table></div><div class="sect1" id="ECPG-DEVELOP"><div class="titlepage"><div><div><h2 class="title" style="clear: both">34.17. Fonctionnement Interne <a href="#ECPG-DEVELOP" class="id_link">#</a></h2></div></div></div><p>
+  Cette section explique comment <span class="application">ECPG</span>
+  fonctionne en interne. Cette information peut être utile pour
+  comprendre comment utiliser <span class="application">ECPG</span>.
+ </p><p>
+  Les quatre premières lignes écrites sur la sortie par
+  <code class="command">ecpg</code> sont des lignes fixes. Deux sont des
+  commentaires et deux sont des lignes d'inclusion nécessaires pour
+  s'interfacer avec la librairie. Puis le préprocesseur lit le fichier
+  et écrit la sortie. La plupart du temps, il répète simplement
+  tout dans la sortie.
+ </p><p>
+  Quand il voit un ordre <code class="command">EXEC SQL</code>, il intervient
+  et le modifie. La commande débute par <code class="command">EXEC SQL</code>
+  et se termine par <code class="command">;</code>. Tout ce qui se trouve entre
+  deux est traité comme un ordre <acronym class="acronym">SQL</acronym> et analysé
+  pour substitution de variables.
+ </p><p>
+  Une substitution de variable se produit quand un symbole commence
+  par un deux-points (<code class="literal">:</code>). La variable dont c'est le
+  nom est recherchée parmi les variables qui ont été précédemment
+  déclarées dans une section <code class="literal">EXEC SQL DECLARE</code>.
+ </p><p>
+  La fonction la plus importante de la librairie est
+  <code class="function">ECPGdo</code>, qui s'occupe de l'exécution de la
+  plupart des commandes. Elle prend un nombre variable d'arguments. Le
+  nombre de ces arguments peut rapidement dépasser la cinquantaine, et
+  nous espérons que cela ne posera de problème sur aucune plateforme.
+ </p><p>
+  Les arguments sont:
+
+  </p><div class="variablelist"><dl class="variablelist"><dt id="ECPG-DEVELOP-LINE-NUMBER"><span class="term">Un numéro de ligne</span> <a href="#ECPG-DEVELOP-LINE-NUMBER" class="id_link">#</a></dt><dd><p>
+      C'est le numéro de la ligne originale; c'est utilisé uniquement pour les messages d'erreu.
+     </p></dd><dt id="ECPG-DEVELOP-STRING"><span class="term">Une chaîne</span> <a href="#ECPG-DEVELOP-STRING" class="id_link">#</a></dt><dd><p>
+      C'est la commande <acronym class="acronym">SQL</acronym> à exécuter. Elle est
+      modifiée par les variables d'entrée, c'est à dire les variables
+      qui n'étaient pas connues au moment de la compilation mais qui
+      doivent tout de même faire partie de la commande. Aux endroits
+      où ces variables doivent être positionnées, la chaîne contient
+      des <code class="literal">?</code>.
+     </p></dd><dt id="ECPG-DEVELOP-INPUT-VARIABLES"><span class="term">Variables d'Entrée</span> <a href="#ECPG-DEVELOP-INPUT-VARIABLES" class="id_link">#</a></dt><dd><p>
+      Chaque variable d'entrée entraîne la création de dix
+      arguments. (Voir plus bas.)
+     </p></dd><dt id="ECPG-DEVELOP-ECPGT-EOIT"><span class="term"><em class="parameter"><code>ECPGt_EOIT</code></em></span> <a href="#ECPG-DEVELOP-ECPGT-EOIT" class="id_link">#</a></dt><dd><p>
+      Un <code class="type">enum</code> annonçant qu'il n'y a pas de variable
+      d'entrées supplémentaires.
+     </p></dd><dt id="ECPG-DEVELOP-OUTPUT-VARIABLES"><span class="term">Variables de Sortie</span> <a href="#ECPG-DEVELOP-OUTPUT-VARIABLES" class="id_link">#</a></dt><dd><p>
+      Chaque variable de sortie entraîne la création de dix
+      arguments. (Voir plus bas.) Ces variables sont renseignées par
+      la fonction.
+     </p></dd><dt id="ECPG-DEVELOP-ECPGT-EORT"><span class="term"><em class="parameter"><code>ECPGt_EORT</code></em></span> <a href="#ECPG-DEVELOP-ECPGT-EORT" class="id_link">#</a></dt><dd><p>
+      Un <code class="type">enum</code> annonçant qu'il n'y a plus de variables.
+     </p></dd></dl></div><p>
+ </p><p>
+  Pour chaque variable qui fait partie d'une commande
+  <acronym class="acronym">SQL</acronym>, la fonction reçoit dix arguments:
+
+  </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>
+     Le type sous forme de symbole spécial.
+    </p></li><li class="listitem"><p>
+     Un pointeur vers la valeur ou un pointeur vers le pointeur.
+    </p></li><li class="listitem"><p>
+     La taille de la variable si elle est <code class="type">char</code> ou <code class="type">varchar</code>.
+    </p></li><li class="listitem"><p>
+     Le nombre d'éléments du tableau (pour les fetch sur tableau).
+    </p></li><li class="listitem"><p>
+     Le décalage vers le prochain élément du tableau (pour les fetch sur tableau).
+    </p></li><li class="listitem"><p>
+     Le type de la variable indicateur sous forme de symbole special.
+    </p></li><li class="listitem"><p>
+     Un pointeur vers la variable indicateur.
+    </p></li><li class="listitem"><p>
+     0
+    </p></li><li class="listitem"><p>
+     Le nombre d'éléments du tableau d'indicateurs (pour les fetch sur tableau).
+    </p></li><li class="listitem"><p>
+     Le décalage vers le prochain élément du tableau d'indicateurs (pour
+     les fetch sur tableau).
+    </p></li></ol></div><p>
+ </p><p>
+  Notez que toutes les commandes SQL ne sont pas traitées de cette
+  façon. Par exemple, un ordre d'ouverture de curseur comme:
+  </p><pre class="programlisting">
+EXEC SQL OPEN <em class="replaceable"><code>cursor</code></em>;
+  </pre><p>
+  n'est pas copié vers la sortie. À la place, la commande de curseur
+  <code class="command">DECLARE</code> est utilisée à l'endroit de la commande
+  <code class="command">OPEN</code> parce qu'elle ouvre effectivement le curseur.
+ </p><p>
+  Voici un exemple complet expliquant la sortie du préprocesseur sur
+  un fichier <code class="filename">foo.pgc</code> (quelques détails pourraient
+  changer en fonction de la version exacte du préprocesseur):
+  </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+int index;
+int result;
+EXEC SQL END DECLARE SECTION;
+...
+EXEC SQL SELECT res INTO :result FROM mytable WHERE index = :index;
+  </pre><p>
+  est traduit en :
+  </p><pre class="programlisting">
+/* Processed by ecpg (2.6.0) */
+/* These two include files are added by the preprocessor */
+#include &lt;ecpgtype.h&gt;;
+#include &lt;ecpglib.h&gt;;
+
+/* exec sql begin declare section */
+
+#line 1 "foo.pgc"
+
+ int index;
+ int result;
+/* exec sql end declare section */
+...
+ECPGdo(__LINE__, NULL, "SELECT res FROM mytable WHERE index = ?     ",
+        ECPGt_int,&amp;(index),1L,1L,sizeof(int),
+        ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EOIT,
+        ECPGt_int,&amp;(result),1L,1L,sizeof(int),
+        ECPGt_NO_INDICATOR, NULL , 0L, 0L, 0L, ECPGt_EORT);
+#line 147 "foo.pgc"
+
+  </pre><p>
+  (L'indentation est ajoutée ici pour améliorer la lisibilité et
+  n'est pas quelque chose que le préprocesseur effectue).
+ </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/ecpg-develop.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:38 GMT -->
+</html>

@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/libpq-cancel.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:36 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>32.7. Annuler des requêtes en cours d'exécution</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="libpq-single-row-mode.html" title="32.6. Récupérer le résultats des requêtes par morceau" /><link rel="next" href="libpq-fastpath.html" title="32.8. Interface rapide (Fast Path)" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/libpq-cancel.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/libpq-cancel.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/libpq-cancel.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/libpq-cancel.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/libpq-cancel.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/libpq-cancel.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/libpq-cancel.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/libpq-cancel.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/libpq-cancel.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/libpq-cancel.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/libpq-cancel.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/libpq-cancel.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/libpq-cancel.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/libpq-cancel.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/libpq-cancel.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/libpq-cancel.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/libpq-cancel.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/libpq-cancel.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/libpq-cancel.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/libpq-cancel.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/libpq-cancel.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="client-interfaces.html">Interfaces client</a></span> » <span class="breadcrumb-link"><a href="libpq.html"><span class="application">libpq</span>  --  Bibliothèque C</a></span> » <span class="breadcrumb-node">Annuler des requêtes en cours d'exécution</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="libpq-single-row-mode.html" title="32.6. Récupérer le résultats des requêtes par morceau">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="libpq.html" title="Chapitre 32. libpq  --  Bibliothèque C">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="libpq-fastpath.html" title="32.8. Interface rapide (Fast Path)">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">32.6. Récupérer le résultats des requêtes par morceau </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 32.8. Interface rapide (Fast Path)</td></tr></table></div><div class="sect1" id="LIBPQ-CANCEL"><div class="titlepage"><div><div><h2 class="title" style="clear: both">32.7. Annuler des requêtes en cours d'exécution <a href="#LIBPQ-CANCEL" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="libpq-cancel.html#LIBPQ-CANCEL-FUNCTIONS">32.7.1. Fonctions pour envoyer des demandes d'annulation</a></span></dt><dt><span class="sect2"><a href="libpq-cancel.html#LIBPQ-CANCEL-DEPRECATED">32.7.2. Fonctions obsolètes pour l'envoi de demandes d'annulation</a></span></dt></dl></div><a id="id-1.7.3.14.2" class="indexterm"></a><a id="id-1.7.3.14.3" class="indexterm"></a><div class="sect2" id="LIBPQ-CANCEL-FUNCTIONS"><div class="titlepage"><div><div><h3 class="title">32.7.1. Fonctions pour envoyer des demandes d'annulation <a href="#LIBPQ-CANCEL-FUNCTIONS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQCANCELCREATE"><span class="term"><code class="function">PQcancelCreate</code><a id="id-1.7.3.14.4.2.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCANCELCREATE" class="id_link">#</a></dt><dd><p>
+       Prépare une connexion sur laquelle une demande d'annulation peut être
+       envoyée.
+</p><pre class="synopsis">
+PGcancelConn *PQcancelCreate(PGconn *conn);
+</pre><p>
+      </p><p>
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELCREATE"><code class="function">PQcancelCreate</code></a> crée un objet
+       <code class="structname">PGcancelConn</code><a id="id-1.7.3.14.4.2.1.2.2.3" class="indexterm"></a>
+       mais elle ne va pas commencer immédiatement l'envoi d'une demande
+       d'annulation sur cette connexion. Une demande d'annulation peut être
+       envoyée sur cette connexion d'une façon bloquante en utilisant
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELBLOCKING"><code class="function">PQcancelBlocking</code></a> et d'une façon non bloquante en
+       utilisant <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELSTART"><code class="function">PQcancelStart</code></a>. La valeur de retour
+       peut être passée à <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELSTATUS"><code class="function">PQcancelStatus</code></a>
+       pour vérifier si l'objet <code class="structname">PGcancelConn</code> a été
+       créé avec succès. L'objet <code class="structname">PGcancelConn</code> est une
+       structure opaque qui ne doit pas être accédée directement par
+       l'application. Cet objet <code class="structname">PGcancelConn</code> peut être
+       utilisé pour annuler la requête en cours d'exécution sur la connexion
+       originale d'une façon sûre avec des threads.
+      </p><p>
+       Beaucoup de paramètres de connexion du client original seront réutilisés
+       lors de la configuration de la connexion pour la demande d'annulation. Si
+       la connexion originiale nécessite le chiffrement de la connexion et/ou
+       la vérification de l'hôte cible (en utilisant <code class="literal">sslmode</code>
+       ou <code class="literal">gssencmode</code>), alors la connexion pour la demande
+       d'annulation est faite avec les mêmes prérequis. Toute option de
+       connexion utilisée pendant et après l'authentification du client est
+       cependant ignorée car les demandes d'annulation ne nécessitent pas
+       d'authentification et la connexion est fermée immédiatement après la
+       soumission de la demande d'annulation.
+      </p><p>
+       Notez que quand <code class="function">PQcancelCreate</code> renvoie un pointeur
+       non nul, vous devez appeler <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELFINISH"><code class="function">PQcancelFinish</code></a> quand
+       vous en avez fini avec lui pour libérer la structure et tout bloc mémoire
+       associé. Ceci doit être fait même si la demande d'annulation a échoué ou
+       a été abandonnée.
+      </p></dd><dt id="LIBPQ-PQCANCELBLOCKING"><span class="term"><code class="function">PQcancelBlocking</code><a id="id-1.7.3.14.4.2.2.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCANCELBLOCKING" class="id_link">#</a></dt><dd><p>
+       Demande que le serveur abandonne le traitement de la commande en cours
+       d'une façon bloquante.
+</p><pre class="synopsis">
+int PQcancelBlocking(PGcancelConn *cancelConn);
+</pre><p>
+      </p><p>
+       Cette demande est faite au travers d'un objet
+       <code class="structname">PGcancelConn</code>, qui doit être créé avec
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELCREATE"><code class="function">PQcancelCreate</code></a>.
+       La valeur de retour de <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELBLOCKING"><code class="function">PQcancelBlocking</code></a> vaut 1
+       si la demande d'annulation a été envoyée avec succès et 0 dans le cas
+       contraire. Sans succès, le message d'erreur peut être récupéré en
+       utilisant <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELERRORMESSAGE">
+      <code class="function">PQcancelErrorMessage</code>
+      
+     </a>.
+      </p><p>
+       L'envoi avec succès de l'annulation n'est cependant pas une garantie que
+       la demande réussisse. Si l'annulation est bien faite, la commande en cours
+       d'annulation terminera rapidement et renverra un résultat en erreur. Si
+       l'annulation échoue (par exemple parce que le serveur avait déjà terminé
+       l'exécution de la commande), alors aucun résultat ne sera visible.
+      </p></dd><dt id="LIBPQ-PQCANCELSTART"><span class="term"><code class="function">PQcancelStart</code><a id="id-1.7.3.14.4.2.3.1.2" class="indexterm"></a><br /></span><span class="term"><code class="function">PQcancelPoll</code><a id="id-1.7.3.14.4.2.3.2.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCANCELSTART" class="id_link">#</a></dt><dd><p>
+       Demande que le serveur abandonne le traitement de la commande en cours
+       d'une façon non bloquante.
+</p><pre class="synopsis">
+int PQcancelStart(PGcancelConn *cancelConn);
+
+PostgresPollingStatusType PQcancelPoll(PGcancelConn *cancelConn);
+</pre><p>
+      </p><p>
+       Cette demande est faite au travers d'un objet
+       <code class="structname">PGcancelConn</code>, qui doit être créé avec
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELCREATE"><code class="function">PQcancelCreate</code></a>.
+       La valeur de retour de <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELBLOCKING"><code class="function">PQcancelBlocking</code></a> vaut 1
+       si la demande d'annulation a été envoyée avec succès et 0 dans le cas
+       contraire. Sans succès, le message d'erreur peut être récupéré en
+       utilisant <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELERRORMESSAGE">
+      <code class="function">PQcancelErrorMessage</code>
+      
+     </a>.
+      </p><p>
+       Si <code class="function">PQcancelStart</code> réussit, la prochaine étape revient
+       à interroger <span class="application">libpq</span> pour qu'il puisse traiter
+       la séquence de connexion d'annulation. Utilisez <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELSOCKET"><code class="function">PQcancelSocket</code></a> pour obtenir le descripteur de la socket
+       de la connexion à la base (attention, ne supposez pas que la socket sera
+       identique après plusieurs appels à <code class="function">PQcancelPoll</code>).
+       En boucle : si <code class="function">PQcancelPoll(cancelConn)</code> renvoie
+       <code class="symbol">PGRES_POLLING_READING</code>, attendez jusqu'à ce que la socket
+       soit prête en lecture (comme indiqué par <code class="function">select()</code>,
+       <code class="function">poll()</code>, ou tout fonction système similaire). Puis
+       appelez <code class="function">PQcancelPoll(cancelConn)</code> de nouveau.
+       Inversement, si <code class="function">PQcancelPoll(cancelConn)</code> renvoie
+       <code class="symbol">PGRES_POLLING_WRITING</code>, attendez jusqu'à ce que la socket
+       soit disponible en écriture, puis appelez de nouveau
+       <code class="function">PQcancelPoll(cancelConn)</code>. Sur la première itération,
+       si vous avez encore besoin d'appeler
+       <code class="function">PQcancelPoll(cancelConn)</code>, faites comme si elle avait
+       renvoyé <code class="symbol">PGRES_POLLING_WRITING</code>. Continuez cette boucle
+       jusqu'à ce que <code class="function">PQcancelPoll(cancelConn)</code> renvoie
+       <code class="symbol">PGRES_POLLING_FAILED</code>, indiquant que la procédure de
+       connexion a échoué ou <code class="symbol">PGRES_POLLING_OK</code>, indiquant que la
+       demande d'annulation a été envoyée avec succès.
+      </p><p>
+       L'envoi avec succès de l'annulation n'est cependant pas une garantie que
+       la demande réussisse. Si l'annulation est bien faite, la commande en cours
+       d'annulation terminera rapidement et renverra un résultat en erreur. Si
+       l'annulation échoue (par exemple parce que le serveur avait déjà terminé
+       l'exécution de la commande), alors aucun résultat ne sera visible.
+      </p><p>
+       À tout moment pendant la connexion, le statut de cette connexion peut
+       être vérifié en appelant <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELSTATUS"><code class="function">PQcancelStatus</code></a>. Si cet
+       appel renvoie <code class="symbol">CONNECTION_BAD</code>, alors la procédure
+       d'annulation a échoué ; si l'appel renvoie
+       <code class="function">CONNECTION_OK</code>, alors la demande d'annulation a été
+       correctement envoyée. Ces deux statuts sont détectables à partir de la
+       valeur renvoyée par <code class="function">PQcancelPoll</code>, décrite
+       ci-dessus. D'autres statuts peuvent aussi survenir, mais seulement lors
+       d'une procédure de connexion asynchrone. Elles indiquent l'étape
+       actuelle de la procédure de connexion et pourraient être utiles, par
+       exemple pour donner des informations à l'utilisateur. Ces statuts
+       sont :
+
+       </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-CANCEL-CONNECTION-ALLOCATED"><span class="term"><code class="symbol">CONNECTION_ALLOCATED</code></span> <a href="#LIBPQ-CANCEL-CONNECTION-ALLOCATED" class="id_link">#</a></dt><dd><p>
+           En attente d'un appel à <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELSTART"><code class="function">PQcancelStart</code></a> ou
+           <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELBLOCKING"><code class="function">PQcancelBlocking</code></a>, pour réellement ouvrir la
+           socket. Cela correspond au statut de la connexion tout de suite après
+           un appel à <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELCREATE"><code class="function">PQcancelCreate</code></a>
+           ou <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELRESET"><code class="function">PQcancelReset</code></a>. Aucun connexion au serveur
+           n'a encore été initiée à ce point. Pour réellement commencer l'envoi
+           de la demande d'annulation, utilisez <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELSTART"><code class="function">PQcancelStart</code></a> ou
+           <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELBLOCKING"><code class="function">PQcancelBlocking</code></a>.
+          </p></dd><dt id="LIBPQ-CANCEL-CONNECTION-STARTED"><span class="term"><code class="symbol">CONNECTION_STARTED</code></span> <a href="#LIBPQ-CANCEL-CONNECTION-STARTED" class="id_link">#</a></dt><dd><p>
+           En attente de la connexion.
+          </p></dd><dt id="LIBPQ-CANCEL-CONNECTION-MADE"><span class="term"><code class="symbol">CONNECTION_MADE</code></span> <a href="#LIBPQ-CANCEL-CONNECTION-MADE" class="id_link">#</a></dt><dd><p>
+           Connexion OK ; en attente de l'envoi.
+          </p></dd><dt id="LIBPQ-CANCEL-CONNECTION-AWAITING-RESPONSE"><span class="term"><code class="symbol">CONNECTION_AWAITING_RESPONSE</code></span> <a href="#LIBPQ-CANCEL-CONNECTION-AWAITING-RESPONSE" class="id_link">#</a></dt><dd><p>
+           En attente d'une réponse du serveur.
+          </p></dd><dt id="LIBPQ-CANCEL-CONNECTION-SSL-STARTUP"><span class="term"><code class="symbol">CONNECTION_SSL_STARTUP</code></span> <a href="#LIBPQ-CANCEL-CONNECTION-SSL-STARTUP" class="id_link">#</a></dt><dd><p>
+           Négociation d'un chiffrement SSL.
+          </p></dd><dt id="LIBPQ-CANCEL-CONNECTION-GSS-STARTUP"><span class="term"><code class="symbol">CONNECTION_GSS_STARTUP</code></span> <a href="#LIBPQ-CANCEL-CONNECTION-GSS-STARTUP" class="id_link">#</a></dt><dd><p>
+           Négociation d'un chiffrement GSS.
+          </p></dd></dl></div><p>
+
+       Notez que, bien que ces constantes resteront (pour maintenir la
+       compatibilité), une application ne devrait jamais se baser sur leur
+       arrivée dans un ordre précis ou du tout. Elle ne devrait pas plus se
+       baser sur l'inexistence d'autres statuts. Une application pourrait faire
+       quelque chose comme :
+</p><pre class="programlisting">
+switch(PQcancelStatus(conn))
+{
+        case CONNECTION_STARTED:
+            feedback = "Connecting...";
+            break;
+
+        case CONNECTION_MADE:
+            feedback = "Connected to server...";
+            break;
+.
+.
+.
+        default:
+            feedback = "Connecting...";
+}
+</pre><p>
+      </p><p>
+       Le paramètre de connexion <code class="literal">connect_timeout</code> est ignoré
+       lors de l'utilisation de <code class="function">PQcancelPoll</code> ; c'est
+       de la responsabilité de l'application de décider si trop de temps s'est
+       écoulé. Sinon, <code class="function">PQcancelStart</code> suivi d'une boucle
+       <code class="function">PQcancelPoll</code> est équivalent à
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELBLOCKING"><code class="function">PQcancelBlocking</code></a>.
+      </p></dd><dt id="LIBPQ-PQCANCELSTATUS"><span class="term"><code class="function">PQcancelStatus</code><a id="id-1.7.3.14.4.2.4.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCANCELSTATUS" class="id_link">#</a></dt><dd><p>
+       Renvoie le statut de la demande d'annulation.
+</p><pre class="synopsis">
+ConnStatusType PQcancelStatus(const PGcancelConn *cancelConn);
+</pre><p>
+      </p><p>
+       Le statut peut avoir différentes valeurs. Néanmoins, seules trois de ces
+       valeurs sont vues en dehors d'une procédure d'annulation asynchrone :
+       <code class="literal">CONNECTION_ALLOCATED</code>,
+       <code class="literal">CONNECTION_OK</code> et
+       <code class="literal">CONNECTION_BAD</code>. Le statut initial d'un objet
+       <code class="function">PGcancelConn</code> créé avec succès en utilisant
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELCREATE"><code class="function">PQcancelCreate</code></a> est
+       <code class="literal">CONNECTION_ALLOCATED</code>. Une demande d'annulation qui a
+       été correctement envoyée a le statut <code class="literal">CONNECTION_OK</code>. Une
+       tentative échouée d'annulation est signalée par le statut
+       <code class="literal">CONNECTION_BAD</code>. Un statut OK restera jusqu'à ce que
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELFINISH"><code class="function">PQcancelFinish</code></a> ou
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELRESET"><code class="function">PQcancelReset</code></a> soit appelé.
+      </p><p>
+       Voir l'entrée pour <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELSTART"><code class="function">PQcancelStart</code></a> concernant les
+       autres statuts pouvant être renvoyés.
+      </p><p>
+       L'envoi avec succès de l'annulation n'est cependant pas une garantie que
+       la demande réussisse. Si l'annulation est bien faite, la commande en cours
+       d'annulation terminera rapidement et renverra un résultat en erreur. Si
+       l'annulation échoue (par exemple parce que le serveur avait déjà terminé
+       l'exécution de la commande), alors aucun résultat ne sera visible.
+      </p></dd><dt id="LIBPQ-PQCANCELSOCKET"><span class="term"><code class="function">PQcancelSocket</code><a id="id-1.7.3.14.4.2.5.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCANCELSOCKET" class="id_link">#</a></dt><dd><p>
+       Obtient le numéro du descripteur de fichier du socket de la connexion
+       d'annulation au serveur.
+</p><pre class="synopsis">
+int PQcancelSocket(const PGcancelConn *cancelConn);
+</pre><p>
+      </p><p>
+       Un descripteur valide sera supérieur ou égale à 0 ; un résultat -1
+       indiquera qu'aucune connexion n'est actuellement ouverte vers le serveur.
+       Ceci pourrait changer suite à l'appel d'une des fonctions de cette
+       section sur l'objet <code class="structname">PGcancelConn</code>
+       (sauf pour <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELERRORMESSAGE">
+      <code class="function">PQcancelErrorMessage</code>
+      
+     </a> et
+       <code class="function">PQcancelSocket</code>).
+      </p></dd><dt id="LIBPQ-PQCANCELERRORMESSAGE"><span class="term">
+      <code class="function">PQcancelErrorMessage</code><a id="id-1.7.3.14.4.2.6.1.2" class="indexterm"></a>
+      <a id="id-1.7.3.14.4.2.6.1.3" class="indexterm"></a>
+     </span> <a href="#LIBPQ-PQCANCELERRORMESSAGE" class="id_link">#</a></dt><dd><p>
+       Renvoie le message d'erreur généré le plus récemment par une opération
+       sur la connexion d'annulation.
+</p><pre class="synopsis">
+char *PQcancelErrorMessage(const PGcancelConn *cancelconn);
+</pre><p>
+      </p><p>
+       Pratiquement toutes les fonctions <span class="application">libpq</span> qui
+       prennent un objet <code class="structname">PGcancelConn</code> enverra un
+       message pour
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELERRORMESSAGE">
+      <code class="function">PQcancelErrorMessage</code>
+      
+     </a> si elles échouent.
+       Notez que par une convention de la <span class="application">libpq</span>, un
+       résultat <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELERRORMESSAGE">
+      <code class="function">PQcancelErrorMessage</code>
+      
+     </a> non vide peut
+       contenir plusieurs lignes et incluera une nouvelle ligne à la fin.
+       L'appelant ne doit pas libérer directement le résultat. Il sera libéré
+       quand l'objet <code class="structname">PGcancelConn</code> associé est passé à
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELFINISH"><code class="function">PQcancelFinish</code></a>. La chaîne résultante ne doit pas
+       s'attendre à rester identique tout au long des opérations sur la
+       structure <code class="literal">PGcancelConn</code>.
+      </p></dd><dt id="LIBPQ-PQCANCELFINISH"><span class="term"><code class="function">PQcancelFinish</code><a id="id-1.7.3.14.4.2.7.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCANCELFINISH" class="id_link">#</a></dt><dd><p>
+       Ferme la connexion d'annulation (si elle n'a pas encore envoyée la demande
+       d'annulation). De plus, libère la mémoire utilisée par l'objet
+       <code class="structname">PGcancelConn</code>.
+</p><pre class="synopsis">
+void PQcancelFinish(PGcancelConn *cancelConn);
+</pre><p>
+      </p><p>
+       Notez que même si la tentative d'annulation échoué (comme indiquée par
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELSTATUS"><code class="function">PQcancelStatus</code></a>), l'application doit appeler
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELFINISH"><code class="function">PQcancelFinish</code></a> pour libérer la mémoire utilisée
+       par l'objet <code class="structname">PGcancelConn</code>. Le pointeur
+       <code class="structname">PGcancelConn</code> ne doit pas être utilisé de nouveau
+       après l'appel de <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELFINISH"><code class="function">PQcancelFinish</code></a>.
+      </p></dd><dt id="LIBPQ-PQCANCELRESET"><span class="term"><code class="function">PQcancelReset</code><a id="id-1.7.3.14.4.2.8.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCANCELRESET" class="id_link">#</a></dt><dd><p>
+       Réinitialise l'objet <code class="symbol">PGcancelConn</code> pour qu'il puisse
+       être réutilisé pour une nouvelle connexion d'annulation.
+</p><pre class="synopsis">
+void PQcancelReset(PGcancelConn *cancelConn);
+</pre><p>
+      </p><p>
+       Si l'objet <code class="symbol">PGcancelConn</code> est actuellement utilisé pour
+       envoyer une demande d'annulation, alors cette connexion est fermée. Il
+       préparera alors l'objet <code class="symbol">PGcancelConn</code> de façon à ce qu'il
+       puisse être utilisé pour une nouvelle demande d'annulation.
+      </p><p>
+       Cette fonction peut être utilisé pour créer un objet
+       <code class="structname">PGcancelConn</code> pour un objet
+       <code class="structname">PGconn</code> et pour le réutiliser plusieurs fois tout
+       au long de la vie de l'objet <code class="structname">PGconn</code> original.
+      </p></dd></dl></div></div><div class="sect2" id="LIBPQ-CANCEL-DEPRECATED"><div class="titlepage"><div><div><h3 class="title">32.7.2. Fonctions obsolètes pour l'envoi de demandes d'annulation <a href="#LIBPQ-CANCEL-DEPRECATED" class="id_link">#</a></h3></div></div></div><p>
+    Ces fonctions représentent d'anciennes méthodes pour l'envoi de demandes
+    d'annulation. Bien qu'elles fonctionnent toujours, elles ne sont pas
+    recommendées car elles n'envoient pas les demandes d'annulation d'une
+    façon chiffrée, même quand la connexion originale réclamait le chiffrement
+    avec <code class="literal">sslmode</code> ou <code class="literal">gssencmode</code>. De ce fait,
+    l'utilisation des anciennes méthodes dans du nouveau code est fortement
+    déconseillée, et il est fortement recommandé de modifier le code existant
+    pour utiliser à la place les nouvelles fonctions.
+   </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQGETCANCEL"><span class="term"><code class="function">PQgetCancel</code>
+      <a id="id-1.7.3.14.5.3.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQGETCANCEL" class="id_link">#</a></dt><dd><p>
+       Crée une structure de données contenant les informations
+       nécessaires à l'annulation d'une commande en utilisant
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCEL"><code class="function">PQcancel</code>
+      </a>.
+       </p><pre class="synopsis">PGcancel *PQgetCancel(PGconn *conn);
+       </pre><p>
+      </p><p>
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQGETCANCEL"><code class="function">PQgetCancel</code>
+      </a> crée un objet
+       <code class="structname">PGcancel</code><a id="id-1.7.3.14.5.3.1.2.2.3" class="indexterm"></a>
+       à partir d'un objet connexion <code class="structname">PGconn</code>. Il renverra
+       <code class="symbol">NULL</code> si le paramètre <em class="parameter"><code>conn</code></em>
+       donné est <code class="symbol">NULL</code> ou est une connexion
+       invalide. L'objet <code class="structname">PGcancel</code> est une structure opaque
+       qui n'a pas pour but d'être accédé directement par
+       l'application ; elle peut seulement être passée à
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCEL"><code class="function">PQcancel</code>
+      </a> ou <a class="xref" href="libpq-cancel.html#LIBPQ-PQFREECANCEL"><code class="function">PQfreeCancel</code>
+      </a>.
+      </p></dd><dt id="LIBPQ-PQFREECANCEL"><span class="term"><code class="function">PQfreeCancel</code>
+      <a id="id-1.7.3.14.5.3.2.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQFREECANCEL" class="id_link">#</a></dt><dd><p>
+       Libère une structure de données créée par
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQGETCANCEL"><code class="function">PQgetCancel</code>
+      </a>.
+       </p><pre class="synopsis">void PQfreeCancel(PGcancel *cancel);
+       </pre><p>
+      </p><p>
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQFREECANCEL"><code class="function">PQfreeCancel</code>
+      </a> libère un objet donné par
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQGETCANCEL"><code class="function">PQgetCancel</code>
+      </a>.
+      </p></dd><dt id="LIBPQ-PQCANCEL"><span class="term"><code class="function">PQcancel</code>
+      <a id="id-1.7.3.14.5.3.3.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCANCEL" class="id_link">#</a></dt><dd><p>
+       Demande que le serveur abandonne l'exécution de la commande en
+       cours. <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCEL"><code class="function">PQcancel</code>
+      </a> est une variante obsolète et non
+       sécurisée <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELBLOCKING"><code class="function">PQcancelBlocking</code></a>, mais elle peut être
+       utilisée à l'intérieur d'un gestionnaire de signaux.
+       </p><pre class="synopsis">int PQcancel(PGcancel *cancel, char *errbuf, int errbufsize);
+       </pre><p>
+      </p><p>
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCEL"><code class="function">PQcancel</code>
+      </a> existe uniquement pour des raisons de
+       rétro-compatibilité. <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELBLOCKING"><code class="function">PQcancelBlocking</code></a> doit être
+       utilisé à la place. Le seul avantage de <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCEL"><code class="function">PQcancel</code>
+      </a>
+       est qu'il peut être utilisé en toute sécurité à partir d'un gestionnaire
+       de signaux, si <em class="parameter"><code>errbuf</code></em> est une variable locale dans
+       le gestionnaire de signaux. Néanmoins, ce bénéfice n'est pas suffisamment
+       important par rapport aux risques de faille de sécurité que comporte cette
+       fonction.
+      </p><p>
+       L'objet <code class="structname">PGcancel</code> est en lecture seule pour ce
+       qui concerne <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCEL"><code class="function">PQcancel</code>
+      </a>, donc il peut aussi être
+       appelé à partir d'un thread qui est séparé de celui qui manipule l'objet
+       <code class="structname">PGconn</code>.
+      </p><p>
+       La valeur de retour de <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCEL"><code class="function">PQcancel</code>
+      </a> est 1 si la
+       demande d'annulation a été envoyée avec succès, et 0 sinon. Dans ce
+       dernier cas, <em class="parameter"><code>errbuf</code></em> contient un message d'erreur
+       d'explication.
+       <em class="parameter"><code>errbuf</code></em> doit être un tableau de caractères dont la
+       taille correspond à <em class="parameter"><code>errbufsize</code></em> (la taille
+       recommandée est de 256 octets).
+      </p></dd></dl></div><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQREQUESTCANCEL"><span class="term"><code class="function">PQrequestCancel</code>
+      <a id="id-1.7.3.14.5.4.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQREQUESTCANCEL" class="id_link">#</a></dt><dd><p>
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQREQUESTCANCEL"><code class="function">PQrequestCancel</code>
+      </a> est une variante obsolète et
+       non sécurisée de
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELBLOCKING"><code class="function">PQcancelBlocking</code></a>.
+       </p><pre class="synopsis">int PQrequestCancel(PGconn *conn);
+       </pre><p>
+      </p><p>
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQREQUESTCANCEL"><code class="function">PQrequestCancel</code>
+      </a> existe uniquement pour des
+       raisons de compatibilité ascendante. <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELBLOCKING"><code class="function">PQcancelBlocking</code></a>
+       peut être utilisé à la place. Il n'y a pas d'intérêt à utiliser
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQREQUESTCANCEL"><code class="function">PQrequestCancel</code>
+      </a> à la place de
+       <a class="xref" href="libpq-cancel.html#LIBPQ-PQCANCELBLOCKING"><code class="function">PQcancelBlocking</code></a>.
+      </p><p>
+       Demande au serveur l'abandon du traitement de la commande en cours
+       d'exécution. Elle opère directement sur l'objet
+       <code class="structname">PGconn</code> et, en cas d'échec, stocke le message d'erreur
+       dans l'objet <code class="structname">PGconn</code> (d'où il peut être récupéré avec
+       <a class="xref" href="libpq-status.html#LIBPQ-PQERRORMESSAGE">
+      <code class="function">PQerrorMessage</code>
+      
+     </a>). Bien qu'il s'agisse de la même
+       fonctionnalité, cette approche n'est pas sûre dans les programmes
+       multi-threads et les gestionnaires de
+       signaux car il est possible que la surcharge du message d'erreur de
+       <code class="structname">PGconn</code> gênera l'opération en cours sur la connexion.
+      </p></dd></dl></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/libpq-cancel.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:36 GMT -->
+</html>

@@ -1,0 +1,541 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/plpgsql-trigger.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:44 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>41.10. Fonctions trigger</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="plpgsql-errors-and-messages.html" title="41.9. Erreurs et messages" /><link rel="next" href="plpgsql-implementation.html" title="41.11. Les dessous de PL/pgSQL" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/plpgsql-trigger.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/plpgsql-trigger.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/plpgsql-trigger.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/plpgsql-trigger.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/plpgsql-trigger.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/plpgsql-trigger.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/plpgsql-trigger.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/plpgsql-trigger.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/plpgsql-trigger.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/plpgsql-trigger.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/plpgsql-trigger.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/plpgsql-trigger.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/plpgsql-trigger.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/plpgsql-trigger.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/plpgsql-trigger.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/plpgsql-trigger.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/plpgsql-trigger.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/plpgsql-trigger.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/plpgsql-trigger.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/plpgsql-trigger.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/plpgsql-trigger.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="plpgsql.html"><span class="application">PL/pgSQL</span>  --  Langage de procédures <acronym class="acronym">SQL</acronym></a></span> » <span class="breadcrumb-node">Fonctions trigger</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="plpgsql-errors-and-messages.html" title="41.9. Erreurs et messages">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="plpgsql.html" title="Chapitre 41. PL/pgSQL  --  Langage de procédures SQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="plpgsql-implementation.html" title="41.11. Les dessous de PL/pgSQL">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">41.9. Erreurs et messages </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 41.11. Les dessous de <span class="application">PL/pgSQL</span></td></tr></table></div><div class="sect1" id="PLPGSQL-TRIGGER"><div class="titlepage"><div><div><h2 class="title" style="clear: both">41.10. Fonctions trigger <a href="#PLPGSQL-TRIGGER" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="plpgsql-trigger.html#PLPGSQL-DML-TRIGGER">41.10.1. Triggers sur les modifications de données</a></span></dt><dt><span class="sect2"><a href="plpgsql-trigger.html#PLPGSQL-EVENT-TRIGGER">41.10.2. Triggers sur des événements</a></span></dt></dl></div><a id="id-1.8.8.12.2" class="indexterm"></a><p>
+  <span class="application">PL/pgSQL</span> peut être utilisé pour définir des
+  fonctions trigger sur les modifications de données ou sur les événements
+  en base. Une fonction trigger est créée avec la commande, en la déclarant
+  comme une fonction sans argument et avec un type en retour
+  <code class="type">trigger</code> (pour les triggers sur les modifications de données)
+  ou <code class="type">event_trigger</code> (pour les triggers sur les événements en
+  base). Des variables locales spéciales, nommées
+  <code class="varname">TG_<em class="replaceable"><code>quelquechose</code></em></code> sont
+  automatiquement définies pour décrire la condition qui a déclenché l'appel.
+ </p><div class="sect2" id="PLPGSQL-DML-TRIGGER"><div class="titlepage"><div><div><h3 class="title">41.10.1. Triggers sur les modifications de données <a href="#PLPGSQL-DML-TRIGGER" class="id_link">#</a></h3></div></div></div><p>
+   Un <a class="link" href="triggers.html" title="Chapitre 37. Triggers (triggers)">trigger sur modification de données</a> est
+   déclaré comme une fonction sans arguments et renvoyant le type
+   <code class="type">trigger</code>. Notez que la fonction doit être déclarée sans
+   arguments même si elle s'attend à recevoir des arguments spécifiés dans
+   <code class="command">CREATE TRIGGER</code>  --  ce type d'argument est passé via
+   <code class="varname">TG_ARGV</code>, comme indiqué ci-dessous.
+  </p><p>
+   Quand une fonction <span class="application">PL/pgSQL</span> est appelée en tant que
+   trigger, plusieurs variables spéciales sont créées automatiquement dans le bloc de
+   plus haut niveau. Ce sont :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt id="PLPGSQL-DML-TRIGGER-NEW"><span class="term"><code class="varname">NEW</code> <code class="type">record</code></span> <a href="#PLPGSQL-DML-TRIGGER-NEW" class="id_link">#</a></dt><dd><p>
+       nouvelle ligne de base de données pour les opérations
+       <code class="command">INSERT</code> /
+       <code class="command">UPDATE</code> dans les triggers de niveau ligne. Cette
+       variable est NULL dans un trigger de niveau instruction et
+       pour les opérations <code class="command">DELETE</code>.
+      </p></dd><dt id="PLPGSQL-DML-TRIGGER-OLD"><span class="term"><code class="varname">OLD</code> <code class="type">record</code></span> <a href="#PLPGSQL-DML-TRIGGER-OLD" class="id_link">#</a></dt><dd><p>
+       ancienne ligne de base de données pour les opérations
+       <code class="command">UPDATE</code>/<code class="command">DELETE</code>
+       dans les triggers de niveau ligne. Cette variable est NULL
+       dans les triggers de niveau instruction et pour les opérations
+       <code class="command">INSERT</code>.
+      </p></dd><dt id="PLPGSQL-DML-TRIGGER-TG-NAME"><span class="term"><code class="varname">TG_NAME</code> <code class="type">name</code></span> <a href="#PLPGSQL-DML-TRIGGER-TG-NAME" class="id_link">#</a></dt><dd><p>
+       nom du trigger réellement lancé.
+      </p></dd><dt id="PLPGSQL-DML-TRIGGER-TG-WHEN"><span class="term"><code class="varname">TG_WHEN</code> <code class="type">text</code></span> <a href="#PLPGSQL-DML-TRIGGER-TG-WHEN" class="id_link">#</a></dt><dd><p>
+       <code class="literal">BEFORE</code>, <code class="literal">AFTER</code> ou
+       <code class="literal">INSTEAD OF</code> selon la définition du trigger.
+      </p></dd><dt id="PLPGSQL-DML-TRIGGER-TG-LEVEL"><span class="term"><code class="varname">TG_LEVEL</code> <code class="type">text</code></span> <a href="#PLPGSQL-DML-TRIGGER-TG-LEVEL" class="id_link">#</a></dt><dd><p>
+       <code class="literal">ROW</code> soit
+       <code class="literal">STATEMENT</code>, selon la définition du trigger.
+      </p></dd><dt id="PLPGSQL-DML-TRIGGER-TG-OP"><span class="term"><code class="varname">TG_OP</code> <code class="type">text</code></span> <a href="#PLPGSQL-DML-TRIGGER-TG-OP" class="id_link">#</a></dt><dd><p>
+       <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>,
+       <code class="literal">DELETE</code> ou <code class="literal">TRUNCATE</code>
+      </p></dd><dt id="PLPGSQL-DML-TRIGGER-TG-RELID"><span class="term"><code class="varname">TG_RELID</code> <code class="type">oid</code> (references <a class="link" href="catalog-pg-class.html" title="51.11. pg_class"><code class="structname">pg_class</code></a>.<code class="structfield">oid</code>)</span> <a href="#PLPGSQL-DML-TRIGGER-TG-RELID" class="id_link">#</a></dt><dd><p>
+       objet de la table qui a causé le déclenchement du trigger.
+      </p></dd><dt id="PLPGSQL-DML-TRIGGER-TG-RELNAME"><span class="term"><code class="varname">TG_RELNAME</code> <code class="type">name</code></span> <a href="#PLPGSQL-DML-TRIGGER-TG-RELNAME" class="id_link">#</a></dt><dd><p>
+       table qui a causé
+       le déclenchement. C'est obsolète et pourrait disparaître dans une
+       prochaine version. À la place, utilisez <code class="literal">TG_TABLE_NAME</code>.
+      </p></dd><dt id="PLPGSQL-DML-TRIGGER-TG-TABLE-NAME"><span class="term"><code class="varname">TG_TABLE_NAME</code> <code class="type">name</code></span> <a href="#PLPGSQL-DML-TRIGGER-TG-TABLE-NAME" class="id_link">#</a></dt><dd><p>
+       table qui a déclenché le trigger.
+      </p></dd><dt id="PLPGSQL-DML-TRIGGER-TG-TABLE-SCHEMA"><span class="term"><code class="varname">TG_TABLE_SCHEMA</code> <code class="type">name</code></span> <a href="#PLPGSQL-DML-TRIGGER-TG-TABLE-SCHEMA" class="id_link">#</a></dt><dd><p>
+       schéma de la table qui a appelé le trigger.
+      </p></dd><dt id="PLPGSQL-DML-TRIGGER-TG-NARGS"><span class="term"><code class="varname">TG_NARGS</code> <code class="type">integer</code></span> <a href="#PLPGSQL-DML-TRIGGER-TG-NARGS" class="id_link">#</a></dt><dd><p>
+       nombre d'arguments donnés à la fonction
+       trigger dans l'instruction <code class="command">CREATE TRIGGER</code>.
+      </p></dd><dt id="PLPGSQL-DML-TRIGGER-TG-ARGV"><span class="term"><code class="varname">TG_ARGV</code> <code class="type">text[]</code></span> <a href="#PLPGSQL-DML-TRIGGER-TG-ARGV" class="id_link">#</a></dt><dd><p>
+       arguments de l'instruction <code class="command">CREATE TRIGGER</code>.
+       L'index débute à 0. Les indices invalides (inférieurs à 0 ou supérieurs ou égaux
+       à <code class="varname">tg_nargs</code>) auront une valeur NULL.
+      </p></dd></dl></div><p>
+  </p><p>
+   Une fonction trigger doit renvoyer soit <code class="symbol">NULL</code> soit une
+   valeur record ayant
+   exactement la structure de la table pour laquelle le trigger a été lancé.
+  </p><p>
+   Les triggers de niveau ligne lancés <code class="literal">BEFORE</code> peuvent renvoyer NULL
+   pour indiquer au gestionnaire de trigger de sauter le reste de l'opération pour
+   cette ligne (les triggers suivants ne sont pas lancés, et les
+   <code class="command">INSERT</code>/<code class="command">UPDATE</code>/<code class="command">DELETE</code> ne se font pas pour cette
+   ligne). Si une valeur non NULL est renvoyée alors l'opération se déroule avec cette
+   valeur ligne. Renvoyer une valeur ligne différente de la valeur originale de
+   <code class="varname">NEW</code> modifie la ligne qui sera insérée ou mise à jour.
+   De ce fait, si la fonction de trigger veut que l'action réussisse sans modifier la
+   valeur de rangée, <code class="varname">NEW</code> (ou une valeur égale) doit être
+   renvoyée. Pour modifier la rangée à être stockée, il est possible de
+   remplacer les valeurs directement dans <code class="varname">NEW</code> et renvoyer le
+   <code class="varname">NEW</code> modifié ou de générer un nouvel enregistrement à
+   renvoyer. Dans le cas d'un before-trigger sur une commande
+   <code class="command">DELETE</code>, la valeur renvoyée n'a aucun effet
+   direct mais doit être non-nulle pour permettre à l'action trigger de
+   continuer. Notez que <code class="varname">NEW</code> est nul dans le cadre des
+   triggers <code class="command">DELETE</code> et que renvoyer ceci n'est pas recommandé
+   dans les cas courants. Une pratique utile dans des triggers <code class="command">DELETE</code>
+   serait de renvoyer <code class="varname">OLD</code>.
+  </p><p>
+   Les triggers <code class="literal">INSTEAD OF</code> (qui sont toujours des
+   triggers au niveau ligne et peuvent seulement être utilisés sur des
+   vues) peuvent renvoyer NULL pour signaler qu'ils n'ont fait aucune
+   modification et que le reste de l'opération pour cette ligne doit
+   être ignoré (autrement dit, les triggers suivants ne sont pas
+   déclenchés et la ligne n'est pas comptée dans le statut des lignes
+   affectées pour la requête
+   <code class="command">INSERT</code>/<code class="command">UPDATE</code>/<code class="command">DELETE</code>).
+   Une valeur différente de NULL doit être renvoyée pour indiquer que
+   le trigger a traité l'opération demandée. Pour les opérations
+   <code class="command">INSERT</code> et <code class="command">UPDATE</code>, la valeur
+   de retour doit être <code class="varname">NEW</code>, que la fonction trigger
+   peut modifier pour supporter une clause <code class="command">RETURNING</code>
+   d'une requête <code class="command">INSERT</code> ou <code class="command">UPDATE</code>
+   (ceci affectera aussi la valeur de ligne passée aux triggers suivants
+   ou passée à l'alias spécial <code class="varname">EXCLUDED</code> dans une
+   instruction <code class="command">INSERT</code> dotée d'une clause <code class="literal">ON
+    CONFLICT DO UPDATE</code>). Pour les opérations <code class="command">DELETE</code>,
+   la valeur de retour doit être <code class="varname">OLD</code>.
+  </p><p>
+   La valeur de retour d'un trigger de niveau rangée
+   déclenché <code class="literal">AFTER</code> ou un trigger de niveau instruction
+   déclenché <code class="literal">BEFORE</code> ou <code class="literal">AFTER</code> est
+   toujours ignoré ; il pourrait aussi bien être NULL. Néanmoins, tous les
+   types de triggers peuvent toujours annuler l'opération complète en
+   envoyant une erreur.
+  </p><p>
+   L'<a class="xref" href="plpgsql-trigger.html#PLPGSQL-TRIGGER-EXAMPLE" title="Exemple 41.3. Une fonction trigger PL/pgSQL">Exemple 41.3</a> montre un exemple d'une fonction
+   trigger dans <span class="application">PL/pgSQL</span>.
+  </p><div class="example" id="PLPGSQL-TRIGGER-EXAMPLE"><p class="title"><strong>Exemple 41.3. Une fonction trigger <span class="application">PL/pgSQL</span> </strong></p><div class="example-contents"><p>
+    Cet exemple de trigger assure qu'à chaque moment où une ligne est insérée ou
+    mise à jour dans la table, le nom de l'utilisateur courant et l'heure sont estampillés
+    dans la ligne. Et cela vous assure qu'un nom d'employé est donné et que le salaire
+    est une valeur positive.
+   </p><pre class="programlisting">CREATE TABLE emp (
+    nom_employe          text,
+    salaire              integer,
+    date_dermodif        timestamp,
+    utilisateur_dermodif text
+);
+
+CREATE FUNCTION emp_stamp() RETURNS trigger AS $emp_stamp$
+    BEGIN
+        -- Verifie que nom_employe et salary sont donnés
+        IF NEW.nom_employe IS NULL THEN
+            RAISE EXCEPTION 'nom_employe ne peut pas être NULL';
+        END IF;
+        IF NEW.salaire IS NULL THEN
+            RAISE EXCEPTION '% ne peut pas avoir un salaire', NEW.nom_employe;
+        END IF;
+
+        -- Qui travaille pour nous si la personne doit payer pour cela ?
+        IF NEW.salaire &lt; 0 THEN
+            RAISE EXCEPTION '% ne peut pas avoir un salaire négatif', NEW.nom_employe;
+        END IF;
+
+        -- Rappelons-nous qui a changé le salaire et quand
+        NEW.date_dermodif := current_timestamp;
+        NEW.utilisateur_dermodif := current_user;
+        RETURN NEW;
+    END;
+$emp_stamp$ LANGUAGE plpgsql;
+
+CREATE TRIGGER emp_stamp BEFORE INSERT OR UPDATE ON emp
+    FOR EACH ROW EXECUTE FUNCTION emp_stamp();
+   </pre></div></div><br class="example-break" /><p>
+   Une autre façon de tracer les modifications sur une table implique la
+   création d'une nouvelle table qui contient une ligne pour chaque
+   insertion, mise à jour ou suppression qui survient. Cette approche peut
+   être vue comme un audit des modifications sur une table.
+   L'<a class="xref" href="plpgsql-trigger.html#PLPGSQL-TRIGGER-AUDIT-EXAMPLE" title="Exemple 41.4. Une fonction d'audit par trigger en PL/pgSQL">Exemple 41.4</a> montre un exemple d'une
+   fonction d'audit par trigger en <span class="application">PL/pgSQL</span>.
+  </p><div class="example" id="PLPGSQL-TRIGGER-AUDIT-EXAMPLE"><p class="title"><strong>Exemple 41.4. Une fonction d'audit par trigger en
+    <span class="application">PL/pgSQL</span></strong></p><div class="example-contents"><p>
+    Cet exemple de trigger nous assure que toute insertion,
+    modification ou suppression d'une ligne dans la table
+    <code class="literal">emp</code> est enregistrée dans la
+    table <code class="literal">emp_audit</code>. L'heure et le nom de l'utilisateur
+    sont conservées dans la ligne avec le type d'opération réalisé.
+   </p><pre class="programlisting">CREATE TABLE emp (
+    nom_employe       text NOT NULL,
+    salaire           integer
+);
+
+CREATE TABLE emp_audit(
+    operation         char(1)   NOT NULL,
+    tampon            timestamp NOT NULL,
+    id_utilisateur    text      NOT NULL,
+    nom_employe       text      NOT NULL,
+    salaire           integer
+);
+
+CREATE OR REPLACE FUNCTION audit_employe() RETURNS TRIGGER AS $emp_audit$
+BEGIN
+    --
+    -- Ajoute une ligne dans emp_audit pour refléter l'opération réalisée
+    -- sur emp,
+    -- utilise la variable spéciale TG_OP pour cette opération.
+    --
+    IF (TG_OP = 'DELETE') THEN
+        INSERT INTO emp_audit SELECT 'D', now(), current_user, OLD.*;
+    ELSIF (TG_OP = 'UPDATE') THEN
+        INSERT INTO emp_audit SELECT 'U', now(), current_user, NEW.*;
+    ELSIF (TG_OP = 'INSERT') THEN
+        INSERT INTO emp_audit SELECT 'I', now(), current_user, NEW.*;
+    END IF;
+    RETURN NULL; -- le résultat est ignoré car il s'agit d'un trigger AFTER
+END;
+$emp_audit$ language plpgsql;
+
+CREATE TRIGGER emp_audit
+    AFTER INSERT OR UPDATE OR DELETE ON emp
+    FOR EACH ROW EXECUTE FUNCTION audit_employe();
+   </pre></div></div><br class="example-break" /><p>
+   Une variation de l'exemple précédent utilise une vue joignant la
+   table principale et la table d'audit pour montrer les derniers
+   enregistrements modifiés. Cette approche enregistre toujours toutes
+   les modifications sur la table mais présente aussi une vue simple
+   de l'audit, n'affichant que le date et heure de la dernière
+   modification pour chaque enregistrement. <a class="xref" href="plpgsql-trigger.html#PLPGSQL-VIEW-TRIGGER-AUDIT-EXAMPLE" title="Exemple 41.5. Une fonction trigger en PL/pgSQL sur une vue pour un audit">Exemple 41.5</a> montre un exemple
+   d'un trigger d'audit sur une vue avec
+   <span class="application">PL/pgSQL</span>.
+  </p><div class="example" id="PLPGSQL-VIEW-TRIGGER-AUDIT-EXAMPLE"><p class="title"><strong>Exemple 41.5. Une fonction trigger en <span class="application">PL/pgSQL</span>
+    sur une vue pour un audit</strong></p><div class="example-contents"><p>
+    Cet exemple utilise un trigger sur une vue pour la rendre
+    modifiable, et s'assure que toute insertion, mise à jour ou
+    suppression d'une ligne dans la vue est enregistrée (pour l'audit)
+    dans la table <code class="literal">emp_audit</code>. La date et l'heure courante ainsi que le
+    nom de l'utilisateur sont enregistrés, avec le type d'opération
+    réalisé pour que la vue affiche la date et l'heure de la dernière
+    modification de chaque ligne.
+   </p><pre class="programlisting">CREATE TABLE emp (
+    nom_employe       text PRIMARY KEY,
+    salaire           integer
+);
+
+CREATE TABLE emp_audit(
+    operation         char(1)   NOT NULL,
+    id_utilisateur    text      NOT NULL,
+    nom_employe       text      NOT NULL,
+    salaire           integer,
+    dmodif            timestamp NOT NULL
+);
+
+CREATE VIEW emp_vue AS
+    SELECT e.nom_employe,
+           e.salaire,
+           max(ea.dmodif) AS derniere_modification
+      FROM emp e
+      LEFT JOIN emp_audit ea ON ea.nom_employe = e.nom_employe
+     GROUP BY 1, 2;
+
+CREATE OR REPLACE FUNCTION miseajour_emp_vue() RETURNS TRIGGER AS $$
+    BEGIN
+        --
+        -- Perform the required operation on emp, and create a row in emp_audit
+        -- to reflect the change made to emp.
+        --
+        IF (TG_OP = 'DELETE') THEN
+            DELETE FROM emp WHERE nom_employe = OLD.nom_employe;
+            IF NOT FOUND THEN RETURN NULL; END IF;
+
+            OLD.derniere_modification = now();
+            INSERT INTO emp_audit VALUES('D', current_user, OLD.*);
+            RETURN OLD;
+        ELSIF (TG_OP = 'UPDATE') THEN
+            UPDATE emp SET salary = NEW.salary WHERE nom_employe = OLD.nom_employe;
+            IF NOT FOUND THEN RETURN NULL; END IF;
+
+            NEW.derniere_modification = now();
+            INSERT INTO emp_audit VALUES('U', current_user, NEW.*);
+            RETURN NEW;
+        ELSIF (TG_OP = 'INSERT') THEN
+            INSERT INTO emp VALUES(NEW.nom_employe, NEW.salaire);
+
+            NEW.derniere_modification = now();
+            INSERT INTO emp_audit VALUES('I', current_user, NEW.*);
+            RETURN NEW;
+        END IF;
+    END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER emp_audit
+INSTEAD OF INSERT OR UPDATE OR DELETE ON emp_vue
+    FOR EACH ROW EXECUTE FUNCTION miseajour_emp_vue();
+   </pre></div></div><br class="example-break" /><p>
+   Une utilisation des triggers est le maintien d'une table résumée
+   d'une autre table. Le résumé résultant peut être utilisé à la place de
+   la table originale pour certaines requêtes  --  souvent avec des
+   temps d'exécution bien réduits. Cette technique est souvent utilisée
+   pour les statistiques de données où les tables de données mesurées ou
+   observées (appelées des tables de faits) peuvent être extrêmement
+   grandes. L'<a class="xref" href="plpgsql-trigger.html#PLPGSQL-TRIGGER-SUMMARY-EXAMPLE" title="Exemple 41.6. Une fonction trigger PL/pgSQL pour maintenir une table résumée">Exemple 41.6</a> montre un
+   exemple d'une fonction trigger en
+   <span class="application">PL/pgSQL</span> maintenant une table résumée pour
+   une table de faits dans un système de données (data warehouse).
+  </p><div class="example" id="PLPGSQL-TRIGGER-SUMMARY-EXAMPLE"><p class="title"><strong>Exemple 41.6. Une fonction trigger <span class="application">PL/pgSQL</span>
+    pour maintenir une table résumée</strong></p><div class="example-contents"><p>
+    Le schéma détaillé ici est partiellement basé sur l'exemple du
+    <span class="emphasis"><em>Grocery Store</em></span> provenant de <span class="emphasis"><em>The Data
+     Warehouse Toolkit</em></span> par Ralph Kimball.
+   </p><pre class="programlisting">--
+-- Tables principales - dimension du temps de ventes.
+--
+CREATE TABLE time_dimension (
+  time_key                    integer NOT NULL,
+  day_of_week                 integer NOT NULL,
+  day_of_month                integer NOT NULL,
+  month                       integer NOT NULL,
+  quarter                     integer NOT NULL,
+  year                        integer NOT NULL
+);
+CREATE UNIQUE INDEX time_dimension_key ON time_dimension(time_key);
+
+CREATE TABLE sales_fact (
+  time_key                    integer NOT NULL,
+  product_key                 integer NOT NULL,
+  store_key                   integer NOT NULL,
+  amount_sold                 numeric(12,2) NOT NULL,
+  units_sold                  integer NOT NULL,
+  amount_cost                 numeric(12,2) NOT NULL
+);
+CREATE INDEX sales_fact_time ON sales_fact(time_key);
+
+--
+-- Table résumé - ventes sur le temps.
+--
+CREATE TABLE sales_summary_bytime (
+  time_key                    integer NOT NULL,
+  amount_sold                 numeric(15,2) NOT NULL,
+  units_sold                  numeric(12) NOT NULL,
+  amount_cost                 numeric(15,2) NOT NULL
+);
+CREATE UNIQUE INDEX sales_summary_bytime_key ON sales_summary_bytime(time_key);
+
+--
+-- Fonction et trigger pour amender les colonnes résumées
+-- pour un UPDATE, INSERT, DELETE.
+--
+CREATE OR REPLACE FUNCTION maint_sales_summary_bytime() RETURNS TRIGGER
+AS $maint_sales_summary_bytime$
+DECLARE
+  delta_time_key          integer;
+  delta_amount_sold       numeric(15,2);
+  delta_units_sold        numeric(12);
+  delta_amount_cost       numeric(15,2);
+BEGIN
+
+  -- Travaille sur l'ajout/la suppression de montant(s).
+  IF (TG_OP = 'DELETE') THEN
+
+    delta_time_key = OLD.time_key;
+    delta_amount_sold = -1 * OLD.amount_sold;
+    delta_units_sold = -1 * OLD.units_sold;
+    delta_amount_cost = -1 * OLD.amount_cost;
+
+  ELSIF (TG_OP = 'UPDATE') THEN
+
+    -- interdit les mises à jour qui modifient time_key -
+    -- (probablement pas trop cher, car DELETE + INSERT est la façon la plus
+    -- probable de réaliser les modifications).
+    IF ( OLD.time_key != NEW.time_key) THEN
+      RAISE EXCEPTION 'Update of time_key : % -&gt; % not allowed',
+                      OLD.time_key, NEW.time_key;
+    END IF;
+
+    delta_time_key = OLD.time_key;
+    delta_amount_sold = NEW.amount_sold - OLD.amount_sold;
+    delta_units_sold = NEW.units_sold - OLD.units_sold;
+    delta_amount_cost = NEW.amount_cost - OLD.amount_cost;
+
+  ELSIF (TG_OP = 'INSERT') THEN
+
+    delta_time_key = NEW.time_key;
+    delta_amount_sold = NEW.amount_sold;
+    delta_units_sold = NEW.units_sold;
+    delta_amount_cost = NEW.amount_cost;
+
+  END IF;
+
+
+  -- Insertion ou mise à jour de la ligne de résumé avec les nouvelles valeurs.
+  &lt;&lt;insert_update&gt;&gt;
+  LOOP
+  UPDATE sales_summary_bytime
+  SET amount_sold = amount_sold + delta_amount_sold,
+    units_sold = units_sold + delta_units_sold,
+    amount_cost = amount_cost + delta_amount_cost
+    WHERE time_key = delta_time_key;
+
+    EXIT insert_update WHEN found;
+
+    BEGIN
+      INSERT INTO sales_summary_bytime (
+        time_key,
+        amount_sold,
+        units_sold,
+        amount_cost)
+        VALUES (
+        delta_time_key,
+        delta_amount_sold,
+        delta_units_sold,
+        delta_amount_cost
+        );
+      EXIT insert_update;
+
+      EXCEPTION
+      WHEN UNIQUE_VIOLATION THEN
+      -- do nothing
+      END;
+      END LOOP insert_update;
+
+  RETURN NULL;
+
+END;
+$maint_sales_summary_bytime$ LANGUAGE plpgsql;
+
+CREATE TRIGGER maint_sales_summary_bytime
+  AFTER INSERT OR UPDATE OR DELETE ON sales_fact
+  FOR EACH ROW EXECUTE FUNCTION maint_sales_summary_bytime();
+
+INSERT INTO sales_fact VALUES(1,1,1,10,3,15);
+INSERT INTO sales_fact VALUES(1,2,1,20,5,35);
+INSERT INTO sales_fact VALUES(2,2,1,40,15,135);
+INSERT INTO sales_fact VALUES(2,3,1,10,1,13);
+SELECT * FROM sales_summary_bytime;
+DELETE FROM sales_fact WHERE product_key = 1;
+SELECT * FROM sales_summary_bytime;
+UPDATE sales_fact SET units_sold = units_sold * 2;
+SELECT * FROM sales_summary_bytime;
+   </pre></div></div><br class="example-break" /><p>
+   Les triggers <code class="literal">AFTER</code> peuvent aussi utiliser les
+   <em class="firstterm">tables de transition</em> pour inspecter l'ensemble
+   complet de lignes modifiées par l'instruction trigger. La commande
+   <code class="command">CREATE TRIGGER</code> donne des noms à la ou aux tables de
+   transition. La fonction peut ensuite se référer à ces noms comme s'il
+   s'agissait de tables temporaires en lecture seule. <a class="xref" href="plpgsql-trigger.html#PLPGSQL-TRIGGER-AUDIT-TRANSITION-EXAMPLE" title="Exemple 41.7. Auditer avec les tables de transition">Exemple 41.7</a> montre un exemple.
+  </p><div class="example" id="PLPGSQL-TRIGGER-AUDIT-TRANSITION-EXAMPLE"><p class="title"><strong>Exemple 41.7. Auditer avec les tables de transition</strong></p><div class="example-contents"><p>
+    Cet exemple produit les mêmes résultats que <a class="xref" href="plpgsql-trigger.html#PLPGSQL-TRIGGER-AUDIT-EXAMPLE" title="Exemple 41.4. Une fonction d'audit par trigger en PL/pgSQL">Exemple 41.4</a> mais au lieu d'utiliser un
+    trigger qui se déclenche pour chaque ligne, il utilise un trigger qui se
+    déclenche une fois par instruction, après avoir récupérer les
+    informations intéressantes dans une table de transition. Cela peut être
+    significativement plus rapide que l'approche du trigger par ligne lorsque
+    l'instruction trigger a modifié beaucoup de lignes. Notez qu'il est
+    nécessaire de faire une déclaration séparée du trigger pour chaque type
+    d'événement car les clauses <code class="literal">REFERENCING</code> doivent être
+    différentes dans chaque cas. Mais ceci ne nous empêche pas d'utiliser une
+    seule fonction trigger si nous le souhaitons. (En pratique, il pourrait
+    être préférable d'utiliser trois fonctions séparées et d'éviter les tests
+    à l'exécution sur la variable <code class="varname">TG_OP</code>.)
+   </p><pre class="programlisting">
+CREATE TABLE emp (
+    empname           text NOT NULL,
+    salary            integer
+);
+
+CREATE TABLE emp_audit(
+    operation         char(1)   NOT NULL,
+    stamp             timestamp NOT NULL,
+    userid            text      NOT NULL,
+    empname           text      NOT NULL,
+    salary integer
+);
+
+CREATE OR REPLACE FUNCTION process_emp_audit() RETURNS TRIGGER AS $emp_audit$
+    BEGIN
+        --
+        -- Create rows in emp_audit to reflect the operations performed on emp,
+        -- making use of the special variable TG_OP to work out the operation.
+        --
+        IF (TG_OP = 'DELETE') THEN
+            INSERT INTO emp_audit
+                SELECT 'D', now(), current_user, o.* FROM old_table o;
+        ELSIF (TG_OP = 'UPDATE') THEN
+            INSERT INTO emp_audit
+                SELECT 'U', now(), current_user, n.* FROM new_table n;
+        ELSIF (TG_OP = 'INSERT') THEN
+            INSERT INTO emp_audit
+                SELECT 'I', now(), current_user, n.* FROM new_table n;
+        END IF;
+        RETURN NULL; -- result is ignored since this is an AFTER trigger
+    END;
+$emp_audit$ LANGUAGE plpgsql;
+
+CREATE TRIGGER emp_audit_ins
+    AFTER INSERT ON emp
+    REFERENCING NEW TABLE AS new_table
+    FOR EACH STATEMENT EXECUTE FUNCTION process_emp_audit();
+CREATE TRIGGER emp_audit_upd
+    AFTER UPDATE ON emp
+    REFERENCING OLD TABLE AS old_table NEW TABLE AS new_table
+    FOR EACH STATEMENT EXECUTE FUNCTION process_emp_audit();
+CREATE TRIGGER emp_audit_del
+    AFTER DELETE ON emp
+    REFERENCING OLD TABLE AS old_table
+    FOR EACH STATEMENT EXECUTE FUNCTION process_emp_audit();
+   </pre></div></div><br class="example-break" /></div><div class="sect2" id="PLPGSQL-EVENT-TRIGGER"><div class="titlepage"><div><div><h3 class="title">41.10.2. Triggers sur des événements <a href="#PLPGSQL-EVENT-TRIGGER" class="id_link">#</a></h3></div></div></div><p>
+   <span class="application">PL/pgSQL</span> peut être utilisé pour définir des
+   <a class="link" href="event-triggers.html" title="Chapitre 38. Triggers sur événement">triggers sur des événements</a>. <span class="productname">PostgreSQL</span> requiert
+   qu'une fonction qui doit appelée en tant que trigger d'événement soit
+   déclarée sans argument et avec un type <code class="literal">event_trigger</code> en
+   retour.
+  </p><p>
+   Quand une fonction <span class="application">PL/pgSQL</span> est appelée en tant
+   que trigger d'événement, plusieurs variables spéciales sont créées
+   automatiquement dans son bloc de niveau haut. Les voici :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt id="PLPGSQL-EVENT-TRIGGER-TG-EVENT"><span class="term"><code class="varname">TG_EVENT</code> <code class="type">text</code></span> <a href="#PLPGSQL-EVENT-TRIGGER-TG-EVENT" class="id_link">#</a></dt><dd><p>
+       événement pour lequel le trigger est déclenché.
+      </p></dd><dt id="PLPGSQL-EVENT-TRIGGER-TG-TAG"><span class="term"><code class="varname">TG_TAG</code> <code class="type">text</code></span> <a href="#PLPGSQL-EVENT-TRIGGER-TG-TAG" class="id_link">#</a></dt><dd><p>
+       balise commande pour laquelle le trigger a été déclenché.
+      </p></dd></dl></div><p>
+  </p><p>
+   <a class="xref" href="plpgsql-trigger.html#PLPGSQL-EVENT-TRIGGER-EXAMPLE" title="Exemple 41.8. Une fonction PL/pgSQL pour un trigger d'événement">Exemple 41.8</a> montre un exemple d'une
+   fonction pour un trigger d'événement écrit en
+   <span class="application">PL/pgSQL</span>.
+  </p><div class="example" id="PLPGSQL-EVENT-TRIGGER-EXAMPLE"><p class="title"><strong>Exemple 41.8. Une fonction <span class="application">PL/pgSQL</span> pour un trigger
+    d'événement</strong></p><div class="example-contents"><p>
+    Cet exemple de trigger lève simplement un message <code class="literal">NOTICE</code>
+    à chaque fois qu'une commande supportée est exécutée.
+   </p><pre class="programlisting">
+CREATE OR REPLACE FUNCTION rapporte() RETURNS event_trigger AS $$
+BEGIN
+    RAISE NOTICE 'rapporte: % %', tg_event, tg_tag;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE EVENT TRIGGER rapporte ON ddl_command_start EXECUTE FUNCTION rapporte();
+   </pre></div></div><br class="example-break" /></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/plpgsql-trigger.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:44 GMT -->
+</html>

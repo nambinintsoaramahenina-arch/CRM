@@ -1,0 +1,1449 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/libpq-connect.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:36 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>32.1. Fonctions de contrôle de connexion à la base de données</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="libpq.html" title="Chapitre 32. libpq -- Bibliothèque C" /><link rel="next" href="libpq-status.html" title="32.2. Fonctions de statut de connexion" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/libpq-connect.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/libpq-connect.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/libpq-connect.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/libpq-connect.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/libpq-connect.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/libpq-connect.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/libpq-connect.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/libpq-connect.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/libpq-connect.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/libpq-connect.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="client-interfaces.html">Interfaces client</a></span> » <span class="breadcrumb-link"><a href="libpq.html"><span class="application">libpq</span>  --  Bibliothèque C</a></span> » <span class="breadcrumb-node">Fonctions de contrôle de connexion à la base de données</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="libpq.html" title="Chapitre 32. libpq  --  Bibliothèque C">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="libpq.html" title="Chapitre 32. libpq  --  Bibliothèque C">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="libpq-status.html" title="32.2. Fonctions de statut de connexion">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Chapitre 32. <span class="application">libpq</span>  --  Bibliothèque C </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 32.2. Fonctions de statut de connexion</td></tr></table></div><div class="sect1" id="LIBPQ-CONNECT"><div class="titlepage"><div><div><h2 class="title" style="clear: both">32.1. Fonctions de contrôle de connexion à la base de données <a href="#LIBPQ-CONNECT" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="libpq-connect.html#LIBPQ-CONNSTRING">32.1.1. Chaînes de connexion</a></span></dt><dt><span class="sect2"><a href="libpq-connect.html#LIBPQ-PARAMKEYWORDS">32.1.2. Mots clés de la chaîne de connexion</a></span></dt></dl></div><p>
+   Les fonctions suivantes concernent la réalisation d'une connexion avec un
+   serveur <span class="productname">PostgreSQL</span>. Un programme peut avoir
+   plusieurs connexions ouvertes sur des serveurs à un même moment (une raison
+   de la faire est d'accéder à plusieurs bases de données). Chaque connexion
+   est représentée par un objet
+   <code class="structname">PGconn</code><a id="id-1.7.3.8.2.3" class="indexterm"></a>,
+   obtenu avec la fonction <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDB"><code class="function">PQconnectdb</code></a>, <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDBPARAMS"><code class="function">PQconnectdbParams</code></a> ou <a class="xref" href="libpq-connect.html#LIBPQ-PQSETDBLOGIN"><code class="function">PQsetdbLogin</code></a>. Notez que ces fonctions renverront toujours
+   un pointeur d'objet non nul, sauf peut-être dans un cas de manque de
+   mémoire pour l'allocation de l'objet <code class="structname">PGconn</code>. La
+   fonction <a class="xref" href="libpq-status.html#LIBPQ-PQSTATUS"><code class="function">PQstatus</code></a> doit être appelée pour vérifier
+   le code retour pour une connexion réussie avant de lancer des requêtes via
+   l'objet de connexion.
+
+   </p><div class="warning"><h3 class="title">Avertissement</h3><p>
+     Si des utilisateurs non dignes de confiance ont accès à une base de
+     données qui n'a pas adopté une <a class="link" href="ddl-schemas.html#DDL-SCHEMAS-PATTERNS" title="5.10.6. Utilisation">méthode sécurisée d'utilisation des
+      schémas</a>, commencez chaque session en supprimant du
+     <code class="varname">search_path</code> les schémas accessibles par tout le monde.
+     Il est possible de configurer le paramètre <code class="literal">options</code> à
+     la valeur <code class="literal">-csearch_path=</code>. Sinon, il est possible
+     d'exécuter <code class="literal">PQexec(<em class="replaceable"><code>conn</code></em>, "SELECT
+      pg_catalog.set_config('search_path', '', false)")</code> tout de suite
+     après la connexion. Cette considération n'est pas spécifique à la
+     <span class="application">libpq</span> ; elle s'applique à chaque
+     interface permettant d'exécuter des commandes SQL arbitraires.
+    </p></div><p>
+
+   </p><div class="warning"><h3 class="title">Avertissement</h3><p>
+     Sur Unix, la création d'un processus via l'appel système fork() avec des
+     connexions libpq ouvertes peut amener à des résultats imprévisibles car
+     les processus parent et enfants partagent les même sockets et les mêmes
+     ressources du système d'exploitation. Pour cette raison, un tel usage n'est
+     pas recommandé, alors qu'exécuter un <code class="function">exec</code> à partir
+     du processus enfant pour charger un nouvel exécutable est sûr.
+    </p></div><p>
+
+   </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQCONNECTDBPARAMS"><span class="term"><code class="function">PQconnectdbParams</code><a id="id-1.7.3.8.2.11.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCONNECTDBPARAMS" class="id_link">#</a></dt><dd><p>
+       Établit une nouvelle connexion au serveur de base de données.
+
+       </p><pre class="synopsis">
+PGconn *PQconnectdbParams(const char * const *keywords,
+                          const char * const *values,
+                          int expand_dbname);
+       </pre><p>
+      </p><p>
+       Cette fonction ouvre une nouvelle connexion à la base de données en
+       utilisant les paramètres à partir des deux tableaux terminés par un
+       <code class="symbol">NULL</code>. Le premier, <code class="literal">keywords</code>, est
+       défini comme un tableau de chaînes, chacune étant un mot-clé. Le second,
+       <code class="literal">values</code>, donne la valeur pour chaque mot-clé.
+       Contrairement à <a class="xref" href="libpq-connect.html#LIBPQ-PQSETDBLOGIN"><code class="function">PQsetdbLogin</code></a> ci-dessous, l'ensemble
+       des paramètres peut être étendu sans changer la signature de la fonction
+       donc son utilisation (ou ses versions non bloquantes, à savoir
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTSTARTPARAMS"><code class="function">PQconnectStartParams</code></a> et
+       <code class="function">PQconnectPoll</code>) est recommandée pour les nouvelles
+       applications.
+      </p><p>
+       Les mots clés actuellement reconnus sont listés dans
+       <a class="xref" href="libpq-connect.html#LIBPQ-PARAMKEYWORDS" title="32.1.2. Mots clés de la chaîne de connexion">Section 32.1.2</a>.
+      </p><p>
+       Les tableaux fournis peuvent être vides pour utiliser tous les
+       paramètres par défaut ou peuvent contenir une ou plusieurs
+       configurations. Elles doivent correspondre en longueur. Le traitement
+       s'arrêtera à la première entrée <code class="symbol">NULL</code> dans le tableau
+       <code class="literal">keywords</code>. De plus, si l'entrée
+       <code class="literal">values</code> associée à une entrée
+       <code class="literal">keywords</code> non <code class="symbol">NULL</code> est
+       <code class="symbol">NULL</code> ou une chaîne vide, cette entrée est ignorée et
+       le traitement continue avec la prochaine paire d'entrées des tableaux.
+      </p><p>
+       Quand <code class="literal">expand_dbname</code> est différent de zéro, la valeur
+       pour le premier mot-clé <em class="parameter"><code>dbname</code></em> est testé pour
+       vérifier s'il s'agit d'une <em class="firstterm">chaîne de connexion</em>.
+       Dans ce cas, elle sera <span class="quote">« <span class="quote">éclatée</span> »</span> dans les paramètres
+       individuels de connexion. La valeur est considérée être une chaîne de
+       connexion, plutôt qu'un nom de base, si elle contient un signe égal
+       (<code class="literal">=</code>) ou si elle commence avec un désignateur de
+       schéma URI. (Vous trouverez plus de détails sur les formats de chaîne
+       de connexion dans <a class="xref" href="libpq-connect.html#LIBPQ-CONNSTRING" title="32.1.1. Chaînes de connexion">Section 32.1.1</a>.) Seule la première
+       occurrence de <em class="parameter"><code>dbname</code></em> est traitée de cette
+       façon ; tout paramètre <em class="parameter"><code>dbname</code></em>
+       supplémentaire est traité comme un simple nom de base.
+      </p><p>
+       En général, les tableaux de paramètres sont traités du début à la fin.
+       Si un mot clé est répété, la dernière valeur (non <code class="symbol">NULL</code>
+       ou vide) est utilisée. Cette règle s'applique en particulier quand un
+       mot clé trouvé dans la chaîne de connexion est en conflit avec un mot
+       clé apparaissant dans le tableau <code class="literal">keywords</code>. De ce
+       fait, le développeur peut déterminer si les entrées du tableau peuvent
+       surcharger ou être surchargées par des valeurs prises dans la chaîne de
+       connexion. Les entrées du tableau apparaissant avant une entrée
+       <em class="parameter"><code>dbname</code></em> éclatée peuvent être surchargées par les
+       champs de la chaîne de connexion et, à leur tour,ces champs peuvent
+       être surchargés par des entrées du tableau apparaissant après
+       <em class="parameter"><code>dbname</code></em> (mais, encore une fois, seulement si ces
+       entrées fournissent des valeurs non vides).
+      </p><p>
+       Après avoir traité toutes les entrées de tableau et toute chaîne de
+       connexion éclatée, tous les paramètres de connexion restants non
+       configurés sont remplis avec leur valeurs par défaut. Si une variable
+       d'environnement d'un paramètre non configuré (voir <a class="xref" href="libpq-envars.html" title="32.15. Variables d'environnement">Section 32.15</a>) est configuré, sa valeur est utilisée. Si la
+       variable d'environnement n'est pas configurée, alors la valeur par
+       défaut interne du paramètre est utilisée.
+      </p></dd><dt id="LIBPQ-PQCONNECTDB"><span class="term"><code class="function">PQconnectdb</code><a id="id-1.7.3.8.2.11.2.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCONNECTDB" class="id_link">#</a></dt><dd><p>
+       Établit une nouvelle connexion à un serveur de bases de données.
+
+       </p><pre class="synopsis">
+        PGconn *PQconnectdb(const char *conninfo);
+       </pre><p>
+      </p><p>
+       Cette fonction ouvre une nouvelle connexion à la base de données en
+       utilisant les paramètres pris à partir de la chaîne
+       <code class="literal">conninfo</code>.
+      </p><p>
+       La chaîne passée peut être vide pour utiliser tous les paramètres par
+       défaut ou elle peut contenir un ou plusieurs paramètres, séparés par
+       des espaces blancs. Elle peut aussi contenir une <acronym class="acronym">URI</acronym>.
+       Voir <a class="xref" href="libpq-connect.html#LIBPQ-CONNSTRING" title="32.1.1. Chaînes de connexion">Section 32.1.1</a> pour les détails.
+      </p></dd><dt id="LIBPQ-PQSETDBLOGIN"><span class="term"><code class="function">PQsetdbLogin</code><a id="id-1.7.3.8.2.11.3.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQSETDBLOGIN" class="id_link">#</a></dt><dd><p>
+       Crée une nouvelle connexion sur le serveur de bases de données.
+       </p><pre class="synopsis">PGconn *PQsetdbLogin(const char *pghost,
+                     const char *pgport,
+                     const char *pgoptions,
+                     const char *pgtty,
+                     const char *dbName,
+                     const char *login,
+                     const char *pwd);
+       </pre><p>
+      </p><p>
+       C'est le prédécesseur de <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDB"><code class="function">PQconnectdb</code></a> avec un ensemble
+       fixe de paramètres. Cette fonction a les mêmes fonctionnalités sauf que les
+       paramètres manquants seront toujours initialisés avec leur valeurs par
+       défaut. Écrire <code class="symbol">NULL</code> ou une chaîne vide pour un de ces
+       paramètres fixes dont vous souhaitez utiliser la valeur par défaut.
+      </p><p>
+       Si <em class="parameter"><code>dbName</code></em> contient un signe <code class="symbol">=</code> ou
+       a un préfixe <acronym class="acronym">URI</acronym> de connexion valide,
+       il est pris pour une chaîne <em class="parameter"><code>conninfo</code></em> exactement
+       de la même façon que si elle était passée à
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDB"><code class="function">PQconnectdb</code></a>, et le reste des paramètres est
+       ensuite appliqué comme spécifié dans <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDBPARAMS"><code class="function">PQconnectdbParams</code></a>.
+      </p><p>
+        <code class="literal">pgtty</code> n'est plus utilisé et toute valeur passée sera
+        ignorée.
+      </p></dd><dt id="LIBPQ-PQSETDB"><span class="term"><code class="function">PQsetdb</code><a id="id-1.7.3.8.2.11.4.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQSETDB" class="id_link">#</a></dt><dd><p>
+       Crée une nouvelle connexion sur le serveur de bases de données.
+       </p><pre class="synopsis">PGconn *PQsetdb(char *pghost,
+                char *pgport,
+                char *pgoptions,
+                char *pgtty,
+                char *dbName);
+       </pre><p>
+      </p><p>
+       C'est une macro faisant appel à <a class="xref" href="libpq-connect.html#LIBPQ-PQSETDBLOGIN"><code class="function">PQsetdbLogin</code></a> avec des
+       pointeurs nuls pour les paramètres <em class="parameter"><code>login</code></em> et <em class="parameter"><code>pwd</code></em>.
+       Elle est fournie pour la compatibilité avec les très vieux programmes.
+      </p></dd><dt id="LIBPQ-PQCONNECTSTARTPARAMS"><span class="term"><code class="function">PQconnectStartParams</code><a id="id-1.7.3.8.2.11.5.1.2" class="indexterm"></a><br /></span><span class="term"><code class="function">PQconnectStart</code><a id="id-1.7.3.8.2.11.5.2.2" class="indexterm"></a><br /></span><span class="term" id="LIBPQ-PQCONNECTPOLL"><code class="function">PQconnectPoll</code><a id="id-1.7.3.8.2.11.5.3.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCONNECTSTARTPARAMS" class="id_link">#</a></dt><dd><p>
+       <a id="id-1.7.3.8.2.11.5.4.1.1" class="indexterm"></a>
+       Crée une connexion au serveur de bases de données d'une façon non bloquante.
+       </p><pre class="synopsis">PGconn *PQconnectStartParams(const char * const *keywords,
+                             const char * const *values,
+                              int expand_dbname);
+
+        PGconn *PQconnectStart(const char *conninfo);
+
+        PostgresPollingStatusType PQconnectPoll(PGconn *conn);
+       </pre><p>
+      </p><p>
+       Ces trois fonctions sont utilisées pour ouvrir une connexion au serveur de
+       bases de données d'une façon telle que le thread de votre application n'est
+       pas bloqué sur les entrées/sorties distantes en demandant la connexion. Le
+       but de cette approche est que l'attente de la fin des entrées/sorties peut se
+       faire dans la boucle principale de l'application plutôt qu'à l'intérieur de
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDBPARAMS"><code class="function">PQconnectdbParams</code></a> ou <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDB"><code class="function">PQconnectdb</code></a>,
+       et donc l'application peut gérer des opérations en
+       parallèle à d'autres activités.
+      </p><p>
+       Avec <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTSTARTPARAMS"><code class="function">PQconnectStartParams</code></a>, la connexion à la base
+       de données est faite en utilisant les paramètres à partir des tableaux
+       <code class="literal">keywords</code> et <code class="literal">values</code>, et contrôlée
+       par <code class="literal">expand_dbname</code>, comme décrit dans
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDBPARAMS"><code class="function">PQconnectdbParams</code></a>.
+      </p><p>
+       Avec <code class="function">PQconnectStart</code>, la connexion à la base de
+       données est faite en utilisant les paramètres provenant de la chaîne
+       <code class="literal">conninfo</code> comme décrit ci-dessus pour
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDB"><code class="function">PQconnectdb</code></a>.
+      </p><p>
+       Ni <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTSTARTPARAMS"><code class="function">PQconnectStartParams</code></a> ni
+       <code class="function">PQconnectStart</code> ni <code class="function">PQconnectPoll</code>
+       ne bloqueront, aussi longtemps qu'un certain nombre de restrictions est
+       respecté :
+       </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+          Le paramètre <code class="literal">hostaddr</code> doit être utilisé de façon
+          appropriée pour empêcher l'exécution de requêtes DNS. Voir la
+          documentation de ce paramètre sur <a class="xref" href="libpq-connect.html#LIBPQ-PARAMKEYWORDS" title="32.1.2. Mots clés de la chaîne de connexion">Section 32.1.2</a> pour plus de détails.
+         </p></li><li class="listitem"><p>
+          Si vous appelez <a class="xref" href="libpq-control.html#LIBPQ-PQTRACE"><code class="function">PQtrace</code></a>, assurez-vous que l'objet de
+          flux dans lequel vous enregistrez les traces ne bloquera pas.
+         </p></li><li class="listitem"><p>
+          Assurez-vous que le socket soit dans l'état approprié avant d'appeler
+          <code class="function">PQconnectPoll</code>, comme décrit ci-dessous.
+         </p></li></ul></div><p>
+      </p><p>
+       Pour commencer une demande de connexion non bloquante, appelez
+       <code class="function">PQconnectStart</code> ou
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTSTARTPARAMS"><code class="function">PQconnectStartParams</code></a>. Si le résultat est nul,
+       alors <span class="application">libpq</span> a été incapable d'allouer une
+       nouvelle structure <code class="structname">PGconn</code>. Sinon, un pointeur
+       valide vers une structure <code class="structname">PGconn</code> est renvoyé
+       (bien qu'il ne représente pas encore une connexion valide vers la base
+       de données). Au retour de <code class="function">PQconnectStart</code>, appelez
+       <code class="function">PQstatus(conn)</code>. Si le résultat vaut
+       <code class="symbol">CONNECTION_BAD</code>, la tentative de connexion a déjà
+       échoué, généralement à cause de paramètres de connexion invalides.
+      </p><p>
+       Si <code class="function">PQconnectStart</code> ou
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTSTARTPARAMS"><code class="function">PQconnectStartParams</code></a> réussit, la prochaine étape
+       est d'appeler souvent <span class="application">libpq</span> de façon à ce
+       qu'il continue la séquence de connexion. Utilisez
+       <code class="function">PQsocket(conn)</code> pour obtenir le descripteur de
+       socket sous la connexion à la base de données. (Attention, ne supposez
+       pas que la socket reste identique pour les différents appels à
+       <code class="function">PQconnectPoll</code>.) Du coup, une boucle : si le
+       dernier retour de <code class="function">PQconnectPoll(conn)</code> est
+       <code class="symbol">PGRES_POLLING_READING</code>, attendez que la socket soit
+       prête pour lire (comme indiqué par <code class="function">select()</code>,
+       <code class="function">poll()</code> ou une fonction système similaire). Notez que
+       <code class="function">PQsocketPoll</code> cela peut aider à réduire le texte
+       habituel en faisant abstraction de la configuration de
+       <code class="function">select(2)</code> ou de <code class="function">poll(2)</code> s'il
+       est disponible sur votre système. Puis,
+       appelez de nouveau <code class="function">PQconnectPoll(conn)</code>. En
+       revanche, si le dernier retour de
+       <code class="function">PQconnectPoll(conn)</code> est
+       <code class="symbol">PGRES_POLLING_WRITING</code>, attendez que la socket soit
+       prête pour écrire, puis appelez de nouveau
+       <code class="function">PQconnectPoll(conn)</code>. À la première itération, si
+       vous avez encore à appeler <code class="function">PQconnectPoll</code>,
+       continuez comme s'il avait renvoyé
+       <code class="symbol">PGRES_POLLING_WRITING</code>. Continuez cette boucle jusqu'à
+       ce que <code class="function">PQconnectPoll(conn)</code> renvoie
+       <code class="symbol">PGRES_POLLING_FAILED</code>, indiquant que la procédure de
+       connexion a échoué ou <code class="symbol">PGRES_POLLING_OK</code>, indiquant le
+       succès de la procédure de connexion.
+      </p><p>
+       À tout moment pendant la connexion, le statut de cette connexion peut
+       être vérifié en appelant <a class="xref" href="libpq-status.html#LIBPQ-PQSTATUS"><code class="function">PQstatus</code></a>. Si le résultat est
+       <code class="symbol">CONNECTION_BAD</code>, alors la procédure de connexion a échoué ;
+       si, au contraire, elle renvoie <code class="function">CONNECTION_OK</code>, alors la
+       connexion est prête. Ces deux états sont détectables à partir de la valeur
+       de retour de <code class="function">PQconnectPoll</code>, décrite ci-dessus. D'autres états
+       pourraient survenir lors (et seulement lors) d'une procédure de
+       connexion asynchrone. Ils indiquent l'état actuel de la procédure de
+       connexion et pourraient être utiles pour fournir un retour à l'utilisateur.
+       Ces statuts sont :
+      </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-CONNECTION-STARTED"><span class="term"><code class="symbol">CONNECTION_STARTED</code></span> <a href="#LIBPQ-CONNECTION-STARTED" class="id_link">#</a></dt><dd><p>
+          Attente de la connexion à réaliser.
+         </p></dd><dt id="LIBPQ-CONNECTION-MADE"><span class="term"><code class="symbol">CONNECTION_MADE</code></span> <a href="#LIBPQ-CONNECTION-MADE" class="id_link">#</a></dt><dd><p>
+          Connexion OK ; attente d'un envoi.
+         </p></dd><dt id="LIBPQ-CONNECTION-AWAITING-RESPONSE"><span class="term"><code class="symbol">CONNECTION_AWAITING_RESPONSE</code></span> <a href="#LIBPQ-CONNECTION-AWAITING-RESPONSE" class="id_link">#</a></dt><dd><p>
+          Attente d'une réponse du serveur.
+         </p></dd><dt id="LIBPQ-CONNECTION-AUTH-OK"><span class="term"><code class="symbol">CONNECTION_AUTH_OK</code></span> <a href="#LIBPQ-CONNECTION-AUTH-OK" class="id_link">#</a></dt><dd><p>
+          Authentification reçue ; attente de la fin du lancement du moteur.
+         </p></dd><dt id="LIBPQ-CONNECTION-SSL-STARTUP"><span class="term"><code class="symbol">CONNECTION_SSL_STARTUP</code></span> <a href="#LIBPQ-CONNECTION-SSL-STARTUP" class="id_link">#</a></dt><dd><p>
+          Négociation du cryptage SSL.
+         </p></dd><dt id="LIBPQ-CONNECTION-GSS-STARTUP"><span class="term"><code class="symbol">CONNECTION_GSS_STARTUP</code></span> <a href="#LIBPQ-CONNECTION-GSS-STARTUP" class="id_link">#</a></dt><dd><p>
+          Négociation du chiffrement GSS.
+         </p></dd><dt id="LIBPQ-CONNECTION-CHECK-WRITABLE"><span class="term"><code class="symbol">CONNECTION_CHECK_WRITABLE</code></span> <a href="#LIBPQ-CONNECTION-CHECK-WRITABLE" class="id_link">#</a></dt><dd><p>
+          Vérification que la connexion est capable de gérer des transactions
+          en écriture.
+         </p></dd><dt id="LIBPQ-CONNECTION-CHECK-STANDBY"><span class="term"><code class="symbol">CONNECTION_CHECK_STANDBY</code></span> <a href="#LIBPQ-CONNECTION-CHECK-STANDBY" class="id_link">#</a></dt><dd><p>
+          Vérification que la connexion concerne un serveur secondaire.
+         </p></dd><dt id="LIBPQ-CONNECTION-CONSUME"><span class="term"><code class="symbol">CONNECTION_CONSUME</code></span> <a href="#LIBPQ-CONNECTION-CONSUME" class="id_link">#</a></dt><dd><p>
+          En train de traiter les messages de réponse restants sur la connexion.
+         </p></dd></dl></div><p>
+       Notez que, bien que ces constantes resteront (pour maintenir une
+       compatibilité), une application ne devrait jamais se baser sur
+       l'apparition de ces états dans un ordre particulier, ou leur survenance
+       tout court, ou sur le fait que le statut fait partie de ces valeurs
+       documentées.
+       Une application pourrait faire quelque chose comme
+       ça :
+       </p><pre class="programlisting">switch(PQstatus(conn))
+{
+    case CONNECTION_STARTED:
+        feedback = "Connexion en cours...";
+        break;
+
+    case CONNECTION_MADE:
+        feedback = "Connecté au serveur...";
+        break;
+.
+.
+.
+    default:
+        feedback = "Connexion...";
+}
+       </pre><p>
+      </p><p>
+       Le paramètre de connexion <code class="literal">connect_timeout</code> est ignoré lors
+       de l'utilisation <code class="function">PQconnectPoll</code> ; c'est de la
+       responsabilité de l'application de décider quand une période de temps
+       excessive s'est écoulée. Sinon, <code class="function">PQconnectStart</code> suivi par
+       une boucle <code class="function">PQconnectPoll</code> est équivalent à
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDB"><code class="function">PQconnectdb</code></a>.
+      </p><p>
+       Notez que quand <code class="function">PQconnectStart</code> ou
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTSTARTPARAMS"><code class="function">PQconnectStartParams</code></a> renvoient un pointeur non
+       NULL, vous devez appeler <a class="xref" href="libpq-connect.html#LIBPQ-PQFINISH"><code class="function">PQfinish</code></a> quand vous en
+       avez fini pour libérer la structure et tout bloc mémoire qui y est
+       associé. Ceci doit être fait même si la tentative de connexion échoue
+       ou est abandonnée.
+      </p></dd><dt id="LIBPQ-PQSOCKETPOLL"><span class="term"><code class="function">PQsocketPoll</code><a id="id-1.7.3.8.2.11.6.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQSOCKETPOLL" class="id_link">#</a></dt><dd><p>
+       <a id="id-1.7.3.8.2.11.6.2.1.1" class="indexterm"></a>
+       Interroge le descripteur de la socket utilisée par la connexion,
+       descripteur récupéré avec la fonction <a class="xref" href="libpq-status.html#LIBPQ-PQSOCKET"><code class="function">PQsocket</code></a>.
+       L'usage principal de cette fonction est d'itérer à travers la séquence
+       de la connexion décrite dans la documentation de
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTSTARTPARAMS"><code class="function">PQconnectStartParams</code></a>.
+</p><pre class="synopsis">
+typedef pg_int64 pg_usec_time_t;
+
+int PQsocketPoll(int sock, int forRead, int forWrite,
+                 pg_usec_time_t end_time);
+</pre><p>
+      </p><p>
+       Cette fonction interroge un description de fichier, parfois avec un délai
+       maximal. Si <em class="parameter"><code>forRead</code></em> est différent de zéro, la
+       fonction terminera quand la socket est prête en lecture. Si
+       <em class="parameter"><code>forWrite</code></em> est différent de zéro, la fonction
+       terminera quand la socket est prête en écriture.
+      </p><p>
+       Le délai est spécifié par <em class="parameter"><code>end_time</code></em>, qui est le
+       temps maximal avant d'arrêter l'attente, exprimé en nombre de
+       microsecondes depuis l'époque Unix (autrement dit, <code class="type">time_t</code>
+       fois un million). Ce délai est infini si <em class="parameter"><code>end_time</code></em>
+       vaut <code class="literal">-1</code>. Ce délai est immédiat (donc non bloquant) si
+       end_time vaut <code class="literal">0</code> (ou en fait, tout moment avant
+       maintenant). Les valeurs du délai peuvent être plus facilement calculées
+       en ajoutant le nombre de microsecondes souhaité au résultat de la
+       fonction <a class="xref" href="libpq-misc.html#LIBPQ-PQGETCURRENTTIMEUSEC"><code class="function">PQgetCurrentTimeUSec</code></a>. Notez que les
+       appels systèmes sous-jacents peuvent être moins précis qu'une
+       microseconde, donc le délai réel peut être moins précis.
+      </p><p>
+       La fonction renvoie une valeur plus grande que <code class="literal">0</code> si la
+       condition spécifiée est rencontrée, <code class="literal">0</code> si le délai est
+       atteint ou <code class="literal">-1</code> si une erreur est survenue. L'erreur
+       peut être récupérée en vérifiant la valeur de <code class="literal">errno
+       (3)</code>. Au cas où <em class="parameter"><code>forRead</code></em> et
+       <em class="parameter"><code>forWrite</code></em> valent zéro, la fonction renvoie
+       immédiatement l'indication d'un dépassement de délai.
+      </p><p>
+       <code class="function">PQsocketPoll</code> est implémenté en utilisant soit
+       <code class="function">poll(2)</code> soit <code class="function">select(2)</code>, suivant
+       la plateforme. Voir <code class="literal">POLLIN</code> et
+       <code class="literal">POLLOUT</code> à partir de <code class="function">poll(2)</code>, ou
+       <em class="parameter"><code>readfds</code></em> et <em class="parameter"><code>writefds</code></em> à
+       partir de <code class="function">select(2)</code>, pour plus d'informations.
+      </p></dd><dt id="LIBPQ-PQCONNDEFAULTS"><span class="term"><code class="function">PQconndefaults</code><a id="id-1.7.3.8.2.11.7.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCONNDEFAULTS" class="id_link">#</a></dt><dd><p>
+       Renvoie les options de connexion par défaut.
+       </p><pre class="synopsis">PQconninfoOption *PQconndefaults(void);
+
+typedef struct
+{
+    char   *keyword;   /* Mot clé de l'option */
+    char   *envvar;    /* Nom de la variable d'environnement équivalente */
+    char   *compiled;  /* Valeur par défaut interne */
+    char   *val;       /* Valeur actuelle de l'option ou NULL */
+    char   *label;     /* Label du champ pour le dialogue de connexion */
+    char   *dispchar;  /* Indique comment afficher ce champ
+                          dans un dialogue de connexion. Les valeurs sont :
+                          ""        Affiche la valeur entrée sans modification
+                          "*"       Champ de mot de passe - cache la valeur
+                          "D"       Option de débogage - non affiché par défaut
+                       */
+    int     dispsize;  /* Taille du champ en caractère pour le dialogue */
+} PQconninfoOption;
+       </pre><p>
+      </p><p>
+       Renvoie un tableau d'options de connexion. Ceci pourrait être utilisé pour
+       déterminer toutes les options possibles de <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDB"><code class="function">PQconnectdb</code></a>
+       et leur valeurs par défaut. La valeur de retour pointe vers un tableau de
+       structures <code class="structname">PQconninfoOption</code> qui se termine avec une
+       entrée utilisant un pointeur nul pour <code class="structfield">keyword</code>. Le pointeur
+       null est renvoyé si la mémoire n'a pas pu être allouée. Notez que les
+       valeurs par défaut actuelles (champs <code class="structfield">val</code>)
+       dépendront des variables d'environnement et d'autres contextes.  Un
+       fichier de service manquant ou non valide sera ignoré de manière
+       silencieuse. Les demandeurs doivent traiter les données des options de
+       connexion en lecture seule.
+      </p><p>
+       Après le traitement du tableau d'options, libérez-le en le passant à la
+       fonction <a class="xref" href="libpq-misc.html#LIBPQ-PQCONNINFOFREE"><code class="function">PQconninfoFree</code></a>. Si cela n'est pas fait, un
+       petit groupe de mémoire est perdu à chaque appel de
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNDEFAULTS"><code class="function">PQconndefaults</code></a>.
+      </p></dd><dt id="LIBPQ-PQCONNINFO"><span class="term"><code class="function">PQconninfo</code><a id="id-1.7.3.8.2.11.8.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCONNINFO" class="id_link">#</a></dt><dd><p>
+       Renvoie les options de connexion utilisées par une connexion en cours.
+       </p><pre class="synopsis">
+       PQconninfoOption *PQconninfo(PGconn *conn);
+       </pre><p>
+      </p><p>
+       Renvoie un tableau des options de connexion. Cette fonction peut être
+       utilisée pour déterminer les valeurs de toutes les options de
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDB"><code class="function">PQconnectdb</code></a> qui ont été utilisées pour se
+       connecter au serveur. La valeur renvoyée pointe vers un tableau de
+       structures <code class="structname">PQconninfoOption</code> qui se termine avec
+       une entrée possédant un pointeur <code class="structfield">keyword</code> nul.
+       Toutes les notes ci-dessus pour <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNDEFAULTS"><code class="function">PQconndefaults</code></a>
+       s'appliquent aussi au résultat de <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNINFO"><code class="function">PQconninfo</code></a>.
+      </p></dd><dt id="LIBPQ-PQCONNINFOPARSE"><span class="term"><code class="function">PQconninfoParse</code><a id="id-1.7.3.8.2.11.9.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCONNINFOPARSE" class="id_link">#</a></dt><dd><p>
+       Renvoie les options de connexions analysées d'après la chaîne de
+       connexion fournie.
+
+       </p><pre class="synopsis">
+       PQconninfoOption *PQconninfoParse(const char *conninfo, char **errmsg);
+       </pre><p>
+      </p><p>
+       Analyse une chaîne de connexion et renvoie les options résultantes
+       dans un tableau ; renvoie <code class="symbol">NULL</code> si un problème a été détecté avec
+       la chaîne de connexion. Ceci peut être utilisé pour déterminer les
+       options de <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDB"><code class="function">PQconnectdb</code></a> dans la chaîne de connexion
+       fournie. La valeur de retour pointe vers un tableau de structures
+       <code class="structname">PQconninfoOption</code> et termine avec une entrée
+       ayant un pointeur <code class="structfield">keyword</code> nul.
+      </p><p>
+       Toutes les options légales seront présentes dans le tableau en résultat
+       mais le <code class="literal">PQconninfoOption</code> pour toute option absente
+       de la chaîne de connexion aura sa valeur (<code class="literal">val</code>)
+       configurée à <code class="literal">NULL</code> ; les valeurs par défaut ne
+       sont pas utilisées.
+      </p><p>
+       Si <code class="literal">errmsg</code> n'est pas <code class="symbol">NULL</code>, alors
+       <code class="literal">*errmsg</code> est configuré à <code class="symbol">NULL</code> en cas de succès et sinon
+       à un message d'erreur (alloué via un appel à <code class="function">malloc</code>) expliquant le
+       problèm. (Il est aussi possible pour <code class="literal">*errmsg</code> d'être
+       configuré à <code class="symbol">NULL</code> et la fonction de renvoyer <code class="symbol">NULL</code> ; cela indique un
+       cas de mémoire épuisée.)
+      </p><p>
+       Après avoir traité le tableau des options, libérez-le en le passant à
+       <a class="xref" href="libpq-misc.html#LIBPQ-PQCONNINFOFREE"><code class="function">PQconninfoFree</code></a>. Si ce n'est pas fait, de la mémoire
+       sera perdu à chaque appel à <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNINFOPARSE"><code class="function">PQconninfoParse</code></a>.
+       Réciproquement, si une erreur survient et que <code class="literal">errmsg</code>
+       n'est pas <code class="symbol">NULL</code>, assurez-vous de libérer la chaîne d'erreur en utilisant
+       <a class="xref" href="libpq-misc.html#LIBPQ-PQFREEMEM"><code class="function">PQfreemem</code></a>.
+      </p></dd><dt id="LIBPQ-PQFINISH"><span class="term"><code class="function">PQfinish</code><a id="id-1.7.3.8.2.11.10.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQFINISH" class="id_link">#</a></dt><dd><p>
+       Ferme la connexion au serveur. Libère aussi la mémoire utilisée par l'objet
+       <code class="structname">PGconn</code>.
+       </p><pre class="synopsis">void PQfinish(PGconn *conn);
+       </pre><p>
+      </p><p>
+       Notez que même si la connexion au serveur a échoué (d'après l'indication
+       de <a class="xref" href="libpq-status.html#LIBPQ-PQSTATUS"><code class="function">PQstatus</code></a>), l'application devrait appeler
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQFINISH"><code class="function">PQfinish</code></a> pour libérer la mémoire utilisée par l'objet
+       <code class="structname">PGconn</code>. Le pointeur <code class="structname">PGconn</code> ne doit
+       pas être encore utilisé après l'appel à <a class="xref" href="libpq-connect.html#LIBPQ-PQFINISH"><code class="function">PQfinish</code></a>.
+      </p></dd><dt id="LIBPQ-PQRESET"><span class="term"><code class="function">PQreset</code><a id="id-1.7.3.8.2.11.11.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQRESET" class="id_link">#</a></dt><dd><p>
+       Réinitialise le canal de communication avec le serveur.
+       </p><pre class="synopsis">void PQreset(PGconn *conn);
+       </pre><p>
+      </p><p>
+       Cette fonction fermera la connexion au serveur et tentera l'établissement
+       d'une nouvelle connexion au même serveur en utilisant tous les paramètres
+       utilisés précédemment. Ceci pourrait être utile en cas de récupération après
+       une perte de connexion.
+      </p></dd><dt id="LIBPQ-PQRESETSTART"><span class="term"><code class="function">PQresetStart</code><a id="id-1.7.3.8.2.11.12.1.2" class="indexterm"></a><br /></span><span class="term"><code class="function">PQresetPoll</code><a id="id-1.7.3.8.2.11.12.2.2" class="indexterm"></a></span> <a href="#LIBPQ-PQRESETSTART" class="id_link">#</a></dt><dd><p>
+       Réinitialise le canal de communication avec le serveur d'une façon non
+       bloquante.
+
+       </p><pre class="synopsis">
+       int PQresetStart(PGconn *conn);
+
+       PostgresPollingStatusType PQresetPoll(PGconn *conn);
+       </pre><p>
+      </p><p>
+       Ces fonctions fermeront la connexion au serveur et tenteront d'établir
+       une nouvelle connexion sur le même serveur, en utilisant tous les paramètres
+       précédemment utilisés. Ceci peut être utile pour revenir à un état normal
+       après une erreur si une connexion est perdue. Ces fonctions diffèrent de
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQRESET"><code class="function">PQreset</code></a> (ci-dessus) dans le fait qu'elles agissent
+       d'une façon non bloquante. Ces fonctions souffrent des mêmes restrictions
+       que <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTSTARTPARAMS"><code class="function">PQconnectStartParams</code></a>, <code class="function">PQconnectStart</code>
+       et <code class="function">PQconnectPoll</code>.
+      </p><p>
+       Pour lancer une réinitialisation de la connexion, exécutez
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQRESETSTART"><code class="function">PQresetStart</code></a>. Si cette fonction 0, la réinitialisation
+       a échoué. Si elle renvoie 1, récupérez le résultat de la réinitialisation
+       en utilisant <code class="function">PQresetPoll</code> exactement de la même
+       façon que vous auriez créé la connexion en utilisant
+       <code class="function">PQconnectPoll</code>.
+      </p></dd><dt id="LIBPQ-PQPINGPARAMS"><span class="term"><code class="function">PQpingParams</code><a id="id-1.7.3.8.2.11.13.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQPINGPARAMS" class="id_link">#</a></dt><dd><p>
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQPINGPARAMS"><code class="function">PQpingParams</code></a> renvoie le statut du serveur. Elle
+       accepte les mêmes paramètres de connexion que ceux de la fonction
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDBPARAMS"><code class="function">PQconnectdbParams</code></a>, décrite ci-dessus. Néanmoins,
+       il n'est pas nécessaire de fournir les bons nom d'utilisateur, mot de
+       passe, ou nom de base de données pour obtenir le statut du serveur.
+       Néanmoins, si des valeurs incorrectes sont fournies, le serveur
+       tracera une tentative échouée de connexion.
+
+       </p><pre class="synopsis">
+       PGPing PQpingParams(const char * const *keywords,
+                    const char * const *values,
+                    int expand_dbname);
+       </pre><p>
+
+       La fonction renvoie une des valeurs suivantes :
+
+       </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQPINGPARAMS-PQPING_OK"><span class="term"><code class="literal">PQPING_OK</code></span> <a href="#LIBPQ-PQPINGPARAMS-PQPING_OK" class="id_link">#</a></dt><dd><p>
+           Le serveur est en cours d'exécution et semble accepter les
+           connexions.
+          </p></dd><dt id="LIBPQ-PQPINGPARAMS-PQPING_REJECT"><span class="term"><code class="literal">PQPING_REJECT</code></span> <a href="#LIBPQ-PQPINGPARAMS-PQPING_REJECT" class="id_link">#</a></dt><dd><p>
+           Le serveur est en cours d'exécution mais est dans un état qui
+           interdit les connexions (démarrage, arrêt, restauration après
+           crash).
+          </p></dd><dt id="LIBPQ-PQPINGPARAMS-PQPING_NO_RESPONSE"><span class="term"><code class="literal">PQPING_NO_RESPONSE</code></span> <a href="#LIBPQ-PQPINGPARAMS-PQPING_NO_RESPONSE" class="id_link">#</a></dt><dd><p>
+           Le serveur n'a pas pu être contacté. Cela pourrait indiquer que
+           le serveur n'est pas en cours d'exécution ou qu'il y a un problème
+           avec les paramètres de connexion donnés (par exemple un mauvais
+           numéro de port). Cela peut aussi indiquer un problème de connexion
+           réseau (par exemple un pare-feu qui bloque la demande de connexion).
+          </p></dd><dt id="LIBPQ-PQPINGPARAMS-PQPING_NO_ATTEMPT"><span class="term"><code class="literal">PQPING_NO_ATTEMPT</code></span> <a href="#LIBPQ-PQPINGPARAMS-PQPING_NO_ATTEMPT" class="id_link">#</a></dt><dd><p>
+           Aucune tentative n'a été faite pour contacter le serveur à cause des
+           paramètres fournis erronnés ou à cause d'un problème au niveau client
+           (par exemple un manque mémoire).
+          </p></dd></dl></div><p>
+
+      </p></dd><dt id="LIBPQ-PQPING"><span class="term"><code class="function">PQping</code><a id="id-1.7.3.8.2.11.14.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQPING" class="id_link">#</a></dt><dd><p>
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQPING"><code class="function">PQping</code></a> renvoie l'état du serveur.  Elle
+       accepte les mêmes paramètres de connexion que ceux de la fonction
+       <a class="xref" href="libpq-connect.html#LIBPQ-PQCONNECTDB"><code class="function">PQconnectdb</code></a>, décrite ci-dessus. Néanmoins,
+       il n'est pas nécessaire de fournir les bons nom d'utilisateur, mot de
+       passe, ou nom de base de données pour obtenir le statut du serveur;
+       toutefois, si des valeurs incorrectes sont fournies, le serveur tracera
+       une tentative de connexion en échec.
+
+       </p><pre class="synopsis">
+       PGPing PQping(const char *conninfo);
+       </pre><p>
+      </p><p>
+       Les valeurs de retour sont les mêmes que pour <a class="xref" href="libpq-connect.html#LIBPQ-PQPINGPARAMS"><code class="function">PQpingParams</code></a>.
+      </p></dd><dt id="LIBPQ-PQSETSSLKEYPASSHOOK-OPENSSL"><span class="term"><code class="function">PQsetSSLKeyPassHook_OpenSSL</code><a id="id-1.7.3.8.2.11.15.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQSETSSLKEYPASSHOOK-OPENSSL" class="id_link">#</a></dt><dd><p>
+       <code class="function">PQsetSSLKeyPassHook_OpenSSL</code> permet à une
+       application de passer outre la <a class="link" href="libpq-ssl.html#LIBPQ-SSL-CLIENTCERT" title="32.19.2. Certificats des clients">gestion par défaut des fichiers clés de
+        certificats client</a> de la <span class="application">libpq</span> en
+       utilisant <a class="xref" href="libpq-connect.html#LIBPQ-CONNECT-SSLPASSWORD">sslpassword</a> ou une invite
+       interactive.
+
+       </p><pre class="synopsis">
+void PQsetSSLKeyPassHook_OpenSSL(PQsslKeyPassHook_OpenSSL_type hook);
+       </pre><p>
+
+       L'application passe un pointeur a une fonction callback avec la signature :
+       </p><pre class="programlisting">
+int callback_fn(char *buf, int size, PGconn *conn);
+       </pre><p>
+
+       que <code class="literal">libpq</code> appelera <span class="emphasis"><em>à la place
+        du</em></span> gestionnaire de la fonction par défaut
+       <code class="function">PQdefaultSSLKeyPassHook_OpenSSL</code>. Le callback devra
+       déterminer le mot de passe pour la clé et la copier dans le résultat
+       tampon <code class="literal">buf</code> de taille <code class="literal">size</code>. La
+       chaîne dans <em class="parameter"><code>buf</code></em> doit être terminée par null. Le
+       callback doit retourner la longueur du mot de passe stockée dans
+       <em class="parameter"><code>buf</code></em> en excluant le caractère terminateur nul. En
+       cas d'échec, le callback devra affecter <code class="literal">buf[0] =
+        '\0'</code> et retourner 0. Voir
+       <code class="function">PQdefaultSSLKeyPassHook_OpenSSL</code> dans le code
+       source de <code class="literal">libpq</code> pour un exemple.
+      </p><p>
+       Si l'utilisateur spécifie un emplacement explicite de la clef, son
+       chemin sera dans <code class="literal">conn-&gt;sslkey</code> quand le callback
+       est appelé. Il sera vide si le chemin de clé par défaut est utilisé.
+       Pour les clés qui sont spécifiques au moteur, celui-ci est responsable
+       de leurs implémentations qu'elles utilisent le callback mot de passe
+       <span class="productname">OpenSSL</span> ou qu'elles définissent leur propre
+       gestionnaire.
+      </p><p>
+       Le callback de l'application peut choisir de déléguer les cas non gérés
+       à <code class="function">PQdefaultSSLKeyPassHook_OpenSSL</code>, ou l'appeler en
+       premier et essayer autre chose si elle retourne 0, ou complétement la
+       passer outre.
+      </p><p>
+       Le callback <span class="emphasis"><em>ne doit pas</em></span> éviter le contrôle de flux
+       normal avec quelques exceptions, <code class="function">longjmp(...)</code>,
+       etc. Il doit retourner normallement.
+      </p></dd><dt id="LIBPQ-PQGETSSLKEYPASSHOOK-OPENSSL"><span class="term"><code class="function">PQgetSSLKeyPassHook_OpenSSL</code><a id="id-1.7.3.8.2.11.16.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQGETSSLKEYPASSHOOK-OPENSSL" class="id_link">#</a></dt><dd><p>
+       <code class="function">PQgetSSLKeyPassHook_OpenSSL</code> retourne le point
+       d'ancrage de la fonction de mot de passe de clé de certificat client
+       courant, ou <code class="literal">NULL</code> si aucun n'a été affecté.
+
+       </p><pre class="synopsis">
+PQsslKeyPassHook_OpenSSL_type PQgetSSLKeyPassHook_OpenSSL(void);
+       </pre><p>
+      </p></dd></dl></div><p>
+  </p><div class="sect2" id="LIBPQ-CONNSTRING"><div class="titlepage"><div><div><h3 class="title">32.1.1. Chaînes de connexion <a href="#LIBPQ-CONNSTRING" class="id_link">#</a></h3></div></div></div><a id="id-1.7.3.8.3.2" class="indexterm"></a><a id="id-1.7.3.8.3.3" class="indexterm"></a><p>
+    Plusieurs fonctions de la bibliothèque <span class="application">libpq</span>
+    analysent une chaîne donnée par l'utilisateur pour obtenir les paramètres
+    de connexion. Deux formats sont acceptés pour ces chaînes :
+    les chaînes mot clé/valeur et les
+    URI. Les URI respectent généralement la
+    <a class="ulink" href="https://datatracker.ietf.org/doc/html/rfc3986" target="_top">RFC
+     3986</a>, sauf que les chaînes de connexions multi hôtes sont
+    autorisées, comme décrit ci-dessous.
+   </p><div class="sect3" id="LIBPQ-CONNSTRING-KEYWORD-VALUE"><div class="titlepage"><div><div><h4 class="title">32.1.1.1. Chaînes de connexion clé/valeur <a href="#LIBPQ-CONNSTRING-KEYWORD-VALUE" class="id_link">#</a></h4></div></div></div><p>
+     Dans le format mot clé/valeur, chaque configuration de paramètre se
+     présente sous la forme <em class="replaceable"><code>mot clé</code></em>
+     <code class="literal">=</code> <em class="replaceable"><code>valeur</code></em> avec des espaces
+     entre les paramètres. Les espaces autour du signe égal
+     sont optionnels. Pour écrire une valeur vide ou une valeur contenant des
+     espaces, il est nécessaires de l'entourer de guillemets simples, par
+     exemple <code class="literal">clé = 'une valeur'</code>. Les guillemets simples et
+     les antislashs compris dans une valeur doivent être échappés par un
+     antislash, comme ceci <code class="literal">\'</code> et ceci <code class="literal">\\</code>.
+    </p><p>
+     Exemple :
+     </p><pre class="programlisting">
+      host=localhost port=5432 dbname=mabase connect_timeout=10
+     </pre><p>
+    </p><p>
+     Les mots clés reconnus pour les paramètres sont listés dans <a class="xref" href="libpq-connect.html#LIBPQ-PARAMKEYWORDS" title="32.1.2. Mots clés de la chaîne de connexion">Section 32.1.2</a>.
+    </p></div><div class="sect3" id="LIBPQ-CONNSTRING-URIS"><div class="titlepage"><div><div><h4 class="title">32.1.1.2. URI de connexion <a href="#LIBPQ-CONNSTRING-URIS" class="id_link">#</a></h4></div></div></div><p>
+     La forme générale pour une <acronym class="acronym">URI</acronym> de connexion est :
+     </p><pre class="synopsis">
+      postgresql://[utilisateur[:mot_de_passe]@][hote][:port][,...][/nom_base][?param1=valeur1&amp;...]
+      postgresql://[<span class="optional"><em class="replaceable"><code>spec_utilisateur</code></em>@</span>][<span class="optional"><em class="replaceable"><code>spec_hote</code></em></span>][<span class="optional">/<em class="replaceable"><code>nom_base</code></em></span>][<span class="optional">?<em class="replaceable"><code>spec_param</code></em></span>]
+
+<span class="phrase">où <em class="replaceable"><code>spec_utilisateur</code></em> vaut :</span>
+
+<em class="replaceable"><code>utilisateur</code></em>[<span class="optional">:<em class="replaceable"><code>motdepasse</code></em></span>]
+
+<span class="phrase">et <em class="replaceable"><code>spec_hote</code></em> vaut :</span>
+
+[<span class="optional"><em class="replaceable"><code>hote</code></em></span>][<span class="optional">:<em class="replaceable"><code>port</code></em></span>][<span class="optional">,...</span>]
+
+<span class="phrase">et <em class="replaceable"><code>spec_param</code></em> vaut :</span>
+
+<em class="replaceable"><code>nom</code></em>=<em class="replaceable"><code>valeur</code></em>[<span class="optional">&amp;...</span>]
+     </pre><p>
+    </p><p>
+     Le désignateur d'<acronym class="acronym">URI</acronym> peut être soit
+     <code class="literal">postgresql://</code> soit <code class="literal">postgres://</code>.
+     Chacune des parties restantes de l'<acronym class="acronym">URI</acronym> est
+     optionnelle. Les exemples suivants montrent des syntaxes valides pour
+     l'<acronym class="acronym">URI</acronym> :
+     </p><pre class="programlisting">
+ postgresql://
+ postgresql://localhost
+ postgresql://localhost:5433
+ postgresql://localhost/ma_base
+ postgresql://utilisateur@localhost
+ postgresql://utilisateur:secret@localhost
+ postgresql://autre@localhost/autre_base?connect_timeout=10&amp;application_name=mon_appli
+ postgresql://host1:123,host2:456/somedb?target_session_attrs=any&amp;application_name=myapp
+     </pre><p>
+     Les valeurs qui apparaîtraient normalement dans la partie hiérarchique de
+     l'<acronym class="acronym">URI</acronym> peuvent être aussi données sous la forme de
+     paramètres nommés. Par exemple :
+     </p><pre class="programlisting">
+ postgresql:///ma_base?host=localhost&amp;port=5433
+     </pre><p>
+     Tous les paramètres nommés doivent correspondre aux mots clés listés dans
+     <a class="xref" href="libpq-connect.html#LIBPQ-PARAMKEYWORDS" title="32.1.2. Mots clés de la chaîne de connexion">Section 32.1.2</a>, sauf que, pour la compatibilité
+     avec les <acronym class="acronym">URI</acronym> des connexions JDBC, les parties avec of
+     <code class="literal">ssl=true</code> sont traduites en
+     <code class="literal">sslmode=require</code>.
+    </p><p>
+     L'<acronym class="acronym">URI</acronym> de connexion doit être encodée avec <a class="ulink" href="https://datatracker.ietf.org/doc/html/rfc3986#section-2.1" target="_top">percent-encoding</a>
+     si elle inclut des symboles avec des significations spéciales dans toutes
+     les parties. Voici un exemple où un signe égal (<code class="literal">=</code>) est
+     remplacé avec <code class="literal">%3D</code> et un caractère espace avec
+     <code class="literal">%20</code> :
+     </p><pre class="programlisting">
+postgresql://user@localhost:5433/mydb?options=-c%20synchronous_commit%3Doff
+     </pre><p>
+    </p><p>
+     La partie host peut être soit un nom d'hôte soit une adresse IP. Pour
+     indiquer une adresse IPv6, il est nécessaire de l'englober dans des
+     crochets :
+     </p><pre class="synopsis">
+      postgresql://[2001:db8::1234]/database
+     </pre><p>
+    </p><p>
+     La partie host est interprétée de la façon décrite pour le paramètre
+     <a class="xref" href="libpq-connect.html#LIBPQ-CONNECT-HOST">host</a>. En particulier, une connexion par
+     socket de domaine Unix est choisi si la partie host est vide ou ressemble à un
+     nom de chemin absolu. Dans tous les autres cas, une connexion TCP/IP est
+     démarrée. Cependant, notez que le slash est un caractère réservé dans la
+     partie hiérarchique de l'URI. Donc, pour indiquer un répertoire non standard
+     pour la socket de domaine Unix, il faut soit omettre d'indiquer la partie
+     host dans l'URI et l'indiquer en tant que paramètre nommé, soit encoder le
+     chemin dans le composant host de l'URI :
+     </p><pre class="programlisting">
+ postgresql:///dbname?host=/var/lib/postgresql
+ postgresql://%2Fvar%2Flib%2Fpostgresql/dbname
+     </pre><p>
+    </p><p>
+     Il est possible de spécifier plusieurs composants hôte, chacun avec un port
+     optionnel, dans une seule URI. Une URI de la forme
+     <code class="literal">postgresql://host1:port1,host2:port2,host3:port3/</code> est
+     équivalent à une chaîne de connexion de la forme
+     <code class="literal">host=host1,host2,host3 port=port1,port2,port3</code>. Comme
+     indiqué plus en détails plus bas, chaque hôte sera testé à son tour
+     jusqu'à ce qu'une connexion soit établie avec succès.
+    </p></div><div class="sect3" id="LIBPQ-MULTIPLE-HOSTS"><div class="titlepage"><div><div><h4 class="title">32.1.1.3. Spécifier plusieurs hôtes <a href="#LIBPQ-MULTIPLE-HOSTS" class="id_link">#</a></h4></div></div></div><p>
+     Il est possible de spécifier plusieurs hôtes où se connecter. Ils sont
+     essayés dans l'ordre donné. Dans un format clé/valeur, les options
+     <code class="literal">host</code>, <code class="literal">hostaddr</code>, and
+     <code class="literal">port</code> acceptent des listes de valeurs séparées par une
+     virgule. Le même nombre d'éléments doit être donné dans chaque option qui
+     est spécifiée
+     pour que le premier élément dans <code class="literal">hostaddr</code> au premier
+     nom d'hôte, le second <code class="literal">hostaddr</code> correspond au second
+     nom d'hôte, et ainsi de suite. Seule exception pour l'option
+     <code class="literal">port</code>, si un seul port est spécifié, il est utilisé
+     pour tous les hôtes.
+    </p><p>
+     Dans le format de connexion URI, vous pouvez lister plusieurs paires
+     <code class="literal">hote:port</code> séparées par des virgules dans le composant
+     <code class="literal">host</code> de l'URI.
+    </p><p>
+     Quel que soit le format, un simple nom
+     d'hôte peut aussi se traduire en plusieurs adresses réseau. Un exemple
+     habituel est un hôte qui a à la fois une adresse IPv4 et une adresse
+     IPv6.
+    </p><p>
+     Quand plusieurs hôtes sont indiqués ou quand un nom d'hôte est converti
+     en plusieurs adresses, tous les hôtes et adresses seront essayés dans
+     l'ordre jusqu'à ce qu'une connexion réussisse. Si aucun des hôtes ne peut
+     être atteint, la connexion échoue. Si la connexion réussit mais que
+     l'authentification échoue, les autres hôtes de la liste ne seront pas
+     testés.
+    </p><p>
+     Si un fichier de mots de passe est utilisé, vous pouvez avoir plusieurs
+     mots de passe pour des hôtes différents. Toutes les autres options de
+     connexion sont identiques pour chaque hôte de la liste. Par exemple, il n'est pas
+     possible d'indiquer un nom d'utilisateur différent pour les différents
+     hôtes.
+    </p></div></div><div class="sect2" id="LIBPQ-PARAMKEYWORDS"><div class="titlepage"><div><div><h3 class="title">32.1.2. Mots clés de la chaîne de connexion <a href="#LIBPQ-PARAMKEYWORDS" class="id_link">#</a></h3></div></div></div><p>
+    Les mots clés actuellement reconnus sont :
+
+    </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-CONNECT-HOST"><span class="term"><code class="literal">host</code></span> <a href="#LIBPQ-CONNECT-HOST" class="id_link">#</a></dt><dd><p>
+        Nom de l'hôte où se connecter.<a id="id-1.7.3.8.4.2.1.1.2.1.1" class="indexterm"></a> Si un nom d'hôte ressemble à un nom de
+        chemin absolu, il spécifie une communication par domaine Unix plutôt
+        qu'une communication TCP/IP ; la valeur est le nom du répertoire
+        où le fichier socket est stocké. (Sur Unix, un chemin absolu commence
+        par un slash. Sur windows, les chemins débutant par la lettre du
+        lecteur sont aussi reconnus.) Si le nom de l'ĥote commence avec un
+        <code class="literal">@</code>, il est pris pour un socket de domaine Unix dans
+        l'espace de nom abstrait (actuellement supporté sur Linux et
+        Windows). Par défaut, quand <code class="literal">host</code> n'est pas
+        spécifié ou est vide, il s'agit d'une communication par socket de
+        domaine Unix<a id="id-1.7.3.8.4.2.1.1.2.1.4" class="indexterm"></a> dans <code class="filename">/tmp</code> (ou tout
+        autre répertoire de socket spécifié lors de la construction de
+        <span class="productname">PostgreSQL</span>). Sur Windows, la valeur par
+        défaut est de se connecter à <code class="literal">localhost</code>.
+       </p><p>
+        Une liste de noms d'hôtes séparés par des virgules est aussi acceptée,
+        auquel cas chaque nom d'hôte est testé dans l'ordre ;
+        un élément vide dans la liste implique le comportement par
+        défaut comme décrit plus haut. Voir
+        <a class="xref" href="libpq-connect.html#LIBPQ-MULTIPLE-HOSTS" title="32.1.1.3. Spécifier plusieurs hôtes">Section 32.1.1.3</a> pour les détails.
+       </p></dd><dt id="LIBPQ-CONNECT-HOSTADDR"><span class="term"><code class="literal">hostaddr</code></span> <a href="#LIBPQ-CONNECT-HOSTADDR" class="id_link">#</a></dt><dd><p>
+        Adresse IP numérique de l'hôte de connexion. Elle devrait être au format
+        d'adresse standard IPv4, par exemple <code class="literal">172.28.40.9</code>. Si votre
+        machine supporte IPv6, vous pouvez aussi utiliser ces adresses. La
+        communication TCP/IP est toujours utilisée lorsqu'une chaîne non vide est
+        spécifiée pour ce paramètre.
+        Si ce paramètre n'est pas spécifié, la valeur pour <code class="literal">host</code>
+        sera résolue pour trouver l'adresse IP correspondante  -- 
+        ou, si <code class="literal">host</code> spécifie une adresse IP, cette valeur sera
+        utilisée directement.
+       </p><p>
+        Utiliser <code class="literal">hostaddr</code>
+        permet à l'application d'éviter une résolution de nom, ce qui
+        pourrait être important dans les applications avec des
+        contraintes de temps. Cependant, un nom d'hôte est requis pour les méthodes
+        d'authentification GSSAPI ou SSPI, ainsi que pour la
+        vérification de certificat SSL en <code class="literal">verify-full</code>.
+        Les règles suivantes sont observées :
+        </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+           Si <code class="literal">host</code> est indiqué sans
+           <code class="literal">hostaddr</code>, une résolution du nom de l'hôte est
+           lancée. (Si vous utilisez <code class="function">PQconnectPoll</code>, la
+           recherche survient quand <code class="function">PQconnectPoll</code>
+           considère le nom d'hôte pour la première fois, et cela pourrait
+           être la cause d'un blocage de <code class="function">PQconnectPoll</code>
+           pendant une bonne durée de temps.)
+          </p></li><li class="listitem"><p>
+           Si <code class="literal">hostaddr</code> est indiqué sans
+           <code class="literal">host</code>, la valeur de
+           <code class="literal">hostaddr</code> fournit l'adresse réseau de
+           l'hôte. La tentative de connexion échouera si la méthode
+           d'authentification nécessite un nom d'hôte.
+          </p></li><li class="listitem"><p>
+           Si <code class="literal">host</code> et <code class="literal">hostaddr</code>
+           sont spécifiés, la valeur de <code class="literal">hostaddr</code>
+           donne l'adresse réseau de l'hôte. La valeur de
+           <code class="literal">host</code> est ignorée sauf si la méthode
+           d'authentification la réclame, auquel cas elle sera
+           utilisée comme nom d'hôte.
+          </p></li></ul></div><p>
+        Notez que l'authentification a de grandes chances d'échouer si
+        <code class="literal">host</code> n'est pas le nom du serveur
+        à l'adresse réseau <code class="literal">hostaddr</code>. Et quand
+        <code class="literal">host</code> et <code class="literal">hostaddr</code> sont tous deux
+        spécifiés, seul <code class="literal">host</code> est utilisé pour identifier
+        la connexion dans un fichier de mots de passe (voir la <a class="xref" href="libpq-pgpass.html" title="32.16. Fichier de mots de passe">Section 32.16</a>).
+       </p><p>
+        Une liste d'adresses <code class="literal">hostaddr</code> séparées par des
+        virgules est aussi acceptée, auquel cas chaque hôte est essayé dans cet
+        ordre. Un élément vide dans la liste mène à l'utilisation du nom d'hôte
+        correspondant, ou, s'il est vide aussi, de la valeur par défaut.
+        Voir <a class="xref" href="libpq-connect.html#LIBPQ-MULTIPLE-HOSTS" title="32.1.1.3. Spécifier plusieurs hôtes">Section 32.1.1.3</a> pour plus de détails.
+       </p><p>
+        Sans un nom ou une adresse d'hôte, <span class="application">libpq</span> se
+        connectera en utilisant un socket local de domaine Unix. Sur Windows,
+        il tentera une connexion sur <code class="literal">localhost</code>.
+       </p></dd><dt id="LIBPQ-CONNECT-PORT"><span class="term"><code class="literal">port</code></span> <a href="#LIBPQ-CONNECT-PORT" class="id_link">#</a></dt><dd><p>
+        Numéro de port pour la connexion au serveur ou extension du nom de
+        fichier pour des connexions de domaine Unix.
+        <a id="id-1.7.3.8.4.2.1.3.2.1.1" class="indexterm"></a>
+        Si plusieurs hôtes sont indiquées dans les paramètres
+        <code class="literal">host</code> ou <code class="literal">hostaddr</code>,
+        ce paramètre spécifie une liste de ports séparés par des virgules
+        et de même taille que la liste
+        des hôtes, ou bien il peut préciser un seul port à tester pour tous les hôtes.
+        Une chaîne vide, ou un élément vide de la liste, indique le numéro de
+        port par défaut établi à la compilation de
+        <span class="productname">PostgreSQL</span>.
+       </p></dd><dt id="LIBPQ-CONNECT-DBNAME"><span class="term"><code class="literal">dbname</code></span> <a href="#LIBPQ-CONNECT-DBNAME" class="id_link">#</a></dt><dd><p>
+        Nom de la base de données. Par défaut, la même que le nom utilisateur.
+        Dans certains contextes, la valeur est vérifiée pour les formats
+        étendus ; voir <a class="xref" href="libpq-connect.html#LIBPQ-CONNSTRING" title="32.1.1. Chaînes de connexion">Section 32.1.1</a> pour plus
+        d'informations.
+       </p></dd><dt id="LIBPQ-CONNECT-USER"><span class="term"><code class="literal">user</code></span> <a href="#LIBPQ-CONNECT-USER" class="id_link">#</a></dt><dd><p>
+        Nom de l'utilisateur <span class="productname">PostgreSQL</span> qui se
+        connecte.
+        Par défaut, il s'agit du même nom que l'utilisateur système lançant
+        l'application.
+       </p></dd><dt id="LIBPQ-CONNECT-PASSWORD"><span class="term"><code class="literal">password</code></span> <a href="#LIBPQ-CONNECT-PASSWORD" class="id_link">#</a></dt><dd><p>
+        Mot de passe à utiliser si le serveur demande une authentification par
+        mot de passe.
+       </p></dd><dt id="LIBPQ-CONNECT-PASSFILE"><span class="term"><code class="literal">passfile</code></span> <a href="#LIBPQ-CONNECT-PASSFILE" class="id_link">#</a></dt><dd><p>
+        Spécifie le nom du fichier utilisé pour stocker les mots de passe
+        (voir <a class="xref" href="libpq-pgpass.html" title="32.16. Fichier de mots de passe">Section 32.16</a>).
+        La valeur par défaut est <code class="filename">~/.pgpass</code>, ou
+        <code class="filename">%APPDATA%\postgresql\pgpass.conf</code> sur Microsoft
+        Windows. (Aucune erreur n'est levée si le fichier n'existe pas.)
+       </p></dd><dt id="LIBPQ-CONNECT-REQUIRE-AUTH"><span class="term"><code class="literal">require_auth</code></span> <a href="#LIBPQ-CONNECT-REQUIRE-AUTH" class="id_link">#</a></dt><dd><p>
+        Indique la méthode d'authentification que le client requiert du serveur.
+        Si le serveur n'utilise pas la méthode requise pour authentifier le
+        client ou si l'authentification n'est pas réalisée complètement par le
+        serveur, la connexion échouera. Une liste de méthodes séparée par des
+        virgules peut aussi être fournie. Le serveur utilisera exactement une
+        d'entre elles pour que la connexion réussisse. Par défaut, toute méthode
+        d'authentification est acceptée et le serveur est libre d'ignorer
+        l'authentification.
+      </p><p>
+        Il est possible d'indiquer qu'on ne veut pas une méthode en ajoutant
+        le préfixe <code class="literal">!</code> à cette méthode, auquel cas le serveur
+        ne doit <span class="emphasis"><em>pas</em></span> tenter la méthode indiquée ; toute
+        autre méthode est acceptée et le serveur est libre de ne pas authentifier
+        le client. Si une liste séparée par des virgules est fournie, le serveur
+        ne doit tenter <span class="emphasis"><em>aucune</em></span> de ces méthodes. Les formes
+        positives et négatives ne peuvent pas être combinées en même temps.
+      </p><p>
+        La méthode <code class="literal">none</code> requiert que le serveur n'utilise pas
+        de méthode d'authentification. (Il peut aussi être inversé, pour
+        réclamer une authentification quelque soit sa forme.)
+      </p><p>
+        Les méthodes suivantes peuvent être utilisées :
+
+        </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">password</code></span></dt><dd><p>
+            Le serveur doit demander une authentification par mot de passe en
+            clair.
+           </p></dd><dt><span class="term"><code class="literal">md5</code></span></dt><dd><p>
+            Le serveur doit demander une authentification par mot de passe MD5.
+           </p></dd><dt><span class="term"><code class="literal">gss</code></span></dt><dd><p>
+            Le serveur doit demander une authentification Kerberos via
+            <acronym class="acronym">GSSAPI</acronym> ou établir un canal chiffré avec
+            <acronym class="acronym">GSS</acronym> (voir aussi
+            <a class="xref" href="libpq-connect.html#LIBPQ-CONNECT-GSSENCMODE">gssencmode</a>).
+           </p></dd><dt><span class="term"><code class="literal">sspi</code></span></dt><dd><p>
+            Le serveur doit réclamer une authentification <acronym class="acronym">SSPI</acronym>
+            Windows.
+           </p></dd><dt><span class="term"><code class="literal">scram-sha-256</code></span></dt><dd><p>
+            Le serveur doit terminer avec succès une authentification
+            SCRAM-SHA-256 avec le client.
+           </p></dd><dt><span class="term"><code class="literal">none</code></span></dt><dd><p>
+            Le serveur ne doit pas demander au client une authentification.
+            (Ceci n'empêche pas l'authentification par certificat client via
+            TLS ou l'authentification GSS via son transport sécurisé.)
+           </p></dd></dl></div><p>
+      </p></dd><dt id="LIBPQ-CONNECT-CHANNEL-BINDING"><span class="term"><code class="literal">channel_binding</code></span> <a href="#LIBPQ-CONNECT-CHANNEL-BINDING" class="id_link">#</a></dt><dd><p>
+        Cette option contrôle l'utilisation cliente de la liaison de canal.
+        Une valeur <code class="literal">require</code> signifie que la connexion doit
+        toujours employer la liaison de canal, <code class="literal">prefer</code> signifie
+        que le client doit choisir la liaison de canal si disponible, et
+        <code class="literal">disable</code> empêche l'utilisation de liaison de canal.
+        Le défaut est <code class="literal">prefer</code> si <span class="productname">PostgreSQL</span>
+        est compilé avec le support SSL.
+
+       </p><p>
+        La liaison de canal est une méthode permettant au serveur de s'authentifier
+        vers un client. Elle est seulement supportée sur des connexions SSL avec
+        <span class="productname">PostgreSQL</span> 11 ou des versions ultérieures utilisant
+        la méthode d'authentification <code class="literal">SCRAM</code>.
+       </p></dd><dt id="LIBPQ-CONNECT-CONNECT-TIMEOUT"><span class="term"><code class="literal">connect_timeout</code></span> <a href="#LIBPQ-CONNECT-CONNECT-TIMEOUT" class="id_link">#</a></dt><dd><p>
+        Temps d'attente maximum lors d'une connexion, en secondes (écrit sous la
+        forme d'un entier décimal, par exemple <code class="literal">10</code>). La
+        valeur zéro, une valeur négative ou sans valeur indique une attente
+        infinie.
+        Ce délai s'applique séparément pour chaque nom d'hôte ou adresse IP.
+        Par exemple, si vous indiquez deux hôtes et que le paramètre
+        <code class="literal">connect_timeout</code> vaut 5, chaque hôte sera en timeout
+        si aucune connexion n'est réalisée en 5 secondes, donc le temps total
+        passé à attendre une connexion peut monter jusqu'à 10 secondes.
+       </p></dd><dt id="LIBPQ-CONNECT-CLIENT-ENCODING"><span class="term"><code class="literal">client_encoding</code></span> <a href="#LIBPQ-CONNECT-CLIENT-ENCODING" class="id_link">#</a></dt><dd><p>
+        Ceci configure le paramètre <code class="varname">client_encoding</code>
+        pour cette connexion. En plus des valeurs acceptées par
+        l'option correspondante du serveur, vous pouvez utiliser
+        <code class="literal">auto</code> pour déterminer le bon encodage à
+        partir de la locale courante du client (variable
+        d'environnement <code class="envar">LC_CTYPE</code> sur les systèmes Unix).
+       </p></dd><dt id="LIBPQ-CONNECT-OPTIONS"><span class="term"><code class="literal">options</code></span> <a href="#LIBPQ-CONNECT-OPTIONS" class="id_link">#</a></dt><dd><p>
+        Spécifie les options en ligne de commande à envoyer au serveur à
+        l'exécution. Par exemple, en le configurant à <code class="literal">-c
+        geqo=off</code> ou <code class="literal">--geqo=off</code>, cela configure
+        la valeur de la session
+        pour le paramètre <code class="varname">geqo</code> à
+        <code class="literal">off</code>. Les espaces à l'intérieur de cette
+        chaîne sont considérés comme séparateurs d'arguments,
+        sauf si ils sont échappés avec le caractère d'échappement
+        <code class="literal">\</code> ; écrivez <code class="literal">\\</code> pour obtenir
+        le caractère d'échappement lui-même.
+        Pour une discussion détaillée des options
+        disponibles, voir <a class="xref" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Chapitre 19</a>.
+       </p></dd><dt id="LIBPQ-CONNECT-APPLICATION-NAME"><span class="term"><code class="literal">application_name</code></span> <a href="#LIBPQ-CONNECT-APPLICATION-NAME" class="id_link">#</a></dt><dd><p>
+        Précise une valeur pour le paramètre de configuration <a class="xref" href="runtime-config-logging.html#GUC-APPLICATION-NAME">application_name</a>.
+       </p></dd><dt id="LIBPQ-CONNECT-FALLBACK-APPLICATION-NAME"><span class="term"><code class="literal">fallback_application_name</code></span> <a href="#LIBPQ-CONNECT-FALLBACK-APPLICATION-NAME" class="id_link">#</a></dt><dd><p>
+        Indique une valeur de secours pour le paramètre de configuration
+        <a class="xref" href="runtime-config-logging.html#GUC-APPLICATION-NAME">application_name</a>. Cette valeur sera utilisée
+        si aucune valeur n'est donnée à <code class="literal">application_name</code>
+        via un paramètre de connexion ou la variable d'environnement
+        <code class="literal">PGAPPNAME</code>.
+        L'indication d'un nom de secours est utile pour les programmes
+        outils génériques qui souhaitent configurer un nom d'application
+        par défaut mais permettent sa surcharge par l'utilisateur.
+       </p></dd><dt id="LIBPQ-KEEPALIVES"><span class="term"><code class="literal">keepalives</code></span> <a href="#LIBPQ-KEEPALIVES" class="id_link">#</a></dt><dd><p>
+        Contrôle si les paramètres TCP keepalives côté client sont utilisés.
+        La valeur par défaut est de 1, signifiant ainsi qu'ils sont
+        utilisés. Vous pouvez le configurer à 0, ce qui aura pour effet de
+        les désactiver si vous n'en voulez pas. Ce paramètre est ignoré
+        pour les connexions réalisées via un socket de domaine Unix.
+       </p></dd><dt id="LIBPQ-KEEPALIVES-IDLE"><span class="term"><code class="literal">keepalives_idle</code></span> <a href="#LIBPQ-KEEPALIVES-IDLE" class="id_link">#</a></dt><dd><p>
+        Contrôle le nombre de secondes d'inactivité après lequel TCP doit
+        envoyer un message keepalive au server. Une valeur de zéro utilise
+        la valeur par défaut du système. Ce paramètre est ignoré pour les
+        connexions réalisées via un socket de domaine Unix ou si les
+        paramètres keepalives sont désactivés. Ce paramètre est uniquement
+        supporté sur les systèmes où les options
+        <code class="symbol">TCP_KEEPIDLE</code> ou une option socket équivalente
+        sont disponibles et sur Windows ; pour les autres systèmes,
+        ce paramètre n'a pas d'effet.
+       </p></dd><dt id="LIBPQ-KEEPALIVES-INTERVAL"><span class="term"><code class="literal">keepalives_interval</code></span> <a href="#LIBPQ-KEEPALIVES-INTERVAL" class="id_link">#</a></dt><dd><p>
+        Contrôle le nombre de secondes après lequel un message TCP
+        keepalive doit être retransmis si le serveur ne l'a pas acquitté.
+        Une valeur de zéro utilise la valeur par défaut du système. Ce
+        paramètre est uniquement supporté sur les systèmes où l'option
+        <code class="symbol">TCP_KEEPINTVL</code> ou une option socket équivalente est
+        disponible et sur Windows ;
+        pour les autres systèmes, ce paramètre n'a pas d'effet.
+       </p></dd><dt id="LIBPQ-KEEPALIVES-COUNT"><span class="term"><code class="literal">keepalives_count</code></span> <a href="#LIBPQ-KEEPALIVES-COUNT" class="id_link">#</a></dt><dd><p>
+        Contrôle le nombre de messages TCP keepalive pouvant être perdus
+        avant que la connexion du client au serveur ne soit considérée
+        comme perdue. Une valeur de zéro utilise la valeur par défaut du
+        système. Ce paramètre est uniquement supporté sur les systèmes où
+        l'option <code class="symbol">TCP_KEEPCNT</code> ou une option socket équivalente
+        est disponible et sur
+        Windows ; pour les autres systèmes, ce paramètre n'a pas
+        d'effet.
+       </p></dd><dt id="LIBPQ-TCP-USER-TIMEOUT"><span class="term"><code class="literal">tcp_user_timeout</code></span> <a href="#LIBPQ-TCP-USER-TIMEOUT" class="id_link">#</a></dt><dd><p>
+        Contrôle le nombre de millisecondes durant lesquelles les
+        données transmises peuvent rester non acquittées avant que la
+        connexion soit fermée de force.
+        Une valeur à zéro indique d'utiliser la valeur par défaut du
+        système. Ce paramètre est ignoré pour les connexions initiées
+        via socket de domaine Unix.
+        Il est seulement pris en charge sur les systèmes où
+        <code class="symbol">TCP_USER_TIMEOUT</code> est disponible ; sur les autres systèmes,
+        il n'a pas d'effet.
+       </p></dd><dt id="LIBPQ-CONNECT-REPLICATION"><span class="term"><code class="literal">replication</code></span> <a href="#LIBPQ-CONNECT-REPLICATION" class="id_link">#</a></dt><dd><p>
+        Cette option détermine si la connexion doit utiliser le protocole de
+        réplication au lieu du protocole normal.
+        C'est ce qu'utilisent les connexions de réplication de PostgreSQL, ainsi
+        que des outils comme <span class="application">pg_basebackup</span>, mais il
+        peut aussi être utilisé par des applications tierces. Pour une description
+        du protocole de réplication, consulter
+        <a class="xref" href="protocol-replication.html" title="53.4. Protocole de réplication en flux">Section 53.4</a>
+       </p><p>
+        Les valeurs suivantes, non sensibles à la casse, sont supportées :
+        </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">
+           <code class="literal">true</code>, <code class="literal">on</code>,
+           <code class="literal">yes</code>, <code class="literal">1</code>
+          </span></dt><dd><p>
+            La connexion passe en mode réplication physique.
+           </p></dd><dt><span class="term"><code class="literal">database</code></span></dt><dd><p>
+            La connexion passe en mode réplication logique, se connectant à la
+            base spécifiée par le paramètre <code class="literal">dbname</code>.
+           </p></dd><dt><span class="term">
+           <code class="literal">false</code>, <code class="literal">off</code>,
+           <code class="literal">no</code>, <code class="literal">0</code>
+          </span></dt><dd><p>
+            On utilise la connexion habituelle, ce qui est le comportement par
+            défaut.
+           </p></dd></dl></div><p>
+       </p><p>
+        En mode réplication physique ou logique, seul le protocole simple
+        peut être utilisé.
+       </p></dd><dt id="LIBPQ-CONNECT-GSSENCMODE"><span class="term"><code class="literal">gssencmode</code></span> <a href="#LIBPQ-CONNECT-GSSENCMODE" class="id_link">#</a></dt><dd><p>
+        Cette option détermine si une connexion TCP/IP sécurisée avec
+        <acronym class="acronym">GSS</acronym> sera négociée avec le serveur, et si oui avec
+        quelle priorité. Il y a trois modes :
+
+        </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">disable</code></span></dt><dd><p>
+            essaie uniquement une connexion non chiffrée avec <acronym class="acronym">GSSAPI</acronym>.
+           </p></dd><dt><span class="term"><code class="literal">prefer</code> (par défaut)</span></dt><dd><p>
+            si des informations d'authentification <acronym class="acronym">GSSAPI</acronym> sont présentes
+            (c'est-à-dire, dans un cache d'authentification), essaie d'abord une connexion
+            chiffrée avec <acronym class="acronym">GSSAPI</acronym> ; si elle échoue ou qu'il n'y a
+            pas les informations d'authentification, essaie une connexion non chiffrée
+            avec <acronym class="acronym">GSSAPI</acronym>. C'est le comportement par défaut quand
+            <span class="productname">PostgreSQL</span> a été compilé avec le support
+            de <acronym class="acronym">GSSAPI</acronym>.
+           </p></dd><dt><span class="term"><code class="literal">require</code></span></dt><dd><p>
+            essaie uniquement une connexion chiffrée avec <acronym class="acronym">GSSAPI</acronym>.
+           </p></dd></dl></div><p>
+       </p><p>
+        <code class="literal">gssencmode</code> est ignoré pour les connexions par socket
+        du domaine Unix. Si <span class="productname">PostgreSQL</span> est compilé
+        sans le support de GSSAPI, l'utilisation de l'option <code class="literal">require</code>
+        provoquera une erreur, alors que <code class="literal">prefer</code> sera acceptée
+        mais, dans ce cas, <span class="application">libpq</span> n'essaiera pas d'initier
+        une connexion chiffrée avec <acronym class="acronym">GSSAPI</acronym>.
+        <a id="id-1.7.3.8.4.2.1.21.2.2.7" class="indexterm"></a>
+       </p></dd><dt id="LIBPQ-CONNECT-SSLMODE"><span class="term"><code class="literal">sslmode</code></span> <a href="#LIBPQ-CONNECT-SSLMODE" class="id_link">#</a></dt><dd><p>
+        Cette option détermine si ou avec quelle priorité une connexion
+        TCP/IP <acronym class="acronym">SSL</acronym> sécurisée sera négociée avec le serveur.
+        Il existe six modes :
+        </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">disable</code></span></dt><dd><p>
+            essaie seulement une connexion non <acronym class="acronym">SSL</acronym>
+           </p></dd><dt><span class="term"><code class="literal">allow</code></span></dt><dd><p>
+            essaie en premier lieu une connexion non
+            <acronym class="acronym">SSL</acronym> ; si cette tentative échoue, essaie
+            une connexion <acronym class="acronym">SSL</acronym>
+           </p></dd><dt><span class="term"><code class="literal">prefer</code> (par défaut)</span></dt><dd><p>
+            essaie en premier lieu une connexion
+            <acronym class="acronym">SSL</acronym> ; si cette tentative échoue, essaie
+            une connexion non <acronym class="acronym">SSL</acronym>
+           </p></dd><dt><span class="term"><code class="literal">require</code></span></dt><dd><p>
+            essaie seulement une connexion <acronym class="acronym">SSL</acronym>.
+            Si un certificat racine d'autorité (<acronym class="acronym">CA</acronym>)
+            est présent, vérifie le certificat de la même façon que si
+            <code class="literal">verify-ca</code> était spécifié
+           </p></dd><dt><span class="term"><code class="literal">verify-ca</code></span></dt><dd><p>
+            essaie seulement une connexion <acronym class="acronym">SSL</acronym> et
+            vérifie que le certificat client est créé par une autorité de
+            certification (<acronym class="acronym">CA</acronym>) de confiance
+           </p></dd><dt><span class="term"><code class="literal">verify-full</code></span></dt><dd><p>
+            essaie seulement une connexion <acronym class="acronym">SSL</acronym>,
+            vérifie que le certificat client est créé par un
+            <acronym class="acronym">CA</acronym> de confiance et que le nom du serveur
+            correspond bien à celui du certificat
+           </p></dd></dl></div><p>
+       </p><p>
+        Voir <a class="xref" href="libpq-ssl.html" title="32.19. Support de SSL">Section 32.19</a> pour une description détaillée du
+        fonctionnement de ces options.
+       </p><p>
+        <code class="literal">sslmode</code> est ignoré pour la communication par
+        socket de domaine Unix.
+        Si <span class="productname">PostgreSQL</span> est compilé sans le support
+        de SSL, l'utilisation des options <code class="literal">require</code>,
+        <code class="literal">verify-ca</code> et
+        <code class="literal">verify-full</code> causera
+        une erreur, alors que les options <code class="literal">allow</code> et
+        <code class="literal">prefer</code> seront acceptées, bien qu'en fait
+        <span class="application">libpq</span> n'essaiera pas de négocier une
+        connexion <acronym class="acronym">SSL</acronym>.
+        <a id="id-1.7.3.8.4.2.1.22.2.3.10" class="indexterm"></a>
+       </p><p>
+        Notez que si le chiffrement <acronym class="acronym">GSSAPI</acronym> est possible, il
+        sera utilisé de préférence au chiffrement <acronym class="acronym">SSL</acronym>,
+        quelque soit la valeur de <code class="literal">sslmode</code>. Pour forcer
+        l'utilisation du chiffrement <acronym class="acronym">SSL</acronym> dans un
+        environnement qui dispose d'une infrastructure
+        <acronym class="acronym">GSSAPI</acronym> fonctionnelle (tel qu'un serveur Kerberos),
+        configurez aussi <code class="literal">gssencmode</code> à
+        <code class="literal">disable</code>.
+       </p></dd><dt id="LIBPQ-CONNECT-REQUIRESSL"><span class="term"><code class="literal">requiressl</code></span> <a href="#LIBPQ-CONNECT-REQUIRESSL" class="id_link">#</a></dt><dd><p>
+        Cette option est obsolète et remplacée par l'option <code class="literal">sslmode</code>.
+       </p><p>
+        Si initialisée à 1, une connexion <acronym class="acronym">SSL</acronym> au serveur est
+        requise (ce qui est équivalent à un <code class="literal">sslmode</code>
+        <code class="literal">require</code>). <span class="application">libpq</span> refusera alors de se
+        connecter si le serveur n'accepte pas une connexion
+        <acronym class="acronym">SSL</acronym>. Si initialisée à 0 (la valeur par défaut),
+        <span class="application">libpq</span> négociera le type de connexion avec le serveur
+        (équivalent à un <code class="literal">sslmode</code> <code class="literal">prefer</code>). Cette option
+        est seulement disponible si <span class="productname">PostgreSQL</span> est compilé avec
+        le support SSL.
+       </p></dd><dt id="LIBPQ-CONNECT-SSLNEGOTIATION"><span class="term"><code class="literal">sslnegotiation</code></span> <a href="#LIBPQ-CONNECT-SSLNEGOTIATION" class="id_link">#</a></dt><dd><p>
+        Cette option contrôle la négociation du chiffrement SSL si SSL est
+        utilisé. Dans le mode <code class="literal">postgres</code> par défaut, le client
+        demande tout d'abord au serveur si SSL est accepté. Dans le mode
+        <code class="literal">direct</code>, le client commence l'échange standard SSL
+        après l'établissement de la connexion TCP/IP. La négociation
+        traditionnelle du protocole <span class="productname">PostgreSQL</span> est
+        plus flexible avec différentes configurations du serveur. S'il est connu
+        que le serveur accepte les connexions <acronym class="acronym">SSL</acronym>, le mode
+        <code class="literal">direct</code> nécessite un aller/retour de moins réduisant
+        la latence de la connexion et permettant aussi l'utilisation d'outils
+        réseau SSL agnostiques. L'option SSL direct a été ajoutée dans la
+        version 17 de <span class="productname">PostgreSQL</span>.
+       </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">postgres</code></span></dt><dd><p>
+             réalise la négocitation du protocole
+             <span class="productname">PostgreSQL</span> protocol. C'est le défaut si
+             l'option n'est pas indiquée.
+           </p></dd><dt><span class="term"><code class="literal">direct</code></span></dt><dd><p>
+             lance l'échange SSL directement après l'établissement d'une
+             connexion TCP/IP. C'est seulement autorisé avec sslmode=require ou
+             une configuration supérieure car les configurations inférieures
+             pourraient amener un retour inattendu à l'authentification quand
+             le serveur n'accepte pas l'échange SSL direct.
+           </p></dd></dl></div></dd><dt id="LIBPQ-CONNECT-SSLCOMPRESSION"><span class="term"><code class="literal">sslcompression</code></span> <a href="#LIBPQ-CONNECT-SSLCOMPRESSION" class="id_link">#</a></dt><dd><p>
+        Si ce paramètre vaut 1, les données envoyées sur des connexions SSL
+        seront compressées. S'il vaut 0, la compression sera désactivée. Le
+        défaut est 0. Ce paramètre est ignoré pour une connexion sans SSL.
+       </p><p>
+        De nos jours, la compression SSL est considérée non sûre et son
+        usage n'est plus recommandé. <span class="productname">OpenSSL</span> 1.1.0
+        désactivait la compression par défaut, et de nombreux systèmes
+        d'exploitation la désactivaient aussi dans des versions précédentes,
+        donc activer ce paramètre n'aura aucun effet si le serveur n'accepte
+        pas la compression.
+        <span class="productname">PostgreSQL</span> 14 désactivait totalement la
+        compression dans le moteur.
+       </p><p>
+        Si la sécurité n'est pas un souci majeur, la compression peut améliorer
+        le débit si le réseau est le goulot d'étranglement. Désactiver la
+        compression peut améliorer le temps de réponse et le débit si le
+        processeur est le facteur limitant.
+       </p></dd><dt id="LIBPQ-CONNECT-SSLCERT"><span class="term"><code class="literal">sslcert</code></span> <a href="#LIBPQ-CONNECT-SSLCERT" class="id_link">#</a></dt><dd><p>
+        Ce paramètre indique le nom du fichier du certificat SSL client,
+        remplaçant le fichier par défaut,
+        <code class="filename">~/.postgresql/postgresql.crt</code>. Ce paramètre
+        est ignoré si la connexion n'utilise pas SSL.
+       </p></dd><dt id="LIBPQ-CONNECT-SSLKEY"><span class="term"><code class="literal">sslkey</code></span> <a href="#LIBPQ-CONNECT-SSLKEY" class="id_link">#</a></dt><dd><p>
+        Ce paramètre indique l'emplacement de la clé secrète utilisée pour
+        le certificat client. Il peut soit indiquer un nom de fichier qui
+        sera utilisé à la place du fichier
+        <code class="filename">~/.postgresql/postgresql.key</code> par défaut, soit
+        indiquer une clé obtenue par un <span class="quote">« <span class="quote">moteur</span> »</span> externe
+        (les moteurs sont des modules chargeables
+        d'<span class="productname">OpenSSL</span>). La spécification d'un moteur
+        externe devrait consister en un nom de moteur et un identifiant de
+        clé spécifique au moteur, les deux séparés par une virgule. Ce paramètre
+        est ignoré si la connexion n'utilise pas SSL.
+       </p></dd><dt id="LIBPQ-CONNECT-SSLPASSWORD"><span class="term"><code class="literal">sslpassword</code></span> <a href="#LIBPQ-CONNECT-SSLPASSWORD" class="id_link">#</a></dt><dd><p>
+        Ce paramètre définit le mot de passe pour la clé secrète spécifiée
+        dans <code class="literal">sslkey</code>, permettant aux clés de certificat
+        privé du client d'être stockées sous format chiffré sur disque même
+        quand la saisie interactive de passphrase n'est pas pratique.
+       </p><p>
+        Spécifier ce paramètre avec toute valeur non vide supprime l'invite de
+        saisie <code class="literal">Enter PEM pass phrase:</code> que
+        <span class="productname">OpenSSL</span> émet par
+        défaut quand une clé de certificat client chiffrée est fournie à
+        <code class="literal">libpq</code>.
+       </p><p>
+        Si la clé est non chiffrée, ce paramètre est ignoré. Le paramètre n'a
+        pas d'effet sur les clés spécifiée par les moteurs
+        <span class="productname">OpenSSL</span> à moins que
+        le moteur utilise le mécanisme de callback de mot de passe
+        <span class="productname">OpenSSL</span>
+        pour les invites de saisie.
+       </p><p>
+        Il n'y a pas de variable d'environment équivalente pour cette option,
+        et aucune possibilité pour la déterminer dans
+        <code class="filename">.pgpass</code>. Elle peut être utilisée dans un fichier
+        de service de définition de connexion. Les utilisateurs avec des
+        usages plus sophistiqués devraient considérer l'utilisation des
+        moteurs <span class="productname">OpenSSL</span> et outils comme PKCS#11 ou
+        les périphériques de déchargement de crypto USB.
+       </p></dd><dt id="LIBPQ-CONNECT-SSLCERTMODE"><span class="term"><code class="literal">sslcertmode</code></span> <a href="#LIBPQ-CONNECT-SSLCERTMODE" class="id_link">#</a></dt><dd><p>
+        Cette option détermine si un certificat client peut être envoyer au
+        serveur et si le serveur doit en demander un. Il existe trois
+        modes :
+
+        </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">disable</code></span></dt><dd><p>
+            Un certificat client n'est jamais envoyé, même s'il est disponible
+            (emplacement par défaut ou fourni via
+            <a class="xref" href="libpq-connect.html#LIBPQ-CONNECT-SSLCERT">sslcert</a>).
+           </p></dd><dt><span class="term"><code class="literal">allow</code> (default)</span></dt><dd><p>
+            Un certificat peut être envoyé si le serveur en réclame un et que le
+            client en possède un.
+           </p></dd><dt><span class="term"><code class="literal">require</code></span></dt><dd><p>
+            Le serveur <span class="emphasis"><em>doit</em></span> réclamer un certificat. La
+            connexion échouera si le client n'envoie pas un certificat et le
+            serveur authentifie le client avec succès de toute façon.
+           </p></dd></dl></div><p>
+       </p><div class="note"><h3 class="title">Note</h3><p>
+         <code class="literal">sslcertmode=require</code> n'est pas une sécurité
+         supplémentaire car il n'y a pas de garantie que le serveur valide
+         correctement le certificat ; les serveurs PostgreSQL réclament
+         généralement des certificats TLS aux clients qu'ils les valident ou
+         non. L'option pourrait être utile lors du dépannage de configurations
+         TLS plus compliquées.
+        </p></div></dd><dt id="LIBPQ-CONNECT-SSLROOTCERT"><span class="term"><code class="literal">sslrootcert</code></span> <a href="#LIBPQ-CONNECT-SSLROOTCERT" class="id_link">#</a></dt><dd><p>
+        Ce paramètre indique le nom d'un fichier contenant le ou les
+        certificats de l'autorité de certification SSL
+        (<acronym class="acronym">CA</acronym>). Si le fichier existe, le certificat du
+        serveur sera vérifié. La signature devra appartenir à une de ces
+        autorités. La valeur par défaut est
+        <code class="filename">~/.postgresql/root.crt</code>.
+       </p><p>
+        La valeur spéciale <code class="literal">system</code> peut être indiquée à la
+	place, auquel cas les racines du CA de confiance provenant de
+	l'implémentation SSL seront chargées. Les
+        emplacements exacts de ces certificats racines diffèrent parmi les
+        implémentations et les plateformes SSL. Pour
+        <span class="productname">OpenSSL</span> en particulier, les emplacements
+        pourraient être encore plus modifiés par les variables d'environnement
+        <code class="envar">SSL_CERT_DIR</code> et <code class="envar">SSL_CERT_FILE</code>.
+       </p><div class="note"><h3 class="title">Note</h3><p>
+         Lors de l'utilisation de <code class="literal">sslrootcert=system</code>, le
+         paramètre <code class="literal">sslmode</code> par défaut est changé en
+         <code class="literal">verify-full</code>, et tout paramétrage plus faible
+         résultera en une erreur. Dans la plupart des cas, il est trivial pour
+         chacun d'obtenir un certificat dans lequel le système a confiance pour
+         un nom d'hôte qu'il contrôle, rendant <code class="literal">verify-ca</code> et
+         tous les modes plus faibles inutiles.
+        </p><p>
+         La valeur magique <code class="literal">system</code> sera privilégiée à un
+         fichier certificat local de même nom. Si, pour certaines raisons, vous
+         vous trouvez dans cette situation, utilisez à la place un chemin
+         alternatif comme <code class="literal">sslrootcert=./system</code>.
+        </p></div></dd><dt id="LIBPQ-CONNECT-SSLCRL"><span class="term"><code class="literal">sslcrl</code></span> <a href="#LIBPQ-CONNECT-SSLCRL" class="id_link">#</a></dt><dd><p>
+        Ce paramètre indique le nom du fichier de la liste de révocation du
+        certificat SSL serveur. Les certificats listés dans ce fichier, s'il existe,
+        seront rejetés lors d'une tentative d'authentification avec le
+        certificat du serveur. Si ni <a class="xref" href="libpq-connect.html#LIBPQ-CONNECT-SSLCRL">sslcrl</a>
+        ni <a class="xref" href="libpq-connect.html#LIBPQ-CONNECT-SSLCRLDIR">sslcrldir</a> ne sont configurés, ce
+        paramètre est pris pour <code class="filename">~/.postgresql/root.crl</code>.
+       </p></dd><dt id="LIBPQ-CONNECT-SSLCRLDIR"><span class="term"><code class="literal">sslcrldir</code></span> <a href="#LIBPQ-CONNECT-SSLCRLDIR" class="id_link">#</a></dt><dd><p>
+        Ce paramètre indique le nom du répertoire de la liste de révocation des
+        certificats SSL serveurs (CRL). Les certificats listés dans les fichiers de ce
+        répertoire, s'il existe, seront rejetés lors de tentative
+        d'authentification du certificat du serveur.
+       </p><p>
+        Le répertoire doit être préparé avec la commande
+        <span class="productname">OpenSSL</span> <code class="literal">openssl rehash</code>
+        ou <code class="literal">c_rehash</code>. Voir sa documentation pour les détails.
+       </p><p>
+        <code class="literal">sslcrl</code> et <code class="literal">sslcrldir</code> peuvent être
+        indiqués ensemble.
+       </p></dd><dt id="LIBPQ-CONNECT-SSLSNI"><span class="term"><code class="literal">sslsni</code><a id="id-1.7.3.8.4.2.1.33.1.2" class="indexterm"></a></span> <a href="#LIBPQ-CONNECT-SSLSNI" class="id_link">#</a></dt><dd><p>
+        Si ce paramètre est configuré à A (sa valeur par défaut), libpq
+        configure l'extension TLS <span class="quote">« <span class="quote">Server Name Indication</span> »</span>
+        (<acronym class="acronym">SNI</acronym>) sur les connexions SSL. En configurant ce
+        paramètre à 0, il est désactivé.
+       </p><p>
+        Server Name Indication peut être utilisé par les proxies SSL pour
+        router les connexions sans avoir à déchiffrer le flux SSL. (Notez que,
+        sauf si le proxy est au courant du protocole d'échange de PostgreSQL,
+        cela nécessitera de configurer <code class="literal">sslnegotiation</code>
+        à <code class="literal">direct</code>.) Néanmoins,
+        <acronym class="acronym">SNI</acronym> fait que le nom d'hôte de destination apparaît
+        en clair sur le trafic réseau, donc il pourrait être indésirable dans
+        certains cas.
+       </p></dd><dt id="LIBPQ-CONNECT-REQUIREPEER"><span class="term"><code class="literal">requirepeer</code></span> <a href="#LIBPQ-CONNECT-REQUIREPEER" class="id_link">#</a></dt><dd><p>
+        Ce paramètre indique le nom d'utilisateur du serveur auprès
+        du système d'exploitation, par exemple
+        <code class="literal">requirepeer=postgres</code>. Lors d'une connexion
+        par socket de domaine Unix, si ce paramètre est configuré, le
+        client vérifie au début de la connexion que le processus
+        tourne sous le nom d'utilisateur indiqué ;
+        dans le cas contraire, la connexion échoue avec une
+        erreur. Ce paramètre peut être utilisé pour fournir une
+        authentification serveur similaire à celle disponible pour les
+        certificats SSL avec les connexions TCP/IP. (Notez que, si
+        la socket de domaine Unix est dans <code class="filename">/tmp</code>
+        ou tout espace autorisé en écriture pour tout le monde,
+        n'importe quel utilisateur peut y mettre un serveur en écoute.
+        Utilisez ce paramètre pour vous assurer que vous êtes connecté à
+        un serveur exécuté par un utilisateur de confiance.) Cette
+        option est seulement supportée par les plateformes où
+        la méthode d'authentification <code class="literal">peer</code>
+        est disponible ; voir <a class="xref" href="auth-peer.html" title="20.9. Authentification Peer">Section 20.9</a>.
+       </p></dd><dt id="LIBPQ-CONNECT-SSL-MIN-PROTOCOL-VERSION"><span class="term"><code class="literal">ssl_min_protocol_version</code></span> <a href="#LIBPQ-CONNECT-SSL-MIN-PROTOCOL-VERSION" class="id_link">#</a></dt><dd><p>
+        Ce paramètre spécifie la version minimale de protocole SSL/TLS pour
+        permettre la connexion. Les valeurs valides sont
+        <code class="literal">TLSv1</code>, <code class="literal">TLSv1.1</code>,
+        <code class="literal">TLSv1.2</code> et <code class="literal">TLSv1.3</code>. Les
+        protocoles supportés dépendent de la version utilisée de
+        <span class="productname">OpenSSL</span>, les plus anciennes versions ne
+        supportant pas les versions de protocole les plus modernes. S'il n'est
+        pas indiqué, la valeur par défaut <code class="literal">TLSv1.2</code>, ce qui
+        satisfait les bonnes pratiques de l'industrie lors de l'écriture de ce
+        document.
+       </p></dd><dt id="LIBPQ-CONNECT-SSL-MAX-PROTOCOL-VERSION"><span class="term"><code class="literal">ssl_max_protocol_version</code></span> <a href="#LIBPQ-CONNECT-SSL-MAX-PROTOCOL-VERSION" class="id_link">#</a></dt><dd><p>
+        Ce paramètre spécifie la version maximale de protocole SSL/TLS pour permettre
+        la connexion. Les valeurs valides sont <code class="literal">TLSv1</code>,
+        <code class="literal">TLSv1.1</code>, <code class="literal">TLSv1.2</code> et
+        <code class="literal">TLSv1.3</code>. Les protocoles supportés dépendent de la
+        version utilisée de <span class="productname">OpenSSL</span>, les anciennes versions
+        ne supportant pas les versions les plus modernes du protocole. S'il n'est pas
+        affecté, ce paramètre est ignoré et la connexion utilisera la version
+        maximale du protocole définie par le backend, si elle existe. Affecter une
+        version maximale du protocole est principalement utile pour tester ou si
+        certains composants ont des problèmes à utiliser un protocole plus récent.
+       </p></dd><dt id="LIBPQ-CONNECT-KRBSRVNAME"><span class="term"><code class="literal">krbsrvname</code></span> <a href="#LIBPQ-CONNECT-KRBSRVNAME" class="id_link">#</a></dt><dd><p>
+        Nom du service Kerberos à utiliser lors de l'authentification avec
+        GSSAPI. Il doit correspondre avec le nom du service spécifié dans
+        la configuration du serveur pour que l'authentification Kerberos puisse
+        réussir. (Voir aussi la <a class="xref" href="gssapi-auth.html" title="20.6. Authentification GSSAPI">Section 20.6</a>.)
+        La valeur par défaut est normalement <code class="literal">postgres</code>, mais
+        cela peut être changé lors de la compilation de
+        <span class="productname">PostgreSQL</span> avec l'option
+        <code class="option">--with-krb-srvnam</code> de
+        <span class="application">configure</span>. Dans la plupart des
+        environnements, ce paramètre n'a jamais besoin d'être modifié.
+        Certaines implémentations Kerberos nécessitent un nom de service
+        différent, par exemple Microsoft Active Directory qui réclame que le
+        nom de service soit en majuscules (<code class="literal">POSTGRES</code>).
+       </p></dd><dt id="LIBPQ-CONNECT-GSSLIB"><span class="term"><code class="literal">gsslib</code></span> <a href="#LIBPQ-CONNECT-GSSLIB" class="id_link">#</a></dt><dd><p>
+        Bibliothèque GSS à utiliser pour l'authentification GSSAPI.
+        Ce paramètre est actuellement ignoré, sauf sur les versions Windows
+        qui incluent la prise en charge de GSSAPI et de SSPI. Dans ce cas,
+        configurer ce paramètre à <code class="literal">gssapi</code> pour amener la
+        libpq à utiliser la bibliothèque GSSAPI pour l'authentification au
+        lieu de SSPI par défaut.
+       </p></dd><dt id="LIBPQ-CONNECT-GSSDELEGATION"><span class="term"><code class="literal">gssdelegation</code></span> <a href="#LIBPQ-CONNECT-GSSDELEGATION" class="id_link">#</a></dt><dd><p>
+        Transférer (déléguer) les informations d'identification GSS au serveur.
+        La valeur par défaut est <code class="literal">0</code>, ce qui signifie que les
+        informations ne sont pas transférées au serveur. Configurez-le à 1 pour
+        qu'elles le soient lorsque c'est possible.
+       </p></dd><dt id="LIBPQ-CONNECT-SERVICE"><span class="term"><code class="literal">service</code></span> <a href="#LIBPQ-CONNECT-SERVICE" class="id_link">#</a></dt><dd><p>
+        Nom du service à utiliser pour des paramètres supplémentaires. Il spécifie
+        un nom de service dans <code class="filename">pg_service.conf</code> contenant
+        des paramètres de connexion supplémentaires. Ceci permet aux
+        applications de spécifier uniquement un nom de service pour que les
+        paramètres de connexion puissent être maintenus de façon centralisée.
+        Voir <a class="xref" href="libpq-pgservice.html" title="32.17. Fichier des services de connexion">Section 32.17</a>.
+       </p></dd><dt id="LIBPQ-CONNECT-TARGET-SESSION-ATTRS"><span class="term"><code class="literal">target_session_attrs</code></span> <a href="#LIBPQ-CONNECT-TARGET-SESSION-ATTRS" class="id_link">#</a></dt><dd><p>
+        Cette option détermine si la session doit avoir certaines propriétés
+        pour être acceptable. C'est typiquement utilisé en combinaison avec
+        plusieurs noms d'hôte pour sélectionner la première alternative
+        acceptable parmi différents hôtes. Il existe six modes :
+
+        </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">any</code> (default)</span></dt><dd><p>
+            toute connexion réussie est acceptable
+           </p></dd><dt><span class="term"><code class="literal">read-write</code></span></dt><dd><p>
+            la session doit accepter les transactions en lecture/écriture par
+            défaut (c'est-à-dire que le serveur ne doit pas être en mode hot
+            standby et le paramètre
+            <code class="varname">default_transaction_read_only</code> doit être à
+            <code class="literal">off</code>)
+           </p></dd><dt><span class="term"><code class="literal">read-only</code></span></dt><dd><p>
+            la session ne doit pas accepter les transactions en lecture/écriture
+            par défaut (l'inverse)
+           </p></dd><dt><span class="term"><code class="literal">primary</code></span></dt><dd><p>
+            le serveur ne doit pas être en mode hot standby
+           </p></dd><dt><span class="term"><code class="literal">standby</code></span></dt><dd><p>
+            le serveur doit être en mode hot standby
+           </p></dd><dt><span class="term"><code class="literal">prefer-standby</code></span></dt><dd><p>
+            essaie tout d'abord de trouver un serveur secondaire, mais aucun
+            des hôtes listés n'est un serveur secondaire, alors tente de
+            nouveau dans le mode <code class="literal">any</code>
+           </p></dd></dl></div><p>
+       </p></dd><dt id="LIBPQ-CONNECT-LOAD-BALANCE-HOSTS"><span class="term"><code class="literal">load_balance_hosts</code></span> <a href="#LIBPQ-CONNECT-LOAD-BALANCE-HOSTS" class="id_link">#</a></dt><dd><p>
+        Contrôle l'ordre dans lequel le client essaie de se connecter aux hôtes
+        et adresses disponibles. Une fois qu'une tentative réussit, aucun autre
+        hôte ou adresse ne sera testé. Ce paramètre est typiquement utilisé en
+        combinaison avec plusieurs noms d'hôtes ou un enregistement DSN qui
+        renvoie plusieurs IP. Ce paramètre peut être utiliser avec
+        <a class="xref" href="libpq-connect.html#LIBPQ-CONNECT-TARGET-SESSION-ATTRS">target_session_attrs</a> pour réaliser de
+        la répartition de charge uniquement sur les serveurs secondaires. Une
+        fois connecté avec succès, les requêtes suivants sur cette connexion
+        iront toutes au même serveur. Il existe actuellement deux modes :
+        </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">disable</code> (par défaut)</span></dt><dd><p>
+            Aucune répartition de charge n'est réalisée entre hôte. Les hôtes
+            sont essayés dans l'ordre où ils sont fournis et les adresses
+            sont essayées dans l'ordre où elles sont reçues d'un DNS ou d'un
+            fichier hosts.
+           </p></dd><dt><span class="term"><code class="literal">random</code></span></dt><dd><p>
+            Les hôtes et les adresses sont essayés dans un ordre aléatoire.
+            Cette valeur est principalement utile pour l'ouverture de plusieurs
+            connexions en même temps, possiblement de différentes machines. De
+            cette façon, les connexions seront réparties entre plusieurs
+            serveurs <span class="productname">PostgreSQL</span>.
+           </p><p>
+            Bien que la répartition aléatoire de charge, à cause de sa nature
+            aléatoire, ne résultera pratiquement jamais en une distribution
+            uniforme, il s'en rapproche statistiquement. Un aspect important
+            ici est que cet algorithme utilise deux niveaux de choix aléatoires.
+            Tout d'abord, les hôtes sont résolus en ordre aléatoire. Puis, avant
+            de résoudre l'hôte suivant, toutes les adresses résolues de lhôte
+            courant seront triées de façon aléatoire. Ce comportement
+            the next host, all resolved addresses for the current host will be
+            tried in random order. Ce comportement peut fausser la quantité de
+            connexions que chaque nœud obtient, et ce grandement dans certains cas,
+            par exemple lorsque certains hôtes résolvent plus d'adresses que
+            d'autres. Mais ce type d'erreur peut également être utilisée à
+            dessein, par exemple pour augmenter le nombre de connexions qu'un
+            serveur plus important obtient en fournissant plusieurs fois son nom
+            d'hôte dans la chaîne.
+           </p><p>
+            Lors de l'utilisation de cette valeur, il est recommandé de configurer
+            aussi une valeur raisonnable pour <a class="xref" href="libpq-connect.html#LIBPQ-CONNECT-CONNECT-TIMEOUT">connect_timeout</a>. Parce que, si un des
+            nœuds utilisés par la répartition de charge ne répond pas, un
+            nouveau nœud sera essayé.
+           </p></dd></dl></div><p>
+       </p></dd></dl></div><p>
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/libpq-connect.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:36 GMT -->
+</html>

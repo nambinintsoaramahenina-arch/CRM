@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/textsearch-tables.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:29 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>12.2. Tables et index</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="textsearch-intro.html" title="12.1. Introduction" /><link rel="next" href="textsearch-controls.html" title="12.3. Contrôler la recherche plein texte" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/textsearch-tables.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/textsearch-tables.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/textsearch-tables.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/textsearch-tables.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/textsearch-tables.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/textsearch-tables.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/textsearch-tables.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/textsearch-tables.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/textsearch-tables.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/textsearch-tables.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/textsearch-tables.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/textsearch-tables.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/textsearch-tables.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/textsearch-tables.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/textsearch-tables.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/textsearch-tables.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/textsearch-tables.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/textsearch-tables.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/textsearch-tables.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="textsearch.html">Recherche plein texte</a></span> » <span class="breadcrumb-node">Tables et index</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="textsearch-intro.html" title="12.1. Introduction">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="textsearch.html" title="Chapitre 12. Recherche plein texte">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="textsearch-controls.html" title="12.3. Contrôler la recherche plein texte">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">12.1. Introduction </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 12.3. Contrôler la recherche plein texte</td></tr></table></div><div class="sect1" id="TEXTSEARCH-TABLES"><div class="titlepage"><div><div><h2 class="title" style="clear: both">12.2. Tables et index <a href="#TEXTSEARCH-TABLES" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="textsearch-tables.html#TEXTSEARCH-TABLES-SEARCH">12.2.1. Rechercher dans une table</a></span></dt><dt><span class="sect2"><a href="textsearch-tables.html#TEXTSEARCH-TABLES-INDEX">12.2.2. Créer des index</a></span></dt></dl></div><p>
+   Les exemples de la section précédente illustrent la correspondance plein
+   texte en utilisant des chaînes simples. Cette section montre comment
+   rechercher les données de la table, parfois en utilisant des index.
+  </p><div class="sect2" id="TEXTSEARCH-TABLES-SEARCH"><div class="titlepage"><div><div><h3 class="title">12.2.1. Rechercher dans une table <a href="#TEXTSEARCH-TABLES-SEARCH" class="id_link">#</a></h3></div></div></div><p>
+    Il est possible de faire des recherches plein texte sans index. Une requête
+    qui ne fait qu'afficher le champ <code class="structname">title</code> de chaque
+    ligne contenant le mot <code class="literal">friend</code> dans son champ
+    <code class="structfield">body</code> ressemble à ceci :
+
+    </p><pre class="programlisting">
+SELECT title
+FROM pgweb
+WHERE to_tsvector('english', body) @@ to_tsquery('english', 'friend');
+    </pre><p>
+
+    Cela trouve aussi les mots relatifs comme <code class="literal">friends</code>
+    et <code class="literal">friendly</code>, car ils ont tous la même racine, le même
+    lexème normalisé.
+   </p><p>
+    La requête ci-dessus spécifie que la configuration
+    <code class="literal">english</code> doit être utilisée pour analyser et normaliser
+    les chaînes. Nous pouvons aussi omettre les paramètres de
+    configuration :
+
+    </p><pre class="programlisting">
+SELECT title
+FROM pgweb
+WHERE to_tsvector(body) @@ to_tsquery('friend');
+    </pre><p>
+
+    Cette requête utilisera l'ensemble de configuration indiqué par <a class="xref" href="runtime-config-client.html#GUC-DEFAULT-TEXT-SEARCH-CONFIG">default_text_search_config</a>.
+   </p><p>
+    Un exemple plus complexe est de sélectionner les dix documents les plus
+    récents qui contiennent les mots <code class="literal">create</code> et
+    <code class="literal">table</code> dans les champs <code class="structname">title</code> ou
+    <code class="structname">body</code> :
+
+    </p><pre class="programlisting">
+SELECT title
+FROM pgweb
+WHERE to_tsvector(title || ' ' || body) @@ to_tsquery('create &amp; table')
+ORDER BY last_mod_date DESC LIMIT 10;
+    </pre><p>
+
+    Pour plus de clarté, nous omettons les appels à la fonction
+    <code class="function">coalesce</code> qui est nécessaire pour rechercher les lignes
+    contenant <code class="literal">NULL</code> dans un des deux champs.
+   </p><p>
+    Bien que ces requêtes fonctionnent sans index, la plupart des applications
+    trouvent cette approche trop lente, sauf peut-être pour des recherches
+    occasionnelles. Une utilisation pratique de la recherche plein texte réclame
+    habituellement la création d'un index.
+   </p></div><div class="sect2" id="TEXTSEARCH-TABLES-INDEX"><div class="titlepage"><div><div><h3 class="title">12.2.2. Créer des index <a href="#TEXTSEARCH-TABLES-INDEX" class="id_link">#</a></h3></div></div></div><p>
+    Nous pouvons créer un index <acronym class="acronym">GIN</acronym> (<a class="xref" href="textsearch-indexes.html" title="12.9. Types d'index préférés pour la recherche plein texte">Section 12.9</a>) pour accélérer les recherches plein
+    texte :
+
+    </p><pre class="programlisting">
+CREATE INDEX pgweb_idx ON pgweb USING GIN(to_tsvector('english', body));
+    </pre><p>
+
+    Notez que la version à deux arguments de <code class="function">to_tsvector</code>
+    est utilisée. Seules les fonctions de recherche plein texte qui spécifient
+    un nom de configuration peuvent être utilisées dans les index sur des
+    expressions
+    (<a class="xref" href="indexes-expressional.html" title="11.7. Index d'expressions">Section 11.7</a>). Ceci est dû au fait que le contenu
+    de l'index ne doit pas être affecté par <a class="xref" href="runtime-config-client.html#GUC-DEFAULT-TEXT-SEARCH-CONFIG">default_text_search_config</a>. Dans le cas contraire, le
+    contenu de l'index peut devenir incohérent parce que différentes entrées
+    pourraient contenir des <code class="type">tsvector</code> créés avec différentes
+    configurations de recherche plein texte et qu'il ne serait plus possible de
+    deviner à quelle configuration fait référence une entrée. Il serait
+    impossible de sauvegarder et restaurer correctement un tel index.
+   </p><p>
+    Comme la version à deux arguments de <code class="function">to_tsvector</code> a
+    été utilisée dans l'index ci-dessus, seule une référence de la requête
+    qui utilise la version à deux arguments de <code class="function">to_tsvector</code>
+    avec le même nom de configuration utilise cet index. C'est-à-dire que
+    <code class="literal">WHERE to_tsvector('english', body) @@ 'a &amp; b'</code> peut
+    utiliser l'index, mais <code class="literal">WHERE to_tsvector(body) @@ 'a &amp; b'</code>
+    ne le peut pas. Ceci nous assure qu'un index est seulement utilisé avec la
+    même configuration que celle utilisée pour créer les entrées de l'index.
+   </p><p>
+    Il est possible de configurer des index avec des expressions plus complexes
+    où le nom de la configuration est indiqué dans une autre colonne. Par
+    exemple :
+
+    </p><pre class="programlisting">
+CREATE INDEX pgweb_idx ON pgweb USING GIN(to_tsvector(config_name, body));
+    </pre><p>
+
+    où <code class="literal">config_name</code> est une colonne de la table
+    <code class="literal">pgweb</code>. Ceci permet l'utilisation de configurations
+    mixtes dans le même index tout en enregistrant la configuration utilisée
+    pour chaque entrée d'index. Ceci est utile dans le cas d'une bibliothèque
+    de documents dans différentes langues. Encore une fois, les requêtes
+    voulant utiliser l'index doivent être écrites pour correspondre à
+    l'index, donc
+    <code class="literal">WHERE to_tsvector(config_name, body) @@ 'a &amp; b'</code>.
+   </p><p>
+    Les index peuvent même concaténer des colonnes :
+
+    </p><pre class="programlisting">
+CREATE INDEX pgweb_idx ON pgweb USING GIN(to_tsvector('english', title || ' ' || body));
+    </pre><p>
+   </p><p>
+    Une autre approche revient à créer une colonne <code class="type">tsvector</code>
+    séparée pour contenir le résultat de <code class="function">to_tsvector</code>.
+    Pour garder cette colonne automatiquement à jour par rapport à la source,
+    on peut utiliser une colonne générée stockée. Cet
+    exemple est une concaténation de <code class="literal">title</code> et
+    <code class="literal">body</code>, en utilisant <code class="function">coalesce</code> pour
+    s'assurer qu'un champ est toujours indexé même si l'autre vaut
+    <code class="literal">NULL</code> :
+
+    </p><pre class="programlisting">
+ALTER TABLE pgweb
+    ADD COLUMN textsearchable_index_col tsvector
+               GENERATED ALWAYS AS (to_tsvector('english', coalesce(title, '') || ' ' || coalesce(body, ''))) STORED;
+    </pre><p>
+
+    Puis nous créons un index <acronym class="acronym">GIN</acronym> pour accélérer la
+    recherche :
+
+    </p><pre class="programlisting">
+CREATE INDEX textsearch_idx ON pgweb USING GIN(textsearchable_index_col);
+    </pre><p>
+
+    Maintenant, nous sommes prêts pour des recherches plein texte rapides :
+
+    </p><pre class="programlisting">
+SELECT title
+FROM pgweb
+WHERE textsearchable_index_col @@ to_tsquery('create &amp; table')
+ORDER BY last_mod_date DESC
+LIMIT 10;
+    </pre><p>
+   </p><p>
+    Un avantage de l'approche de la colonne séparée sur un index par
+    expression est qu'il n'est pas nécessaire de spécifier explicitement la
+    configuration de recherche plein texte dans les requêtes pour utiliser
+    l'index. Comme indiqué dans l'exemple ci-dessus, la requête peut dépendre
+    de <code class="varname">default_text_search_config</code>. Un autre avantage est que
+    les recherches seront plus rapides, car il n'est plus nécessaire de refaire
+    des appels à <code class="function">to_tsvector</code> pour vérifier la
+    correspondance de l'index. (Ceci est plus important lors de l'utilisation
+    d'un index GiST par rapport à un index GIN ; voir la <a class="xref" href="textsearch-indexes.html" title="12.9. Types d'index préférés pour la recherche plein texte">Section 12.9</a>.)
+    Néanmoins, l'approche de l'index par expression est plus simple à
+    configurer et elle réclame moins d'espace disque, car la représentation
+    <code class="type">tsvector</code> n'est pas réellement stockée.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/textsearch-tables.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:29 GMT -->
+</html>

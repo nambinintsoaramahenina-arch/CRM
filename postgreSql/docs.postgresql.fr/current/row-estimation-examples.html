@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/row-estimation-examples.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:19 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>68.1. Exemples d'estimation des lignes</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="planner-stats-details.html" title="Chapitre 68. Comment le planificateur utilise les statistiques" /><link rel="next" href="multivariate-statistics-examples.html" title="68.2. Exemples de statistiques multivariées" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/row-estimation-examples.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/row-estimation-examples.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/row-estimation-examples.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/row-estimation-examples.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/row-estimation-examples.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/row-estimation-examples.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/row-estimation-examples.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/row-estimation-examples.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/row-estimation-examples.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/row-estimation-examples.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="planner-stats-details.html">Comment le planificateur utilise les statistiques</a></span> » <span class="breadcrumb-node">Exemples d'estimation des lignes</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="planner-stats-details.html" title="Chapitre 68. Comment le planificateur utilise les statistiques">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="planner-stats-details.html" title="Chapitre 68. Comment le planificateur utilise les statistiques">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="multivariate-statistics-examples.html" title="68.2. Exemples de statistiques multivariées">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Chapitre 68. Comment le planificateur utilise les statistiques </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 68.2. Exemples de statistiques multivariées</td></tr></table></div><div class="sect1" id="ROW-ESTIMATION-EXAMPLES"><div class="titlepage"><div><div><h2 class="title" style="clear: both">68.1. Exemples d'estimation des lignes <a href="#ROW-ESTIMATION-EXAMPLES" class="id_link">#</a></h2></div></div></div><a id="id-1.10.21.4.2" class="indexterm"></a><p>
+   Les exemples montrés ci-dessous utilisent les tables de la base de tests de
+   régression de <span class="productname">PostgreSQL</span>. Notez aussi que, comme
+   <code class="command">ANALYZE</code> utilise un échantillonnage statistique lors de
+   la réalisation des statistiques, les résultats peuvent changer légèrement
+   après toute exécution d'<code class="command">ANALYZE</code>.
+  </p><p>
+   Commençons avec une requête simple :
+
+   </p><pre class="programlisting">EXPLAIN SELECT * FROM tenk1;
+
+                         QUERY PLAN
+-------------------------------------------------------------
+ Seq Scan on tenk1  (cost=0.00..458.00 rows=10000 width=244)
+   </pre><p>
+
+   Comment le planificateur détermine la cardinalité de
+   <code class="structname">tenk1</code> est couvert dans <a class="xref" href="planner-stats.html" title="14.2. Statistiques utilisées par le planificateur">Section 14.2</a> mais est répété ici pour être complet. Le nombre de
+   pages et de lignes est trouvé dans <code class="structname">pg_class</code> :
+
+   </p><pre class="programlisting">SELECT relpages, reltuples FROM pg_class WHERE relname = 'tenk1';
+
+
+ relpages | reltuples
+----------+-----------
+      358 |     10000
+   </pre><p>
+   Ces nombres sont corrects à partir du dernier <code class="command">VACUUM</code> ou
+   <code class="command">ANALYZE</code> sur la table. Le planificateur récupère
+   ensuite le nombre de pages actuel dans la table (c'est une opération peu
+   coûteuse, ne nécessitant pas un parcours de table). Si c'est différent de
+   <code class="structfield">relpages</code>, alors
+   <code class="structfield">reltuples</code> est modifié en accord pour arriver à
+   une estimation actuelle du nombre de lignes. Dans cet exemple, la valeur de
+   <code class="structfield">relpages</code> est mise à jour, donc l'estimation
+   du nombre de lignes est identique à
+   <code class="structfield">reltuples</code>.
+  </p><p>
+   Passons à un exemple avec une condition dans sa clause
+   <code class="literal">WHERE</code> :
+
+   </p><pre class="programlisting">EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 1000;
+
+                                   QUERY PLAN
+--------------------------------------------------------------------------------
+ Bitmap Heap Scan on tenk1  (cost=24.06..394.64 rows=1007 width=244)
+   Recheck Cond: (unique1 &lt; 1000)
+   -&gt;  Bitmap Index Scan on tenk1_unique1  (cost=0.00..23.80 rows=1007 width=0)
+         Index Cond: (unique1 &lt; 1000)
+   </pre><p>
+
+   Le planificateur examine la condition de la clause <code class="literal">WHERE</code>
+   et cherche la fonction de sélectivité à partir de l'opérateur
+   <code class="literal">&lt;</code> dans <code class="structname">pg_operator</code>. C'est
+   contenu dans la colonne <code class="structfield">oprrest</code> et le résultat,
+   dans ce cas, est <code class="function">scalarltsel</code>. La fonction
+   <code class="function">scalarltsel</code> récupère l'histogramme pour
+   <code class="structfield">unique1</code> à partir de
+   <code class="classname">pg_statistic</code>. Pour les requêtes manuelles, il est
+   plus simple de regarder dans la vue <code class="structname">pg_stats</code> :
+
+   </p><pre class="programlisting">SELECT histogram_bounds FROM pg_stats
+WHERE tablename='tenk1' AND attname='unique1';
+
+                   histogram_bounds
+------------------------------------------------------
+ {0,993,1997,3050,4040,5036,5957,7057,8029,9016,9995}
+   </pre><p>
+
+   Ensuite, la fraction de l'histogramme occupée par <span class="quote">« <span class="quote">&lt; 1000</span> »</span>
+   est traitée. C'est la sélectivité. L'histogramme divise l'ensemble en plus
+   petites parties d'égales fréquences, donc tout ce que nous devons faire est
+   de localiser la partie où se trouve notre valeur et compter une
+   <span class="emphasis"><em>partie</em></span> d'elle et <span class="emphasis"><em>toutes</em></span> celles
+   qui la précèdent. La valeur 1000 est clairement dans la seconde partie
+   (993–1997), donc en supposant une distribution linéaire des valeurs à
+   l'intérieur de chaque partie, nous pouvons calculer la sélectivité comme
+   étant :
+
+   </p><pre class="programlisting">selectivity = (1 + (1000 - bucket[2].min)/(bucket[2].max - bucket[2].min))/num_buckets
+            = (1 + (1000 - 993)/(1997 - 993))/10
+            = 0.100697
+
+   </pre><p>
+
+   c'est-à-dire une partie complète plus une fraction linéaire de la seconde,
+   divisée par le nombre de parties. Le nombre de lignes estimées peut
+   maintenant être calculé comme le produit de la sélectivité et de la
+   cardinalité de <code class="structname">tenk1</code> :
+
+   </p><pre class="programlisting">rows = rel_cardinality * selectivity
+     = 10000 * 0.100697
+     = 1007  (rounding off)
+   </pre><p>
+
+  </p><p>
+   Maintenant, considérons un exemple avec une condition d'égalité dans sa
+   clause <code class="literal">WHERE</code> :
+
+   </p><pre class="programlisting">EXPLAIN SELECT * FROM tenk1 WHERE stringu1 = 'CRAAAA';
+
+                        QUERY PLAN
+----------------------------------------------------------
+ Seq Scan on tenk1  (cost=0.00..483.00 rows=30 width=244)
+   Filter: (stringu1 = 'CRAAAA'::name)
+   </pre><p>
+
+   De nouveau, le planificateur examine la condition de la clause
+   <code class="literal">WHERE</code>
+   et cherche la fonction de sélectivité pour <code class="literal">=</code>, qui est
+   <code class="function">eqsel</code>. Pour une estimation d'égalité, l'histogramme
+   n'est pas utile ; à la place, la liste des valeurs les plus communes
+   (<em class="firstterm">most common values</em>, d'où l'acronyme
+   <acronym class="acronym">MCV</acronym> fréquemment utilisé) est utilisé pour déterminer la
+   sélectivité. Regardons-les avec quelques colonnes
+   supplémentaires qui nous seront utiles plus tard :
+
+   </p><pre class="programlisting">SELECT null_frac, n_distinct, most_common_vals, most_common_freqs FROM pg_stats
+WHERE tablename='tenk1' AND attname='stringu1';
+
+null_frac         | 0
+n_distinct        | 676
+most_common_vals  | {EJAAAA,BBAAAA,CRAAAA,FCAAAA,FEAAAA,GSAAAA,JOAAAA,MCAAAA,NAAAAA,WGAAAA}
+most_common_freqs | {0.00333333,0.003,0.003,0.003,0.003,0.003,0.003,0.003,0.003,0.003}
+
+   </pre><p>
+
+   Comme <code class="literal">CRAAAA</code> apparaît dans la liste des MCV, la
+   sélectivité est tout simplement l'entrée correspondante dans la liste des
+   fréquences les plus courantes (<acronym class="acronym">MCF</acronym>, acronyme de
+   <span class="foreignphrase"><em class="foreignphrase">Most Common Frequencies</em></span>) :
+
+   </p><pre class="programlisting">selectivity = mcf[3]
+            = 0.003
+   </pre><p>
+
+   Comme auparavant, le nombre estimé de lignes est seulement le produit de ceci avec la
+   cardinalité de <code class="structname">tenk1</code> comme précédemment :
+
+   </p><pre class="programlisting">rows = 10000 * 0.003
+     = 30
+   </pre><p>
+  </p><p>
+   Maintenant, considérez la même requête mais avec une constante qui n'est pas
+   dans la liste <acronym class="acronym">MCV</acronym> :
+
+   </p><pre class="programlisting">EXPLAIN SELECT * FROM tenk1 WHERE stringu1 = 'xxx';
+
+                        QUERY PLAN
+----------------------------------------------------------
+ Seq Scan on tenk1  (cost=0.00..483.00 rows=15 width=244)
+   Filter: (stringu1 = 'xxx'::name)
+   </pre><p>
+
+   C'est un problème assez différent, comment estimer la sélectivité quand la
+   valeur n'est <span class="emphasis"><em>pas</em></span> dans la liste <acronym class="acronym">MCV</acronym>.
+   L'approche est d'utiliser le fait que la valeur n'est pas dans la liste,
+   combinée avec la connaissance des fréquences pour tout les
+   <acronym class="acronym">MCV</acronym> :
+
+   </p><pre class="programlisting">
+selectivity = (1 - sum(mcv_freqs))/(num_distinct - num_mcv)
+            = (1 - (0.00333333 + 0.003 + 0.003 + 0.003 + 0.003 + 0.003 +
+                    0.003 + 0.003 + 0.003 + 0.003))/(676 - 10)
+            = 0.0014559
+   </pre><p>
+
+   C'est-à-dire ajouter toutes les fréquences pour les <acronym class="acronym">MCV</acronym>
+   et les soustraire d'un, puis les diviser par le nombre des
+   <span class="emphasis"><em>autres</em></span> valeurs distinctes. Notez qu'il n'y a pas de
+   valeurs NULL, donc vous n'avez pas à vous en inquiéter (sinon nous pourrions
+   soustraire la fraction NULL à partir du numérateur). Le nombre estimé de
+   lignes est ensuite calculé comme d'habitude :
+
+   </p><pre class="programlisting">
+rows = 10000 * 0.0014559
+     = 15  (rounding off)
+   </pre><p>
+  </p><p>
+   L'exemple précédent avec <code class="literal">unique1 &lt; 1000</code> était une
+   sursimplification de ce que <code class="function">scalarltsel</code> faisait
+   réellement ; maintenant que nous avons vu un exemple de l'utilisation
+   des MCV, nous pouvons ajouter quelques détails supplémentaires. L'exemple
+   était correct aussi loin qu'il a été car, comme
+   <code class="structfield">unique1</code> est une colonne unique, elle n'a pas de
+   MCV (évidemment, n'avoir aucune valeur n'est pas plus courant que toute
+   autre valeur). Pour une colonne non unique, il y a normalement un histogramme
+   et une liste MCV, et <span class="emphasis"><em>l'histogramme n'inclut pas la portion de la
+    population de colonne représentée par les MCV</em></span>. Nous le faisons
+   ainsi parce que cela permet une estimation plus précise. Dans cette
+   situation, <code class="function">scalarltsel</code> s'applique directement à la
+   condition (c'est-à-dire <span class="quote">« <span class="quote">&lt; 1000</span> »</span>) pour chaque valeur de la
+   liste MCV, et ajoute les fréquence des MCV pour lesquelles la condition
+   est vérifiée. Ceci donne une estimation exacte de la sélectivité dans la
+   portion de la table qui est MCV. L'histogramme est ensuite utilisée de la
+   même façon que ci-dessus pour estimer la sélectivité dans la portion de la
+   table qui n'est pas MCV, et ensuite les deux nombres sont combinés pour
+   estimer la sélectivité. Par exemple, considérez
+
+   </p><pre class="programlisting">
+EXPLAIN SELECT * FROM tenk1 WHERE stringu1 &lt; 'IAAAAA';
+
+                         QUERY PLAN
+------------------------------------------------------------
+ Seq Scan on tenk1  (cost=0.00..483.00 rows=3077 width=244)
+   Filter: (stringu1 &lt; 'IAAAAA'::name)
+   </pre><p>
+
+   Nous voyons déjà l'information MCV pour <code class="structfield">stringu1</code>,
+   et voici son histogramme :
+
+   </p><pre class="programlisting">
+SELECT histogram_bounds FROM pg_stats
+WHERE tablename='tenk1' AND attname='stringu1';
+
+                                histogram_bounds
+--------------------------------------------------------------------------------
+ {AAAAAA,CQAAAA,FRAAAA,IBAAAA,KRAAAA,NFAAAA,PSAAAA,SGAAAA,VAAAAA,XLAAAA,ZZAAAA}
+   </pre><p>
+
+   En vérifiant la liste MCV, nous trouvons que la condition <code class="literal">stringu1
+    &lt; 'IAAAAA'</code> est satisfaite par les six premières entrées et non
+   pas les quatre dernières, donc la sélectivité dans la partie MCV de la
+   population est :
+
+   </p><pre class="programlisting">
+selectivity = sum(relevant mvfs)
+            = 0.00333333 + 0.003 + 0.003 + 0.003 + 0.003 + 0.003
+            = 0.01833333
+   </pre><p>
+
+   Additionner toutes les MFC nous indique aussi que la fraction totale de
+   la population représentée par les MCV est de 0.03033333, et du coup la
+   fraction représentée par l'histogramme est de 0.96966667 (encore une fois,
+   il n'y a pas de NULL, sinon nous devrions les exclure ici). Nous pouvons
+   voir que la valeur <code class="literal">IAAAAA</code> tombe près de la fin du
+   troisième jeton d'histogramme. En utilisant un peu de suggestions sur la
+   fréquence des caractères différents, le planificateur arrive à
+   l'estimation 0.298387 pour la portion de la population de l'histogramme
+   qui est moindre que <code class="literal">IAAAAA</code>. Ensuite nous combinons les
+   estimations pour les populations MCV et non MCV :
+
+   </p><pre class="programlisting">
+selectivity = mcv_selectivity + histogram_selectivity * histogram_fraction
+            = 0.01833333 + 0.298387 * 0.96966667
+            = 0.307669
+
+rows        = 10000 * 0.307669
+            = 3077  (rounding off)
+   </pre><p>
+
+   Dans cet exemple particulier, la correction à partir de la liste MCV est
+   très petit car la distribution de la colonne est réellement assez plat
+   (les statistiques affichant ces valeurs particulières comme étant plus
+   communes que les autres sont principalement dûes à une erreur
+   d'échantillonnage). Dans un cas plus typique où certaines valeurs sont
+   significativement plus communes que les autres, ce processus compliqué
+   donne une amélioration utile dans la précision car la sélectivité pour les
+   valeurs les plus communes est trouvée exactement.
+  </p><p>
+   Maintenant, considérons un cas avec plus d'une condition
+   dans la clause <code class="literal">WHERE</code> :
+
+   </p><pre class="programlisting">
+EXPLAIN SELECT * FROM tenk1 WHERE unique1 &lt; 1000 AND stringu1 = 'xxx';
+
+                                   QUERY PLAN
+--------------------------------------------------------------------------------
+ Bitmap Heap Scan on tenk1  (cost=23.80..396.91 rows=1 width=244)
+   Recheck Cond: (unique1 &lt; 1000)
+   Filter: (stringu1 = 'xxx'::name)
+   -&gt;  Bitmap Index Scan on tenk1_unique1  (cost=0.00..23.80 rows=1007 width=0)
+         Index Cond: (unique1 &lt; 1000)
+   </pre><p>
+
+   Le planificateur suppose que les deux conditions sont indépendantes, pour
+   que les sélectivités individuelles des clauses puissent être multipliées
+   ensemble :
+
+   </p><pre class="programlisting">
+selectivity = selectivity(unique1 &lt; 1000) * selectivity(stringu1 = 'xxx')
+            = 0.100697 * 0.0014559
+            = 0.0001466
+
+rows        = 10000 * 0.0001466
+            = 1  (rounding off)
+   </pre><p>
+
+   Notez que l'estimation du nombre de lignes renvoyées à partir du bitmap
+   index scan reflète seulement la condition utilisée avec l'index ; c'est
+   important car cela affecte l'estimation du coût pour les récupérations
+   suivantes sur la table.
+  </p><p>
+   Enfin, nous examinerons une requête qui implique une jointure :
+
+   </p><pre class="programlisting">
+EXPLAIN SELECT * FROM tenk1 t1, tenk2 t2
+WHERE t1.unique1 &lt; 50 AND t1.unique2 = t2.unique2;
+
+                                      QUERY PLAN
+-----------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------
+ Nested Loop  (cost=4.64..456.23 rows=50 width=488)
+   -&gt;  Bitmap Heap Scan on tenk1 t1  (cost=4.64..142.17 rows=50 width=244)
+         Recheck Cond: (unique1 &lt; 50)
+         -&gt;  Bitmap Index Scan on tenk1_unique1  (cost=0.00..4.63 rows=50 width=0)
+               Index Cond: (unique1 &lt; 50)
+   -&gt;  Index Scan using tenk2_unique2 on tenk2 t2  (cost=0.00..6.27 rows=1 width=244)
+         Index Cond: (unique2 = t1.unique2)
+   </pre><p>
+
+   La restriction sur <code class="structname">tenk1</code>,
+   <code class="literal">unique1 &lt; 50</code>, est évaluée avant la jointure de boucle
+   imbriquée. Ceci est géré de façon analogue à l'exemple précédent. Cette fois, la
+   valeur 50 est dans la première partie de l'histogramme
+   <code class="structfield">unique1</code> :
+
+   </p><pre class="programlisting">selectivity = (0 + (50 - bucket[1].min)/(bucket[1].max - bucket[1].min))/num_buckets
+            = (0 + (50 - 0)/(993 - 0))/10
+            = 0.005035
+
+rows        = 10000 * 0.005035
+            = 50  (rounding off)
+   </pre><p>
+
+   La restriction pour la jointure est <code class="literal">t2.unique2 =
+    t1.unique2</code>.
+   L'opérateur est tout simplement le <code class="literal">=</code>, néanmoins la
+   fonction de sélectivité est obtenue à partir de la colonne
+   <code class="structfield">oprjoin</code> de
+   <code class="structname">pg_operator</code>, et est <code class="function">eqjoinsel</code>.
+   <code class="function">eqjoinsel</code> recherche l'information statistique de
+   <code class="structname">tenk2</code> et <code class="structname">tenk1</code> :
+
+   </p><pre class="programlisting">
+SELECT tablename, null_frac,n_distinct, most_common_vals FROM pg_stats
+WHERE tablename IN ('tenk1', 'tenk2') AND attname='unique2';
+
+tablename  | null_frac | n_distinct | most_common_vals
+-----------+-----------+------------+------------------
+ tenk1     |         0 |         -1 |
+ tenk2     |         0 |         -1 |
+   </pre><p>
+
+   Dans ce cas, il n'y a pas d'information <acronym class="acronym">MCV</acronym> pour
+   <code class="structfield">unique2</code> et toutes les valeurs semblent
+   être unique (n_distinct = -1), donc nous utilisons un algorithme qui
+   se base sur les estimations de nombres de lignes pour les deux relations
+   (num_rows, non affiché, mais "tenk") ensemble avec les ratios de NULL
+   dans la colonne (zéro pour les deux :
+
+   </p><pre class="programlisting">selectivity = (1 - null_frac1) * (1 - null_frac2) / max(num_rows1, num_rows2)
+            = (1 - 0) * (1 - 0) / max(10000, 10000)
+            = 0.0001
+   </pre><p>
+
+   C'est-à-dire, soustraire le ratio de valeurs NULL pour chacune des
+   relations, et diviser par le nombre de lignes de la relation la plus
+   volumineuse (cette valeur a un facteur d'échelle dans le cas de non
+   unicité). Le nombre de
+   lignes que la jointure pourrait émettre est calculé comme la cardinalité du
+   produit cartésien de deux inputs, multiplié par la sélectivité :
+
+   </p><pre class="programlisting">
+rows = (outer_cardinality * inner_cardinality) * selectivity
+     = (50 * 10000) * 0.0001
+     = 50
+   </pre><p>
+  </p><p>
+   S'il y avait eu des listes MCV pour les deux colonnes,
+   <code class="function">eqjoinsel</code> aurait utilisé une comparaison directe des
+   listes MCV pour déterminer la sélectivité de jointure à l'intérieur de la
+   aprtie des populations de colonne représentées par les MCV. L'estimation
+   pour le reste des populations suit la même approche affichée ici.
+  </p><p>
+   Notez que nous affichons <code class="literal">inner_cardinality</code> à 10000,
+   c'est-à-dire la taille non modifiée de <code class="structname">tenk2</code>. Il
+   pourrait apparaître en inspectant l'affichage <code class="command">EXPLAIN</code>
+   que l'estimation des lignes jointes vient de 50 * 1, c'est-à-dire que le
+   nombre de lignes externes multiplié par le nombre estimé de lignes obtenu
+   par chaque parcours d'index interne sur <code class="structname">tenk2</code>.
+   Mais ce n'est pas le cas : la taille de la relation jointe est
+   estimée avant tout plan de jointure particulier considéré. Si tout
+   fonctionne si bien, alors les deux façons d'estimer la taille de la jointure
+   produiront la même réponse mais, à cause de l'erreur d'arrondi et d'autres
+   facteurs, ils divergent quelque fois significativement.
+  </p><p>
+   Pour les personnes intéressées par plus de détails, l'estimation de la taille
+   d'une table (avant toute clause <code class="literal">WHERE</code>) se fait dans
+   <code class="filename">src/backend/optimizer/util/plancat.c</code>. La logique
+   générique pour les sélectivités de clause est dans
+   <code class="filename">src/backend/optimizer/path/clausesel.c</code>. Les fonctions
+   de sélectivité spécifiques aux opérateurs se trouvent principalement dans
+   <code class="filename">src/backend/utils/adt/selfuncs.c</code>.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/row-estimation-examples.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:19 GMT -->
+</html>

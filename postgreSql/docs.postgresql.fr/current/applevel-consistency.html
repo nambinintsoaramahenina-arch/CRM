@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/applevel-consistency.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>13.4. Vérification de cohérence des données au niveau de l'application</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="explicit-locking.html" title="13.3. Verrouillage explicite" /><link rel="next" href="mvcc-serialization-failure-handling.html" title="13.5. Gestion des échecs de sérialisation" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/applevel-consistency.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/applevel-consistency.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/applevel-consistency.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/applevel-consistency.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/applevel-consistency.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/applevel-consistency.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/applevel-consistency.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/applevel-consistency.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/applevel-consistency.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/applevel-consistency.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/applevel-consistency.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/applevel-consistency.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/applevel-consistency.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/applevel-consistency.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/applevel-consistency.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/applevel-consistency.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/applevel-consistency.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/applevel-consistency.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/applevel-consistency.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/applevel-consistency.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/applevel-consistency.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="mvcc.html">Contrôle d'accès simultané</a></span> » <span class="breadcrumb-node">Vérification de cohérence des données au niveau de l'application</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="explicit-locking.html" title="13.3. Verrouillage explicite">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="mvcc.html" title="Chapitre 13. Contrôle d'accès simultané">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="mvcc-serialization-failure-handling.html" title="13.5. Gestion des échecs de sérialisation">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">13.3. Verrouillage explicite </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 13.5. Gestion des échecs de sérialisation</td></tr></table></div><div class="sect1" id="APPLEVEL-CONSISTENCY"><div class="titlepage"><div><div><h2 class="title" style="clear: both">13.4. Vérification de cohérence des données au niveau de l'application <a href="#APPLEVEL-CONSISTENCY" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="applevel-consistency.html#SERIALIZABLE-CONSISTENCY">13.4.1. Garantir la Cohérence avec des Transactions Serializable</a></span></dt><dt><span class="sect2"><a href="applevel-consistency.html#NON-SERIALIZABLE-CONSISTENCY">13.4.2. Garantir la Cohérence avec des Verrous Bloquants Explicites</a></span></dt></dl></div><p>
+   Il est très difficile d'implémenter des règles de gestion sur l'intégrité
+   des données en utilisant des transactions Read Committed parce que la vue
+   des données est changeante avec chaque ordre, et même un seul ordre peut
+   ne pas se cantonner à son propre instantané si un conflit en écriture
+   se produit.
+  </p><p>
+   Bien qu'une transaction Repeatable Read ait une vue stable des
+   données dans toute la durée de son exécution, il y a un problème
+   subtil quand on utilise les instantanés <acronym class="acronym">MVCC</acronym> pour
+   vérifier la cohérence des données, impliquant quelque chose connu
+   sous le nom de <em class="firstterm">conflits lecture/écriture</em>. Si
+   une transaction écrit des données et qu'une transaction
+   concurrente essaie de lire la même donnée (que ce soit avant ou
+   après l'écriture), elle ne peut pas voir le travail de l'autre
+   transaction. Le lecteur donne donc l'impression de s'être exécuté
+   le premier, quel que soit celui qui a commencé le premier ou qui a
+   validé le premier. Si on s'en tient là, ce n'est pas un problème,
+   mais si le lecteur écrit aussi des données qui sont lues par
+   une transaction concurrente, il y a maintenant une transaction qui
+   semble s'être exécutée avant les transactions précédemment
+   mentionnées. Si la transaction qui semble s'être exécutée en
+   dernier valide en premier, il est très facile qu'un cycle apparaisse
+   dans l'ordre d'exécution des transactions. Quand un cycle de ce
+   genre apparaît, les contrôles d'intégrité ne fonctionneront pas
+   correctement sans aide.
+  </p><p>
+   Comme mentionné dans <a class="xref" href="transaction-iso.html#XACT-SERIALIZABLE" title="13.2.3. Niveau d'Isolation Serializable">Section 13.2.3</a>, les
+   transactions Serializable ne sont que des transactions Repeatable
+   Read qui ajoutent une supervision non bloquante de formes dangereuses
+   de conflits lecture/écriture. Quand une de ces formes est détectée
+   qui pourrait entraîner un cycle dans l'ordre apparent d'exécution,
+   une des transactions impliquées est annulée pour casser le cycle.
+  </p><div class="sect2" id="SERIALIZABLE-CONSISTENCY"><div class="titlepage"><div><div><h3 class="title">13.4.1. Garantir la Cohérence avec des Transactions Serializable <a href="#SERIALIZABLE-CONSISTENCY" class="id_link">#</a></h3></div></div></div><p>
+    Si le niveau d'isolation de transactions Serializable est utilisé
+    pour toutes les écritures et toutes les lectures qui ont besoin
+    d'une vue cohérente des données, aucun autre effort n'est requis
+    pour garantir la cohérence. Un logiciel d'un autre environnement
+    écrit pour utiliser des transactions Serializable pour garantir
+    la cohérence devrait <span class="quote">« <span class="quote">fonctionner sans modification</span> »</span>
+    de ce point de vue dans <span class="productname">PostgreSQL</span>.
+   </p><p>
+    L'utilisation de cette technique évitera de créer une
+    charge de travail inutile aux développeurs d'applications
+    si le logiciel utilise un framework qui réessaie automatiquement
+    les transactions annulées pour échec de sérialisation.
+    Cela pourrait être une bonne idée de
+    positionner <code class="literal">default_transaction_isolation</code> à
+    <code class="literal">serializable</code>. Il serait sage, par ailleurs, de
+    vous assurer qu'aucun autre niveau d'isolation n'est utilisé, soit
+    par inadvertance, soit pour contourner les contrôles d'intégrité,
+    en vérifiant les niveaux d'isolations dans les triggers.
+   </p><p>
+    Voyez <a class="xref" href="transaction-iso.html#XACT-SERIALIZABLE" title="13.2.3. Niveau d'Isolation Serializable">Section 13.2.3</a> pour des suggestions sur
+    les performances.
+   </p><div class="warning"><h3 class="title">Attention : transactions sérialisables et réplication
+     de données</h3><p>
+     Ce niveau de protection de l'intégrité en utilisant
+     des transactions Serializable ne s'étend pour le moment pas
+     jusqu'au mode standby (<a class="xref" href="hot-standby.html" title="26.4. Hot Standby">Section 26.4</a>) ou aux réplicas
+     logiques. Pour cette
+     raison, les utilisateurs du hot standby ou de réplication logique
+     voudront peut-être utiliser le niveau
+     Repeatable Read et un verrouillage explicite sur le primaire.
+    </p></div></div><div class="sect2" id="NON-SERIALIZABLE-CONSISTENCY"><div class="titlepage"><div><div><h3 class="title">13.4.2. Garantir la Cohérence avec des Verrous Bloquants Explicites <a href="#NON-SERIALIZABLE-CONSISTENCY" class="id_link">#</a></h3></div></div></div><p>
+    Quand des écritures non sérialisables sont possibles, pour garantir
+    la validité courante d'un enregistrement et le protéger contre
+    des mises à jour concurrentes, on doit utiliser <code class="command">SELECT
+     FOR UPDATE</code>, <code class="command">SELECT FOR SHARE</code>, ou un
+    ordre <code class="command">LOCK TABLE</code> approprié. (<code class="command">SELECT
+     FOR UPDATE</code> et <code class="command">SELECT FOR SELECT</code> ne
+    verrouillent que les lignes retournées contre les mises à jour
+    concurrentes, tandis que <code class="command">LOCK TABLE</code> verrouille
+    toute la table.) Cela doit être pris en considération quand
+    vous portez des applications <span class="productname">PostgreSQL</span>
+    à partir d'autres environnements.
+   </p><p>
+    Il est aussi important de noter pour ceux qui convertissent à
+    partir d'autres environnements le fait que <code class="command">SELECT
+     FOR UPDATE</code> ne garantit pas qu'une transaction
+    concurrente ne mettra pas à jour ou n'effacera
+    pas l'enregistrement sélectionné. Pour faire cela dans
+    <span class="productname">PostgreSQL</span>, vous devez réellement modifier
+    l'enregistrement, même si vous n'avez pas besoin de modifier une
+    valeur. <code class="command">SELECT FOR UPDATE</code> <span class="emphasis"><em>empêche
+     temporairement</em></span> les autres transactions d'acquérir
+    le même verrou ou d'exécuter un <code class="command">UPDATE</code>
+    ou <code class="command">DELETE</code> qui modifierait l'enregistrement
+    verrouillé, mais une fois que la transaction possédant ce verrou
+    valide ou annule, une transaction bloquée pourra continuer avec son
+    opération en conflit, sauf si un réel <code class="command">UPDATE</code>
+    de l'enregistrement a été effectué pendant que le verrou était
+    possédé.
+   </p><p>
+    Les vérifications globales de validité demandent davantage de
+    réflexion sous un <acronym class="acronym">MVCC</acronym> non sérialisable. Par
+    exemple, une application bancaire pourrait vouloir vérifier que
+    la somme de tous les crédits d'une table est égale à la somme
+    de tous les débits d'une autre, alors que les deux tables sont
+    en cours de mise à jour. La comparaison des résultats de deux
+    <code class="literal">SELECT sum(...)</code> successifs ne fonctionnera pas
+    correctement en mode Read Committed, puisque la seconde requête
+    inclura probablement les résultats de transactions non prises en
+    compte dans la première. Effectuer les deux sommes dans une seule
+    transaction repeatable read donnera uniquement une image précise des effets
+    des transactions qui ont validé avant le début de la
+    transaction repeatable read — mais on pourrait légitimement
+    se demander si la réponse est toujours valide au moment où elle
+    est fournie. Si la transaction repeatable read a elle-même effectué
+    des modifications avant d'effectuer le test de cohérence, l'utilité
+    de la vérification devient encore plus sujette à caution, puisque
+    maintenant elle inclut des modifications depuis le début de la
+    transaction, mais pas toutes. Dans ce genre de cas, une personne
+    prudente pourra vouloir verrouiller toutes les tables nécessaires
+    à la vérification, afin d'avoir une vision incontestable de
+    la réalité courante. Un mode <code class="literal">SHARE</code> (ou plus
+    élevé) garantit qu'il n'y a pas de changements non validés dans
+    la table verrouillée, autres que ceux de la transaction courante.
+   </p><p>
+    Notez aussi que si on se fie au verrouillage explicite pour
+    empêcher les mises à jour concurrentes, on devrait soit utiliser
+    Read Committed, soit utiliser Repeatable Read et faire attention
+    à obtenir les verrous avant d'effectuer les requêtes. Un verrou
+    obtenu par une transaction repeatable read garantit qu'aucune autre
+    transaction modifiant la table n'est en cours d'exécution, mais si
+    l'instantané vu par la transaction est antérieur à l'obtention du
+    verrou, il pourrait aussi précéder des modifications maintenant
+    validées dans la table. Un instantané de transaction repeatable
+    read est en fait figé à l'exécution de sa première requête ou
+    commande de modification de données (<code class="literal">SELECT</code>,
+    <code class="literal">INSERT</code>, <code class="literal">UPDATE</code>, ou
+    <code class="literal">DELETE</code>), il est donc possible d'obtenir les
+    verrous explicitement avant que l'instantané ne soit figé.
+   </p><p>
+    Le niveau d'isolation Serializable est implémenté en utilisant une
+    technique connue dans la littérature académique sur les bases de données
+    sous le nom de Serializable Snapshot Isolation, qui ajoute à une isolation
+    de snapshot en ajoutant des vérifications sur les anomalies de
+    sérialisation. Quelques différences dans le comportement et les
+    performances sont observables si on le compare à d'autres systèmes qui
+    utilisent une technique de verrouillage traditionnelle. Merci de lire
+    <a class="xref" href="biblio.html#PORTS12">[ports12]</a> pour des informations détaillées.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/applevel-consistency.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+</html>

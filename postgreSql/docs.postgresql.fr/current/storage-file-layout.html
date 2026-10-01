@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/storage-file-layout.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:17 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>65.1. Emplacement des fichiers de la base de données</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="storage.html" title="Chapitre 65. Stockage physique de la base de données" /><link rel="next" href="storage-toast.html" title="65.2. TOAST" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/storage-file-layout.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/storage-file-layout.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/storage-file-layout.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/storage-file-layout.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/storage-file-layout.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/storage-file-layout.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/storage-file-layout.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/storage-file-layout.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/storage-file-layout.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/storage-file-layout.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="storage.html">Stockage physique de la base de données</a></span> » <span class="breadcrumb-node">Emplacement des fichiers de la base de données</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="storage.html" title="Chapitre 65. Stockage physique de la base de données">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="storage.html" title="Chapitre 65. Stockage physique de la base de données">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="storage-toast.html" title="65.2. TOAST">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Chapitre 65. Stockage physique de la base de données </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 65.2. TOAST</td></tr></table></div><div class="sect1" id="STORAGE-FILE-LAYOUT"><div class="titlepage"><div><div><h2 class="title" style="clear: both">65.1. Emplacement des fichiers de la base de données <a href="#STORAGE-FILE-LAYOUT" class="id_link">#</a></h2></div></div></div><p>
+   Cette section décrit le format de stockage au niveau des fichiers et
+   répertoires.
+  </p><p>
+   Traditionnellement, les fichiers de configuration et les fichiers de données utilisés
+   par une instance du serveur sont stockés ensemble dans le répertoire des données,
+   habituellement référencé en tant que <code class="varname">PGDATA</code> (d'après le nom de
+   la variable d'environnement qui peut être utilisé pour le définir). Un emplacement
+   courant pour <code class="varname">PGDATA</code> est <code class="filename">/var/lib/pgsql/data</code>.
+   Plusieurs groupes, gérés par différentes instances du serveur, peuvent exister sur
+   la même machine.
+  </p><p>
+   Le répertoire <code class="varname">PGDATA</code> contient plusieurs sous-répertoires et
+   fichiers de contrôle, comme indiqué dans le <a class="xref" href="storage-file-layout.html#PGDATA-CONTENTS-TABLE" title="Tableau 65.1. Contenu de PGDATA">Tableau 65.1</a>.
+   En plus de ces éléments requis, les fichiers
+   de configuration du groupe, <code class="filename">postgresql.conf</code>,
+   <code class="filename">pg_hba.conf</code> et <code class="filename">pg_ident.conf</code> sont
+   traditionnellement stockés dans <code class="varname">PGDATA</code> (bien qu'il soit possible de
+   les placer ailleurs).
+  </p><div class="table" id="PGDATA-CONTENTS-TABLE"><p class="title"><strong>Tableau 65.1. Contenu de <code class="varname">PGDATA</code></strong></p><div class="table-contents"><table class="table" summary="Contenu de PGDATA" border="1"><colgroup><col /><col /></colgroup><thead><tr><th>Élément</th><th>Description</th></tr></thead><tbody><tr><td><code class="filename">PG_VERSION</code></td><td>Un fichier contenant le numéro de version majeur de
+       <span class="productname">PostgreSQL</span></td></tr><tr><td><code class="filename">base</code></td><td>Sous-répertoire contenant les sous-répertoires par base de
+       données</td></tr><tr><td><code class="filename">current_logfiles</code></td><td>Fichier contenant le ou les fichiers de trace en cours d'écriture
+       par le gestionnaire de traces.</td></tr><tr><td><code class="filename">global</code></td><td>Sous-répertoire contenant les tables communes au groupe, telles que
+       <code class="structname">pg_database</code></td></tr><tr><td><code class="filename">pg_commit_ts</code></td><td>Sous-répertoire contenant des données d'horodatage des
+       validations de transactions</td></tr><tr><td><code class="filename">pg_dynshmem</code></td><td>Sous-répertoire contenant les fichiers utilisés par le système de gestion
+       de la mémoire partagée dynamique</td></tr><tr><td><code class="filename">pg_logical</code></td><td>Sous-répertoire contenant les données de statut pour le décodage logique</td></tr><tr><td><code class="filename">pg_multixact</code></td><td>Sous-répertoire contenant des données sur l'état des
+       multi-transactions (utilisé pour les verrous de lignes partagées)</td></tr><tr><td><code class="filename">pg_notify</code></td><td>Sous-répertoire contenant les données de statut de LISTEN/NOTIFY</td></tr><tr><td><code class="filename">pg_replslot</code></td><td>Sous-répertoire contenant les données des slots de réplication</td></tr><tr><td><code class="filename">pg_serial</code></td><td>Sous-répertoire contenant des informations sur les transactions
+       sérialisables validées</td></tr><tr><td><code class="filename">pg_snapshots</code></td><td>Sous-répertoire contenant les snapshots (images) exportés</td></tr><tr><td><code class="filename">pg_stat</code></td><td>Sous-répertoire contenant les fichiers permanents pour le sous-système de
+       statistiques</td></tr><tr><td><code class="filename">pg_stat_tmp</code></td><td>Sous-répertoire contenant les fichiers temporaires pour le sous-système
+       des statistiques</td></tr><tr><td><code class="filename">pg_subtrans</code></td><td>Sous-répertoire contenant les données d'états des
+       sous-transactions</td></tr><tr><td><code class="filename">pg_tblspc</code></td><td>Sous-répertoire contenant les liens symboliques vers les espaces
+       logiques</td></tr><tr><td><code class="filename">pg_twophase</code></td><td>Sous-répertoire contenant les fichiers d'état pour les transactions
+       préparées</td></tr><tr><td><code class="filename">pg_wal</code></td><td>Sous-répertoire contenant les fichiers WAL (Write Ahead Log)</td></tr><tr><td><code class="filename">pg_xact</code></td><td>Sous-répertoire contenant les données d'état de validation des
+       transactions</td></tr><tr><td><code class="filename">postgresql.auto.conf</code></td><td>Fichier utilisé pour les paramètres configurés avec la commande
+       <code class="command">ALTER SYSTEM</code></td></tr><tr><td><code class="filename">postmaster.opts</code></td><td>Un fichier enregistrant les options en ligne de commande avec
+       lesquelles le serveur a été lancé la dernière fois</td></tr><tr><td><code class="filename">postmaster.pid</code></td><td>Un fichier verrou contenant l'identifiant du processus postmaster en
+       cours d'exécution (PID), le chemin du répertoire de données, la date et
+       l'heure du lancement de postmaster, le numéro de port, le chemin du
+       répertoire du socket de domaine Unix (pourrait être vide), la première adresse
+       valide dans listen_address (adresse IP ou <code class="literal">*</code>, ou vide s'il
+       n'y a pas d'écoute TCP) et l'identifiant du segment de mémoire partagé (ce
+       fichier est supprimé à l'arrêt du serveur)</td></tr></tbody></table></div></div><br class="table-break" /><p>
+   Pour chaque base de données dans le groupe, il existe un sous-répertoire dans
+   <code class="varname">PGDATA</code><code class="filename">/base</code>, nommé d'après l'OID de la base de données
+   dans <code class="structname">pg_database</code>. Ce sous-répertoire est l'emplacement par
+   défaut pour les fichiers de la base de données; en particulier, ses
+   catalogues système sont stockés ici.
+  </p><p>
+   Notez que les sections suivantes décrivent le comportement de la <a class="link" href="tableam.html" title="Chapitre 61. Définition de l'interface des méthodes d'accès aux tables">méthode d'accès table</a> interne nommée
+   <code class="literal">heap</code> et des <a class="link" href="indexam.html" title="Chapitre 62. Définition de l'interface des méthodes d'accès aux index">méthodes d'accès
+    index</a> internes. Du fait de la nature extensible de
+   <span class="productname">PostgreSQL</span>, d'autres méthodes d'accès pourraient
+   fonctionner différemment.
+  </p><p>
+   Chaque table et index est stocké dans un fichier séparé. Pour les relations
+   ordinaires, ces fichiers sont nommés d'après le numéro
+   <em class="firstterm">filenode</em> de la table ou de l'index. Ce numéro est stocké
+   dans <code class="structname">pg_class</code>.<code class="structfield">relfilenode</code>.
+   Pour les relations temporaires, le nom du fichier est de la forme
+   <code class="literal">t<em class="replaceable"><code>BBB</code></em>_<em class="replaceable"><code>FFF</code></em></code>,
+   où <em class="replaceable"><code>BBB</code></em> est l'identifiant du processus serveur qui a
+   créé le fichier, et <em class="replaceable"><code>FFF</code></em> et le numéro
+   <em class="firstterm">filenode</em>. Dans tous les cas, en plus du fichier principal
+   (aussi appelé <span class="foreignphrase"><em class="foreignphrase">main fork</em></span>), chaque table et index
+   a une <em class="firstterm">carte des espaces libres</em> (voir <a class="xref" href="storage-fsm.html" title="65.3. Carte des espaces libres">Section 65.3</a>), qui enregistre des informations sur l'espace libre
+   disponible dans la relation. La carte des espaces libres est stockée dans un
+   fichier dont le nom est le numéro filenode suivi du suffixe
+   <code class="literal">_fsm</code>. Les tables ont aussi une <em class="firstterm">carte des
+    visibilités</em>, stockée dans un fichier de suffixe
+   <code class="literal">_vm</code>, pour tracer les pages connues comme n'ayant pas de
+   lignes mortes. La carte des visibilités est décrite dans <a class="xref" href="storage-vm.html" title="65.4. Carte de visibilité">Section 65.4</a>. Les tables non tracées et les index disposent d'un
+   troisième fichier, connu sous le nom de fichier d'initialisation. Son nom a
+   pour suffixe <code class="literal">_init</code> (voir <a class="xref" href="storage-init.html" title="65.5. Fichier d'initialisation">Section 65.5</a>).
+  </p><div class="caution"><h3 class="title">Attention</h3><p>
+    Notez que, bien que le filenode de la table correspond souvent à son OID,
+    cela n'est <span class="emphasis"><em>pas</em></span> nécessairement le cas ; certaines
+    opérations, comme <code class="command">TRUNCATE</code>, <code class="command">REINDEX</code>,
+    <code class="command">CLUSTER</code> et quelques formes d'<code class="command">ALTER TABLE</code> peuvent
+    modifier le filenode tout en préservant l'OID. Évitez de supposer que filenode
+    et OID sont identiques.
+    De plus, pour certains catalogues système incluant
+    <code class="structname">pg_class</code> lui-même,
+    <code class="structname">pg_class</code>.<code class="structfield">relfilenode</code>
+    contient zéro.  Le numéro filenode en cours est stocké dans une structure de
+    données de bas niveau, et peut être obtenu avec la fonction
+    <code class="function">pg_relation_filenode()</code>.
+   </p></div><p>
+   Quand une table ou un index dépasse 1 Go, il est divisé en
+   <em class="firstterm">segments</em> d'un Go. Le nom du fichier du premier
+   segment est identique au filenode ; les segments suivants sont nommés
+   filenode.1, filenode.2, etc. Cette disposition évite des problèmes sur les
+   plateformes qui ont des limitations sur les tailles des fichiers.
+   (Actuellement, 1 Go est la taille du segment par défaut. Cette taille est
+   ajustable en utilisant l'option <code class="option">--with-segsize</code> pour configurer
+   avant de construire <span class="productname">PostgreSQL</span>.)
+   En principe, les fichiers de la carte des espaces libres et de la carte de
+   visibilité pourraient aussi nécessiter plusieurs segments, bien qu'il y ait
+   peu de chance que cela arrive réellement.
+  </p><p>
+   Une table contenant des colonnes avec des entrées potentiellement volumineuses
+   aura une table <em class="firstterm">TOAST</em> associée, qui est
+   utilisée pour le stockage de valeurs de champs trop importantes pour
+   conserver des lignes adéquates.
+   <code class="structname">pg_class</code>.<code class="structfield">reltoastrelid</code> établit un lien entre
+   une table et sa table <acronym class="acronym">TOAST</acronym>, si elle existe. Voir <a class="xref" href="storage-toast.html" title="65.2. TOAST">Section 65.2</a> pour plus d'informations.
+  </p><p>
+   Le contenu des tables et des index est discuté plus en détails dans <a class="xref" href="storage-page-layout.html" title="65.6. Emplacement des pages de la base de données">Section 65.6</a>.
+  </p><p>
+   Les tablespaces rendent ce scénario plus compliqué. Chaque espace
+   logique défini par l'utilisateur contient un lien symbolique dans le répertoire
+   <code class="varname">PGDATA</code><code class="filename">/pg_tblspc</code>, pointant vers le répertoire physique
+   du tablespace (celui spécifié dans la commande <code class="command">CREATE
+    TABLESPACE</code>). Ce lien symbolique est nommé d'après l'OID du tablespace.
+   À l'intérieur du répertoire du tablespace, il existe un sous-répertoire
+   avec un nom qui dépend de la version du serveur <span class="productname">PostgreSQL</span>,
+   comme par exemple <code class="literal">PG_9.0_201008051</code>. (La raison de l'utilisation
+   de ce sous-répertoire est que des versions successives de la base de données
+   puissent utiliser le même emplacement indiqué par <code class="command">CREATE
+    TABLESPACE</code> sans que cela provoque des conflits.) À l'intérieur de
+   ce répertoire spécifique à la version, il existe un sous-répertoire
+   pour chacune des bases de données contenant des éléments dans ce tablespace. Ce
+   sous-répertoire est nommé d'après l'OID de la base. Les tables et les index
+   sont enregistrés dans ce répertoire et suivent le schéma de nommage des filenodes. Le tablespace
+   <code class="literal">pg_default</code> n'est pas accédé via <code class="filename">pg_tblspc</code> mais
+   correspond à <code class="varname">PGDATA</code><code class="filename">/base</code>. De façon similaire,
+   le tablespace <code class="literal">pg_global</code> n'est pas accédé via
+   <code class="filename">pg_tblspc</code> mais correspond à <code class="varname">PGDATA</code><code class="filename">/global</code>.
+  </p><p>
+   La fonction <code class="function">pg_relation_filepath()</code> affiche le chemin
+   entier (relatif à <code class="varname">PGDATA</code>) de toute relation. Il est souvent
+   utile pour ne pas avoir à se rappeler toutes les différentes règles ci-dessus.
+   Gardez néanmoins en tête que cette fonction donne seulement le nom du premier
+   segment du fichier principal de la relation  --  vous pourriez avoir
+   besoin d'ajouter le numéro de segment et/ou les extensions
+   <code class="literal">_fsm</code>, <code class="literal">_vm</code> ou <code class="literal">_init</code> pour trouver tous les
+   fichiers associés avec la relation.
+  </p><p>
+   Les fichiers temporaires (pour des opérations comme le tri de plus de données
+   que ce que la mémoire peut contenir) sont créés à l'intérieur de <code class="varname">PGDATA</code><code class="filename">/base/pgsql_tmp</code>,
+   ou dans un sous-répertoire <code class="filename">pgsql_tmp</code> du répertoire du
+   tablespace si un tablespace autre que <code class="literal">pg_default</code> est
+   indiqué pour eux. Le nom du fichier temporaire est de la forme
+   <code class="filename">pgsql_tmp<em class="replaceable"><code>PPP</code></em>.<em class="replaceable"><code>NNN</code></em></code>,
+   où <em class="replaceable"><code>PPP</code></em> est le PID du serveur propriétaire et
+   <em class="replaceable"><code>NNN</code></em> distingue les différents fichiers temporaires de ce
+   serveur.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/storage-file-layout.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:17 GMT -->
+</html>

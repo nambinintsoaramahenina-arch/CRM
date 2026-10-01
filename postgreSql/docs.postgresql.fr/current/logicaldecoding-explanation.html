@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/logicaldecoding-explanation.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:46 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>47.2. Concepts de décodage logique</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="logicaldecoding-example.html" title="47.1. Exemples de décodage logique" /><link rel="next" href="logicaldecoding-walsender.html" title="47.3. Interface du protocole de réplication par flux" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/logicaldecoding-explanation.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/logicaldecoding-explanation.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/logicaldecoding-explanation.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/logicaldecoding-explanation.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/logicaldecoding-explanation.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/logicaldecoding-explanation.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/logicaldecoding-explanation.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/logicaldecoding-explanation.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/logicaldecoding-explanation.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/logicaldecoding-explanation.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/logicaldecoding-explanation.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/logicaldecoding-explanation.html">9.4</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/logicaldecoding-explanation.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="logicaldecoding.html">Décodage logique (Logical Decoding)</a></span> » <span class="breadcrumb-node">Concepts de décodage logique</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="logicaldecoding-example.html" title="47.1. Exemples de décodage logique">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="logicaldecoding.html" title="Chapitre 47. Décodage logique (Logical Decoding)">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="logicaldecoding-walsender.html" title="47.3. Interface du protocole de réplication par flux">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">47.1. Exemples de décodage logique </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 47.3. Interface du protocole de réplication par flux</td></tr></table></div><div class="sect1" id="LOGICALDECODING-EXPLANATION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">47.2. Concepts de décodage logique <a href="#LOGICALDECODING-EXPLANATION" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="logicaldecoding-explanation.html#LOGICALDECODING-EXPLANATION-LOG-DEC">47.2.1. Décodage logique</a></span></dt><dt><span class="sect2"><a href="logicaldecoding-explanation.html#LOGICALDECODING-REPLICATION-SLOTS">47.2.2. Slots de réplication</a></span></dt><dt><span class="sect2"><a href="logicaldecoding-explanation.html#LOGICALDECODING-REPLICATION-SLOTS-SYNCHRONIZATION">47.2.3. Synchronisation du slot de réplication</a></span></dt><dt><span class="sect2"><a href="logicaldecoding-explanation.html#LOGICALDECODING-EXPLANATION-OUTPUT-PLUGINS">47.2.4. Plugins de sortie</a></span></dt><dt><span class="sect2"><a href="logicaldecoding-explanation.html#LOGICALDECODING-EXPLANATION-EXPORTED-SNAPSHOTS">47.2.5. Instantanés exportés</a></span></dt></dl></div><div class="sect2" id="LOGICALDECODING-EXPLANATION-LOG-DEC"><div class="titlepage"><div><div><h3 class="title">47.2.1. Décodage logique <a href="#LOGICALDECODING-EXPLANATION-LOG-DEC" class="id_link">#</a></h3></div></div></div><a id="id-1.8.14.8.2.2" class="indexterm"></a><p>
+    Le décodage logique est le processus d'extraction de tous les
+    changements persistants sur des tables d'une base de données, dans un
+    format cohérent et simple à comprendre, et qui peut être interprété sans une
+    connaissance détaillée de l'état interne de la base de données.
+   </p><p>
+    Dans <span class="productname">PostgreSQL</span>, le décodage logique est
+    implémenté en décodant le contenu des <a class="link" href="wal.html" title="Chapitre 28. Fiabilité et journaux de transaction">journaux de
+    transaction (WAL)</a>, qui décrivent les changements au niveau
+    stockage, dans un format spécifique tel que le flux de lignes ou des
+    ordres SQL.
+   </p></div><div class="sect2" id="LOGICALDECODING-REPLICATION-SLOTS"><div class="titlepage"><div><div><h3 class="title">47.2.2. Slots de réplication <a href="#LOGICALDECODING-REPLICATION-SLOTS" class="id_link">#</a></h3></div></div></div><a id="id-1.8.14.8.3.2" class="indexterm"></a><p>
+    Dans le contexte de la réplication logique, un slot représente un flux de
+    changements qui peut être rejoué par un client, dans l'ordre dans lequel
+    ils ont été effectués sur le serveur d'origine. Chaque slot envoie dans
+    ce flux une séquence de changements d'une unique base.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     <span class="productname">PostgreSQL</span> possède également des slots de
+     réplication (voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION" title="26.2.5. Réplication en flux">Section 26.2.5</a>), mais ceux-ci
+     sont utilisés de manière un peu différente ici.
+    </p></div><p>
+    Les slots de réplication ont un identifiant qui est unique à travers
+    toutes les bases d'une instance <span class="productname">PostgreSQL</span>.
+    Les slots persistent indépendamment de la connexion les utilisant et sont
+    résistants à un arrêt brutal.
+   </p><p>
+    Un slot logique émettra chaque modification une fois en temps normal. La
+    position actuelle de chaque slot est enregistrée seulement lors d'un
+    checkpoint, donc dans le cas d'un crash, le slot pourrait revenir à un
+    ancien LSN, qui sera la cause d'un renvoi des changements récents au
+    redémarrage du serveur. Les clients de décodage logique sont responsables
+    de la bonne gestion de ce fait et doivent éviter les mauvais effets dûs à
+    la gestion du même message plusieurs fois. Les clients peuvent souhaiter
+    enregistrer le dernier LSN qu'ils ont vu lors du décodage pour ignorer
+    toute donnée répétée ou (lors de l'utilisation du protocole de
+    réplication) demander que le décodage commence à partir de ce LSN plutôt
+    que de laisser le serveur déterminer le point de démarrage. La
+    fonctionnalité <span class="foreignphrase"><em class="foreignphrase">Replication Progress
+    Tracking</em></span> est conçue dans ce but, voir les <a class="link" href="replication-origins.html" title="Chapitre 48. Tracer la progression de la réplication">origines de réplication</a>.
+   </p><p>
+    De nombreux slots indépendants peuvent exister pour une même base. Chaque
+    slot possède son propre état, autorisant différents consommateurs à
+    recevoir des changements depuis différents points dans le flux de
+    changement de la base. Pour la plupart des utilisations, un slot séparé
+    sera requis pour chaque consommateur.
+   </p><p>
+    Un slot de réplication logique ne sait rien sur l'état du ou des
+    destinataire(s). Il est même possible d'avoir plusieurs destinataires
+    différents utilisant un même slot à des moments différents ; ils ne
+    recevront que les changements à partir du moment où le dernier
+    destinataire a arrêté de les consommer. Un seul destinataire peut
+    consommer les changements d'un slot à un instant donné.
+   </p><p>
+    Un slot de réplication logique peut aussi être créé sur un serveur
+    secondaire en hot standby. Pour empêcher <code class="command">VACUUM</code> de
+    supprimer les lignes requises des catalogues systèmes,
+    <code class="varname">hot_standby_feedback</code> doit être configuré sur le
+    secondaire. Malgré cela, si un des lignes requises est supprimée, le slot
+    devient invalide. Il est hautement recommandé d'utiliser un slot physique
+    entre le primaire et le secondaire. Sinon,
+    <code class="varname">hot_standby_feedback</code> fonctionnera mais uniquement tant
+    que la connexion est vivante (par exemple le redémarrage d'un nœud
+    le cassera). Ensuite, le primaire peut supprimer les lignes d'un catalogue
+    système qui aurait été nécessaire au décodage logique sur le secondaire
+    (car il ne connait pas la valeur de <code class="literal">catalog_xmin</code> sur le
+    secondaire). Les
+    slots logiques existants sur le secondaire deviennent aussi invalides si
+    <code class="varname">wal_level</code> sur le primaire est configuré à une valeur
+    inférieure à <code class="literal">logical</code>. Ceci est fait dès que le secondaire
+    détecte un tel changement dans le flux de journaux. Cela signifie que, pour
+    les walsenders en retard , certains enregistrements des journaux jusqu'au
+    changement du paramètre <code class="varname">wal_level</code> sur le primaire ne
+    seront pas décodés.
+   </p><p>
+    La création d'un slot logique requiert des informations sur les
+    transactions en cours d'exécution. Sur le primaire, cette information est
+    disponible directement mais sur un secondaire, cette information doit être
+    obtenue du primaire. De ce fait, la création du slot pourrait devoir
+    attendre qu'une activité ait lieu sur le primaire. Si le primaire ne fait
+    rien, créer un slot de réplication sur le secondaire peut prendre beaucoup
+    de temps. Ceci peut être accéléré en exécutant la fonction
+    <code class="function">pg_log_standby_snapshot</code> sur le primaire.
+   </p><div class="caution"><h3 class="title">Attention</h3><p>
+     Les slots de réplication persistent après un arrêt brutal et ne
+     connaissent rien de l'état de leur(s) consommateur(s). Ils empêcheront
+     la suppression automatique des ressources nécessaires même si aucune
+     connexion ne les utilise. Cela consomme de l'espace car aucun des
+     journaux de transactions et aucune des lignes des catalogues systèmes
+     requis ne peuvent être supprimés par <code class="command">VACUUM</code> tant
+     qu'ils sont requis par un slot de réplication. Dans les cas extrêmes,
+     cela pourrait causer l'arrêt de la base pour empêcher une réutilisation
+     des identifiants de transactions (voir <a class="xref" href="routine-vacuuming.html#VACUUM-FOR-WRAPAROUND" title="24.1.5. Éviter les cycles des identifiants de transactions">Section 24.1.5</a>). Par conséquent, si un slot n'est
+     plus nécessaire, il devrait être supprimé.
+    </p></div></div><div class="sect2" id="LOGICALDECODING-REPLICATION-SLOTS-SYNCHRONIZATION"><div class="titlepage"><div><div><h3 class="title">47.2.3. Synchronisation du slot de réplication <a href="#LOGICALDECODING-REPLICATION-SLOTS-SYNCHRONIZATION" class="id_link">#</a></h3></div></div></div><p>
+     Les slots de réplication logiques sur le primaire peuvent être
+     synchronisés sur le secondaire en utilisant le paramètre
+     <code class="literal">failover</code> de <a class="link" href="functions-admin.html#PG-CREATE-LOGICAL-REPLICATION-SLOT">
+     <code class="function">pg_create_logical_replication_slot</code></a>, ou en
+     utilisant l'option <a class="link" href="sql-createsubscription.html#SQL-CREATESUBSCRIPTION-PARAMS-WITH-FAILOVER">
+     <code class="literal">failover</code></a> de <code class="command">CREATE
+     SUBSCRIPTION</code> lors de la création du slot.
+     De plus, activer <a class="link" href="runtime-config-replication.html#GUC-SYNC-REPLICATION-SLOTS">
+     <code class="varname">sync_replication_slots</code></a> sur le serveur
+     est obligatoire.
+     En activant <a class="link" href="runtime-config-replication.html#GUC-SYNC-REPLICATION-SLOTS">
+     <code class="varname">sync_replication_slots</code></a> sur le secondaire, les
+     slots en failover peuvent être synchronisés périodiquement dans le
+     worker slotsync. Pour que la synchronisation fonctionne, il est
+     obligatoire d'avoir un slot de réplication physique entre le primaire et
+     le secondaire (autrement dit, <a class="link" href="runtime-config-replication.html#GUC-PRIMARY-SLOT-NAME"><code class="varname">primary_slot_name</code></a>
+     doit être configuré sur le secondaire), et <a class="link" href="runtime-config-replication.html#GUC-HOT-STANDBY-FEEDBACK"><code class="varname">hot_standby_feedback</code></a>
+     doit être activé sur le secondaire. Il est aussi nécessaire de spécifier
+     un nom de base(<code class="literal">dbname</code>) valide dans le paramètre <a class="link" href="runtime-config-replication.html#GUC-PRIMARY-CONNINFO"><code class="varname">primary_conninfo</code></a>.
+     Il est fortement recommandé que le slot de réplication physique soit
+     nommé dans la liste <a class="link" href="runtime-config-replication.html#GUC-SYNCHRONIZED-STANDBY-SLOTS"><code class="varname">synchronized_standby_slots</code></a>
+     sur le primaire, pour empêcher l'abonné de consommer les changements
+     plus rapidement que le secondaire. Même une fois correctement configuré,
+     une latence est attendue lors de l'envoi des changements aux abonnés
+     logiques à cause de l'attente des slots nommés dans <a class="link" href="runtime-config-replication.html#GUC-SYNCHRONIZED-STANDBY-SLOTS"><code class="varname">synchronized_standby_slots</code></a>.
+     Quand <code class="varname">synchronized_standby_slots</code> est utilisé, le serveur
+     primaire ne va pas s'arrêter complètement jusqu'à ce que les secondaires
+     correspondants, associés avec les slots de réplication physique indiqués
+     dans <code class="varname">synchronized_standby_slots</code>, aient confirmé la réception
+     des journaux de transaction jusqu'à la dernière position vidée sur le
+     serveur primaire.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Bien qu'activer <a class="link" href="runtime-config-replication.html#GUC-SYNC-REPLICATION-SLOTS">
+      <code class="varname">sync_replication_slots</code></a> permet une
+      synchronisation périodique automatique des slots en failover, ils peuvent
+      aussi être synchronisé manuellement en utilisant la fonction
+      <a class="link" href="functions-admin.html#PG-SYNC-REPLICATION-SLOTS">
+      <code class="function">pg_sync_replication_slots</code></a> sur le secondaire.
+      Néanmoins, cette fonction a principalement pour but les tests et le
+      débugage. Elle doit donc être utilisée avec discernement. Contrairement à
+      la synchronisation automatique, elle n'inclut pas des tentatives cycliques,
+      la rendant plus sensible aux échecs de synchronisation, tout
+      particulièrement pendant le scénario de synchronisation initiale où les
+      fichiers WAL requis ou les lignes du catalogues pour le slot pourraient
+      avoir déjà été supprimés du secondaire. À l'inverse, la synchronisation
+      automatique via <code class="varname">sync_replication_slots</code> fournit des
+      mises à jour continues du slot, activant un failover simple et supportant
+      la haute disponibilité. De ce fait, il s'agit de la méthode
+      recommandée pour la synchronisation des slots.
+     </p></div><p>
+     Quand la synchronisation du slot est configuré comme recommandé et que la
+     synchronisation initiale est réalisée soit automatiquement soit
+     manuellement via <code class="function">pg_sync_replication_slot</code>, le
+     secondaire peut persister le
+     slot synchronisé seulement si la condition suivante est observée :
+     le slot de réplication logique sur le primaire doit conserver les journaux
+     de transaction et les lignes du catalogue système qui sont toujours
+     disponibles sur le secondaire. Ceci assure l'intégrité des données et
+     permet à la réplication logique de continuer tranquillement après la
+     promotion. Si les WAL requis ou les lignes du catalogue ont déjà été
+     purgés du secondaire, le slot ne sera pas conservé pour éviter des pertes
+     de données. Dans de tels cas, le message suivant apparaitra dans les
+     traces :
+</p><pre class="programlisting">
+LOG:  could not synchronize replication slot "failover_slot"
+DETAIL:  Synchronization could lead to data loss, because the remote slot needs WAL at LSN 0/3003F28 and catalog xmin 754, but the standby has LSN 0/3003F28 and catalog xmin 756.
+</pre><p>
+     Si le slot de réplication logique est utilisé activement par un
+     consommateur, aucune intervention manuelle n'est nécessaire ; le slot
+     avancera automatiquement, et la synchronisation continuera au prochain
+     cycle. Néanmoins, si aucun consommateur n'est configuré, il est conseillé
+     d'avancer manuellement le slot sur le primaire en utilisant
+     <a class="link" href="functions-admin.html#PG-LOGICAL-SLOT-GET-CHANGES">
+     <code class="function">pg_logical_slot_get_changes</code></a> ou
+     <a class="link" href="functions-admin.html#PG-LOGICAL-SLOT-GET-BINARY-CHANGES">
+     <code class="function">pg_logical_slot_get_binary_changes</code></a>,
+     autorisant ainsi la suite de la synchronisation.
+    </p><p>
+     La capacité de reprendre la réplication logique après un failover dépend
+     de la valeur de <a class="link" href="view-pg-replication-slots.html" title="52.19. pg_replication_slots">pg_replication_slots</a>.<code class="structfield">synced</code>
+     value pour les slots synchronisés sur le secondaire au moment du
+     failover. Seuls les slots persistents qui ont atteint l'état synced true
+     sur le secondaire avant le failover peuvent être utilisés pour la
+     réplication logique après failover. Les slots temporaires synchronisés
+     ne peuvent pas être utilisés pour le décodage logique, de ce fait la
+     réplication logique ne peut être reprise pour ces slots. Par exemple, si
+     le slot synchronisé n'a pas pu devenir persistent sur le secondaire à
+     cause d'une souscription désactivée, alors la souscription ne peut être
+     reprise après un failover même s'il est activé.
+    </p><p>
+     Pour reprendre la réplication logique après un failover à partir des
+     slots logiques synchronisés, le paramètre conninfo de l'abonné doit être
+     modifié pour pointer vers le nouveau serveur primaire. Ceci se fait en
+     utilisant <a class="link" href="sql-altersubscription.html#SQL-ALTERSUBSCRIPTION-PARAMS-CONNECTION"><code class="command">ALTER
+     SUBSCRIPTION ... CONNECTION</code></a>. Il est recommandé que les
+     souscriptions soient tout d'abord désactivées avant de promouvoir le
+     secondaire, puis réactivées après avoir modifié la chaîne de connexion.
+    </p><div class="caution"><h3 class="title">Attention</h3><p>
+      Il est possible que l'ancien primaire soit de nouveau disponible lors de
+      la promotion et, si les souscriptions ne sont pas désactivées, les
+      abonnés logiques pourraient continuer à recevoir des données à partir
+      de l'ancien serveur primaire même après la promotion jusqu'à ce que la
+      chaîne de connexion ne soit modifiée. Ceci pourrait résulter en des
+      données incohérentes, empêchant les abonnés logiques de pouvoir
+      reprendre la réplication à partir du nouveau serveur primaire.
+     </p></div></div><div class="sect2" id="LOGICALDECODING-EXPLANATION-OUTPUT-PLUGINS"><div class="titlepage"><div><div><h3 class="title">47.2.4. Plugins de sortie <a href="#LOGICALDECODING-EXPLANATION-OUTPUT-PLUGINS" class="id_link">#</a></h3></div></div></div><p>
+    Les plugins de sortie transforment les données depuis la représentation
+    interne dans les journaux de transactions (WAL) vers le format dont le
+    consommateur d'un slot de réplication a besoin.
+   </p></div><div class="sect2" id="LOGICALDECODING-EXPLANATION-EXPORTED-SNAPSHOTS"><div class="titlepage"><div><div><h3 class="title">47.2.5. Instantanés exportés <a href="#LOGICALDECODING-EXPLANATION-EXPORTED-SNAPSHOTS" class="id_link">#</a></h3></div></div></div><p>
+    Quand un nouveau slot de réplication est créé avec l'interface de la
+    réplication en flux (voir <a class="xref" href="protocol-replication.html#PROTOCOL-REPLICATION-CREATE-REPLICATION-SLOT">create_replication_slot</a>), un instantané est exporté
+    (voir <a class="xref" href="functions-admin.html#FUNCTIONS-SNAPSHOT-SYNCHRONIZATION" title="9.28.5. Fonctions de synchronisation d'image">Section 9.28.5</a>), qui montrera
+    exactement l'état de la base de données après lequel tous les changements
+    seront inclus dans le flux de changement. Cela peut être utilisé pour
+    créer un nouveau réplica en utilisant <a class="link" href="sql-set-transaction.html" title="SET TRANSACTION"><code class="literal">SET TRANSACTION
+    SNAPSHOT</code></a> pour lire l'état de la base au moment où le
+    slot a été créé. Cette transaction peut alors être utilisée pour
+    exporter l'état de la base à ce point dans le temps, lequel peut ensuite
+    être mis à jour en utilisant le contenu des slots sans perdre le moindre
+    changement.
+   </p><p>
+    Les applications qui ne nécessitent pas d'instantané
+    exporté peuvent les supprimer avec l'option
+    <code class="literal">SNAPSHOT 'nothing'</code>.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/logicaldecoding-explanation.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:46 GMT -->
+</html>

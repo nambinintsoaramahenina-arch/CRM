@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/sql-createpolicy.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:54 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>CREATE POLICY</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="sql-createopfamily.html" title="CREATE OPERATOR FAMILY" /><link rel="next" href="sql-createprocedure.html" title="CREATE PROCEDURE" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/sql-createpolicy.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/sql-createpolicy.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/sql-createpolicy.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/sql-createpolicy.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/sql-createpolicy.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/sql-createpolicy.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/sql-createpolicy.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/sql-createpolicy.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/sql-createpolicy.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/sql-createpolicy.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/sql-createpolicy.html">9.5</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/sql-createpolicy.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="reference.html">Référence</a></span> » <span class="breadcrumb-link"><a href="sql-commands.html">Commandes SQL</a></span> » <span class="breadcrumb-node">CREATE POLICY</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="sql-createopfamily.html" title="CREATE OPERATOR FAMILY">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="sql-commands.html" title="Commandes SQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="sql-createprocedure.html" title="CREATE PROCEDURE">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">CREATE OPERATOR FAMILY </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> CREATE PROCEDURE</td></tr></table></div><div class="refentry" id="SQL-CREATEPOLICY"><div class="titlepage"></div><a id="id-1.9.3.75.1" class="indexterm"></a><div class="refnamediv"><h2><span class="refentrytitle">CREATE POLICY</span></h2><p>CREATE POLICY — définir un niveau de politique de sécurité pour une table</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+CREATE POLICY <em class="replaceable"><code>nom</code></em> ON <em class="replaceable"><code>nom_table</code></em>
+    [ AS { PERMISSIVE | RESTRICTIVE } ]
+    [ FOR { ALL | SELECT | INSERT | UPDATE | DELETE } ]
+    [ TO { <em class="replaceable"><code>nom_role</code></em> | PUBLIC | CURRENT_ROLE | CURRENT_USER | SESSION_USER } [, ...] ]
+    [ USING ( <em class="replaceable"><code>expression_USING</code></em> ) ]
+    [ WITH CHECK ( <em class="replaceable"><code>expression_CHECK</code></em> ) ]
+  </pre></div><div class="refsect1" id="id-1.9.3.75.5"><h2>Description</h2><p>
+   La commande <code class="command">CREATE POLICY</code> définit un nouveau niveau
+   de politique de sécurité pour une table.
+   Notez que le niveau de politique de sécurité doit être actif pour la
+   table.
+   Les politiques de sécurité créées peuvent être appliquées en
+   utilisant la commande suivante :
+   <code class="command">ALTER TABLE ... ENABLE ROW LEVEL SECURITY</code>
+  </p><p>
+   Une politique (<span class="foreignphrase"><em class="foreignphrase">policy</em></span> dans la version
+   originale de la documentation) valide l'autorisation de sélectionner
+   (instruction SELECT), insérer (instruction INSERT), mettre à jour
+   (instruction UPDATE) ou supprimer (instruction DELETE) des lignes qui
+   correspondent à l'expression concordante d'une politique particulière.
+   Une expression spécifiée avec <code class="literal">USING</code>
+   sera vérifiée par rapport aux lignes existantes dans la table,
+   tandis qu'une expression spécifiée avec <code class="literal">WITH CHECK</code> sera
+   vérifiée sur les nouvelles lignes crées par <code class="literal">INSERT</code> ou
+   <code class="literal">UPDATE</code>
+
+   Lorsqu'une expression définie dans <code class="literal">USING</code> renvoie true
+   pour une ligne donnée, alors cette ligne est visible pour l'utilisateur.
+   Dans le cas contraire, cette ligne reste invisible.
+
+   Généralement, aucune erreur ne survient quand une ligne est invisible, mais
+   voir <a class="xref" href="sql-createpolicy.html#SQL-CREATEPOLICY-SUMMARY" title="Tableau 297. Politiques appliquées par type de commande">Tableau 297</a> pour les exceptions.
+
+   Lorsqu'une expression définie dans <code class="literal">WITH CHECK</code> renvoie
+   true pour une ligne, alors cette ligne est insérée. Par contre, si elle
+   renvoie false ou NULL, cela génère une erreur.
+  </p><p>
+   Pour les commandes <code class="command">INSERT</code>, <code class="command">UPDATE</code>
+   et <code class="command">MERGE</code>,
+   les expressions définies dans <code class="literal">WITH CHECK</code> sont
+   appliquées après l'activation du trigger <code class="literal">BEFORE</code>
+   et avant qu'aucune modification de données n'ait réellement été
+   effectuée.
+
+   Un trigger <code class="literal">BEFORE ROW</code> peut éventuellement
+   modifier les données à insérer, influençant ainsi le résultat de la
+   politique de sécurité.
+
+   Les expressions définies dans <code class="literal">WITH CHECK</code> sont forcées avant
+   toutes les autres contraintes.
+  </p><p>
+   Les noms de politique s'entendent par table. De ce fait, un même nom
+   de politique peut être utilisé pour différentes tables et avoir une
+   définition différente, adaptée à la table en question.
+  </p><p>
+   Les politiques peuvent être appliquées pour des commandes ou rôles
+   spécifiques.
+   Par défaut, une nouvelle politique créée sera appliquée à toutes les
+   commandes et pour tous les rôles à moins qu'autre chose ne soit
+   spécifié. Plusieurs politiques peuvent s'appliquer à une seule
+   commande ; voir ci-dessous pour plus de détails. <a class="xref" href="sql-createpolicy.html#SQL-CREATEPOLICY-SUMMARY" title="Tableau 297. Politiques appliquées par type de commande">Tableau 297</a> résume la façon dont s'appliquent les
+   différents types de politique aux commandes spécifiques.
+  </p><p>
+   Pour les politiques qui ont simultanément les expressions
+   <code class="literal">USING</code> et <code class="literal">WITH CHECK</code>
+   (<code class="literal">ALL</code> et <code class="literal">UPDATE</code>),
+   s'il n'y a pas d'expression <code class="literal">WITH CHECK</code> définie, alors
+   l'expression <code class="literal">USING</code> sera utilisée pour déterminer les lignes
+   visibles (cas normal d'utilisation de <code class="literal">USING</code>),
+   et les lignes qui obtiendront l'autorisation d'être ajoutées
+   (cas <code class="literal">WITH CHECK</code> ).
+  </p><p>
+   Si un niveau de sécurité est activé pour une table mais qu'aucune
+   politique (policy) n'est applicable, une politique <span class="quote">« <span class="quote">default
+    deny</span> »</span> est utilisée, plus aucune ligne n'est alors visible ou
+   modifiable.
+  </p></div><div class="refsect1" id="id-1.9.3.75.6"><h2>Paramètres</h2><div class="variablelist"><dl class="variablelist"><dt><span class="term"><em class="replaceable"><code>nom</code></em></span></dt><dd><p>
+      Nom de la politique à créer. Chaque nom de politique doit
+      être unique au sein d'une table.
+     </p></dd><dt><span class="term"><em class="replaceable"><code>nom_table</code></em></span></dt><dd><p>
+      Le nom (optionnellement qualifié par le schéma) de la table à
+      laquelle s'applique la politique.
+     </p></dd><dt><span class="term"><code class="literal">PERMISSIVE</code></span></dt><dd><p>
+      Spécifie que la politique doit être crée comme une politique permissive.
+      Toutes les politiques permissives qui s'appliquent à une requête donnée
+      seront combinée ensemble en utilisant l'opérateur booléen <span class="quote">« <span class="quote">OR</span> »</span>.  En
+      créant des politiques permissives, les administrateurs peuvent ajouter
+      des enregistrements à l'ensemble qui sera accédé.  Les politiques sont
+      permissives par défaut.
+     </p></dd><dt><span class="term"><code class="literal">RESTRICTIVE</code></span></dt><dd><p>
+      Spécifie que la politique doit être crée comme une politique restrictive.
+      Toutes les politiques permissives qui s'appliquent à une requête donnée
+      seront combinée ensemble en utilisant l'opérateur booléen <span class="quote">« <span class="quote">AND</span> »</span>.  En
+      créant des politiques restrictives, les administrateurs peuvent retirer
+      des enregistrements de l'ensemble qui sera accédé puisque toutes les
+      politiques restrictives doivent être passées pour chaque enregistrement.
+     </p><p>
+      Il est nécessaire d'avoir au moins une politique permissive pour
+      autoriser l'accès aux enregistrements avant que les politiques
+      restrictives ne puissent être utilisées pour réduire cet accès. Si
+      seules des politiques restrictives existent, alors aucun enregistrement
+      ne sera accessible. Quand un mixe de politiques permissives et
+      restrictives est présent, un enregistrement n'est accessible que si au
+      moins une politique permissive passe, en plus de toutes les politiques
+      restrictives.
+     </p></dd><dt><span class="term"><em class="replaceable"><code>commande</code></em></span></dt><dd><p>
+      La commande à laquelle la politique s'applique.
+      Les options valides sont les suivantes :
+      <code class="command">ALL</code>, <code class="command">SELECT</code>,
+      <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+      et <code class="command">DELETE</code>.
+      <code class="command">ALL</code> est la valeur par défaut.
+      Vous verrez par la suite comment sont appliquées les spécificités
+      de chaque option.
+     </p></dd><dt><span class="term"><em class="replaceable"><code>nom_role</code></em></span></dt><dd><p>
+      Le ou les role(s) auxquels les politiques sont appliquées.
+      Par défaut, c'est le pseudo-rôle <code class="literal">PUBLIC</code>, qui applique
+      les politiques à tous les rôles.
+     </p></dd><dt><span class="term"><em class="replaceable"><code>expression_USING</code></em></span></dt><dd><p>
+      Toute expression <acronym class="acronym">SQL</acronym> conditionnelle
+      (autrement dit, renvoyant une donnée de type <code class="type">boolean</code>).
+      L'expression conditionnelle ne peut pas contenir de fonction
+      d'agrégat ou de fenêtrage (window).
+      Si le niveau de politique de sécurité est activé, cette expression
+      sera ajoutée aux requêtes exécutées sur la table.
+      Les lignes pour lesquelles l'expression renvoie true seront
+      visibles.
+      Toute ligne pour laquelle l'expression renvoie false
+      ou NULL sera invisible pour l'utilisateur (avec <code class="command">SELECT</code>)
+      et ne sera pas modifiable (avec <code class="command">UPDATE</code> ou
+      <code class="command">DELETE</code>). Généralement,
+      ces lignes seront supprimées silencieusement ; aucune erreur ne
+      survient (mais voir
+      <a class="xref" href="sql-createpolicy.html#SQL-CREATEPOLICY-SUMMARY" title="Tableau 297. Politiques appliquées par type de commande">Tableau 297</a> pour les exceptions).
+     </p></dd><dt><span class="term"><em class="replaceable"><code>expression_CHECK</code></em></span></dt><dd><p>
+      Toute expression <acronym class="acronym">SQL</acronym> conditionnelle
+      (autrement dit, renvoyant une donnée de type <code class="type">boolean</code>).
+      L'expression conditionnelle ne peut pas contenir de fonction d'agrégat
+      ou de fenêtrage (window).
+      Si le niveau de politique de sécurité est activé, cette expression
+      sera utilisée dans les requêtes contenant <code class="command">INSERT</code>
+      et <code class="command">UPDATE</code>.
+      Seules les lignes pour lesquelles l'expression est évaluée à true
+      seront autorisée à être modifiées.
+      Une erreur sera générée si l'évaluation de la condition de la
+      commande UPDATE ou INSERT renvoie false ou NULL pour n'importe quel
+      enregistrement parmi l'ensemble des résultats.
+      Notez que <em class="replaceable"><code>expression_CHECK</code></em>
+      est évaluée sur le futur contenu de la ligne, et non pas sur le contenu
+      d'origine.
+     </p></dd></dl></div><div class="refsect2" id="id-1.9.3.75.6.3"><h3>Politique par commande</h3><div class="variablelist"><dl class="variablelist"><dt id="SQL-CREATEPOLICY-ALL"><span class="term"><code class="literal">ALL</code></span> <a href="#SQL-CREATEPOLICY-ALL" class="id_link">#</a></dt><dd><p>
+       Utiliser <code class="literal">ALL</code> pour une politique signifie qu'elle
+       s'appliquera pour toutes les commandes, peu importe le type de
+       commande. Si une politique <code class="literal">ALL</code> existe et que des
+       politiques spécifiques supplémentaires existent, alors leur résultat
+       sera appliqué. Pour terminer, les politiques <code class="literal">ALL</code>
+       seront appliquées pour la partie extraction et pour la partie
+       modification de la requête, en utilisant l'expression définie dans
+       <code class="literal">USING</code> pour les deux cas si seule la partie
+       <code class="literal">USING</code> est définie.
+      </p><p>
+       Par exemple, si une requête <code class="literal">UPDATE</code> est
+       exécutée, alors la politique <code class="literal">ALL</code> sera applicable
+       sur les lignes à modifier que la commande <code class="literal">UPDATE</code>
+       sera capable de sélectionner (en appliquant l'expression
+       définie dans <code class="literal">USING</code>) mais aussi sur le
+       résultat des lignes modifiées, pour vérifier s'il est autorisé
+       de les ajouter à la table (en appliquant l'expression définie
+       dans <code class="literal">WITH CHECK</code> si elle est définie, et
+       sinon en appliquant l'expression définie dans <code class="literal">USING
+       </code>).
+
+       Si une commande <code class="command">INSERT</code> ou <code class="command">UPDATE</code>
+       essaie d'ajouter des lignes à une table et est bloquée par
+       l'expression définie dans <code class="literal">WITH CHECK</code> de la
+       politique <code class="literal">ALL</code> (ou son expression
+       <code class="literal">USING</code> si elle n'a pas d'expression <code class="literal">WITH
+       CHECK</code>), l'ensemble de la commande est annulé.
+      </p></dd><dt id="SQL-CREATEPOLICY-SELECT"><span class="term"><code class="literal">SELECT</code></span> <a href="#SQL-CREATEPOLICY-SELECT" class="id_link">#</a></dt><dd><p>
+       Utiliser <code class="literal">SELECT</code> dans une politique signifie
+       que cette politique s'appliquera à toutes les requêtes
+       <code class="literal">SELECT</code> ainsi qu'à toute vérification du
+       droit <code class="literal">SELECT</code> nécessaire sur
+       la table pour laquelle la politique est définie.
+
+       Concernant les requêtes <code class="literal">SELECT</code>, le résultat
+       sera composé uniquement des lignes qui auront passé la politique
+       <code class="literal">SELECT</code>
+
+       Pour les requêtes qui demandent des droits, telles que les
+       commandes d'<code class="literal">UPDATE</code>, <code class="literal">DELETE</code> et
+       <code class="literal">MERGE</code>, elles verront uniquement
+       dans le résultat les lignes qui auront été autorisés par la politique
+       <code class="literal">SELECT</code>, sauf comme décrit ci-dessous.
+     </p><p>
+       Si une requête de modification de données a une clause
+       <code class="literal">RETURNING</code>, les droits <code class="literal">SELECT</code> sont
+       requis sur la relation, et toute nouvelle ligne insérée ou supprimée pour
+       cette relation doit satisfaire les politiques <code class="literal">SELECT</code>
+       de la relation pour être disponible dans la clause
+       <code class="literal">RETURNING</code>. Si une ligne nouvellement insérée ou
+       modifiée ne satisfait pas les politiques <code class="literal">SELECT</code> de la
+       relation, une erreur sera renvoyée (les lignes insérées ou modifiées
+       à renvoyer ne sont <span class="emphasis"><em>jamais</em></span> ignorées silencieusement).
+     </p><p>
+       Si un <code class="literal">INSERT</code> a une clause <code class="literal">ON CONFLICT DO
+       UPDATE</code> ou une clause <code class="literal">ON CONFLICT DO NOTHING</code>
+       avec une spécification d'un index ou d'une contrainte arbitre, les droits
+       <code class="literal">SELECT</code> sont requis
+       sur la relation et les lignes proposées en insertion sont
+       vérifiées en utilisant les politiques <code class="literal">SELECT</code> de la
+       relation. Si une ligne proposée en insertion ne satisfait pas les
+       politiques <code class="literal">SELECT</code> de la relation, une erreur est
+       renvoyée (le <code class="literal">INSERT</code> n'est <span class="emphasis"><em>jamais</em></span>
+       silencieusement évité). De plus, si le chemin <code class="literal">UPDATE</code>
+       est pris, la ligne à mettre à jour et la nouvelle ligne mise à jour sont
+       vérifiées avec les politiques <code class="literal">SELECT</code> de la relation,
+       et une erreur est renvoyée si elles ne sont pas satisfaites (un
+       <code class="literal">UPDATE</code> auxiliaire n'est <span class="emphasis"><em>jamais</em></span>
+       évité silencieusement.
+     </p><p>
+       Une commande <code class="literal">MERGE</code> requiert les droits
+       <code class="literal">SELECT</code> sur les relations source et cible, et donc
+       chaque politique <code class="literal">SELECT</code> de la relation est appliqué
+       avant de les joindre, et les actions du <code class="literal">MERGE</code> verront
+       uniquement les lignes qui sont autorisées par ces politiques. De plus,
+       si un <code class="literal">UPDATE</code> est exécuté, les politiques
+       <code class="literal">SELECT</code> de la relation cible sont appliquées à la ligne
+       mise à jour, comme pour un <code class="literal">UPDATE</code> autonome, sauf
+       qu'une erreur est renvoyée si elles ne sont pas satisfaite.
+
+       Une politique <code class="literal">SELECT</code> ne peut pas avoir une
+       expression définie dans <code class="literal">WITH CHECK</code> qui ne
+       s'applique que dans le cas où des enregistrements sont
+       récupérés depuis la table.
+      </p></dd><dt id="SQL-CREATEPOLICY-INSERT"><span class="term"><code class="literal">INSERT</code></span> <a href="#SQL-CREATEPOLICY-INSERT" class="id_link">#</a></dt><dd><p>
+       Utiliser <code class="literal">INSERT</code> dans une politique signifie
+       que cette politique s'appliquera à toutes les requêtes
+       <code class="literal">INSERT</code>
+       Les lignes à insérer qui ne passent pas la politique renvoient une
+       erreur de violation de politique, et l'ensemble <code class="literal">INSERT</code>
+       de la commande est annulé.
+       Une politique <code class="literal">INSERT</code> ne peut pas avoir une
+       expression définie dans <code class="literal">USING</code> qui ne
+       s'applique que dans les cas où des enregistrements sont ajoutés
+       à la table.
+
+      </p><p>
+       Notez qu'une commande <code class="literal">INSERT</code> avec
+       <code class="literal">ON CONFLICT DO UPDATE</code> vérifie les politiques
+       <code class="literal">INSERT</code> avec les expressions définies dans
+       <code class="literal">WITH CHECK</code> pour toutes les lignes proposées en
+       insertion, qu'elles soient ou non insérées au final.
+      </p></dd><dt id="SQL-CREATEPOLICY-UPDATE"><span class="term"><code class="literal">UPDATE</code></span> <a href="#SQL-CREATEPOLICY-UPDATE" class="id_link">#</a></dt><dd><p>
+       Utiliser <code class="literal">UPDATE</code> dans une politique signifie
+       que cette politique s'appliquera à toutes les requêtes
+       <code class="literal">UPDATE</code>, <code class="literal">SELECT FOR UPDATE</code>
+       et <code class="literal">SELECT FOR SHARE</code>, ainsi qu'aux clauses
+       <code class="literal">ON CONFLICT DO UPDATE</code> de la commande
+       <code class="literal">INSERT</code> et de la commande <code class="literal">MERGE</code>
+       si elle contient une action <code class="literal">UPDATE</code>.
+
+       Puisque la commande <code class="literal">UPDATE</code> implique de
+       récupérer un enregistrement existant et le replacer avec un
+       nouvel enregistrement modifié, la politique <code class="literal">UPDATE</code>
+       accepte les expressions définies dans <code class="literal">USING</code>
+       mais aussi dans <code class="literal">WITH CHECK</code>
+
+       L'expression définie dans <code class="literal">USING</code> déterminera
+       sur quelle selection d'enregistrements la commande <code class="literal">
+        UPDATE</code> est capable de travailler tandis que
+       l'expression définie dans <code class="literal">WITH CHECK</code>
+       déterminera les enregistrements qui pourront être modifiés et
+       réinjectés dans la table.
+      </p><p>
+       Si une seule ligne à mettre à jour ne remplit pas les
+       conditions pour être autorisée par l'expression spécifiée dans
+       <code class="literal">WITH CHECK</code>, une erreur sera générée, et
+       l'ensemble de la commande est annulé.
+       S'il n'y a que l'expression spécifiée dans <code class="literal">USING</code>
+       qui a été définie alors c'est cette expression qui
+       sera utilisée pour vérifier les cas <code class="literal">USING</code> et
+       <code class="literal">WITH CHECK</code>
+      </p><p>
+       Typiquement, une commande <code class="literal">UPDATE</code> a aussi besoin de
+       lire les données des colonnes de la relation mise à jour (par exemple
+       dans une clause <code class="literal">WHERE</code> ou dans une clause
+       <code class="literal">RETURNING</code> ou dans une expression du côté droit de
+       la clause <code class="literal">SET</code>). Dans ce cas, les droits
+       <code class="literal">SELECT</code> sont aussi requis sur la relation en cours
+       de mise à jour, et les politiques <code class="literal">SELECT</code> ou
+       <code class="literal">ALL</code> seront appliquées en plus des politiques
+       <code class="literal">UPDATE</code>. De ce fait, l'utilisateur doit avoir accès
+       aux lignes en cours de mise à jour via une politique
+       <code class="literal">SELECT</code> ou <code class="literal">ALL</code> en plus d'avoir le
+       droit de mettre à jour la ligne via une politique
+       <code class="literal">UPDATE</code> ou <code class="literal">ALL</code>.
+      </p><p>
+       Quand une commande <code class="literal">INSERT</code> a une clause
+       supplémentaire <code class="literal">ON CONFLICT DO UPDATE</code>, si le chemin
+       <code class="literal">UPDATE</code> est pris, la ligne à mettre à jour est tout
+       d'abord vérifiée avec les expressions <code class="literal">USING</code> de
+       toute politique <code class="literal">UPDATE</code>, puis la nouvelle ligne mise
+       à jour est vérifiée avec les expressions <code class="literal">WITH
+        CHECK</code>. Néanmoins, notez que, contrairement à une commande
+       <code class="literal">UPDATE</code> autonome, si la ligne existante ne passe pas
+       les expressions <code class="literal">USING</code>, une erreur sera levée (le
+       chemin <code class="literal">UPDATE</code> ne sera <span class="emphasis"><em>jamais</em></span>
+       évité silencieusement). Cela s'applique aussi à une action
+       <code class="literal">UPDATE</code> d'une commande <code class="command">MERGE</code>.
+      </p></dd><dt id="SQL-CREATEPOLICY-DELETE"><span class="term"><code class="literal">DELETE</code></span> <a href="#SQL-CREATEPOLICY-DELETE" class="id_link">#</a></dt><dd><p>
+       Utiliser <code class="literal">DELETE</code> dans une politique signifie
+       que cette politique s'appliquera à toutes les requêtes
+       <code class="literal">DELETE</code> et aux requêtes <code class="literal">MERGE</code>
+       contenant des commandes <code class="literal">DELETE</code>.
+       Pour une commande <code class="literal">DELETE</code>, seules les lignes autorisées
+       par cette politique seront visibles à une commande
+       <code class="literal">DELETE</code>
+       Il peut y avoir des lignes visibles retournées par la commande
+       <code class="literal">SELECT</code> qui ne sont pas candidates à la
+       suppression si elles ne sont pas validées par l'expression
+       définie dans la clause <code class="literal">USING</code> de la politique
+       <code class="literal">DELETE</code> Cependant, notez qu'une action
+       <code class="literal">DELETE</code> dans une commande <code class="literal">MERGE</code>
+       verra des lignes qui sont visibles au travers des politiques
+       <code class="literal">SELECT</code> et, si la politique
+       <code class="literal">DELETE</code> ne passe pas pour une telle ligne, une erreur
+       sera renvoyée.
+      </p><p>
+       Dans la plupart des cas, une commande <code class="literal">DELETE</code> doit
+       également lire les données des colonnes qu'elle supprime dans la relation
+       (par exemple, dans une clause <code class="literal">WHERE</code> ou une clause
+       <code class="literal">RETURNING</code>). Dans ce cas, les droits <code class="literal">SELECT
+       </code> sont également requis sur la relation, et les politiques de
+       sécurité <code class="literal">SELECT</code> ou <code class="literal">ALL</code> seront
+       appliquées en plus des politiques de sécurité <code class="literal">DELETE</code>.
+       Ainsi, l'utilisateur doit avoir accès à la ou aux lignes en cours de
+       suppression via une politique de sécurité <code class="literal">SELECT</code> ou
+       <code class="literal">ALL</code> en plus d'être autorisé à supprimer la ou les
+       lignes via une politique de sécurité <code class="literal">DELETE</code> ou
+       <code class="literal">ALL</code>.
+      </p><p>
+       Une politique <code class="literal">DELETE</code> ne peut pas avoir
+       d'expression définie dans <code class="literal">WITH CHECK</code> puisque
+       cette politique ne s'applique qu'à des enregistrements qui vont être
+       supprimés de la table. Il n'y a donc pas de nouvelles lignes
+       à vérifier.
+      </p></dd></dl></div><p>
+    <a class="xref" href="sql-createpolicy.html#SQL-CREATEPOLICY-SUMMARY" title="Tableau 297. Politiques appliquées par type de commande">Tableau 297</a> résume comment les différents
+    types de politique s'appliquent aux commandes spécifiques. Dans le tableau,
+    <span class="quote">« <span class="quote">vérifie</span> »</span> signifie que l'expression de la politique est
+    vérifiée et une erreur est renvoyée si la vérification renvoie false ou
+    null, alors que <span class="quote">« <span class="quote">filtre</span> »</span> signifie que la ligne est ignorée
+    silencieusement si l'expression de la politique renvoie false ou null.
+   </p><div class="table" id="SQL-CREATEPOLICY-SUMMARY"><p class="title"><strong>Tableau 297. Politiques appliquées par type de commande</strong></p><div class="table-contents"><table class="table" summary="Politiques appliquées par type de commande" border="1"><colgroup><col /><col /><col /><col class="update-using" /><col class="update-check" /><col /></colgroup><thead><tr><th rowspan="2">Command</th><th><code class="literal">Politique SELECT/ALL</code></th><th><code class="literal">Politique INSERT/ALL</code></th><th colspan="2"><code class="literal">Politique UPDATE/ALL</code></th><th><code class="literal">Politique DELETE/ALL</code></th></tr><tr><th><code class="literal">Expression USING</code></th><th><code class="literal">Expression WITH CHECK</code></th><th><code class="literal">Expression USING</code></th><th><code class="literal">Expression WITH CHECK</code></th><th><code class="literal">Expression USING</code></th></tr></thead><tbody><tr><td><code class="command">SELECT</code> / <code class="command">COPY ... TO</code></td><td>Filtre la ligne existante</td><td> -- </td><td> -- </td><td> -- </td><td> -- </td></tr><tr><td><code class="command">SELECT FOR UPDATE/SHARE</code></td><td>Filtre la ligne existante</td><td> -- </td><td>Filtre la ligne existante</td><td> -- </td><td> -- </td></tr><tr><td><code class="command">INSERT</code></td><td>
+        Vérifie la nouvelle ligne <a href="#ftn.RLS-SELECT-PRIV" class="footnote"><sup class="footnote" id="RLS-SELECT-PRIV">[a]</sup></a>
+       </td><td>Vérifie la nouvelle ligne</td><td> -- </td><td> -- </td><td> -- </td></tr><tr><td><code class="command">UPDATE</code></td><td>
+        Filtre la ligne existante <a href="sql-createpolicy.html#ftn.RLS-SELECT-PRIV" class="footnoteref"><sup class="footnoteref">[a]</sup></a> &amp;
+        vérifie la nouvelle ligne <a href="sql-createpolicy.html#ftn.RLS-SELECT-PRIV" class="footnoteref"><sup class="footnoteref">[a]</sup></a>
+       </td><td> -- </td><td>Filtre la ligne existante</td><td>Vérifie la nouvelle ligne</td><td> -- </td></tr><tr><td><code class="command">DELETE</code></td><td>
+        Filtre la ligne existante <a href="sql-createpolicy.html#ftn.RLS-SELECT-PRIV" class="footnoteref"><sup class="footnoteref">[a]</sup></a>
+       </td><td> -- </td><td> -- </td><td> -- </td><td>Filtre la ligne existante</td></tr><tr><td><code class="command">INSERT ... ON CONFLICT</code></td><td>
+        Vérifie la nouvelle ligne <a href="#ftn.id-1.9.3.75.6.3.4.2.5.6.2.1" class="footnote"><sup class="footnote" id="id-1.9.3.75.6.3.4.2.5.6.2.1">[b]</sup></a><a href="#ftn.RLS-ON-CONFLICT-PRIV" class="footnote"><sup class="footnote" id="RLS-ON-CONFLICT-PRIV">[c]</sup></a>
+       </td><td>
+        Vérifie la nouvelle ligne <a href="sql-createpolicy.html#ftn.RLS-ON-CONFLICT-PRIV" class="footnoteref"><sup class="footnoteref">[c]</sup></a>
+       </td><td> -- </td><td> -- </td><td> -- </td></tr><tr><td><code class="command">ON CONFLICT DO UPDATE</code></td><td>
+        Vérifie les lignes existantes &amp; nouvelles <a href="#ftn.RLS-ON-CONFLICT-UPDATE-PRIV" class="footnote"><sup class="footnote" id="RLS-ON-CONFLICT-UPDATE-PRIV">[d]</sup></a>
+       </td><td> -- </td><td>Vérifie la ligne existante</td><td>
+        Vérifie la nouvelle ligne <a href="sql-createpolicy.html#ftn.RLS-ON-CONFLICT-UPDATE-PRIV" class="footnoteref"><sup class="footnoteref">[d]</sup></a>
+       </td><td> -- </td></tr><tr><td><code class="command">MERGE</code></td><td>Filtre les lignes source &amp; cible</td><td> -- </td><td> -- </td><td> -- </td><td> -- </td></tr><tr><td><code class="command">MERGE ... THEN INSERT</code></td><td> -- </td><td>Vérifie la nouvelle ligne</td><td> -- </td><td> -- </td><td> -- </td></tr><tr><td><code class="command">MERGE ... THEN UPDATE</code></td><td>Vérifie la nouvelle ligne</td><td> -- </td><td>Vérifie la ligne existante</td><td>Vérifie la nouvelle ligne</td><td> -- </td></tr><tr><td><code class="command">MERGE ... THEN DELETE</code></td><td> -- </td><td> -- </td><td> -- </td><td> -- </td><td>Vérifie la ligne existante</td></tr></tbody><tbody class="footnotes"><tr><td colspan="6"><div id="ftn.RLS-SELECT-PRIV" class="footnote"><p><a href="#RLS-SELECT-PRIV" class="para"><sup class="para">[a] </sup></a>
+          Si l'accès en lecture est requis pour la ligne existante ou la nouvelle
+          ligne, une clause <code class="literal">WHERE</code> ou
+          <code class="literal">RETURNING</code> faisant référence aux colonnes de la
+          relation).
+         </p></div><div id="ftn.id-1.9.3.75.6.3.4.2.5.6.2.1" class="footnote"><p><a href="#id-1.9.3.75.6.3.4.2.5.6.2.1" class="para"><sup class="para">[b] </sup></a>
+          Si un index ou une contrainte arbitre est indiqué.
+         </p></div><div id="ftn.RLS-ON-CONFLICT-PRIV" class="footnote"><p><a href="#RLS-ON-CONFLICT-PRIV" class="para"><sup class="para">[c] </sup></a>
+          La ligne proposée en insertion est vérifiée qu'un conflit survienne
+          ou pas.
+         </p></div><div id="ftn.RLS-ON-CONFLICT-UPDATE-PRIV" class="footnote"><p><a href="#RLS-ON-CONFLICT-UPDATE-PRIV" class="para"><sup class="para">[d] </sup></a>
+          La nouvelle ligne d'un <code class="command">UPDATE</code> auxiliaire, qui
+          pourrait être différente de la nouvelle ligne d'une commande
+          <code class="command">INSERT</code> originale.
+         </p></div></td></tr></tbody></table></div></div><br class="table-break" /></div><div class="refsect2" id="id-1.9.3.75.6.4"><h3>Application de plusieurs politiques</h3><p>
+    Quand plusieurs politiques de différents types de commande s'appliquent à
+    la même commande (par exemple, des politiques <code class="literal">SELECT</code> et
+    <code class="literal">UPDATE</code> appliquées à une commande
+    <code class="literal">UPDATE</code>), alors l'utilisateur doit avoir les deux types
+    de droits (par exemple, le droit de sélectionner les lignes de la relation
+    ainsi que le droit de les mettre à jour). De ce fait, les expressions pour
+    un type de politique sont combinées pour l'autre type de politique en
+    utilisant l'opérateur <code class="literal">AND</code>.
+   </p><p>
+    Quand plusieurs politiques du même type de commande s'appliquent à la même
+    commande, alors il doit exister au moins une politique
+    <code class="literal">PERMISSIVE</code> donnant accès à la relation, et toutes les
+    politiques <code class="literal">RESTRICTIVE</code> doivent passer. De ce fait,
+    toutes les expressions de politique <code class="literal">PERMISSIVE</code> sont
+    combinées en utilisant <code class="literal">OR</code>, toutes les expressions de
+    politique <code class="literal">RESTRICTIVE</code> sont combinées en utilisant
+    <code class="literal">AND</code>, et les résultats sont combinés en utilisant
+    <code class="literal">AND</code>. S'il n'y a pas de politiques
+    <code class="literal">PERMISSIVE</code>, alors l'accès est refusé.
+   </p><p>
+    Notez que, pour combiner les différentes politiques, les politiques
+    <code class="literal">ALL</code> sont traitées comme ayant le même type que tout
+    autre type de politique appliquée.
+   </p><p>
+    Par exemple, dans une commande <code class="literal">UPDATE</code> nécessitant des
+    droits pour <code class="literal">SELECT</code> et <code class="literal">UPDATE</code>, si
+    plusieurs politiques de chaque type sont applicables, elles seront
+    combinées ainsi :
+
+    </p><pre class="programlisting">
+<em class="replaceable"><code>expression</code></em> from RESTRICTIVE SELECT/ALL politique 1
+AND
+<em class="replaceable"><code>expression</code></em> from RESTRICTIVE SELECT/ALL politique 2
+AND
+...
+AND
+(
+  <em class="replaceable"><code>expression</code></em> from PERMISSIVE SELECT/ALL politique 1
+  OR
+  <em class="replaceable"><code>expression</code></em> from PERMISSIVE SELECT/ALL politique 2
+  OR
+  ...
+)
+AND
+<em class="replaceable"><code>expression</code></em> from RESTRICTIVE UPDATE/ALL politique 1
+AND
+<em class="replaceable"><code>expression</code></em> from RESTRICTIVE UPDATE/ALL politique 2
+AND
+...
+AND
+(
+  <em class="replaceable"><code>expression</code></em> from PERMISSIVE UPDATE/ALL politique 1
+  OR
+  <em class="replaceable"><code>expression</code></em> from PERMISSIVE UPDATE/ALL politique 2
+  OR
+  ...
+)
+    </pre><p>
+   </p></div></div><div class="refsect1" id="id-1.9.3.75.7"><h2>Notes</h2><p>
+   Vous devez être le propriétaire de la table pour laquelle vous souhaitez
+   creéer ou modifier des politiques.
+  </p><p>
+   Tandis que les politiques sont appliquées pour les requêtes
+   accédant explicitement aux tables de la base de données, elles ne sont
+   pas appliquées lorsque le système réalise des vérifications internes
+   d'intégrité sur le référentiel ou pour la validation des contraintes.
+   Ce qui signifie qu'il y a des manières indirectes de déterminer si une
+   valeur donnée existe.
+
+   Par exemple, si vous essayez d'insérer un doublon dans une colonne
+   clé primaire, ou qui possède une contrainte d'unicité.
+   Si l'insertion échoue alors l'utilisateur peut inférer que la valeur
+   existe déjà. (dans cet exemple, il est entendu que l'utilisateur est
+   soumis à une politique de sécurité lui permettant d'insérer
+   des enregistrements qu'il n'est néanmoins pas autorisé à consulter)
+
+   Un autre exemple, si un utilisateur est autorisé à insérer dans une
+   table qui en référence une autre, une table cachée.
+   Son existence peut être déterminée par l'utilisateur en insérant
+   une valeur dans la table, la réussite indiquerait que la valeur existe
+   dans la table référencée.
+
+   Ces problèmes peuvent être résolus en vérifiant minutieusement les
+   politiques de façon à ce que les utilisateurs ne puissent pas insérer,
+   supprimer, ou mettre à jour des enregistrements qui pourraient
+   récupérer des valeurs qu'ils ne devraient pas pouvoir consulter, ou
+   en utilisant un générateur de valeur (par exemple clés substituées) à la
+   place de clés à signification externe.
+  </p><p>
+   En général le système va appliquer des conditions filtrantes en
+   se servant de politiques de sécurité pour prioriser les conditions
+   apparaissant dans les requêtes utilisateur. Ceci afin d'éviter
+   d'exposer par inadvertance des données protégées à certaines
+   fonctions utilisateurs qui pourraient ne pas être dignes de
+   confiance.
+   Les fonctions et opérateurs, taggués <code class="literal">LEAKPROOF</code>
+   par le système (ou l'administrateur système) seront évaluées
+   avant les expressions des politiques et seront considérées comme
+   digne de confiance.
+  </p><p>
+   Comme les expressions de politique s'appliquent directement à la requête d'un
+   utilisateur, elles seront lancées avec les droits de cet utilisateur pendant
+   toute la durée de la requête.  De ce fait, un utilisateur qui utilise une
+   politique donnée doit pouvoir accéder à toutes les tables et fonctions
+   référencées dans l'expression de vérification, sinon il recevra une erreur du
+   type <span class="quote">« <span class="quote">permission denied</span> »</span> en essayant d'accéder à une référence
+   dont le niveau de sécurité est activé. Cependant, ceci ne modifie pas le
+   fonctionnement des vues.  Comme avec les requêtes classiques et leurs vues,
+   les vérifications des autorisations et politiques des tables référencées par
+   la vue utilisent les droits du propriétaire de la vue, ainsi que les
+   politiques qui s'appliquent sur le propriétaire de la la vue, sauf si la vue
+   est définie en utilisant l'option <code class="literal">security_invoker</code> (voir
+   <a class="link" href="sql-createview.html" title="CREATE VIEW"><code class="command">CREATE VIEW</code></a>).
+  </p><p>
+   Aucune politique séparée n'existe pour <code class="command">MERGE</code>. À la place,
+   les politiques définies pour <code class="command">SELECT</code>,
+   <code class="command">INSERT</code>, <code class="command">UPDATE</code> et
+   <code class="command">DELETE</code> sont appliquées lors de l'exécution de
+   <code class="command">MERGE</code>, dépendant des actions réalisées.
+  </p><p>
+   Des commentaires supplémentaires et des exemples pratiques peuvent
+   être trouvés ici : <a class="xref" href="ddl-rowsecurity.html" title="5.9. Politiques de sécurité niveau ligne">Section 5.9</a>.
+  </p></div><div class="refsect1" id="id-1.9.3.75.8"><h2>Compatibilité</h2><p>
+   <code class="command">CREATE POLICY</code> est une extension
+   <span class="productname">PostgreSQL</span>.
+  </p></div><div class="refsect1" id="id-1.9.3.75.9"><h2>Voir aussi</h2><span class="simplelist"><a class="xref" href="sql-alterpolicy.html" title="ALTER POLICY"><span class="refentrytitle">ALTER POLICY</span></a>, <a class="xref" href="sql-droppolicy.html" title="DROP POLICY"><span class="refentrytitle">DROP POLICY</span></a>, <a class="xref" href="sql-altertable.html" title="ALTER TABLE"><span class="refentrytitle">ALTER TABLE</span></a></span></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/sql-createpolicy.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:54 GMT -->
+</html>

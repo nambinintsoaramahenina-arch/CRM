@@ -1,0 +1,1097 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/app-pgdump.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:06 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>pg_dump</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="app-pgconfig.html" title="pg_config" /><link rel="next" href="app-pg-dumpall.html" title="pg_dumpall" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/app-pgdump.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/app-pgdump.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/app-pgdump.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/app-pgdump.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/app-pgdump.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/app-pgdump.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/app-pgdump.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/app-pgdump.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/app-pgdump.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/app-pgdump.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/app-pgdump.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/app-pgdump.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/app-pgdump.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/app-pgdump.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/app-pgdump.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/app-pgdump.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/app-pgdump.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/app-pgdump.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/app-pgdump.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/app-pgdump.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/app-pgdump.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="reference.html">Référence</a></span> » <span class="breadcrumb-link"><a href="reference-client.html">Applications client de PostgreSQL</a></span> » <span class="breadcrumb-node"><span class="application">pg_dump</span></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="app-pgconfig.html" title="pg_config">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="reference-client.html" title="Applications client de PostgreSQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="app-pg-dumpall.html" title="pg_dumpall">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top"><span class="application">pg_config</span> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> <span class="application">pg_dumpall</span></td></tr></table></div><div class="refentry" id="APP-PGDUMP"><div class="titlepage"></div><a id="id-1.9.4.14.1" class="indexterm"></a><div class="refnamediv"><h2><span class="refentrytitle"><span class="application">pg_dump</span></span></h2><p>pg_dump — 
+   sauvegarder une base de données <span class="productname">PostgreSQL</span> dans
+   un script ou tout autre fichier d'archive
+  </p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p id="id-1.9.4.14.4.1"><code class="command">pg_dump</code> [<em class="replaceable"><code>option_connexion</code></em>...] [<em class="replaceable"><code>option</code></em>...] [<em class="replaceable"><code>nom_base</code></em>]</p></div></div><div class="refsect1" id="PG-DUMP-DESCRIPTION"><h2>
+   Description
+  </h2><p>
+   <span class="application">pg_dump</span> est un outil de sauvegarde d'une base de
+   données <span class="productname">PostgreSQL</span>. Les sauvegardes réalisées
+   sont cohérentes, même lors d'accès concurrents à la base de données.
+   <span class="application">pg_dump</span> ne bloque pas l'accès des autres
+   utilisateurs (ni en lecture ni en écriture).
+  </p><p>
+   <span class="application">pg_dump</span> sauvegarde seulement une base de
+   données. Pour sauvegarder une instance complète ou pour sauvegarder les
+   objets globaux communs à toutes les bases de données d'une même instance,
+   tels que les rôles et les tablespaces, utilisez <a class="xref" href="app-pg-dumpall.html" title="pg_dumpall"><span class="refentrytitle"><span class="application">pg_dumpall</span></span></a>.
+  </p><p>
+   Les extractions peuvent être réalisées sous la forme de scripts ou de
+   fichiers d'archive. Les scripts sont au format texte et contiennent les
+   commandes SQL nécessaires à la reconstruction de la base de données dans
+   l'état où elle était au moment de la sauvegarde. La restauration s'effectue
+   en chargeant ces scripts avec <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle" id="APP-PSQL-TITLE"><span class="application">psql</span></span></a>. Ces scripts
+   permettent de reconstruire la base de données sur d'autres machines et
+   d'autres architectures, et même, au prix de quelques modifications, sur
+   d'autres bases de données SQL.
+  </p><p>
+   La reconstruction de la base de données à partir d'autres formats de
+   fichiers archive est obtenue avec <a class="xref" href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle"><span class="application">pg_restore</span></span></a>.
+   <span class="application">pg_restore</span> permet, à partir de ces formats, de
+   sélectionner les éléments à restaurer, voire de les réordonner avant
+   restauration. Les fichiers d'archive sont conçus pour être portables au
+   travers d'architectures différentes.
+  </p><p>
+   Utilisé avec un des formats de fichier d'archive et combiné avec
+   <span class="application">pg_restore</span>, <span class="application">pg_dump</span>
+   fournit un mécanisme d'archivage et de transfert flexible.
+   <span class="application">pg_dump</span> peut être utilisé pour sauvegarder une
+   base de données dans son intégralité ;
+   <span class="application">pg_restore</span> peut alors être utilisé pour examiner
+   l'archive et/ou sélectionner les parties de la base de données à restaurer.
+   Les formats de fichier en sortie les plus flexibles sont le format
+   <span class="quote">« <span class="quote">custom</span> »</span> (<code class="option">-Fc</code>) et le format
+   <span class="quote">« <span class="quote">directory</span> »</span> (<code class="option">-Fd</code>). Ils permettent la
+   sélection et le ré-ordonnancement de tous les éléments archivés, le support
+   de la restauration en parallèle. De plus, ils sont compressés par défaut.
+   Le format <span class="quote">« <span class="quote">directory</span> »</span> est aussi le seul format à permettre les
+   sauvegardes parallélisées.
+  </p><p>
+   Lors de l'exécution de <span class="application">pg_dump</span>, il est utile de
+   surveiller les messages d'avertissement (affichés sur la sortie erreur
+   standard), en particulier en ce qui concerne les limitations indiquées
+   ci-dessous.
+  </p><div class="warning"><h3 class="title">Avertissement</h3><p>
+    Restaurer une sauvegarde fait que la destination exécute du code arbitraire.
+    Les sauvegardes et restaurations partielles ne limitent pas cela. S'il n'est
+    pas possible de faire confiance aux superutilisateurs de la source, les
+    requêtes SQL de restauration doivent être inspectées avant d'être exécutées.
+    Les sauvegardes binaires peuvent être inspectées en utilisant l'option
+    <code class="option">--file</code> de <span class="application">pg_restore</span>. Notez que
+    le client exécutant la sauvegarde et la restauration n'a pas besoin de
+    faire confiance aux superutilisateurs source et destination.
+   </p></div></div><div class="refsect1" id="PG-DUMP-OPTIONS"><h2>Options</h2><p>
+   Les options suivantes de la ligne de commande contrôlent le contenu et le
+   format de la sortie.
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><em class="replaceable"><code>nom_base</code></em></span></dt><dd><p>
+       Le nom de la base de données à sauvegarder. En l'absence de précision,
+       la variable d'environnement <code class="envar">PGDATABASE</code> est utilisée. Si
+       cette variable n'est pas positionnée, le nom de l'utilisateur de la
+       connexion est utilisé.
+      </p></dd><dt><span class="term"><code class="option">-a</code><br /></span><span class="term"><code class="option">--data-only</code></span></dt><dd><p>
+       Seules les données sont sauvegardées, pas le schéma (définition des
+       données). Les données des tables, les Large Objects, et les valeurs des
+       séquences sont sauvegardées.
+      </p><p>
+       Cette option est similaire à <code class="option">--section=data</code> mais, pour
+       des raisons historiques, elle n'est pas identique.
+      </p></dd><dt><span class="term"><code class="option">-b</code><br /></span><span class="term"><code class="option">--large-objects</code><br /></span><span class="term"><code class="option">--blobs</code> (obsolète)</span></dt><dd><p>
+       Inclut les objets larges dans la sauvegarde. C'est le comportement par
+       défaut, sauf si une des options suivantes est ajoutée :
+       <code class="option">--schema</code>, <code class="option">--table</code> ou
+       <code class="option">--schema-only</code>. L'option <code class="option">-b</code> n'est de
+       ce fait utile que pour ajouter des Large Objects aux sauvegardes pour
+       lesquelles un schéma particulier ou une table particulière a été
+       demandée. Notez que les Large Objects sont considérés comme des données
+       et, de ce fait, seront inclus si <code class="option">--data-only</code> est
+       utilisé, mais pas quand <code class="option">--schema-only</code> l'est.
+      </p></dd><dt><span class="term"><code class="option">-B</code><br /></span><span class="term"><code class="option">--no-large-objects</code><br /></span><span class="term"><code class="option">--no-blobs</code> (obsolète)</span></dt><dd><p>
+       Exclut les objets larges de la sauvegarde.
+      </p><p>
+       Quand à la fois les options <code class="option">-b</code> et <code class="option">-B</code>
+       sont fournies, le comportement est de produire les objets larges, quand
+       les données sont sauvegardées, voir la documentation de
+       <code class="option">-b</code>.
+      </p></dd><dt><span class="term"><code class="option">-c</code><br /></span><span class="term"><code class="option">--clean</code></span></dt><dd><p>
+       Les commandes de suppression (<code class="command">DROP</code>) des objets de la
+       base sont écrites avant les commandes de création.
+       Cette option est utile quand la restauration écrase une base existante.
+       Si un des objets n'existe pas dans la base de destination, des messages
+       d'erreur, à ignorer, seront renvoyées lors de la restauration sauf si
+       l'option <code class="option">--if-exists</code> est aussi précisée.
+      </p><p>
+       Cette option n'a d'intérêt que pour le format texte. Pour les formats
+       archive, l'option est précisée à l'appel de
+       <code class="command">pg_restore</code>.
+      </p></dd><dt><span class="term"><code class="option">-C</code><br /></span><span class="term"><code class="option">--create</code></span></dt><dd><p>
+       La sortie débute par une commande de création de la base de données et
+       de connexion à cette base. Peu importe, dans ce cas, la base de données
+       de connexion à la restauration. De plus, si <code class="option">--clean</code>
+       est aussi spécifié, le script supprime puis crée de nouveau la base de
+       données cible avant de s'y connecter.
+      </p><p>
+       Avec <code class="option">--create</code>, la sortie inclut aussi le commentaire
+       de la base de données, s'il a été configuré, et toute variable de
+       configuration spécifique à cette base de données, configurée via les
+       commandes <code class="command">ALTER DATABASE ... SET ...</code> et
+       <code class="command">ALTER ROLE ... IN DATABASE ... SET ...</code> mentionnant
+       cette base. Les droits d'accès à la base elle-même sont aussi
+       sauvegardés, sauf si <code class="option">--no-acl</code> est indiqué.
+      </p><p>
+       Cette option n'a d'intérêt que pour le format texte. Pour les formats
+       archive, l'option est précisée à l'appel de
+       <code class="command">pg_restore</code>.
+      </p></dd><dt><span class="term"><code class="option">-f <em class="replaceable"><code>fichier</code></em></code><br /></span><span class="term"><code class="option">--file=<em class="replaceable"><code>fichier</code></em></code></span></dt><dd><p>
+       La sortie est redirigée vers le fichier indiqué. Ce paramètre peut être
+       omis pour les sorties en mode fichier, dans ce cas la sortie standard
+       sera utilisée. Par contre, il doit être fourni pour le format
+       'directory' (répertoire), où il spécifie le répertoire cible plutôt
+       qu'un fichier. Dans ce cas, le répertoire est créé par
+       <code class="command">pg_dump</code> et ne doit pas exister auparavant.
+      </p></dd><dt><span class="term"><code class="option">-e <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--extension=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+        Ne sauvegarde que les extensions correspondant au
+        <em class="replaceable"><code>motif</code></em> indiqué.
+        Sans cette option, seront sauvées toutes les extensions non système
+        de la base sauvegardée. Plusieurs extensions peuvent être sélectionnées à l'aide
+        de plusieurs paramètres <code class="option">-e</code>.
+        Le <em class="replaceable"><code>motif</code></em> est interprété
+        suivant les mêmes règles que la commande <code class="literal">\d</code>
+        de <span class="application">psql</span> (voir <a class="xref" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs">Motifs</a>) ;
+        ainsi plusieurs extensions peuvent être sélectionnées à l'aide de jokers
+        dans le motif. Dans ce cas, prenez soin d'encadrer le motif de
+        guillemets simples au besoin, pour empêcher le shell de les interpréter.
+       </p><p>
+        Toute configuration de table enregistrée dans
+        <code class="function">pg_extension_config_dump</code> est incluse dans la
+        sauvegarde si l'extension est spécifiée dans <code class="option">--extension</code>.
+       </p><div class="note"><h3 class="title">Note</h3><p>
+         Quand <code class="option">-e</code> est spécifié, <span class="application">pg_dump</span>
+         ne cherche pas à sauvegarder tout autre objet dont l'extension pourrait
+         dépendre. En conséquence, il n'y a pas de garantie que le résultat
+         d'une sauvegarde en précisant les extensions puisse être restauré
+         dans une base propre.
+        </p></div></dd><dt><span class="term"><code class="option">-E <em class="replaceable"><code>codage</code></em></code><br /></span><span class="term"><code class="option">--encoding=<em class="replaceable"><code>codage</code></em></code></span></dt><dd><p>
+       La sauvegarde est créée dans l'encodage indiqué. Par défaut, la
+       sauvegarde utilise celui de la base de données. Le même résultat peut
+       être obtenu en positionnant la variable d'environnement
+       <code class="envar">PGCLIENTENCODING</code> avec le codage désiré pour la
+       sauvegarde. Les encodages supportés sont décrits dans <a class="xref" href="multibyte.html#MULTIBYTE-CHARSET-SUPPORTED" title="23.3.1. Jeux de caractères supportés">Section 23.3.1</a>.
+      </p></dd><dt><span class="term"><code class="option">-F <em class="replaceable"><code>format</code></em></code><br /></span><span class="term"><code class="option">--format=<em class="replaceable"><code>format</code></em></code></span></dt><dd><p>
+       Le format de la sortie. <em class="replaceable"><code>format</code></em> correspond à
+       un des éléments suivants :
+
+       </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">p</code></span></dt><dd><p>
+           Fichier de scripts <acronym class="acronym">SQL</acronym> en texte simple
+           (défaut).
+          </p></dd><dt><span class="term"><code class="literal">c</code></span></dt><dd><p>
+           archive personnalisée utilisable par
+           <span class="application">pg_restore</span>. Avec le format de sortie
+           répertoire, c'est le format le plus souple, car il permet la
+           sélection manuelle et le réordonnancement des objets archivés au
+           moment de la restauration. Ce format est aussi compressé par
+           défaut.
+          </p></dd><dt><span class="term"><code class="literal">d</code><br /></span><span class="term"><code class="literal">directory</code></span></dt><dd><p>
+           Produire une archive au format répertoire utilisable en entrée de
+           <span class="application">pg_restore</span>. Cela créera un répertoire
+           avec un fichier pour chaque table et Large Object exporté, ainsi qu'un
+           fichier appelé Table of Contents (Table des matières) décrivant les
+           objets exportés dans un format machine que
+           <span class="application">pg_restore</span> peut lire. Une archive au
+           format répertoire peut être manipulée avec des outils Unix
+           standard; par exemple, les fichiers d'une archive non-compressée
+           peuvent être compressés avec les outils
+           <span class="application">gzip</span>,
+           <span class="application">lz4</span> ou
+           <span class="application">zstd</span>. Ce format est compressé par défaut
+           en utilisant <code class="literal">gzip</code> et supporte aussi les
+           sauvegardes parallélisées.
+          </p></dd><dt><span class="term"><code class="literal">t</code></span></dt><dd><p>
+           Archive <code class="command">tar</code> utilisable par
+           <span class="application">pg_restore</span>. Le format tar est compatible
+           avec le format répertoire; l'extraction d'une archive au format tar
+           produit une archive au format répertoire valide. Toutefois, le
+           format tar ne supporte pas la compression. Par ailleurs, lors de
+           l'utilisation du format tar, l'ordre de restauration des données
+           des tables ne peut pas être changé au moment de la restauration.
+          </p></dd></dl></div><p>
+      </p></dd><dt><span class="term"><code class="option">-j <em class="replaceable"><code>njobs</code></em></code><br /></span><span class="term"><code class="option">--jobs=<em class="replaceable"><code>njobs</code></em></code></span></dt><dd><p>
+       Exécute une sauvegarde parallélisée en sauvegardant <em class="replaceable"><code>njobs</code></em> tables simultanément. Cette
+       option réduit la durée de la sauvegarde mais elle augmente aussi la
+       charge sur le serveur de base de données. Vous ne pouvez utiliser cette
+       option qu'avec le format de sortie répertoire car c'est le seul format
+       où plusieurs processus peuvent écrire leur données en même temps.
+      </p><p>
+       <span class="application">pg_dump</span> ouvrira <em class="replaceable"><code>njobs</code></em> + 1 connexions à la base de
+       données. Assurez-vous donc que la valeur de <a class="xref" href="runtime-config-connection.html#GUC-MAX-CONNECTIONS">max_connections</a> est configurée suffisamment haut pour
+       permettre autant de connexions.
+      </p><p>
+       Réclamer des verrous exclusifs sur les objets de la base lors de
+       l'exécution d'une sauvegarde parallélisée peut causer l'échec de la
+       sauvegarde. La raison en est que le processus principal de
+       <span class="application">pg_dump</span> réclame des verrous partagés
+       (<a class="link" href="explicit-locking.html#LOCKING-TABLES" title="13.3.1. Verrous de niveau table">ACCESS SHARE</a>) sur les
+       objets que les processus fils vont sauvegarder plus tard pour s'assurer
+       que personne ne les supprime pendant la sauvegarde. Si un autre client
+       demande alors un verrou exclusif sur une table, ce verrou ne sera pas
+       accepté mais mis en queue, en attente du relâchement du verrou partagé
+       par le processus principal. En conséquence, tout autre accès à la table ne
+       sera pas non plus accepté. Il sera lui-aussi mis en queue, après la
+       demande de verrou exclusif. Cela inclut le processus fils essayant de
+       sauvegarder la table. Sans autre précaution, cela résulterait en un
+       classique « deadlock ». Pour détecter ce conflit, le processus fils
+       <span class="application">pg_dump</span> réclame un nouveau verrou partagé en
+       utilisant l'option <code class="literal">NOWAIT</code>. Si le processus fils
+       n'obtient pas ce verrou, quelqu'un d'autre doit avoir demandé un verrou
+       exclusif entre temps, et il n'existe donc aucun moyen de continuer la
+       sauvegarde. <span class="application">pg_dump</span> n'a d'autre choix que
+       d'annuler la sauvegarde.
+      </p><p>
+       Pour réaliser une sauvegarde parallélisée, le serveur de la base de
+       données a besoin de supporter les images (« snapshots ») synchronisées.
+       Cette fonctionnalité a été introduite avec
+       <span class="productname">PostgreSQL</span> version 9.2 pour les serveurs
+       primaires et version 10 pour les serveurs secondaires. Avec cette
+       fonctionnalité, les clients de la base de données peuvent s'assurer de
+       voir le même ensemble de données, même s'ils utilisent des connexions
+       différentes. <code class="command">pg_dump -j</code> utilise plusieurs connexions
+       à la base de données ; il se connecte une première fois en tant
+       que processus principal et une fois encore par processus fils. Sans la
+       fonctionnalité d'images synchronisées, les différent processus ne
+       pourraient pas garantir de voir les mêmes données sur chaque connexion,
+       ce qui aurait pour résultat une sauvegarde incohérente.
+      </p></dd><dt><span class="term"><code class="option">-n <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--schema=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Sauvegarde uniquement les schémas correspondant à <em class="replaceable"><code>schema</code></em> ; la sélection se fait à la
+       fois sur le schéma et sur les objets qu'il contient. Quand cette option
+       n'est pas indiquée, tous les schémas non système de la base cible sont
+       sauvegardés. Plusieurs schémas peuvent être indiqués en utilisant
+       plusieurs fois l'option <code class="option">-n</code>. De plus, le paramètre
+       <em class="replaceable"><code>motif</code></em> est interprété
+       comme un modèle selon les règles utilisées par les commandes
+       <code class="literal">\d</code> de <span class="application">psql</span> (voir <a class="xref" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs">Motifs</a>). Du coup, plusieurs schémas peuvent être
+       sélectionnés en utilisant des caractères joker dans le modèle. Lors de
+       l'utilisation de ces caractères, il faut faire attention à placer le
+       modèle entre guillemets, si nécessaire, pour empêcher le shell de
+       remplacer les jokers ; voir <a class="xref" href="app-pgdump.html#PG-DUMP-EXAMPLES" title="Exemples">Exemples</a>.
+      </p><div class="note"><h3 class="title">Note</h3><p>
+        Quand <code class="option">-n</code> est indiqué,
+        <span class="application">pg_dump</span> ne sauvegarde aucun autre objet de
+        la base que ceux dont les schémas sélectionnés dépendent. Du coup, il
+        n'est pas garanti que la sauvegarde d'un schéma puisse être restaurée
+        avec succès dans une base vide.
+       </p></div><div class="note"><h3 class="title">Note</h3><p>
+        Les objets qui ne font pas partie du schéma comme les Large Objects ne
+        sont pas sauvegardés quand <code class="option">-n</code> est précisé. Ils
+        peuvent être rajoutés avec l'option <code class="option">--large-objects</code>.
+       </p></div></dd><dt><span class="term"><code class="option">-N <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--exclude-schema=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Ne sauvegarde pas les schémas correspondant au modèle <em class="replaceable"><code>motif</code></em>. Le modèle est interprété selon
+       les même règles que <code class="option">-n</code>. <code class="option">-N</code> peut aussi
+       être indiqué plus d'une fois pour exclure des schémas correspondant à
+       des modèles différents.
+      </p><p>
+       Quand les options <code class="option">-n</code> et <code class="option">-N</code> sont
+       indiquées, seuls sont sauvegardés les schémas qui correspondent à au
+       moins une option <code class="option">-n</code> et à aucune option
+       <code class="option">-N</code>. Si <code class="option">-N</code> apparaît sans
+       <code class="option">-n</code>, alors les schémas correspondant à
+       <code class="option">-N</code> sont exclus de ce qui est une sauvegarde normale.
+      </p></dd><dt><span class="term"><code class="option">-O</code><br /></span><span class="term"><code class="option">--no-owner</code></span></dt><dd><p>
+       Les commandes d'initialisation des possessions des objets au regard de
+       la base de données originale ne sont pas produites. Par défaut,
+       <span class="application">pg_dump</span> engendre des instructions
+       <code class="command">ALTER OWNER</code> ou <code class="command">SET SESSION
+        AUTHORIZATION</code> pour fixer ces possessions. Ces instructions
+       échouent lorsque le script n'est pas lancé par un superutilisateur (ou
+       par l'utilisateur qui possède tous les objets de ce script). L'option
+       <code class="option">-O</code> est utilisée pour créer un script qui puisse être
+       restauré par n'importe quel utilisateur. En revanche, c'est cet
+       utilisateur qui devient propriétaire de tous les objets.
+      </p><p>
+       Cette option n'a d'intérêt que pour le format texte. Pour les formats
+       archive, l'option est précisée à l'appel de
+       <code class="command">pg_restore</code>.
+      </p></dd><dt><span class="term"><code class="option">-R</code><br /></span><span class="term"><code class="option">--no-reconnect</code></span></dt><dd><p>
+       Cette option, obsolète, est toujours acceptée pour des raisons de
+       compatibilité ascendante.
+      </p></dd><dt><span class="term"><code class="option">-s</code><br /></span><span class="term"><code class="option">--schema-only</code></span></dt><dd><p>
+       Seule la définition des objets (le schéma) est sauvegardée, pas les
+       données.
+      </p><p>
+       Cette option est l'inverse de <code class="option">--data-only</code>. Elle est
+       similaire, mais pas identique (pour des raisons historiques), à
+       <code class="option">--section=pre-data --section=post-data</code>.
+      </p><p>
+       (Ne pas la confondre avec l'option <code class="option">--schema</code> qui
+       utilise le mot <span class="quote">« <span class="quote">schema</span> »</span> dans un contexte différent.)
+      </p><p>
+       Pour exclure les données de la table pour seulement un sous-ensemble
+       des tables de la base de données, voir
+       <code class="option">--exclude-table-data</code>.
+      </p></dd><dt><span class="term"><code class="option">-S <em class="replaceable"><code>nom_utilisateur</code></em></code><br /></span><span class="term"><code class="option">--superuser=<em class="replaceable"><code>nom_utilisateur</code></em></code></span></dt><dd><p>
+       Le nom du superutilisateur à utiliser lors de la désactivation des
+       triggers. Cela n'a d'intérêt que si l'option
+       <code class="option">--disable-triggers</code> est précisée. (En règle générale,
+       il est préférable de ne pas utiliser cette option et de lancer le
+       script produit en tant que superutilisateur.)
+      </p></dd><dt><span class="term"><code class="option">-t <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--table=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Sauvegarde seulement les tables dont le nom correspond à <em class="replaceable"><code>motif</code></em>. Plusieurs tables sont sélectionnables
+       en utilisant plusieurs fois l'option <code class="option">-t</code>. De plus, le
+       paramètre <em class="replaceable"><code>motif</code></em> est
+       interprété comme un modèle suivant les règles utilisées par les
+       commandes <code class="literal">\d</code> de <span class="application">psql</span>
+       (voir <a class="xref" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs">Motifs</a>). Du coup, plusieurs tables
+       peuvent être sélectionnées en utilisant des caractères joker dans le
+       modèle. Lors de l'utilisation de ces caractères, il faut faire
+       attention à placer le modèle entre guillemets, si nécessaire, pour
+       empêcher le shell de remplacer les jokers ; voir <a class="xref" href="app-pgdump.html#PG-DUMP-EXAMPLES" title="Exemples">Exemples</a>.
+      </p><p>
+       Conçue pour les tables, cette option peut être utilisée pour
+       sauvegarder la définition des vues, vues matérialisées, tables externes
+       et séquences correspondantes. Elle ne sauvegardera pas le contenu des
+       vues et des vues matérialisées. Le contenu des tables externes ne sera
+       sauvegardé que si le serveur distant correspondant est précisé avec
+       l'option <code class="option">--include-foreign-data</code>.
+      </p><p>
+       Les options <code class="option">-n</code> et <code class="option">-N</code> n'ont aucun
+       effet quand l'option <code class="option">-t</code> est utilisée car les tables
+       sélectionnées par <code class="option">-t</code> sont sauvegardées quelle que soit
+       la valeur des options relatives aux schémas. Les objets qui ne sont pas
+       des tables ne sont pas sauvegardés.
+      </p><div class="note"><h3 class="title">Note</h3><p>
+        Quand <code class="option">-t</code> est indiqué,
+        <span class="application">pg_dump</span> ne sauvegarde aucun autre objet de
+        la base dont la (ou les) table(s) sélectionnée(s) pourrai(en)t
+        dépendre. Du coup, il n'est pas garanti que la sauvegarde spécifique
+        d'une table puisse être restaurée avec succès dans une base vide.
+       </p></div></dd><dt><span class="term"><code class="option">-T <em class="replaceable"><code>motif</code></em></code><br /></span><span class="term"><code class="option">--exclude-table=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Ne sauvegarde pas les tables correspondant au modèle <em class="replaceable"><code>motif</code></em>. Le modèle est interprété selon
+       les même règles que <code class="option">-t</code>. <code class="option">-T</code> peut aussi
+       être indiqué plusieurs pour exclure des tables correspondant à des
+       modèles différents.
+      </p><p>
+       Quand les options <code class="option">-t</code> et <code class="option">-T</code> sont
+       indiquées, seules sont sauvegardées les tables qui correspondent à au
+       moins une option <code class="option">-t</code> et à aucune option
+       <code class="option">-T</code>. Si <code class="option">-T</code> apparaît sans
+       <code class="option">-t</code>, alors les tables correspondant à
+       <code class="option">-T</code> sont exclues de ce qui est une sauvegarde normale.
+      </p></dd><dt><span class="term"><code class="option">-v</code><br /></span><span class="term"><code class="option">--verbose</code></span></dt><dd><p>
+       Mode verbeux. <span class="application">pg_dump</span> affiche des
+       commentaires détaillés sur les objets et les heures de début et de fin
+       dans le fichier de sauvegarde. Des messages de progression sont
+       également affichés sur la sortie d'erreur standard.
+       Répéter l'option entraîne l'apparition de messages de débogage
+       supplémentaires sur la sortie d'erreur standard.
+      </p></dd><dt><span class="term"><code class="option">-V</code><br /></span><span class="term"><code class="option">--version</code></span></dt><dd><p>
+       Affiche la version de <span class="application">pg_dump</span> puis quitte.
+      </p></dd><dt><span class="term"><code class="option">-x</code><br /></span><span class="term"><code class="option">--no-privileges</code><br /></span><span class="term"><code class="option">--no-acl</code></span></dt><dd><p>
+       Les droits d'accès (commandes grant/revoke) ne sont pas sauvegardés.
+      </p></dd><dt><span class="term"><code class="option">-Z <em class="replaceable"><code>level</code></em></code><br /></span><span class="term"><code class="option">-Z <em class="replaceable"><code>method</code></em></code>[:<em class="replaceable"><code>detail</code></em>]<br /></span><span class="term"><code class="option">--compress=<em class="replaceable"><code>level</code></em></code><br /></span><span class="term"><code class="option">--compress=<em class="replaceable"><code>method</code></em></code>[:<em class="replaceable"><code>detail</code></em>]</span></dt><dd><p>
+       Spécifie la méthode de compression et/ou le niveau de compression à
+       utiliser. La méthode de compression peut être <code class="literal">gzip</code>,
+       <code class="literal">lz4</code>, <code class="literal">zstd</code>,
+       ou <code class="literal">none</code> pour désactiver la compression.
+       Des détails pour la compression peuvent être précisés. Si c'est un
+       entier, cela correspond au niveau de compression. Autrement, il s'agit
+       d'une liste d'éléments séparés par des virgules pouvant prendre la forme
+       <code class="literal">clé</code> ou <code class="literal">clé=valeur</code>.
+       Actuellement, les mots-clés supportés sont <code class="literal">level</code> et
+       <code class="literal">long</code>.
+      </p><p>
+       Si aucun niveau de compression n'est spécifié, le niveau de compression
+       par défaut sera utilisé. Si seul un niveau est spécifié sans mentionner
+       d'algorithme, la compression <code class="literal">gzip</code> sera utilisée si le
+       niveau est supérieur à <code class="literal">0</code>, et aucune compression
+       sera utilisée si le niveau est <code class="literal">0</code>.
+      </p><p>
+       Pour les formats <span class="quote">« <span class="quote">custom</span> »</span> et <span class="quote">« <span class="quote">directory</span> »</span>, ce
+       paramètre spécifie la compression des segments individuels des données de
+       la table et par défaut la compression se fait à l'aide de
+       <code class="literal">gzip</code> à un niveau modéré. Pour le format texte simple,
+       la définition d'un niveau de compression non nul entraîne la
+       compression de l'ensemble du fichier de sortie, comme s'il était passé
+       par <span class="application">gzip</span>,
+       <span class="application">lz4</span>, ou <span class="application">zstd</span> ;
+       mais par défaut, il n'y a pas de compression.
+       Avec la compression zstd, le mode <code class="literal">long</code> peut améliorer le taux de
+       compression, au prix d'une utilisation accrue de la mémoire.
+      </p><p>
+       Le format d'archive tar ne supporte pas du tout la compression.
+      </p></dd><dt><span class="term"><code class="option">--binary-upgrade</code></span></dt><dd><p>
+       Cette option est destinée à être utilisée pour une mise à jour en
+       ligne. Son utilisation dans d'autres buts n'est ni recommandée ni
+       supportée. Le comportement de cette option peut changer dans les
+       futures versions sans avertissement.
+      </p></dd><dt><span class="term"><code class="option">--column-inserts</code><br /></span><span class="term"><code class="option">--attribute-inserts</code></span></dt><dd><p>
+       Extraire les données en tant que commandes <code class="command">INSERT</code>
+       avec des noms de colonnes explicites (<code class="literal">INSERT INTO
+        <em class="replaceable"><code>table</code></em> (<em class="replaceable"><code>colonne</code></em>,
+        ...) VALUES ...</code>). Ceci rendra la restauration très
+       lente ; c'est surtout utile pour créer des extractions qui
+       puissent être chargées dans des bases de données autres que
+       <span class="productname">PostgreSQL</span>. Toute erreur lors du
+       rechargement causera la perte uniquement des lignes faisant partie du
+       <code class="command">INSERT</code> problématique, et pas du contenu complet de
+       la table.
+      </p></dd><dt><span class="term"><code class="option">--disable-dollar-quoting</code></span></dt><dd><p>
+       Cette option désactive l'utilisation du caractère dollar comme
+       délimiteur de corps de fonctions, et force leur délimitation en tant
+       que chaîne SQL standard.
+      </p></dd><dt><span class="term"><code class="option">--disable-triggers</code></span></dt><dd><p>
+       Cette option ne s'applique que dans le cas d'une extraction de données
+       seules. Ceci demande à <span class="application">pg_dump</span> d'inclure des
+       commandes pour désactiver temporairement les triggers sur les tables
+       cibles pendant que les données sont rechargées. Utilisez ceci si, sur
+       les tables, vous avez des contraintes d'intégrité ou des triggers que
+       vous ne voulez pas invoquer pendant le rechargement.
+      </p><p>
+       À l'heure actuelle, les commandes émises pour
+       <code class="option">--disable-triggers</code> doivent être exécutées en tant que
+       superutilisateur. Par conséquent, vous devez aussi spécifier un nom de
+       superutilisateur avec <code class="option">-S</code>, ou préférablement faire
+       attention à lancer le script résultat en tant que superutilisateur.
+      </p><p>
+       Cette option n'a de sens que pour le format texte simple. Pour les
+       formats d'archive, vous pouvez spécifier cette option quand vous
+       appelez <code class="command">pg_restore</code>.
+      </p></dd><dt><span class="term"><code class="option">--enable-row-security</code></span></dt><dd><p>
+       Cette option est seulement adéquate lors de la sauvegarde du contenu
+       d'une table disposant du mode de sécurité niveau ligne. Par défaut,
+       <span class="application">pg_dump</span> configurera <a class="xref" href="runtime-config-client.html#GUC-ROW-SECURITY">row_security</a> à off pour s'assurer que toutes les
+       données de la table soient sauvegardées. Si l'utilisateur n'a pas les
+       droits suffisant pour contourner la sécurité niveau ligne, alors une
+       erreur est renvoyée. Ce paramètre force
+       <span class="application">pg_dump</span> à configurer <a class="xref" href="runtime-config-client.html#GUC-ROW-SECURITY">row_security</a> à on, permettant à l'utilisateur de ne
+       sauvegarder que le contenu auquel il a le droit d'accéder.
+      </p><p>
+       Notez que si vous utilisez cette option actuellement, vous serez
+       certainement intéressé à faire une sauvegarde au format
+       <code class="command">INSERT</code> car les politiques de sécurité ne sont pas
+       respectées par l'instruction <code class="command">COPY FROM</code>.
+      </p></dd><dt><span class="term"><code class="option">--exclude-extension=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+        Ne sauvegarde pas les extensions correspondant au <em class="replaceable"><code>motif</code></em>. Le motif est interprété suivant
+        les mêmes règles que pour <code class="option">-e</code>.
+        <code class="option">--exclude-extension</code> peut être utilisé plus d'une fois
+        pour exclure des extensions correspondant à différents motifs.
+       </p><p>
+        Quand <code class="option">-e</code> et <code class="option">--exclude-extension</code>
+        sont utilisés en même temps, le comportement est de sauvegarder
+        uniquement les extensions qui correspondent à au moins une option
+        <code class="option">-e</code> et à aucune option
+        <code class="option">--exclude-extension</code>. Si
+        <code class="option">--exclude-extension</code> apparaît sans
+        <code class="option">-e</code>, alors les extensions correspondant à
+        <code class="option">--exclude-extension</code> sont exclues de ce qui serait
+        habituellement une sauvegarde normale.
+       </p></dd><dt><span class="term"><code class="option">--exclude-table-and-children=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Cette option fonctionne de la même manière que l'option
+       <code class="option">-T</code>/<code class="option">--exclude-table</code>, à l'exception
+       qu'elle exclue également les partitions et les tables enfant des tables
+       dont le nom correspond à <em class="replaceable"><code>motif</code></em>.
+      </p></dd><dt><span class="term"><code class="option">--exclude-table-data=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+       Ne sauvegarde pas les données pour toute table correspondant au motif
+       indiqué par <em class="replaceable"><code>motif</code></em>. Le
+       motif est interprété selon les même règles que pour l'option
+       <code class="option">-t</code>. <code class="option">--exclude-table-data</code> peut être
+       utilisé plusieurs fois pour exclure des tables dont le nom correspond à
+       des motifs différents. Cette option est utile quand vous avez besoin de
+       la définition d'une table particulière mais pas de ses données.
+      </p><p>
+       Pour exclure les données de toutes les tables de la base, voir
+       <code class="option">--schema-only</code>.
+      </p></dd><dt><span class="term"><code class="option">--exclude-table-data-and-children=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+      Cette option fonctionne de la même manière que l'option
+      <code class="option">--exclude-table-data</code>, à l'exception qu'elle exclue
+      également les données des partitions et des tables enfant des tables
+      dont le nom correspond à <em class="replaceable"><code>motif</code></em>.
+      </p></dd><dt><span class="term"><code class="option">--extra-float-digits=<em class="replaceable"><code>nchiffres</code></em></code></span></dt><dd><p>
+       Utilise la valeur spécifiée pour <code class="option">extra_float_digits</code>
+       lors de la
+       sauvegarde de valeurs en virgule flottante, au lieu de la précision
+       maximale disponible. Les sauvegardes de routine ne devraient pas
+       utiliser cette option.
+      </p></dd><dt><span class="term"><code class="option">--filter=<em class="replaceable"><code>filename</code></em></code></span></dt><dd><p>
+       Indique un nom de fichier à partir duquel lire les motifs des objets
+       exclus ou inclus d'une restauration. Les motifs sont interprétés
+       suivant les mêmes règles que les options correspondantes :
+       <code class="option">-t</code>/<code class="option">--table</code>,
+       <code class="option">--table-and-children</code>,
+       <code class="option">-T</code>/<code class="option">--exclude-table</code> et
+       <code class="option">--exclude-table-and-children</code> pour les tables,
+       <code class="option">-n</code>/<code class="option">--schema</code> et
+       <code class="option">-N</code>/<code class="option">--exclude-schema</code> pour les
+       schémas, <code class="option">--include-foreign-data</code> pour les données des
+       serveurs distants, <code class="option">--exclude-table-data</code> et
+       <code class="option">--exclude-table-data-and-children</code> pour les données
+       des tables, et <code class="option">-e</code>/<code class="option">--extension</code> et
+       <code class="option">--exclude-extension</code> pour les extensions. Pour lire à
+       partir de <code class="literal">STDIN</code>, utilisez <code class="filename">-</code>
+       comme nom de fichier. L'option <code class="option">--filter</code> peut être
+       utilisé en même temps que les options listées ci-dessus pour inclure
+       ou exclure des objets, et peut aussi être utilisée plus d'une fois
+       pour prendre en compte plusieurs fichiers de filtre.
+
+      </p><p>
+       Le fichier liste un motif de base par ligne en respectant le
+       format suivant :
+</p><pre class="synopsis">
+{ include | exclude } { extension | foreign_data | table | table_and_children | table_data | table_data_and_children | schema } <em class="replaceable"><code>PATTERN</code></em>
+</pre><p>
+      </p><p>
+       Le premier mot clé indique si les objets correspondant aux motifs
+        doivent être inclus ou exclus. Le deuxième mot clé précise le
+        type d'objet à filtrer suivant le motif :
+       </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+          <code class="literal">extension</code> : extensions. Ceci fonctionne
+          comme les options <code class="option">-e</code>/<code class="option">--extension</code>
+          et <code class="option">--exclude-extension</code>.
+         </p></li><li class="listitem"><p>
+          <code class="literal">foreign_data</code> : données sur les serveurs
+          distants. Ceci fonctionne comme l'option
+          <code class="option">--include-foreign-data</code>. Ce mot clé peut seulement
+          être utilisé avec le mot clé <code class="literal">include</code>.
+         </p></li><li class="listitem"><p>
+          <code class="literal">table</code> : tables. Ceci fonctionne comme les
+          options <code class="option">-t</code>/<code class="option">--table</code> et
+          <code class="option">-T</code>/<code class="option">--exclude-table</code>.
+         </p></li><li class="listitem"><p>
+          <code class="literal">table_and_children</code> : tables incluant des
+          partitions ou des tables enfants par héritage. Ceci fonctionne
+          comme les options <code class="option">--table-and-children</code> et
+          <code class="option">--exclude-table-and-children</code>.
+         </p></li><li class="listitem"><p>
+          <code class="literal">table_data</code>: données de table pour toute table
+          correspondant à <em class="replaceable"><code>pattern</code></em>. Ceci
+          fonctionne comme l'option <code class="option">--exclude-table-data</code>. Ce
+          mot clé peut seulement être utilisé avec le mot clé
+          <code class="literal">exclude</code>.
+         </p></li><li class="listitem"><p>
+          <code class="literal">table_data_and_children</code> : données de table
+          pour toute table correspondant à <em class="replaceable"><code>pattern</code></em>
+          ainsi qu'à toute partition ou table enfant de la table sélectionnée.
+          Ceci fonctionne comme l'option
+          <code class="option">--exclude-table-data-and-children</code>. Ce mot clé peut
+          seulement être utilisé avec le mot clé <code class="literal">exclude</code>.
+         </p></li><li class="listitem"><p>
+          <code class="literal">schema</code> : schémas. Ceci fonctionne comme
+          les options <code class="option">-n</code>/<code class="option">--schema</code> et
+          <code class="option">-N</code>/<code class="option">--exclude-schema</code>.
+         </p></li></ul></div><p>
+      </p><p>
+       Les lignes commençant avec <code class="literal">#</code> sont considérées
+       comme des commentaires et, de ce fait, sont ignorées. Les
+       commentaires peuvent aussi être placés après une ligne de motif
+       d'objet. Les lignes blanches sont elles-aussi ignorées. Voir
+       <a class="xref" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs">Motifs</a> pour savoir comment réaliser
+       l'échappement dans les motifs.
+      </p><p>
+       Les fichiers d'exemple sont listés dans la section <a class="xref" href="app-pgdump.html#PG-DUMP-EXAMPLES" title="Exemples">Exemples</a>.
+      </p></dd><dt><span class="term"><code class="option">--if-exists</code></span></dt><dd><p>
+       Utilise des commandes <code class="literal">DROP ... IF EXISTS</code> pour
+       supprimer des objets dans le mode <code class="option">--clean</code>. Cela
+       permet de supprimer les erreurs <span class="quote">« <span class="quote">does not exist</span> »</span> qui
+       seraient sinon renvoyées. Cette option n'est pas valide sauf si
+       <code class="option">--clean</code> est aussi indiquée.
+      </p></dd><dt><span class="term"><code class="option">--include-foreign-data=<em class="replaceable"><code>foreignserver</code></em></code></span></dt><dd><p>
+       Sauvegarde les données de toute table externe ayant comme serveur
+       distant <em class="replaceable"><code>foreignserver</code></em>.
+       Plusieurs serveurs distants peuvent être sélectionnés en utilisant
+       plusieurs fois l'options <code class="option">--include-foreign-data</code>. De
+       plus, le paramètre <em class="replaceable"><code>foreignserver</code></em> est interprété comme un
+       motif suivant les mêmes règles que celles utilisées par les commandes
+       <code class="literal">\d</code> de <span class="application">psql</span> (voir <a class="xref" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs">Motifs</a>), donc plusieurs serveurs
+       distants peuvent aussi être sélectionnés en écrivant des caractères
+       joker dans le motif. Lors de l'utilisation des jokers, faites
+       attention à placer le motif entre guillemets pour empêcher le shell de
+       les prendre en compte ; voir <a class="xref" href="app-pgdump.html#PG-DUMP-EXAMPLES" title="Exemples">Exemples</a>
+       ci-dessous. Le seule exception est qu'un motif vide est interdit.
+      </p><div class="note"><h3 class="title">Note</h3><p>
+        L'utilisation de jokers dans <code class="option">--include-foreign-data</code>
+        pourrait donner accès à des serveurs distants inattendus. De plus,
+        pour utiliser cette option en toute sécurité, assurez-vous que le serveur
+        nommé a un propriétaire de confiance.
+       </p></div><div class="note"><h3 class="title">Note</h3><p>
+        Quand <code class="option">--include-foreign-data</code> est précisé,
+        <span class="application">pg_dump</span> ne vérifie pas que la table
+        externe est accessible en écriture. De ce fait, il n'y a pas de
+        garantie que la sauvegarde des données de la table distante pourra
+        être restaurée sans erreurs.
+       </p></div></dd><dt><span class="term"><code class="option">--inserts</code></span></dt><dd><p>
+       Extraire les données en tant que commandes <code class="command">INSERT</code>
+       (plutôt que <code class="command">COPY</code>). Ceci rendra la restauration très
+       lente ; c'est surtout utile pour créer des extractions qui
+       puissent être chargées dans des bases de données autres que
+       <span class="productname">PostgreSQL</span>. Toute erreur lors du
+       rechargement fera que seules les lignes comprises dans le
+       <code class="command">INSERT</code> problématique seront perdues, plutôt que le
+       contenu entier de la table. Notez que la restauration pourrait échouer
+       si vous avez modifié l'ordre des colonnes. L'option
+       <code class="option">--column-inserts</code> protège contre les changements
+       d'ordre des colonnes au prix de lenteurs supplémentaires.
+      </p></dd><dt><span class="term"><code class="option">--load-via-partition-root</code></span></dt><dd><p>
+       Lors de l'export de données d'une partition, faire que les instructions
+       <code class="command">COPY</code> ou <code class="command">INSERT</code> ciblent la racine
+       du partitionnement qui contient cette partition, plutôt que la
+       partition elle-même. Ceci fait que la partition appropriée soit
+       re-déterminée pour chaque ligne au moment du chargement. Ceci peut être
+       utile quand le rechargement des données se fait sur un serveur où les
+       lignes ne tomberont pas forcément dans les mêmes partitions que celles
+       du serveur original. Ceci pourrait arriver si la colonne de
+       partitionnement est de type text et que les deux systèmes ont une
+       définition différente du collationnement utilisé pour tier la colonne
+       de partitionnement.
+      </p></dd><dt><span class="term"><code class="option">--lock-wait-timeout=<em class="replaceable"><code>expiration</code></em></code></span></dt><dd><p>
+       Ne pas attendre indéfiniment l'acquisition de verrous partagés sur
+       table au démarrage de l'extraction. Échouer à la place s'il est
+       impossible de verrouiller une table dans le temps d'<em class="replaceable"><code>expiration</code></em> indiqué. L'expiration peut
+       être spécifiée dans tous les formats acceptés par <code class="command">SET
+        statement_timeout</code>, les valeurs autorisées dépendant de la
+       version du serveur sur laquelle vous faites l'extraction, mais une
+       valeur entière en millisecondes est acceptée par toutes les versions.
+      </p></dd><dt><span class="term"><code class="option">--no-comments</code></span></dt><dd><p>
+       Ne pas sauvegarder les commentaires.
+      </p></dd><dt><span class="term"><code class="option">--no-publications</code></span></dt><dd><p>
+       Ne pas sauvegarder les publications.
+      </p></dd><dt><span class="term"><code class="option">--no-security-labels</code></span></dt><dd><p>
+       Ne pas sauvegarder les labels de sécurité.
+      </p></dd><dt><span class="term"><code class="option">--no-subscriptions</code></span></dt><dd><p>
+       Ne pas sauvegarder les souscriptions.
+      </p></dd><dt><span class="term"><code class="option">--no-sync</code></span></dt><dd><p>
+       Par défaut, <code class="command">pg_dump</code> attendra que tous les fichiers
+       aient été écrits de manière sûre sur disque.  Cette option force
+       <code class="command">pg_dump</code> à rendre la main sans attendre, ce qui est
+       plus rapide, mais signifie qu'un arrêt brutal du serveur survenant
+       après la sauvegarde peut laisser la sauvegarde dans un état corrompu.
+       De manière générale, cette option est utile durant les tests mais ne
+       devrait pas être utilisée dans un environnement de production.
+      </p></dd><dt><span class="term"><code class="option">--no-table-access-method</code></span></dt><dd><p>
+       Ne pas générer de commandes pour sélectionner les méthodes d'accès
+       aux tables. Avec cette option, tous les objets seront créés avec la
+       méthode d'accès par défaut au moment de la restauration.
+      </p><p>
+       Cette option est ignorée lors de la création d'un fichier d'archive
+       (non texte). Pour les formats d'archivage, vous pouvez indiquer
+       l'option lors de l'appel à <code class="command">pg_restore</code>.
+      </p></dd><dt><span class="term"><code class="option">--no-tablespaces</code></span></dt><dd><p>
+       Ne pas générer de commandes pour créer des tablespace, ni sélectionner
+       de tablespace pour les objets. Avec cette option, tous les objets
+       seront créés dans le tablespace par défaut durant la restauration.
+      </p><p>
+       Cette option n'a de sens que pour le format texte simple. Pour les
+       formats d'archive, vous pouvez spécifier cette option quand vous
+       appelez <code class="command">pg_restore</code>.
+      </p></dd><dt><span class="term"><code class="option">--no-toast-compression</code></span></dt><dd><p>
+       Ne génère pas de commandes pour définir les méthodes de compression
+       <acronym class="acronym">TOAST</acronym>.
+       Avec cette option, toutes les colonnes seront restaurées avec la méthode de
+       compression par défaut en vigueur au moment de la restauration.
+      </p></dd><dt><span class="term"><code class="option">--no-unlogged-table-data</code></span></dt><dd><p>
+       Ne pas exporter le contenu des tables et séquences non journalisées
+       (unlogged).  Cette option n'a aucun effet sur le fait que la définition
+       (schéma) des tables et séquences soit exportée ou non ; seul
+       l'export des données de la table et de la séquence est supprimé. Les
+       données des tables et séquences non journalisées sont toujours exclues
+       lors d'une sauvegarde à partir d'un serveur en standby.
+      </p></dd><dt><span class="term"><code class="option">--on-conflict-do-nothing</code></span></dt><dd><p>
+       Ajouter <code class="literal">ON CONFLICT DO NOTHING</code> aux commandes
+       <code class="command">INSERT</code>. Cette option n'est seulement valide que si
+       <code class="option">--inserts</code>, <code class="option">--column-inserts</code> ou
+       <code class="option">--rows-per-insert</code> est aussi utilisée.
+      </p></dd><dt><span class="term"><code class="option">--quote-all-identifiers</code></span></dt><dd><p>
+       Force la mise entre guillemets de tous les identifiants. Cette option
+       est recommandée lors de la sauvegarde d'un serveur
+       <span class="productname">PostgreSQL</span> dont la version majeure est
+       différente de celle du <span class="application">pg_dump</span> ou quand le
+       résultat est prévu d'être rechargé dans une autre version majeure. Par
+       défaut, <span class="application">pg_dump</span> met entre guillemets
+       uniquement les identifiants qui sont des mots réservés dans sa propre
+       version majeure. Ceci peut poser parfois des problèmes de compatibilité
+       lors de l'utilisation de serveurs de versions différentes qui auraient
+       des ensembles différents de mots clés. Utiliser
+       <code class="option">--quote-all-identifiers</code> empêche ce type de problèmes
+       au prix d'un script résultant plus difficile à lire.
+      </p></dd><dt><span class="term"><code class="option">--restrict-key=<em class="replaceable"><code>restrict_key</code></em></code></span></dt><dd><p>
+       Utilise la chaîne fournie comme clé de <code class="command">\restrict</code>
+       dans <span class="application">psql</span> dans la sortie de la sauvegarde.
+       Cela peut seulement être indiqué pour les sauvegardes textes, autrement
+       dit quand <code class="option">--format</code> être configuré à
+       <code class="literal">plain</code> ou quand l'option <code class="option">--format</code>
+       est omise. Si aucune clé de restriction n'est indiqué,
+       <span class="application">pg_dump</span> en générera une aléatoirement si
+       nécessaire. Les clés doivent contenir uniquement des caractères
+       alphanumériques.
+      </p><p>
+       Cette option a principalement pour but des tests et d'autres scénarios
+       nécessitant une sortie répétable (par exemple pour comparer les fichiers
+       de sauvegarde). Ce n'est pas recommandé pour une utilisation standard,
+       car un serveur malicieux avec une connaissance de la clé pourrait
+       injecter un code arbitraire qui sera exécuté sur la machine qui lance
+       <span class="application">psql</span> avec la sauvegarde en sortie.
+      </p></dd><dt><span class="term"><code class="option">--rows-per-insert=<em class="replaceable"><code>nlignes</code></em></code></span></dt><dd><p>
+       Sauvegarde les données sous la forme de commandes
+       <code class="command">INSERT</code> (plutôt qu'avec <code class="command">COPY</code>).
+       Contrôle le nombre maximum de lignes par commande
+       <code class="command">INSERT</code>. La valeur indiquée doit être strictement
+       positive. Toute erreur lors du rechargement provoquera uniquement la
+       perte des lignes faisant partie du <code class="command">INSERT</code>
+       problématique, et non pas le contenu complet de la table.
+      </p></dd><dt><span class="term"><code class="option">--section=<em class="replaceable"><code>nom_section</code></em></code></span></dt><dd><p>
+       Sauvegarde seulement la section nommée. Le nom de la section peut être
+       <code class="option">pre-data</code>, <code class="option">data</code> ou
+       <code class="option">post-data</code>. Cette option peut être spécifiée plus d'une
+       fois pour sélectionner plusieurs sections. La valeur par défaut est
+       toutes les sections.
+      </p><p>
+       La section data contient toutes les données des tables ainsi que la
+       définition des Large Objects et les valeurs des séquences. Les éléments
+       post-data incluent la définition des index, triggers, règles et
+       contraintes (autres que les contraintes de vérification). Les éléments
+       pre-data incluent en tous les autres éléments de définition.
+      </p></dd><dt><span class="term"><code class="option">--serializable-deferrable</code></span></dt><dd><p>
+       Utiliser une transaction <code class="literal">sérialisable</code> pour l'export,
+       pour garantir que l'instantané utilisé est cohérent avec les états
+       futurs de la base; mais ceci est effectué par l'attente d'un point dans
+       le flux des transactions auquel aucune anomalie ne puisse être
+       présente, afin qu'il n'y ait aucun risque que l'export échoue ou cause
+       l'annulation d'une autre transaction pour <code class="literal">erreur de
+        sérialisation</code>. Voyez <a class="xref" href="mvcc.html" title="Chapitre 13. Contrôle d'accès simultané">Chapitre 13</a> pour davantage
+       d'informations sur l'isolation des transactions et le contrôle d'accès
+       concurrent.
+      </p><p>
+       Cette option est inutile pour une sauvegarde qui ne sera utilisée qu'en cas de
+       récupération après sinistre. Elle pourrait être utile pour une sauvegarde
+       utilisée pour charger une copie de la base pour du reporting ou toute
+       autre activité en lecture seule tandis que la base originale continue à
+       être mise à jour. Sans cela, la sauvegarde serait dans un état incohérent
+       avec l'exécution sérielle des transactions qui auront été finalement
+       validées. Par exemple, si un traitement de type batch est exécuté, un
+       batch pourrait apparaître comme terminé dans la sauvegarde sans que tous les
+       éléments du batch n'apparaissent.
+      </p><p>
+       Cette option ne fera aucune différence si aucune transaction en
+       lecture-écriture n'est active au lancement de pg_dump. Si des
+       transactions en lecture-écriture sont actives, le démarrage de la sauvegarde
+       pourrait être retardé pour une durée indéterminée. Une fois qu'il sera
+       démarré, la performance est identique à celle de la sauvegarde sans cette
+       option.
+      </p></dd><dt><span class="term"><code class="option">--snapshot=<em class="replaceable"><code>nom_snapshot</code></em></code></span></dt><dd><p>
+       Utilise l'image de base de données synchronisée spécifiée lors de la
+       sauvegarde d'une base de données (voir <a class="xref" href="functions-admin.html#FUNCTIONS-SNAPSHOT-SYNCHRONIZATION-TABLE" title="Tableau 9.98. Fonctions de synchronisation d'image">Tableau 9.98</a> pour plus de
+       détails).
+      </p><p>
+       Cette option est utile lorsqu'il est nécessaire de synchroniser la
+       sauvegarde avec un slot de réplication logique (voir <a class="xref" href="logicaldecoding.html" title="Chapitre 47. Décodage logique (Logical Decoding)">Chapitre 47</a>) ou avec une session concurrente.
+      </p><p>
+       Dans le cas d'une sauvegarde parallèle, le nom de l'image défini par
+       cette option est utilisé plutôt que de prendre une nouvelle image de
+       base.
+      </p></dd><dt><span class="term"><code class="option">--strict-names</code></span></dt><dd><p>
+       Implique que chaque qualificateur d'extension (<code class="option">-e</code>/
+       <code class="option">--extension</code>), de schéma(<code class="option">-n</code>/<code class="option">--schema</code>)
+       et de table (<code class="option">-t</code>/<code class="option">--table</code>)
+       corresponde à au moins un ou une extension/schéma/table dans la base à
+       sauvegarder.
+       Ceci s'applique aussi aux filtres utilisés avec
+       <code class="option">--filter</code>.
+       Notez que, si aucun motif d'extension/schéma/table ne trouve une correspondance,
+       <span class="application">pg_dump</span> générera une erreur, y compris sans
+       <code class="option">--strict-names</code>.
+      </p><p>
+       Cette option n'a pas d'effet sur
+       <code class="option">--exclude-extension</code>,
+       <code class="option">-N</code> / <code class="option">--exclude-schema</code>,
+       <code class="option">-T</code> / <code class="option">--exclude_table</code> et
+       <code class="option">--exclude-table-date</code>. Tout échec de correspondance
+       pour un motif d'exclusion n'est pas considéré comme une erreur.
+      </p></dd><dt><span class="term"><code class="option">--sync-method=<em class="replaceable"><code>method</code></em></code></span></dt><dd><p>
+       Quand il est initialisé à <code class="literal">fsync</code>, qui est la valeur
+       par défaut, <code class="command">pg_dump --format=directory</code> va ouvrir
+       récursivement tous les fichiers du répertoire d'archivage et les
+       synchroniser sur disque.
+      </p><p>
+       Sur Linux, <code class="literal">syncfs</code> peut être utilisé à la place
+       pour demander au système d'exploitation de synchroniser le système
+       de fichiers complet qui contient le répertoire d'archivage. Voir
+       <a class="xref" href="runtime-config-error-handling.html#GUC-RECOVERY-INIT-SYNC-METHOD">recovery_init_sync_method</a> pour plus d'informations
+       sur les points importants à connaître lors de l'utilisation de
+       <code class="literal">syncfs</code>.
+      </p><p>
+       Cette option n'a aucun effet quand <code class="option">--no-sync</code> est
+       utilisé et quand <code class="option">--format</code> n'est pas configuré à
+       <code class="literal">directory</code>.
+      </p></dd><dt><span class="term"><code class="option">--table-and-children=<em class="replaceable"><code>motif</code></em></code></span></dt><dd><p>
+	   Cette option fonctionne de la même manière que l'option
+	   <code class="option">-t</code>/<code class="option">--table</code>, à l'exception qu'elle inclue
+	   également les partitions et les tables enfant des tables dont le nom
+	   correspond à <em class="replaceable"><code>motif</code></em>.
+      </p></dd><dt><span class="term"><code class="option">--use-set-session-authorization</code></span></dt><dd><p>
+       Émettre des commandes SQL standard <code class="command">SET SESSION
+        AUTHORIZATION</code> à la place de commandes <code class="command">ALTER
+        OWNER</code> pour déterminer l'appartenance d'objet. Ceci rend
+       l'extraction davantage compatible avec les standards, mais, suivant
+       l'historique des objets de l'extraction, peut ne pas se restaurer
+       correctement. Par ailleurs, une extraction utilisant <code class="command">SET
+        SESSION AUTHORIZATION</code> nécessitera certainement des droits
+       superutilisateur pour se restaurer correctement, alors que
+       <code class="command">ALTER OWNER</code> nécessite des droits moins élevés.
+      </p></dd><dt><span class="term"><code class="option">-?</code><br /></span><span class="term"><code class="option">--help</code></span></dt><dd><p>
+       Affiche l'aide sur les arguments en ligne de commande de
+       <span class="application">pg_dump</span>, puis quitte
+      </p></dd></dl></div><p>
+  </p><p>
+   Les options de ligne de commande suivantes gèrent les paramètres de
+   connexion :
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="option">-d <em class="replaceable"><code>nom_base</code></em></code><br /></span><span class="term"><code class="option">--dbname=<em class="replaceable"><code>nom_base</code></em></code></span></dt><dd><p>
+       Indique le nom de la base de données de connexion. Ceci revient à
+       spécifier <em class="replaceable"><code>nom_base</code></em> comme
+       premier argument sans option sur la ligne de commande. Ce nom de base
+       peut être remplacé par une <a class="link" href="libpq-connect.html#LIBPQ-CONNSTRING" title="32.1.1. Chaînes de connexion">chaîne de
+        connexion</a>. Dans ce cas, les paramètres de la chaîne de connexion
+       surchargeront toutes les options en ligne de commande conflictuelles.
+      </p></dd><dt><span class="term"><code class="option">-h <em class="replaceable"><code>hôte</code></em></code><br /></span><span class="term"><code class="option">--host <em class="replaceable"><code>hôte</code></em></code></span></dt><dd><p>
+       Le nom d'hôte de la machine sur laquelle le serveur de bases de données
+       est exécuté. Si la valeur commence par une barre oblique (/), elle est
+       utilisée comme répertoire pour le socket de domaine Unix. La valeur par
+       défaut est fournie par la variable d'environnement
+       <code class="envar">PGHOST</code>, si elle est initialisée. Dans le cas contraire,
+       une connexion sur la socket de domaine Unix est tentée.
+      </p></dd><dt><span class="term"><code class="option">-p <em class="replaceable"><code>port</code></em></code><br /></span><span class="term"><code class="option">--port <em class="replaceable"><code>port</code></em></code></span></dt><dd><p>
+       Le port TCP ou le fichier local de socket de domaine Unix sur lequel le
+       serveur écoute les connexions. La valeur par défaut est fournie par la
+       variable d'environnement <code class="envar">PGPORT</code>, si elle est
+       initialisée. Dans le cas contraire, il s'agit de la valeur fournie à la
+       compilation.
+      </p></dd><dt><span class="term"><code class="option">-U <em class="replaceable"><code>nomutilisateur</code></em></code><br /></span><span class="term"><code class="option">--username <em class="replaceable"><code>nomutilisateur</code></em></code></span></dt><dd><p>
+       Le nom d'utilisateur utilisé pour la connexion.
+      </p></dd><dt><span class="term"><code class="option">-w</code><br /></span><span class="term"><code class="option">--no-password</code></span></dt><dd><p>
+       Ne demande jamais un mot de passe. Si le serveur en réclame un pour
+       l'authentification et qu'un mot de passe n'est pas disponible d'une
+       autre façon (par exemple avec le fichier <code class="filename">.pgpass</code>),
+       la tentative de connexion échouera. Cette option peut être utile pour
+       les scripts où aucun utilisateur n'est présent pour saisir un mot de
+       passe.
+      </p></dd><dt><span class="term"><code class="option">-W</code><br /></span><span class="term"><code class="option">--password</code></span></dt><dd><p>
+       Force <span class="application">pg_dump</span> à demander un mot de passe
+       avant la connexion à une base de données.
+      </p><p>
+       Cette option n'est jamais nécessaire car
+       <span class="application">pg_dump</span> demande automatiquement un mot de
+       passe si le serveur exige une authentification par mot de passe.
+       Néanmoins, <span class="application">pg_dump</span> perd une tentative de
+       connexion pour tester si le serveur demande un mot de passe. Dans
+       certains cas, il est préférable d'ajouter l'option <code class="option">-W</code>
+       pour éviter la tentative de connexion.
+      </p></dd><dt><span class="term"><code class="option">--role=<em class="replaceable"><code>nomrole</code></em></code></span></dt><dd><p>
+       Spécifie un rôle à utiliser pour créer l'extraction. Avec cette option,
+       <span class="application">pg_dump</span> émet une commande <code class="command">SET
+        ROLE</code> <em class="replaceable"><code>nomrole</code></em>
+       après s'être connecté à la base. C'est utile quand l'utilisateur
+       authentifié (indiqué par <code class="option">-U</code>) n'a pas les droits dont
+       <span class="application">pg_dump</span> a besoin, mais peut basculer vers un
+       rôle qui les a. Certaines installations ont une politique qui est
+       contre se connecter directement en tant que superutilisateur, et
+       l'utilisation de cette option permet que les extractions soient faites
+       sans violer cette politique.
+      </p></dd></dl></div><p>
+  </p></div><div class="refsect1" id="id-1.9.4.14.7"><h2>Environnement</h2><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="envar">PGDATABASE</code><br /></span><span class="term"><code class="envar">PGHOST</code><br /></span><span class="term"><code class="envar">PGOPTIONS</code><br /></span><span class="term"><code class="envar">PGPORT</code><br /></span><span class="term"><code class="envar">PGUSER</code></span></dt><dd><p>
+      Paramètres de connexion par défaut.
+     </p></dd><dt><span class="term"><code class="envar">PG_COLOR</code></span></dt><dd><p>
+      Indique s'il faut utiliser la couleur dans les messages de diagnostic.
+      Les valeurs possibles sont <code class="literal">always</code>,
+      <code class="literal">auto</code>, <code class="literal">never</code>.
+     </p></dd></dl></div><p>
+   Cet outil, comme la plupart des autres outils
+   <span class="productname">PostgreSQL</span>, utilise les variables
+   d'environnement supportées par la bibliothèque
+   <span class="application">libpq</span> (voir <a class="xref" href="libpq-envars.html" title="32.15. Variables d'environnement">Section 32.15</a>).
+  </p></div><div class="refsect1" id="APP-PGDUMP-DIAGNOSTICS"><h2>Diagnostics</h2><p>
+   <span class="application">pg_dump</span> exécute intrinsèquement des instructions
+   <code class="command">SELECT</code>. Si des problèmes apparaissent à l'exécution de
+   <span class="application">pg_dump</span>, <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle" id="APP-PSQL-TITLE"><span class="application">psql</span></span></a> peut être
+   utilisé pour s'assurer qu'il est possible de sélectionner des informations
+   dans la base de données. De plus, tout paramètre de connexion par défaut et
+   toute variable d'environnement utilisé par la bibliothèque
+   <span class="application">libpq</span> s'appliquent.
+  </p><p>
+   L'activité générée par <span class="application">pg_dump</span> dans la base de
+   données est normalement collectée par le système de statistiques cumulées. Si
+   c'est gênant, vous pouvez positionner le paramètre
+   <code class="varname">track_counts</code> à false via <code class="envar">PGOPTIONS</code> ou la
+   commande <code class="literal">ALTER USER</code>.
+  </p></div><div class="refsect1" id="PG-DUMP-NOTES"><h2>Notes</h2><p>
+   Si des ajouts locaux à la base <code class="literal">template1</code> ont été
+   effectués, il est impératif de s'assurer que la sortie de
+   <span class="application">pg_dump</span> est effectivement restaurée dans une
+   base vide ; dans le cas contraire, il est fort probable que la
+   duplication des définitions des objets ajoutés engendre des erreurs. Pour
+   obtenir une base vide de tout ajout local, on utilise
+   <code class="literal">template0</code> à la place de <code class="literal">template1</code>
+   comme modèle. Par exemple :
+   </p><pre class="programlisting">CREATE DATABASE foo WITH TEMPLATE template0;
+   </pre><p>
+  </p><p>
+   Quand une sauvegarde des seules données est sélectionnée et que l'option
+   <code class="option">--disable-triggers</code> est utilisée,
+   <span class="application">pg_dump</span> engendre des commandes de désactivation
+   des triggers sur les tables utilisateur avant l'insertion des données,
+   puis après coup, des commandes de réactivation après l'insertion. Si la
+   restauration est interrompue, il se peut que les catalogues systèmes
+   conservent cette position.
+  </p><p>
+   Le fichier de sauvegarde produit par <span class="application">pg_dump</span> ne
+   contient pas les statistiques utilisées par l'optimiseur pour la
+   planification des requêtes. Il est donc conseillé, pour assurer des
+   performances optimales, de lancer <code class="command">ANALYZE</code> après la
+   restauration d'une sauvegarde ; voir <a class="xref" href="routine-vacuuming.html#VACUUM-FOR-STATISTICS" title="24.1.3. Maintenir les statistiques de l'optimiseur">Section 24.1.3</a> et <a class="xref" href="routine-vacuuming.html#AUTOVACUUM" title="24.1.6. Le démon auto-vacuum">Section 24.1.6</a> pour plus
+   d'informations.
+  </p><p>
+   Parce que <span class="application">pg_dump</span> est utilisé pour transférer
+   des données vers des nouvelles versions de
+   <span class="productname">PostgreSQL</span>, la sortie de
+   <span class="application">pg_dump</span> devra pouvoir se charger dans les
+   versions du serveur <span class="productname">PostgreSQL</span> plus récentes que
+   la version de <span class="application">pg_dump</span>.
+   <span class="application">pg_dump</span> peut aussi extraire des données de
+   serveurs <span class="productname">PostgreSQL</span> plus anciens que sa propre
+   version. (À l'heure actuelle, les versions de serveurs supportées vont
+   jusqu'à la 9.2.) Toutefois, <span class="application">pg_dump</span> ne peut pas
+   réaliser d'extraction de serveurs <span class="productname">PostgreSQL</span>
+   plus récents que sa propre version majeure ; il refusera même
+   d'essayer, plutôt que de risquer de fournir une extraction invalide. Par
+   ailleurs, il n'est pas garanti que la sortie de
+   <span class="application">pg_dump</span> puisse être chargée dans un serveur
+   d'une version majeure plus ancienne  --  pas même si l'extraction a
+   été faite à partir d'un serveur dans cette version. Charger un fichier
+   d'extraction dans un serveur de version plus ancienne pourra requérir une
+   édition manuelle du fichier pour supprimer les syntaxe incomprises de
+   l'ancien serveur. L'utilisation de l'option
+   <code class="option">--quote-all-identifiers</code> est recommendée lors de
+   l'utilisation avec des versions différentes, car cela permet d'empêcher la
+   venue de problèmes provenant de listes de mots clés dans différentes
+   versions de <span class="productname">PostgreSQL</span>.
+  </p><p>
+   Lors de la sauvegarde des souscription de réplication logique,
+   <span class="application">pg_dump</span> générera des commandes <code class="command">CREATE
+   SUBSCRIPTION</code> qui utilisent l'option <code class="literal">connect =
+   false</code>, afin que la restauration des souscriptions ne fasse pas de
+   connexions distantes pour créer un slot de réplication ou pour la copie
+   initiale de table.  De cette façon, la sauvegarde peut être restaurée sans
+   avoir besoin d'un accès réseau aux serveurs distants.  Il est alors à la
+   charge de l'utilisateur de réactiver les souscriptions de manière adaptée.
+   Si les hôtes impliquées ont changés, l'information de connexion pourrait
+   nécessiter d'être changée.  Il pourrait également être approprié de tronquer
+   les tables cibles avant de lancer une nouvelle copie complète des tables.  Si
+   les utilisateurs ont pour but de copier les données originales lors du
+   rafraichissement, ils doivent créer le slot avec <a class="link" href="sql-createsubscription.html#SQL-CREATESUBSCRIPTION-PARAMS-WITH-TWO-PHASE"><code class="literal">two_phase</code></a>.
+   Après la synchronisation initiale, l'option
+   <code class="literal">two_phase</code> sera automatiquement activée si la souscription
+   a été créée à l'origine avec l'option <code class="literal">two_phase = true</code>.
+  </p><p>
+   Il est généralement recommendé d'utiliser l'option <code class="option">-X</code>
+   (<code class="option">--no-psqlrc</code>) lors de la restauration d'une base à partir
+   d'un script texte de <span class="application">pg_dump</span> pour s'assurer
+   d'un traitement propre et empêcher tout conflit potentiel avec des
+   configurations personnalisées de <span class="application">psql</span>.
+  </p></div><div class="refsect1" id="PG-DUMP-EXAMPLES"><h2>Exemples</h2><p>
+   Sauvegarder une base appelée <code class="literal">ma_base</code> dans un script
+   SQL :
+   </p><pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump ma_base &gt; base.sql</code></strong>
+   </pre><p>
+  </p><p>
+   Pour sauvegarder une base de données dans une archive au format
+   répertoire :
+
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>pg_dump -Fd ma_base -f rep_sauve</code></strong>
+   </pre><p>
+  </p><p>
+   Charger ce script dans une base nouvellement créée et nommée
+   <code class="literal">nouvelle_base</code> :
+
+   </p><pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>psql -X -d nouvelle_base -f base.sql</code></strong>
+   </pre><p>
+  </p><p>
+   Sauvegarder une base dans un fichier au format personnalisé :
+
+   </p><pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -Fc ma_base &gt; base.dump</code></strong>
+   </pre><p>
+  </p><p>
+   Pour sauvegarder une base de données en utilisant le format répertoire et
+   en activant la parallélisation sur cinq jobs :
+
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>pg_dump -Fd ma_base -j 5 -f rep_sauvegarde</code></strong>
+   </pre><p>
+  </p><p>
+   Charger un fichier d'archive dans une nouvelle base nommée
+   <code class="literal">nouvelle_base</code> :
+
+   </p><pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_restore -d nouvelle_base base.dump</code></strong>
+   </pre><p>
+  </p><p>
+   Pour recharger un fichier archive dans la même base de données, annuler le
+   contenu actuel de cette base :
+
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>pg_restore -d postgres --clean --create db.dump</code></strong>
+   </pre><p>
+  </p><p>
+   Sauvegarder la table nommée <code class="literal">mytab</code> :
+
+   </p><pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -t ma_table ma_base &gt; base.sql</code></strong>
+   </pre><p>
+  </p><p>
+   Sauvegarder toutes les tables du schéma <code class="literal">detroit</code> et dont
+   le nom commence par <code class="literal">emp</code> sauf la table nommée
+   <code class="literal">traces_employes</code> :
+
+   </p><pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -t 'detroit.emp*' -T detroit.traces_employes ma_base &gt; base.sql</code></strong>
+   </pre><p>
+  </p><p>
+   Sauvegarder tous les schémas dont le nom commence par
+   <code class="literal">est</code> ou <code class="literal">ouest</code> et se termine par
+   <code class="literal">gsm</code>, en excluant les schémas dont le nom contient le mot
+   <code class="literal">test</code> :
+
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>pg_dump -n 'est*gsm' -n 'ouest*gsm' -N '*test*' ma_base &gt; base.sql</code></strong>
+   </pre><p>
+  </p><p>
+   Idem mais en utilisant des expressions rationnelles dans les options :
+
+   </p><pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -n '(est|ouest)*gsm' -N '*test*' ma_base &gt; base.sql</code></strong>
+   </pre><p>
+  </p><p>
+   Sauvegarder tous les objets de la base sauf les tables dont le nom commence
+   par <code class="literal">ts_</code> :
+
+   </p><pre class="screen"><code class="prompt">$</code> <strong class="userinput"><code>pg_dump -T 'ts_*' ma_base &gt; base.sql</code></strong>
+   </pre><p>
+  </p><p>
+   Pour indiquer un nom qui comporte des majuscules dans les options
+   <code class="option">-t</code> et assimilées, il faut ajouter des guillemets
+   doubles ; sinon le nom est converti en minuscules (voir <a class="xref" href="app-psql.html#APP-PSQL-PATTERNS" title="Motifs">Motifs</a>). Les guillemets doubles sont interprétés par
+   le shell et doivent donc être placés entre guillemets. Du coup, pour
+   sauvegarder une seule table dont le nom comporte des majuscules, on utilise
+   une commande du style :
+
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>pg_dump -t "\"NomAMajuscule\"" ma_base &gt; ma_base.sql</code></strong>
+</pre><p>
+   Pour sauvegarder toutes les tables dont le nom commencent par
+   <code class="literal">mytable</code>, à l'exception de la table
+   <code class="literal">mytable2</code>, créer un fichier
+   <code class="filename">filter.txt</code> ainsi :
+</p><pre class="programlisting">
+include table mytable*
+exclude table mytable2
+</pre><p>
+
+</p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>pg_dump --filter=filter.txt mydb &gt; db.sql</code></strong>
+   </pre><p>
+  </p></div><div class="refsect1" id="id-1.9.4.14.11"><h2>Voir aussi</h2><span class="simplelist"><a class="xref" href="app-pg-dumpall.html" title="pg_dumpall"><span class="refentrytitle"><span class="application">pg_dumpall</span></span></a>, <a class="xref" href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle"><span class="application">pg_restore</span></span></a>, <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle" id="APP-PSQL-TITLE"><span class="application">psql</span></span></a></span></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/app-pgdump.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:06 GMT -->
+</html>

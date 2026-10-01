@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/logical-replication-architecture.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>29.8. Architecture</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="logical-replication-restrictions.html" title="29.7. Restrictions" /><link rel="next" href="logical-replication-monitoring.html" title="29.9. Supervision" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/logical-replication-architecture.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/logical-replication-architecture.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/logical-replication-architecture.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/logical-replication-architecture.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/logical-replication-architecture.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/logical-replication-architecture.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/logical-replication-architecture.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/logical-replication-architecture.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/logical-replication-architecture.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/logical-replication-architecture.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="logical-replication.html">Réplication logique</a></span> » <span class="breadcrumb-node">Architecture</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="logical-replication-restrictions.html" title="29.7. Restrictions">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="logical-replication.html" title="Chapitre 29. Réplication logique">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="logical-replication-monitoring.html" title="29.9. Supervision">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">29.7. Restrictions </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 29.9. Supervision</td></tr></table></div><div class="sect1" id="LOGICAL-REPLICATION-ARCHITECTURE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">29.8. Architecture <a href="#LOGICAL-REPLICATION-ARCHITECTURE" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="logical-replication-architecture.html#LOGICAL-REPLICATION-SNAPSHOT">29.8.1. Instantané initial</a></span></dt></dl></div><p>
+   La réplication logique démarre en copiant un instantané des données sur la
+   base de publication. Une fois cette étape réalisée, les modifications sur la
+   base de publication sont envoyées à la base de données abonnée au fil de
+   l'eau. La base abonnée applique les modifications sur les données dans
+   l'ordre dans lequel les validations ont été effectuées sur la base éditeur de
+   manière à ce que la cohérence transactionnelle soit respectée pour les
+   publications vis à vis de tous les abonnements.
+  </p><p>
+   La réplication se construit de façon similaire à la réplication physique en
+   flux (<span class="foreignphrase"><em class="foreignphrase">Streaming Replication</em></span>, voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION" title="26.2.5. Réplication en flux">Section 26.2.5</a>). Ceci est implémenté par les processus
+   <code class="literal">walsender</code> et <code class="literal">apply</code>. Le processus walsender
+   démarre le décodage logique (décrit dans la section <a class="xref" href="protocol-logical-replication.html" title="53.5. Protocole de réplication logique en flux">Section 53.5</a>) des fichiers WAL et charge le
+   plugin de décodage logique standard (<code class="literal">pgoutput</code>). Ce plugin
+   transforme les
+   changements lus depuis les fichiers WAL vers le protocole de réplication
+   logique (voir <a class="xref" href="protocol-logical-replication.html" title="53.5. Protocole de réplication logique en flux">Section 53.5</a>) et filtre les
+   données en fonction des spécificités des publications. Les données sont
+   envoyées au fil de l'eau au processus apply, qui met en relation les données
+   vers les tables locales et applique les changements individuels au moment où
+   ils sont reçus, dans le bon ordre transactionnel.
+  </p><p>
+   Le processus apply sur l'instance de la base abonnée fonctionne toujours avec
+   le paramètre <code class="varname">session_replication_role</code> défini à la valeur
+   <code class="literal">replica</code>, qui produit les effets habituels sur les triggers
+   et les contraintes.
+  </p><p>
+   Le processus apply de la réplication logique déclenche actuellement des
+   triggers de ligne, et non pas des triggers de requêtes. Néanmoins, la
+   synchronisation initiale des tables est implémentée comme une commande
+   <code class="command">COPY</code>, ce qui peut déclencher les triggers
+   <code class="command">INSERT</code> en mode ligne et requête.
+  </p><div class="sect2" id="LOGICAL-REPLICATION-SNAPSHOT"><div class="titlepage"><div><div><h3 class="title">29.8.1. Instantané initial <a href="#LOGICAL-REPLICATION-SNAPSHOT" class="id_link">#</a></h3></div></div></div><p>
+    Les données initiales présentes dans des tables abonnées sont photographiées
+    et copiées dans une instance parallèle qui utilise un type particulier de
+    processus apply. Ce processus va créer son propre slot de réplication et
+    copier les données existantes. Dès que la copie est terminée, le contenu de
+    la table deviendra visible aux autres processus. Une fois les données
+    existantes copiées, le processus passe en mode de synchronisation, qui
+    assure que la table est amenée vers un état synchronisé avec le processus
+    apply principal, ceci en transférant toutes les modifications survenues
+    pendant la copie initiale des données, réalisée avec le système de
+    réplication logique standard. Lors de cette phase de synchronisation, les
+    changements sont appliqués et validés dans le même ordre que sur le
+    publieur. Une fois la synchronisation terminée, le contrôle de la
+    réplication de la table est rendu au processus apply principal et la
+    réplication continue telle quelle.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Le paramètre de publication  <a class="link" href="sql-createpublication.html#SQL-CREATEPUBLICATION-PARAMS-WITH-PUBLISH"><code class="literal">publish</code></a>
+     affecte uniquement
+     les opérations DML qui seront répliquées. La synchronisation initiale des
+     données ne prend pas ce paramètre en compte lors de la copie des données
+     existantes de la table.
+    </p></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/logical-replication-architecture.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+</html>

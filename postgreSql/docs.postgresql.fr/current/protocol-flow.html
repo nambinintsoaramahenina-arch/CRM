@@ -1,0 +1,1025 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/protocol-flow.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:14 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>53.2. Flot de messages</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="protocol-overview.html" title="53.1. Aperçu" /><link rel="next" href="sasl-authentication.html" title="53.3. Authentification SASL" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/protocol-flow.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/protocol-flow.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/protocol-flow.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/protocol-flow.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/protocol-flow.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/protocol-flow.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/protocol-flow.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/protocol-flow.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/protocol-flow.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/protocol-flow.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/protocol-flow.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/protocol-flow.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/protocol-flow.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/protocol-flow.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/protocol-flow.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/protocol-flow.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/protocol-flow.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/protocol-flow.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/protocol-flow.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/protocol-flow.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/protocol-flow.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="protocol.html">Protocole Frontend/Backend</a></span> » <span class="breadcrumb-node">Flot de messages</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="protocol-overview.html" title="53.1. Aperçu">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="protocol.html" title="Chapitre 53. Protocole Frontend/Backend">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="sasl-authentication.html" title="53.3. Authentification SASL">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">53.1. Aperçu </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 53.3. Authentification SASL</td></tr></table></div><div class="sect1" id="PROTOCOL-FLOW"><div class="titlepage"><div><div><h2 class="title" style="clear: both">53.2. Flot de messages <a href="#PROTOCOL-FLOW" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="protocol-flow.html#PROTOCOL-FLOW-START-UP">53.2.1. Démarrage (Start-up)</a></span></dt><dt><span class="sect2"><a href="protocol-flow.html#PROTOCOL-FLOW-SIMPLE-QUERY">53.2.2. Requête simple</a></span></dt><dt><span class="sect2"><a href="protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY">53.2.3. Requête étendue</a></span></dt><dt><span class="sect2"><a href="protocol-flow.html#PROTOCOL-FLOW-PIPELINING">53.2.4. Pipelines</a></span></dt><dt><span class="sect2"><a href="protocol-flow.html#PROTOCOL-FLOW-FUNCTION-CALL">53.2.5. Appel de fonction (<span class="foreignphrase"><em class="foreignphrase">Function Call</em></span>)</a></span></dt><dt><span class="sect2"><a href="protocol-flow.html#PROTOCOL-COPY">53.2.6. Opérations COPY</a></span></dt><dt><span class="sect2"><a href="protocol-flow.html#PROTOCOL-ASYNC">53.2.7. Opérations asynchrones</a></span></dt><dt><span class="sect2"><a href="protocol-flow.html#PROTOCOL-FLOW-CANCELING-REQUESTS">53.2.8. Annuler des requêtes en cours</a></span></dt><dt><span class="sect2"><a href="protocol-flow.html#PROTOCOL-FLOW-TERMINATION">53.2.9. Arrêt</a></span></dt><dt><span class="sect2"><a href="protocol-flow.html#PROTOCOL-FLOW-SSL">53.2.10. Chiffrement <acronym class="acronym">SSL</acronym> de la session</a></span></dt><dt><span class="sect2"><a href="protocol-flow.html#PROTOCOL-FLOW-GSSAPI">53.2.11. Chiffrement <acronym class="acronym">GSSAPI</acronym> des sessions</a></span></dt></dl></div><p>
+   Cette section décrit le flot de message et la sémantique de chaque type de
+   message. (Les détails sur la représentation exacte de chaque message
+   apparaît dans <a class="xref" href="protocol-message-formats.html" title="53.7. Formats de message">Section 53.7</a>.) Il existe
+   plusieurs sous-protocoles différents dépendant de l'état de la
+   connexion : démarrage, requête, appel de fonction,
+   <code class="command">COPY</code>, et fin. Il existe aussi plusieurs cas spéciaux pour
+   les opérations asynchrones (incluant les réponses aux notifications et les
+   annulations de commande), qui peuvent survenir à tout moment après la phase
+   de démarrage.
+  </p><div class="sect2" id="PROTOCOL-FLOW-START-UP"><div class="titlepage"><div><div><h3 class="title">53.2.1. Démarrage (Start-up) <a href="#PROTOCOL-FLOW-START-UP" class="id_link">#</a></h3></div></div></div><p>
+    Pour commencer une session, un client ouvre une connexion au serveur et
+    envoie un message de démarrage. Ce message inclut les noms de l'utilisateur
+    et de la base de données sur laquelle l'utilisateur souhaite se
+    connecter ; il identifie aussi la version particulière du protocole à
+    utiliser. (En option, le message de démarrage peut inclure différentes
+    configurations de paramètres.) Le serveur utilise ensuite cette information
+    et le contenu des fichiers de configuration (tels que
+    <code class="filename">pg_hba.conf</code>) pour déterminer si la connexion est
+    acceptable et le type d'authentification requis (si c'est le cas).
+   </p><p>
+    Ensuite, le serveur envoie un message approprié de demande
+    d'authentification, auquel le client doit répondre avec un message approprié
+    de réponse d'authentification (par exemple, avec un mot de passe).  Pour
+    toutes les méthodes d'authentification, sauf GSSAPI, SSPI et SASL, il existe
+    au moins une requête et une réponse. Pour certaines méthodes, aucune réponse
+    n'est nécessaire, et donc aucune demande d'authentification n'arrive.  Pour
+    les méthodes GSSAPI, SSPI et SASL, plusieurs échanges de paquets pourraient
+    être nécessaires pour terminer l'authentification.
+   </p><p>
+    Le cycle d'authentification se termine avec le serveur rejetant la tentative
+    de connexion (message ErrorResponse), ou renvoyant le message
+    AuthenticationOk.
+   </p><p>
+    Dans cette phase, les messages possibles provenant du serveur sont :
+
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">ErrorResponse</span></dt><dd><p>
+        La demande de connexion a été rejetée. Le serveur ferme
+        immédiatement la connexion.
+       </p></dd><dt><span class="term">AuthenticationOk</span></dt><dd><p>
+        L'échange d'authentification s'est terminé avec succès.
+       </p></dd><dt><span class="term">AuthenticationKerberosV5</span></dt><dd><p>
+        Le client doit maintenant prendre part à un dialogue d'authentification
+        Kerberos V5 (qui n'est pas décrit ici, et fait partie de la
+        spécification Kerberos) avec le serveur. Si ce dialogue réussit, le
+        serveur répond avec un AuthenticationOk, sinon il répond avec un
+        ErrorResponse. Ceci n'est plus accepté.
+       </p></dd><dt><span class="term">AuthenticationCleartextPassword</span></dt><dd><p>
+        Le client doit maintenant envoyer un message PasswordMessage contenant
+        le mot de passe en clair. Si le mot de passe est bon, le serveur répond
+        avec un message AuthenticationOk, sinon il répond avec un message
+        ErrorResponse.
+       </p></dd><dt><span class="term">AuthenticationMD5Password</span></dt><dd><p>
+        Le client doit maintenant envoyer un message PasswordMessage contenant
+        le mot de passe (avec le nom de l'utilisateur) chiffré avec MD5, puis
+        chiffré de nouveau en utilisant le sel aléatoire de quatre octets
+        indiqué dans le message AuthenticationMD5Password. S'il s'agit du bon
+        mot de passe, le serveur répond avec un message AuthenticationOk, sinon
+        il répond avec nu message ErrorResponse. Le message PasswordMessage réel
+        peut être calculé en SQL avec un <code class="literal">concat('md5',
+        md5(concat(md5(concat(motdepasse, nomdutilisateur)),
+        selaléatoire)))</code>.  (Gardez en tête que la fonction
+        <code class="function">md5()</code> renvoie le résultat sous la forme d'une
+        chaîne hexadécimale.)
+       </p></dd><dt><span class="term">AuthenticationGSS</span></dt><dd><p>
+        Le client doit maintenant initier une négociation GSSAPI. Le client
+        enverra un message GSSResponse avec la première partie du flux de
+        données GSSAPI en réponse à cela. Si plusieurs messages sont nécessaires,
+        le serveur répondra avec AuthenticationGSSContinue.
+       </p></dd><dt><span class="term">AuthenticationSSPI</span></dt><dd><p>
+        Le client doit maintenant initier une négociation SSPI. Le client
+        enverra un message GSSResponse avec la première partie du flux de
+        données SSPI en réponse à cela. Si plusieurs messages sont nécessaires,
+        le serveur répondra avec AuthenticationGSSContinue.
+       </p></dd><dt><span class="term">AuthenticationGSSContinue</span></dt><dd><p>
+        Ce message contient les données de réponse de l'étape précédente de la
+        négociation GSSAPI ou SSPI (AuthenticationGSS, AuthenticationSSPI ou un
+        AuthenticationGSSContinue précédent). Si les données GSSAPI ou SSPI de
+        ce message indique que plus de données sont nécessaires pour terminer
+        l'authentification, le client doit envoyer les données dans un autre
+        message GSSResponse. Si l'authentification GSSAPI ou SSPI est terminée
+        par ce message, le serveur enverra ensuite un message AuthenticationOk
+        pour indiquer une authentification réussie ou un message ErrorResponse
+        pour indiquer un échec.
+       </p></dd><dt><span class="term">AuthenticationSASL</span></dt><dd><p>
+        Le client doit maintenant initier une négociation SASL, en utilisant un
+        des mécanismes SASL listés dans le message. Le client doit envoyer un
+        message SASLInitialResponse avec le nom du mécanisme sélectionné, et la
+        première partie du flux de données SASL en réponse à ceci. Si plus de
+        messages sont nécessaires, le serveur répondra avec un message
+        AuthenticationSASLContinue. Voir <a class="xref" href="sasl-authentication.html" title="53.3. Authentification SASL">Section 53.3</a>
+        pour les détails.
+       </p></dd><dt><span class="term">AuthenticationSASLContinue</span></dt><dd><p>
+        Ce message contient des données de challenge provenant des étapes
+        précédentes de la négociation SASL (AuthenticationSASL, ou d'un
+        précédent AuthenticationSASLContinue). Le client doit répondre avec un
+        message SASLResponse.
+       </p></dd><dt><span class="term">AuthenticationSASLFinal</span></dt><dd><p>
+        L'authentification SASL a terminé avec les données supplémentaires
+        spécifiques du mécanisme pour le client. Le serveur enverra ensuite le
+        message AuthenticationOk pour indiquer une authentification réussie ou
+        un message ErrorResponse pour indiquer un échec. Ce message est envoyé
+        uniquement si le mécanisme SASL indique que des données supplémentaires
+        doivent être envoyées du serveur au client à la fin.
+       </p></dd><dt><span class="term">NegotiateProtocolVersion</span></dt><dd><p>
+        Le serveur n'accepte pas la version mineure du protocole réclamée par le
+        client, mais accepte une version plus ancienne du protocole ; ce
+        message indique la version mineure la plus haute que le serveur accepté.
+        Ce message sera aussi envoyé si le client a demandé des options non
+        acceptées du protocole (par exemple commençant avec
+        <code class="literal">_pq_.</code>) dans le paquet de démarrage. Ce message sera
+        suivi par un message ErrorResponse ou par un message indiquant le succès
+        ou l'échec de l'authentification.
+       </p></dd></dl></div><p>
+   </p><p>
+    Si le client n'accepte pas la méthode d'authentification demandée par le
+    client, il doit immédiatement fermer la connexion.
+   </p><p>
+    Après avoir reçu le message AuthenticationOk, le client doit attendre plus
+    de messages du serveur.  Dans cette phase, un processus backend est démarré,
+    et le client est juste un partenaire intéressé.  Il est toujours possible
+    que la demande de démarrage échoue (ErrorResponse) ou que le serveur décline
+    le support de la version mineure demandée du protocole
+    (NegotiateProtocolVersion), mais dans un cas normal, le backend enverra
+    quelques messages ParameterStatus, BackendKeyData et enfin ReadyForQuery.
+   </p><p>
+    Lors de cette phase, le backend tentera d'appliquer toute configuration
+    supplémentaire de paramètre d'exécution donnée lors du message de démarrage.
+    EN cas de succès, ces valeurs deviennent les valeurs par défaut de la
+    session. Une erreur cause un message ErrorResponse puis quitte.
+   </p><p>
+    Les messages possibles provenant du backend dans cette phase sont :
+
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">BackendKeyData</span></dt><dd><p>
+        Ce message fournit des données de clé secrète que le client doit
+        conserver s'il souhaite être capable d'annuler des requêtes plus tard.
+        Le client ne doit pas répondre à ce message mais doit continuer à
+        attendre un message ReadyForQuery.
+       </p></dd><dt><span class="term">ParameterStatus</span></dt><dd><p>
+        Ce message informe le client sur la configuration actuelle (initiale)
+        d'un paramètre serveur, tel que <a class="xref" href="runtime-config-client.html#GUC-CLIENT-ENCODING">client_encoding</a> ou
+        <a class="xref" href="runtime-config-client.html#GUC-DATESTYLE">datestyle</a>. Le client peut ignorer ce message, ou
+        enregistrer la configuration pour une utilisation ultérieure ; voir
+        <a class="xref" href="protocol-flow.html#PROTOCOL-ASYNC" title="53.2.7. Opérations asynchrones">Section 53.2.7</a> pour plus de détails. Le client ne doit
+        pas répondre à ce message, mais doit continuer à attendre un message
+        ReadyForQuery.
+       </p></dd><dt><span class="term">ReadyForQuery</span></dt><dd><p>
+        Le démarrage est terminé. Le client peut maintenant exécuter des
+        commandes.
+       </p></dd><dt><span class="term">ErrorResponse</span></dt><dd><p>
+        Le démarrage a échoué. La connexion est fermée après l'envoi de ce
+        message.
+       </p></dd><dt><span class="term">NoticeResponse</span></dt><dd><p>
+        Un message d'avertissement a été envoyé. Le client doit afficher le
+        message mais continuer à attendre des messages ReadyForQuery ou
+        ErrorResponse.
+       </p></dd></dl></div><p>
+   </p><p>
+    Le message ReadyForQuery est le même que le backend enverra après chaque
+    cycle de commande. Suivant les besoins du client, il est raisonnable de
+    considérer le message ReadyForQuery comme débutant un cycle de commande ou
+    de le considérer comme terminant la phase de démarrage et chaque cycle de
+    commandes suivant.
+   </p></div><div class="sect2" id="PROTOCOL-FLOW-SIMPLE-QUERY"><div class="titlepage"><div><div><h3 class="title">53.2.2. Requête simple <a href="#PROTOCOL-FLOW-SIMPLE-QUERY" class="id_link">#</a></h3></div></div></div><p>
+    Un cycle de requête simple est initié par le client envoyant un message
+    Query au backend. The message inclut une commande SQL (ou des commandes)
+    exprimée sous la forme d'une chaîne de caractères. Le backend envoie alors
+    une ou plusieurs réponses suivant le contenu de la chaîne de texte, et
+    termine par un message ReadyForQuery. Ce dernier message informe le client
+    qu'il peut envoyer une nouvelle commande. (Il n'est pas absolument
+    nécessaire que le client attende le message ReadyForQuery avant de lancer
+    une autre commande, mais le client prend alors la responsabilité de
+    comprendre ce qu'il se passe si la commande précédente échoue et que les
+    commandes suivantes déjà lancées réussissent.)
+   </p><p>
+    Les messages de réponse possibles du backend sont :
+
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">CommandComplete</span></dt><dd><p>
+        Une commande SQL terminée normalement.
+       </p></dd><dt><span class="term">CopyInResponse</span></dt><dd><p>
+        Le backend est prêt à copier des données du client vers une
+        table ; voir <a class="xref" href="protocol-flow.html#PROTOCOL-COPY" title="53.2.6. Opérations COPY">Section 53.2.6</a>.
+       </p></dd><dt><span class="term">CopyOutResponse</span></dt><dd><p>
+        Le backend est prêt à copier les données d'une table vers le
+        client ; voir <a class="xref" href="protocol-flow.html#PROTOCOL-COPY" title="53.2.6. Opérations COPY">Section 53.2.6</a>.
+       </p></dd><dt><span class="term">RowDescription</span></dt><dd><p>
+        Indique que les lignes sont prêtes à être renvoyées en réponse à une
+        requête <code class="command">SELECT</code>, <code class="command">FETCH</code>, etc. Le
+        contenu de ce message décrit la disposition des colonnes pour les
+        lignes. Ceci sera suivi par un message DataRow pour chaque ligne
+        renvoyée au client.
+       </p></dd><dt><span class="term">DataRow</span></dt><dd><p>
+        Un des ensembles de lignes renvoyés par une requête
+        <code class="command">SELECT</code>, <code class="command">FETCH</code>, etc.
+       </p></dd><dt><span class="term">EmptyQueryResponse</span></dt><dd><p>
+        Une chaîne a été reconnue à la place d'une requête.
+       </p></dd><dt><span class="term">ErrorResponse</span></dt><dd><p>
+        Une erreur est survenue.
+       </p></dd><dt><span class="term">ReadyForQuery</span></dt><dd><p>
+        Le traitement de la requête est terminé. Un message séparé est envoyé
+        pour l'indiquer parce que la chaîne de texte pourrait contenir plusieurs
+        commandes SQL. (Le message CommandComplete marque la fin du traitement
+        d'une commande SQL, et non pas de la chaîne complète.) Le message
+        ReadyForQuery sera toujours envoyé, que le traitement se termine avec
+        succès ou avec échec.
+       </p></dd><dt><span class="term">NoticeResponse</span></dt><dd><p>
+        Un message d'avertissement a été envoyé en relation à la requête. Les
+        avertissements sont en plus des autres réponses, autrement dit le
+        backend continuera de traiter la commande.
+       </p></dd></dl></div><p>
+   </p><p>
+    La réponse à une requête <code class="command">SELECT</code> (ou autres requêtes qui
+    renvoient des ensembles de lignes, tels que <code class="command">EXPLAIN</code> ou
+    <code class="command">SHOW</code>), consiste normalement en des messages
+    RowDescription, zéro ou plusieurs messages DataRow, et enfin un message
+    CommandComplete. <code class="command">COPY</code> vers ou à partir du client fait
+    appel à un protocole spécial décrit dans <a class="xref" href="protocol-flow.html#PROTOCOL-COPY" title="53.2.6. Opérations COPY">Section 53.2.6</a>.
+    Tous les autres types de requêtes produisent normalement seulement un
+    message CommandComplete.
+   </p><p>
+    Comme une chaîne de texte peut contenir plusieurs requêtes (séparées par des
+    points-virgules), il pourrait y avoir plusieurs séquences de réponses avant
+    que le backend finisse le traitement de la chaîne. Le message ReadyForQuery
+    est lancé quand la chaîne entière a été traitée et que le backend est prêt à
+    accepter une nouvelle chaîne de texte.
+   </p><p>
+    Si une chaîne de caractères complètement vide est reçue (aucun contenu
+    autre que les espaces blancs), la réponse est EmptyQueryResponse suivi par
+    ReadyForQuery.
+   </p><p>
+    Au cas où une erreur survient, le message ErrorResponse est envoyé suivi
+    d'un message ReadyForQuery. Tous les autres traitement de chaîne de texte
+    sont annulés par le message ErrorResponse (même s'il reste des requêtes dans
+    la chaîne). Notez que ceci pourrait survenir au milieu de la séquence de
+    messages générés par une requête individuel.
+   </p><p>
+    Dans le mode simple requête, le format de valeurs récupérées est toujours du
+    texte, sauf quand la commande données est un <code class="command">FETCH</code> à
+    partir d'un curseur déclaré avec l'option <code class="literal">BINARY</code>. Dans ce
+    cas, les valeurs récupérées sont dans un format binaire. Les codes format
+    donnés dans le message RowDescription indiquent le format utilisé.
+   </p><p>
+    Un client doit être préparé pour accepter des messages ErrorResponse et
+    NoticeResponse à chaque fois qu'il est attendu d'autres types de message.
+    Voir aussi <a class="xref" href="protocol-flow.html#PROTOCOL-ASYNC" title="53.2.7. Opérations asynchrones">Section 53.2.7</a> pour les messages que le backend
+    pourrait générer à cause d'événements externes.
+   </p><p>
+    Une pratique recommandée est de coder des clients dans un style machine
+    d'états qui acceptera tout type de message à tout moment où cela aurait du
+    sens, plutôt que de coder des suppositions sur la séquence exacte des
+    messages.
+   </p><div class="sect3" id="PROTOCOL-FLOW-MULTI-STATEMENT"><div class="titlepage"><div><div><h4 class="title">53.2.2.1. Plusieurs requêtes dans le mode requête simple <a href="#PROTOCOL-FLOW-MULTI-STATEMENT" class="id_link">#</a></h4></div></div></div><p>
+     Quand un message simple Query contient plus d'une requête SQL (séparé par
+     des points-virgules), ces requêtes sont exécutées comme une seule
+     transaction, sauf si des commandes de contrôle de transaction explicites
+     sont inclus pour forcer un comportement différent. Par exemple, si le
+     message contient :
+</p><pre class="programlisting">
+INSERT INTO mytable VALUES(1);
+SELECT 1/0;
+INSERT INTO mytable VALUES(2);
+</pre><p>
+     alors une erreur de division par zéro dans la requête
+     <code class="command">SELECT</code> forcera l'annulation du premier
+     <code class="command">INSERT</code>. De plus, comme l'exécution du message est
+     abandonnée à la première erreur, le deuxième <code class="command">INSERT</code>
+     n'est jamais tenté.
+    </p><p>
+     Si le message contient à la place :
+</p><pre class="programlisting">
+BEGIN;
+INSERT INTO mytable VALUES(1);
+COMMIT;
+INSERT INTO mytable VALUES(2);
+SELECT 1/0;
+</pre><p>
+     alors le premier <code class="command">INSERT</code> est validé par la commande
+     <code class="command">COMMIT</code> explicite. Le deuxième <code class="command">INSERT</code>
+     et le <code class="command">SELECT</code> sont toujours traités comme une seule
+     transaction, donc l'échec de division par zéro annulera le second
+     <code class="command">INSERT</code>, mais pas le premier.
+    </p><p>
+     Ce comportement est implémenté en exécutant les requêtes dans un message
+     message multi-requêtes dans un <em class="firstterm">bloc de transaction
+     implicite</em> sauf s'il existe un bloc de transaction explicite
+     pour leur exécution. La principale différence entre un bloc de transaction
+     implicite et un bloc standard est qu'un bloc implicite est fermé
+     automatiquement à la fin d'un message Query, soit par une validation
+     implicite s'il n'y a pas d'erreur, soit par une annulation implicite s'il y
+     avait une erreur. Ceci est similaire à la validation ou à l'annulation
+     implicite qui survient pour une requête exécutée par elle-même (quand elle
+     n'est pas dans un bloc de transaction).
+    </p><p>
+     Si la session est déjà dans un bloc de transaction, en résultat d'un
+     <code class="command">BEGIN</code> dans un message précédent, alors le message Query
+     continue simplement ce bloc de transaction, si le message contient une ou
+     plusieurs requêtes. Néanmoins, si le message Query contient un
+     <code class="command">COMMIT</code> ou un <code class="command">ROLLBACK</code> fermant le bloc
+     de transaction existant, alors toutes les requêtes suivantes sont exécutées
+     dans un bloc de transaction explicite.  Inversement, si un
+     <code class="command">BEGIN</code> apparaît dans un message Query multi-requêtes,
+     alors il démarre un bloc de transaction standard qui sera uniquement
+     terminé par un <code class="command">COMMIT</code> ou <code class="command">ROLLBACK</code>
+     explicite, apparaissant soit dans ce message Query soit dans un message
+     suivant. Si le <code class="command">BEGIN</code> suit certaines requêtes qui ont
+     été exécutées sous la forme d'un bloc de transaction implicite, ces
+     requêtes ne sont pas immédiatement validées ; en effet, elles sont
+     inclues rétroactivement dans le nouveau bloc de transaction standard.
+    </p><p>
+     Un <code class="command">COMMIT</code> ou un <code class="command">ROLLBACK</code> apparaissant
+     dans un bloc de transaction implicite est exécuté de façon normale, fermant
+     le bloc implicite ; néanmoins, un message d'avertissement sera renvoyé
+     car un <code class="command">COMMIT</code> ou un <code class="command">ROLLBACK</code> sans
+     <code class="command">BEGIN</code> pourrait être une erreur. Si des requêtes suivent,
+     un nouveau bloc de transaction implicite sera démarré pour elles.
+    </p><p>
+     Les savepoints ne sont pas autorisés dans un bloc de transaction implicite
+     car elles pourraient entrer en conflit avec le comportement de fermeture
+     automatique du bloc en cas d'erreur.
+    </p><p>
+     Rappelez-vous que, quelque soient les commandes de contrôle des
+     transactions présentes, l'exécution d'un message Query s'arrête à la
+     première erreur. Donc sur cet exemple :
+</p><pre class="programlisting">
+BEGIN;
+SELECT 1/0;
+ROLLBACK;
+</pre><p>
+     dans un seul message Query, la session sera laissée à l'intérieur d'un bloc
+     de transaction standard en échec car <code class="command">ROLLBACK</code> n'est pas
+     atteint après l'erreur de division par zéro. Un autre
+     <code class="command">ROLLBACK</code> sera nécessaire pour restaurer la session dans
+     un état utilisable.
+    </p><p>
+     Un autre comportement à noter est que l'analyse lexicale et syntaxique est
+     réalisée sur la chaîne de caractères entière avant qu'une seule requête ne
+     soit exécutée.  De ce fait, les erreurs simples (telle qu'un mot clé mal
+     orthographié) dans des requêtes ultérieures peuvent empêcher l'exécution
+     des requêtes. Ceci est habituellement invisible pour les utilisateurs car
+     les requêtes vont de toute façon être intégralement annulées quand elles
+     font partie d'un bloc de transaction implicite. Cependant, cela peut se
+     voir lors d'une tentative sur plusieurs transactions dans un message Query
+     multi-requêtes. Par exemple, si une faute est intégrée à l'exemple
+     précédent comme ceci :
+</p><pre class="programlisting">
+BEGIN;
+INSERT INTO mytable VALUES(1);
+COMMIT;
+INSERT INTO mytable VALUES(2);
+SELCT 1/0;
+</pre><p>
+     alors aucune des requêtes ne sera exécutée, résultant en une différence
+     visible, à savoir que le premier <code class="command">INSERT</code> n'est pas
+     validé. Les erreurs détectées lors de l'analyse sémantique ou plus tard,
+     comme une table ou une colonne mal nommée, n'ont pas cet effet.
+    </p><p>
+     Enfin, notez que toutes les requêtes du message Query auront la même valeur
+     pour la fonction <code class="function">statement_timestamp()</code>, car cet
+     horodatage est mis à jour seulement lors de la réception d'un message
+     Query. De ce fait, ils auront aussi tous la même valeur pour
+     <code class="function">transaction_timestamp()</code>, sauf dans les cas où la
+     chaîne de requêtes finit avec une transaction précédemment démarrée et
+     en commence une nouvelle.
+    </p></div></div><div class="sect2" id="PROTOCOL-FLOW-EXT-QUERY"><div class="titlepage"><div><div><h3 class="title">53.2.3. Requête étendue <a href="#PROTOCOL-FLOW-EXT-QUERY" class="id_link">#</a></h3></div></div></div><p>
+    Le protocole de requête étendue divise le protocole de requête simple décrit
+    ci-dessus en plusieurs étapes.  Le résultat des étapes préparatoires peut
+    être ré-utilisé plusieurs fois pour améliorer l'efficacité.  De plus, des
+    fonctionnalités supplémentaires sont disponibles, tel que la possibilité de
+    fournir des valeurs de données comme paramètres séparés au lieu d'avoir à
+    les insérer directement dans la chaîne de la requête.
+   </p><p>
+    Dans le protocole étendu, le client envoie en premier lieu un message Parse,
+    qui contient une chaîne de caractères pour la requête, avec en options
+    quelques informations sur les types de données des paramètres, et le nom
+    d'un objet représentant la requête préparée (une chaîne vide indiquera une
+    requête préparée sans nom).  La réponse est soit un message ParseComplete
+    soit un message ErrorResponse. Les types de données des paramètres peuvent
+    être des types de données indiquées par leur OID. Si aucun type n'est
+    indiqué, l'analyseur tentera de deviner les types de données de la même
+    façon qu'il le ferait pour des constantes de chaînes non typées.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Un type de paramètre peut être laissé sans spécification en le configurant
+     à zéro ou en faisant en sorte que le table d'OID des types de paramètres
+     soit de taille inférieur au nombre de symboles de paramètres
+     (<code class="literal">$</code><em class="replaceable"><code>n</code></em>) utilisés dans la chaîne
+     de requête. Un autre cas spécial est qu'un type de paramètre peut être
+     indiqué comme <code class="type">void</code> (autrement dit, l'OID du pseudo-type
+     <code class="type">void</code>). Ceci permet l'utilisation de symboles de paramètre pour
+     les paramètres de fonction qui sont en réalité des paramètres OUT.
+     D'habitude, il n'y a pas de contexte dans lequel un paramètre
+     <code class="type">void</code> pourrait être utilisé, mais si un tel symbole de
+     paramètre apparaît dans la liste de paramètres d'une fonction, il est en
+     fait ignoré. Par exemple, un appel de fonction tel que
+     <code class="literal">foo($1,$2,$3,$4)</code> pourrait correspondre à une fonction
+     avec deux arguments IN et deux arguments OUT, si <code class="literal">$3</code> et
+     <code class="literal">$4</code> sont indiqués comme étant de type <code class="type">void</code>.
+    </p></div><div class="note"><h3 class="title">Note</h3><p>
+     La chaîne de requête contenue dans un message Parse ne peut pas inclure
+     plus d'une requête SQL ; dans le cas contraire une erreur SQL est
+     levée. Cette restriction n'existe pas dans le protocole requête simple mais
+     elle existe dans le protocole étendu parce que permettre à des requêtes
+     préparées ou à des portails de contenir plusieurs commandes compliquerait
+     indument le protocole.
+    </p></div><p>
+    En cas de succès à la création, un objet nommé de requête préparé existe
+    jusqu'à la fin de la session, sauf s'il est détruit explicitement. Une
+    requête préparée sans nom dure seulement jusqu'à l'exécution du prochain
+    message Parse pour une requête préparée sans nom. (Notez qu'un message Query
+    détruit aussi une requête préparée sans nom.) Les requêtes préparées nommées
+    doivent être explicitement fermées avant de pouvoir être redéfinies par un
+    autre message Parse, mais ceci n'est pas requis pour une requête préparée
+    sans nom. Les requêtes préparées nommées peuvent aussi être créées et
+    accédées au niveau des commandes SQL en utilisant les instructions
+    <code class="command">PREPARE</code> et <code class="command">EXECUTE</code>.
+   </p><p>
+    Une fois qu'une requête préparée existe, elle peut être préparée pour une
+    exécution en utilisant le message Bind. Ce dernier donne le nom de la
+    requête préparée source (ou une chaîne vide dans le cas d'une requête
+    préparée sans nom) et les valeurs à utiliser pour tous les paramètres
+    présents dans la requête préparée. L'ensemble de paramètres fournis doit
+    correspondre ceux requis par la requête préparée. (Si vous avez indiqué un
+    ou plusieurs paramètres <code class="type">void</code> dans le message Parse, donnez des
+    valeurs NULL pour chacune dans le message Bind.) Bind spécifie aussi le
+    format à utiliser pour toute donnée renvoyée par la requête ; le format
+    peut être spécifié de façon globale ou par colonne. La réponse est soit
+    BindComplete soit ErrorResponse.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Le choix entre une sortie texte et une sortie binaire est déterminé par les
+     codes format donnés dans Bind, quelque soit la commande SQL impliquée.
+     L'attribut <code class="literal">BINARY</code> dans les déclarations de curseur est
+     hors sujet lors de l'utilisation du protocole de requête étendue.
+    </p></div><p>
+    La planification/optimisation de la requête survient typiquement quand le
+    message Bind est traité. Si la requête préparée n'a pas de paramètres ou si
+    elle est exécutée de façon répétée, le serveur pourrait sauvegarde le plan
+    créé et le ré-utiliser lors des messages Bind suivants pour la même requête
+    préparée. Néanmoins, il le fera seulement s'il trouve qu'un plan générique
+    peut être créé, sans être trop inefficace par rapport à un plan dépendant
+    des valeurs spécifiques fournies pour les paramètres. Ceci survient de façon
+    transparente pour ce qui concerne le protocole.
+   </p><p>
+    S'il est créé avec succès, un objet portail nommé dure jusqu'à la fin de la
+    transaction en cours, sauf en cas de destruction explicite. Un portail non
+    nommé est détruit à la fin de la transaction ou dès l'exécution du prochain
+    message Bind pour un portal non nommé. (Notez qu'un simple message Query
+    détruit aussi le portail sans nom.) Les portails nommés doivent être fermés
+    explicitement avant de pouvoir être redéfinis par un autre message Bind,
+    mais ceci n'est pas requis pour un portail non nommé. Les portails nommés
+    peuvent aussi être utilisés et accédés au niveau des commandes SQL, en
+    utilisant les instructions <code class="command">DECLARE CURSOR</code> et
+    <code class="command">FETCH</code>.
+   </p><p>
+    Une fois que le portail existe, il peut être exécuté en utilisant un message
+    Execute. Ce dernier spécifie le nom du portail (une chaîne vide indique un
+    portail non nommé) et un nombre maximum de lignes de résultat (zéro
+    signifiant <span class="quote">« <span class="quote">récupère toutes les lignes</span> »</span>).  Ce nombre a
+    seulement un sens pour les portails contenant des commandes renvoyant des
+    ensembles de lignes ; dans les autres cas, la commande est toujours
+    exécutée jusqu'à sa fin, et le nombre de lignes est ignoré. Les réponses
+    possibles à Exécute sont les mêmes que celles décrites ci-dessus pour les
+    requêtes lancées via le protocole de requête simple, sauf que Execute ne
+    cause pas l'exécution de ReadyForQuery ou RowDescription.
+   </p><p>
+    Si Execute termine avant la fin de l'exécution d'un portail (à cause de
+    l'atteinte d'un nombre de lignes résultats différent de zéro), il enverra un
+    message PortalSuspended ; l'apparence de ce message indique au client
+    qu'un autre Execute devrait être exécuté contre le même portail pour
+    terminer l'opération. Le message CommandComplete indiquant la fin de la
+    commande SQL source n'est pas envoyé jusqu'à la fin de l'exécution du
+    portail. De ce fait, une phase Execute est toujours terminée par
+    l'apparition d'exactement un de ces messages : CommandComplete,
+    EmptyQueryResponse (si le portail a été créé à partir d'une chaîne vide de
+    requête), ErrorResponse ou PortalSuspended.
+   </p><p>
+    À la fin de chaque série de messages du protocole de requête étendue, le
+    client doit envoyer un message Sync. Ce message sans paramètre fait que le
+    backend ferme la transaction en cours si elle n'est pas à l'intérieur d'un
+    bloc de transaction <code class="command">BEGIN</code>/<code class="command">COMMIT</code>
+    (<span class="quote">« <span class="quote">fermer</span> »</span> signifiant une validation s'il n'y a pas d'erreur et
+    une annulation dans le cas d'une erreur). Une réponse ReadyForQuery est
+    ensuite produite. Le but de Sync est de fournir un point de
+    resynchronisation pour les erreurs. Quand une erreur est détectée lors du
+    traitement de tout message du protocole de requête étendu, le backend envoie
+    un message ErrorResponse, puis lit et annule les messages jusqu'à la
+    réception d'un Sync, envoie un message ReadyForQuery et enfin retourne à un
+    traitement habituelle des messages.  (Mais notez qu'une erreur dans le
+    traitement du message Sync n'est pas ignoré  --  ceci assure qu'il y a
+    bien un et un seul ReadyForQuery envoyé pour chaque Sync.)
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Sync ne ferme pas un bloc de transaction ouvert avec
+     <code class="command">BEGIN</code>.  Il est possible de détecter cette situation car
+     le message ReadyForQuery inclut des informations de statut de la
+     transaction.
+    </p></div><p>
+    En plus de ces opérations fondamentales et requises, il existe plusieurs
+    opérations optionnelles pouvant être utilisées avec le protocole de requête
+    étendue.
+   </p><p>
+    Le message Describe (variant du portail) indique le nom d'un portail
+    existant (ou une chaîne vide pour le portail non nommé). La réponse est un
+    message RowDescription décrivant les lignes qui seront retournées par
+    l'exécution du portail ; ou un message NoData si le portail ne contient
+    pas une requête qui renverra des lignes ; ou ErrorResponse s'il
+    n'existe pas un tel portail.
+   </p><p>
+    Le message Describe (variant de la requête) indique le nom d'une requête
+    préparée existante (ou une chaîne vide pour la requête préparée non nommée).
+    La réponse est un message ParameterDescription décrivant les paramètres
+    nécessaires pour la requête, suivi par un message RowDescription décrivant
+    les lignes qui seront renvoyés quand la requête sera enfin exécutée (ou un
+    message NoData si la requête ne renverra pas de lignes). Le message
+    ErrorResponse est renvoyé si cette requête préparée n'existe pas. Notez que,
+    comme Bind n'a pas été exécutée, les formats à utiliser pour les colonnes
+    renvoyés ne sont pas encore connus du backend ; les champs de code
+    format seront à zéro dans le message RowDescription dans ce cas.
+   </p><div class="tip"><h3 class="title">Astuce</h3><p>
+     Dans la plupart des scénarios, le client doit envoyer une variante ou
+     l'autre de Describe avant d'envoyer le message Execute, pour s'assurer
+     qu'il sait comment interpréter les résultats qu'il récupérera.
+    </p></div><p>
+    Le message Close ferme une requête préparée ou un portail existant, et
+    libère les ressources. Ce n'est pas une erreur d'envoyer Close pour un nom
+    inexistant de requête préparée ou de portail. La réponse est habituellement
+    CloseComplete, mais pourrait être ErrorResponse si des difficultés sont
+    rencontrées lors de la libération des ressources. Notez que fermer
+    implicitement une requête préparée ferme tout portail ouvert qui était
+    construit par cette requête.
+   </p><p>
+    Le message Flush ne cause pas la génération d'une sortie spécifique mais
+    force le backend à renvoyer toutes les données en attente dans les buffers de
+    sortie. Un Flush doit être envoyé après toute commande de requête étendue
+    sauf Sync, si le client souhaite examiner les résultats de cette commande
+    avant de lancer d'autres commandes. Sans Flush, les messages renvoyés par le
+    backend seront combinés dans le plus petit nombre de paquets pour minimiser
+    la surcharge réseau.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Le message Query en requête simple est approximativement équivalent à une
+     série Parse, Bind, Describe portail, Execute, Close, Sync, en utilisant une
+     requête préparée et un portail non nommés et aucun paramètre. Une
+     différence est qu'il acceptera plusieurs requêtes SQL dans la chaîne de
+     requête, réalisant automatiquement les séquences bind/describe/execute pour
+     chaque requête, les unes à la suite des autres.  Une autre différence est
+     qu'il ne renvoie pas les messages ParseComplete, BindComplete,
+     CloseComplete et NoData.
+    </p></div></div><div class="sect2" id="PROTOCOL-FLOW-PIPELINING"><div class="titlepage"><div><div><h3 class="title">53.2.4. Pipelines <a href="#PROTOCOL-FLOW-PIPELINING" class="id_link">#</a></h3></div></div></div><a id="id-1.10.6.7.6.2" class="indexterm"></a><p>
+    L'utilisation du protocole de requête étendue autorise les
+    <em class="firstterm">pipelines</em>, autrement dit l'envoi d'une série de
+    requêtes sans attendre que les premières se terminent. Ceci réduit le nombre
+    d'aller/retour réseau nécessaire pour terminer une série d'opérations.
+    Néanmoins, l'utilisateur doit faire attention au comportement souhaité si
+    une des étapes échoue car les requêtes suivantes seront déjà envoyées au
+    serveur.
+   </p><p>
+    Une façon de gérer cela est de transformer la série complète de requête en
+    une seule transaction, donc de l'entourer des commandes
+    <code class="command">BEGIN</code> ...  <code class="command">COMMIT</code>. Cela n'aide
+    cependant pas les personnes qui souhaiteraient que certaines commandes
+    soient validées indépendamment des autres.
+   </p><p>
+    Le protocole de requête étendue fournit un autre moyen pour gérer cette
+    problématique. Il s'agit d'oublier d'envoyer les messages Sync entre les
+    étapes qui sont dépendantes. Comme, après une erreur, le moteur ignorera les
+    messages des commandes jusqu'à ce qu'il trouve un message Sync, cela
+    autorise les commandes ultérieures d'un pipeline d'être automatiquement
+    ignorées si une commande précédente échoue, sans que le client ait à gérer
+    cela explicitement avec des commandes <code class="command">BEGIN</code> et
+    <code class="command">COMMIT</code>. Les segments à valider indépendamment dans le
+    pipeline peuvent être séparées par des messages Sync.
+   </p><p>
+    Si le client n'a pas exécuté un <code class="command">BEGIN</code> explicite, alors
+    chaque Sync implique un <code class="command">COMMIT</code> implicite si les étapes
+    prédédentes ont réussi ou un <code class="command">ROLLBACK</code> implicite si elles
+    ont échoué. Néanmoins, il existe quelques commandes DDL (comme
+    <code class="command">CREATE DATABASE</code>) qui ne peuvent pas être exécutées dans
+    un bloc de transaction. Si une de ces commandes est exécutée dans un
+    pipeline, cela échouera sauf s'il s'agit de la première commande du pipeline.
+    De plus, en cas de succès, cela forcera une validation immédiate pour
+    préserver la cohérence de la base. De ce fait, un Sync suivant immédiatement une des ces
+    commandes n'aura pas d'effet autre que de répondre avec ReadyForQuery.
+   </p><p>
+    Lors de l'utilisation de cette méthode, la fin du pipelin doit être
+    déterminée en comptant les messages ReadyForQuery et en attendant que cela
+    atteigne le nombre de Sync envoyés. Compter les réponses de fin de commande
+    n'est pas fiable car certaines commandes pourraient être ignorées et
+    donc ne pas produire de message de fin.
+   </p></div><div class="sect2" id="PROTOCOL-FLOW-FUNCTION-CALL"><div class="titlepage"><div><div><h3 class="title">53.2.5. Appel de fonction (<span class="foreignphrase"><em class="foreignphrase">Function Call</em></span>) <a href="#PROTOCOL-FLOW-FUNCTION-CALL" class="id_link">#</a></h3></div></div></div><p>
+    Le sous-protocole d'appel de fonction permet au client de demander un appel
+    direct de toute fonction qui existe dans le catalogue système
+    <code class="structname">pg_proc</code> de la base de données. Le client doit avoir
+    le droit d'exécution sur la fonction.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Le sous-protocole d'appel de fonction est une ancienne fonctionnalité qu'il
+     est certainement préférable d'éviter dans du nouveau code. Des résultats
+     similaires peuvent être accomplis en configurant une requête préparée qui
+     exécute <code class="literal">SELECT function($1, ...)</code>. Le cycle de l'appel de
+     fonction peut ensuite être remplacé avec les messages Bind/Execute.
+    </p></div><p>
+    Un cycle d'appel de fonction est initié par le client en envoyant un message
+    FunctionCall au backend. Le backend envoie alors un ou plusieurs messages de
+    réponse suivant le résultat de l'appel de fonction, et termine avec un
+    message ReadyForQuery. Ce message informe le client qu'il peut envoyer une
+    nouvelle requête ou un nouvel appel de fonction.
+   </p><p>
+    Les messages de réponse possible provenant du backend sont :
+
+    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">ErrorResponse</span></dt><dd><p>
+        Une erreur est survenue
+       </p></dd><dt><span class="term">FunctionCallResponse</span></dt><dd><p>
+        L'appel de fonction s'est terminé et a renvoyé le résultat donné dans le
+        message. (Notez que le protocole d'appel de fonction peut seulement
+        gérer un résultat scalaire simple, pas un type ligne ou un ensemble de
+        résultats.)
+       </p></dd><dt><span class="term">ReadyForQuery</span></dt><dd><p>
+        Le traitement de l'appel de fonction est terminé. Le message
+        ReadyForQuery sera toujours envoyé, que le traitement termine avec
+        succès ou avec une erreur.
+       </p></dd><dt><span class="term">NoticeResponse</span></dt><dd><p>
+        Un message d'avertissement a été lancé en relation avec l'appel de
+        fonction. Les notes sont en plus des autres réponses, autrement dit le
+        backend continuera à traiter la commande.
+       </p></dd></dl></div><p>
+   </p></div><div class="sect2" id="PROTOCOL-COPY"><div class="titlepage"><div><div><h3 class="title">53.2.6. Opérations COPY <a href="#PROTOCOL-COPY" class="id_link">#</a></h3></div></div></div><p>
+    La commande <code class="command">COPY</code> permet une transfert de données en masse
+    très rapide du ou à partir du serveur. Les opérations de copie vers le
+    serveur (<span class="foreignphrase"><em class="foreignphrase">copy-in</em></span>) ou à partir du serveur
+    (<span class="foreignphrase"><em class="foreignphrase">copy-out</em></span>) font basculer la connexion dans un
+    sous-protocole distinct, qui dure jusqu'à la fin de l'opération.
+   </p><p>
+    Le mode <code class="literal">Copy-in</code> (transfert de données vers le serveur)
+    est initié quand le backend exécute une requête SQL <code class="command">COPY FROM
+    STDIN</code>. Le backend envoie un message CopyInResponse au client. Le
+    client doit alors envoyer zéro ou plusieurs messages CopyData, formant un
+    flux de données en entrée. (Les limites du message ne sont pas nécessaires
+    liées aux limites des lignes, bien qu'il s'agit souvent d'un choix
+    raisonnable.) Le client peut terminer le mode <code class="literal">copy-in</code> en
+    envoyant soit un message CopyDone (permettant une fin avec succès) ou un
+    message CopyFail (qui causera l'échec de la requête SQL
+    <code class="command">COPY</code> avec un message d'erreur). Le backend annule alors
+    le mode de traitement de commande dans lequel il était entré au début de la
+    commande <code class="command">COPY</code>, qui sera soit le protocole de requête
+    simple ou celui de requête étendu.  Il enverra ensuite soit un message
+    CommandComplete (en cas de réussite) soit un message ErrorResponse (dans le
+    cas contraire).
+   </p><p>
+    Dans le cas d'une erreur détecté par le backend lors du mode
+    <code class="literal">copy-in</code> (incluant la réception d'un message CopyFail), le
+    backend enverra un message ErrorResponse. Si la commande
+    <code class="command">COPY</code> a été lancée via un message de requête étendue, le
+    backend ignorera maintenant les messages du client jusqu'à la réception d'un
+    message Sync. Après, il enverra un message ReadyForQuery et retournera à un
+    traitement normal. Si la commande <code class="command">COPY</code> a été lancé via un
+    message Query, le reste de ce message est ignoré et le message ReadyForQuery
+    est envoyé. Dans tous les cas, les messages CopyData, CopyDone ou CopyFail
+    suivants envoyés par le client seront simplement ignorés.
+   </p><p>
+    Le backend ignorera les messages Flush et Sync reçus lors du mode
+    <code class="literal">copy-in</code>.  La réception de tout autre message qui ne
+    concerne pas la copie constitue une erreur qui annulera l'état
+    <code class="literal">copy-in</code> comme décrit ci-dessus. (L'exception pour Flush
+    et Sync est pour simplifier les bibliothèques clientes qui envoient toujours
+    Flush ou Sync après un message Execute, sans vérifier si la commande à
+    exécuter est un <code class="command">COPY FROM STDIN</code>.)
+   </p><p>
+    Le mode <span class="foreignphrase"><em class="foreignphrase">Copy-out</em></span> (transfert de données à
+    partir du serveur) est initié lorsque le backend exécute une requête SQL
+    <code class="command">COPY TO STDOUT</code>. Le backend envoie un message
+    CopyOutResponse au client, suivi par zéro ou plusieurs messages CopyData
+    (toujours un par ligne), suivi par un message CopyDone. Le backend annulera
+    alors le mode de traitement de commande dans lequel il était avant le
+    lancement de <code class="command">COPY</code>. Enfin, il envoie CommandComplete.  Le
+    client ne peut pas annuler le transfert (sauf en fermant la connexion ou en
+    envoyant une requête Cancel), mais il peut ignorer les messages CopyData et
+    CopyDone indésirables.
+   </p><p>
+    Dans le cas d'une erreur détectée par le backend en mode
+    <code class="literal">copy-out</code>, le backend lancera un message ErrorResponse et
+    reviendra en traitement normal.  Le client devrait traiter la réception de
+    ErrorResponse comme terminant le mode <code class="literal">copy-out</code>.
+   </p><p>
+    Il est possible que les messages NoticeResponse et ParameterStatus soient
+    mélangés entre des messages CopyData ; les clients doivent gérer ces
+    cas, et devraient être préparés aussi pour tout type de message asynchrone
+    (voir <a class="xref" href="protocol-flow.html#PROTOCOL-ASYNC" title="53.2.7. Opérations asynchrones">Section 53.2.7</a>). Sinon, tout type de message autre
+    que CopyData ou CopyDone peut être traité comme terminant le mode
+    <code class="literal">copy-out</code>.
+   </p><p>
+    Il existe un autre mode relatif à la copie, appelé
+    <span class="foreignphrase"><em class="foreignphrase">copy-both</em></span>, qui permet des transferts de
+    données en masse et très rapides vers <span class="emphasis"><em>et</em></span> à partir du
+    serveur. Le mode <code class="literal">copy-both</code> est initié quand un backend en
+    mode walsender exécute une instruction <code class="command">START_REPLICATION</code>.
+    Le backend envoie un message CopyBothResponse au client. Le backend et le
+    client peuvent ensuite envoyer des messages CopyData jusqu'à ce que l'un des
+    deux envoie un message CopyDone. Une fois que le client a envoyé un message
+    CopyDone, le connexion passe du mode <code class="literal">copy-both</code> au mode
+    <code class="literal">copy-out</code> et le client ne peut plus envoyer de messages
+    CopyData.  De la même façon, quand le serveur envoie un message CopyDone, la
+    connexion passe en mode <code class="literal">copy-in</code>, et le serveur ne peut
+    plus envoyer de messages CopyData. Une fois que les deux ont envoyé un
+    message CopyDone, le mode de copie est terminé, et le backend revient au
+    mode de traitement des commandes. Dans le cas où une erreur est détectée par
+    le backend pendant le mode <code class="literal">copy-both</code>, le backend enverra
+    un message ErrorResponse, ignorera les messages du client jusqu'à ce qu'un
+    message Sync ne soit reçu, puis enverra un message ReadyForQuery avant de
+    revenir au traitement normal.  Le client doit traiter la réception d'un
+    message ErrorResponse comme terminant la copie dans les deux
+    directions ; aucun message CopyDone ne devra être envoyé dans ce cas.
+    Voir <a class="xref" href="protocol-replication.html" title="53.4. Protocole de réplication en flux">Section 53.4</a> pour plus d'informations sur le
+    sous-protocole transmis sur le mode <code class="literal">copy-both</code>.
+   </p><p>
+    Les messages CopyInResponse, CopyOutResponse et CopyBothResponse incluent
+    des champs qui informent le client du nombre de colonnes par ligne et des
+    codes format utilisés pour chaque colonne. (Sur l'implémentation actuelle,
+    toutes les colonnes d'une opération <code class="command">COPY</code> donnée
+    utiliseront le même format, mais le design des messages ne le force pas.)
+   </p></div><div class="sect2" id="PROTOCOL-ASYNC"><div class="titlepage"><div><div><h3 class="title">53.2.7. Opérations asynchrones <a href="#PROTOCOL-ASYNC" class="id_link">#</a></h3></div></div></div><p>
+    Il existe différents cas où le backend enverra des messages qui ne sont pas
+    spécifiquement demandés par le flux de commande du client. Les clients
+    doivent être préparés à gérer aussi ces messages à tout moment, même quand
+    une requête n'est pas en cours.  Au minimum, un client devrait vérifier ces
+    cas avant de continuer à lire la réponse à une requête.
+   </p><p>
+    Il est possible que des messages NoticeResponse soient générés à cause d'une
+    activité externe ; par exemple, si l'administrateur de la base de
+    données ordonne un arrêt <span class="quote">« <span class="quote">rapide</span> »</span> de la base de données, le
+    backend enverra un message NoticeResponse indiquant ce fait avant de fermer
+    la connexion. Les clients doivent donc être prêts à accepter et afficher les
+    messages NoticeResponse, même quand la connexion n'exécute pas de requêtes.
+   </p><p>
+    Les messages ParameterStatus seront générés à chaque fois qu'une valeur
+    change pour un des paramètres pour lesquels le backend pense que le client
+    doit être notifié.  La plupart du temps, ceci survient en réponse à une
+    commande SQL <code class="command">SET</code> exécutée par le client, et ce cas est
+    effectivement synchrone  --  mais il est aussi possible qu'un changement
+    de valeur de paramètres survient parce que l'administrateur a modifié un
+    fichier de configuration, puis envoyé le signal
+    <span class="systemitem">SIGHUP</span> au serveur. De plus, si une commande
+    <code class="command">SET</code> est annulé, un message ParameterStatus approprié sera
+    généré pour rapporter la valeur effective.
+   </p><p>
+    Il existe actuellement un ensemble, codé en dur, de paramètres pour lesquels
+    un message ParameterStatus sera généré. En voici la liste :
+    </p><table border="0" summary="Simple list" class="simplelist"><tr><td><code class="varname">application_name</code></td><td><code class="varname">is_superuser</code></td></tr><tr><td><code class="varname">client_encoding</code></td><td><code class="varname">scram_iterations</code></td></tr><tr><td><code class="varname">DateStyle</code></td><td><code class="varname">server_encoding</code></td></tr><tr><td><code class="varname">default_transaction_read_only</code></td><td><code class="varname">server_version</code></td></tr><tr><td><code class="varname">in_hot_standby</code></td><td><code class="varname">session_authorization</code></td></tr><tr><td><code class="varname">integer_datetimes</code></td><td><code class="varname">standard_conforming_strings</code></td></tr><tr><td><code class="varname">IntervalStyle</code></td><td><code class="varname">TimeZone</code></td></tr></table><p>
+    (<code class="varname">default_transaction_read_only</code> et
+    <code class="varname">in_hot_standby</code> ne sont pas rapportés avant la version
+    14 ; <code class="varname">scram_iterations</code> n'est par rapporté avant la
+    version 16.)
+    Notez que
+    <code class="varname">server_version</code>,
+    <code class="varname">server_encoding</code> et
+    <code class="varname">integer_datetimes</code>
+    sont des pseudos-paramètres qui ne peuvent pas changer après le démarrage.
+    Cet ensemble pourrrait être modifié dans le futur, voire même devenir
+    configurable. En conséquence, un client devrait simplement ignorer les
+    messages ParameterStatus pour les paramètres qu'il ne comprend pas ou qui ne
+    sont pas intéressants pour lui.
+   </p><p>
+    Si un client exécute une commande <code class="command">LISTEN</code>, alors le
+    backend enverra un message NotificationResponse (à ne pas confondre avec
+    NoticeResponse !) à chaque fois qu'une commande
+    <code class="command">NOTIFY</code> est exécutée pour le même nom de canal.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Actuellement, NotificationResponse peut seulement être envoyé en dehors
+     d'une transaction, et donc il ne surviendra pas au milieu d'une série de
+     réponses à des commandes, bien qu'il puisse survenir juste avant un message
+     ReadyForQuery. Il est déconseillé de concevoir la logique du client comme
+     assumant cela. Une bonne pratique est d'être capable d'accepter un message
+     NotificationResponse à tout moment dans le protocole.
+    </p></div></div><div class="sect2" id="PROTOCOL-FLOW-CANCELING-REQUESTS"><div class="titlepage"><div><div><h3 class="title">53.2.8. Annuler des requêtes en cours <a href="#PROTOCOL-FLOW-CANCELING-REQUESTS" class="id_link">#</a></h3></div></div></div><p>
+    Lors du traitement d'une requête, le client pourrait demander l'annulation
+    de la requête. La demande d'annulation n'est pas envoyée directement sur la
+    connexion ouverte sur le backend pour des raisons d'efficacité de
+    l'implémentation : nous ne voulons pas avoir le backend en train de
+    vérifier constamment pour une nouvelle entrée en provenance du client lors
+    du traitement de la requête. Les demandes d'annulation sont relativement peu
+    fréquentes, donc nous pouvons les rendre un peu compliquées pour éviter un
+    pénalité sur les cas normaux.
+   </p><p>
+    Pour demander une annulation, le client ouvre une nouvelle connexion au
+    serveur et envoie un message CancelRequest, plutôt que le message
+    StartupMessage qui serait habituellement envoyé lors d'une nouvelle
+    connexion. Le serveur traitera cette demande, puis fermera la connexion.
+    Pour des raisons de sécurité, aucune réponse directe n'est faite au message
+    de demande d'annulation.
+   </p><p>
+    Un message CancelRequest sera ignoré sauf s'il contient la même donnée clé
+    (PID et clé sécrète) passée au client lors de la connexion. Si la demande
+    correspond  au PID et à la clé secrète pour un backend en cours d'exécution
+    d'une requête, le traitement de la requête est annulé. (Dans
+    l'implémentation actuelle, ceci se fait en envoyant un signal spécial au
+    processus backend qui traite la requête.)
+   </p><p>
+    Le signal d'annulation pourrait avoir un effet ou pas  --  par exemple,
+    s'il arrive après que le backend ait terminé le traitement de la requête, il
+    n'aura aucun effet. Si l'annulation est réelle, la commande en cours est
+    arrêtée avec un message d'erreur.
+   </p><p>
+    Le résultat de tout ceci est que, pour des raisons de sécurité et
+    d'efficacité, le client n'a pas de façon de savoir si la requête
+    d'annulation a réussi. Il doit continuer d'attendre que le backend réponse à
+    la requête. Exécuter une annulation améliore simplement les chances que la
+    requête en cours termine rapidement, et améliore les chances qu'elle
+    échouera avec un message d'erreur au lieu d'un succès.
+   </p><p>
+    Comme la requête d'annulation est envoyée sur une nouvelle connexion au
+    serveur et non pas via le lien standard de communication client/backend, il
+    est possible d'envoyer une demande d'annulation pour tout processus, pas
+    uniquement pour le client dont la requête est à annuler. Ceci apporte une
+    flexibilité supplémentaire lors de la construction d'applications
+    multi-processus. Cela introduit aussi un risque de sécurité dans le fait que
+    des personnes non autorisées pourraient tenter d'annuler des requêtes. Le
+    risque de sécurité est mitigé par le besoin d'une clé secrète générée
+    dynamiquement, à fournir lors de demandes d'annulation.
+   </p></div><div class="sect2" id="PROTOCOL-FLOW-TERMINATION"><div class="titlepage"><div><div><h3 class="title">53.2.9. Arrêt <a href="#PROTOCOL-FLOW-TERMINATION" class="id_link">#</a></h3></div></div></div><p>
+    La procédure normale et propre d'arrêt est que le client envoie un message
+    Terminate et ferme immédiatement la connexion. Sur réception de ce message,
+    le backend ferme la connexion et quitte.
+   </p><p>
+    Dans les rares cas (tel qu'un arrêt de base demandé par l'administrateur),
+    le backend pourrait se déconnecter sans demande du client. Dans ce genre de
+    cas, le backend tentera d'envoyer un message d'erreur ou d'information,
+    donnant la raison de la déconnexion avant de fermer la connexion.
+   </p><p>
+    D'autres scénarios d'arrêt surgissent de différents cas d'échec, tel qu'un
+    core dump d'un bout ou de l'autre, une perte du lien de communication, une
+    perte de la synchronisation sur les messages, etc. Si soit le client soit le
+    backend voit une fin inattendue de la connexion, il doit faire son ménage et
+    quitter.  Le client a l'option de lancer un nouveau backend en recontactant
+    le serveur s'il ne veut pas quitter. Fermer la connexion est aussi conseillé
+    si un type de message non reconnu est reçu car cela indique probablement la
+    perte de synchronisation des messages.
+   </p><p>
+    Pour un arrêt normal ou anormal, toute transaction ouverte est annulée, et
+    non pas validée. Néanmoins, notez que si un client se déconnecter alors
+    qu'une requête autre qu'un <code class="command">SELECT</code> est en cours de
+    traitement, le backend finira probablement la requête sans se rendre compte
+    de la déconnexion. Si la requête est exécutée en dehors d'un bloc de
+    transaction (séquence <code class="command">BEGIN</code> ...
+    <code class="command">COMMIT</code>), alors ses résultats pourraient être validées
+    avant que le backend ne s'aperçoive de la déconnexion.
+   </p></div><div class="sect2" id="PROTOCOL-FLOW-SSL"><div class="titlepage"><div><div><h3 class="title">53.2.10. Chiffrement <acronym class="acronym">SSL</acronym> de la session <a href="#PROTOCOL-FLOW-SSL" class="id_link">#</a></h3></div></div></div><p>
+    Si <span class="productname">PostgreSQL</span> a été compilé avec le support de
+    <acronym class="acronym">SSL</acronym>, les communications client/backend peuvent être
+    chiffrés en utilisant <acronym class="acronym">SSL</acronym>. Cela fournit une sécurité sur
+    la communication pour les environnements où des attaquants pourraient être
+    en mesure de capturer le trafic de la session. Pour plus d'informations sur
+    le chiffrement des sessions <span class="productname">PostgreSQL</span> avec
+    <acronym class="acronym">SSL</acronym>, voir <a class="xref" href="ssl-tcp.html" title="18.9. Connexions TCP/IP sécurisées avec SSL">Section 18.9</a>.
+   </p><p>
+    Pour initier une connexion chiffrée avec <acronym class="acronym">SSL</acronym>, le client
+    envoie dès le début un message SSLRequest au lieu de StartupMessage. Le
+    serveur répond avec un seul octet contenant <code class="literal">S</code> ou
+    <code class="literal">N</code>, indiquant s'il est, respectivement, prêt ou non à
+    utiliser <acronym class="acronym">SSL</acronym>. Le client pourrait fermer la connexion à ce
+    point s'il n'est pas satisfait par la réponse. Pour continuer après un
+    <code class="literal">S</code>, le client réalise une poignée de main
+    <acronym class="acronym">SSL</acronym> de démarrage (non décrit ici, car partie de la
+    spécification <acronym class="acronym">SSL</acronym>) avec le serveur. Si la poignée de main
+    est réussie, le client continue avec l'habituel StartupMessage. Dans ce cas,
+    le message StartupMessage et toutes les données qui suivent seront chiffrés
+    avec <acronym class="acronym">SSL</acronym>. Pour continuer après un <code class="literal">N</code>,
+    le client envoie le message habituel StartupMessage et continue sans
+    chiffrement.  (Il est aussi possible de lancer un message GSSENCRequest
+    après une réponse <code class="literal">N</code> pour tenter l'utilisation du
+    chiffrement <acronym class="acronym">GSSAPI</acronym> à la place du chiffrement
+    <acronym class="acronym">SSL</acronym>.)
+   </p><p>
+    Le client doit aussi se préparer à gérer un message ErrorMessage en réponse
+    à un message SSLRequest. Le client ne doit pas afficher ce message d'erreur
+    à l'utilisateur/application car le serveur n'a pas été authentifié
+    (<a class="ulink" href="https://www.postgresql.org/support/security/CVE-2024-10977/" target="_top">CVE-2024-10977</a>).
+    Dans ce cas, la
+    connexion doit être fermée mais le client pourrait choisir d'ouvrir une
+    connexion propre et continuer sans demander <acronym class="acronym">SSL</acronym>.
+   </p><p>
+    Quand le chiffrement <acronym class="acronym">SSL</acronym> peut être réalisé, le serveur
+    est supposé envoyer l'octet <code class="literal">S</code>, puis attendre que le
+    client initie une poignée de main <acronym class="acronym">SSL</acronym>. Si des octets
+    supplémentaires sont disponibles en lecture, cela signifie probablement
+    qu'une attaque de type
+    <span class="foreignphrase"><em class="foreignphrase">man-in-the-middle</em></span> est en cours et tente de
+    réaliser la technique <span class="foreignphrase"><em class="foreignphrase">buffer-stuffing</em></span> (<a class="ulink" href="https://www.postgresql.org/support/security/cve-2021-23222/" target="_top">CVE-2021-23222</a>).
+    Les clients doivent être codés soit pour lire exactement un octet de la
+    socket avant de renvoyer la socket à leur bibliothèque SSL ou de la traiter
+    comme une violation du protocole s'ils voient qu'ils ont déjà des octets
+    supplémentaires.
+   </p><p>
+    De la même façon, le serveur s'attend à ce que le client ne commence pas
+    la négociation <acronym class="acronym">SSL</acronym> tant qu'il n'a pas reçu la réponse
+    en un octet du serveur à la demande de <acronym class="acronym">SSL</acronym>. Si le
+    client commence la négociation <acronym class="acronym">SSL</acronym> immédiatement,
+    sans attendre la réception de la réponse du serveur, cela peut réduire
+    la latence de connexion d'un aller/retour. Néanmoins, cela a un
+    coût : ne pas être capable de gérer le cas où le serveur envoie une
+    réponse négative à la demande de <acronym class="acronym">SSL</acronym>. Dans ce cas,
+    au lieu de continuer avec une connexion GSSAPI ou non chiffrée ou une
+    erreur de procotole, le serveur se déconnectera tout simplement.
+   </p><p>
+    Un message initial SSLRequest peut aussi être utilisé dans une connexion
+    en cours d'ouverture pour envoyer un message CancelRequest.
+   </p><p>
+     Une autre façon d'initier le chiffrement <acronym class="acronym">SSL</acronym> est
+     disponible. Le serveur reconnaitra les connexions qui commencent
+     immédiatement une négociation <acronym class="acronym">SSL</acronym> sans paquet
+     SSLRequest. Une fois la connexion <acronym class="acronym">SSL</acronym> établie, le
+     serveur attendra un paquet standard startup-request et continuera la
+     négociation sur un canal chiffré. Dans ce cas, toute autre requête de
+     chiffrement sera refusée. Cette méthode n'est pas préférée pour les
+     outils généralistes car elle ne peut pas négotier le meilleur
+     chiffrement de la connexion et ne peut pas gérer les connexions non
+     chiffrées. Cependant, c'est utile pour des environnements où le serveur
+     et le client sont contrôlés ensemble. Dans ce cas, cela évite une
+     latence d'un aller/retour, et permet l'utilisation d'outils réseaux
+     dépendants de connexions standards <acronym class="acronym">SSL</acronym>. Lors de
+     l'utilisation de connexions <acronym class="acronym">SSL</acronym> de ce style, le
+     client doit utiliser l'extension ALPN définie par la
+     <a class="ulink" href="https://tools.ietf.org/html/rfc7301" target="_top">RFC 7301</a> pour
+     se protéger contre les attaques de confusion de protocole. Le protocole
+     <span class="productname">PostgreSQL</span> est enregistré sous le nom
+     "postgresql" sur le resgistre <a class="ulink" href="https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids" target="_top">IANA
+     TLS ALPN Protocol IDs</a>.
+   </p><p>
+    Alors que le protocole lui-même ne fournit pas de moyens pour que le serveur
+    force un chiffrement <acronym class="acronym">SSL</acronym>, l'administrateur peut
+    configurer le serveur de telle façon qu'il rejette les sessions non
+    chiffrées. Cela se fait pendant la vérification de l'authentification.
+   </p></div><div class="sect2" id="PROTOCOL-FLOW-GSSAPI"><div class="titlepage"><div><div><h3 class="title">53.2.11. Chiffrement <acronym class="acronym">GSSAPI</acronym> des sessions <a href="#PROTOCOL-FLOW-GSSAPI" class="id_link">#</a></h3></div></div></div><p>
+    Si <span class="productname">PostgreSQL</span> a été compilé avec le support de
+    <acronym class="acronym">GSSAPI</acronym>, les communications client/backend peuvent être
+    chiffrées en utilisant <acronym class="acronym">GSSAPI</acronym>. Ceci fournit une sécurité
+    de la communication dans les environnements où les attaquants pourraient
+    être en mesure de capturer le trafic de la session. Pour plus d'informations
+    sur le chiffrement des sessions <span class="productname">PostgreSQL</span> avec
+    <acronym class="acronym">GSSAPI</acronym>, voir <a class="xref" href="gssapi-enc.html" title="18.10. Connexions TCP/IP sécurisées avec le chiffrage GSSAPI">Section 18.10</a>.
+   </p><p>
+    Pour initier une connexion chiffrée avec <acronym class="acronym">GSSAPI</acronym>, le
+    client doit au départ envoyer un message GSSENCRequest plutôt qu'un message
+    StartupMessage. Le serveur répond avec un seul octet contenant
+    <code class="literal">G</code> ou <code class="literal">N</code>, indiquant s'il est,
+    respectivement, disposé ou non pour réaliser un chiffrement
+    <acronym class="acronym">GSSAPI</acronym>. Le client pourrait fermer la connexion à ce stage
+    s'il n'est pas satisfait par la réponse. Pour continuer après un
+    <code class="literal">G</code>, en utilisant les fonctions C de GSSAPI comme indiqué
+    dans la <a class="ulink" href="https://datatracker.ietf.org/doc/html/rfc2744" target="_top">RFC 2744</a> ou
+    un équivalent, le client réalise une initialisation de
+    <acronym class="acronym">GSSAPI</acronym> en appelant
+    <code class="function">gss_init_sec_context()</code> dans une boucle et en envoyant
+    le résultat au serveur, en commençant avec une entrée vide, et en continuant
+    avec chaque résultat du serveur jusqu'à la fin. Lors de l'envoi de résultats
+    de <code class="function">gss_init_sec_context()</code> au serveur, il ajoute la
+    longueur du message sous la forme d'un entier sous quatre octets dans
+    l'ordre des octets du réseau.  Pour continuer après un <code class="literal">N</code>,
+    il envoie le message habituel StartupMessage puis continue sans chiffrement.
+    (Une autre solution est de lancer un message SSLRequest après une réponse
+    <code class="literal">N</code> pour tenter l'utilisation d'un chiffrement
+    <acronym class="acronym">SSL</acronym> à la place du chiffrement <acronym class="acronym">GSSAPI</acronym>.)
+   </p><p>
+    Le client doit aussi être préparé à gérer une réponse ErrorMessage pour
+    GSSENCRequest provenant du serveur. Le client ne doit pas afficher ce message
+    d'erreur à l'utilisation/application carle serveur n'a pas été authentifié
+    (<a class="ulink" href="https://www.postgresql.org/support/security/CVE-2024-10977/" target="_top">CVE-2024-10977</a>).
+    Dans ce cas, la connexion doit être
+    termée, mais le client peut choisir d'ouvrir une nouvelle connexion et de
+    continuer sans demander de chiffrement <acronym class="acronym">GSSAPI</acronym>.
+   </p><p>
+    Quand le chiffrement <acronym class="acronym">GSSAPI</acronym> peut être réalisé, le serveur
+    est supposé envoyer l'octet <code class="literal">G</code>, puis attendre que le
+    client initie une poignée de main <acronym class="acronym">GSSAPI</acronym>. Si des octets
+    supplémentaires sont disponibles en lecture, cela signifie probablement
+    qu'une attaque de type
+    <span class="foreignphrase"><em class="foreignphrase">man-in-the-middle</em></span> est en cours et tente de
+    réaliser la technique <span class="foreignphrase"><em class="foreignphrase">buffer-stuffing</em></span> (<a class="ulink" href="https://www.postgresql.org/support/security/cve-2021-23222/" target="_top">CVE-2021-23222</a>).
+    Les clients doivent être codés soit pour lire exactement un octet de la
+    socket avant de renvoyer la socket à leur bibliothèque GSSAPI ou de la traiter
+    comme une violation du protocole s'ils voient qu'ils ont déjà des octets
+    supplémentaires à lire.
+   </p><p>
+    Un message initial GSSENCRequest peut aussi être utilisé dans une
+    connexion en cours d'ouverture pour envoyer un message CancelRequest.
+   </p><p>
+    Une fois que le chiffrement <acronym class="acronym">GSSAPI</acronym> a été établi avec
+    succès, le client utilise la fonction <code class="function">gss_wrap()</code> pour
+    chiffrer le message StartupMessage habituel et toutes les données qui
+    suivent, ajoutant la longueur du résultat de <code class="function">gss_wrap()</code>
+    sous la forme d'un entier sous quatre octets dans l'ordre d'octets du réseau
+    à la charge chiffrée réelle. Notez que le serveur acceptera seulement des
+    paquets chiffrés provenant du client qui font moins de 16 Ko ;
+    <code class="function">gss_wrap_size_limit()</code> devrait être utilisé par le
+    client pour déterminer la taille du message non chiffré qui sera contenu
+    dans cette limite, et les messages plus larges devront être divisés en
+    plusieurs appels à <code class="function">gss_wrap()</code>. Les segments typiques
+    sont 8 Ko de données non chiffrées, résultant en des paquets chiffrés
+    légèrement supérieurs à 8 Ko mais bien contenu dans les 16 Ko
+    maximum. Il est attendu que le serveur n'envoie pas de paquets de plus de
+    16 ;Ko au client.
+   </p><p>
+    Alors que le protocole lui-même ne fournit pas de moyens pour que le serveur
+    force un chiffrement <acronym class="acronym">GSSAPI</acronym>, l'administrateur peut
+    configurer le serveur de telle façon qu'il rejette les sessions non
+    chiffrées. Cela se fait pendant la vérification de l'authentification.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/protocol-flow.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:14 GMT -->
+</html>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/generic-wal.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:16 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>63.1. Enregistrements génériques des journaux de transactions</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="wal-for-extensions.html" title="Chapitre 63. Journaux de transactions pour les extensions" /><link rel="next" href="custom-rmgr.html" title="63.2. Gestionnaires de ressources WAL personnalisées" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/generic-wal.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/generic-wal.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/generic-wal.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/generic-wal.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/generic-wal.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/generic-wal.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/generic-wal.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/generic-wal.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/generic-wal.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/generic-wal.html">9.6</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/generic-wal.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="wal-for-extensions.html">Journaux de transactions pour les extensions</a></span> » <span class="breadcrumb-node">Enregistrements génériques des journaux de transactions</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="wal-for-extensions.html" title="Chapitre 63. Journaux de transactions pour les extensions">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="wal-for-extensions.html" title="Chapitre 63. Journaux de transactions pour les extensions">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="custom-rmgr.html" title="63.2. Gestionnaires de ressources WAL personnalisées">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Chapitre 63. Journaux de transactions pour les extensions </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 63.2. Gestionnaires de ressources WAL personnalisées</td></tr></table></div><div class="sect1" id="GENERIC-WAL"><div class="titlepage"><div><div><h2 class="title" style="clear: both">63.1. Enregistrements génériques des journaux de transactions <a href="#GENERIC-WAL" class="id_link">#</a></h2></div></div></div><p>
+  Bien que tous les modules internes traçant dans les journaux de
+  transactions ont leur propre type d'enregistrements WAL, il existe aussi un
+  type d'enregistrement générique. Ce type d'enregistrement décrit les
+  modifications de pages d'une façon générique.
+ </p><div class="note"><h3 class="title">Note</h3><p>
+   Les enregistrements WAL génériques sont ignorés lors du <a class="link" href="logicaldecoding.html" title="Chapitre 47. Décodage logique (Logical Decoding)">décodage logique</a>. Si le décodage logique est
+   requis pour votre extension, pensez à un gestionnaire de ressources WAL
+   personnalisées.
+  </p></div><p>
+  L'API de construction des enregistrements génériques pour les journaux de
+  transactions est définie dans <code class="filename">access/generic_xlog.h</code> et
+  implémentée dans <code class="filename">access/transam/generic_xlog.c</code>.
+ </p><p>
+  Pour réaliser une mise à jour de données tracée dans les journaux de
+  transactions en utilisant le système d'enregistrement générique, suivez ces
+  étapes :
+
+  </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>
+     <code class="function">state = GenericXLogStart(relation)</code>  --  lance la
+     construction d'un enregistrement générique pour la relation spécifiée.
+    </p></li><li class="listitem"><p>
+     <code class="function">page = GenericXLogRegisterBuffer(state, buffer,
+      flags)</code>  --  enregistre un tampon à modifier dans
+     l'enregistrement générique actuel du journal de transactions. Cette
+     fonction renvoie un pointeur vers une copie temporaire de la page du
+     tampon, où les modifications doivent survenir. (Ne modifiez pas le
+     contenu du tampon.) Le troisième argument est un masque de bits pour les
+     drapeaux applicables à l'opération. Actuellement, le seul drapeau
+     disponible est <code class="literal">GENERIC_XLOG_FULL_IMAGE</code>, qui indique
+     qu'une image d'une page complète doit être incluse dans l'enregistrement
+     WAL, plutôt qu'un delta. Typiquement, ce drapeau doit être configuré si
+     le bloc est nouveau ou s'il a été complètement réécrit.
+     <code class="function">GenericXLogRegisterBuffer</code> peut être répété si
+     l'action tracée doit modifier plusieurs blocs.
+    </p></li><li class="listitem"><p>
+     Réalisez des modifications à l'image des pages obtenue à l'étape
+     précédente.
+    </p></li><li class="listitem"><p>
+     <code class="function">GenericXLogFinish(state)</code>  --  applique les
+     modifications aux tampons et émet l'enregistrement générique.
+    </p></li></ol></div><p>
+ </p><p>
+  La construction d'enregistrements de journaux de transactions peut être
+  annulée entre n'importe laquelle des étapes ci-dessus en appelant la
+  fonction <code class="function">GenericXLogAbort(state)</code>. Ceci annulera toutes
+  les modifications aux copies d'image de bloc.
+ </p><p>
+  Merci de noter les points suivants lors de l'utilisation de la
+  fonctionnalité d'enregistrements génériques pour les journaux de
+  transactions :
+
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+     Aucune modification directe des tampons n'est autorisée !  Toutes
+     les modifications doivent se faire dans les copies récupérées de
+     <code class="function">GenericXLogRegisterBuffer()</code>. Autrement dit, le code
+     réalisant les enregistrements génériques ne doit jamais appeler lui-même
+     <code class="function">BufferGetPage()</code>. Néanmoins, il est de la
+     responsabilité de l'appelant du bloquer/débloquer et de
+     verrouiller/déverrouiller les tampons au bon moment. Un verrou exclusif
+     doit être obtenu et conservé pour chaque tampon cible avant l'appel à
+     <code class="function">GenericXLogRegisterBuffer()</code> et jusqu'à l'appel à
+     <code class="function">GenericXLogFinish()</code>.
+    </p></li><li class="listitem"><p>
+     Les enregistrements de tampons (étape 2) et les modifications des images
+     de page (étape 3) peuvent être librement mélangés. Les deux étapes
+     peuvent donc être répétées dans n'importe quelle séquence. Gardez en
+     tête que les tampons doivent être enregistrés dans le même ordre que
+     l'obtention des verrous lors de leur rejeu.
+    </p></li><li class="listitem"><p>
+     Le nombre maximum de tampons qui peut être enregistré pour un
+     enregistrement générique dépend de la constante
+     <code class="literal">MAX_GENERIC_XLOG_PAGES</code>. Une erreur est renvoyée si
+     cette limite est dépassée.
+    </p></li><li class="listitem"><p>
+     Un enregistrement générique suppose que les blocs à modifier aient un
+     schéma standard et, en particulier, qu'il n'y ait pas de données utiles
+     entre <code class="structfield">pd_lower</code> et
+     <code class="structfield">pd_upper</code>.
+    </p></li><li class="listitem"><p>
+     Comme vous modifiez des copies de pages de tampon,
+     <code class="function">GenericXLogStart()</code> ne commence pas une section
+     critique. De ce fait, vous pouvez faire de l'allocation mémoire de façon
+     sûre, en renvoyant des erreurs le cas échéant, entre
+     <code class="function">GenericXLogStart()</code> et
+     <code class="function">GenericXLogFinish()</code>. La seule section réellement
+     critique se trouve dans <code class="function">GenericXLogFinish()</code>. Il
+     n'est pas non plus nécessaire de s'inquiéter lors de l'appel de
+     <code class="function">GenericXLogAbort()</code> pendant une sortie en erreur.
+    </p></li><li class="listitem"><p>
+     <code class="function">GenericXLogFinish()</code> fait attention à marquer les
+     tampons comme modifiés et à configurer leur LSN. Vous n'avez pas besoin
+     de le faire explicitement.
+    </p></li><li class="listitem"><p>
+     Pour les relations non journalisées, tout fonctionne de la même façon
+     sauf qu'aucun enregistrement n'est réellement émis. De ce fait, vous
+     n'avez pas besoin de faire une quelconque vérification explicite pour
+     les relations non journalisées.
+    </p></li><li class="listitem"><p>
+     La fonction de rejeu des enregistrements génériques acquiert des verrous
+     exclusifs sur les tampons dans le même ordre qu'ils ont été enregistrés.
+     Après l'exécution du rejeu, les verrous sont relâchés dans le même
+     ordre.
+    </p></li><li class="listitem"><p>
+     Si <code class="literal">GENERIC_XLOG_FULL_IMAGE</code> n'est pas spécifié pour un
+     tampon enregistré, l'enregistrement générique contient un delta entre
+     les anciennes et les nouvelles images. Ce delta est basé sur une comparaison
+     octet par octet. Ceci n'est pas spécialement compact dans le cas d'un
+     déplacement de données dans une page, et pourrait être amélioré dans le
+     futur.
+    </p></li></ul></div><p>
+ </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/generic-wal.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:16 GMT -->
+</html>

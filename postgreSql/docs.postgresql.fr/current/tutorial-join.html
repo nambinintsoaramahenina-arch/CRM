@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/tutorial-join.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:24 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>2.6. Jointures entre les tables</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="tutorial-select.html" title="2.5. Interroger une table" /><link rel="next" href="tutorial-agg.html" title="2.7. Fonctions d'agrégat" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/tutorial-join.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/tutorial-join.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/tutorial-join.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/tutorial-join.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/tutorial-join.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/tutorial-join.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/tutorial-join.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/tutorial-join.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/tutorial-join.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/tutorial-join.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/tutorial-join.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/tutorial-join.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/tutorial-join.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/tutorial-join.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/tutorial-join.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/tutorial-join.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/tutorial-join.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/tutorial-join.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/tutorial-join.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/tutorial-join.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/tutorial-join.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="tutorial.html">Tutoriel</a></span> » <span class="breadcrumb-link"><a href="tutorial-sql.html">Le langage <acronym class="acronym">SQL</acronym></a></span> » <span class="breadcrumb-node">Jointures entre les tables</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tutorial-select.html" title="2.5. Interroger une table">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="tutorial-sql.html" title="Chapitre 2. Le langage SQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="tutorial-agg.html" title="2.7. Fonctions d'agrégat">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">2.5. Interroger une table </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 2.7. Fonctions d'agrégat</td></tr></table></div><div class="sect1" id="TUTORIAL-JOIN"><div class="titlepage"><div><div><h2 class="title" style="clear: both">2.6. Jointures entre les tables <a href="#TUTORIAL-JOIN" class="id_link">#</a></h2></div></div></div><a id="id-1.4.4.7.2" class="indexterm"></a><p>
+    Jusqu'ici, nos requêtes avaient seulement consulté une table à la fois.
+    Les requêtes peuvent accéder à plusieurs tables en même temps ou accéder
+    à la même table de façon à ce que plusieurs lignes de la table soient
+    traitées en même temps. Les requêtes qui accèdent à plusieurs tables
+    (ou plusieurs fois la même table) sont appelées des requêtes de
+    <em class="firstterm">jointure</em>. Elles combinent les lignes d'une table
+    avec les lignes d'une deuxième table, avec une expression indiquant
+    comment réaliser la jointure entre ces lignes. Par exemple, pour renvoyer
+    toutes les lignes de la table temps avec l'emplacement de la ville
+    associée, la base de données doit comparer la colonne
+    <code class="structfield">ville</code> de chaque ligne de la table
+    <code class="structname">temps</code> avec la colonne
+    <code class="structfield">nom</code> de toutes les lignes de la table
+    <code class="structname">villes</code> et que vous choisissiez les paires de
+    lignes où ces valeurs correspondent.<a href="#ftn.id-1.4.4.7.3.6" class="footnote"><sup class="footnote" id="id-1.4.4.7.3.6">[4]</sup></a>
+    Ceci sera accompli avec la requête suivante :
+
+</p><pre class="programlisting">SELECT * FROM temps JOIN villes ON ville = nom;</pre><p>
+
+</p><pre class="screen">     ville     | t_basse | t_haute | prcp |    date    |     nom       | emplacement
+---------------+---------+---------+------+------------+---------------+-------------
+ San Francisco |      46 |      50 | 0.25 | 1994-11-27 | San Francisco | (-194,53)
+ San Francisco |      43 |      57 |    0 | 1994-11-29 | San Francisco | (-194,53)
+(2 rows)
+   </pre><p>
+
+  </p><p>
+   Deux remarques à propos du résultat :
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Il n'y a pas de lignes pour la ville de Hayward dans le résultat. C'est
+      parce qu'il n'y a aucune entrée correspondante dans la table
+      <code class="structname">villes</code> pour Hayward, donc la jointure ignore
+      les lignes n'ayant pas de correspondance avec la table
+      <code class="structname">temps</code>. Nous verrons rapidement comment cela
+      peut être résolu.
+     </p></li><li class="listitem"><p>
+      Il y a deux colonnes contenant le nom des villes. C'est correct, car les
+      listes des colonnes des tables <code class="structname">temps</code> et
+      <code class="structname">villes</code> sont concaténées. En pratique, ceci est
+      indésirable, vous voudrez probablement lister les colonnes explicitement
+      plutôt que d'utiliser <code class="literal">*</code> :
+      </p><pre class="programlisting">SELECT ville, t_basse, t_haute, prcp, date, emplacement
+    FROM temps JOIN villes ON ville = nom;</pre><p>
+      </p></li></ul></div><p>
+   </p><p>
+    Puisque toutes les colonnes ont un nom différent, l'analyseur a
+    automatiquement trouvé à quelle table elles appartiennent. Si des noms de
+    colonnes sont communs entre les deux tables, vous aurez besoin de
+    <em class="firstterm">qualifier</em> les noms des colonnes pour préciser celles
+    dont vous parlez. Par exemple :
+
+</p><pre class="programlisting">SELECT temps.ville, temps.t_basse, temps.t_haute,
+       temps.prcp, temps.date, villes.emplacement
+    FROM temps JOIN villes ON villes.nom = temps.ville;</pre><p>
+
+    La qualification des noms de colonnes dans une requête de jointure est
+    fréquemment considérée comme une bonne pratique. Cela évite l'échec de la
+    requête si un nom de colonne dupliqué est ajouté plus tard dans une des
+    tables.
+   </p><p>
+    Les requêtes de jointure vues jusqu'ici peuvent aussi être écrites sous
+    cette forme :
+
+</p><pre class="programlisting">SELECT *
+    FROM temps, villes WHERE ville = nom;</pre><p>
+
+    Cette syntaxe date d'avant la syntaxe
+    <code class="literal">JOIN</code>/<code class="literal">ON</code>, qui a été introduite dans
+    SQL-92. Les tables sont simplement listées dans la clause
+    <code class="literal">FROM</code>, et l'expression de comparaison est ajoutée dans
+    la clause <code class="literal">WHERE</code>. Les résultats de l'ancienne syntaxe
+    implicite et de la nouvelle syntaxe explicite
+    <code class="literal">JOIN</code>/<code class="literal">ON</code> sont identiques. Cependant,
+    pour celui qui lit la requête, la syntaxe explicite est plus facile à
+    comprendre : la condition de jointure est introduite par son propre
+    mot clé alors qu'auparavant, la condition était mélangée dans la clause
+    <code class="literal">WHERE</code> avec les autres conditions.
+   </p><a id="id-1.4.4.7.7" class="indexterm"></a><p>
+    Maintenant, nous allons essayer de comprendre comment nous pouvons avoir
+    les entrées de Hayward. Nous voulons que la requête parcoure la table
+    <code class="structname">temps</code> et que, pour chaque ligne, elle trouve la
+    (ou les) ligne(s) de <code class="structname">villes</code> correspondante(s). Si
+    aucune ligne correspondante n'est trouvée, nous voulons que les valeurs des
+    colonnes de la table <code class="structname">villes</code> soient remplacées par
+    des <span class="quote">« <span class="quote">valeurs vides</span> »</span>. Ce genre de requêtes est appelé
+    <em class="firstterm">jointure externe</em> (outer join). (Les jointures que
+    nous avons vues jusqu'ici sont des <em class="firstterm">jointures internes</em>
+     --  inner joins).
+    La commande ressemble à cela :
+
+</p><pre class="programlisting">SELECT *
+    FROM temps LEFT OUTER JOIN villes ON temps.ville = villes.nom;
+</pre><p>
+
+</p><pre class="screen">
+     ville     | t_basse | t_haute | prcp |    date    |     nom       | emplacement
+---------------+---------+---------+------+------------+---------------+-------------
+ Hayward       |      37 |      54 |      | 1994-11-29 |               |
+ San Francisco |      46 |      50 | 0.25 | 1994-11-27 | San Francisco | (-194,53)
+ San Francisco |      43 |      57 |    0 | 1994-11-29 | San Francisco | (-194,53)
+(3 rows)</pre><p>
+
+    Cette requête est appelée une <em class="firstterm">jointure externe à
+    gauche</em> (left outer join) parce que la table mentionnée à la
+    gauche de l'opérateur de jointure aura au moins une fois ses lignes dans
+    le résultat, tandis que la table sur la droite aura seulement les lignes qui
+    correspondent à des lignes de la table de gauche. Lors de l'affichage d'une
+    ligne de la table de gauche pour laquelle il n'y a pas de correspondance
+    dans la table de droite, des valeurs vides (appelées NULL) sont utilisées
+    pour les colonnes de la table de droite.
+   </p><p><strong>Exercice : </strong>
+     Il existe aussi des jointures externes à droite et des jointures externes
+     complètes. Essayez de trouver ce qu'elles font.
+    </p><a id="id-1.4.4.7.10" class="indexterm"></a><a id="id-1.4.4.7.11" class="indexterm"></a><p>
+    Nous pouvons également joindre une table avec elle-même. Ceci est appelé
+    une <em class="firstterm">jointure réflexive</em>. Comme exemple, supposons
+    que nous voulions trouver toutes les entrées de temps qui sont dans un
+    intervalle de températures d'autres entrées de temps. Nous avons donc besoin
+    de comparer les colonnes <code class="structfield">t_basse</code> et
+    <code class="structfield">t_haute</code> de chaque ligne de
+    <code class="structname">temps</code> aux colonnes
+    <code class="structfield">t_basse</code> et
+    <code class="structfield">t_haute</code> de toutes les autres lignes de
+    <code class="structname">temps</code>. Nous pouvons faire cela avec la requête
+    suivante :
+
+</p><pre class="programlisting">SELECT T1.ville, T1.t_basse AS bas, T1.t_haute AS haut,
+    T2.ville, T2.t_basse AS bas, T2.t_haute AS haus
+    FROM temps T1 JOIN temps T2
+    ON T1.t_basse &lt; T2.t_basse AND T1.t_haute &gt; T2.t_haute;
+</pre><p>
+
+</p><pre class="screen">
+     ville      | bas | haut |     ville     | bas | haut
+----------------+-----+------+---------------+-----+------
+  San Francisco |  43 |   57 | San Francisco |  46 |   50
+  Hayward       |  37 |   54 | San Francisco |  46 |   50
+(2 rows)</pre><p>
+
+    Dans cet exemple, nous avons renommé la table temps en <code class="literal">T1</code>
+    et en <code class="literal">T2</code> pour être capables de distinguer respectivement
+    le côté gauche et le côté droit de la jointure. Vous pouvez aussi utiliser
+    ce genre d'alias dans d'autres requêtes pour économiser de la frappe,
+    c'est-à-dire :
+</p><pre class="programlisting">SELECT *
+    FROM temps t JOIN villes v ON t.ville = v.nom;</pre><p>
+    Vous rencontrerez ce genre d'abréviation assez fréquemment.
+   </p><div class="footnotes"><br /><hr style="width:100; text-align:left;margin-left: 0" /><div id="ftn.id-1.4.4.7.3.6" class="footnote"><p><a href="#id-1.4.4.7.3.6" class="para"><sup class="para">[4] </sup></a>
+      Ceci est uniquement un modèle conceptuel. La jointure est habituellement
+      exécutée d'une manière plus efficace que la comparaison de chaque paire
+      de lignes, mais c'est invisible pour l'utilisateur.
+     </p></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/tutorial-join.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:24 GMT -->
+</html>

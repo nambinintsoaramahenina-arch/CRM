@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/preventing-server-spoofing.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:31 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>18.7. Empêcher l'usurpation de serveur (spoofing)</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="upgrading.html" title="18.6. Mise à jour d'une instance PostgreSQL" /><link rel="next" href="encryption-options.html" title="18.8. Options de chiffrement" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/preventing-server-spoofing.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/preventing-server-spoofing.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/preventing-server-spoofing.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/preventing-server-spoofing.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/preventing-server-spoofing.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/preventing-server-spoofing.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/preventing-server-spoofing.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/preventing-server-spoofing.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/preventing-server-spoofing.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/preventing-server-spoofing.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/preventing-server-spoofing.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/preventing-server-spoofing.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/preventing-server-spoofing.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/preventing-server-spoofing.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/preventing-server-spoofing.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/preventing-server-spoofing.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/preventing-server-spoofing.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/preventing-server-spoofing.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/preventing-server-spoofing.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="runtime.html">Configuration du serveur et mise en place</a></span> » <span class="breadcrumb-node">Empêcher l'usurpation de serveur (spoofing)</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="upgrading.html" title="18.6. Mise à jour d'une instance PostgreSQL">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime.html" title="Chapitre 18. Configuration du serveur et mise en place">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="encryption-options.html" title="18.8. Options de chiffrement">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">18.6. Mise à jour d'une instance <span class="productname">PostgreSQL</span> </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 18.8. Options de chiffrement</td></tr></table></div><div class="sect1" id="PREVENTING-SERVER-SPOOFING"><div class="titlepage"><div><div><h2 class="title" style="clear: both">18.7. Empêcher l'usurpation de serveur (spoofing) <a href="#PREVENTING-SERVER-SPOOFING" class="id_link">#</a></h2></div></div></div><a id="id-1.6.5.10.2" class="indexterm"></a><p>
+Quand le serveur est en cours d'exécution, un utilisateur mal intentionné ne
+peut pas interférer dans les communications client/serveur. Néanmoins,
+quand le serveur est arrêté, un utilisateur local peut usurper le rôle du serveur
+normal en lançant son propre serveur. Le serveur usurpateur pourrait lire
+les mots de passe et les requêtes envoyés par les clients, mais ne pourrait
+pas renvoyer de données car le répertoire <code class="varname">PGDATA</code> est
+toujours sécurisé grâce aux droits d'accès du répertoire. L'usurpation
+est possible parce que tout utilisateur peut lancer un serveur de bases
+de données ; un client ne peut pas identifier un serveur invalide
+sauf s'il est configuré spécialement.
+</p><p>
+Un moyen d'empêcher les serveurs d'usurper des
+connexions <code class="literal">local</code>es est d'utiliser un répertoire de
+socket de domaine Unix (<a class="xref" href="runtime-config-connection.html#GUC-UNIX-SOCKET-DIRECTORIES">unix_socket_directories</a>) qui
+n'a un droit en écriture que pour un utilisateur local de
+confiance. Ceci empêche un utilisateur mal intentionné de créer son
+propre fichier socket dans ce répertoire. Si vous craignez que
+certaines applications puissent encore référencer
+<code class="filename">/tmp</code> pour le fichier socket et, du coup, être
+vulnérable au <span class="quote">« <span class="quote">spoofing</span> »</span>, créez un lien
+symbolique <code class="filename">/tmp/.s.PGSQL.5432</code> pointant vers le fichier
+socket déplacé. Vous pourriez alors avoir besoin de modifier votre script
+de nettoyage de <code class="filename">/tmp</code> pour empêcher la suppression du
+lien symbolique.
+</p><p>
+Une autre option pour les connexions de type <code class="literal">local</code> est que
+les clients utilisent <a class="link" href="libpq-connect.html#LIBPQ-CONNECT-REQUIREPEER"><code class="literal">requirepeer</code></a>
+pour indiquer un propriétaire précis du processus serveur connecté au socket.
+</p><p>
+Pour éviter l'usurpation sur les connexions TCP, utilisez des certificats SSL,
+et assurez-vous que les clients vérifient le certificat du serveur,
+ou bien utilisez le chiffrage GSSAPI (ou les deux, s'il s'agit de connexions
+séparées).
+</p><p>
+   Pour éviter l'usurpation avec SSL, le serveur doit être configuré pour
+   accepter les connexions <code class="literal">hostssl</code> (<a class="xref" href="auth-pg-hba-conf.html" title="20.1. Le fichier pg_hba.conf">Section 20.1</a>) et avoir des fichiers SSL clé et certificat
+   (<a class="xref" href="ssl-tcp.html" title="18.9. Connexions TCP/IP sécurisées avec SSL">Section 18.9</a>). Le client TCP doit se connecter en utilisant
+   <code class="literal">sslmode='verify-ca'</code> ou <code class="literal">verify-full</code> et
+   le fichier certificat racine approprié doit y être installé (<a class="xref" href="libpq-ssl.html#LIBQ-SSL-CERTIFICATES" title="32.19.1. Vérification par le client du certificat serveur">Section 32.19.1</a>). Sinon, l'<a class="link" href="libpq-connect.html#LIBPQ-CONNECT-SSLROOTCERT">ensemble CA du système</a>, tel que
+   défini par l'implémentation SSL, peut être utilisé avec
+   <code class="literal">sslrootcert=system</code> ; dans ce cas,
+   <code class="literal">sslmode=verify-full</code> est forcé pour la sécurité car il est
+   généralement trivial d'obtenir des certificats qui ont été signés par un CA
+   public.
+  </p><p>
+   Pour éviter l'usurpation de serveur lors de l'utilisation de l'authentification
+   <a class="link" href="auth-password.html" title="20.5. Authentification par mot de passe">scram-sha-256</a> sur un réseau, vous devez
+   vous assurer que vous vous connectez au serveur en utilisant SSL et une des
+   méthodes anti-usurpation décrites dans le paragraphe précédent. De plus,
+   l'implémentation SCRAM dans
+   <span class="application">libpq</span> ne peut pas protéger l'échange entier
+   d'authentification mais, utiliser le paramètre de connexion
+   <code class="literal">channel_binding=require</code> atténue le risque d'usurpation du
+   serveur. Un attaquant qui utilise un serveur pour intercepter un échange
+   SCRAM peut utiliser une analyse hors ligne pour déterminer potentiellement
+   le mot de passe haché du client.
+</p><p>
+Pour éviter l'usurpation avec GSSAPI, le serveur doit être configuré
+pour n'accepter que les connexions <code class="literal">hostgssenc</code>
+(<a class="xref" href="auth-pg-hba-conf.html" title="20.1. Le fichier pg_hba.conf">Section 20.1</a>) et l'authentification
+<code class="literal">gss</code> avec elles.
+Le client TCP doit se connecter en utilisant <code class="literal">gssencmode=require</code>.
+</p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/preventing-server-spoofing.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:31 GMT -->
+</html>

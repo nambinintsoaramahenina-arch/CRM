@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/querytree.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>39.1. Arbre de requêtes</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="rules.html" title="Chapitre 39. Système de règles" /><link rel="next" href="rules-views.html" title="39.2. Vues et système de règles" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/querytree.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/querytree.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/querytree.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/querytree.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/querytree.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/querytree.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/querytree.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/querytree.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/querytree.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/querytree.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="rules.html">Système de règles</a></span> » <span class="breadcrumb-node">Arbre de requêtes</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="rules.html" title="Chapitre 39. Système de règles">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="rules.html" title="Chapitre 39. Système de règles">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="rules-views.html" title="39.2. Vues et système de règles">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Chapitre 39. Système de règles </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 39.2. Vues et système de règles</td></tr></table></div><div class="sect1" id="QUERYTREE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">39.1. Arbre de requêtes <a href="#QUERYTREE" class="id_link">#</a></h2></div></div></div><a id="id-1.8.6.6.2" class="indexterm"></a><p>
+   Pour comprendre comment fonctionne le système de règles, il est nécessaire
+   de comprendre quand il est appelé et quelles sont ses entrées et sorties.
+  </p><p>
+   Le système de règles est situé entre l'analyseur et le planificateur. Il
+   prend la sortie de l'analyseur, un arbre de requête et les règles de
+   réécriture définies par l'utilisateur qui sont aussi des arbres de requêtes
+   avec quelques informations supplémentaires, et crée zéro ou plusieurs arbres
+   de requêtes comme résultat. Donc, son entrée et sortie sont toujours des
+   éléments que l'analyseur lui-même pourrait avoir produit et, du coup, tout
+   ce qu'il voit est représentable basiquement comme une instruction
+   <acronym class="acronym">SQL</acronym>.
+  </p><p>
+   Maintenant, qu'est-ce qu'un arbre de requêtes ? C'est une
+   représentation interne d'une instruction <acronym class="acronym">SQL</acronym> où les
+   parties qui le forment sont stockées séparément. Ces arbres de requêtes sont
+   affichables dans le journal de traces du serveur si vous avez configuré les
+   paramètres <code class="varname">debug_print_parse</code>,
+   <code class="varname">debug_print_rewritten</code>, ou
+   <code class="varname">debug_print_plan</code>. Les actions de règles sont aussi
+   enregistrées comme arbres de requêtes dans le catalogue système
+   <code class="structname">pg_rewrite</code>. Elles ne sont pas formatées comme la
+   sortie de traces mais elles contiennent exactement la même information.
+  </p><p>
+   Lire un arbre de requête brut requiert un peu d'expérience. Mais comme les
+   représentations <acronym class="acronym">SQL</acronym> des arbres de requêtes sont
+   suffisantes pour comprendre le système de règles, ce chapitre ne
+   vous apprendra pas à les lire.
+  </p><p>
+   Lors de la lecture des représentations <acronym class="acronym">SQL</acronym> des arbres de
+   requêtes dans ce chapitre, il est nécessaire d'être capable d'identifier les
+   morceaux cassés de l'instruction lorsqu'ils sont dans la structure de l'arbre
+   de requête. Les parties d'un arbre de requêtes sont
+
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">
+      le type de commande
+     </span></dt><dd><p>
+       C'est une simple valeur indiquant quelle commande
+       (<code class="command">select</code>, <code class="command">insert</code>,
+       <code class="command">update</code>, <code class="command">delete</code>)
+       l'arbre de requêtes produira.
+      </p></dd><dt><span class="term">
+      la table d'échelles
+      <a id="id-1.8.6.6.7.2.2.1.1" class="indexterm"></a>
+     </span></dt><dd><p>
+       La table d'échelles est une liste des relations utilisées dans la
+       requête. Dans une instruction <code class="command">select</code>, ce sont les
+       relations données après le mot clé <code class="literal">from</code>.
+      </p><p>
+       Chaque entrée de la table d'échelles identifie une table ou une vue et
+       indique par quel nom elle est désignée dans les autres parties de la
+       requête. Dans l'arbre de requêtes, les entrées de la table d'échelles
+       sont référencées par des numéros plutôt que par des noms. Il
+       importe donc peu, ici, de savoir s'il y a des noms dupliqués comme cela
+       peut être le cas avec une instruction <acronym class="acronym">SQL</acronym>. Cela peut
+       arriver après l'assemblage des tables d'échelle des règles.
+       Les exemples de ce chapitre ne sont pas confrontés à cette situation.
+      </p></dd><dt><span class="term">
+      la relation résultat
+     </span></dt><dd><p>
+       C'est un index dans la table d'échelles qui identifie la relation où
+       iront les résultats de la requête.
+      </p><p>
+       Les requêtes <code class="command">select</code> n'ont pas de
+       relation résultat. Le cas spécial d'un <code class="command">select into</code>
+       est pratiquement identique à un <code class="command">create table</code> suivi
+       par un <code class="literal">insert ... select</code> et n'est pas discuté
+       séparément ici.
+      </p><p>
+       Pour les commandes <code class="command">insert</code>, <code class="command">update</code>
+       et <code class="command">delete</code>, la relation de résultat est la table (ou
+       vue !) où les changements prennent effet.
+      </p></dd><dt><span class="term">
+      la liste cible
+      <a id="id-1.8.6.6.7.2.4.1.1" class="indexterm"></a>
+     </span></dt><dd><p>
+       La liste cible est une liste d'expressions définissant le résultat
+       d'une requête. Dans le cas d'un <code class="command">select</code>, ces
+       expressions sont celles qui construisent la sortie finale de la requête.
+       Ils correspondent aux expressions entre les mots clés
+       <code class="command">select</code> et <code class="command">from</code>
+       (<code class="literal">*</code> est seulement une abréviation pour tous les noms
+       de colonnes d'une relation. Il est étendu par l'analyseur en colonnes
+       individuelles, pour que le système de règles ne le voie jamais).
+      </p><p>
+       Les commandes <code class="command">delete</code> n'ont pas besoin d'une liste
+       normale de
+       colonnes car elles ne produisent aucun résultat. En fait, l'optimiseur
+       ajoutera une entrée spéciale <acronym class="acronym">ctid</acronym> pour aller
+       jusqu'à la liste de cibles vide pour permettre à l'exécuteur de trouver
+       la ligne à supprimer. (<acronym class="acronym">CTID</acronym> est ajouté quand la
+       relation résultante est une table ordinaire. S'il s'agit d'une vue,
+       une variable de type ligne est ajoutée à la place, par le système de
+       règles, comme décrit dans
+       <a class="xref" href="rules-views.html#RULES-VIEWS-UPDATE" title="39.2.4. Mise à jour d'une vue">Section 39.2.4</a>.)
+      </p><p>
+       Pour les commandes <code class="command">insert</code>, la liste cible décrite les
+       nouvelles lignes devant aller dans la relation résultat. Elle consiste
+       en des expressions de la clause <code class="literal">values</code> ou en celles de la
+       clause <code class="command">select</code> dans <code class="literal">insert ...
+        SELECT</code>. La première étape du processus de réécriture ajoute
+       les entrées de la liste cible pour les colonnes n'ont affecté par la
+       commande originale mais ayant des valeurs par défaut. Toute colonne
+       restante (avec soit une valeur donnée soit une valeur par défaut) sera
+       remplie par le planificateur avec une expression NULL constante.
+      </p><p>
+       Pour les commandes <code class="command">update</code>, la liste cible décrite les
+       nouvelles lignes remplaçant les anciennes. Dans le système des règles,
+       elle contient seulement les expressions de la partie <code class="literal">set
+        colonne = expression</code> de la commande. Le planificateur gèrera
+       les colonnes manquantes en insérant des expressions qui copient les
+       valeurs provenant de l'ancienne ligne dans la nouvelle. Comme pour
+       <code class="command">DELETE</code>, un <acronym class="acronym">CTID</acronym> ou une variable
+       de type ligne est ajouté pour que l'exécuteur puisse identifier
+       l'ancienne ligne à mettre à jour.
+      </p><p>
+       Chaque entrée de la liste cible contient une expression qui peut être
+       une valeur constante, une variable pointant vers une colonne d'une des
+       relations de la table d'échelles, un paramètre ou un arbre d'expressions
+       réalisé à partir d'appels de fonctions, de constantes, de variables,
+       d'opérateurs, etc.
+      </p></dd><dt><span class="term">
+      la qualification
+     </span></dt><dd><p>
+       La qualification de la requête est une expression ressemblant à une de
+       celles contenues dans les entrées de la liste cible. La valeur résultant
+       de cette expression est un booléen indiquant si l'opération
+       (<code class="command">insert</code>, <code class="command">update</code>,
+       <code class="command">delete</code> ou <code class="command">select</code>) pour la ligne de
+       résultat final devrait être exécutée ou non. Elle correspond à la clause
+       <code class="literal">where</code> d'une instruction <acronym class="acronym">SQL</acronym>.
+      </p></dd><dt><span class="term">
+      l'arbre de jointure
+     </span></dt><dd><p>
+       L'arbre de jointure de la requête affiche la structure de la clause
+       <code class="literal">from</code>. Pour une simple requête comme <code class="literal">select ... from
+        a, b, c</code>, l'arbre de jointure est une simple liste d'éléments
+       de <code class="literal">from</code> parce que nous sommes autorisés à les joindre dans
+       tout ordre. Mais quand des expressions <code class="literal">join</code>, et plus
+       particulièrement les jointures externes, sont utilisées, nous devons les
+       joindre dans l'ordre affiché par les jointures. Dans ce cas, l'arbre de
+       jointure affiche la structure des expressions <code class="literal">join</code>. Les
+       restrictions associées avec ces clauses <code class="literal">join</code> particulières
+       (à partir d'expressions <code class="literal">on</code> ou <code class="literal">using</code>) sont
+       enregistrées comme des expressions de qualification attachées aux
+       nœuds
+       de l'arbre de jointure. Il s'avère agréable d'enregistrer l'expression
+       de haut niveau <code class="literal">where</code> comme une qualification attachée à
+       l'élément de l'arbre de jointure de haut niveau. Donc, réellement,
+       l'arbre de jointure représente à la fois les clauses <code class="literal">from</code> et
+       <code class="literal">where</code> d'un <code class="command">select</code>.
+      </p></dd><dt><span class="term">
+      le reste
+     </span></dt><dd><p>
+       Les autres parties de l'arbre de requête comme la clause <code class="literal">order
+        BY</code> n'ont pas d'intérêt ici. Le système de règles substitue quelques
+       entrées lors de l'application des règles mais ceci n'a pas grand-chose à
+       voir avec les fondamentaux du système de règles.
+      </p></dd></dl></div><p>
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/querytree.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:43 GMT -->
+</html>

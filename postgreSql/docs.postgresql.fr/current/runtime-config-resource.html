@@ -1,0 +1,828 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-resource.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.4. Consommation des ressources</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-connection.html" title="19.3. Connexions et authentification" /><link rel="next" href="runtime-config-wal.html" title="19.5. Write Ahead Log" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/runtime-config-resource.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/runtime-config-resource.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/runtime-config-resource.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/runtime-config-resource.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/runtime-config-resource.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/runtime-config-resource.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/runtime-config-resource.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/runtime-config-resource.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/runtime-config-resource.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/runtime-config-resource.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/runtime-config-resource.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/runtime-config-resource.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/runtime-config-resource.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/runtime-config-resource.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/runtime-config-resource.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/runtime-config-resource.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/runtime-config-resource.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/runtime-config-resource.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/runtime-config-resource.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/runtime-config-resource.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/runtime-config-resource.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="runtime-config.html">Configuration du serveur</a></span> » <span class="breadcrumb-node">Consommation des ressources</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-connection.html" title="19.3. Connexions et authentification">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-wal.html" title="19.5. Write Ahead Log">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">19.3. Connexions et authentification </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 19.5. Write Ahead Log</td></tr></table></div><div class="sect1" id="RUNTIME-CONFIG-RESOURCE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.4. Consommation des ressources <a href="#RUNTIME-CONFIG-RESOURCE" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-MEMORY">19.4.1. Mémoire</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-DISK">19.4.2. Disque</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-KERNEL">19.4.3. Usage des ressources du noyau</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-VACUUM-COST">19.4.4. Report du VACUUM en fonction de son coût</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-BACKGROUND-WRITER">19.4.5. Processus d'écriture en arrière-plan</a></span></dt><dt><span class="sect2"><a href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-ASYNC-BEHAVIOR">19.4.6. Comportement asynchrone</a></span></dt></dl></div><div class="sect2" id="RUNTIME-CONFIG-RESOURCE-MEMORY"><div class="titlepage"><div><div><h3 class="title">19.4.1. Mémoire <a href="#RUNTIME-CONFIG-RESOURCE-MEMORY" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-SHARED-BUFFERS"><span class="term"><code class="varname">shared_buffers</code> (<code class="type">integer</code>)</span> <a href="#GUC-SHARED-BUFFERS" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.2.2.1.2.1" class="indexterm"></a><p>
+     Initialise la quantité de mémoire que le serveur de bases de données
+     utilise comme mémoire partagée. La valeur par défaut, en général
+     128 Mo, peut être automatiquement abaissée si la configuration du
+     noyau ne la supporte pas (déterminé lors de l'exécution de
+     l'<span class="application">initdb</span>). Ce paramètre doit être au minimum
+     de 128 ko + 16 ko par <a class="xref" href="runtime-config-connection.html#GUC-MAX-CONNECTIONS">max_connections</a>.
+     Des valeurs significativement plus importantes que ce minimum sont
+     généralement nécessaires pour de bonnes performances. Si cette valeur est
+     spécifiée sans unité, elle sera interprétée comme un nombre de blocs,
+     autrement dit <code class="symbol">BLCKSZ</code> octets, typiquement 8 Ko. (Une
+     valeur personnalisée de <code class="symbol">BLCKSZ</code> changera la valeur
+     minimale.) Ce paramètre ne peut être configuré qu'au lancement du
+     serveur.
+    </p><p>
+     Si vous disposez d'un serveur dédié à la base de données, avec 1 Go
+     de mémoire ou plus, une valeur de départ raisonnable pour ce paramètre
+     est de 25% la mémoire de votre système. Certains cas peuvent nécessiter
+     une valeur encore plus importante pour le
+     <code class="varname">shared_buffers</code> mais comme
+     <span class="productname">PostgreSQL</span> profite aussi du cache du système
+     d'exploitation, il est peu probable qu'une allocation de plus de 40% de
+     la mémoire fonctionnera mieux qu'une valeur plus restreinte. Des valeurs
+     importantes pour le paramètre <code class="varname">shared_buffers</code>
+     requièrent généralement une augmentation proportionnelle du
+     <code class="varname">max_wal_size</code>, pour étendre dans le temps les
+     écritures de grandes quantités de données, nouvelles ou modifiées.
+    </p><p>
+     Sur des systèmes comprenant moins d'1 Go de mémoire, un pourcentage
+     plus restreint est approprié pour laisser une place suffisante au
+     système d'exploitation.
+    </p></dd><dt id="GUC-HUGE-PAGES"><span class="term"><code class="varname">huge_pages</code> (<code class="type">enum</code>)
+    <a id="id-1.6.6.7.2.2.2.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-HUGE-PAGES" class="id_link">#</a></dt><dd><p>
+     Contrôle si les <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span> sont obligatoires
+     pour la principale zone de mémoire partagée. Les valeurs valides sont
+     <code class="literal">try</code> (le défaut), <code class="literal">on</code> et
+     <code class="literal">off</code>. Ce paramètre est seulement configurable au
+     démarrage du serveur. Avec <code class="varname">huge_pages</code> àconfig
+     <code class="literal">try</code>, le serveur tentera de demander des
+     <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span> mais se rabattra sur le défaut
+     en cas d'échec. Avec <code class="literal">on</code>, cet échec empêchera le serveur
+     de démarrer. Avec <code class="literal">off</code>, il n'y aura pas de demande de
+     <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span>.
+     L'état réel des <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span> est indiqué par
+     la variable <a class="xref" href="runtime-config-preset.html#GUC-HUGE-PAGES-STATUS">huge_pages_status</a>.
+    </p><p>
+     Pour le moment, ce paramètre n'est supporté que sur Linux et Windows. Il
+     est ignoré sur les autres systèmes quand il est à
+     <code class="literal">try</code>. Sur Linux, il est seulement supporté quand
+     <code class="varname">shared_memory_type</code> est configuré à
+     <code class="literal">mmap</code> (la valeur par défaut).
+    </p><p>
+     L'utilisation des <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span> réduit la
+     taille des tables de pages et la consommation CPU pour gérer la mémoire,
+     améliorant ainsi les performances. Pour plus de détails sur la gestion
+     des <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span> sur Linux,
+     voir <a class="xref" href="kernel-resources.html#LINUX-HUGE-PAGES" title="18.4.5. Pages mémoire de grande taille (huge pages) sous Linux">Section 18.4.5</a>.
+    </p><p>
+     Sous Windows, les <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span> sont connues
+     sous le nom de  <span class="foreignphrase"><em class="foreignphrase">large pages</em></span>. Pour les
+     utiliser, vous devez assigner le droit
+     « Verrouiller les pages en mémoire »
+     (<span class="foreignphrase"><em class="foreignphrase">Lock Pages in Memory</em></span>) à l'utilisateur
+     Windows qui fait tourner <span class="productname">PostgreSQL</span>.
+     Vous pouvez utiliser l'<span class="productname">Éditeur de stratégie de groupe locale
+     </span> (gpedit.msc) pour assigner ce droit à l'utilisateur.
+     Pour démarrer le serveur en ligne de commande en tant que processus
+     autonome, et pas en tant que service Windows, l'invite de commande doit
+     tourner en tant qu'administrateur, ou bien le contrôle de compte d'utilisateur
+     (UAC, <span class="foreignphrase"><em class="foreignphrase">User Access Control</em></span>) doit être
+     désactivé. Quand l'UAC est activé, l'invite de commande normale révoque
+     le droit « Verrouiller les pages en mémoire » de l'utilisateur
+     au démarrage.
+    </p><p>
+     Notez que ce paramètre n'affecte que la partie principale de la mémoire
+     partagée. Des systèmes d'exploitation comme Linux, FreeBSD et Illumos
+     peuvent aussi utiliser les <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span>
+     automatiquement pour les allocations mémoire normales sans demande
+     explicite de <span class="productname">PostgreSQL</span>. Sur Linux, cela
+     s'appelle <span class="quote">« <span class="quote">transparent huge pages</span> »</span><a id="id-1.6.6.7.2.2.2.2.5.4" class="indexterm"></a> (THP). Elles sont
+     connues pour causer une dégradation des performances avec
+     <span class="productname">PostgreSQL</span> pour certains utilisateurs sur
+     certaines versions de Linux ; leur usage est donc actuellement
+     déconseillé (au contraire de l'utilisation explicite de
+     <code class="varname">huge_pages</code>).
+    </p></dd><dt id="GUC-HUGE-PAGE-SIZE"><span class="term"><code class="varname">huge_page_size</code> (<code class="type">integer</code>)
+      <a id="id-1.6.6.7.2.2.3.1.3" class="indexterm"></a>
+      </span> <a href="#GUC-HUGE-PAGE-SIZE" class="id_link">#</a></dt><dd><p>
+        Contrôle la taille des <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span>,
+        quand elles sont activées avec <a class="xref" href="runtime-config-resource.html#GUC-HUGE-PAGES">huge_pages</a>. La
+        valeur par défaut est zéro (<code class="literal">0</code>). Si initialisé à
+        <code class="literal">0</code>, la valeur par défaut du système pour la taille
+        des <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span> est utilisée.
+       </p><p>
+        Certaines valeurs communes de la taille des pages sur les serveurs à
+        architecture 64 bits sont :
+        <code class="literal">2MB</code> et <code class="literal">1GB</code> (Intel et AMD),
+        <code class="literal">16MB</code> et <code class="literal">16GB</code> (IBM POWER), et
+        <code class="literal">64kB</code>, <code class="literal">2MB</code>,
+        <code class="literal">32MB</code> et <code class="literal">1GB</code> (ARM). Pour plus
+        d'informations, voir <a class="xref" href="kernel-resources.html#LINUX-HUGE-PAGES" title="18.4.5. Pages mémoire de grande taille (huge pages) sous Linux">Section 18.4.5</a>.
+       </p><p>
+        L'utilisation de valeurs différentes des valeurs par défaut n'est
+        actuellement supportée que sous Linux.
+       </p></dd><dt id="GUC-TEMP-BUFFERS"><span class="term"><code class="varname">temp_buffers</code> (<code class="type">integer</code>)</span> <a href="#GUC-TEMP-BUFFERS" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.2.2.4.2.1" class="indexterm"></a><p>
+     Configure la quantité maximale de mémoire utilisée pour le cache des
+     objets temporaires à l'intérieur de chaque session à la base. Ce sont des
+     caches locaux à la session utilisés uniquement pour l'accès aux tables
+     temporaires. Si cette valeur est spécifiée sans unité, elle est
+     interprétée comme un nombre de blocs, de <code class="symbol">BLCKSZ</code> octets,
+     typiquement 8 Ko. La valeur par défaut est de 8 Mo
+     (<code class="literal">8MB</code>). (Si <code class="symbol">BLCKSZ</code> ne vaut pas 8 Ko,
+     la valeur changera de façon proportionnée.) Ce paramètre peut être
+     modifié à l'intérieur de sessions individuelles mais seulement jusqu'à la
+     première utilisation des tables temporaires dans une session ; les
+     tentatives suivantes de changement de cette valeur n'ont aucun effet sur
+     cette session.
+    </p><p>
+     Une session alloue des tampons temporaires en fonction des besoins jusqu'à atteindre
+     la limite donnée par <code class="varname">temp_buffers</code>. Positionner
+     une valeur importante pour les sessions qui ne le nécessitent pas ne
+     coûte qu'un descripteur de tampon, soit
+     environ 64 octets, par incrément de <code class="varname">temp_buffers</code>. Néanmoins,
+     si un tampon est réellement utilisé, 8192 autres octets sont consommés
+     pour celui-ci (ou, plus généralement, <code class="symbol">BLCKSZ</code> octets).
+    </p></dd><dt id="GUC-MAX-PREPARED-TRANSACTIONS"><span class="term"><code class="varname">max_prepared_transactions</code> (<code class="type">integer</code>)</span> <a href="#GUC-MAX-PREPARED-TRANSACTIONS" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.2.2.5.2.1" class="indexterm"></a><p>
+     Configure le nombre maximum de transactions simultanément dans
+     l'état <span class="quote">« <span class="quote">préparées</span> »</span> (voir <a class="xref" href="sql-prepare-transaction.html" title="PREPARE TRANSACTION"><span class="refentrytitle">PREPARE TRANSACTION</span></a>).
+     Zéro, la configuration par défaut, désactive la fonctionnalité des
+     transactions préparées
+     Ce paramètre ne peut être configuré qu'au lancement du serveur.
+    </p><p>
+     Si vous ne prévoyez pas d'utiliser les transactions préparées, ce
+     paramètre devrait être positionné à zéro pour éviter toute création
+     accidentelle de transactions préparées. Au contraire, si vous les
+     utilisez, il peut être intéressant de positionner
+     <code class="varname">max_prepared_transactions</code> au minimum à au moins
+     <a class="xref" href="runtime-config-connection.html#GUC-MAX-CONNECTIONS">max_connections</a> pour que chaque session puisse
+     avoir sa transaction préparée.
+    </p><p>
+     Lors de l'exécution d'un serveur en attente, vous devez configurer ce
+     paramètre à la même valeur ou à une valeur plus importante que sur le
+     serveur primaire. Sinon, des requêtes pourraient ne pas être autorisées
+     sur le serveur en attente.
+    </p></dd><dt id="GUC-WORK-MEM"><span class="term"><code class="varname">work_mem</code> (<code class="type">integer</code>)</span> <a href="#GUC-WORK-MEM" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.2.2.6.2.1" class="indexterm"></a><p>
+     Indique la quantité de mémoire maximale de base à utiliser pour
+     l'exécution d'une requête (tel qu'un tri ou une table de hachage) avant
+     d'écrire dans des fichiers temporaires sur disque. Si cette valeur est
+     indiquée sans unité, elle est considérée être en Ko. La valeur par défaut
+     est de 4 Mo (<code class="literal">4MB</code>). Une requête complexe peut réaliser
+     plusieurs opérations de tri ou de hachage exécutées en
+     même temps, chaque opération étant autorisée à utiliser autant
+     de mémoire que cette valeur indique avant de commencer à écrire
+     les données dans des fichiers
+     temporaires. De plus, de nombreuses sessions peuvent exécuter de telles
+     opérations simultanément. La mémoire totale utilisée peut, de ce fait,
+     atteindre plusieurs fois la valeur de <code class="varname">work_mem</code> ;
+     il est nécessaire de garder cela à l'esprit lors du choix de cette
+     valeur. Les opérations de tri sont utilisées pour <code class="literal">ORDER
+      BY</code>, <code class="literal">DISTINCT</code> et les jointures de fusion. Les
+     tables de hachage sont utilisées dans les jointures de hachage, les
+     agrégations, les nœuds Memoize et le traitement des
+     sous-requêtes <code class="literal">IN</code> fondés sur le hachage.
+    </p><p>
+     Les opérations basées sur le hachage sont généralement plus sensibles à
+     la disponibilité de la mémoire que leur équivalent basé sur le tri. La
+     mémoire disponible pour les tables de hachages est calculée en
+     multipliant <code class="varname">work_mem</code> par
+     <code class="varname">hash_mem_multiplier</code>. Cela rend possible pour les
+     opérations de hachage d'utiliser une quantité de mémoire qui dépasse la
+     quantité de base proposée par <code class="varname">work_mem</code>.
+    </p></dd><dt id="GUC-HASH-MEM-MULTIPLIER"><span class="term"><code class="varname">hash_mem_multiplier</code> (<code class="type">floating point</code>)
+    <a id="id-1.6.6.7.2.2.7.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-HASH-MEM-MULTIPLIER" class="id_link">#</a></dt><dd><p>
+     Utilisé pour calculer la quantité maximale de mémoire que les opérations
+     basées sur le hachage peuvent utiliser. La limite finale est déterminée
+     en multipliant <code class="varname">work_mem</code> par
+     <code class="varname">hash_mem_multiplier</code>. La valeur par défaut est 2.0, ce
+     qui rend les opérations de hachage sujettes au double de la valeur de
+     <code class="varname">work_mem</code> pour les opérations basées sur le tri.
+    </p><p>
+     Pensez à augmenter <code class="varname">hash_mem_multiplier</code> dans les
+     environnements où l'utilisation de fichiers temporaires survient
+     fréquemment, tout spécialement quand augmenter uniquement
+     <code class="varname">work_mem</code> a pour résultat une pression mémoire trop
+     importante (la pression mémoire prend typiquement la forme d'erreurs pour
+     manque de mémoire). La configuration par défaut de 2.0 est souvent
+     efficace avec des charges de travail variées. Des configurations plus
+     hautes (entre 2.0 et 8.0, voire encore plus) pourraient être plus
+     efficaces dans les environnements où <code class="varname">work_mem</code> a déjà
+     été augmenté à 40 Moi, voire plus.
+    </p></dd><dt id="GUC-MAINTENANCE-WORK-MEM"><span class="term"><code class="varname">maintenance_work_mem</code> (<code class="type">integer</code>)</span> <a href="#GUC-MAINTENANCE-WORK-MEM" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.2.2.8.2.1" class="indexterm"></a><p>
+     Indique la quantité maximale de mémoire que peuvent utiliser les
+     opérations de maintenance telles que <code class="command">VACUUM</code>,
+     <code class="command">CREATE INDEX</code> et <code class="command">ALTER TABLE ADD FOREIGN
+      KEY</code>. Si cette valeur est indiquée sans unité, elle est
+     considérée être en Ko. La valeur par défaut est de 64 Mo.
+     Puisque seule une de ces opérations peut être exécutée à la fois
+     dans une session et que, dans le cadre d'un fonctionnement
+     normal, peu d'opérations de ce genre sont exécutées
+     concurrentiellement sur une même installation, il est possible d'initialiser
+     cette variable à une valeur bien plus importante que
+     <code class="varname">work_mem</code>. Une grande valeur peut
+     améliorer les performances des opérations VACUUM et de la
+     restauration des sauvegardes.
+    </p><p>
+     Quand autovacuum fonctionne, un maximum de
+     <a class="xref" href="runtime-config-autovacuum.html#GUC-AUTOVACUUM-MAX-WORKERS">autovacuum_max_workers</a> fois cette quantité de
+     mémoire peut être utilisée. Il convient donc de s'assurer de ne pas
+     configurer la valeur par défaut de façon trop importante. Il pourrait
+     être utile de contrôler ceci en configurant <a class="xref" href="runtime-config-resource.html#GUC-AUTOVACUUM-WORK-MEM">autovacuum_work_mem</a> séparément.
+    </p></dd><dt id="GUC-AUTOVACUUM-WORK-MEM"><span class="term"><code class="varname">autovacuum_work_mem</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.7.2.2.9.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-AUTOVACUUM-WORK-MEM" class="id_link">#</a></dt><dd><p>
+     Indique la quantité maximale de mémoire à utiliser pour chaque processus
+     autovacuum worker. Si cette valeur est indiquée sans unité, elle est
+     considérée être en Ko. Ce paramètre vaut -1 par défaut, indiquant que la
+     valeur de <a class="xref" href="runtime-config-resource.html#GUC-MAINTENANCE-WORK-MEM">maintenance_work_mem</a> doit être utilisée à
+     la place. Ce paramétrage n'a pas d'effet sur le comportement de
+     <code class="command">VACUUM</code> lorsqu'il est exécuté dans d'autres contextes.
+     Ce paramètre peut seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+     serveur.
+    </p></dd><dt id="GUC-VACUUM-BUFFER-USAGE-LIMIT"><span class="term">
+    <code class="varname">vacuum_buffer_usage_limit</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.7.2.2.10.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-VACUUM-BUFFER-USAGE-LIMIT" class="id_link">#</a></dt><dd><p>
+     Indique la taille du <a class="glossterm" href="glossary.html#GLOSSARY-BUFFER-ACCESS-STRATEGY"><em class="glossterm"><a class="glossterm" href="glossary.html#GLOSSARY-BUFFER-ACCESS-STRATEGY" title="Stratégie d'accès aux buffers (Buffer Access Strategy">Buffer Access
+     Strategy</a></em></a> utilisé par les commandes <code class="command">VACUUM</code> et
+     <code class="command">ANALYZE</code>.  Un paramétrage à 0 va autoriser l'opération à
+     utiliser autant de <code class="varname">shared_buffers</code> que souhaité.  Les
+     tailles valides sont comprises entre <code class="literal">128 kB</code> et
+     <code class="literal">16 GB</code>.  Si la taille spécifiée dépasse 1/8 de la taille
+     de <code class="varname">shared_buffers</code>, la taille sera plafonnée
+     silencieusement à cette valeur.  La valeur par défaut est <code class="literal">2
+     MB</code>.  Si cette valeur est indiquée sans unité, elle sera
+     considérée comme étant des kilo-octets. Ce paramètre peut être modifié à
+     tout instant.  Il peut être surchargé pour <a class="xref" href="sql-vacuum.html" title="VACUUM"><span class="refentrytitle" id="SQL-VACUUM-TITLE">VACUUM</span></a> et
+     <a class="xref" href="sql-analyze.html" title="ANALYZE"><span class="refentrytitle" id="SQL-ANALYZE-TITLE">ANALYZE</span></a> en spécifiant l'option
+     <code class="option">BUFFER_USAGE_LIMIT</code>.  Un paramétrage plus élevé permet aux
+     commandes <code class="command">VACUUM</code> et <code class="command">ANALYZE</code> de
+     s'exécuter plus rapidement, cependant, avoir une valeur trop élevée peut
+     entrainer l'éviction d'autres blocs utiles de la mémoire partagée.
+    </p></dd><dt id="GUC-LOGICAL-DECODING-WORK-MEM"><span class="term"><code class="varname">logical_decoding_work_mem</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.7.2.2.11.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-LOGICAL-DECODING-WORK-MEM" class="id_link">#</a></dt><dd><p>
+     Indique la quantité de mémoire à utiliser pour le décodage logique, avant
+     que certaines données décodées ne soient écrites sur les disques locaux.
+     Ceci limite la quantité de mémoire utilisée par la réplication logique en
+     flux. Elle vaut par défaut 64 Mo (<code class="literal">64MB</code>). Comme chaque
+     connexion de réplication utilise un seul tampon de cette taille et qu'une
+     installation ne peut avoir normalement beaucoup de connexions simultanées
+     de ce type (étant donné qu'elles sont limitées par
+     <code class="varname">max_wal_senders</code>), il est plus sûr de configurer cette
+     valeur bien plus haute que <code class="varname">work_mem</code>, réduisant la
+     quantité de données décodées écrites sur disque.
+    </p></dd><dt id="GUC-COMMIT-TIMESTAMP-BUFFERS"><span class="term"><code class="varname">commit_timestamp_buffers</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.7.2.2.12.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-COMMIT-TIMESTAMP-BUFFERS" class="id_link">#</a></dt><dd><p>
+     Précise la quantité de mémoire à utiliser pour le cache du contenu de
+     <code class="literal">pg_commit_ts</code> (voir
+     <a class="xref" href="storage-file-layout.html#PGDATA-CONTENTS-TABLE" title="Tableau 65.1. Contenu de PGDATA">Tableau 65.1</a>).
+     Si cette valeur est indiquée sans unité, elle est prise pour un nombre de
+     blocs, autrement dit <code class="symbol">BLCKSZ</code> octets, soit typiquement 8 Ko.
+     La valeur par défaut est <code class="literal">0</code>, ce qui réclame de
+     <code class="varname">shared_buffers</code>/512 à 1024 blocs, mais pas moins de 16
+     blocs. Ce paramètre peut seulement être configuré au démarrage du serveur.
+    </p></dd><dt id="GUC-MULTIXACT-MEMBER-BUFFERS"><span class="term"><code class="varname">multixact_member_buffers</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.7.2.2.13.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MULTIXACT-MEMBER-BUFFERS" class="id_link">#</a></dt><dd><p>
+     Précise la quantité de mémoire partagée à utiliser pour le cache du contenu
+     de <code class="literal">pg_multixact/members</code> (voir
+     <a class="xref" href="storage-file-layout.html#PGDATA-CONTENTS-TABLE" title="Tableau 65.1. Contenu de PGDATA">Tableau 65.1</a>).
+     Si cette valeur est indiquée sans unité, elle est prise pour un nombre de
+     blocs, autrement dit <code class="symbol">BLCKSZ</code> octets, soit typiquement 8 Ko.
+     La valeur par défaut est <code class="literal">32</code>. Ce paramètre peut seulement
+     être configuré au démarrage du serveur.
+    </p></dd><dt id="GUC-MULTIXACT-OFFSET-BUFFERS"><span class="term"><code class="varname">multixact_offset_buffers</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.7.2.2.14.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MULTIXACT-OFFSET-BUFFERS" class="id_link">#</a></dt><dd><p>
+     Précise la quantité de mémoire partagée à utiliser pour le cache du contenu
+     de <code class="literal">pg_multixact/offsets</code> (voir
+     <a class="xref" href="storage-file-layout.html#PGDATA-CONTENTS-TABLE" title="Tableau 65.1. Contenu de PGDATA">Tableau 65.1</a>).
+     Si cette valeur est indiquée sans unité, elle est prise pour un nombre de
+     blocs, autrement dit <code class="symbol">BLCKSZ</code> octets, soit typiquement 8 Ko.
+     La valeur par défaut est <code class="literal">16</code>. Ce paramètre peut seulement
+     être configuré au démarrage du serveur.
+    </p></dd><dt id="GUC-NOTIFY-BUFFERS"><span class="term"><code class="varname">notify_buffers</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.7.2.2.15.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-NOTIFY-BUFFERS" class="id_link">#</a></dt><dd><p>
+     Précise la quantité de mémoire partagée à utiliser pour le cache du contenu
+     de <code class="literal">pg_notify</code> (voir
+     <a class="xref" href="storage-file-layout.html#PGDATA-CONTENTS-TABLE" title="Tableau 65.1. Contenu de PGDATA">Tableau 65.1</a>).
+     Si cette valeur est indiquée sans unité, elle est prise pour un nombre de
+     blocs, autrement dit <code class="symbol">BLCKSZ</code> octets, soit typiquement 8 Ko.
+     La valeur par défaut est <code class="literal">16</code>. Ce paramètre peut seulement
+     être configuré au démarrage du serveur.
+    </p></dd><dt id="GUC-SERIALIZABLE-BUFFERS"><span class="term"><code class="varname">serializable_buffers</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.7.2.2.16.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SERIALIZABLE-BUFFERS" class="id_link">#</a></dt><dd><p>
+     Précise la quantité de mémoire partagée à utiliser pour le cache du contenu
+     de <code class="literal">pg_serial</code> (voir
+     <a class="xref" href="storage-file-layout.html#PGDATA-CONTENTS-TABLE" title="Tableau 65.1. Contenu de PGDATA">Tableau 65.1</a>).
+     Si cette valeur est indiquée sans unité, elle est prise pour un nombre de
+     blocs, autrement dit <code class="symbol">BLCKSZ</code> octets, soit typiquement 8 Ko.
+     La valeur par défaut est <code class="literal">32</code>. Ce paramètre peut seulement
+     être configuré au démarrage du serveur.
+    </p></dd><dt id="GUC-SUBTRANSACTION-BUFFERS"><span class="term"><code class="varname">subtransaction_buffers</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.7.2.2.17.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SUBTRANSACTION-BUFFERS" class="id_link">#</a></dt><dd><p>
+     Précise la quantité de mémoire partagée à utiliser pour le cache du contenu
+     de <code class="literal">pg_subtrans</code> (voir
+     <a class="xref" href="storage-file-layout.html#PGDATA-CONTENTS-TABLE" title="Tableau 65.1. Contenu de PGDATA">Tableau 65.1</a>).
+     Si cette valeur est indiquée sans unité, elle est prise pour un nombre de
+     blocs, autrement dit <code class="symbol">BLCKSZ</code> octets, soit typiquement 8 Ko.
+     La valeur par défaut est <code class="literal">0</code>, ce qui réclame de
+     <code class="varname">shared_buffers</code>/512 à 1024 blocs, mais pas moins de 16
+     blocs. Ce paramètre peut seulement être configuré au démarrage du serveur.
+    </p></dd><dt id="GUC-TRANSACTION-BUFFERS"><span class="term"><code class="varname">transaction_buffers</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.7.2.2.18.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-TRANSACTION-BUFFERS" class="id_link">#</a></dt><dd><p>
+     Précise la quantité de mémoire partagée à utiliser pour le cache du contenu
+     de <code class="literal">pg_xact</code> (voir
+     <a class="xref" href="storage-file-layout.html#PGDATA-CONTENTS-TABLE" title="Tableau 65.1. Contenu de PGDATA">Tableau 65.1</a>).
+     Si cette valeur est indiquée sans unité, elle est prise pour un nombre de
+     blocs, autrement dit <code class="symbol">BLCKSZ</code> octets, soit typiquement 8 Ko.
+     La valeur par défaut est <code class="literal">0</code>, ce qui réclame de
+     <code class="varname">shared_buffers</code>/512 à 1024 blocs, mais pas moins de 16
+     blocs. Ce paramètre peut seulement être configuré au démarrage du serveur.
+    </p></dd><dt id="GUC-MAX-STACK-DEPTH"><span class="term"><code class="varname">max_stack_depth</code> (<code class="type">integer</code>)</span> <a href="#GUC-MAX-STACK-DEPTH" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.2.2.19.2.1" class="indexterm"></a><p>
+     Indique la profondeur maximale de la pile d'exécution du serveur. La
+     configuration idéale pour ce paramètre est la limite réelle de la pile
+     assurée par le noyau (configurée par <code class="literal">ulimit -s</code> ou
+     équivalent local) à laquelle est soustraite une marge de sécurité d'un Mo
+     environ. La marge de sécurité est nécessaire parce que la profondeur de la
+     pile n'est pas vérifiée dans chaque routine du serveur mais uniquement dans
+     les routines clés potentiellement récursives. Si cette valeur est indiquée
+     sans unité, elle est considérée être en Ko. Le paramétrage par défaut est
+     de 2 Mo, valeur faible qui implique peu de risques.  Néanmoins, elle
+     peut s'avérer trop petite pour autoriser l'exécution de fonctions
+     complexes. Seuls les superutilisateurs et les utilisateurs disposant des
+     droits <code class="literal">SET</code> appropriés peuvent modifier ce paramètre.
+    </p><p>
+     Configurer ce paramètre à une valeur plus importante que la limite
+     réelle du noyau signifie qu'une fonction récursive peut
+     occasionner un arrêt brutal d'un processus serveur particulier.
+     Sur les plateformes où
+     <span class="productname">PostgreSQL</span> peut déterminer la limite du
+     noyau, il interdit de positionner cette variable à une valeur
+     inadéquate. Néanmoins, toutes les plateformes ne fournissent pas
+     cette information, et une grande attention doit être portée au
+     choix de cette valeur.
+    </p></dd><dt id="GUC-SHARED-MEMORY-TYPE"><span class="term"><code class="varname">shared_memory_type</code> (<code class="type">enum</code>)
+    <a id="id-1.6.6.7.2.2.20.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SHARED-MEMORY-TYPE" class="id_link">#</a></dt><dd><p>
+     Indique l'implémentation de mémoire partagée que le serveur doit utiliser
+     pour la principale région de mémoire partagée contenant le cache disque
+     de <span class="productname">PostgreSQL</span> et d'autres données partagées.
+     Les valeurs possibles sont <code class="literal">mmap</code> (pour la mémoire
+     partagée anonyme allouée en utilisant <code class="function">mmap</code>),
+     <code class="literal">sysv</code> (pour la mémoire partagée System V allouée via
+     <code class="function">shmget</code>) et <code class="literal">windows</code> (pour la
+     mémoire partagée Windows). Toutes les valeurs ne sont pas forcément
+     supportées sur toutes les plateformes ; la première option supportée
+     est la valeur par défaut pour cette plateforme. L'utilisation de l'option
+     <code class="literal">sysv</code>, qui n'est pas la valeur par défaut quelque soit
+     la plateforme, est généralement non conseillée car elle nécessite
+     habituellement une configuration du noyau différente de la configuration
+     par défaut pour permettre de grosses allocations (voir <a class="xref" href="kernel-resources.html#SYSVIPC" title="18.4.1. Mémoire partagée et sémaphore">Section 18.4.1</a>). Ce paramètre est seulement configurable au démarrage
+     du serveur.
+    </p></dd><dt id="GUC-DYNAMIC-SHARED-MEMORY-TYPE"><span class="term"><code class="varname">dynamic_shared_memory_type</code> (<code class="type">enum</code>)
+    <a id="id-1.6.6.7.2.2.21.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-DYNAMIC-SHARED-MEMORY-TYPE" class="id_link">#</a></dt><dd><p>
+     Indique l'implémentation de mémoire partagée dynamique que le serveur
+     doit utiliser. Les valeurs possibles sont <code class="literal">posix</code> (pour
+     la mémoire partagée POSIX allouée en utilisant <code class="literal">shm_open</code>),
+     <code class="literal">sysv</code> (pour la mémoire partagée System V allouée en*
+     utilisant <code class="literal">shmget</code>), <code class="literal">windows</code> (pour la
+     mémoire partagée Windows), <code class="literal">mmap</code> (pour simuler la mémoire
+     partagée en utilisant les fichiers de mémoire enregistrés dans le
+     répertoire des données). Toutes les valeurs ne sont pas forcément supportées
+     sur toutes les plateformes ; la première option supportée est la
+     valeur par défaut pour cette plateforme. L'utilisation de l'option
+     <code class="literal">mmap</code>, qui n'est la valeur par défaut d'aucune plateforme,
+     est généralement déconseillée car le système d'exploitation pourrait écrire
+     des pages modifiées sur disque de manière répétée, augmentant la charge
+     disque du système. Néanmoins, cela peut se révéler utile pour débugger, quand
+     le répertoire <code class="literal">pg_dynshmem</code> est stocké dans un disque RAM ou
+     quand les autres options de mémoire partagée ne sont pas disponibles.
+     Ce paramètre est seulement configurable au démarrage du serveur.
+    </p></dd><dt id="GUC-MIN-DYNAMIC-SHARED-MEMORY"><span class="term"><code class="varname">min_dynamic_shared_memory</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.7.2.2.22.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MIN-DYNAMIC-SHARED-MEMORY" class="id_link">#</a></dt><dd><p>
+     Indique la quantité de mémoire qui doit être allouée au démarrage du
+     serveur pour l'execution en parallèle de requêtes. Quand cette partie de
+     la mémoire est insuffisante pour les requêtes concurrentes, de nouvelles
+     requêtes parallèles essayent d'allouer temporairement plus de mémoire
+     partagée en utilisant la méthode configurée avec
+     <code class="varname">dynamic_shared_memory_type</code>, ce qui peut être plus
+     lent à cause de la consommation de ressources de la gestion de la
+     mémoire. La mémoire allouée au démarrage avec
+     <code class="varname">min_dynamic_shared_memory</code> est affectée par le
+     paramètre <code class="varname">huge_pages</code> au niveau du système
+     d'exploitation lorsque c'est supporté et peut bénéficier de plus grandes
+     pages sur les systèmes d'exploitation où c'est géré automatiquement. La
+     valeur par défaut est <code class="literal">0</code> (aucune).
+    </p></dd><dt id="GUC-FILE-EXTEND-METHOD"><span class="term"><code class="varname">file_extend_method</code> (<code class="type">enum</code>)
+   <a id="id-1.6.6.7.2.2.23.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-FILE-EXTEND-METHOD" class="id_link">#</a></dt><dd><p>
+     Indique la méthode utilisée pour étendre les fichiers de données lors
+     d'opérations de masse telles que <code class="command">COPY</code>. La première
+     option disponible est utilisée comme valeur par défaut, suivant le
+     système d'exploitation :
+     </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+         <code class="literal">posix_fallocate</code> (Unix) utilise l'interface standard
+         POSIX pour allouer de l'espace disque, mais elle n'existe pas sur
+         certains systèmes. Si elle est présente mais que le système de fichiers
+         sous-jacent ne l'accepte pas, cette option utilise silencieusement
+         <code class="literal">write_zeros</code>. Les versions actuelles de BTRFS sont
+         connues pour désactiver la compression quand cette option est utilisée.
+         C'est la valeur par défaut sur les systèmes qui ont cette fonction.
+        </p></li><li class="listitem"><p>
+         <code class="literal">write_zeros</code> étend les fichiers en écrivant des blocs
+         de zéro octet. C'est la valeur par défaut sur les systèmes qui n'ont
+         pas la fonction <code class="function">posix_fallocate</code>.
+       </p></li></ul></div><p>
+     La méthode <code class="literal">write_zeros</code> est toujours utilisée quand les
+     fichiers de données sont étendues par huit blocs ou moins.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-RESOURCE-DISK"><div class="titlepage"><div><div><h3 class="title">19.4.2. Disque <a href="#RUNTIME-CONFIG-RESOURCE-DISK" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-TEMP-FILE-LIMIT"><span class="term"><code class="varname">temp_file_limit</code> (<code class="type">integer</code>)</span> <a href="#GUC-TEMP-FILE-LIMIT" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.3.2.1.2.1" class="indexterm"></a><p>
+     Spécifie la quantité maximale d'espace disque qu'un processus peut
+     utiliser pour les fichiers temporaires, comme par exemple ceux
+     utilisés pour les tris et hachages, ou le fichier de stockage pour
+     un curseur détenu. Une transaction tentant de dépasser cette limite
+     sera annulée. La valeur a pour unité le ko. La valeur spéciale
+     <code class="literal">-1</code> (valeur par défaut) signifie sans limite. Seuls
+     les superutilisateurs et les utilisateurs disposant des droits
+     <code class="literal">SET</code> appropriés peuvent modifier cette configuration.
+    </p><p>
+     Ce paramètre contraint l'espace total utilisé à tout instant par tous
+     les fichiers temporaires utilisés pour un processus
+     <span class="productname">PostgreSQL</span> donnée. Il doit être noté que
+     l'espace disque utilisé pour les tables temporaires explicites, à
+     l'opposé des fichiers temporaires utilisés implicitement pour
+     l'exécution des requêtes, n'est <span class="emphasis"><em>pas</em></span> pris en
+     compte pour cette limite.
+    </p></dd><dt id="GUC-MAX-NOTIFY-QUEUE-PAGES"><span class="term"><code class="varname">max_notify_queue_pages</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.7.3.2.2.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MAX-NOTIFY-QUEUE-PAGES" class="id_link">#</a></dt><dd><p>
+     Précise la quantité maximale de blocs alloués pour la queue
+     <a class="xref" href="sql-notify.html" title="NOTIFY"><span class="refentrytitle">NOTIFY</span></a> / <a class="xref" href="sql-listen.html" title="LISTEN"><span class="refentrytitle">LISTEN</span></a>. La valeur par
+     défaut est 1048576. Pour des blocs de 8 Ko, cela permet de consommer
+     jusqu'à 8 Go d'espace disque. Ce paramètre peut seulement être configuré
+     au démarrage du serveur.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-RESOURCE-KERNEL"><div class="titlepage"><div><div><h3 class="title">19.4.3. Usage des ressources du noyau <a href="#RUNTIME-CONFIG-RESOURCE-KERNEL" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-MAX-FILES-PER-PROCESS"><span class="term"><code class="varname">max_files_per_process</code> (<code class="type">integer</code>)</span> <a href="#GUC-MAX-FILES-PER-PROCESS" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.4.2.1.2.1" class="indexterm"></a><p>
+     Positionne le nombre maximum de fichiers simultanément ouverts par
+     sous-processus serveur. La valeur par défaut est de 1000 fichiers. Si le
+     noyau assure une limite par processus, il n'est pas nécessaire de
+     s'intéresser à ce paramètre. Toutefois, sur certaines plateformes
+     (notamment les systèmes BSD) le noyau autorise les processus
+     individuels à ouvrir plus de fichiers que le système ne peut
+     effectivement en supporter lorsqu'un grand nombre de processus
+     essayent tous d'ouvrir ce nombre de fichiers. Si le message
+     <span class="quote">« <span class="quote">Too many open files</span> »</span> (<span class="quote">« <span class="quote">Trop de fichiers
+      ouverts</span> »</span>) apparaît, il faut essayer de
+     réduire ce paramètre. Ce paramètre ne peut être configuré qu'au
+     lancement du serveur.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-RESOURCE-VACUUM-COST"><div class="titlepage"><div><div><h3 class="title">19.4.4. Report du VACUUM en fonction de son coût <a href="#RUNTIME-CONFIG-RESOURCE-VACUUM-COST" class="id_link">#</a></h3></div></div></div><p>
+  Lors de l'exécution des commandes
+  <a class="xref" href="sql-vacuum.html" title="VACUUM"><span class="refentrytitle" id="SQL-VACUUM-TITLE">VACUUM</span></a> et
+  <a class="xref" href="sql-analyze.html" title="ANALYZE"><span class="refentrytitle" id="SQL-ANALYZE-TITLE">ANALYZE</span></a>, le système
+  maintient un compteur interne qui conserve la trace du coût estimé
+  des différentes opérations d'entrée/sortie réalisées. Quand le coût
+  accumulé atteint une limite (indiquée par
+  <code class="varname">vacuum_cost_limit</code>), le processus traitant l'opération
+  s'arrête un court moment (précisé par <code class="varname">vacuum_cost_delay</code>).
+  Puis, il réinitialise le compteur et continue l'exécution.
+ </p><p>
+  Le but de cette fonctionnalité est d'autoriser les administrateurs à
+  réduire l'impact des entrées/sorties de ces commandes en fonction de
+  l'activité des bases de données. Nombreuses sont les situations pour
+  lesquelles il n'est pas très important que les commandes de
+  maintenance telles que <code class="command">VACUUM</code> et
+  <code class="command">ANALYZE</code> se finissent rapidement, mais
+  il est généralement très
+  important que ces commandes n'interfèrent pas de façon significative
+  avec la capacité du système à réaliser d'autres opérations sur les bases
+  de données. Le report du VACUUM en fonction de son coût fournit aux
+  administrateurs un moyen d'y parvenir.
+ </p><p>
+  Cette fonctionnalité est désactivée par défaut pour les commandes
+  <code class="command">VACUUM</code> lancées manuellement. Pour l'activer,
+  la variable <code class="varname">vacuum_cost_delay</code> doit être
+  initialisée à une valeur différente de zéro.
+ </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-VACUUM-COST-DELAY"><span class="term"><code class="varname">vacuum_cost_delay</code> (<code class="type">floating point</code>)</span> <a href="#GUC-VACUUM-COST-DELAY" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.5.5.1.2.1" class="indexterm"></a><p>
+     Indique le temps, en millisecondes, de repos du processus quand la limite
+     de coût a été atteinte. Si cette valeur est indiquée sans unité, elle est
+     comprise comme des millisecondes. La valeur par défaut est zéro, ce qui
+     désactive la fonctionnalité de report du VACUUM en fonction de
+     son coût. Une valeur positive active cette fonctionnalité.
+    </p><p>
+     Lors d'utilisation de vacuum basée sur le coût, les valeurs appropriées
+     pour <code class="varname">vacuum_cost_delay</code> sont habituellement assez
+     petites, inférieures à 1 milliseconde. Bien que
+     <code class="varname">vacuum_cost_delay</code> puisse être configuré à des valeurs
+     à virgule flottante en millisecondes, ces délais pourraient ne pas
+     pouvoir être mesurés de façon précise sur les anciennes plateformes. Sur
+     ce type de plateforme, augmenter la consommation de ressource du
+     <code class="command">VACUUM</code> au-dessus de ce que vous obtiendrez avec 1ms
+     nécessitera de modifier les autres paramètres de coût. De plus, vous
+     devrez garder <code class="varname">vacuum_cost_delay</code> aussi petit que ce que
+     votre plateforme peut mesurer correctement. De gros délais n'aident pas.
+    </p></dd><dt id="GUC-VACUUM-COST-PAGE-HIT"><span class="term"><code class="varname">vacuum_cost_page_hit</code> (<code class="type">integer</code>)</span> <a href="#GUC-VACUUM-COST-PAGE-HIT" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.5.5.2.2.1" class="indexterm"></a><p>
+     Indique Le coût estimé du nettoyage par VACUUM d'un tampon trouvé dans le
+     cache des tampons partagés. Cela représente le coût de
+     verrouillage de la réserve de tampons, la recherche au sein de la table de
+     hachage partagée et le parcours du contenu de la page. La valeur
+     par défaut est 1.
+    </p></dd><dt id="GUC-VACUUM-COST-PAGE-MISS"><span class="term"><code class="varname">vacuum_cost_page_miss</code> (<code class="type">integer</code>)</span> <a href="#GUC-VACUUM-COST-PAGE-MISS" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.5.5.3.2.1" class="indexterm"></a><p>
+     Indique le coût estimé du nettoyage par VACUUM d'un tampon qui doit être lu
+     sur le disque. Cela représente l'effort à fournir pour
+     verrouiller la réserve de tampons, rechercher dans la table de
+     hachage partagée, lire le bloc désiré sur le disque et
+     parcourir son contenu. La valeur par défaut est 2.
+    </p></dd><dt id="GUC-VACUUM-COST-PAGE-DIRTY"><span class="term"><code class="varname">vacuum_cost_page_dirty</code> (<code class="type">integer</code>)</span> <a href="#GUC-VACUUM-COST-PAGE-DIRTY" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.5.5.4.2.1" class="indexterm"></a><p>
+     Indique le coût estimé de modification par VACUUM d'un bloc
+     précédemment vide (<span class="foreignphrase"><em class="foreignphrase">clean block</em></span>).
+     Cela représente les entrées/sorties
+     supplémentaires nécessaires pour vider à nouveau le bloc
+     modifié (<span class="foreignphrase"><em class="foreignphrase">dirty block</em></span>) sur le
+     disque. La valeur par défaut est 20.
+    </p></dd><dt id="GUC-VACUUM-COST-LIMIT"><span class="term"><code class="varname">vacuum_cost_limit</code> (<code class="type">integer</code>)</span> <a href="#GUC-VACUUM-COST-LIMIT" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.5.5.5.2.1" class="indexterm"></a><p>
+     Indique Le coût cumulé qui provoque l'endormissement du processus de
+     VACUUM pendant <code class="varname">vacuum_cost_delay</code>varname&gt;. La valeur par
+     défaut est 200.
+    </p></dd></dl></div><div class="note"><h3 class="title">Note</h3><p>
+   Certaines opérations détiennent des verrous critiques et doivent
+   donc se terminer le plus vite possible. Les reports de
+   VACUUM en fonction du coût ne surviennent pas pendant ces opérations.
+   De ce fait, il
+   est possible que le coût cumulé soit bien plus important que la
+   limite indiquée. Pour éviter des délais inutilement longs dans de
+   tels cas, le délai réel est calculé de la façon suivante :
+   <code class="varname">vacuum_cost_delay</code> * <code class="varname">accumulated_balance</code> /
+   <code class="varname">vacuum_cost_limit</code> avec un maximum de
+   <code class="varname">vacuum_cost_delay</code> * 4.
+  </p></div></div><div class="sect2" id="RUNTIME-CONFIG-RESOURCE-BACKGROUND-WRITER"><div class="titlepage"><div><div><h3 class="title">19.4.5. Processus d'écriture en arrière-plan <a href="#RUNTIME-CONFIG-RESOURCE-BACKGROUND-WRITER" class="id_link">#</a></h3></div></div></div><p>
+  Il existe un processus serveur séparé appelé <em class="firstterm">background
+  writer</em> dont le but est d'écrire les tampons <span class="quote">« <span class="quote">sales</span> »</span>
+  (parce que nouveaux ou modifiés). Quand le nombre de tampons partagés
+  propres semble insuffisant, le <span class="foreignphrase"><em class="foreignphrase">background
+  writer</em></span> écrit quelques tampons sales au système de fichiers
+  et les marque comme étant propres. Ceci réduit la probabilité que les
+  processus serveur gérant les requêtes des utilisateurs ne soient dans
+  l'incapacité de trouver des tampons propres et doivent écrire eux-mêmes des
+  tampons sales. Néanmoins, ce processus
+  d'écriture en tâche de fond implique une augmentation globale de la charge
+  des entrées/sorties disque car, quand une page fréquemment modifiée pourrait
+  n'être écrite qu'une seule fois par CHECKPOINT, le processus d'écriture en
+  tâche de fond pourrait l'avoir écrit plusieurs fois si cette page a été
+  modifiée plusieurs fois dans le même intervalle. Les paramètres discutés
+  dans cette sous-section peuvent être utilisés pour configurer finement son
+  comportement pour les besoins locaux.
+ </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-BGWRITER-DELAY"><span class="term"><code class="varname">bgwriter_delay</code> (<code class="type">integer</code>)</span> <a href="#GUC-BGWRITER-DELAY" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.6.3.1.2.1" class="indexterm"></a><p>
+     Indique le délai entre les tours d'activité du processus
+     d'écriture en arrière-plan. À chaque tour, le processus
+     écrit un certain nombre de tampons modifiés (contrôlable par les
+     paramètres qui suivent). Puis, il s'endort pour
+     <code class="varname">bgwriter_delay</code> millisecondes et recommence.
+     Quand il n'y a pas de tampons modifiés dans le cache, il s'endort
+     plus profondément sans considération du <code class="varname">bgwriter_delay</code>.
+     Si cette valeur est indiquée sans unité, elle est prise comme des
+     millisecondes. La valeur par défaut est de 200 millisecondes.
+     Sur certains systèmes, la résolution réelle du <code class="command">sleep</code>
+     est de 10 millisecondes ; positionner
+     <code class="varname">bgwriter_delay</code> à une valeur qui n'est pas un multiple
+     de 10 peut avoir le même résultat que de le positionner au
+     multiple de 10 supérieur.
+     Ce paramètre ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+    </p></dd><dt id="GUC-BGWRITER-LRU-MAXPAGES"><span class="term"><code class="varname">bgwriter_lru_maxpages</code> (<code class="type">integer</code>)</span> <a href="#GUC-BGWRITER-LRU-MAXPAGES" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.6.3.2.2.1" class="indexterm"></a><p>
+     Nombre maximum de tampons qui peuvent être écrits à chaque tour
+     par le processus d'écriture en tâche de fond. Le configurer à zéro désactive
+     l'écriture en tâche de fond.
+     (Notez que les checkpoints ne sont pas affectés. Ils sont gérés par
+     un autre processus, dédié à cette tâche.)
+     La valeur par défaut est de 100 tampons.
+     Ce paramètre ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de
+     commande.
+    </p></dd><dt id="GUC-BGWRITER-LRU-MULTIPLIER"><span class="term"><code class="varname">bgwriter_lru_multiplier</code> (<code class="type">floating point</code>)</span> <a href="#GUC-BGWRITER-LRU-MULTIPLIER" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.6.3.3.2.1" class="indexterm"></a><p>
+     Le nombre de tampons sales écrits à chaque tour est basé sur le nombre
+     de nouveaux tampons qui ont été requis par les processus serveur lors
+     des derniers tours. Le besoin récent moyen est multiplié par
+     <code class="varname">bgwriter_lru_multiplier</code> pour arriver à une
+     estimation du nombre de tampons nécessaire au prochain tour. Les
+     tampons sales sont écrits pour qu'il y ait ce nombre de tampons
+     propres, réutilisables.
+     (Néanmoins, au maximum <code class="varname">bgwriter_lru_maxpages</code> tampons sont écrits par
+     tour.)
+     De ce fait, une configuration de 1.0 représente une politique d'écriture
+     <span class="quote">« <span class="quote">juste à temps</span> »</span> d'exactement le nombre de tampons prédits.
+     Des valeurs plus importantes fournissent une protection
+     contre les pics de demande, alors qu'une valeur plus petite laisse
+     intentionnellement des écritures aux processus serveur. La valeur par
+     défaut est de 2.
+     Ce paramètre ne peut être configuré que dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de
+     commande.
+    </p></dd><dt id="GUC-BGWRITER-FLUSH-AFTER"><span class="term"><code class="varname">bgwriter_flush_after</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.7.6.3.4.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-BGWRITER-FLUSH-AFTER" class="id_link">#</a></dt><dd><p>
+     Quand plus de ce nombre d'octets ont été
+     écrit par le processus d'écriture en tâche de fond (bgwriter), tente de
+     forcer le système d'exploitation à écrire les données sur disque. Faire
+     cela limite la quantité de données modifiées dans le cache disque du
+     noyau, réduisant le risque de petites pauses dues à l'exécution d'un
+     <code class="function">fsync</code> à la fin d'un checkpoint ou à l'écriture massive en tâche de fond
+     des données modifiées. Souvent, cela réduira fortement la latence des
+     transactions mais il existe aussi quelques cas de dégradation des
+     performances, tout spécialement avec les charges de travail plus
+     importantes que <a class="xref" href="runtime-config-resource.html#GUC-SHARED-BUFFERS">shared_buffers</a>, mais plus petites
+     que le cache disque du système d'exploitation. Ce paramètre pourrait ne
+     pas avoir d'effet sur certaines plateformes. L'intervalle valide se situe
+     entre <code class="literal">0</code>, qui désactive le <span class="quote">« <span class="quote">writeback</span> »</span>
+     forcé, et <code class="literal">2MB</code>. Si cette valeur est indiquée sans unité,
+     elle est compris comme des blocs, autrement dit <code class="symbol">BLCKSZ</code>
+     octets, typiquement 8 Ko. La valeur par défaut est
+     <code class="literal">512KB</code> sur Linux, <code class="literal">0</code> ailleurs. (Si
+     <code class="symbol">BLCKSZ</code> ne vaut pas 8 ko, les valeurs par défaut et
+     maximales évoluent de façon proportionnelles à cette constante.) Ce
+     paramètre est seulement configurable dans le fichier
+     <code class="filename">postgresql.conf</code> et à la ligne de commande.
+    </p></dd></dl></div><p>
+  Des valeurs plus faibles de <code class="varname">bgwriter_lru_maxpages</code> et
+  <code class="varname">bgwriter_lru_multiplier</code> réduisent la
+  charge supplémentaire des entrées/sorties induite par le processus
+  d'écriture en arrière-plan. En contrepartie, la probabilité que les
+  processus serveurs effectuent plus d'écritures par eux-mêmes augmente,
+  ce qui retarde les requêtes interactives.
+ </p></div><div class="sect2" id="RUNTIME-CONFIG-RESOURCE-ASYNC-BEHAVIOR"><div class="titlepage"><div><div><h3 class="title">19.4.6. Comportement asynchrone <a href="#RUNTIME-CONFIG-RESOURCE-ASYNC-BEHAVIOR" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-BACKEND-FLUSH-AFTER"><span class="term"><code class="varname">backend_flush_after</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.7.7.2.1.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-BACKEND-FLUSH-AFTER" class="id_link">#</a></dt><dd><p>
+     Lorsqu'une quantité de données supérieure à cette valeur doit être écrite
+     par un seul processus, une tentative de forcer le système d'exploitation
+     à écrire sur le stockage sous-jacent est faite. En agissant ainsi, on
+     limite la quantité de données modifiée dans le cache du noyau, réduisant
+     ainsi la probabilité d'une perte de temps quand la fonction
+     <code class="function">fsync</code> est appelée à la fin du checkpoint ou lorsque
+     le système d'exploitation écrit beaucoup de données en arrière-plan.
+     Souvent, cela permet de réduire grandement la latence des transactions
+     mais il est possible dans certains cas, en particulier pour les volumes
+     de donnés plus importants que <a class="xref" href="runtime-config-resource.html#GUC-SHARED-BUFFERS">shared_buffers</a> mais
+     plus petits qu'un bloc de cache du système d'exploitation, que les
+     performances en soient dégradées. Ce paramètre peut aussi n'avoir aucun
+     effet sur certaines plateformes. Si la valeur est indiquée sans unité,
+     elle est comprise en blocs, c'est-à-dire en <code class="symbol">BLCKSZ</code>
+     octets, généralement 8 ko. Les valeurs doivent être comprises entre
+     <code class="literal">0</code>, ce qui désactive la fonctionnalité d'écritures
+     forcées et <code class="literal">2Mo</code>. La valeur par défaut est
+     <code class="literal">0</code>. (Si <code class="symbol">BLCKSZ</code> n'est pas configuré à
+     8 ko, la valeur maximale est ajustée proportionnellement.)
+    </p></dd><dt id="GUC-EFFECTIVE-IO-CONCURRENCY"><span class="term"><code class="varname">effective_io_concurrency</code> (<code class="type">integer</code>)</span> <a href="#GUC-EFFECTIVE-IO-CONCURRENCY" class="id_link">#</a></dt><dd><a id="id-1.6.6.7.7.2.2.2.1" class="indexterm"></a><p>
+     Positionne le nombre d'opérations d'entrées/sorties disque concurrentes
+     que <span class="productname">PostgreSQL</span> pense pouvoir exécuter
+     simultanément. Augmenter cette valeur va augmenter le nombre d'opérations
+     d'entrée/sortie que chaque session <span class="productname">PostgreSQL</span>
+     individuelle essayera d'exécuter en parallèle. Les valeurs autorisées
+     vont de 1 à 1000, ou zéro pour désactiver l'exécution de requêtes
+     d'entrée/sortie asynchrones. Actuellement, ce paramètre ne
+     concerne que les parcours de type <span class="foreignphrase"><em class="foreignphrase">bitmap
+      heap</em></span>.
+    </p><p>
+     Pour les disques magnétiques, un bon point départ pour ce paramètre est
+     le nombre de disques que comprend un agrégat par bande RAID 0 ou miroir
+     RAID 1 utilisé pour la base de données. (Pour du RAID 5, le disque de
+     parité ne devrait pas être pris en compte.) Toutefois, si la base est
+     souvent occupée par de nombreuses requêtes exécutées dans des sessions
+     concurrentes, des valeurs plus basses peuvent être suffisantes pour
+     maintenir le groupe de disques occupé. Une valeur plus élevée que
+     nécessaire pour maintenir les disques occupés n'aura comme seul résultat
+     que de surcharger le processeur. Les SSD et autres méthodes de stockage
+     basées sur de la mémoire peuvent souvent traiter un grand nombre de
+     demandes concurrentes, donc la meilleure valeur pourrait être dans les
+     centaines.
+    </p><p>
+     Les entrées/sorties asynchrones dépendent de la présence d'une fonction
+     <code class="function">posix_fadvise</code> efficace, ce que n'ont pas certains
+     systèmes d'exploitation. Si la fonction n'est pas présente, alors
+     positionner ce paramètre à une valeur autre que zéro entraînera une
+     erreur. Sur certains systèmes (par exemple Solaris), cette fonction
+     est présente mais n'a pas d'effet.
+    </p><p>
+     La valeur par défaut est 1 sur les systèmes supportés, et 0 pour les
+     autres. Cette valeur peut être surchargée pour les tables d'un tablespace
+     particulier en configuration le paramètre tablespace du même nom (voir
+     <a class="xref" href="sql-altertablespace.html" title="ALTER TABLESPACE"><span class="refentrytitle">ALTER TABLESPACE</span></a>).
+    </p></dd><dt id="GUC-MAINTENANCE-IO-CONCURRENCY"><span class="term"><code class="varname">maintenance_io_concurrency</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.7.7.2.3.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MAINTENANCE-IO-CONCURRENCY" class="id_link">#</a></dt><dd><p>
+     Similaire à <code class="varname">effective_io_concurrency</code>, mais utilisé
+     pour le travail de maintenance réaliser pour les nombreuses sessions
+     clientes.
+    </p><p>
+     La valeur par défaut est 10 sur les systèmes supportés, 0 sinon. Cette
+     valeur peut être surchargée pour les tables d'un tablespace particulier en
+     configurant le paramètre de même nom pour ce tablespace (voir <a class="xref" href="sql-altertablespace.html" title="ALTER TABLESPACE"><span class="refentrytitle">ALTER TABLESPACE</span></a>).
+    </p></dd><dt id="GUC-IO-COMBINE-LIMIT"><span class="term"><code class="varname">io_combine_limit</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.7.7.2.4.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-IO-COMBINE-LIMIT" class="id_link">#</a></dt><dd><p>
+     Contrôle la taille la plus importante d'entrées/sorties disque dans les
+     opérations qui combinent des entrées/sorties. Si cette valeur est indiquée
+     sans unité, il s'agit de blocs de <code class="symbol">BLCKSZ</code> octets. La
+     valeur par défaut est 128 Ko.
+    </p></dd><dt id="GUC-MAX-WORKER-PROCESSES"><span class="term"><code class="varname">max_worker_processes</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.7.7.2.5.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MAX-WORKER-PROCESSES" class="id_link">#</a></dt><dd><p>
+     Configure le nombre maximum de background workers acceptés par le
+     système. Ce paramètre n'est configurable qu'au démarrage du serveur. La
+     valeur par défaut est 8.
+    </p><p>
+     S'il s'agit de la configuration d'un serveur secondaire, vous devez
+     configurer ce paramètre à une valeur supérieure ou égale à celui du
+     serveur primaire. Dans le cas contraire, il ne sera pas possible d'exécuter
+     des requêtes sur le serveur secondaire.
+    </p></dd><dt id="GUC-MAX-PARALLEL-WORKERS-PER-GATHER"><span class="term"><code class="varname">max_parallel_workers_per_gather</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.7.7.2.6.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MAX-PARALLEL-WORKERS-PER-GATHER" class="id_link">#</a></dt><dd><p>
+     Configure le nombre maximum de processus parallèles pouvant être lancé
+     par un seul nœud <code class="literal">Gather</code> ou <code class="literal">Gather
+      Merge</code>. Les processus parallèles sont pris dans l'ensemble de
+     processus établi par <a class="xref" href="runtime-config-resource.html#GUC-MAX-WORKER-PROCESSES">max_worker_processes</a>, limité par
+     <a class="xref" href="runtime-config-resource.html#GUC-MAX-PARALLEL-WORKERS">max_parallel_workers</a>. Notez que le nombre demandé de
+     processus parallèles pourrait ne pas être disponible à l'exécution. Si
+     cela survient, le plan s'exécutera avec moins de processus qu'attendu, ce
+     qui pourrait être inefficace. La valeur par défaut est 2. Positionner
+     cette valeur à 0 désactive l'exécution parallélisée de requête.
+    </p><p>
+     Notez que les requêtes parallélisées peuvent consommer considérablement
+     plus de ressources que des requêtes non parallélisées parce que chaque
+     processus parallèle est un processus totalement séparé qui a en gros le
+     même impact sur le système qu'une session utilisateur supplémentaire.
+     Ceci doit être pris en considération lors du choix d'une valeur pour ce
+     paramètre, ainsi que lors de la configuration d'autres paramètres qui
+     contrôlent l'utilisation des ressources, comme par exemple <a class="xref" href="runtime-config-resource.html#GUC-WORK-MEM">work_mem</a>. Les limites de ressources comme
+     <code class="varname">work_mem</code> sont appliquées individuellement pour chaque
+     processus, ce qui signifie que l'utilisation totale pourrait être bien
+     plus importante que pour un seul processus. Par exemple, une requête
+     parallélisée utilisant quatre processus pourrait utiliser jusqu'à cinq
+     fois plus de CPU, de mémoire, de bande passante disque, et ainsi de suite
+     qu'une requête non parallélisée.
+    </p><p>
+     Pour plus d'informations sur les requêtes parallélisées, voir <a class="xref" href="parallel-query.html" title="Chapitre 15. Requêtes parallélisées">Chapitre 15</a>.
+    </p></dd><dt id="GUC-MAX-PARALLEL-MAINTENANCE-WORKERS"><span class="term"><code class="varname">max_parallel_maintenance_workers</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.7.7.2.7.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MAX-PARALLEL-MAINTENANCE-WORKERS" class="id_link">#</a></dt><dd><p>
+     Indique le nombre maximum de workers parallèles qu'une commande utilitaire
+     peut démarrer. Actuellement, les commandes utilitaires qui supportent
+     les workers parallèles est <code class="command">CREATE INDEX</code> pour la création
+     d'un index B-tree ou BRIN, et <code class="command">VACUUM</code> sans l'option
+     <code class="literal">FULL</code>. Les workers parallèles sont déduits du
+     pool de processus défini par <a class="xref" href="runtime-config-resource.html#GUC-MAX-WORKER-PROCESSES">max_worker_processes</a>,
+     dans la limite de <a class="xref" href="runtime-config-resource.html#GUC-MAX-PARALLEL-WORKERS">max_parallel_workers</a>. Notez que le
+     nombre de workers demandé peut ne pas être disponible lors de l'exécution.
+     Si cela arrive, l'opération utilitaire fonctionnera avec moins de workers
+     qu'attendu. Le défaut est de 2. Passer cette valeur à 0 désactive
+     l'utilisation des workers parallèles par les commandes utilitaires.
+    </p><p>
+     Notez que les commandes utilitaires parallélisées ne devraient pas consommer
+     beaucoup plus de mémoire que leur équivalent non parallélisé. Cette stratégie
+     diffère de celle adoptée pour les requêtes parallélisées, où les limites
+     de ressources s'appliquent généralement par processus (worker).
+     Les commandes utilitaires parallélisées traitent la limite de ressource
+     <code class="varname">maintenance_work_mem</code> comme une limite à appliquer à la
+     commande entière, sans considération du nombre de workers parallèles.
+     Cependant, les commandes utilitaires parallélisées peuvent consommer
+     nettement plus de CPU et de bande passante.
+    </p></dd><dt id="GUC-MAX-PARALLEL-WORKERS"><span class="term"><code class="varname">max_parallel_workers</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.7.7.2.8.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MAX-PARALLEL-WORKERS" class="id_link">#</a></dt><dd><p>
+     Positionne le nombre maximum de workers que l'instance peut supporter pour
+     le besoin des requêtes parallèles.  La valeur par défaut est 8.  Lorsque
+     cette valeur est augmentée ou diminuée, pensez également à modifier
+     <a class="xref" href="runtime-config-resource.html#GUC-MAX-PARALLEL-MAINTENANCE-WORKERS">max_parallel_maintenance_workers</a> et
+     <a class="xref" href="runtime-config-resource.html#GUC-MAX-PARALLEL-WORKERS-PER-GATHER">max_parallel_workers_per_gather</a>.
+     De plus, veuillez noter que positionner cette valeur plus haut que
+     <a class="xref" href="runtime-config-resource.html#GUC-MAX-WORKER-PROCESSES">max_worker_processes</a> n'aura pas d'effet puisque les
+     workers parallèles sont pris de la réserve de processus établie par ce
+     paramètre.
+    </p></dd><dt id="GUC-PARALLEL-LEADER-PARTICIPATION"><span class="term">
+    <code class="varname">parallel_leader_participation</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.7.7.2.9.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-PARALLEL-LEADER-PARTICIPATION" class="id_link">#</a></dt><dd><p>
+     Permet au processus leader d'exécuter le plan de la requête sur les nœuds
+     <code class="literal">Gather</code> et <code class="literal">Gather Merge</code> au lieu
+     d'attendre le processus en cours. Positionner ce paramètre à
+     <code class="literal">off</code> réduit la probabilité qu'un processus soit bloqué
+     parce que le processus leader ne lit pas les données assez vite mais
+     impose que le processus leader attende que les autres processus aient
+     démarré avant que les premières lignes ne soient produites. Le degré à
+     partir duquel le processus leader peut améliorer ou détériorer les
+     performances dépend du type de plan d'exécution, du nombre de processus
+     parallèles et de la durée d'exécution de la requête.
+    </p></dd></dl></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-resource.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+</html>

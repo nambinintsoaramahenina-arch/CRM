@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-connection.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.3. Connexions et authentification</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-file-locations.html" title="19.2. Emplacement des fichiers" /><link rel="next" href="runtime-config-resource.html" title="19.4. Consommation des ressources" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/runtime-config-connection.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/runtime-config-connection.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/runtime-config-connection.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/runtime-config-connection.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/runtime-config-connection.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/runtime-config-connection.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/runtime-config-connection.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/runtime-config-connection.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/runtime-config-connection.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/runtime-config-connection.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/runtime-config-connection.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/runtime-config-connection.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/runtime-config-connection.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/runtime-config-connection.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/runtime-config-connection.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/runtime-config-connection.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/runtime-config-connection.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/runtime-config-connection.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/runtime-config-connection.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/runtime-config-connection.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/runtime-config-connection.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="runtime-config.html">Configuration du serveur</a></span> » <span class="breadcrumb-node">Connexions et authentification</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-file-locations.html" title="19.2. Emplacement des fichiers">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-resource.html" title="19.4. Consommation des ressources">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">19.2. Emplacement des fichiers </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 19.4. Consommation des ressources</td></tr></table></div><div class="sect1" id="RUNTIME-CONFIG-CONNECTION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.3. Connexions et authentification <a href="#RUNTIME-CONFIG-CONNECTION" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="runtime-config-connection.html#RUNTIME-CONFIG-CONNECTION-SETTINGS">19.3.1. Paramètres de connexion</a></span></dt><dt><span class="sect2"><a href="runtime-config-connection.html#RUNTIME-CONFIG-TCP-SETTINGS">19.3.2. TCP Settings</a></span></dt><dt><span class="sect2"><a href="runtime-config-connection.html#RUNTIME-CONFIG-CONNECTION-AUTHENTICATION">19.3.3. Authentification</a></span></dt><dt><span class="sect2"><a href="runtime-config-connection.html#RUNTIME-CONFIG-CONNECTION-SSL">19.3.4. SSL</a></span></dt></dl></div><div class="sect2" id="RUNTIME-CONFIG-CONNECTION-SETTINGS"><div class="titlepage"><div><div><h3 class="title">19.3.1. Paramètres de connexion <a href="#RUNTIME-CONFIG-CONNECTION-SETTINGS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-LISTEN-ADDRESSES"><span class="term"><code class="varname">listen_addresses</code> (<code class="type">string</code>)</span> <a href="#GUC-LISTEN-ADDRESSES" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.2.2.1.2.1" class="indexterm"></a><p>
+     Indique les adresses TCP/IP sur lesquelles le serveur écoute
+     les connexions en provenance d'applications clientes. La valeur prend la forme
+     d'une liste de noms d'hôte ou d'adresses IP numériques séparés
+     par des virgules. L'entrée spéciale <code class="literal">*</code> correspond
+     à toutes les interfaces IP disponibles.  L'enregistrement
+     <code class="literal">0.0.0.0</code> permet l'écoute sur toutes les
+     adresses IPv4 et <code class="literal">::</code> permet l'écoute sur
+     toutes les adresses IPv6. Si la liste est vide, le
+     serveur n'écoute aucune interface IP, auquel cas seuls les
+     sockets de domaine Unix peuvent être utilisées pour s'y connecter.
+     Si la liste n'est pas vide, le serveur démarrera s'il peut écouter
+     sur au moins une adresse IP. Un message d'avertissement sera émis pour
+     les adresses TCP/IP qui ne peuvent pas être  ouvertes.
+     La valeur par défaut est <span class="systemitem">localhost</span>, ce qui n'autorise que
+     les connexions TCP/IP locales de type <span class="quote">« <span class="quote">loopback</span> »</span>.
+    </p><p>
+     Bien que l'authentification client (<a class="xref" href="client-authentication.html" title="Chapitre 20. Authentification du client">Chapitre 20</a>) permet un contrôle très fin
+     sur les accès au serveur, <code class="varname">listen_addresses</code>
+     contrôle les interfaces pouvant accepter des tentatives de
+     connexion, ce qui permet d'empêcher des demandes répétées de connexion
+     malveillantes sur des interfaces réseau non sécurisées. Ce paramètre
+     ne peut être configuré qu'au lancement du serveur.
+    </p></dd><dt id="GUC-PORT"><span class="term"><code class="varname">port</code> (<code class="type">integer</code>)</span> <a href="#GUC-PORT" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.2.2.2.2.1" class="indexterm"></a><p>
+     Le port TCP sur lequel le serveur écoute ; 5432 par défaut.
+     Le même numéro de port est utilisé pour toutes les
+     adresses IP que le serveur écoute. Ce paramètre ne peut
+     être configuré qu'au lancement du serveur.
+    </p></dd><dt id="GUC-MAX-CONNECTIONS"><span class="term"><code class="varname">max_connections</code> (<code class="type">integer</code>)</span> <a href="#GUC-MAX-CONNECTIONS" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.2.2.3.2.1" class="indexterm"></a><p>
+     Indique le nombre maximum de connexions concurrentes au serveur de
+     base de données. La valeur par défaut typique est de 100 connexions,
+     mais elle peut être moindre si les paramètres du noyau ne le supportent pas
+     (ce qui est déterminé lors de l'<span class="application">initdb</span>). Ce
+     paramètre ne peut être configuré qu'au lancement du serveur.
+    </p><p>
+     PostgreSQL taille certaines ressources en se basant directement sur la
+     valeur de <code class="varname">max_connections</code>. Augmenter sa valeur amène
+     une allocation plus importante de ces ressources, y compris pour la mémoire
+     partagée.
+    </p><p>
+     Lors de l'exécution d'un serveur standby, vous devez configurer ce
+     paramètre à la même valeur ou à une valeur plus importante que sur le
+     serveur primaire. Sinon, des requêtes pourraient ne pas être autorisées
+     sur le serveur en attente.
+    </p><p>
+     Lorsque vous modifiez cette valeur, pensez également à ajuster
+     <a class="xref" href="runtime-config-resource.html#GUC-MAX-PARALLEL-WORKERS">max_parallel_workers</a>,
+     <a class="xref" href="runtime-config-resource.html#GUC-MAX-PARALLEL-MAINTENANCE-WORKERS">max_parallel_maintenance_workers</a> et
+     <a class="xref" href="runtime-config-resource.html#GUC-MAX-PARALLEL-WORKERS-PER-GATHER">max_parallel_workers_per_gather</a>.
+    </p></dd><dt id="GUC-RESERVED-CONNECTIONS"><span class="term"><code class="varname">reserved_connections</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.6.2.2.4.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-RESERVED-CONNECTIONS" class="id_link">#</a></dt><dd><p>
+    Définit le nombre de <span class="quote">« <span class="quote">slots</span> »</span> de connexions réservées pour des
+    connexions effectuées avec des rôles appartenant au rôle
+    <a class="link" href="predefined-roles.html#PREDEFINED-ROLES-TABLE" title="Tableau 21.1. Rôles prédéfinis"><code class="literal">pg_use_reserved_connections</code></a>.
+    Lorsque le nombre de <span class="quote">« <span class="quote">slots</span> »</span> de connexions libres est plus
+    grand que <a class="xref" href="runtime-config-connection.html#GUC-SUPERUSER-RESERVED-CONNECTIONS">superuser_reserved_connections</a> mais
+    inférieur ou égal à la somme de
+    <code class="varname">superuser_reserved_connections</code> et de
+    <code class="varname">reserved_connections</code>, les nouvelles connexions ne seront
+    acceptées que pour des <span class="quote">« <span class="quote">superutilisateurs</span> »</span> et des roles appartenant
+    au rôle <code class="literal">pg_use_reserved_connections</code>.
+    Si le nombre de <span class="quote">« <span class="quote">slots</span> »</span> de connexions libres est inférieur ou
+    égal à <code class="varname">superuser_reserved_connections</code>, alors les
+    nouvelles connexions ne seront acceptées que pour des <span class="quote">« <span class="quote">superutilisateurs</span> »</span>.
+    </p><p>
+     La valeur par défaut est 0. La valeur doit être inférieure à
+     <code class="varname">max_connections</code> moins <code class="varname">superuser_reserved_connections</code>.
+     Ce paramètre ne peut être modifié qu'au démarrage du serveur.
+    </p></dd><dt id="GUC-SUPERUSER-RESERVED-CONNECTIONS"><span class="term"><code class="varname">superuser_reserved_connections</code> (<code class="type">integer</code>)</span> <a href="#GUC-SUPERUSER-RESERVED-CONNECTIONS" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.2.2.5.2.1" class="indexterm"></a><p>
+     Indique le nombre de connecteurs (<span class="quote">« <span class="quote">slots</span> »</span>) réservés
+     aux connexions des superutilisateurs <span class="productname">PostgreSQL</span>.
+     Au plus <a class="xref" href="runtime-config-connection.html#GUC-MAX-CONNECTIONS">max_connections</a> connexions peuvent être
+     actives simultanément. Dès que le nombre de connexions
+     simultanément actives atteint <code class="varname">max_connections</code> moins
+     <code class="varname">superuser_reserved_connections</code>, les nouvelles
+     connexions ne sont plus acceptées que pour les superutilisateurs.
+     Les <span class="quote">« <span class="quote">slots</span> »</span> de connexions réservés grâce à ce paramètre sont destinés à
+     servir de réserve finale pour des utilisations en urgence lorsque les <span class="quote">« <span class="quote">slots</span> »</span>
+     réservés par <a class="xref" href="runtime-config-connection.html#GUC-RESERVED-CONNECTIONS">reserved_connections</a> ont été épuisés.
+    </p><p>
+     La valeur par défaut est de trois connexions. La valeur doit être plus
+     petite que la valeur de <code class="varname">max_connections</code> moins
+     <code class="varname">reserved_connections</code>. Ce paramètre
+     ne peut être configuré qu'au lancement du serveur.
+    </p></dd><dt id="GUC-UNIX-SOCKET-DIRECTORIES"><span class="term"><code class="varname">unix_socket_directories</code> (<code class="type">string</code>)</span> <a href="#GUC-UNIX-SOCKET-DIRECTORIES" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.2.2.6.2.1" class="indexterm"></a><p>
+     Indique le répertoire pour le(s) socket(s) de domaine Unix sur
+     lequel le serveur va écouter les connexions des applications
+     clientes. Plusieurs sockets peuvent être créés en listant plusieurs
+     répertoires et en les séparant par des virgules. Les espaces blancs
+     entre les entrées sont ignorés. Entourer un nom de répertoire avec
+     des guillemets doubles si vous avez besoin d'inclure un espace blanc
+     ou une virgule dans son nom. Une valeur vide désactive l'utilisation
+     des sockets de domaine Unix, auquel cas seules les sockets TCP/IP
+     pourront être utilisées pour se connecter au serveur.
+    </p><p>
+     Une valeur commençant par <code class="literal">@</code> indique qu'un socket abstrait
+     doit être créé (actuellement uniquement supporté sous Linux).
+     Dans ce cas, la valeur ne doit pas spécifier un <span class="quote">« <span class="quote">répertoire</span> »</span>
+     mais un préfixe à partir duquel le nom du socket est construit de la même
+     manière que pour un socket de système de fichiers. Alors que le préfixe d'un
+     socket réseau est totalement libre, puisqu'il ne s'agit pas d'un emplacement
+     sur disque, il est conseillé par convention d'utiliser des valeurs qui ressemblent
+     à celles des sockets de systèmes de fichiers comme <code class="literal">@/tmp</code>.
+    </p><p>
+     La valeur
+     par défaut est habituellement <code class="filename">/tmp</code>, mais cela
+     peut se changer au moment de la contruction. Sur Windows, la valeur par
+     défaut est vide, ce qui signifie qu'aucun socket de domaine Unix n'est
+     créé par défaut. Ce paramètre ne peut être configuré qu'au lancement du
+     serveur.
+    </p><p>
+     En plus du fichier socket, qui est nommé
+     <code class="literal">.s.PGSQL.<em class="replaceable"><code>nnnn</code></em></code> où
+     <em class="replaceable"><code>nnnn</code></em> est le numéro de port du serveur, un
+     fichier ordinaire nommé
+     <code class="literal">.s.PGSQL.<em class="replaceable"><code>nnnn</code></em>.lock</code> sera
+     créé dans chaque répertoire de <code class="varname">unix_socket_directories</code>.
+     Les deux fichiers ne doivent pas être supprimés manuellement.
+     Pour les sockets réseau, aucun fichier de verrou n'est créé.
+    </p><p>
+     Ce paramètre n'a pas de sens sur les systèmes qui ignorent complètement
+     les droits sur les sockets, comme Solaris à partir de la version 10.
+     Un effet similaire peut être atteint en pointant
+     <code class="varname">unix_socket_directories</code> vers un répertoire ayant
+     un droit de recherche limité à l'audience acceptée.
+    </p></dd><dt id="GUC-UNIX-SOCKET-GROUP"><span class="term"><code class="varname">unix_socket_group</code> (<code class="type">string</code>)</span> <a href="#GUC-UNIX-SOCKET-GROUP" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.2.2.7.2.1" class="indexterm"></a><p>
+     Configure le groupe propriétaire des sockets de domaine Unix
+     (l'utilisateur propriétaire des sockets est toujours l'utilisateur
+     qui lance le serveur). En combinaison avec le paramètre
+     <code class="varname">unix_socket_permissions</code>, ceci peut être
+     utilisé comme un mécanisme de contrôle d'accès supplémentaire pour
+     les connexions de domaine Unix. Par défaut, il s'agit d'une
+     chaîne vide, ce qui sélectionne le groupe par défaut de l'utilisateur
+     courant. Ce paramètre ne peut être configuré qu'au lancement du
+     serveur.
+    </p><p>
+     Ce paramètre n'est pas supporté sous Windows. Sa configuration sera
+     ignorée. De plus, les sockets réseaux n'ayant pas de propriétaire, ce paramètre
+     est ignoré dans ce cas.
+    </p></dd><dt id="GUC-UNIX-SOCKET-PERMISSIONS"><span class="term"><code class="varname">unix_socket_permissions</code> (<code class="type">integer</code>)</span> <a href="#GUC-UNIX-SOCKET-PERMISSIONS" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.2.2.8.2.1" class="indexterm"></a><p>
+     Configure les droits d'accès aux sockets de domaine Unix. Ce socket
+     utilise l'ensemble habituel des droits du système de fichiers
+     Unix. Ce paramètre doit être indiqué sous une forme
+     numérique telle qu'acceptée par les appels système
+     <code class="function">chmod</code> et <code class="function">umask</code> (pour
+     utiliser le format octal, ce nombre doit commencer avec un
+     <code class="literal">0</code> (zéro)).
+    </p><p>
+     Les droits par défaut sont <code class="literal">0777</code>, signifiant que
+     tout le monde peut se connecter. Les alternatives raisonnables sont
+     <code class="literal">0770</code> (utilisateur et groupe uniquement, voir
+     aussi <code class="varname">unix_socket_group</code>) et
+     <code class="literal">0700</code> (utilisateur uniquement) (pour un
+     socket de domaine Unix, seul le droit d'accès en écriture
+     importe ; il n'est donc pas nécessaire de donner ou de révoquer les
+     droits de lecture ou d'exécution).
+    </p><p>
+     Ce mécanisme de contrôle d'accès est indépendant de celui décrit
+     dans le <a class="xref" href="client-authentication.html" title="Chapitre 20. Authentification du client">Chapitre 20</a>.
+    </p><p>
+     Ce paramètre ne peut être configuré qu'au lancement du serveur.
+    </p><p>
+     Ce paramètre est hors sujet sur certains systèmes comme Solaris, à partir
+     de sa version 10, qui ignorent complètement les droits des sockets. Là,
+     vous pouvez obtenir le même effet en pointant
+     <code class="varname">unix_socket_directories</code> vers un répertoire ayant les
+     droits de recherche limités à l'audience souhaité.
+    </p><p>
+     Les sockets réseaux n'ayant pas de droits de fichier, ce paramètre est
+     également ignoré dans ce cas.
+    </p></dd><dt id="GUC-BONJOUR"><span class="term"><code class="varname">bonjour</code> (<code class="type">boolean</code>)</span> <a href="#GUC-BONJOUR" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.2.2.9.2.1" class="indexterm"></a><p>
+     Active la promotion de l'existence du serveur via le protocole
+     <span class="productname">Bonjour</span>. Désactivé par défaut, ce paramètre
+     ne peut être configuré qu'au lancement du serveur.
+    </p></dd><dt id="GUC-BONJOUR-NAME"><span class="term"><code class="varname">bonjour_name</code> (<code class="type">string</code>)</span> <a href="#GUC-BONJOUR-NAME" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.2.2.10.2.1" class="indexterm"></a><p>
+     Indique le nom du service <span class="productname">Bonjour</span>.
+     Le nom de l'ordinateur est utilisé si ce paramètre est configuré avec
+     une chaîne vide (ce qui est la valeur par défaut). Ce paramètre est
+     ignoré si le serveur n'est pas compilé avec le support
+     <span class="productname">Bonjour</span>.
+     Ce paramètre ne peut être configuré qu'au lancement du serveur.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-TCP-SETTINGS"><div class="titlepage"><div><div><h3 class="title">19.3.2. TCP Settings <a href="#RUNTIME-CONFIG-TCP-SETTINGS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-TCP-KEEPALIVES-IDLE"><span class="term"><code class="varname">tcp_keepalives_idle</code> (<code class="type">integer</code>)</span> <a href="#GUC-TCP-KEEPALIVES-IDLE" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.3.2.1.2.1" class="indexterm"></a><p>
+     Indique la durée sans activité réseau après laquelle le système
+     d'exploitation devra envoyer un message TCP au client. Si la valeur de ce
+     paramètre est indiquée sans unité, la valeur est supposée être en
+     secondes. Une valeur de 0 (valeur par défaut) utilise la valeur par
+     défaut du système d'exploitation.
+     Sur Windows, une valeur à 0 va configurer ce paramètre à 2 heures, comme
+     Windows ne permet pas de lire la valeur système par défaut.
+     Ce paramètre est seulement
+     supporté par les systèmes qui supportent les symboles
+     <code class="symbol">TCP_KEEPIDLE</code> ou une option socket équivalente et
+     sur Windows ; sur les autres systèmes, ce paramètre doit valoir
+     zéro.
+     Pour les sessions connectées via une socket de domaine Unix, ce
+     paramètre est ignoré et vaut toujours zéro.
+    </p></dd><dt id="GUC-TCP-KEEPALIVES-INTERVAL"><span class="term"><code class="varname">tcp_keepalives_interval</code> (<code class="type">integer</code>)</span> <a href="#GUC-TCP-KEEPALIVES-INTERVAL" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.3.2.2.2.1" class="indexterm"></a><p>
+     Indique la durée après laquelle un message TCP keepalive qui n'a pas été
+     répondu par le client devra être transmis de nouveau. Si la valeur de ce
+     paramètre est indiquée sans unité, la valeur est supposée être en
+     secondes. Une valeur de 0 (valeur par défaut) utilise la valeur par
+     défaut du système d'exploitation.
+     Sur Windows, une valeur à 0 va configurer se paramètre à 1 seconde, comme
+     Windows ne permet pas de lire la valeur système par défaut.
+     Ce paramètre est
+     seulement supporté par les systèmes qui supportent le symbole
+     <code class="symbol">TCP_KEEPINTVL</code>  ou une option socket équivalente et sur
+     Windows ; sur les autres systèmes, ce paramètre doit valoir zéro.
+     Pour les sessions connectées via une socket de domaine Unix, ce
+     paramètre est ignoré et vaut toujours zéro.
+    </p></dd><dt id="GUC-TCP-KEEPALIVES-COUNT"><span class="term"><code class="varname">tcp_keepalives_count</code> (<code class="type">integer</code>)</span> <a href="#GUC-TCP-KEEPALIVES-COUNT" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.3.2.3.2.1" class="indexterm"></a><p>
+     Indique le nombre de messages TCP keepalive pouvant être perdus avant
+     que la connexion au serveur soit considérée comme morte. Une valeur de
+     0 (valeur par défaut) revient à utiliser la valeur système par défaut. Ce paramètre est
+     seulement supporté par les systèmes qui supportent le symbole
+     <code class="symbol">TCP_KEEPCNT</code> ou une option socket équivalente (which does not include
+     Windows) ; sur les autres systèmes, ce paramètre doit valoir zéro.
+     Pour les sessions connectées via une socket de domaine Unix, ce
+     paramètre est ignoré et vaut toujours zéro.
+    </p></dd><dt id="GUC-TCP-USER-TIMEOUT"><span class="term"><code class="varname">tcp_user_timeout</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.6.3.2.4.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-TCP-USER-TIMEOUT" class="id_link">#</a></dt><dd><p>
+     Indique la durée pendant laquelle les données transmises peuvent rester
+     sans réponse avec que la connexion TCP ne soit fermée.Si la valeur de ce
+     paramètre est indiquée sans unité, la valeur est supposée être en
+     millisecondes. Une valeur de 0 (valeur par défaut) utilise la valeur par
+     défaut du système d'exploitation.
+     Ce paramètre est uniquement accepté sur les systèmes
+     qui acceptent <code class="symbol">TCP_USER_TIMEOUT</code> (which does not include Windows) ;
+     sur les autres
+     systèmes, il doit valoir zéro. Pour les sessions connectées via un socket
+     de domaine Unix, ce paramètre est ignoré et vaut toujours zéro.
+    </p></dd><dt id="GUC-CLIENT-CONNECTION-CHECK-INTERVAL"><span class="term"><code class="varname">client_connection_check_interval</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.6.3.2.5.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-CLIENT-CONNECTION-CHECK-INTERVAL" class="id_link">#</a></dt><dd><p>
+     Permet de passer un intervalle de temps pendant lequel le server vérifie
+     que le client est toujours connecté lorsqu'une requête s'exécute. La
+     vérification est faite en interrogeant le socket et permet aux requêtes
+     longues d'être annulées plus tôt si le noyau indique que la connexion
+     est fermée.
+    </p><p>
+     Cette option se base sur les événements noyau exposés par Linux, macOS,
+     illumos et la famille BSD de systèmes d'exploitation, et n'est actuellement
+     pas disponibles sur les autres systèmes.
+    </p><p>
+     Si la valeur est passée sans unité, elle est comprise en millisecondes.
+     La valeur par défaut est <code class="literal">0</code>, ce qui désactive la
+     fonctionnalité. Sans cette fonctionnalité de vérification des
+     connexions, le serveur ne détectera une perte de connexion qu'à la
+     prochaine interaction avec le socket, lorsqu'il attend ou reçoit ou
+     envoie des données.
+    </p><p>
+     Pour que le noyau puisse détecter de lui-même une perte de connexion TCP
+     dans un certain délai quel que soit le scénario, y compris des pannes de
+     réseau, il peut être nécessaire d'ajuster le paramètre de keepalive TCP
+     au niveau du système d'exploitation ou les paramètres  <a class="xref" href="runtime-config-connection.html#GUC-TCP-KEEPALIVES-IDLE">tcp_keepalives_idle</a>, <a class="xref" href="runtime-config-connection.html#GUC-TCP-KEEPALIVES-INTERVAL">tcp_keepalives_interval</a> et <a class="xref" href="runtime-config-connection.html#GUC-TCP-KEEPALIVES-COUNT">tcp_keepalives_count</a> de
+     <span class="productname">PostgreSQL</span>.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-CONNECTION-AUTHENTICATION"><div class="titlepage"><div><div><h3 class="title">19.3.3. Authentification <a href="#RUNTIME-CONFIG-CONNECTION-AUTHENTICATION" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-AUTHENTICATION-TIMEOUT"><span class="term"><code class="varname">authentication_timeout</code> (<code class="type">integer</code>)</span> <a href="#GUC-AUTHENTICATION-TIMEOUT" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.4.2.1.2.1" class="indexterm"></a><a id="id-1.6.6.6.4.2.1.2.2" class="indexterm"></a><a id="id-1.6.6.6.4.2.1.2.3" class="indexterm"></a><p>
+     Temps maximum pour terminer l'authentification du client, en
+     secondes. Si un client n'a pas terminé le protocole d'authentification
+     dans ce délai, le serveur ferme la connexion. Cela protège le serveur
+     des clients bloqués occupant une connexion indéfiniment. Si la valeur de
+     ce paramètre est donné sans unité, l'unité sera la seconde. La valeur par
+     défaut est d'une minute.
+     Ce paramètre peut être configuré au lancement du serveur et dans le fichier
+     <code class="filename">postgresql.conf</code>.
+    </p></dd><dt id="GUC-PASSWORD-ENCRYPTION"><span class="term"><code class="varname">password_encryption</code> (<code class="type">enum</code>)
+    <a id="id-1.6.6.6.4.2.2.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-PASSWORD-ENCRYPTION" class="id_link">#</a></dt><dd><p>
+     Détermine l'algorithme utilisé pour chiffrer un mot de passe
+     spécifié dans <a class="xref" href="sql-createrole.html" title="CREATE ROLE"><span class="refentrytitle">CREATE ROLE</span></a>
+     ou <a class="xref" href="sql-alterrole.html" title="ALTER ROLE"><span class="refentrytitle">ALTER ROLE</span></a>. Les valeurs possibles sont
+     <code class="literal">scram-sha-256</code>, qui permettra un chiffrement du mot de passe
+     avec SCRAM-SHA-256 et <code class="literal">md5</code>, qui stocke le mot de passe
+     haché en MD5. La valeur par défaut est <code class="literal">scram-sha-256</code>.
+    </p><p>
+     Notez que des clients plus anciens pourraient ne pas disposer du support
+     pour l'authentification SCRAM, et ne fonctionneraient pas avec des
+     mots de passe chiffrés avec SCRAM-SHA-256. Voir
+     <a class="xref" href="auth-password.html" title="20.5. Authentification par mot de passe">Section 20.5</a> pour les détails.
+    </p></dd><dt id="GUC-SCRAM-ITERATIONS"><span class="term"><code class="varname">scram_iterations</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.6.4.2.3.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SCRAM-ITERATIONS" class="id_link">#</a></dt><dd><p>
+     Le nombre d'itérations de calcul à effectuer lors du chiffrement
+     d'un mot de passe en utilisant SCRAM-SHA-256. La valeur par défaut est <code class="literal">4096</code>.
+     Un nombre d'itérations plus élevé offre une protection supplémentaire
+     contre les attaques par force brute sur les mots de passe stockés, mais
+     rend l'authentification plus lente. La modification de la valeur n'a
+     aucun effet sur les mots de passe existants chiffrés avec SCRAM-SHA-256 car
+     le nombre d'itérations est fixé au moment du chiffrement. Afin d'utiliser une
+     valeur modifiée, le mot de passe doit être défini de nouveau.
+    </p></dd><dt id="GUC-KRB-SERVER-KEYFILE"><span class="term"><code class="varname">krb_server_keyfile</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.6.4.2.4.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-KRB-SERVER-KEYFILE" class="id_link">#</a></dt><dd><p>
+     Indique l'emplacement du fichier de clés Kerberos du serveur. La valeur
+     par défaut est <code class="filename">FILE:/usr/local/pgsql/etc/krb5.keytab</code>
+     (où le chemin correspond à ce qui a été indiqué comme
+     <code class="varname">sysconfdir</code> lors de la compilation ; utilisez
+     <code class="literal">pg_config --sysconfdir</code> pour le déterminer). Si ce
+     paramètre est configuré à une chaîne vide, il est ignoré et une valeur
+     par défaut dépendante du système est utilisée. Ce paramètre peut
+     seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+     serveur. Voir <a class="xref" href="gssapi-auth.html" title="20.6. Authentification GSSAPI">Section 20.6</a> pour plus d'informations.
+    </p></dd><dt id="GUC-KRB-CASEINS-USERS"><span class="term"><code class="varname">krb_caseins_users</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.6.4.2.5.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-KRB-CASEINS-USERS" class="id_link">#</a></dt><dd><p>
+     Indique si les noms d'utilisateur GSSAPI doivent être traités en
+     respectant la casse. Le défaut est  <code class="literal">off</code> (sensible à
+     la casse). Ce paramètre ne peut être positionné que dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+     serveur.
+    </p></dd><dt id="GUC-GSS-ACCEPT-DELEGATION"><span class="term"><code class="varname">gss_accept_delegation</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.6.4.2.6.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-GSS-ACCEPT-DELEGATION" class="id_link">#</a></dt><dd><p>
+     Indique si la déléagation GSSAPI doit être acceptée par le client.
+     La valeur par défaut (<code class="literal">off</code>) indique les informations
+     d'identification des clients <span class="emphasis"><em> ne seront pas</em></span> acceptés.
+     La changer à <code class="literal">on</code> va permettre au serveur d'accepter les
+     informations d'identification qui lui sont déléguées par le client. Ce
+     paramètre ne peut être modifié que dans le fichier
+     <code class="filename">postgresql.conf</code> ou en ligne de commande.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-CONNECTION-SSL"><div class="titlepage"><div><div><h3 class="title">19.3.4. SSL <a href="#RUNTIME-CONFIG-CONNECTION-SSL" class="id_link">#</a></h3></div></div></div><p>
+  Voir <a class="xref" href="ssl-tcp.html" title="18.9. Connexions TCP/IP sécurisées avec SSL">Section 18.9</a> pour plus d'informations sur la mise en œuvre
+  de <acronym class="acronym">SSL</acronym>. Les paramètres de configuration pour le contrôle du
+  chiffrement de transfert utilisant les protocoles <acronym class="acronym">TLS</acronym> sont
+  nommés <code class="literal">ssl</code> pour des raisons historiques, même si le support
+  du protocole <acronym class="acronym">SSL</acronym> est considéré comme obsolète. Dans ce
+  contexte, <acronym class="acronym">SSL</acronym> est utilisé de façon interchangeable avec
+  <acronym class="acronym">TLS</acronym>.
+ </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-SSL"><span class="term"><code class="varname">ssl</code> (<code class="type">boolean</code>)</span> <a href="#GUC-SSL" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.5.3.1.2.1" class="indexterm"></a><p>
+     Active les connexions <acronym class="acronym">SSL</acronym>.
+     Ce paramètre peut uniquement être modifié dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+     La valeur par défaut est <code class="literal">off</code>.
+    </p></dd><dt id="GUC-SSL-CIPHERS"><span class="term"><code class="varname">ssl_ciphers</code> (<code class="type">string</code>)</span> <a href="#GUC-SSL-CIPHERS" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.5.3.2.2.1" class="indexterm"></a><p>
+     Donne une liste d'algorithmes <acronym class="acronym">SSL</acronym> autorisées à être
+     utilisés sur des connexions SSL. Voir la page de manuel de
+     <span class="citerefentry"><span class="refentrytitle">ciphers</span></span> dans
+     le paquet <span class="productname">OpenSSL</span> pour la syntaxe de ce
+     paramètre et une liste des valeurs supportées. Seules les connexions
+     utilisant TLS version 1.2 et antérieures sont impactées. Il n'existe
+     actuellement pas de paramètre contrôlant le choix des algorithmes
+     utilisés par les connexions avec  TLS version 1.3. La valeur par défaut
+     est <code class="literal">HIGH:MEDIUM:+3DES:!aNULL</code>. Cette valeur est
+     généralement raisonnable, sauf si vous avez des besoins spécifiques en
+     terme de sécurité.
+    </p><p>
+     Ce paramètre peut seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+     serveur.
+    </p><p>
+     Voici une explication de la valeur par défaut ;:
+     </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-SSL-CIPHERS-HIGH"><span class="term"><code class="literal">HIGH</code></span> <a href="#GUC-SSL-CIPHERS-HIGH" class="id_link">#</a></dt><dd><p>
+         Algorithmes du groupe <code class="literal">HIGH</code> (par exemple AES,
+         Camellia, 3DES)
+        </p></dd><dt id="GUC-SSL-CIPHERS-MEDIUM"><span class="term"><code class="literal">MEDIUM</code></span> <a href="#GUC-SSL-CIPHERS-MEDIUM" class="id_link">#</a></dt><dd><p>
+         Algorithmes du groupe <code class="literal">MEDIUM</code> (par exemple RC4,
+         SEED)
+        </p></dd><dt id="GUC-SSL-CIPHERS-PLUS-3DES"><span class="term"><code class="literal">+3DES</code></span> <a href="#GUC-SSL-CIPHERS-PLUS-3DES" class="id_link">#</a></dt><dd><p>
+         L'ordre par défaut d'<span class="productname">OpenSSL</span> pour
+         <code class="literal">HIGH</code> est problématique
+         car il positionne 3DES avant AES128. Ceci est mauvais parce que
+         3DES offre moins de sécurité que AES128, et il est aussi bien moins
+         rapide. <code class="literal">+3DES</code> le réordonne après les algorithmes
+         des groupes <code class="literal">HIGH</code> et <code class="literal">MEDIUM</code>.
+        </p></dd><dt id="GUC-SSL-CIPHERS-NOT-ANULL"><span class="term"><code class="literal">!aNULL</code></span> <a href="#GUC-SSL-CIPHERS-NOT-ANULL" class="id_link">#</a></dt><dd><p>
+         Désactive les algorithmes anonymes qui ne font pas d'authentification.
+         Ces algorithmes sont vulnérables à des attaques de type
+         <span class="foreignphrase"><em class="foreignphrase">man-in-the-middle</em></span> (<acronym class="acronym">MITM</acronym>)
+         et ne doivent donc pas être utilisés.
+        </p></dd></dl></div><p>
+    </p><p>
+     Les détails sur les algorithmes varient suivant les versions
+     d'<span class="productname">OpenSSL</span>.
+     Utiliser la commande <code class="literal">openssl ciphers -v 'HIGH:MEDIUM:+3DES:!aNULL'</code>
+     pour voir les détails réels de la version <span class="productname">OpenSSL</span>
+     actuellement installée. Notez que cette liste est filtrée à l'exécution
+     suivant le type de clé du serveur.
+    </p></dd><dt id="GUC-SSL-PREFER-SERVER-CIPHERS"><span class="term"><code class="varname">ssl_prefer_server_ciphers</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.6.5.3.3.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SSL-PREFER-SERVER-CIPHERS" class="id_link">#</a></dt><dd><p>
+     Précise s'il faut utiliser les préférences du serveur en terme
+     d'algorithmes, ou celles du client.
+     Ce paramètre peut uniquement être modifié dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+     La valeur par défaut est <code class="literal">on</code>.
+    </p><p>
+     Les versions de PostgreSQL antérieures à la 9.4 n'ont pas ce paramètre et
+     utilisent toujours les préférences du client. Ce paramètre a
+     principalement pour but de maintenir une compatibilité ascendante avec
+     ces versions. Utiliser les préférences du serveur est généralement
+     conseillé car il est plus probable que le serveur soit correctement
+     configuré.
+    </p></dd><dt id="GUC-SSL-ECDH-CURVE"><span class="term"><code class="varname">ssl_ecdh_curve</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.6.5.3.4.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SSL-ECDH-CURVE" class="id_link">#</a></dt><dd><p>
+     Indique le nom de la courve à utiliser dans l'échange de clés
+     <acronym class="acronym">ECDH</acronym>. Elle doit être acceptée par tous les clients
+     qui se connectent. Il n'est pas nécessaire que la même courbe soit
+     utilisée par la clé Elliptic Curve.
+     Ce paramètre peut uniquement être modifié dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+     La valeur par défaut est <code class="literal">prime256v1</code>.
+    </p><p>
+     Noms <span class="productname">OpenSSL</span> pour les courbes les plus courantes :
+     <code class="literal">prime256v1</code> (NIST P-256),
+     <code class="literal">secp384r1</code> (NIST P-384),
+     <code class="literal">secp521r1</code> (NIST P-521).
+     La liste complète des courbes disponibles peut être récupérée avec la
+     commande <code class="command">openssl ecparam -list_curves</code>. Toutes ne
+     sont pas utilisables dans <acronym class="acronym">TLS</acronym>.
+    </p></dd><dt id="GUC-SSL-CA-FILE"><span class="term"><code class="varname">ssl_ca_file</code> (<code class="type">string</code>)</span> <a href="#GUC-SSL-CA-FILE" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.5.3.5.2.1" class="indexterm"></a><p>
+     Indique le nom du fichier contenant l'autorité du certificat serveur SSL
+     (CA).
+     Les chemins relatifs sont relatifs par rapport au répertoire de données.
+     Ce paramètre peut uniquement être modifié dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+     Par défaut le paramètre est vide, ce qui veut dire qu'il n'y a pas de
+     fichier d'autorité du certificat chargé, et donc que la vérification du
+     certificat client n'est pas effectuée.
+    </p></dd><dt id="GUC-SSL-CERT-FILE"><span class="term"><code class="varname">ssl_cert_file</code> (<code class="type">string</code>)</span> <a href="#GUC-SSL-CERT-FILE" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.5.3.6.2.1" class="indexterm"></a><p>
+     Indique le nom du fichier contenant le certificat SSL du serveur.
+     Les chemins relatifs sont relatifs par rapport au répertoire de données.
+     Ce paramètre peut uniquement être modifié dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+     La valeur par défaut est <code class="filename">server.crt</code>.
+    </p></dd><dt id="GUC-SSL-CRL-FILE"><span class="term"><code class="varname">ssl_crl_file</code> (<code class="type">string</code>)</span> <a href="#GUC-SSL-CRL-FILE" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.5.3.7.2.1" class="indexterm"></a><p>
+     Indique le nom du fichier contenant la liste de révocation de certificat
+     SSL client (CRL).
+     Les chemins relatifs sont relatifs par rapport au répertoire de données.
+     Ce paramètre peut uniquement être modifié dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+     Par défaut, ce paramètre est vide, ce qui veut dire qu'aucune liste de
+     révocation de certificat n'est chargée. (à moins que
+     <a class="xref" href="runtime-config-connection.html#GUC-SSL-CRL-DIR">ssl_crl_dir</a> soit configuré).
+    </p></dd><dt id="GUC-SSL-CRL-DIR"><span class="term"><code class="varname">ssl_crl_dir</code> (<code class="type">string</code>)
+   <a id="id-1.6.6.6.5.3.8.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SSL-CRL-DIR" class="id_link">#</a></dt><dd><p>
+     Indique le nom du répertoire qui contient la liste de révocation de
+     certificats du serveur (CRL). Les chemins relatifs sont pris à partir du
+     répertoire de données. Ce paramètre peut seulement être indiqué dans le
+     fichier <code class="filename">postgresql.conf</code> ou sur la ligne de
+     commande. La valeur par défaut est vide, signifiant qu'aucun CRL n'est
+     utilisé, à moins que le paramètre <a class="xref" href="runtime-config-connection.html#GUC-SSL-CRL-FILE">ssl_crl_file</a>
+     ne soit renseigné.
+    </p><p>
+     Le répertoire doit être préparé avec la commande
+     <span class="productname">OpenSSL</span> <code class="literal">openssl rehash</code> ou
+     <code class="literal">c_rehash</code>. Voir la documentation de OpenSSL pour plus
+     d'informations.
+    </p><p>
+     Quand ce paramètre est utilisé, les CRL du répertoire spécifié sont
+     chargés à la demande au moment de la connexion. Les nouvelles CRL qui
+     sont ajoutées dans le répertoire pourront être utilisées immédiatement,
+     contrairement au paramètre <a class="xref" href="runtime-config-connection.html#GUC-SSL-CRL-FILE">ssl_crl_file</a>, avec
+     lequel les CRL sont chargées au démarrage du serveur ou au rechargement
+     de la configuration. Les deux paramètres peuvent être utilisés
+     simultanément.
+    </p></dd><dt id="GUC-SSL-KEY-FILE"><span class="term"><code class="varname">ssl_key_file</code> (<code class="type">string</code>)</span> <a href="#GUC-SSL-KEY-FILE" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.5.3.9.2.1" class="indexterm"></a><p>
+     Indique le nom du fichier contenant la clé privée SSL du serveur.
+     Les chemins relatifs sont relatifs par rapport au répertoire de données.
+     Ce paramètre peut uniquement être modifié dans le fichier
+     <code class="filename">postgresql.conf</code> ou indiqué sur la ligne de commande.
+     La valeur par défaut est <code class="filename">server.key</code>.
+    </p></dd><dt id="GUC-SSL-MIN-PROTOCOL-VERSION"><span class="term"><code class="varname">ssl_min_protocol_version</code> (<code class="type">enum</code>)</span> <a href="#GUC-SSL-MIN-PROTOCOL-VERSION" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.5.3.10.2.1" class="indexterm"></a><p>
+     Configure la version minimale du protocole SSL/TLS à utiliser. Les
+     valeurs valides sont actuellement : <code class="literal">TLSv1</code>,
+     <code class="literal">TLSv1.1</code>, <code class="literal">TLSv1.2</code>,
+     <code class="literal">TLSv1.3</code>. Les versions plus anciennes de la
+     bibliothèque <span class="productname">OpenSSL</span> n'acceptent pas toutes
+     les valeurs ; une erreur peut survenir si une configuration non
+     supportée est choisie. Les versions du protocole avant TLS 1.0, donc SSL
+     version 2 et 3, sont toujours désactivées.
+    </p><p>
+     La valeur par défaut est <code class="literal">TLSv1.2</code>, ce qui satisfait les
+     bonnes pratiques au moment où ceci est écrit.
+    </p><p>
+     Ce paramètre peut seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+     serveur.
+    </p></dd><dt id="GUC-SSL-MAX-PROTOCOL-VERSION"><span class="term"><code class="varname">ssl_max_protocol_version</code> (<code class="type">enum</code>)</span> <a href="#GUC-SSL-MAX-PROTOCOL-VERSION" class="id_link">#</a></dt><dd><a id="id-1.6.6.6.5.3.11.2.1" class="indexterm"></a><p>
+     Configure la version maximale du protocole SSL/TLS à utiliser. Les
+     valeurs valides sont les mêmes que pour <a class="xref" href="runtime-config-connection.html#GUC-SSL-MIN-PROTOCOL-VERSION">ssl_min_protocol_version</a>, avec la possibilité d'accepter
+     une chaîne vide, qui permet toute version du protocole. Le comportement
+     par défaut est d'autoriser toute version. Configurer la version maximale
+     du protocole est principalement utile pour des tests ou si certains
+     composants ont des problèmes pour travailler avec un protocole plus
+     récent.
+    </p><p>
+     Ce paramètre peut seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+     serveur.
+    </p></dd><dt id="GUC-SSL-DH-PARAMS-FILE"><span class="term"><code class="varname">ssl_dh_params_file</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.6.5.3.12.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SSL-DH-PARAMS-FILE" class="id_link">#</a></dt><dd><p>
+     Indique le nom du fichier contenant les paramètres Diffie-Hellman utilisés
+     pour la famille DH éphémère des algorithmes SSL. La valeur par défaut est
+     une chaîne vide, auquel cas les paramètres DH par défaut sont utilisés.
+     Utiliser des paramètres DH personnalisés réduit l'exposition si un attaquant
+     réussit à craquer les paramètres DH internes bien connus. Vous pouvez créer
+     votre propre fichier de paramètre DH avec la commande
+     <code class="command">openssl dhparam -out dhparams.pem 2048</code>.
+    </p><p>
+     Ce paramètre peut seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+     serveur.
+    </p></dd><dt id="GUC-SSL-PASSPHRASE-COMMAND"><span class="term"><code class="varname">ssl_passphrase_command</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.6.5.3.13.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SSL-PASSPHRASE-COMMAND" class="id_link">#</a></dt><dd><p>
+     Indique une commande externe à appeler quand il faut obtenir une phrase
+     de passe pour déchiffrer un fichier SSL tel que la clé privée. Par
+     défaut, ce paramètre est vide, ce qui implique que le mécanisme interne
+     de demande de cette phrase de passe sera utilisé.
+    </p><p>
+     La commande doit envoyer la phrase de passe dans sa sortie standard et
+     quitter avec le code 0. Dans la valeur du paramètre, <code class="literal">%p</code>
+     est remplacée par la chaîne d'interrogation. (Écrivez
+     <code class="literal">%%</code> pour afficher un <code class="literal">%</code>.) Notez que la
+     chaîne d'interrogation contiendra probablement des espaces, donc
+     mettez les guillemets adéquats. S'il y a une nouvelle ligne unique à la fin
+     de la sortie, elle sera supprimée.
+    </p><p>
+     En fait, la commande n'a pas besoin de demander une phrase de passe à
+     l'utilisateur. Elle peut la lire depuis un fichier, l'obtenir d'un
+     trousseau ou de quelque chose de ce genre. C'est à l'utilisateur de
+     s'assurer que ce mécanisme est sûr.
+    </p><p>
+     Ce paramètre ne peut être renseigné que dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande.
+    </p></dd><dt id="GUC-SSL-PASSPHRASE-COMMAND-SUPPORTS-RELOAD"><span class="term"><code class="varname">ssl_passphrase_command_supports_reload</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.6.5.3.14.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SSL-PASSPHRASE-COMMAND-SUPPORTS-RELOAD" class="id_link">#</a></dt><dd><p>
+     Ce paramètre indique si la commande pour la phrase de passe désignée dans
+     <code class="varname">ssl_passphrase_command</code> doit aussi être appelée lors d'un
+     rechargement de configuration, si le fichier clé veut une phrase de
+     passe. Si ce paramètre est <code class="literal">off</code>  (c'est le défaut),
+     alors <code class="varname">ssl_passphrase_command</code> sera ignoré lors d'un
+     rechargement et la configuration SSL ne sera pas rechargée si une phrase
+     de passe était nécessaire. C'est la configuration correcte si la
+     commande a besoin d'un TTY pour demander la phrase, qui pourrait ne pas
+     être disponible quand le serveur fonctionne. Passer ce paramètre à
+     <code class="literal">on</code> peut être approprié si la phrase de passe est
+     obtenue, par exemple, depuis un fichier.
+    </p><p>
+     Ce paramètre doit être configuré à <code class="literal">on</code> lors d'une
+     exécution sous <span class="systemitem">Windows</span> car
+     toutes les connexions réaliseront un rechargement de la configuration à
+     cause du modèle différent de processus de cette plateforme.
+    </p><p>
+     Ce paramètre ne peut être renseigné que dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande.
+    </p></dd></dl></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-connection.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+</html>

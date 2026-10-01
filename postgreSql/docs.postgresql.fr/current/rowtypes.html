@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/rowtypes.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:26 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>8.16. Types composites</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="arrays.html" title="8.15. Tableaux" /><link rel="next" href="rangetypes.html" title="8.17. Types intervalle de valeurs" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/rowtypes.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/rowtypes.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/rowtypes.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/rowtypes.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/rowtypes.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/rowtypes.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/rowtypes.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/rowtypes.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/rowtypes.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/rowtypes.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/rowtypes.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/rowtypes.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/rowtypes.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/rowtypes.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/rowtypes.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/rowtypes.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/rowtypes.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/rowtypes.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/rowtypes.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/rowtypes.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/rowtypes.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="datatype.html">Types de données</a></span> » <span class="breadcrumb-node">Types composites</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="arrays.html" title="8.15. Tableaux">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="datatype.html" title="Chapitre 8. Types de données">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="rangetypes.html" title="8.17. Types intervalle de valeurs">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">8.15. Tableaux </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 8.17. Types intervalle de valeurs</td></tr></table></div><div class="sect1" id="ROWTYPES"><div class="titlepage"><div><div><h2 class="title" style="clear: both">8.16. Types composites <a href="#ROWTYPES" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="rowtypes.html#ROWTYPES-DECLARING">8.16.1. Déclaration de types composites</a></span></dt><dt><span class="sect2"><a href="rowtypes.html#ROWTYPES-CONSTRUCTING">8.16.2. Construire des valeurs composites</a></span></dt><dt><span class="sect2"><a href="rowtypes.html#ROWTYPES-ACCESSING">8.16.3. Accéder aux types composites</a></span></dt><dt><span class="sect2"><a href="rowtypes.html#ROWTYPES-MODIFYING">8.16.4. Modifier les types composites</a></span></dt><dt><span class="sect2"><a href="rowtypes.html#ROWTYPES-USAGE">8.16.5. Utiliser des types composites dans les requêtes</a></span></dt><dt><span class="sect2"><a href="rowtypes.html#ROWTYPES-IO-SYNTAX">8.16.6. Syntaxe en entrée et sortie d'un type composite</a></span></dt></dl></div><a id="id-1.5.7.24.2" class="indexterm"></a><a id="id-1.5.7.24.3" class="indexterm"></a><p>
+  Un <em class="firstterm">type composite</em> représente la structure d'une ligne
+  ou d'un enregistrement ; il est en essence une simple liste de noms de
+  champs et de leurs types de données. <span class="productname">PostgreSQL</span>
+  autorise l'utilisation de types composites identiques de plusieurs façons à
+  l'utilisation des types simples. Par exemple, une colonne d'une table peut
+  être déclarée comme étant de type composite.
+ </p><div class="sect2" id="ROWTYPES-DECLARING"><div class="titlepage"><div><div><h3 class="title">8.16.1. Déclaration de types composites <a href="#ROWTYPES-DECLARING" class="id_link">#</a></h3></div></div></div><p>
+   Voici deux exemples simples de définition de types composites :
+   </p><pre class="programlisting">CREATE TYPE complexe AS (
+    r       double precision,
+    i       double precision
+);
+
+CREATE TYPE element_inventaire AS (
+    nom             text,
+    id_fournisseur  integer,
+    prix            numeric
+);</pre><p>
+  La syntaxe est comparable à <code class="command">CREATE TABLE</code>, sauf que seuls les noms
+  de champs et leurs types peuvent être spécifiés ; aucune contrainte (telle
+  que <code class="literal">NOT NULL</code>) ne peut être incluse actuellement. Notez que le mot-clé
+  <code class="literal">AS</code> est essentiel ; sans lui, le système penserait à un
+  autre genre de commande <code class="command">CREATE TYPE</code> et vous obtiendriez d'étranges
+  erreurs de syntaxe.
+ </p><p>
+  Après avoir défini les types, nous pouvons les utiliser pour créer des
+  tables :
+
+</p><pre class="programlisting">CREATE TABLE disponible (
+    element   element_inventaire,
+    nombre    integer
+);
+
+INSERT INTO disponible VALUES (ROW('fuzzy dice', 42, 1.99), 1000);</pre><p>
+
+  ou des fonctions :
+
+</p><pre class="programlisting">CREATE FUNCTION prix_extension(element_inventaire, integer) RETURNS numeric
+AS 'SELECT $1.prix * $2' LANGUAGE SQL;
+
+SELECT prix_extension(element, 10) FROM disponible;</pre><p>
+
+ </p><p>
+  Quand vous créez une table, un type composite est automatiquement créé, avec
+  le même nom que la table, pour représenter le type de ligne de la table. Par
+  exemple, si nous avions dit :
+</p><pre class="programlisting">CREATE TABLE element_inventaire (
+    nom             text,
+    id_fournisseur  integer REFERENCES fournisseur,
+    prix            numeric CHECK (prix &gt; 0)
+);</pre><p>
+  alors le même type composite <code class="literal">element_inventaire</code> montré ci-dessus
+  aurait été créé et pourrait être utilisé comme ci-dessus. Néanmoins, notez
+  une restriction importante de l'implémentation actuelle : comme aucune
+  contrainte n'est associée avec un type composite, les contraintes indiquées
+  dans la définition de la table <span class="emphasis"><em>ne sont pas appliquées</em></span>
+  aux valeurs du type composite en dehors de la table. (Pour contourner ceci,
+  créer un <a class="glossterm" href="glossary.html#GLOSSARY-DOMAIN"><em class="glossterm"><a class="glossterm" href="glossary.html#GLOSSARY-DOMAIN" title="Domain">domaine</a></em></a>
+  sur le type composite, et appliquer les contraintes désirées
+  en tant que contraintes <code class="literal">CHECK</code> du domaine.)
+ </p></div><div class="sect2" id="ROWTYPES-CONSTRUCTING"><div class="titlepage"><div><div><h3 class="title">8.16.2. Construire des valeurs composites <a href="#ROWTYPES-CONSTRUCTING" class="id_link">#</a></h3></div></div></div><a id="id-1.5.7.24.6.2" class="indexterm"></a><p>
+   Pour écrire une valeur composite comme une constante littérale, englobez
+   les valeurs du champ dans des parenthèses et séparez-les par des virgules.
+   Vous pouvez placer des guillemets doubles autour de chaque valeur de champ
+   et vous devez le faire si elle contient des virgules ou des parenthèses
+   (plus de détails <a class="link" href="rowtypes.html#ROWTYPES-IO-SYNTAX" title="8.16.6. Syntaxe en entrée et sortie d'un type composite">ci-dessous</a>).
+   Donc, le format général d'une constante composite est le suivant :
+</p><pre class="synopsis">'( <em class="replaceable"><code>val1</code></em> , <em class="replaceable"><code>val2</code></em> , ... )'</pre><p>
+   Voici un exemple :
+</p><pre class="programlisting">'("fuzzy dice",42,1.99)'</pre><p>
+   qui serait une valeur valide du type <code class="literal">element_inventaire</code> défini
+   ci-dessus. Pour rendre un champ NULL, n'écrivez aucun caractère dans sa
+   position dans la liste. Par exemple, cette constante spécifie un troisième
+   champ NULL :
+</p><pre class="programlisting">'("fuzzy dice",42,)'</pre><p>
+   Si vous voulez un champ vide au lieu d'une valeur NULL, saisissez deux
+   guillemets :
+</p><pre class="programlisting">'("",42,)'</pre><p>
+   Ici, le premier champ est une chaîne vide non NULL alors que le troisième
+   est NULL.
+  </p><p>
+   (Ces constantes sont réellement seulement un cas spécial de constantes
+   génériques de type discutées dans la <a class="xref" href="sql-syntax-lexical.html#SQL-SYNTAX-CONSTANTS-GENERIC" title="4.1.2.7. Constantes d'autres types">Section 4.1.2.7</a>. La constante est initialement
+   traitée comme une chaîne et passée à la routine de conversion de l'entrée
+   de type composite. Une spécification explicite de type pourrait être
+   nécessaire pour préciser le type à utiliser pour la conversion de la
+   constante.)
+  </p><p>
+  La syntaxe d'expression <code class="literal">ROW</code> pourrait aussi être utilisée
+  pour construire des valeurs composites. Dans la plupart des cas, ceci est
+  considérablement plus simple à utiliser que la syntaxe de chaîne littérale, car
+  vous n'avez pas à vous inquiéter des multiples couches de guillemets. Nous avons
+  déjà utilisé cette méthode ci-dessus :
+</p><pre class="programlisting">ROW('fuzzy dice', 42, 1.99)
+ROW('', 42, NULL)</pre><p>
+  Le mot-clé ROW est optionnel si vous avez plus d'un champ dans l'expression,
+  donc ceci peut être simplifié avec
+</p><pre class="programlisting">('fuzzy dice', 42, 1.99)
+('', 42, NULL)</pre><p>
+  La syntaxe de l'expression <code class="literal">ROW</code> est discutée avec plus de détails
+  dans la <a class="xref" href="sql-expressions.html#SQL-SYNTAX-ROW-CONSTRUCTORS" title="4.2.13. Constructeurs de lignes">Section 4.2.13</a>.
+ </p></div><div class="sect2" id="ROWTYPES-ACCESSING"><div class="titlepage"><div><div><h3 class="title">8.16.3. Accéder aux types composites <a href="#ROWTYPES-ACCESSING" class="id_link">#</a></h3></div></div></div><p>
+  Pour accéder à un champ d'une colonne composite, vous pouvez écrire un point
+  et le nom du champ, un peu comme la sélection d'un champ à partir d'un nom
+  de table. En fait, c'est tellement similaire que vous pouvez souvent utiliser
+  des parenthèses pour éviter une confusion de l'analyseur. Par exemple, vous
+  pouvez essayer de sélectionner des sous-champs à partir de notre exemple de
+  table, <code class="literal">disponible</code>, avec quelque chose comme :
+
+</p><pre class="programlisting">SELECT element.nom FROM disponible WHERE element.prix &gt; 9.99;</pre><p>
+
+  Ceci ne fonctionnera pas, car le nom <code class="literal">element</code> est pris pour le nom
+  d'une table, et non pas d'une colonne de <code class="literal">disponible</code>, suivant les
+  règles de la syntaxe SQL. Vous devez l'écrire ainsi :
+
+</p><pre class="programlisting">SELECT (element).nom FROM disponible WHERE (element).prix &gt; 9.99;</pre><p>
+
+  ou si vous avez aussi besoin d'utiliser le nom de la table (par exemple dans
+  une requête multitable), de cette façon :
+
+</p><pre class="programlisting">SELECT (disponible.element).nom FROM disponible WHERE (disponible.element).prix &gt; 9.99;</pre><p>
+
+  Maintenant, l'objet entre parenthèses est correctement interprété comme une
+  référence à la colonne <code class="literal">element</code>, puis le sous-champ peut être
+  sélectionné à partir de lui.
+ </p><p>
+  Des problèmes syntaxiques similaires s'appliquent quand vous sélectionnez un
+  champ à partir d'une valeur composite. En fait, pour sélectionner un seul champ
+  à partir du résultat d'une fonction renvoyant une valeur composite, vous aurez
+  besoin d'écrire quelque chose comme :
+
+</p><pre class="programlisting">SELECT (ma_fonction(...)).champ FROM ...</pre><p>
+
+  Sans les parenthèses supplémentaires, ceci provoquera une erreur.
+ </p><p>
+  Le nom du champ spécial <code class="literal">*</code> signifie <span class="quote">« <span class="quote">tous les
+  champs</span> »</span>, comme expliqué dans <a class="xref" href="rowtypes.html#ROWTYPES-USAGE" title="8.16.5. Utiliser des types composites dans les requêtes">Section 8.16.5</a>.
+ </p></div><div class="sect2" id="ROWTYPES-MODIFYING"><div class="titlepage"><div><div><h3 class="title">8.16.4. Modifier les types composites <a href="#ROWTYPES-MODIFYING" class="id_link">#</a></h3></div></div></div><p>
+  Voici quelques exemples de la bonne syntaxe pour insérer et mettre à jour
+  des colonnes composites. Tout d'abord, pour insérer ou modifier une colonne
+  entière :
+
+</p><pre class="programlisting">INSERT INTO matab (col_complexe) VALUES((1.1,2.2));
+
+UPDATE matab SET col_complexe = ROW(1.1,2.2) WHERE ...;</pre><p>
+
+  Le premier exemple omet <code class="literal">ROW</code>, le deuxième l'utilise ; nous
+  pouvons le faire des deux façons.
+ </p><p>
+  Nous pouvons mettre à jour un sous-champ individuel d'une colonne
+  composite :
+
+</p><pre class="programlisting">UPDATE matab SET col_complexe.r = (col_complexe).r + 1 WHERE ...;</pre><p>
+
+  Notez ici que nous n'avons pas besoin de (et, en fait, ne pouvons pas) placer
+  des parenthèses autour des noms de colonnes apparaissant juste après
+  <code class="literal">SET</code>, mais nous avons besoin de parenthèses lors de la référence à
+  la même colonne dans l'expression à droite du signe d'égalité.
+ </p><p>
+  Et nous pouvons aussi spécifier des sous-champs comme cibles de la commande
+  <code class="command">INSERT</code> :
+
+</p><pre class="programlisting">INSERT INTO matab (col_complexe.r, col_complexe.i) VALUES(1.1, 2.2);</pre><p>
+
+  Si tous les sous-champs d'une colonne ne sont pas spécifiés, ils sont remplis
+  avec une valeur NULL.
+ </p></div><div class="sect2" id="ROWTYPES-USAGE"><div class="titlepage"><div><div><h3 class="title">8.16.5. Utiliser des types composites dans les requêtes <a href="#ROWTYPES-USAGE" class="id_link">#</a></h3></div></div></div><p>
+   Il existe différentes règles spéciales de syntaxe et de différents
+   comportements associés avec les types composites dans les requêtes. Ces
+   règles fournissent des raccourcis utiles, mais peuvent être difficiles à
+   appréhender si vous ne connaissez pas la logique qui y est associée.
+  </p><p>
+   Dans <span class="productname">PostgreSQL</span>, une référence à un nom de table
+   (ou à un alias) dans une requête est réellement une référence au type
+   composite de la ligne courante de la table. Par exemple, si nous avons une
+   table  <code class="structname">element_inventaire</code> comme définie <a class="link" href="rowtypes.html#ROWTYPES-DECLARING" title="8.16.1. Déclaration de types composites">ci-dessus</a>, nous pouvons écrire :
+</p><pre class="programlisting">
+SELECT c FROM element_inventaire c;
+   </pre><p>
+   Cette requête renvoie une seule colonne comprenant une valeur composite, et
+   nous pourrions obtenir l'affichage suivant :
+   </p><pre class="programlisting">
+           c
+------------------------
+ ("fuzzy dice",42,1.99)
+(1 row)
+   </pre><p>
+   Il faut noter néanmoins que les noms simples (c.-à-d. sans qualifiant) sont
+   traités comme des noms de colonnes puis comme des noms de table s'il n'y a
+   pas de correspondance avec les noms de colonnes. Donc cet exemple
+   fonctionne seulement parce qu'il n'existe pas de colonne nommée
+   <code class="structfield">c</code> dans les tables de la requête.
+  </p><p>
+   La syntaxe habituelle avec des noms de colonne qualifiés (comme
+   <em class="replaceable"><code>nom_table</code></em><code class="literal">.</code><em class="replaceable"><code>nom_colonne</code></em>)
+   peut se comprendre en appliquant la <a class="link" href="sql-expressions.html#FIELD-SELECTION" title="4.2.4. Sélection de champs">sélection de champs</a> à la valeur composite
+   de la ligne actuelle de la table. (Pour des raisons d'efficacité, ce n'est
+   pas réellement implémenté de cette façon.)
+  </p><p>
+   Quand nous écrivons
+   </p><pre class="programlisting">
+SELECT c.* FROM element_inventaire c;
+   </pre><p>
+   alors, d'après le standard SQL, nous devrions obtenir le contenu de la
+   table étendu en des colonnes séparées :
+   </p><pre class="programlisting">
+    nom     | id_fournisseur | prix
+------------+----------------+-------
+ fuzzy dice |             42 |  1.99
+(1 row)
+   </pre><p>
+   comme si la requête avait été écrite ainsi :
+   </p><pre class="programlisting">
+SELECT c.nom, c.id_fournisseur, c.prix FROM element_inventaire c;
+   </pre><p>
+   <span class="productname">PostgreSQL</span> appliquera ce comportement étendu à toute
+   expression de valeur composite, bien que, comme indiqué <a class="link" href="rowtypes.html#ROWTYPES-ACCESSING" title="8.16.3. Accéder aux types composites">ci-dessus</a>, il est nécessaire d'ajouter des
+   parenthèses autour de la valeur à qui <code class="literal">.*</code> est appliquée à chaque
+   fois qu'il ne s'agit pas d'un nom de table. Par exemple, si <code class="function">ma_fonction()</code>
+   est une fonction renvoyant un type composite avec les colonnes
+   <code class="structfield">a</code>,
+   <code class="structfield">b</code> et <code class="structfield">c</code>, alors ces deux
+   requêtes donnent le même résultat :
+   </p><pre class="programlisting">
+SELECT (ma_fonction(x)).* FROM une_table;
+SELECT (ma_fonction(x)).a, (ma_fonction(x)).b, (ma_fonction(x)).c FROM une_table;
+   </pre><p>
+  </p><div class="tip"><h3 class="title">Astuce</h3><p>
+    <span class="productname">PostgreSQL</span> gère le fait d'étendre les colonnes
+    en transformant la première forme en la seconde. De ce fait, dans cet
+    exemple, <code class="function">ma_fonction()</code> serait appelé trois fois par
+    ligne, quelle que soit la syntaxe utilisée. S'il s'agit d'une fonction peu
+    performante, vous pourriez souhaiter éviter cela, ce que vous pouvez faire
+    avec une requête de ce type :
+    </p><pre class="programlisting">
+SELECT (m).* FROM (SELECT ma_fonction(x) AS m FROM une_table OFFSET 0) ss;
+    </pre><p>
+    Placer la fonction dans un élément <code class="literal">LATERAL</code> du
+    <code class="literal">FROM</code> l'aide à ne pas être invoquée plus d'une fois par
+    ligne. <code class="literal">m.*</code> est toujours étendu en <code class="literal">m.a, m.b,
+     m.c</code>, mais maintenant ces variables sont juste des références à
+    la sortie de l'élément <code class="literal">FROM</code>. (Le mot-clé
+    <code class="literal">LATERAL</code> est optionnel ici, mais nous le montrons pour
+    clarifier que la fonction obtient <code class="structfield">x</code> de la
+    <code class="structname">some_table</code>.)
+   </p></div><p>
+   La syntaxe <em class="replaceable"><code>valeur_composite</code></em><code class="literal">.*</code>
+   étend les colonnes avec un résultat de ce type quand il apparaît au niveau haut
+   d'une <a class="link" href="queries-select-lists.html" title="7.3. Listes de sélection">liste en sortie du
+    <code class="command">SELECT</code></a>, d'une <a class="link" href="dml-returning.html" title="6.4. Renvoyer des données provenant de lignes modifiées">liste <code class="literal">RETURNING</code></a> dans des commandes
+   <code class="command">INSERT</code>/<code class="command">UPDATE</code>/<code class="command">DELETE</code>/<code class="command">MERGE</code>, d'une
+   <a class="link" href="queries-values.html" title="7.7. Listes VALUES">clause <code class="literal">VALUES</code></a>, ou d'un
+   <a class="link" href="sql-expressions.html#SQL-SYNTAX-ROW-CONSTRUCTORS" title="4.2.13. Constructeurs de lignes">constructeur de ligne</a>.
+   Dans tous les autres contextes (incluant l'imbrication dans une de ces constructions), attacher <code class="literal">.*</code> à une
+   valeur composite ne change pas la valeur, car cela signifie <span class="quote">« <span class="quote">toutes les colonnes</span> »</span> et donc la valeur composite
+   est produite de nouveau. Par exemple, si <code class="function">une_fonction()</code> accepte un argument de valeur composite,
+   ces requêtes ont un résultat identique :
+
+   </p><pre class="programlisting">
+SELECT une_fonction(c.*) FROM element_inventaire c;
+SELECT une_fonction(c) FROM element_inventaire c;
+   </pre><p>
+
+   Dans les deux cas, la ligne courante de
+   <code class="structname">element_inventaire</code> est passée à la fonction sous
+   la forme d'un seul argument de type composite. Même si
+   <code class="literal">.*</code> ne fait rien dans de tels cas, l'utiliser est
+   intéressant, car il est clair à sa lecture qu'on attend une valeur
+   composite. En particulier, l'analyseur considérera <code class="literal">c</code>
+   dans <code class="literal">c.*</code> comme une référence au nom de la table ou de
+   l'alias, et non pas comme un nom de colonne, pour qu'il n'y ait pas
+   d'ambiguïté. Sans le <code class="literal">.*</code>, il n'est pas clair si
+   <code class="literal">c</code> est un nom de table ou de colonne et, de ce fait,
+   l'interprétation préférée sera celle d'un nom de colonne si une colonne
+   nommée <code class="literal">c</code> existe.
+  </p><p>
+   Voici un autre exemple démontrant ces concepts avec toutes ces requêtes qui
+   ont la même signification :
+   </p><pre class="programlisting">
+SELECT * FROM element_inventaire c ORDER BY c;
+SELECT * FROM element_inventaire c ORDER BY c.*;
+SELECT * FROM element_inventaire c ORDER BY ROW(c.*);
+   </pre><p>
+   Toutes ces clauses <code class="literal">ORDER BY</code> indiquent la valeur
+   composite de la ligne. Néanmoins, si
+   <code class="structname">element_inventaire</code> contenait une colonne nommée
+   <code class="structfield">c</code>, le premier cas serait différent des autres,
+   car le tri se ferait uniquement sur cette colonne. Avec les noms de colonne
+   indiqués précédemment, ces requêtes sont aussi équivalentes à
+   celles-ci :
+   </p><pre class="programlisting">
+SELECT * FROM element_inventaire c ORDER BY ROW(c.nom, c.id_fournisseur, c.prix);
+SELECT * FROM element_inventaire c ORDER BY (c.nom, c.id_fournisseur, c.prix);
+   </pre><p>
+   (Le dernier cas utilise un constructeur de ligne avec le mot-clé
+   <code class="literal">ROW</code> omis.)
+  </p><p>
+   Un autre comportement syntaxique spécial avec les valeurs composites est
+   que nous pouvons utiliser la <em class="firstterm">notation fonctionnelle</em>
+   pour extraire un champ d'une valeur composite. La façon simple d'expliquer
+   ceci est que les notations
+   <code class="literal"><em class="replaceable"><code>champ</code></em>(<em class="replaceable"><code>table</code></em>)</code>
+   et <code class="literal"><em class="replaceable"><code>table</code></em>.<em class="replaceable"><code>champ</code></em></code>
+   sont interchangeables. Par exemple, ces requêtes sont équivalentes :
+
+   </p><pre class="programlisting">
+SELECT c.nom FROM element_inventaire c WHERE c.prix &gt; 1000;
+SELECT nom(c) FROM element_inventaire c WHERE prix(c) &gt; 1000;
+   </pre><p>
+
+   De plus, si nous avons une fonction qui accepte un seul argument de type
+   composite, nous pouvons l'appeler avec une de ces notations. Ces requêtes
+   sont toutes équivalentes :
+
+   </p><pre class="programlisting">
+SELECT une_fonction(c) FROM element_inventaire c;
+SELECT une_fonction(c.*) FROM element_inventaire c;
+SELECT c.une_fonction FROM element_inventaire c;
+   </pre><p>
+  </p><p>
+   Cette équivalence entre la notation fonctionnelle et la notation par champ
+   rend possible l'utilisation de fonctions sur les types composites pour
+   implémenter les <span class="quote">« <span class="quote">champs calculés</span> »</span>.
+   <a id="id-1.5.7.24.9.10.2" class="indexterm"></a>
+   <a id="id-1.5.7.24.9.10.3" class="indexterm"></a>
+   Une application utilisant la dernière requête ci-dessus n'aurait pas besoin
+   d'être directement attentive au fait que <code class="literal">une_fonction</code>
+   n'est pas une vraie colonne de la table.
+  </p><div class="tip"><h3 class="title">Astuce</h3><p>
+    À cause de ce comportement, il est déconseillé de donner une fonction qui
+    prend un argument de type composite simple du même nom que n'importe quel
+    champ de ce type composite. S'il existe une ambiguïté, l'interprétation du
+    nom de champ sera choisie si la syntaxe de nom de champ est utilisée, alors
+    que la fonction sera choisie si la syntaxe d'appel de fonction est
+    utilisée. Néanmoins, les versions de <span class="productname">PostgreSQL</span>
+    antérieures à la 11 choisiront toujours l'interprétation du nom de champ,
+    sauf si la syntaxe de l'appel requiert un appel de fonction. Une façon de
+    forcer l'interprétation en fonction pour les versions antérieures est de
+    qualifier le nom de la fonction avec le nom du schéma, autrement dit
+    <code class="literal"><em class="replaceable"><code>schéma</code></em>.<em class="replaceable"><code>fonction</code></em>(<em class="replaceable"><code>valeurcomposite</code></em>)</code>.
+   </p></div></div><div class="sect2" id="ROWTYPES-IO-SYNTAX"><div class="titlepage"><div><div><h3 class="title">8.16.6. Syntaxe en entrée et sortie d'un type composite <a href="#ROWTYPES-IO-SYNTAX" class="id_link">#</a></h3></div></div></div><p>
+   La représentation texte externe d'une valeur composite consiste en des
+   éléments qui sont interprétés suivant les règles de conversion
+   d'entrées/sorties pour les types de champs individuels, plus des décorations
+   indiquant la structure composite. Ces décorations consistent en des parenthèses
+   (<code class="literal">(</code> et <code class="literal">)</code>) autour de la valeur entière, ainsi que des
+   virgules (<code class="literal">,</code>) entre les éléments adjacents. Des espaces blancs en
+   dehors des parenthèses sont ignorés, mais à l'intérieur des parenthèses, ils
+   sont considérés comme faisant partie de la valeur du champ et pourraient ou non
+   être significatifs suivant les règles de conversion de l'entrée pour le type
+   de données du champ. Par exemple, dans :
+   </p><pre class="programlisting">'(  42)'</pre><p>
+   l'espace blanc sera ignoré si le type du champ est un entier, mais pas s'il
+   s'agit d'un champ de type texte.
+  </p><p>
+   Comme indiqué précédemment, lors de l'écriture d'une valeur composite, vous
+   pouvez utiliser des guillemets doubles autour de chaque valeur de champ
+   individuel. Vous <span class="emphasis"><em>devez</em></span> le faire si la valeur du champ était
+   susceptible de gêner l'analyseur de la valeur du champ composite. En particulier, les
+   champs contenant des parenthèses, des virgules, des guillemets doubles ou des
+   antislashs doivent être entre guillemets doubles. Pour placer un guillemet
+   double ou un antislash dans la valeur d'un champ composite entre guillemets,
+   faites-le précéder d'un antislash. (De plus, une paire de guillemets doubles
+   à l'intérieur d'une valeur de champ à guillemets doubles est prise pour
+   représenter un caractère guillemet double, en analogie avec les règles des
+   guillemets simples dans les chaînes SQL littérales.) Autrement, vous pouvez
+   éviter les guillemets et utiliser l'échappement par antislash pour protéger
+   tous les caractères de données qui auraient été pris pour une syntaxe
+   composite.
+  </p><p>
+   Une valeur de champ composite vide (aucun caractère entre les virgules ou
+   parenthèses) représente une valeur NULL. Pour écrire une valeur qui est une
+   chaîne vide plutôt qu'une valeur NULL, écrivez <code class="literal">""</code>.
+  </p><p>
+   La routine de sortie composite placera des guillemets doubles autour des
+   valeurs de champs si elles sont des chaînes vides ou si elles contiennent des
+   parenthèses, virgules, guillemets doubles, antislash ou espaces blancs.
+   (Faire ainsi pour les espaces blancs n'est pas essentiel, mais aide à la
+   lecture.) Les guillemets doubles et antislashs dans les valeurs des
+   champs seront doublés.
+  </p><div class="note"><h3 class="title">Note</h3><p>
+   Rappelez-vous que ce que vous allez saisir dans une commande SQL sera tout
+   d'abord interprété comme une chaîne littérale, puis comme un composite. Ceci
+   double le nombre d'antislash dont vous avez besoin (en supposant que la syntaxe
+   d'échappement des chaînes soit utilisée). Par exemple, pour insérer
+   un champ <code class="type">text</code> contenant un guillemet double et un antislash dans
+   une valeur composite, vous devez écrire :
+</p><pre class="programlisting">INSERT ... VALUES ('("\"\\")');</pre><p>
+   Le processeur des chaînes littérales supprime un niveau d'antislash de façon
+   que ce qui arrive à l'analyseur de valeurs composites ressemble à
+   <code class="literal">("\"\\")</code>. À son tour, la chaîne remplie par la routine d'entrée
+   du type de données <code class="type">text</code> devient <code class="literal">"\</code>. (Si nous étions en
+   train de travailler avec un type de données dont la routine d'entrée traite
+   aussi les antislashs spécialement, <code class="type">bytea</code> par exemple, nous
+   pourrions avoir besoin d'au plus huit antislashs dans la commande pour obtenir
+   un antislash dans le champ composite stocké.) Le guillemet dollar (voir <a class="xref" href="sql-syntax-lexical.html#SQL-SYNTAX-DOLLAR-QUOTING" title="4.1.2.4. Constantes de chaînes avec guillemet dollar">Section 4.1.2.4</a>) pourrait être utilisé pour éviter le
+   besoin des antislashs doublés.
+  </p></div><div class="tip"><h3 class="title">Astuce</h3><p>
+   La syntaxe du constructeur <code class="literal">ROW</code> est habituellement plus simple à
+   utiliser que la syntaxe du littéral composite lors de l'écriture de valeurs
+   composites dans des commandes SQL. Dans <code class="literal">ROW</code>, les valeurs
+   individuelles d'un champ sont écrites de la même façon qu'elles l'auraient été
+   en n'étant pas membres du composite.
+  </p></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/rowtypes.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:26 GMT -->
+</html>

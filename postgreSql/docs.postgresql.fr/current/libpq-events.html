@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/libpq-events.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:37 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>32.14. Système d'événements</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="libpq-notice-processing.html" title="32.13. Traitement des messages" /><link rel="next" href="libpq-envars.html" title="32.15. Variables d'environnement" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/libpq-events.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/libpq-events.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/libpq-events.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/libpq-events.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/libpq-events.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/libpq-events.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/libpq-events.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/libpq-events.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/libpq-events.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/libpq-events.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/libpq-events.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/libpq-events.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/libpq-events.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/libpq-events.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/libpq-events.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/libpq-events.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/libpq-events.html">8.4</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/libpq-events.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="client-interfaces.html">Interfaces client</a></span> » <span class="breadcrumb-link"><a href="libpq.html"><span class="application">libpq</span>  --  Bibliothèque C</a></span> » <span class="breadcrumb-node">Système d'événements</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="libpq-notice-processing.html" title="32.13. Traitement des messages">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="libpq.html" title="Chapitre 32. libpq  --  Bibliothèque C">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="libpq-envars.html" title="32.15. Variables d'environnement">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">32.13. Traitement des messages </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 32.15. Variables d'environnement</td></tr></table></div><div class="sect1" id="LIBPQ-EVENTS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">32.14. Système d'événements <a href="#LIBPQ-EVENTS" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="libpq-events.html#LIBPQ-EVENTS-TYPES">32.14.1. Types d'événements</a></span></dt><dt><span class="sect2"><a href="libpq-events.html#LIBPQ-EVENTS-PROC">32.14.2. Procédure de rappel de l'événement</a></span></dt><dt><span class="sect2"><a href="libpq-events.html#LIBPQ-EVENTS-FUNCS">32.14.3. Fonctions de support des événements</a></span></dt><dt><span class="sect2"><a href="libpq-events.html#LIBPQ-EVENTS-EXAMPLE">32.14.4. Exemple d'un événement</a></span></dt></dl></div><p>
+   Le système d'événements de <span class="application">libpq</span> est conçu pour
+   notifier les gestionnaires d'événements enregistrés de l'arrivée d'événements
+   intéressants de la <span class="application">libpq</span>, comme par exemple la
+   création ou la destruction d'objets <code class="structname">PGconn</code> et
+   <code class="structname">PGresult</code>. Un cas d'utilisation principal est de
+   permettre aux applications d'associer leur propres données avec un
+   <code class="structname">PGconn</code> ou un <code class="structname">PGresult</code> et
+   de s'assurer que les données soient libérées au bon moment.
+  </p><p>
+   Chaque gestionnaire d'événement enregistré est associé avec deux types de
+   données, connus par <span class="application">libpq</span> comme des pointeurs
+   opaques, c'est-à-dire <code class="literal">void *</code>. Il existe un pointeur
+   <em class="firstterm">passthrough</em> fourni par l'application quand le
+   gestionnaire d'événements est enregistré avec un <code class="structname">PGconn</code>.
+   Le pointeur passthrough ne change jamais pendant toute la durée du
+   <code class="structname">PGconn</code> et des <code class="structname">PGresult</code>
+   générés grâce à lui ; donc s'il est utilisé, il doit pointer vers
+   des données à longue vie. De plus, il existe un pointeur de <em class="firstterm">données
+    instanciées</em>, qui commence à NULL dans chaque objet
+   <code class="structname">PGconn</code> et <code class="structname">PGresult</code>. Ce
+   pointeur peut être manipulé en utilisant les fonctions
+   <a class="xref" href="libpq-events.html#LIBPQ-PQINSTANCEDATA"><code class="function">PQinstanceData</code></a>,
+   <a class="xref" href="libpq-events.html#LIBPQ-PQSETINSTANCEDATA"><code class="function">PQsetInstanceData</code></a>,
+   <a class="xref" href="libpq-events.html#LIBPQ-PQRESULTINSTANCEDATA"><code class="function">PQresultInstanceData</code></a> et
+   <code class="function">PQresultSetInstanceData</code>. Notez que, contrairement au
+   pointeur passthrough, les <code class="structname">PGresult</code> n'héritent pas
+   automatiquement des données instanciées d'un
+   <code class="structname">PGconn</code>. <span class="application">libpq</span> ne sait
+   pas vers quoi pointent les pointeurs passthrough et de données instanciées,
+   et n'essaiera hamais de les libérer  --  cela tient de la responsabilité
+   du gestionnaire d'événements.
+  </p><div class="sect2" id="LIBPQ-EVENTS-TYPES"><div class="titlepage"><div><div><h3 class="title">32.14.1. Types d'événements <a href="#LIBPQ-EVENTS-TYPES" class="id_link">#</a></h3></div></div></div><p>
+    L'enum <code class="literal">PGEventId</code> précise tous les types
+    d'événements gérés par le système d'événements. Toutes ses valeurs ont des
+    noms commençant avec <code class="literal">PGEVT</code>. Pour chaque type d'événement,
+    il existe une structure d'informations sur l'événement, précisant les
+    paramètres passés aux gestionnaires d'événement. Les types d'événements
+    sont :
+   </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PGEVT-REGISTER"><span class="term"><code class="literal">PGEVT_REGISTER</code></span> <a href="#LIBPQ-PGEVT-REGISTER" class="id_link">#</a></dt><dd><p>
+       L'événement d'enregistrement survient quand <a class="xref" href="libpq-events.html#LIBPQ-PQREGISTEREVENTPROC"><code class="function">PQregisterEventProc</code></a>
+       est appelé. C'est le moment idéal pour initialiser toute structure
+       <code class="literal">instanceData</code> qu'une procédure d'événement pourrait avoir
+       besoin. Seul un événement d'enregistrement sera déclenché par gestionnaire
+       d'événement sur une connexion. Si la procédure échoue (renvoie zéro),
+       l'enregistrement est annulé.
+
+       </p><pre class="synopsis">
+        typedef struct
+        {
+            PGconn *conn;
+        } PGEventRegister;
+       </pre><p>
+
+       Quand un événement <code class="literal">PGEVT_REGISTER</code> est reçu, le pointeur
+       <em class="parameter"><code>evtInfo</code></em> doit être converti en un
+       <code class="structname">PGEventRegister *</code>. Cette structure contient un
+       <code class="structname">PGconn</code> qui doit être dans le statut
+       <code class="literal">CONNECTION_OK</code> ; garanti si
+       <a class="xref" href="libpq-events.html#LIBPQ-PQREGISTEREVENTPROC"><code class="function">PQregisterEventProc</code></a> est appelé juste après avoir
+       obtenu un bon <code class="structname">PGconn</code>. Lorsqu'elle renvoie
+       un code d'erreur, le nettoyage doit être réalisé car aucun événement
+       <code class="literal">PGEVT_CONNDESTROY</code> ne sera envoyé.
+      </p></dd><dt id="LIBPQ-PGEVT-CONNRESET"><span class="term"><code class="literal">PGEVT_CONNRESET</code></span> <a href="#LIBPQ-PGEVT-CONNRESET" class="id_link">#</a></dt><dd><p>
+       L'événement de réinitialisation de connexion est déclenché après un <a class="xref" href="libpq-connect.html#LIBPQ-PQRESET"><code class="function">PQreset</code></a> ou un <code class="function">PQresetPoll</code>. Dans
+       les deux cas, l'événement est seulement déclenché si la ré-initialisation
+       est réussie.  La valeur de retour de la procédure événement est ignoré
+       dans les versions 15 et ultérieures de
+       <span class="productname">PostgreSQL</span>. Avec les versions précédentes, il
+       est important de renvoyer le succès (différent de zéro), sinon la
+       connexion sera annulée.
+       </p><pre class="synopsis">
+        typedef struct
+        {
+            PGconn *conn;
+        } PGEventConnReset;
+       </pre><p>
+
+       Quand un événement <code class="literal">PGEVT_CONNRESET</code> est reçu, le
+       pointeur <em class="parameter"><code>evtInfo</code></em> doit être converti en un
+       <code class="structname">PGEventConnReset *</code>. Bien que le
+       <code class="structname">PGconn</code> a été réinitialisé, toutes les données
+       de l'événement restent inchangées. Cet événement doit être utilisé pour
+       ré-initialiser/recharger/re-requêter tout <code class="literal">instanceData</code>
+       associé. Notez que même si la procédure d'événement échoue à traiter
+       <code class="literal">PGEVT_CONNRESET</code>, elle recevra toujours un événement
+       <code class="literal">PGEVT_CONNDESTROY</code> à la fermeture de la connexion.
+      </p></dd><dt id="LIBPQ-PGEVT-CONNDESTROY"><span class="term"><code class="literal">PGEVT_CONNDESTROY</code></span> <a href="#LIBPQ-PGEVT-CONNDESTROY" class="id_link">#</a></dt><dd><p>
+       L'événement de destruction de la connexion est déclenché en réponse
+       à <a class="xref" href="libpq-connect.html#LIBPQ-PQFINISH"><code class="function">PQfinish</code></a>. Il est de la responsabilité de la
+       procédure de l'événement de nettoyer proprement ses données car
+       libpq n'a pas les moyens de gérer cette mémoire. Un échec du
+       nettoyage amènera des fuites de mémoire.
+
+       </p><pre class="synopsis">
+        typedef struct
+        {
+            PGconn *conn;
+        } PGEventConnDestroy;
+       </pre><p>
+
+       Quand un événement <code class="literal">PGEVT_CONNDESTROY</code> est reçu, le
+       pointeur <em class="parameter"><code>evtInfo</code></em> doit être converti en un
+       <code class="structname">PGEventConnDestroy *</code>. Cet événement est
+       déclenché avant que <a class="xref" href="libpq-connect.html#LIBPQ-PQFINISH"><code class="function">PQfinish</code></a> ne réalise d'autres
+       nettoyages. La valeur de retour de la procédure est ignorée car il
+       n'y a aucun moyen d'indiquer un échec de <a class="xref" href="libpq-connect.html#LIBPQ-PQFINISH"><code class="function">PQfinish</code></a>.
+       De plus, un échec de la procédure ne doit pas annuler le nettoyage de
+       la mémoire non désirée.
+      </p></dd><dt id="LIBPQ-PGEVT-RESULTCREATE"><span class="term"><code class="literal">PGEVT_RESULTCREATE</code></span> <a href="#LIBPQ-PGEVT-RESULTCREATE" class="id_link">#</a></dt><dd><p>
+       L'événement de création de résultat est déclenché en réponse à
+       l'utilisation d'une fonction d'exécution d'une requête, par exemple
+       <a class="xref" href="libpq-async.html#LIBPQ-PQGETRESULT"><code class="function">PQgetResult</code></a>. Cet événement sera déclenché seulement
+       après la création réussie du résultat.
+
+       </p><pre class="synopsis">
+        typedef struct
+        {
+            PGconn *conn;
+            PGresult *result;
+        } PGEventResultCreate;
+       </pre><p>
+
+       Quand un événement <code class="literal">PGEVT_RESULTCREATE</code> est reçu, le
+       pointeur <em class="parameter"><code>evtInfo</code></em> doit être converti en un
+       <code class="structname">PGEventResultCreate *</code>. Le paramètre
+       <em class="parameter"><code>conn</code></em> est la connexion utilisée pour générer le
+       résultat. C'est le moment idéal pour initialiser tout
+       <code class="literal">instanceData</code> qui doit être associé avec le résultat.
+       Si une procédure d'événement échoue (renvoie zéro), cet événement de
+       procédure sera ignoré pour la durée de vie restante du résultat ;
+       autrement dit, il ne recevra pas les événements
+       <code class="literal">PGEVT_RESULTCOPY</code> ou
+       <code class="literal">PGEVT_RESULTDESTROY</code> pour ce résultat ou les résultats
+       copiés à partir de lui.
+      </p></dd><dt id="LIBPQ-PGEVT-RESULTCOPY"><span class="term"><code class="literal">PGEVT_RESULTCOPY</code></span> <a href="#LIBPQ-PGEVT-RESULTCOPY" class="id_link">#</a></dt><dd><p>
+       L'événement de copie du résultat est déclenché en réponse à un
+       <a class="xref" href="libpq-misc.html#LIBPQ-PQCOPYRESULT"><code class="function">PQcopyResult</code></a>. Cet événement se déclenchera
+       seulement une fois la copie terminée. Seules les procédures qui ont
+       géré avec succès l'événement <code class="literal">PGEVT_RESULTCREATE</code>
+       ou <code class="literal">PGEVT_RESULTCOPY</code> pour le résultat source recevront
+       les événements <code class="literal">PGEVT_RESULTCOPY</code>.
+
+       </p><pre class="synopsis">
+        typedef struct
+        {
+            const PGresult *src;
+            PGresult *dest;
+        } PGEventResultCopy;
+       </pre><p>
+
+       Quand un événement <code class="literal">PGEVT_RESULTCOPY</code> est reçu, le
+       pointeur <em class="parameter"><code>evtInfo</code></em> doit être converti en un
+       <code class="structname">PGEventResultCopy *</code>. Le résultat
+       <em class="parameter"><code>src</code></em> correspond à ce qui a été copié
+       alors que le résultat <em class="parameter"><code>dest</code></em> correspond à la
+       destination. Cet événement peut être utilisé pour fournir une copie
+       complète de <code class="literal">instanceData</code>, ce que
+       <code class="literal">PQcopyResult</code> ne peut pas faire.
+       Si une procédure d'événement échoue (renvoie zéro), cet événement de
+       procédure sera ignoré pour la durée de vie restante du résultat ;
+       autrement dit, il ne recevra pas les événements
+       <code class="literal">PGEVT_RESULTCOPY</code> ou
+       <code class="literal">PGEVT_RESULTDESTROY</code> pour ce résultat ou les résultats
+       copiés à partir de lui.
+      </p></dd><dt id="LIBPQ-PGEVT-RESULTDESTROY"><span class="term"><code class="literal">PGEVT_RESULTDESTROY</code></span> <a href="#LIBPQ-PGEVT-RESULTDESTROY" class="id_link">#</a></dt><dd><p>
+       L'événement de destruction de résultat est déclenché en réponse à la
+       fonction <a class="xref" href="libpq-exec.html#LIBPQ-PQCLEAR"><code class="function">PQclear</code></a>. Il est de la responsabilité de
+       l'événement de nettoyer proprement les données de l'événement car libpq
+       n'a pas la capacité de gérer cette mémoire. Si le nettoyage
+       échoue, cela sera la cause de pertes mémoire.
+
+       </p><pre class="synopsis">
+        typedef struct
+        {
+            PGresult *result;
+        } PGEventResultDestroy;
+       </pre><p>
+
+       Quand un événement <code class="literal">PGEVT_RESULTDESTROY</code> est reçu, le
+       pointeur <em class="parameter"><code>evtInfo</code></em> doit être converti en un
+       <code class="structname">PGEventResultDestroy *</code>. Cet événement est
+       déclenché avant que <a class="xref" href="libpq-exec.html#LIBPQ-PQCLEAR"><code class="function">PQclear</code></a> ne puisse faire de
+       nettoyage. La valeur de retour de la procédure est ignorée car il
+       n'existe aucun moyen d'indiquer un échec à partir de
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQCLEAR"><code class="function">PQclear</code></a>. De plus, un échec de la procédure ne doit
+       pas annuler le nettoyage de la mémoire non désirée.
+      </p></dd></dl></div></div><div class="sect2" id="LIBPQ-EVENTS-PROC"><div class="titlepage"><div><div><h3 class="title">32.14.2. Procédure de rappel de l'événement <a href="#LIBPQ-EVENTS-PROC" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PGEVENTPROC"><span class="term"><code class="literal">PGEventProc</code><a id="id-1.7.3.21.5.2.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PGEVENTPROC" class="id_link">#</a></dt><dd><p>
+       <code class="literal">PGEventProc</code> est une définition de type pour un pointeur
+       vers une procédure d'événement, c'est-à-dire la fonction utilisateur
+       appelée pour les événements de la libpq. La signature d'une telle fonction
+       doit être :
+
+       </p><pre class="synopsis">
+        int eventproc(PGEventId evtId, void *evtInfo, void *passThrough)
+       </pre><p>
+
+       Le paramètre <em class="parameter"><code>evtId</code></em> indique l'événement
+       <code class="literal">PGEVT</code> qui est survenu. Le pointeur
+       <em class="parameter"><code>evtInfo</code></em> doit être converti vers le type
+       de structure approprié pour obtenir plus d'informations sur l'événement.
+       Le paramètre <em class="parameter"><code>passThrough</code></em> est le pointeur fourni
+       à <a class="xref" href="libpq-events.html#LIBPQ-PQREGISTEREVENTPROC"><code class="function">PQregisterEventProc</code></a> quand la procédure de
+       l'événement a été enregistrée. La fonction doit renvoyer une valeur
+       différente de zéro en cas de succès et zéro en cas d'échec.
+      </p><p>
+       Une procédure d'événement particulière peut être enregistrée une fois
+       seulement pour un <code class="structname">PGconn</code>. Ceci est dû au fait
+       que l'adresse de la procédure est utilisée comme clé de recherche pour
+       identifier les données instanciées associées.
+      </p><div class="caution"><h3 class="title">Attention</h3><p>
+        Sur Windows, les fonctions peuvent avoir deux adresses différentes :
+        une visible de l'extérieur de la DLL et une visible de l'intérieur. Il
+        faut faire attention que seule une de ces adresses soit utilisée avec les
+        fonctions d'événement de la <span class="application">libpq</span>, sinon une
+        confusion en résultera. La règle la plus simple pour écrire du code
+        fonctionnel est de s'assurer que les procédures d'événements sont
+        déclarées <code class="literal">static</code>. Si l'adresse de la procédure doit
+        être disponible en dehors de son propre fichier source, il faut exposer
+        une fonction séparée pour renvoyer l'adresse.
+       </p></div></dd></dl></div></div><div class="sect2" id="LIBPQ-EVENTS-FUNCS"><div class="titlepage"><div><div><h3 class="title">32.14.3. Fonctions de support des événements <a href="#LIBPQ-EVENTS-FUNCS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQREGISTEREVENTPROC"><span class="term"><code class="function">PQregisterEventProc</code><a id="id-1.7.3.21.6.2.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQREGISTEREVENTPROC" class="id_link">#</a></dt><dd><p>
+       Enregistre une procédure de rappel pour les événements avec libpq.
+
+       </p><pre class="synopsis">
+        int PQregisterEventProc(PGconn *conn, PGEventProc proc,
+                                const char *name, void *passThrough);
+       </pre><p>
+      </p><p>
+       Une procédure d'événement doit être enregistrée une fois pour chaque
+       <code class="structname">PGconn</code> pour lequel vous souhaitez recevoir des
+       événements. Il n'existe pas de limite, autre que la mémoire, sur le
+       nombre de procédures d'événements qui peuvent être enregistrées avec
+       une connexion. La fonction renvoie une valeur différente de zéro en cas
+       de succès, et zéro en cas d'échec.
+      </p><p>
+       L'argument <em class="parameter"><code>proc</code></em> sera appelé quand se déclenchera
+       un événement libpq. Son adresse mémoire est aussi utilisée pour rechercher
+       <code class="literal">instanceData</code>. L'argument <em class="parameter"><code>name</code></em>
+       est utilisé pour faire référence à la procédure d'événement dans les
+       messages d'erreur. Cette valeur ne peut pas être <code class="symbol">NULL</code> ou une chaîne de
+       longueur nulle. La chaîne <em class="parameter"><code>name</code></em> est copiée dans
+       <code class="structname">PGconn</code>, donc ce qui est passé n'a pas besoin
+       d'exister longtemps. Le pointeur <em class="parameter"><code>passThrough</code></em> est
+       passé à <em class="parameter"><code>proc</code></em> à chaque arrivée d'un événement. Cet
+       argument peut être <code class="symbol">NULL</code>.
+      </p></dd><dt id="LIBPQ-PQSETINSTANCEDATA"><span class="term"><code class="function">PQsetInstanceData</code><a id="id-1.7.3.21.6.2.2.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQSETINSTANCEDATA" class="id_link">#</a></dt><dd><p>
+       Initialise avec <em class="parameter"><code>data</code></em>
+       l'<code class="literal">instanceData</code> de la connexion
+       <em class="parameter"><code>conn</code></em> pour la
+       procédure <em class="parameter"><code>proc</code></em>.
+       Cette fonction renvoie zéro en cas d'échec et autre chose en cas de réussite.
+       (L'échec est seulement possible si <em class="parameter"><code>proc</code></em> n'a pas
+       été correctement enregistré dans <em class="parameter"><code>conn</code></em>.)
+
+       </p><pre class="synopsis">
+        int PQsetInstanceData(PGconn *conn, PGEventProc proc, void *data);
+       </pre><p>
+      </p></dd><dt id="LIBPQ-PQINSTANCEDATA"><span class="term"><code class="function">PQinstanceData</code><a id="id-1.7.3.21.6.2.3.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQINSTANCEDATA" class="id_link">#</a></dt><dd><p>
+       Renvoie l'<code class="literal">instanceData</code> de la connexion
+       <em class="parameter"><code>conn</code></em> associée
+       au <em class="parameter"><code>proc</code></em> ou <code class="symbol">NULL</code> s'il
+       n'y en a pas.
+
+       </p><pre class="synopsis">
+        void *PQinstanceData(const PGconn *conn, PGEventProc proc);
+       </pre><p>
+      </p></dd><dt id="LIBPQ-PQRESULTSETINSTANCEDATA"><span class="term"><code class="function">PQresultSetInstanceData</code><a id="id-1.7.3.21.6.2.4.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQRESULTSETINSTANCEDATA" class="id_link">#</a></dt><dd><p>
+       Initialise avec <em class="parameter"><code>data</code></em>
+       l'<code class="literal">instanceData</code> du résultat pour la
+       procédure <em class="parameter"><code>proc</code></em>.
+       Cette fonction renvoie zéro en cas d'échec et autre chose en cas de réussite.
+       (L'échec est seulement possible si <em class="parameter"><code>proc</code></em> n'a pas
+       été correctement enregistré dans le résultat.)
+
+       </p><pre class="synopsis">
+        int PQresultSetInstanceData(PGresult *res, PGEventProc proc, void *data);
+       </pre><p>
+      </p><p>
+       Attention, aucun stockage représenté par <em class="parameter"><code>data</code></em> ne
+       sera pris en compte par <a class="xref" href="libpq-misc.html#LIBPQ-PQRESULTMEMORYSIZE"><code class="function">PQresultMemorySize</code></a>, à moins
+       qu'il est alloué en utilisant <a class="xref" href="libpq-misc.html#LIBPQ-PQRESULTALLOC"><code class="function">PQresultAlloc</code></a>.
+       (Faire ceci est recommandé car cela élimine le besoin de libérer le stockage explicitement
+       quand le résultat est supprimé.)
+      </p></dd><dt id="LIBPQ-PQRESULTINSTANCEDATA"><span class="term"><code class="function">PQresultInstanceData</code><a id="id-1.7.3.21.6.2.5.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQRESULTINSTANCEDATA" class="id_link">#</a></dt><dd><p>
+       Renvoie l'<code class="literal">instanceData</code> du résultat associé à
+       <em class="parameter"><code>proc</code></em> ou <code class="symbol">NULL</code> s'il n'y
+       en a pas.
+
+       </p><pre class="synopsis">
+        void *PQresultInstanceData(const PGresult *res, PGEventProc proc);
+       </pre><p>
+      </p></dd></dl></div></div><div class="sect2" id="LIBPQ-EVENTS-EXAMPLE"><div class="titlepage"><div><div><h3 class="title">32.14.4. Exemple d'un événement <a href="#LIBPQ-EVENTS-EXAMPLE" class="id_link">#</a></h3></div></div></div><p>
+    Voici un exemple d'une gestion de données privées associée aux connexions
+    et aux résultats de la libpq.
+   </p><pre class="programlisting">
+
+/* en-tête nécessaire pour les événements de la libpq (note : inclut libpq-fe.h) */
+#include &lt;libpq-events.h&gt;
+
+/* la donnée instanciée : instanceData */
+typedef struct
+{
+    int n;
+    char *str;
+} mydata;
+
+/* PGEventProc */
+static int myEventProc(PGEventId evtId, void *evtInfo, void *passThrough);
+
+int
+main(void)
+{
+    mydata *data;
+    PGresult *res;
+    PGconn *conn =
+        PQconnectdb("dbname=postgres options=-csearch_path=");
+
+    if (PQstatus(conn) != CONNECTION_OK)
+    {
+        /* PQerrorMessage's result includes a trailing newline */
+        fprintf(stderr, "%s", PQerrorMessage(conn));
+        PQfinish(conn);
+        return 1;
+    }
+
+    /* appelée une fois pour toute connexion qui doit recevoir des événements.
+     * Envoit un PGEVT_REGISTER à myEventProc.
+     */
+    if (!PQregisterEventProc(conn, myEventProc, "mydata_proc", NULL))
+    {
+        fprintf(stderr, "Cannot register PGEventProc\n");
+        PQfinish(conn);
+        return 1;
+    }
+
+    /* la connexion instanceData est disponible */
+    data = PQinstanceData(conn, myEventProc);
+
+    /* Envoit un PGEVT_RESULTCREATE à myEventProc */
+    res = PQexec(conn, "SELECT 1 + 1");
+
+    /* le résultat instanceData est disponible */
+    data = PQresultInstanceData(res, myEventProc);
+
+    /* Si PG_COPYRES_EVENTS est utilisé, envoit un PGEVT_RESULTCOPY à myEventProc */
+    res_copy = PQcopyResult(res, PG_COPYRES_TUPLES | PG_COPYRES_EVENTS);
+
+    /* le résultat instanceData est disponible si PG_COPYRES_EVENTS a été
+     * utilisé lors de l'appel à PQcopyResult.
+     */
+    data = PQresultInstanceData(res_copy, myEventProc);
+
+    /* Les deux fonctions de nettoyage envoient PGEVT_RESULTDESTROY à myEventProc */
+    PQclear(res);
+    PQclear(res_copy);
+
+    /* Envoit un PGEVT_CONNDESTROY à myEventProc */
+    PQfinish(conn);
+
+    return 0;
+}
+
+static int
+myEventProc(PGEventId evtId, void *evtInfo, void *passThrough)
+{
+    switch (evtId)
+    {
+        case PGEVT_REGISTER:
+        {
+            PGEventRegister *e = (PGEventRegister *)evtInfo;
+            mydata *data = get_mydata(e-&gt;conn);
+
+            /* associe des données spécifiques de l'application avec la connexion */
+            PQsetInstanceData(e-&gt;conn, myEventProc, data);
+            break;
+        }
+
+        case PGEVT_CONNRESET:
+        {
+            PGEventConnReset *e = (PGEventConnReset *)evtInfo;
+            mydata *data = PQinstanceData(e-&gt;conn, myEventProc);
+
+            if (data)
+              memset(data, 0, sizeof(mydata));
+            break;
+        }
+
+        case PGEVT_CONNDESTROY:
+        {
+            PGEventConnDestroy *e = (PGEventConnDestroy *)evtInfo;
+            mydata *data = PQinstanceData(e-&gt;conn, myEventProc);
+
+            /* libère les données instanciées car la connexion est en cours de destruction */
+            if (data)
+              free_mydata(data);
+            break;
+        }
+
+        case PGEVT_RESULTCREATE:
+        {
+            PGEventResultCreate *e = (PGEventResultCreate *)evtInfo;
+            mydata *conn_data = PQinstanceData(e-&gt;conn, myEventProc);
+            mydata *res_data = dup_mydata(conn_data);
+
+            /* associe des données spécifiques à l'application avec les résultats (copié de la connexion) */
+            PQresultSetInstanceData(e-&gt;result, myEventProc, res_data);
+            break;
+        }
+
+        case PGEVT_RESULTCOPY:
+        {
+            PGEventResultCopy *e = (PGEventResultCopy *)evtInfo;
+            mydata *src_data = PQresultInstanceData(e-&gt;src, myEventProc);
+            mydata *dest_data = dup_mydata(src_data);
+
+            /* associe des données spécifiques à l'application avec les résultats (copié d'un résultat) */
+            PQresultSetInstanceData(e-&gt;dest, myEventProc, dest_data);
+            break;
+        }
+
+        case PGEVT_RESULTDESTROY:
+        {
+            PGEventResultDestroy *e = (PGEventResultDestroy *)evtInfo;
+            mydata *data = PQresultInstanceData(e-&gt;result, myEventProc);
+
+            /* libère les données instanciées car le résultat est en cours de destruction */
+            if (data)
+              free_mydata(data);
+            break;
+        }
+
+        /* unknown event id, just return TRUE. */
+        default:
+            break;
+    }
+
+    return TRUE; /* event processing succeeded */
+}
+
+   </pre></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/libpq-events.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:37 GMT -->
+</html>

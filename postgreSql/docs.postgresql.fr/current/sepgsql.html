@@ -1,0 +1,573 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/sepgsql.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.38. sepgsql -- module de sécurité SELinux pour le contrôle d'accès basé sur les labels</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="seg.html" title="F.37. seg -- un type de données pour les segments de ligne et pour les intervalles en virgule flottante" /><link rel="next" href="contrib-spi.html" title="F.39. spi -- exemples et fonctionnalités du Server Programming Interface" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/sepgsql.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/sepgsql.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/sepgsql.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/sepgsql.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/sepgsql.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/sepgsql.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/sepgsql.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/sepgsql.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/sepgsql.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/sepgsql.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/sepgsql.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/sepgsql.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/sepgsql.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/sepgsql.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/sepgsql.html">9.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/sepgsql.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="appendixes.html">Annexes</a></span> » <span class="breadcrumb-link"><a href="contrib.html">Modules et extensions supplémentaires fournis</a></span> » <span class="breadcrumb-node">sepgsql  -- 
+   module de sécurité SELinux pour le contrôle d'accès basé sur les labels</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="seg.html" title="F.37. seg  --  un type de données pour les segments de ligne et pour&#10; les intervalles en virgule flottante">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="contrib-spi.html" title="F.39. spi  --  exemples et fonctionnalités du Server Programming Interface">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">F.37. seg  --  un type de données pour les segments de ligne et pour
+ les intervalles en virgule flottante </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> F.39. spi  --  exemples et fonctionnalités du Server Programming Interface</td></tr></table></div><div class="sect1" id="SEPGSQL"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.38. sepgsql  -- 
+   module de sécurité SELinux pour le contrôle d'accès basé sur les labels <a href="#SEPGSQL" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="sepgsql.html#SEPGSQL-OVERVIEW">F.38.1. Aperçu</a></span></dt><dt><span class="sect2"><a href="sepgsql.html#SEPGSQL-INSTALLATION">F.38.2. Installation</a></span></dt><dt><span class="sect2"><a href="sepgsql.html#SEPGSQL-REGRESSION">F.38.3. Tests de régression</a></span></dt><dt><span class="sect2"><a href="sepgsql.html#SEPGSQL-PARAMETERS">F.38.4. Paramètres GUC</a></span></dt><dt><span class="sect2"><a href="sepgsql.html#SEPGSQL-FEATURES">F.38.5. Fonctionnalités</a></span></dt><dt><span class="sect2"><a href="sepgsql.html#SEPGSQL-FUNCTIONS">F.38.6. Fonctions Sepgsql</a></span></dt><dt><span class="sect2"><a href="sepgsql.html#SEPGSQL-LIMITATIONS">F.38.7. Limitations</a></span></dt><dt><span class="sect2"><a href="sepgsql.html#SEPGSQL-RESOURCES">F.38.8. Ressources externes</a></span></dt><dt><span class="sect2"><a href="sepgsql.html#SEPGSQL-AUTHOR">F.38.9. Auteur</a></span></dt></dl></div><a id="id-1.11.7.49.2" class="indexterm"></a><p>
+  <code class="filename">sepgsql</code> est un module chargeable ajoutant le
+  support des contrôles d'accès par label basé sur la politique de
+  sécurité de <span class="productname">SELinux</span>.
+ </p><div class="warning"><h3 class="title">Avertissement</h3><p>
+   L'implémentation actuelle a des limitations importantes et ne force pas
+   le contrôle d'accès pour toutes les actions. Voir
+   <a class="xref" href="sepgsql.html#SEPGSQL-LIMITATIONS" title="F.38.7. Limitations">Section F.38.7</a>.
+  </p></div><div class="sect2" id="SEPGSQL-OVERVIEW"><div class="titlepage"><div><div><h3 class="title">F.38.1. Aperçu <a href="#SEPGSQL-OVERVIEW" class="id_link">#</a></h3></div></div></div><p>
+   Ce module s'intègre avec <span class="productname">SELinux</span> pour
+   fournir une couche de vérification de sécurité supplémentaire qui va
+   au-delà de ce qui est déjà fourni par
+   <span class="productname">PostgreSQL</span>. De la perspective de
+   <span class="productname">SELinux</span>, ce module permet à
+   <span class="productname">PostgreSQL</span> de fonctionner comme un
+   gestionnaire d'objet en espace utilisateur. Chaque accès à une table
+   ou à une fonction initié par une requête DML sera vérifié par rapport
+   à la politique de sécurité du système. Cette vérification est en plus
+   des vérifications de droits SQL habituels effectuées par
+   <span class="productname">PostgreSQL</span>.
+  </p><p>
+   Les décisions de contrôle d'accès de <span class="productname">SELinux</span>
+   sont faites en utilisant les labels de sécurité qui sont représentés
+   par des chaînes comme
+   <code class="literal">system_u:object_r:sepgsql_table_t:s0</code>. Chaque
+   décision de contrôle d'accès implique deux labels : celui de
+   l'utilisateur tentant de réaliser l'action et celui de l'objet sur
+   lequel l'action est réalisée. Comme ces labels peuvent être appliqués
+   sur tout type d'objet, les décisions de contrôle d'accès pour les
+   objets stockés dans la base peuvent être (et avec ce module, sont)
+   sujets au même critère général utilisé pour les objets de tout type
+   (par exemple les fichiers). Ce concept a pour but de permettre la mise
+   en place d'une politique centralisée pour protéger l'information
+   quelle que soit la façon dont l'information est stockée.
+  </p><p>
+   L'instruction <a class="link" href="sql-security-label.html" title="SECURITY LABEL"><code class="command">SECURITY
+   LABEL</code></a> permet d'affecter
+   un label de sécurité à un objet de la base de données.
+  </p></div><div class="sect2" id="SEPGSQL-INSTALLATION"><div class="titlepage"><div><div><h3 class="title">F.38.2. Installation <a href="#SEPGSQL-INSTALLATION" class="id_link">#</a></h3></div></div></div><p>
+   <code class="filename">sepgsql</code> peut seulement être utilisé sur
+   <span class="productname">Linux</span> 2.6.28 ou ultérieur, avec
+   <span class="productname">SELinux</span> activé. Il n'est pas disponible
+   sur les autres plateformes. Vous aurez aussi besoin
+   de <span class="productname">libselinux</span> ou ultérieur et de
+   <span class="productname">selinux-policy</span> 2.1.10 ou ultérieur
+   (même si certaines distributions peuvent proposer les règles nécessaires
+   dans des versions antérieures de politique).
+  </p><p>
+   La commande <code class="command">sestatus</code> vous permet de vérifier le
+   statut de <span class="productname">SELinux</span>. Voici un affichage
+   standard :
+   </p><pre class="screen">
+$ sestatus
+SELinux status:                 enabled
+SELinuxfs mount:                /selinux
+Current mode:                   enforcing
+Mode from config file:          enforcing
+Policy version:                 24
+Policy from config file:        targeted
+   </pre><p>
+   Si <span class="productname">SELinux</span> est désactivé ou non installé,
+   vous devez tout d'abord configurer ce produit avant d'utiliser ce
+   module.
+  </p><p>
+   Pour construire ce module, indiquez <a class="xref" href="install-make.html#CONFIGURE-OPTION-WITH-SEPGSQL"><code class="option">--with-selinux</code></a> (lors de l'utilisation de <a class="link" href="install-make.html" title="17.3. Complilation et installation avec Autoconf et Make">make et autoconf</a> ) ou <a class="xref" href="install-meson.html#CONFIGURE-WITH-SEPGSQL-MESON"><code class="option">-Dselinux={ auto | enabled | disabled }</code></a> (si vous utilisez <a class="link" href="install-meson.html" title="17.4. Compilation et installation avec Meson">meson</a>). Assurez-vous que le RPM
+   <code class="filename">libselinux-devel</code>
+   est installé au moment de la construction.
+  </p><p>
+   Pour utiliser ce module, vous devez ajouter <code class="literal">sepgsql</code>
+   dans le paramètre <a class="xref" href="runtime-config-client.html#GUC-SHARED-PRELOAD-LIBRARIES">shared_preload_libraries</a> du
+   fichier <code class="filename">postgresql.conf</code>. Le module ne
+   fonctionnera pas correctement s'il est chargé d'une autre façon. Une
+   fois que le module est chargé, vous devez exécuter
+   <code class="filename">sepgsql.sql</code> dans chaque base de données. Cela
+   installera les fonctions nécessaires à la gestion des labels de
+   sécurité et affectera des labels initiaux de sécurité.
+  </p><p>
+   Voici un exemple montrant comment initialiser un répertoire de données
+   avec les fonctions <code class="filename">sepgsql</code> et les labels de
+   sécurité installés. Ajustez les chemins de façon appropriée pour que
+   cela corresponde à votre installation :
+  </p><pre class="screen">
+$ export PGDATA=/path/to/data/directory
+ $ initdb
+ $ vi $PGDATA/postgresql.conf
+  modifiez
+    #shared_preload_libraries = ''                # (change requires restart)
+  en
+    shared_preload_libraries = 'sepgsql'          # (change requires restart)
+ $ for DBNAME in template0 template1 postgres; do
+    postgres --single -F -c exit_on_error=true $DBNAME \
+      &lt;/usr/local/pgsql/share/contrib/sepgsql.sql &gt;/dev/null
+   done
+  </pre><p>
+   Notez que vous pourriez voir les notifications suivantes, suivant la
+   combinaison de versions particulières de
+   <span class="productname">libselinux</span> et de
+   <span class="productname">selinux-policy</span>.
+   </p><pre class="screen">
+/etc/selinux/targeted/contexts/sepgsql_contexts:  line 33 has invalid object type db_blobs
+/etc/selinux/targeted/contexts/sepgsql_contexts:  line 36 has invalid object type db_language
+/etc/selinux/targeted/contexts/sepgsql_contexts:  line 37 has invalid object type db_language
+/etc/selinux/targeted/contexts/sepgsql_contexts:  line 38 has invalid object type db_language
+/etc/selinux/targeted/contexts/sepgsql_contexts:  line 39 has invalid object type db_language
+/etc/selinux/targeted/contexts/sepgsql_contexts:  line 40 has invalid object type db_language
+   </pre><p>
+   Ces messages ne sont graves et peuvent être ignorés sans conséquence.
+  </p><p>
+   Si le processus d'installation se termine sans erreurs, vous pouvez
+   commencer à lancer le serveur normalement.
+  </p></div><div class="sect2" id="SEPGSQL-REGRESSION"><div class="titlepage"><div><div><h3 class="title">F.38.3. Tests de régression <a href="#SEPGSQL-REGRESSION" class="id_link">#</a></h3></div></div></div><p>
+   Dû à la nature de <span class="productname">SELinux</span>, exécuter les
+   tests de régression pour <code class="filename">sepgsql</code> nécessite
+   quelques étapes de configuration supplémentaires, certaines se faisant en
+   tant qu'utilisateur root. Les tests de régression ne seront pas exécutés
+   par une commande <code class="literal">make check</code> ou <code class="literal">make
+    installcheck</code> ordinaire ; vous devez faire la configuration
+   puis appeler le script de test manuellement. Les tests s'exécuteront dans
+   le répertoire <code class="filename">contrib/sepgsql</code> du répertoire des
+   sources de PostgreSQL, préalablement configuré. Bien que cela nécessite
+   un arbre de construction, les tests sont conçus pour être exécutés par un
+   serveur déjà installé, donc comparable à <code class="literal">make installcheck</code>,
+   et non pas <code class="literal">make check</code>.
+  </p><p>
+   Tout d'abord, configurez <code class="filename">sepgsql</code> dans une base de
+   données fonctionnelle d'après les instructions comprises dans <a class="xref" href="sepgsql.html#SEPGSQL-INSTALLATION" title="F.38.2. Installation">Section F.38.2</a>. Notez que l'utilisateur du système
+   d'exploitation doit être capable de se connecter à la base de données en
+   tant que superutilisateur sans authentification par mot de passe.
+  </p><p>
+   Ensuite, construisez et installez le paquet de politique pour les
+   tests de régression. Le fichier <code class="filename">sepgsql-regtest</code>
+   est un paquet de politique à but spécial. Il fournit un ensemble de
+   règles à autoriser pendant les tests de régression. Il doit être
+   construit à partir du fichier source de politique
+   <code class="filename">sepgsql-regtest.te</code>, ce qui se fait en utilisant
+   <code class="command">make</code> avec un fichier Makefile fourni par SELinux.
+   Vous aurez besoin de localiser le Makefile approprié sur votre
+   système ; le chemin affiché ci-dessous est seulement un exemple.
+   (Ce fichier Makefile est habituellement fourni avec le RPM
+   <code class="filename">selinux-policy-devel</code> ou
+   <code class="filename">selinux-policy</code>.)
+   Une fois construit, installez ce paquet de politique en utilisant la
+   commande
+   <code class="command">semodule</code>, qui charge les paquets de politique fournis
+   dans le noyau. Si ce paquet est correctement
+   installé, <code class="literal"><code class="command">semodule</code> -l</code> doit lister
+   <code class="literal">sepgsql-regtest</code> comme un paquet de politique disponible :
+  </p><pre class="screen">
+$ cd .../contrib/sepgsql
+$ make -f /usr/share/selinux/devel/Makefile
+$ sudo semodule -u sepgsql-regtest.pp
+$ sudo semodule -l | grep sepgsql
+sepgsql-regtest 1.07
+  </pre><p>
+   Pour des raisons de sécurité, les règles de <code class="filename">sepgsql-regtest</code>
+   ne sont pas activés par défaut. Le paramètre
+   <code class="literal">sepgsql_regression_test_mode</code> active les
+   règles pour le lancement des tests de régression. Il peut être
+   activé en utilisant la commande <code class="command">setsebool</code> :
+  </p><pre class="screen">
+$ sudo setsebool sepgsql_regression_test_mode on
+$ getsebool sepgsql_regression_test_mode
+  </pre><p>
+   Ensuite, vérifiez que votre shell est exécuté dans le domaine
+   <code class="literal">unconfined_t</code> :
+  </p><pre class="screen">
+$ ./test_sepgsql
+  </pre><p>
+   Ce script tentera de vérifier que vous avez fait correctement toutes
+   les étapes de configuration, puis il lancera les tests de régression
+   du module <code class="filename">sepgsql</code>.
+  </p><p>
+   Une fois les tests terminés, il est recommandé de désactiver le
+   paramètre <code class="literal">sepgsql_regression_test_mode</code> :
+  </p><pre class="screen">
+$ sudo setsebool sepgsql_regression_test_mode off
+  </pre><p>
+   Vous pouvez préférer supprimer complètement la politique
+   <code class="filename">sepgsql-regtest</code> :
+  </p><pre class="screen">
+$ sudo semodule -r sepgsql-regtest
+  </pre></div><div class="sect2" id="SEPGSQL-PARAMETERS"><div class="titlepage"><div><div><h3 class="title">F.38.4. Paramètres GUC <a href="#SEPGSQL-PARAMETERS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt id="GUC-SEPGSQL-PERMISSIVE"><span class="term"><code class="varname">sepgsql.permissive</code> (<code class="type">boolean</code>)</span> <a href="#GUC-SEPGSQL-PERMISSIVE" class="id_link">#</a></dt><dd><a id="id-1.11.7.49.8.2.1.2.1" class="indexterm"></a><p>
+      Ce paramètre active <span class="productname">sepgsql</span> pour
+      qu'il fonctionne en mode permissif, quelle que soit la configuration
+      du système. La valeur par défaut est off.
+      Ce paramètre est configurable dans le fichier
+      <code class="filename">postgresql.conf</code> et sur la ligne de commande.
+     </p><p>
+      Quand ce paramètre est activé, <span class="productname">sepgsql</span>
+      fonctionne en mode permissif, même si SELinux
+      fonctionne en mode forcé. Ce paramètre est utile principalement
+      pour des tests.
+     </p></dd><dt id="GUC-SEPGSQL-DEBUG-AUDIT"><span class="term"><code class="varname">sepgsql.debug_audit</code> (<code class="type">boolean</code>)</span> <a href="#GUC-SEPGSQL-DEBUG-AUDIT" class="id_link">#</a></dt><dd><a id="id-1.11.7.49.8.2.2.2.1" class="indexterm"></a><p>
+      Ce paramètre active l'affichage de messages d'audit quelle que soit
+      la configuration de la politique. La valeur par défaut est
+      off, autrement dit les messages seront affichés suivant la
+      configuration du système.
+     </p><p>
+      La politique de sécurité de <span class="productname">SELinux</span> a
+      aussi des règles pour contrôler la trace des accès. Par défaut,
+      les violations d'accès sont tracées, contrairement aux accès
+      autorisés.
+     </p><p>
+      Ce paramètre force l'activation de toutes les traces, quelle que soit
+      la politique du système.
+     </p></dd></dl></div></div><div class="sect2" id="SEPGSQL-FEATURES"><div class="titlepage"><div><div><h3 class="title">F.38.5. Fonctionnalités <a href="#SEPGSQL-FEATURES" class="id_link">#</a></h3></div></div></div><div class="sect3" id="SEPGSQL-FEATURES-CONTROLLED-OBJ-CLASSES"><div class="titlepage"><div><div><h4 class="title">F.38.5.1. Classes d'objet contrôlé <a href="#SEPGSQL-FEATURES-CONTROLLED-OBJ-CLASSES" class="id_link">#</a></h4></div></div></div><p>
+    Le modèle de sécurité <span class="productname">SELinux</span> décrit toutes
+    les règles de contrôle d'accès comme des relations entre une entité
+    sujet (habituellement le client d'une base) et une entité objet
+    (tel que l'objet base de données). Les
+    deux sont identifiés par un label de sécurité. Si un accès à un
+    objet sans label est tenté, l'objet est traité comme si le label
+    <code class="literal">unlabeled_t</code> lui est affecté.
+   </p><p>
+    Actuellement, <code class="filename">sepgsql</code> autorise l'affectation
+    de label de sécurité aux schémas, tables, colonnes, séquences, vues
+    et fonctions. Quand <code class="filename">sepgsql</code> est en cours
+    d'utilisation, des labels de sécurité sont automatiquement affectés
+    aux objets de la base au moment de leur création. Ce label est appelé
+    un label de sécurité par défaut et est configuré par la politique de
+    sécurité du système, qui prend en entrée le label du créateur, le
+    label affecté à l'objet parent du nouvel objet et en option le nom de
+    l'objet construit.
+   </p><p>
+    Un nouvel objet base de données hérite en gros du label de sécurité
+    de l'objet parent, sauf quand la politique de sécurité a des règles
+    spéciales, connues sous le nom de règles de transition, auquel cas
+    un label différent est affecté. Pour les schémas, l'objet parent est
+    la base de données ; pour les tables, séquences, vues et
+    fonctions, il s'agit du schéma ; pour les colonnes, il s'agit
+    de la table.
+   </p></div><div class="sect3" id="SEPGSQL-FEATURES-DML-PERMISSIONS"><div class="titlepage"><div><div><h4 class="title">F.38.5.2. Droits DML <a href="#SEPGSQL-FEATURES-DML-PERMISSIONS" class="id_link">#</a></h4></div></div></div><p>
+    Pour les tables, <code class="literal">db_table:select</code>, <code class="literal">db_table:insert</code>,
+    <code class="literal">db_table:update</code> ou <code class="literal">db_table:delete</code>
+    sont vérifiés pour toutes les tables cibles référencées, suivant l'ordre
+    de l'instruction. De plus, <code class="literal">db_table:select</code> est
+    aussi vérifié pour toutes les tables qui contiennent des colonnes
+    référencées dans la clause <code class="literal">WHERE</code> ou
+    <code class="literal">RETURNING</code>, comme source de données d'un
+    <code class="literal">UPDATE</code>, et ainsi de suite.
+   </p><p>
+    Les droits au niveau colonne seront aussi vérifiés pour chaque colonne référencée.
+    <code class="literal">column_db:select</code> est vérifié sur les colonnes lues en utilisant
+    <code class="literal">SELECT</code>, mais aussi celles référencées dans d'autres instructions
+    DML ; <code class="literal">column_db:update</code> ou <code class="literal">column_db:insert</code>
+    sear aussi vérifié pour les colonnes modifiées par <code class="literal">UPDATE</code> ou
+    <code class="literal">INSERT</code>.
+   </p><p>
+    Bien sûr, il vérifie aussi <code class="literal">db_column:update</code> ou
+    <code class="literal">db_column:insert</code> sur la colonne en cours de
+    modification par <code class="literal">UPDATE</code> ou <code class="literal">INSERT</code>.
+   </p><p>
+    Par exemple :
+    </p><pre class="synopsis">
+UPDATE t1 SET x = 2, y = func1(y) WHERE z = 100;
+    </pre><p>
+
+    Ici, <code class="literal">column_db:update</code> sera vérifié pour
+    <code class="literal">t1.x</code> car elle est mise à jour,
+    <code class="literal">column_db:{select update}</code> sera vérifié pour
+    <code class="literal">t1.y</code> car elle est à la fois mise à jour et référencée, et
+    <code class="literal">column_db:select</code> sera vérifié pour <code class="literal">t1.z</code>
+    car elle est référencée.
+    <code class="literal">db_table:{select update}</code>
+    vérifiera aussi la table.
+   </p><p>
+    Pour les séquences, <code class="literal">db_sequence:get_value</code> est
+    vérifié quand nous référençons un objet séquence en utilisant
+    <code class="literal">SELECT</code> ; néanmoins, notez que nous ne vérifions
+    pas les droits d'exécution sur les fonctions correspondantes, par
+    exemple <code class="literal">lastval()</code>.
+   </p><p>
+    Pour les vues, <code class="literal">db_view:expand</code> devrait être
+    vérifié, et ensuite tous les autres droits des objets dus à
+    l'aplatissement de la vue, individuellement.
+   </p><p>
+    Pour les fonctions, <code class="literal">db_procedure:{execute}</code> sera vérifié
+    quand un utilisateur essaie d'exécuter une fonction dans une requête ou en
+    utilisant l'appel « fast-path ». Si cette fonction est déclarée comme étant
+    de confiance, il vérifie aussi le droit
+    <code class="literal">db_procedure:{entrypoint}</code> pour s'assurer qu'il peut
+    s'exécuter comme un point d'entrée d'une procédure de confiance.
+   </p><p>
+    Pour accéder à tout objet d'un schéma, le droit
+    <code class="literal">db_schema:search</code> est requis sur le schéma contenant
+    l'objet. Quand un objet est référencé sans le nom du schéma, les schémas
+    qui n'ont pas ce droit ne seront pas recherchés (exactement le même
+    comportement que l'absence du droit <code class="literal">USAGE</code> sur le schéma).
+    Si une qualification explicite du schéma est présent, une erreur surviendra
+    si l'utilisateur n'a pas le droit requis sur le schéma nommé.
+   </p><p>
+    Le client doit être autorisé à accéder à toutes les tables et colonnes
+    référencées, même si elles proviennent de vues qui ont été aplaties,
+    pour pouvoir appliquer des règles de contrôles d'accès cohérentes
+    indépendamment de la manière dont le contenu des tables est référencé.
+   </p><p>
+    Le système des droits de la base, par défaut, autorise les
+    superutilisateurs de la base à modifier les catalogues systèmes en
+    utilisant des commandes DML, et de référencer ou modifier les tables
+    TOAST. Ces opérations sont interdites quand
+    <code class="filename">sepgsql</code> est activé.
+   </p></div><div class="sect3" id="SEPGSQL-FEATURES-DDL-PERMISSIONS"><div class="titlepage"><div><div><h4 class="title">F.38.5.3. Droits DDL <a href="#SEPGSQL-FEATURES-DDL-PERMISSIONS" class="id_link">#</a></h4></div></div></div><p>
+    <span class="productname">SELinux</span> définit plusieurs droits pour contrôler
+    les opérations standards pour chaque type d'objet : création,
+    modification, suppression et changement du label de sécurité. De plus,
+    certains types d'objet ont des droits spéciaux pour contrôler leurs
+    opérations caractéristiques : ajout ou suppression d'entrées dans
+    un schéma particulier.
+   </p><p>
+    Créer un objet de bases de données nécessite le droit <code class="literal">create</code>.
+    <span class="productname">SELinux</span> acceptera ou refusera ce droit en se
+    basant sur le label de sécurité du client et sur le label de sécurité proposé
+    pour le nouvel objet. Dans certains cas, des droits supplémentaires sont
+    demandés :
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      <a class="link" href="sql-createdatabase.html" title="CREATE DATABASE"><code class="command">CREATE DATABASE</code></a>
+      requiert en plus le droit
+      <code class="literal">getattr</code> pour la base de données source ou modèle.
+     </p></li><li class="listitem"><p>
+      Créer un schéma requiert en plus le droit <code class="literal">add_name</code> sur
+      le schéma parent.
+     </p></li><li class="listitem"><p>
+      Créer une table requiert en plus le droit de créer chaque colonne de la
+      table, tout comme si chaque colonne de la table était un objet séparé de
+      haut-niveau.
+     </p></li><li class="listitem"><p>
+      Créer une fonction marquée <code class="literal">LEAKPROOF</code> requiert en plus
+      le droit <code class="literal">install</code>. (Ce droit est aussi vérifié quand
+      <code class="literal">LEAKPROOF</code> est configuré pour une fonction existante.)
+     </p></li></ul></div><p>
+    Quand la commande <code class="literal">DROP</code> est exécutée,
+    <code class="literal">drop</code> sera vérifié sur l'objet qui doit être supprimé.
+    Les droits seront aussi vérifiés pour les objets supprimés indirectement
+    via <code class="literal">CASCADE</code>. La suppression des objets contenus dans un
+    schéma particulier (tables, vues, séquences et fonctions) nécessite
+    habituellement <code class="literal">remove_name</code> sur le schéma.
+   </p><p>
+    Quand la commande <code class="literal">ALTER</code> est exécutée,
+    <code class="literal">setattr</code> sera vérifié sur l'objet en cours de modification
+    pour chaque type d'objet, sauf pour les objets sous-jacents comme les index
+    ou les triggers d'une table. Pour ces derniers, les droits sont vérifiés sur
+    l'objet parent. Dans certains cas, des droits supplémentaires sont
+    réclamés :
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Déplacer un objet vers un nouveau schéma réclame en plus le droit
+      <code class="literal">remove_name</code> sur l'ancien schéma et le droit
+      <code class="literal">add_name</code> sur le nouveau schéma.
+     </p></li><li class="listitem"><p>
+      Configurer l'attribut <code class="literal">LEAKPROOF</code> sur une fonction
+      requiert le droit <code class="literal">install</code>.
+     </p></li><li class="listitem"><p>
+      Utiliser <a class="link" href="sql-security-label.html" title="SECURITY LABEL"><code class="command">SECURITY
+      LABEL</code></a> sur un objet requiert en
+      plus le droit <code class="literal">relabelfrom</code> pour l'objet en conjonction
+      avec son ancien label et le droit <code class="literal">relabelto</code> pour l'objet
+      en conjonction avec son nouveau label. (Dans les cas où plusieurs
+      fournisseurs de label sont installés et que l'utilisateur essaie de
+      configurer un label de sécurité mais qui est géré par
+      <span class="productname">SELinux</span>, seul <code class="literal">setattr</code> peut
+      être vérifié ici. Cela ne peut pas se faire actuellement à cause des
+      restrictions de l'implémentation.)
+     </p></li></ul></div></div><div class="sect3" id="SEPGSQL-FEATURES-TRUSTED-PROCEDURES"><div class="titlepage"><div><div><h4 class="title">F.38.5.4. Procédures de confiance <a href="#SEPGSQL-FEATURES-TRUSTED-PROCEDURES" class="id_link">#</a></h4></div></div></div><p>
+    Les procédures de confiance sont similaires aux fonctions dont la
+    sécurité est définie à la création ou aux commandes set-uid.
+    <span class="productname">SELinux</span> propose une fonctionnalité qui
+    permet d'autoriser un code de confiance à s'exécuter en utilisant
+    un label de sécurité différent de celui du client, généralement pour
+    donner un accès hautement contrôlé à des données sensibles (par
+    exemple, des lignes peuvent être omises ou la précision des valeurs
+    stockées peut être réduite). Que la fonction agisse ou pas comme
+    une procédure de confiance est contrôlé par son label de sécurité et
+    la politique de sécurité du système d'exploitation. Par exemple :
+   </p><pre class="screen">
+postgres=# CREATE TABLE customer (
+               cid     int primary key,
+               cname   text,
+               credit  text
+           );
+CREATE TABLE
+postgres=# SECURITY LABEL ON COLUMN customer.credit
+               IS 'system_u:object_r:sepgsql_secret_table_t:s0';
+SECURITY LABEL
+postgres=# CREATE FUNCTION show_credit(int) RETURNS text
+             AS 'SELECT regexp_replace(credit, ''-[0-9]+$'', ''-xxxx'', ''g'')
+                        FROM customer WHERE cid = $1'
+           LANGUAGE sql;
+CREATE FUNCTION
+postgres=# SECURITY LABEL ON FUNCTION show_credit(int)
+               IS 'system_u:object_r:sepgsql_trusted_proc_exec_t:s0';
+SECURITY LABEL
+   </pre><p>
+    Les opérations ci-dessus doivent être réalisées par un utilisateur
+    administrateur.
+   </p><pre class="screen">
+postgres=# SELECT * FROM customer;
+ERROR:  SELinux: security policy violation
+postgres=# SELECT cid, cname, show_credit(cid) FROM customer;
+ cid | cname  |     show_credit
+-----+--------+---------------------
+   1 | taro   | 1111-2222-3333-xxxx
+   2 | hanako | 5555-6666-7777-xxxx
+(2 rows)
+   </pre><p>
+    Dans ce cas, un utilisateur standard ne peut pas faire référence à
+    <code class="literal">customer.credit</code> directement mais une procédure de
+    confiance comme <code class="literal">show_credit</code> lui permet d'afficher
+    le numéro de carte de crédit des clients, avec quelques chiffres
+    masqués.
+   </p></div><div class="sect3" id="SEPGSQL-FEATURES-DYNAMIC-DOMAIN-TRANSITIONS"><div class="titlepage"><div><div><h4 class="title">F.38.5.5. Transitions de domaine dynamique <a href="#SEPGSQL-FEATURES-DYNAMIC-DOMAIN-TRANSITIONS" class="id_link">#</a></h4></div></div></div><p>
+    Il est possible d'utiliser la fonctionnalité de transition de domaine
+    dynamique de SELinux pour basculer le label de sécurité du processus
+    client, le domaine client, vers un nouveau contexte, s'il s'avère que
+    c'est autorisé par la politique de sécurité. Le domaine client a besoin
+    du droit <code class="literal">setcurrent</code> ainsi que du droit
+    <code class="literal">dyntransition</code> de l'ancien domaine vers le nouveau
+    domaine.
+   </p><p>
+    Les transitions de domaine dynamique doivent être considérées avec
+    attention car elles permettent aux utilisateurs de basculer leur label, et
+    du coup leurs droits, quand ils le souhaitent, plutôt que (dans le cas d'une
+    procédure de confiance) lorsque c'est demandé par le système. Du coup, le
+    droit <code class="literal">dyntransition</code> est seulement considéré sûr quand il
+    est utilisé pour basculer vers un domaine avec un plus petit ensemble de
+    droits que le domaine original. Par exemple :
+   </p><pre class="screen">
+regression=# select sepgsql_getcon();
+                    sepgsql_getcon
+-------------------------------------------------------
+ unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+(1 row)
+
+regression=# SELECT sepgsql_setcon('unconfined_u:unconfined_r:unconfined_t:s0-s0:c1.c4');
+ sepgsql_setcon
+----------------
+ t
+(1 row)
+
+regression=# SELECT sepgsql_setcon('unconfined_u:unconfined_r:unconfined_t:s0-s0:c1.c1023');
+ERROR:  SELinux: security policy violation
+   </pre><p>
+    Dans l'exemple ci-dessus, nous sommes autorisés à basculer du gros intervalle MCS
+    <code class="literal">c1.c1023</code> vers l'intervalle <code class="literal">c1.c4</code> beaucoup plus
+    petit. Par contre, la bascule inverse est interdite.
+   </p><p>
+    Une combinaison de transition de domaine dynamique et de procédure de
+    confiance permet un cas d'utilisation intéressant qui correspond au
+    cycle de vie typique d'un processus pour un logiciel de pooling de
+    connexions. Même si votre pooler de connexions n'est pas autorisé à
+    exécuter la plupart des commandes SQL, vous pouvez l'autoriser à
+    basculer le label de sécurité du client en utilisant la fonction
+    <code class="literal">sepgsql_setcon()</code> à l'intérieur d'une procédure de
+    confiance. Après cela, cette session aura les droits de l'utilisateur
+    cible plutôt que ceux du pooler de connexions. Le pooler de connexions
+    peut ensuite annuler le changement du label de sécurité en utilisant
+    de nouveau <code class="literal">sepgsql_setcon()</code> avec l'argument
+    <code class="literal">NULL</code>, encore une fois en l'appelant à partir d'une
+    procédure de confiance avec les droits appropriés. Le point ici est que
+    seule la procédure de confiance a réellement le droit de modifier le
+    label de sécurité en cours et ne le fait que si autorisé. Bien sûr,
+    pour un traitement sécurisé, le stockage des autorisations (table,
+    définition de procédure, ou autres) doit être protégé des accès non
+    autorisés.
+   </p></div><div class="sect3" id="SEPGSQL-FEATURES-MISC"><div class="titlepage"><div><div><h4 class="title">F.38.5.6. Divers <a href="#SEPGSQL-FEATURES-MISC" class="id_link">#</a></h4></div></div></div><p>
+    Nous rejetons la commande <a class="link" href="sql-load.html" title="LOAD"><code class="command">LOAD</code></a>
+    car tout module chargé pourrait facilement court-circuiter la politique de
+    sécurité.
+   </p></div></div><div class="sect2" id="SEPGSQL-FUNCTIONS"><div class="titlepage"><div><div><h3 class="title">F.38.6. Fonctions Sepgsql <a href="#SEPGSQL-FUNCTIONS" class="id_link">#</a></h3></div></div></div><p>
+   <a class="xref" href="sepgsql.html#SEPGSQL-FUNCTIONS-TABLE" title="Tableau F.30. Fonctions Sepgsql">Tableau F.30</a> affiche la liste des fonctions
+   disponibles.
+  </p><div class="table" id="SEPGSQL-FUNCTIONS-TABLE"><p class="title"><strong>Tableau F.30. Fonctions Sepgsql</strong></p><div class="table-contents"><table class="table" summary="Fonctions Sepgsql" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+        Fonction
+       </p>
+       <p>
+        Description
+       </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">sepgsql_getcon</code> ()
+        → <code class="returnvalue">text</code>
+       </p>
+       <p>
+        Renvoie le domaine client, le label de sécurité actuel du client.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">sepgsql_setcon</code> ( <code class="type">text</code> )
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Bascule le domaine client de la session actuelle sur un autre domaine,
+        si cela est autorisé par la politique de sécurité. Cette fonction
+        accepte aussi <code class="literal">NULL</code> en entrée comme demande de
+        transaction vers le domaine original du client.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">sepgsql_mcstrans_in</code> ( <code class="type">text</code> )
+        → <code class="returnvalue">text</code>
+       </p>
+       <p>
+        Traduit l'intervalle MLS/MCS donné en un format brut si le démon
+        mcstrans est en cours d'exécution.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">sepgsql_mcstrans_out</code> ( <code class="type">text</code> )
+        → <code class="returnvalue">text</code>
+       </p>
+       <p>
+        Traduit l'intervalle MCS/MCS brut donné en son format qualifié
+        si le démon mcstrans est en cours d'exécution.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">sepgsql_restorecon</code> ( <code class="type">text</code> )
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Configure les labels de sécurité initiaux pour tous les objets à
+        l'intérieur de la base de données actuelle. L'argument peut être NULL
+        ou le nom d'un specfile à utiliser comme alternative du fichier système
+        par défaut.
+       </p></td></tr></tbody></table></div></div><br class="table-break" /></div><div class="sect2" id="SEPGSQL-LIMITATIONS"><div class="titlepage"><div><div><h3 class="title">F.38.7. Limitations <a href="#SEPGSQL-LIMITATIONS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt><span class="term">Droits DDL</span></dt><dd><p>
+      À cause de restrictions d'implémentations, certaines opérations DDL
+      ne vérifient pas les droits.
+     </p></dd><dt><span class="term">Droits DCL</span></dt><dd><p>
+      À cause de restrictions d'implémentations, les droits DCL
+      ne vérifient pas les droits.
+     </p></dd><dt><span class="term">Contrôle d'accès au niveau ligne</span></dt><dd><p>
+      <span class="productname">PostgreSQL</span> propose le contrôle d'accès au
+      niveau ligne. Cependant, <code class="filename">sepgsql</code> ne le supporte
+      pas.
+     </p></dd><dt><span class="term">Canaux cachés</span></dt><dd><p>
+      <code class="filename">sepgsql</code> n'essaie pas de cacher
+      l'existence d'un objet particulier, même si l'utilisateur n'est
+      pas autorisé à y accéder. Par exemple, nous pouvons inférer
+      l'existence d'un objet invisible suite à un conflit de clé primaire,
+      à des violations de clés étrangères et ainsi de suite, même si nous
+      ne pouvons pas accéder au contenu de ces objets. L'existence d'une
+      table secrète ne peut pas être caché. Nous ne faisons que
+      verrouiller l'accès à son contenu.
+     </p></dd></dl></div></div><div class="sect2" id="SEPGSQL-RESOURCES"><div class="titlepage"><div><div><h3 class="title">F.38.8. Ressources externes <a href="#SEPGSQL-RESOURCES" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt><span class="term"><a class="ulink" href="https://wiki.postgresql.org/wiki/SEPostgreSQL" target="_top">SE-PostgreSQL Introduction</a></span></dt><dd><p>
+      Cette page wiki fournit un bref aperçu, le concept de la sécurité,
+      l'architecture, l'administration et les fonctionnalités futures.
+     </p></dd><dt><span class="term"><a class="ulink" href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/selinux_users_and_administrators_guide/index" target="_top">SELinux User's and Administrator's Guide</a></span></dt><dd><p>
+      Ce document fournit une connaissance large pour administrer
+      <span class="productname">SELinux</span> sur vos systèmes. Il cible
+      principalement les systèmes d'exploitation Red Hat mais n'y est pas
+      limité.
+     </p></dd><dt><span class="term"><a class="ulink" href="https://fedoraproject.org/wiki/SELinux_FAQ" target="_top">Fedora SELinux FAQ</a></span></dt><dd><p>
+      Ce document répond aux questions fréquemment posées sur
+      <span class="productname">SELinux</span>.
+      Il cible principalement Fedora mais n'y est pas limité.
+     </p></dd></dl></div></div><div class="sect2" id="SEPGSQL-AUTHOR"><div class="titlepage"><div><div><h3 class="title">F.38.9. Auteur <a href="#SEPGSQL-AUTHOR" class="id_link">#</a></h3></div></div></div><p>
+   KaiGai Kohei <code class="email">&lt;<a class="email" href="mailto:kaigai@ak.jp.nec.com">kaigai@ak.jp.nec.com</a>&gt;</code>
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/sepgsql.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+</html>

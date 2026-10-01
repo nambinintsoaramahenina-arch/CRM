@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/dynamic-trace.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>27.5. Traces dynamiques</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="progress-reporting.html" title="27.4. Rapporter la progression" /><link rel="next" href="diskusage.html" title="27.6. Surveiller l'utilisation du disque" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/dynamic-trace.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/dynamic-trace.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/dynamic-trace.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/dynamic-trace.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/dynamic-trace.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/dynamic-trace.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/dynamic-trace.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/dynamic-trace.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/dynamic-trace.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/dynamic-trace.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/dynamic-trace.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/dynamic-trace.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/dynamic-trace.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/dynamic-trace.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/dynamic-trace.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/dynamic-trace.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/dynamic-trace.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/dynamic-trace.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/dynamic-trace.html">8.2</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/dynamic-trace.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="monitoring.html">Superviser l'activité de la base de données</a></span> » <span class="breadcrumb-node">Traces dynamiques</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="progress-reporting.html" title="27.4. Rapporter la progression">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="monitoring.html" title="Chapitre 27. Superviser l'activité de la base de données">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="diskusage.html" title="27.6. Surveiller l'utilisation du disque">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">27.4. Rapporter la progression </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 27.6. Surveiller l'utilisation du disque</td></tr></table></div><div class="sect1" id="DYNAMIC-TRACE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">27.5. Traces dynamiques <a href="#DYNAMIC-TRACE" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="dynamic-trace.html#COMPILING-FOR-TRACE">27.5.1. Compiler en activant les traces dynamiques</a></span></dt><dt><span class="sect2"><a href="dynamic-trace.html#TRACE-POINTS">27.5.2. Sondes disponibles</a></span></dt><dt><span class="sect2"><a href="dynamic-trace.html#USING-TRACE-POINTS">27.5.3. Utiliser les sondes</a></span></dt><dt><span class="sect2"><a href="dynamic-trace.html#DEFINING-TRACE-POINTS">27.5.4. Définir de nouvelles sondes</a></span></dt></dl></div><a id="id-1.6.14.10.2" class="indexterm"></a><p>
+   <span class="productname">PostgreSQL</span> fournit un support pour les traces
+   dynamiques du serveur de bases de données. Ceci permet l'appel à un outil
+   externe à certains points du code pour tracer son exécution.
+  </p><p>
+   Un certain nombre de sondes et de points de traçage sont déjà insérés dans
+   le code source. Ces sondes ont pour but d'être utilisées par des développeurs
+   et des administrateurs de base de données. Par défaut, les sondes ne sont pas
+   compilées dans <span class="productname">PostgreSQL</span> ; l'utilisateur a
+   besoin de préciser explicitement au script configure de rendre disponible
+   les sondes.
+  </p><p>
+   Actuellement, l'outil <a class="ulink" href="https://en.wikipedia.org/wiki/DTrace" target="_top">DTrace</a> est supporté. Il
+   est disponible sur Solaris, macOS, FreeBSD, NetBSD et Oracle Linux. Le
+   projet <a class="ulink" href="https://sourceware.org/systemtap/" target="_top">SystemTap</a>
+   fournit un équivalent DTrace et peut aussi être utilisé. Le support
+   d'autres outils de traces dynamiques est possible théoriquement en modifiant
+   les définitions des macros dans
+   <code class="filename">src/include/utils/probes.h</code>.
+  </p><div class="sect2" id="COMPILING-FOR-TRACE"><div class="titlepage"><div><div><h3 class="title">27.5.1. Compiler en activant les traces dynamiques <a href="#COMPILING-FOR-TRACE" class="id_link">#</a></h3></div></div></div><p>
+    Par défaut, les sondes ne sont pas disponibles, donc vous aurez besoin d'indiquer
+    explicitement au script configure de les activer dans
+    <span class="productname">PostgreSQL</span>. Pour inclure le support de DTrace,
+    ajoutez <code class="option">--enable-dtrace</code> aux options de configure. Lire
+    <a class="xref" href="install-make.html#CONFIGURE-OPTIONS-DEVEL" title="17.3.3.6. Options pour les développeurs">Section 17.3.3.6</a> pour plus d'informations.
+   </p></div><div class="sect2" id="TRACE-POINTS"><div class="titlepage"><div><div><h3 class="title">27.5.2. Sondes disponibles <a href="#TRACE-POINTS" class="id_link">#</a></h3></div></div></div><p>
+    Un certain nombre de sondes standards sont fournies dans le code source,
+    comme indiqué dans <a class="xref" href="dynamic-trace.html#DTRACE-PROBE-POINT-TABLE" title="Tableau 27.49. Sondes disponibles pour DTrace">Tableau 27.49</a>. <a class="xref" href="dynamic-trace.html#TYPEDEFS-TABLE" title="Tableau 27.50. Types définis utilisés comme paramètres de sonde">Tableau 27.50</a> précise les types utilisés dans les sondes.
+    D'autres peuvent être ajoutées pour améliorer la surveillance de
+    <span class="productname">PostgreSQL</span>.
+   </p><div class="table" id="DTRACE-PROBE-POINT-TABLE"><p class="title"><strong>Tableau 27.49. Sondes disponibles pour DTrace</strong></p><div class="table-contents"><table class="table" summary="Sondes disponibles pour DTrace" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Nom</th><th>Paramètres</th><th>Aperçu</th></tr></thead><tbody><tr><td><code class="literal">transaction-start</code></td><td><code class="literal">(LocalTransactionId)</code></td><td>Sonde qui se déclenche au lancement d'une nouvelle transaction.
+        arg0 est l'identifiant de transaction</td></tr><tr><td><code class="literal">transaction-commit</code></td><td><code class="literal">(LocalTransactionId)</code></td><td>Sonde qui se déclenche quand une transaction se termine avec succès.
+        arg0 est l'identifiant de transaction</td></tr><tr><td><code class="literal">transaction-abort</code></td><td><code class="literal">(LocalTransactionId)</code></td><td>Sonde qui se déclenche quand une transaction échoue.
+        arg0 est l'identifiant de transaction</td></tr><tr><td><code class="literal">query-start</code></td><td><code class="literal">(const char *)</code></td><td>Sonde qui se déclenche lorsque le traitement d'une requête commence.
+        arg0 est la requête</td></tr><tr><td><code class="literal">query-done</code></td><td><code class="literal">(const char *)</code></td><td>Sonde qui se déclenche lorsque le traitement d'une requête se termine.
+        arg0 est la requête</td></tr><tr><td><code class="literal">query-parse-start</code></td><td><code class="literal">(const char *)</code></td><td>Sonde qui se déclenche lorsque l'analyse d'une requête commence.
+        arg0 est la requête</td></tr><tr><td><code class="literal">query-parse-done</code></td><td><code class="literal">(const char *)</code></td><td>Sonde qui se déclenche lorsque l'analyse d'une requête se termine.
+        arg0 est la requête</td></tr><tr><td><code class="literal">query-rewrite-start</code></td><td><code class="literal">(const char *)</code></td><td>Sonde qui se déclenche lorsque la ré-écriture d'une requête commence.
+        arg0 est la requête</td></tr><tr><td><code class="literal">query-rewrite-done</code></td><td><code class="literal">(const char *)</code></td><td>Sonde qui se déclenche lorsque la ré-écriture d'une requête se termine.
+        arg0 est la requête</td></tr><tr><td><code class="literal">query-plan-start</code></td><td><code class="literal">()</code></td><td>Sonde qui se déclenche lorsque la planification d'une requête commence</td></tr><tr><td><code class="literal">query-plan-done</code></td><td><code class="literal">()</code></td><td>Sonde qui se déclenche lorsque la planification d'une requête se termine</td></tr><tr><td><code class="literal">query-execute-start</code></td><td><code class="literal">()</code></td><td>Sonde qui se déclenche lorsque l'exécution d'une requête commence</td></tr><tr><td><code class="literal">query-execute-done</code></td><td><code class="literal">()</code></td><td>Sonde qui se déclenche lorsque l'exécution d'une requête se termine</td></tr><tr><td><code class="literal">statement-status</code></td><td><code class="literal">(const char *)</code></td><td>Sonde qui se déclenche à chaque fois que le processus serveur met à
+        jour son statut dans
+        <code class="structname">pg_stat_activity</code>.<code class="structfield">status</code>.
+        arg0 est la nouvelle chaîne de statut</td></tr><tr><td><code class="literal">checkpoint-start</code></td><td><code class="literal">(int)</code></td><td>Sonde qui se déclenche quand un point de retournement commence son
+        exécution.
+        arg0 détient les drapeaux bit à bit utilisés pour distinguer les
+        différents types de points de retournement, comme un point suite à un
+        arrêt, un point immédiat ou un point forcé</td></tr><tr><td><code class="literal">checkpoint-done</code></td><td><code class="literal">(int, int, int, int, int)</code></td><td>Sonde qui se déclenche quand un point de retournement a terminé son
+        exécution (les sondes listées après se déclenchent en séquence lors du
+        traitement d'un point de retournement).
+        arg0 est le nombre de tampons mémoires écrits. arg1 est le nombre total
+        de tampons mémoires. arg2, arg3 et arg4 contiennent respectivement le
+        nombre de journaux de transactions ajoutés, supprimés et recyclés</td></tr><tr><td><code class="literal">clog-checkpoint-start</code></td><td><code class="literal">(bool)</code></td><td>Sonde qui se déclenche quand la portion CLOG d'un point de
+        retournement commence.
+        arg0 est true pour un point de retournement normal, false pour un point
+        de retournement suite à un arrêt</td></tr><tr><td><code class="literal">clog-checkpoint-done</code></td><td><code class="literal">(bool)</code></td><td>Sonde qui se déclenche quand la portion CLOG d'un point de
+        retournement commence.
+        arg0 a la même signification que pour <code class="literal">clog-checkpoint-start</code></td></tr><tr><td><code class="literal">subtrans-checkpoint-start</code></td><td><code class="literal">(bool)</code></td><td>Sonde qui se déclenche quand la portion SUBTRANS d'un point de
+        retournement commence.
+        arg0 est true pour un point de retournement normal, false pour un point
+        de retournement suite à un arrêt</td></tr><tr><td><code class="literal">subtrans-checkpoint-done</code></td><td><code class="literal">(bool)</code></td><td>Sonde qui se déclenche quand la portion SUBTRANS d'un point de
+        retournement se termine.
+        arg0 a la même signification que pour <code class="literal">subtrans-checkpoint-start</code></td></tr><tr><td><code class="literal">multixact-checkpoint-start</code></td><td><code class="literal">(bool)</code></td><td>Sonde qui se déclenche quand la portion MultiXact d'un point de
+        retournement commence.
+        arg0 est true pour un point de retournement normal, false pour un point
+        de retournement suite à un arrêt</td></tr><tr><td><code class="literal">multixact-checkpoint-done</code></td><td><code class="literal">(bool)</code></td><td>Sonde qui se déclenche quand la portion MultiXact d'un point de
+        retournement se termine.
+        arg0 a la même signification que pour <code class="literal">multixact-checkpoint-start</code></td></tr><tr><td><code class="literal">buffer-checkpoint-start</code></td><td><code class="literal">(int)</code></td><td>Sonde qui se déclenche quand la portion d'écriture de tampons d'un
+        point de retournement commence.
+        arg0 contient les drapeaux bit à bit pour distinguer différents types de
+        point de retournement comme le point après arrêt, un point immédiat, un
+        point forcé</td></tr><tr><td><code class="literal">buffer-sync-start</code></td><td><code class="literal">(int, int)</code></td><td>Sonde qui se déclenche quand nous commençons d'écrire les tampons
+        modifiés pendant un point de retournement (après identification des
+        tampons qui doivent être écrits).
+        arg0 est le nombre total de tampons.
+        arg1 est le nombre de tampons qui sont modifiés et n'ont pas besoin
+        d'être écrits</td></tr><tr><td><code class="literal">buffer-sync-written</code></td><td><code class="literal">(int)</code></td><td>Sonde qui se déclenche après chaque écriture d'un tampon lors d'un
+        point de retournement.
+        arg0 est le numéro d'identifiant du tampon</td></tr><tr><td><code class="literal">buffer-sync-done</code></td><td><code class="literal">(int, int, int)</code></td><td>Sonde qui se déclenche quand tous les tampons modifiés ont été
+        écrits.
+        arg0 est le nombre total de tampons.
+        arg1 est le nombre de tampons réellement écrits par le processus de point
+        de retournement.
+        arg2 est le nombre attendu de tampons à écrire (arg1 de
+        <code class="literal">buffer-sync-start</code>) ; toute différence reflète d'autres processus
+        écrivant des tampons lors du point de retournement</td></tr><tr><td><code class="literal">buffer-checkpoint-sync-start</code></td><td><code class="literal">()</code></td><td>Sonde qui se déclenche une fois les tampons modifiés écrits par le
+        noyau et avant de commencer à lancer des requêtes fsync</td></tr><tr><td><code class="literal">buffer-checkpoint-done</code></td><td><code class="literal">()</code></td><td>Sonde qui se déclenche après la fin de la synchronisation des
+        tampons sur le disque</td></tr><tr><td><code class="literal">twophase-checkpoint-start</code></td><td><code class="literal">()</code></td><td>Sonde qui se déclenche quand la portion deux-phases d'un point de
+        retournement est commencée</td></tr><tr><td><code class="literal">twophase-checkpoint-done</code></td><td><code class="literal">()</code></td><td>Sonde qui se déclenche quand la portion deux-phases d'un point de
+        retournement est terminée</td></tr><tr><td><code class="literal">buffer-extend-start</code></td><td><code class="literal">(ForkNumber, BlockNumber, Oid, Oid, Oid, int, unsigned int)</code></td><td>Sonde qui se déclenche quand l'extension d'une relation commence.
+        arg0 contient le fork à étendre. arg1, arg2 et arg3 contiennent l'OID
+        du tablespace, de la base et de la relation identifiant complètement la
+        relation. arg4 est l'identifiant du processus backend qui a créé la
+        relation temporaire pour un buffer local ou
+        <code class="symbol">INVALID_PROC_NUMBER</code> (-1) pour un buffer partagé. arg5 est
+        le nombre de blocs que l'appelant souhaite ajouter.</td></tr><tr><td><code class="literal">buffer-extend-done</code></td><td><code class="literal">(ForkNumber, BlockNumber, Oid, Oid, Oid, int, unsigned int,   BlockNumber)</code></td><td>Sonde qui se déclenche quand l'extension d'une relation se termine.
+        arg0 contient le fork à étendre. arg1, arg2 et arg3 contiennent l'OID
+        du tablespace, de la base et de la relation identifiant complètement la
+        relation. arg4 est l'identifiant du processus backend qui a créé la
+        relation temporaire pour un buffer local ou
+        <code class="symbol">INVALID_PROC_NUMBER</code> (-1) pour un buffer partagé. arg5 est
+        le nombre de blocs correspondant à l'extension de la relation, ce qui 
+        peut être moins que <code class="literal">buffer-extend-start</code> à cause de
+        contraintes sur les ressources. arg6 contient le BlockNumber du premier
+        nouveau bloc.</td></tr><tr><td><code class="literal">buffer-read-start</code></td><td><code class="literal">(ForkNumber, BlockNumber, Oid, Oid, Oid, int)</code></td><td>Sonde qui se déclenche quand la lecture d'un tampon commence.
+        arg0 et arg1 contiennent les numéros de fork et de bloc de la page.
+        arg2, arg3 et arg4 contiennent respectivement l'OID du tablespace, de la
+        base de données et de la relation identifiant ainsi précisément la
+        relation.
+        arg5 est l'identifiant du processus moteur qui a créé la relation
+        temporaire pour un tampon local ou <code class="symbol">INVALID_PROC_NUMBER</code> (-1) pour un
+        tampon partagé.</td></tr><tr><td><code class="literal">buffer-read-done</code></td><td><code class="literal">(ForkNumber, BlockNumber, Oid, Oid, Oid, int, bool)</code></td><td>Sonde qui se déclenche quand la lecture d'un tampon se termine.
+        arg0 et arg1 contiennent les numéros de fork et de bloc de la page.
+        arg2, arg3 et arg4 contiennent respectivement l'OID du tablespace, de la
+        base de données et de la relation identifiant ainsi précisément la
+        relation.
+        arg5 est l'identifiant du processus moteur qui a créé la relation
+        temporaire pour un tampon local ou <code class="symbol">INVALID_PROC_NUMBER</code> (-1) pour un
+        tampon partagé.
+        arg6 est true si la tampon était disponible en mémoire, false sinon</td></tr><tr><td><code class="literal">buffer-flush-start</code></td><td><code class="literal">(ForkNumber, BlockNumber, Oid, Oid, Oid)</code></td><td>Sonde qui se déclenche avant de lancer une demande d'écriture pour
+        un bloc partagé.
+        arg2, arg3 et arg4 contiennent respectivement l'OID du tablespace, de la
+        base de données et de la relation identifiant ainsi précisément la
+        relation</td></tr><tr><td><code class="literal">buffer-flush-done</code></td><td><code class="literal">(ForkNumber, BlockNumber, Oid, Oid, Oid)</code></td><td>Sonde qui se déclenche quand une demande d'écriture se termine.
+        (Notez que ceci ne reflète que le temps passé pour fournir la donnée au
+        noyau ; ce n'est habituellement pas encore écrit sur le disque.)
+        Les arguments sont identiques à ceux de <code class="literal">buffer-flush-start</code></td></tr><tr><td><code class="literal">wal-buffer-write-dirty-start</code></td><td><code class="literal">()</code></td><td>Sonde qui se déclenche quand un processus serveur commence à écrire
+        un tampon modifié d'un journal de transactions parce qu'il n'y a plus
+        d'espace disponible dans le cache des journaux de transactions. (Si cela
+        arrive souvent, cela implique que <a class="xref" href="runtime-config-wal.html#GUC-WAL-BUFFERS">wal_buffers</a> est
+        trop petit.)</td></tr><tr><td><code class="literal">wal-buffer-write-dirty-done</code></td><td><code class="literal">()</code></td><td>Sonde qui se déclenche quand l'écriture d'un tampon modifié d'un
+        journal de transactions est terminée</td></tr><tr><td><code class="literal">wal-insert</code></td><td><code class="literal">(unsigned char, unsigned char)</code></td><td>Sonde qui se déclenche quand un enregistrement est inséré dans un
+        journal de transactions.
+        arg0 est le gestionnaire de ressource (rmid) pour l'enregistrement.
+        arg1 contient des informations supplémentaires</td></tr><tr><td><code class="literal">wal-switch</code></td><td><code class="literal">()</code></td><td>Sonde qui se déclenche quand une bascule du journal de transactions
+        est demandée</td></tr><tr><td><code class="literal">smgr-md-read-start</code></td><td><code class="literal">(ForkNumber, BlockNumber, Oid, Oid, Oid, int)</code></td><td>Sonde qui se déclenche au début de la lecture d'un bloc d'une
+        relation.
+        arg0 et arg1 contiennent les numéros de fork et de bloc de la page.
+        arg2, arg3 et arg4 contiennent respectivement l'OID du tablespace, de la
+        base de données et de la relation identifiant ainsi précisément la
+        relation.
+        arg5 est l'identifiant du processus moteur qui a créé la relation
+        temporaire pour un tampon local ou <code class="symbol">INVALID_PROC_NUMBER</code> (-1) pour un
+        tampon partagé</td></tr><tr><td><code class="literal">smgr-md-read-done</code></td><td><code class="literal">(ForkNumber, BlockNumber, Oid, Oid, Oid, int, int, int)</code></td><td>Sonde qui se déclenche à la fin de la lecture d'un bloc.
+        arg0 et arg1 contiennent les numéros de fork et de bloc de la page.
+        arg2, arg3 et arg4 contiennent respectivement l'OID du tablespace, de la
+        base de données et de la relation identifiant ainsi précisément la
+        relation.
+        arg5 est l'identifiant du processus moteur qui a créé la relation
+        temporaire pour un tampon local ou <code class="symbol">INVALID_PROC_NUMBER</code> (-1) pour un
+        tampon partagé.
+        arg6 est le nombre d'octets réellement lus alors que arg7 est le nombre
+        d'octets demandés (s'il y a une différence, cela indique une lecture
+        courte)</td></tr><tr><td><code class="literal">smgr-md-write-start</code></td><td><code class="literal">(ForkNumber, BlockNumber, Oid, Oid, Oid, int)</code></td><td>Sonde qui se déclenche au début de l'écriture d'un bloc dans une
+        relation.
+        arg0 et arg1 contiennent les numéros de fork et de bloc de la page.
+        arg2, arg3 et arg4 contiennent respectivement l'OID du tablespace, de la
+        base de données et de la relation identifiant ainsi précisément la
+        relation.
+        arg5 est l'identifiant du processus moteur qui a créé la relation
+        temporaire pour un tampon local ou <code class="symbol">InvalidBackendId</code> (-1) pour un
+        tampon partagé</td></tr><tr><td><code class="literal">smgr-md-write-done</code></td><td><code class="literal">(ForkNumber, BlockNumber, Oid, Oid, Oid, int, int, int)</code></td><td>Sonde qui se déclenche à la fin de l'écriture d'un bloc.
+        arg0 et arg1 contiennent les numéros de fork et de bloc de la page.
+        arg2, arg3 et arg4 contiennent respectivement l'OID du tablespace, de la
+        base de données et de la relation identifiant ainsi précisément la
+        relation.
+        arg5 est l'identifiant du processus moteur qui a créé la relation
+        temporaire pour un tampon local ou <code class="symbol">InvalidBackendId</code> (-1) pour un
+        tampon partagé.
+        arg6 est le nombre d'octets réellement écrits alors que arg7 est le nombre
+        d'octets demandés (si ces nombres sont différents, cela indique une
+        écriture courte)</td></tr><tr><td><code class="literal">sort-start</code></td><td><code class="literal">(int, bool, int, int, bool, int)</code></td><td>Sonde qui se déclenche quand une opération de tri est démarré.
+        arg0 indique un tri de la table, de l'index ou d'un datum.
+        arg1 est true si on force les valeurs uniques.
+        arg2 est le nombre de colonnes clés.
+        arg3 est le nombre de ko de mémoire autorisé pour ce travail.
+        arg4 est true si un accès aléatoire au résultat du tri est requis
+        arg5 indique serial si <code class="literal">0</code>, parallel worker si
+        <code class="literal">1</code>, ou parallel leader si <code class="literal">2</code>.</td></tr><tr><td><code class="literal">sort-done</code></td><td><code class="literal">(bool, long)</code></td><td>Sonde qui se déclenche quand un tri est terminé.
+        arg0 est true pour un tri externe, false pour un tri interne.
+        arg1 est le nombre de blocs disque utilisés pour un tri externe, ou le
+        nombre de ko de mémoire utilisés pour un tri interne</td></tr><tr><td><code class="literal">lwlock-acquire</code></td><td><code class="literal">(char *, LWLockMode)</code></td><td>Sonde qui se déclenche quand un LWLock a été acquis.
+        arg0 est la tranche de LWLock.
+        arg1 est le mode de verrou attendu, soit exclusif soit partagé.</td></tr><tr><td><code class="literal">lwlock-release</code></td><td><code class="literal">(char *)</code></td><td>Sonde qui se déclenche quand un LWLock a été relâché (mais notez
+        que tout processus en attente n'a pas encore été réveillé).
+        arg0 est la tranche de LWLock.</td></tr><tr><td><code class="literal">lwlock-wait-start</code></td><td><code class="literal">(char *, LWLockMode)</code></td><td>Sonde qui se déclenche quand un LWLock n'était pas immédiatement
+        disponible et qu'un processus serveur a commencé à attendre la
+        disponibilité du verrou.
+        arg0 est la tranche de LWLock.
+        arg1 est le mode de verrou attendu, soit exclusif soit partagé.</td></tr><tr><td><code class="literal">lwlock-wait-done</code></td><td><code class="literal">(char *, LWLockMode)</code></td><td>Sonde qui se déclenche quand un processus serveur n'est plus en
+        attente d'un LWLock (il n'a pas encore le verrou).
+        arg0 est la tranche de LWLock.
+        arg1 est le mode de verrou attendu, soit exclusif soit partagé.</td></tr><tr><td><code class="literal">lwlock-condacquire</code></td><td><code class="literal">(char *, LWLockMode)</code></td><td>Sonde qui se déclenche quand un LWLock a été acquis avec succès
+        malgré le fait que l'appelant ait demandé de ne pas attendre.
+        arg0 est la tranche de LWLock.
+        arg1 est le mode de verrou attendu, soit exclusif soit partagé.</td></tr><tr><td><code class="literal">lwlock-condacquire-fail</code></td><td><code class="literal">(char *, LWLockMode)</code></td><td>Sonde qui se déclenche quand un LWLock, demandé sans attente, n'est
+        pas accepté.
+        arg0 est la tranche de LWLock.
+        arg1 est le mode de verrou attendu, soit exclusif soit partagé.</td></tr><tr><td><code class="literal">lock-wait-start</code></td><td><code class="literal">(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int,  LOCKMODE)</code></td><td>Sonde qui se déclenche quand une demande d'un gros verrou
+        (<span class="foreignphrase"><em class="foreignphrase">lmgr lock</em></span>) a commencé l'attente parce que
+        le verrou n'était pas disponible.
+        arg0 à arg3 sont les champs identifiant l'objet en cours de verrouillage.
+        arg4 indique le type d'objet à verrouiller.
+        arg5 indique le type du verrou demandé</td></tr><tr><td><code class="literal">lock-wait-done</code></td><td><code class="literal">(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int,  LOCKMODE)</code></td><td>Sonde qui se déclenche quand une demande d'un gros verrou
+        (<span class="foreignphrase"><em class="foreignphrase">lmgr lock</em></span>) a fini d'attendre (c'est-à-dire
+        que le verrou a été accepté).
+        Les arguments sont identiques à ceux de lock-wait-start</td></tr><tr><td><code class="literal">deadlock-found</code></td><td><code class="literal">()</code></td><td>Sonde qui se déclenche quand un verrou mortel est trouvé par le
+        détecteur</td></tr></tbody></table></div></div><br class="table-break" /><div class="table" id="TYPEDEFS-TABLE"><p class="title"><strong>Tableau 27.50. Types définis utilisés comme paramètres de sonde</strong></p><div class="table-contents"><table class="table" summary="Types définis utilisés comme paramètres de sonde" border="1"><colgroup><col /><col /></colgroup><thead><tr><th>Type</th><th>Definition</th></tr></thead><tbody><tr><td><code class="type">LocalTransactionId</code></td><td><code class="type">unsigned int</code></td></tr><tr><td><code class="type">LWLockMode</code></td><td><code class="type">int</code></td></tr><tr><td><code class="type">LOCKMODE</code></td><td><code class="type">int</code></td></tr><tr><td><code class="type">BlockNumber</code></td><td><code class="type">unsigned int</code></td></tr><tr><td><code class="type">Oid</code></td><td><code class="type">unsigned int</code></td></tr><tr><td><code class="type">ForkNumber</code></td><td><code class="type">int</code></td></tr><tr><td><code class="type">bool</code></td><td><code class="type">unsigned char</code></td></tr></tbody></table></div></div><br class="table-break" /></div><div class="sect2" id="USING-TRACE-POINTS"><div class="titlepage"><div><div><h3 class="title">27.5.3. Utiliser les sondes <a href="#USING-TRACE-POINTS" class="id_link">#</a></h3></div></div></div><p>
+    L'exemple ci-dessous montre un script DTrace pour l'analyse du nombre de
+    transactions sur le système, comme alternative à l'interrogation régulière
+    de <code class="structname">pg_stat_database</code> avant et après un test de
+    performance :
+    </p><pre class="programlisting">#!/usr/sbin/dtrace -qs
+
+ postgresql$1:::transaction-start
+ {
+       @start["Start"] = count();
+       self-&gt;ts  = timestamp;
+ }
+
+ postgresql$1:::transaction-abort
+ {
+       @abort["Abort"] = count();
+ }
+
+ postgresql$1:::transaction-commit
+ /self-&gt;ts/
+ {
+       @commit["Commit"] = count();
+       @time["Total time (ns)"] = sum(timestamp - self-&gt;ts);
+       self-&gt;ts=0;
+ }
+    </pre><p>
+    À son exécution, le script de l'exemple D donne une sortie comme :
+    </p><pre class="screen"># ./txn_count.d `pgrep -n postgres` or ./txn_count.d &lt;PID&gt;
+ ^C
+
+ Start                                          71
+ Commit                                         70
+ Total time (ns)                        2312105013
+    </pre><p>
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     SystemTap utilise une notation différente de DTrace pour les scripts de
+     trace, même si les points de trace sont compatibles. Il est intéressant de
+     noter que, lorsque nous avons écrit ce texte, les scripts SystemTap doivent
+     référencer les noms des sondes en utilisant des tirets bas doubles à la
+     place des tirets simples. Il est prévu que les prochaines versions de
+     SystemTap corrigent ce problème.
+    </p></div><p>
+    Vous devez vous rappeler que les programmes DTrace doivent être écrits
+    soigneusement, sinon les informations récoltées pourraient ne rien valoir.
+    Dans la plupart des cas où des problèmes sont découverts, c'est
+    l'instrumentation qui est erronée, pas le système sous-jacent. En discutant
+    des informations récupérées en utilisant un tel système, il est essentiel de
+    s'assurer que le script utilisé est lui-aussi vérifié et discuter.
+   </p></div><div class="sect2" id="DEFINING-TRACE-POINTS"><div class="titlepage"><div><div><h3 class="title">27.5.4. Définir de nouvelles sondes <a href="#DEFINING-TRACE-POINTS" class="id_link">#</a></h3></div></div></div><p>
+    De nouvelles sondes peuvent être définies dans le code partout où le
+    développeur le souhaite bien que cela nécessite une nouvelle compilation.
+    Voici les étapes nécessaires pour insérer de nouvelles sondes :
+   </p><div class="procedure"><ol class="procedure" type="1"><li class="step"><p>
+      Décider du nom de la sonde et des données nécessaires pour la sonde
+     </p></li><li class="step"><p>
+      Ajoutez les définitions de sonde dans
+      <code class="filename">src/backend/utils/probes.d</code>
+     </p></li><li class="step"><p>
+      Inclure <code class="filename">pg_trace.h</code> s'il n'est pas déjà présent dans le
+      module contenant les points de sonde, et insérer les macros
+      <code class="literal">TRACE_POSTGRESQL</code> aux emplacements souhaités dans le code
+      source
+     </p></li><li class="step"><p>
+      Recompiler et vérifier que les nouvelles sondes sont disponibles
+     </p></li></ol></div><p><strong>Exemple : </strong>
+     Voici un exemple d'ajout d'une sonde pour tracer toutes les nouvelles
+     transactions par identifiant de transaction.
+    </p><div class="procedure"><ol class="procedure" type="1"><li class="step"><p>
+      La sonde sera nommée <code class="literal">transaction-start</code> et nécessite
+      un paramètre de type <code class="type">LocalTransactionId</code>
+     </p></li><li class="step"><p>
+      Ajout de la définition de la sonde dans
+      <code class="filename">src/backend/utils/probes.d</code> :
+      </p><pre class="programlisting">
+       probe transaction__start(LocalTransactionId);
+      </pre><p>
+      Notez l'utilisation du double tiret bas dans le nom de la sonde. Dans un
+      script DTrace utilisant la sonde, le double tiret bas doit être remplacé
+      par un tiret, donc <code class="literal">transaction-start</code> est le nom à
+      documenter pour les utilisateurs.
+     </p></li><li class="step"><p>
+      Au moment de la compilation, <code class="literal">transaction__start</code> est
+      converti en une macro appelée <code class="literal">TRACE_POSTGRESQL_TRANSACTION_START</code>
+      (notez que les tirets bas ne sont plus doubles ici), qui est disponible
+      en incluant le fichier <code class="filename">pg_trace.h</code>. Il faut ajouter
+      l'appel à la macro aux bons emplacements dans le code source. Dans ce
+      cas, cela ressemble à :
+
+      </p><pre class="programlisting">
+     TRACE_POSTGRESQL_TRANSACTION_START(vxid.localTransactionId);
+      </pre><p>
+     </p></li><li class="step"><p>
+      Après une nouvelle compilation et l'exécution du nouveau binaire, il
+      faut vérifier que la nouvelle sonde est disponible en exécutant la
+      commande DTrace suivante. Vous deviez avoir cette sortie :
+      </p><pre class="screen">
+ # dtrace -ln transaction-start
+    ID    PROVIDER          MODULE           Fonction NAME
+ 18705 postgresql49878     postgres     StartTransactionCommand transaction-start
+ 18755 postgresql49877     postgres     StartTransactionCommand transaction-start
+ 18805 postgresql49876     postgres     StartTransactionCommand transaction-start
+ 18855 postgresql49875     postgres     StartTransactionCommand transaction-start
+ 18986 postgresql49873     postgres     StartTransactionCommand transaction-start
+      </pre><p>
+     </p></li></ol></div><p>
+    Il faut faire attention à d'autres choses lors de l'ajout de macros de
+    trace dans le code C :
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Vous devez faire attention au fait que les types de données indiqués
+       pour les paramètres d'une sonde correspondent aux types de données des
+       variables utilisées dans la macro. Dans le cas contraire, vous obtiendrez
+       des erreurs de compilation.
+      </p></li><li class="listitem"><p>
+       Sur la plupart des plateformes, si <span class="productname">PostgreSQL</span>
+       est construit avec <code class="option">--enable-dtrace</code>, les arguments pour
+       une macro de trace seront évalués à chaque fois que le contrôle passe
+       dans la macro, <span class="emphasis"><em>même si aucun traçage n'est réellement en
+        cours</em></span>. Cela a généralement peu d'importance si vous rapportez
+       seulement les valeurs de quelques variables locales, mais faites bien
+       attention à l'utilisation de fonctions coûteuses. Si vous devez le faire,
+       pensez à protéger la macro avec une vérification pour vous assurer que
+       la trace est bien activée :
+
+       </p><pre class="programlisting">
+     if (TRACE_POSTGRESQL_TRANSACTION_START_ENABLED())
+         TRACE_POSTGRESQL_TRANSACTION_START(some_function(...));
+       </pre><p>
+
+       Chaque macro de trace a une macro <code class="literal">ENABLED</code>
+       correspondante.
+      </p></li></ul></div><p>
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/dynamic-trace.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+</html>

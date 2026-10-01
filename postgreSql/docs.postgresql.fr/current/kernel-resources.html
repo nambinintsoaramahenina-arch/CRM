@@ -1,0 +1,617 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/kernel-resources.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:31 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>18.4. Gérer les ressources du noyau</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="server-start.html" title="18.3. Lancer le serveur de bases de données" /><link rel="next" href="server-shutdown.html" title="18.5. Arrêter le serveur" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/kernel-resources.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/kernel-resources.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/kernel-resources.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/kernel-resources.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/kernel-resources.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/kernel-resources.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/kernel-resources.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/kernel-resources.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/kernel-resources.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/kernel-resources.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/kernel-resources.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/kernel-resources.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/kernel-resources.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/kernel-resources.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/kernel-resources.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/kernel-resources.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/kernel-resources.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/kernel-resources.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/kernel-resources.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/kernel-resources.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/kernel-resources.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="runtime.html">Configuration du serveur et mise en place</a></span> » <span class="breadcrumb-node">Gérer les ressources du noyau</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="server-start.html" title="18.3. Lancer le serveur de bases de données">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime.html" title="Chapitre 18. Configuration du serveur et mise en place">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="server-shutdown.html" title="18.5. Arrêter le serveur">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">18.3. Lancer le serveur de bases de données </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 18.5. Arrêter le serveur</td></tr></table></div><div class="sect1" id="KERNEL-RESOURCES"><div class="titlepage"><div><div><h2 class="title" style="clear: both">18.4. Gérer les ressources du noyau <a href="#KERNEL-RESOURCES" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="kernel-resources.html#SYSVIPC">18.4.1. Mémoire partagée et sémaphore</a></span></dt><dt><span class="sect2"><a href="kernel-resources.html#SYSTEMD-REMOVEIPC">18.4.2. systemd RemoveIPC</a></span></dt><dt><span class="sect2"><a href="kernel-resources.html#KERNEL-RESOURCES-LIMITS">18.4.3. Limites de ressources</a></span></dt><dt><span class="sect2"><a href="kernel-resources.html#LINUX-MEMORY-OVERCOMMIT">18.4.4. Linux memory overcommit</a></span></dt><dt><span class="sect2"><a href="kernel-resources.html#LINUX-HUGE-PAGES">18.4.5. Pages mémoire de grande taille
+    (<span class="foreignphrase"><em class="foreignphrase">huge pages</em></span>) sous Linux</a></span></dt></dl></div><p>
+   <span class="productname">PostgreSQL</span> peut quelque fois dépasser les limites
+   des ressources du système d'exploitation, tout spécialement quand plusieurs
+   copies du serveur s'exécutent sur le même système, ou sur des très grosses
+   installations. Cette section explique les ressources du noyau utilisées par
+   <span class="productname">PostgreSQL</span> et les étapes à suivre pour résoudre
+   les problèmes liés à la consommation des ressources du noyau.
+  </p><div class="sect2" id="SYSVIPC"><div class="titlepage"><div><div><h3 class="title">18.4.1. Mémoire partagée et sémaphore <a href="#SYSVIPC" class="id_link">#</a></h3></div></div></div><a id="id-1.6.5.7.3.2" class="indexterm"></a><a id="id-1.6.5.7.3.3" class="indexterm"></a><p>
+    <span class="productname">PostgreSQL</span> a besoin que le système d'exploitation
+    fournisse des fonctionnalités de communication inter-processus
+    (<acronym class="acronym">IPC</acronym>), en particulier de la mémoire partagée et des
+    sémaphores. Les systèmes dérivés d'Unix fournissent
+    <span class="quote">« <span class="quote"><span class="systemitem">System V</span></span> »</span> <acronym class="acronym">IPC</acronym>,
+    <span class="quote">« <span class="quote"><span class="systemitem">POSIX</span></span> »</span> <acronym class="acronym">IPC</acronym>
+    ou les deux. <span class="systemitem">Windows</span> qui fournit sa propre
+    implémentation de ces fonctionnalités ne sera pas approfondi ici.
+   </p><p>
+    Par défaut, <span class="productname">PostgreSQL</span> alloue
+    une très petite quantité de mémoire partagée System V, ainsi
+    qu'une quantité bien plus importante de mémoire partagée anonyme
+    <code class="function">mmap</code>.
+    Autre possibilité : utiliser un seul gros bloc de mémoire partagée
+    System V (voir <a class="xref" href="runtime-config-resource.html#GUC-SHARED-MEMORY-TYPE">shared_memory_type</a>).
+
+    De plus, un nombre important de sémaphores de style System V ou POSIX sont
+    créés au démarrage du serveur. Actuellement, les sémaphores POSIX sont
+    utilisés sur les systèmes Linux et FreeBSD, alors que les autres plateformes
+    utilisent les sémaphores System V.
+   </p><p>
+    Les fonctionnalités System V <acronym class="acronym">IPC</acronym> sont habituellement
+    restreintes par les limites d'allocation au niveau système.
+    Quand <span class="productname">PostgreSQL</span> dépasse une des nombreuses limites
+    <acronym class="acronym">IPC</acronym>, le serveur refusera de s'exécuter et lèvera un
+    message d'erreur instructif décrivant le problème rencontré et que faire
+    avec (voir aussi la <a class="xref" href="server-start.html#SERVER-START-FAILURES" title="18.3.1. Échecs de lancement">Section 18.3.1</a>). Les
+    paramètres adéquats du noyau sont nommés de façon cohérente parmi les
+    différents systèmes ; le <a class="xref" href="kernel-resources.html#SYSVIPC-PARAMETERS" title="Tableau 18.1. Paramètres System V IPC">Tableau 18.1</a> donne un
+    aperçu. Néanmoins, les méthodes pour les obtenir varient. Les suggestions
+    pour quelques plateformes sont données ci-dessous.
+   </p><div class="table" id="SYSVIPC-PARAMETERS"><p class="title"><strong>Tableau 18.1. Paramètres <span class="systemitem">System V</span> <acronym class="acronym">IPC</acronym></strong></p><div class="table-contents"><table class="table" summary="Paramètres System V IPC" border="1"><colgroup><col class="col1" /><col class="col2" /><col class="col3" /></colgroup><thead><tr><th>Nom</th><th>Description</th><th>Valeurs nécessaires pour faire fonctionner une instance <span class="productname">PostgreSQL</span> </th></tr></thead><tbody><tr><td><code class="varname">SHMMAX</code></td><td>Taille maximum du segment de mémoire partagée (en octets)</td><td>au moins 1 ko, mais la valeur par défaut est normalement bien plus grande</td></tr><tr><td><code class="varname">SHMMIN</code></td><td>Taille minimum du segment de mémoire partagée (en octets)</td><td>1</td></tr><tr><td><code class="varname">SHMALL</code></td><td>Total de la mémoire partagée disponible (en octets ou pages)</td><td>si octets, identique à <code class="varname">SHMMAX</code> ;
+        si pages, <code class="literal">ceil(SHMMAX/PAGE_SIZE)</code>,
+        plus de la marge pour les autres applications</td></tr><tr><td><code class="varname">SHMSEG</code></td><td>Nombre maximum de segments de mémoire partagée par processus</td><td>seul un segment est nécessaire, mais la valeur par défaut est
+        bien plus importante</td></tr><tr><td><code class="varname">SHMMNI</code></td><td>Nombre maximum de segments de mémoire partagée pour
+         tout le système</td><td>comme <code class="varname">SHMSEG</code> plus de la place pour les autres
+         applications</td></tr><tr><td><code class="varname">SEMMNI</code></td><td>Nombre maximum d'identifiants de sémaphores (c'est-à-dire
+         d'ensembles)</td><td>au moins <code class="literal">ceil((max_connections + autovacuum_max_workers + max_wal_senders + max_worker_processes + 7) / 19)</code> plus de la marge pour les autres applications</td></tr><tr><td><code class="varname">SEMMNS</code></td><td>nombre maximum de sémaphores répartis dans le système</td><td><code class="literal">ceil((max_connections + autovacuum_max_workers + max_wal_senders + max_worker_processes + 7) / 19) * 20</code> plus la place
+         pour les autres applications</td></tr><tr><td><code class="varname">SEMMSL</code></td><td>Nombre maximum de sémaphores par ensemble</td><td>au moins 20</td></tr><tr><td><code class="varname">SEMMAP</code></td><td>Nombre d'entrées dans la carte des sémaphores</td><td>voir le texte</td></tr><tr><td><code class="varname">SEMVMX</code></td><td>Valeur maximum d'un sémaphore</td><td>au moins 1000 (vaut souvent par défaut 32767 ; ne pas changer
+         sauf si vous êtes forcé.)</td></tr></tbody></table></div></div><br class="table-break" /><p>
+    <span class="productname">PostgreSQL</span> requiert quelques octets de mémoire
+    partagée System V (typiquement 48 octets sur des plateformes 64 bits) pour
+    chaque copie du serveur. Sur la plupart des systèmes d'exploitation modernes,
+    cette quantité est facilement allouable. Néanmoins, si vous exécutez
+    plusieurs copies du serveur
+    ou si vous le configurez explicitement pour utiliser de grandes quantités
+    de mémoire partagée System V (voir <a class="xref" href="runtime-config-resource.html#GUC-SHARED-MEMORY-TYPE">shared_memory_type</a>
+    et <a class="xref" href="runtime-config-resource.html#GUC-DYNAMIC-SHARED-MEMORY-TYPE">dynamic_shared_memory_type</a>),
+    il pourrait être nécessaire d'augmenter
+    <code class="varname">SHMALL</code>, correspondant à la quantité
+    totale de mémoire partagée System V pour tout le système. Notez que
+    <code class="varname">SHMALL</code> est en nombre de blocs disques, et non pas en
+    nombre d'octets sur de nombreux systèmes.
+   </p><p>
+    La taille minimum des segments de mémoire partagée (<code class="varname">SHMMIN</code>) est
+    moins sensible aux problèmes. Elle devrait être au plus à environ
+    32 octets pour <span class="productname">PostgreSQL</span> (il est habituellement à 1). Le
+    nombre maximum de segments au travers du système (<code class="varname">SHMMNI</code>) ou par
+    processus (<code class="varname">SHMSEG</code>) a peu de chances de causer un problème sauf
+    s'ils sont configurés à zéro sur votre système.
+   </p><p>
+    Lors de l'utilisation de sémaphores System V,
+    <span class="productname">PostgreSQL</span> utilise un sémaphore par connexion
+    autorisée (<a class="xref" href="runtime-config-connection.html#GUC-MAX-CONNECTIONS">max_connections</a>), par processus
+    autovacuum autorisé (<a class="xref" href="runtime-config-autovacuum.html#GUC-AUTOVACUUM-MAX-WORKERS">autovacuum_max_workers</a>), par
+    processus <span class="quote">« <span class="quote">WAL sender</span> »</span>
+    (<a class="xref" href="runtime-config-replication.html#GUC-MAX-WAL-SENDERS">max_wal_senders</a>) et par
+    processus en tâche de fond autorisé réclamant un accès à la mémoire
+    partagée, le tout par ensemble de 19. Chacun de ces ensembles contiendra
+    aussi un 20è sémaphore qui contient un <span class="quote">« <span class="quote">nombre magique</span> »</span> pour
+    détecter la collision avec des ensembles de sémaphore utilisés par les
+    autres applications. Le nombre maximum de sémaphores dans le système est
+    initialisé par <code class="varname">SEMMNS</code>, qui en conséquence doit être au
+    moins aussi haut que <code class="varname">max_connections</code> plus
+    <code class="varname">autovacuum_max_workers</code> plus
+    <code class="varname">max_wal_senders</code> plus
+    <code class="varname">max_worker_processes</code>,
+    plus 1 encore pour chacune des 19 connexions autorisées,
+    plus les workers (voir la formule dans le <a class="xref" href="kernel-resources.html#SYSVIPC-PARAMETERS" title="Tableau 18.1. Paramètres System V IPC">Tableau 18.1</a>). Le paramètre <code class="varname">SEMMNI</code>
+    détermine la limite du nombre d'ensembles de sémaphores qui peuvent
+    exister sur le système à un instant précis. Ce paramètre doit donc être
+    au moins égal à
+    <code class="literal">ceil((max_connections + autovacuum_max_workers + max_wal_senders + max_worker_processes + 7) / 19)</code>.
+    Baisser le
+    nombre de connexions autorisées est un contournement temporaire pour les
+    échecs qui sont habituellement indiqués par le message <span class="quote">« <span class="quote">no space
+    left on device</span> »</span>, à partir de la fonction
+    <code class="function">semget</code>.
+   </p><p>
+    Dans certains cas, il pourrait être nécessaire d'augmenter
+    <code class="varname">SEMMAP</code> pour être au moins dans l'ordre de
+    <code class="varname">SEMMNS</code>. Si le système dispose de ce paramètre (ce n'est
+    pas le cas pour beaucoup d'entre eux), il définit la taille de
+    la carte de ressources de sémaphores, dans laquelle chaque bloc contigu de
+    sémaphores disponibles a besoin d'une entrée. Lorsqu'un ensemble de
+    sémaphores est libéré, soit il est ajouté à une entrée existante,
+    soit il est enregistré sous une nouvelle entrée dans la carte.
+    Si la carte est pleine, les sémaphores libérés sont perdus
+    (jusqu'au redémarrage). La fragmentation de l'espace des sémaphores
+    peut mener au fil du temps à rendre moins de sémaphores disponibles qu'il
+    ne devrait y avoir.
+   </p><p>
+    D'autres paramètres en relation avec l'<span class="quote">« <span class="quote">annulation de sémaphores</span> »</span>,
+    tels que <code class="varname">SEMMNU</code> et <code class="varname">SEMUME</code>, n'affectent pas
+    <span class="productname">PostgreSQL</span>.
+   </p><p>
+    Lors de l'utilisation de sémaphores POSIX, le nombre de sémaphores
+    nécessaires est le même que pour System V, c'est-à-dire un sémaphore par
+    connexion autorisée (<a class="xref" href="runtime-config-connection.html#GUC-MAX-CONNECTIONS">max_connections</a>), par
+    processus autovacuum autorisé (<a class="xref" href="runtime-config-autovacuum.html#GUC-AUTOVACUUM-MAX-WORKERS">autovacuum_max_workers</a>), par processus <span class="quote">« <span class="quote">WAL sender</span> »</span> autorisé
+    (<a class="xref" href="runtime-config-replication.html#GUC-MAX-WAL-SENDERS">max_wal_senders</a>)
+    et par processus en tâche de fond (<a class="xref" href="runtime-config-resource.html#GUC-MAX-WORKER-PROCESSES">max_worker_processes</a>).
+    Sur les plateformes où cette option est préférée, le noyau ne
+    spécifie pas de limite au nombre de sémaphores POSIX.
+   </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><span class="systemitem">FreeBSD</span></span></dt><dd><a id="id-1.6.5.7.3.14.1.2.1" class="indexterm"></a><p>
+        Les paramètres par défaut de mémoire partagée sont en général
+        suffisant, sauf si vous affectez <code class="literal">shared_memory_type</code>
+        à <code class="literal">sysv</code>. Les sémaphores System V ne sont pas
+        utilisés sur cette plateforme.
+       </p><p>
+        Les paramètres IPC par défaut peuvent être modifiés en utilisant la
+        commande <code class="command">sysctl</code> ou <code class="command">loader</code>. Les
+        paramètres suivants peuvent être configurés en utilisant
+        <code class="command">sysctl</code> :
+</p><pre class="screen"><code class="prompt">#</code> <strong class="userinput"><code>sysctl kern.ipc.shmall=32768</code></strong>
+<code class="prompt">#</code> <strong class="userinput"><code>sysctl kern.ipc.shmmax=134217728</code></strong>
+   </pre><p>
+   Pour que ces paramètres persistent après les redémarrages, modifiez
+   <code class="filename">/etc/sysctl.conf</code>.
+  </p><p>
+   Si vous avez affecté <code class="literal">shared_memory_type</code> à
+   <code class="literal">sysv</code>, vous pourriez aussi vouloir configurer votre noyau
+   pour verrouiller la mémoire partagée System V en RAM et l'empêcher d'être
+   envoyé dans le swap. Ceci peut être accompli en utilisant le paramètre
+   <code class="literal">kern.ipc.shm_use_phys</code> de <code class="command">sysctl</code>.
+  </p><p>
+   Dans une prison FreeBSD, il vous est recommandé de configurer le paramètre
+   <code class="literal">sysvshm</code> à <code class="literal">new</code>, ainsi il a son propre
+   espace de nommage de mémoire partagée System V. (Avant FreeBSD 11.0, il
+   était nécessaire d'activer l'accès partagé à l'espace de nommage IPC de
+   l'hôte depuis les prisons, et prendre les mesures pour éviter les
+   collisions.)
+  </p></dd><dt><span class="term"><span class="systemitem">NetBSD</span></span></dt><dd><a id="id-1.6.5.7.3.14.2.2.1" class="indexterm"></a><p>
+   La configuration par défaut de la mémoire partagée est en général
+   suffisante, sauf si vous avez affecté <code class="literal">shared_memory_type</code>
+   à <code class="literal">sysv</code>. Dans ce cas, vous voudrez habituellement
+   augmenter <code class="literal">kern.ipc.semmni</code> et
+   <code class="literal">kern.ipc.semmns</code> car les valeurs par défaut de ces
+   paramètres sur <span class="systemitem">NetBSD</span> sont bien
+   trop bas.
+  </p><p>
+   Les paramètres IPC peuvent être ajustés en utilisant
+   <code class="command">sysctl</code>. Par exemple :
+   </p><pre class="screen">
+<code class="prompt">#</code> <strong class="userinput"><code>sysctl -w kern.ipc.semmni=100</code></strong>
+   </pre><p>
+   Pour que ce paramètrage persiste après un redémarrage, modifiez
+   le fichier <code class="filename">/etc/sysctl.conf</code>.
+  </p><p>
+   Si vous avez configuré <code class="literal">shared_memory_type</code> à
+   <code class="literal">sysv</code>, vous pourriez aussi vouloir configurer votre noyau
+   pour verrouiller la mémoire partagée System V en RAM et prévenir la mémoire
+   d'être envoyée sur swap. Ceci peut être accompli en utilisant le paramètre
+   <code class="literal">kern.ipc.shm_use_phys</code>de la commande
+   <code class="command">sysctl</code>.
+  </p></dd><dt><span class="term"><span class="systemitem">OpenBSD</span></span></dt><dd><a id="id-1.6.5.7.3.14.3.2.1" class="indexterm"></a><p>
+   La configuration par défaut de la mémoire partagée est en général
+   suffisante, sauf si vous avez configuré
+   <code class="literal">shared_memory_type</code> à <code class="literal">sysv</code>. Vous
+   voudrez habituellement augmenter <code class="literal">kern.seminfo.semmni</code> et
+   <code class="literal">kern.seminfo.semmns</code> car les valeurs par défaut de ces
+   paramètres sur <span class="systemitem">OpenBSD</span> sont bien
+   trop bas.
+  </p><p>
+   Les paramètres IPC peuvent être ajustés en utilisant
+   <code class="command">sysctl</code>, par exemple :
+   </p><pre class="screen">
+<code class="prompt">#</code> <strong class="userinput"><code>sysctl kern.seminfo.semmni=100</code></strong>
+   </pre><p>
+   Pour rendre ce paramétrage persistant entre les redémarrages, modifiez
+   <code class="filename">/etc/sysctl.conf</code>.
+  </p></dd><dt><span class="term"><span class="systemitem">Linux</span></span></dt><dd><a id="id-1.6.5.7.3.14.4.2.1" class="indexterm"></a><p>
+   La configuration par défaut de la mémoire partagée est en général
+   suffisante, sauf si vous avez configuré
+   <code class="literal">shared_memory_type</code> à <code class="literal">sysv</code>, et
+   uniquement sur les anciennes versions de noyau fournies avec des
+   valeurs par défaut trop basses. Les sémaphores de System V ne sont pas
+   utilisés sur cette plateforme.
+  </p><p>
+   La configuration de la taille de mémoire partagée peut être modifiée
+   avec l'interface proposée par la commande <code class="command">sysctl</code>.
+   Par exemple, pour permettre l'utilisation de 16 Go :
+   </p><pre class="screen">
+<code class="prompt">$</code> <strong class="userinput"><code>sysctl -w kernel.shmmax=17179869184</code></strong>
+<code class="prompt">$</code> <strong class="userinput"><code>sysctl -w kernel.shmall=4194304</code></strong>
+   </pre><p>
+   Pour rendre ce paramètrage persistant entre les redémarrages, voir
+   <code class="filename">/etc/sysctl.conf</code>.
+  </p></dd><dt><span class="term"><span class="systemitem">macOS</span></span></dt><dd><a id="id-1.6.5.7.3.14.5.2.1" class="indexterm"></a><p>
+   La configuration par défaut de la mémoire partagée et des sémaphores est en
+   général suffisante, sauf si vous avez configuré
+   <code class="literal">shared_memory_type</code> à <code class="literal">sysv</code>.
+  </p><p>
+   La méthode recommandée pour configurer la mémoire partagée sous macOS
+   est de créer un fichier nommé <code class="filename">/etc/sysctl.conf</code>
+   contenant des affectations de variables comme :
+   </p><pre class="programlisting">kern.sysv.shmmax=4194304
+kern.sysv.shmmin=1
+kern.sysv.shmmni=32
+kern.sysv.shmseg=8
+kern.sysv.shmall=1024
+   </pre><p>
+   Notez que, dans certaines versions de macOS, <span class="emphasis"><em>les
+    cinq</em></span> paramètres de mémoire partagée doivent être configurés
+   dans <code class="filename">/etc/sysctl.conf</code>, sinon les valeurs seront
+   ignorées.
+  </p><p>
+   <code class="varname">SHMMAX</code> peut seulement être configuré avec un multiple
+   exact de 4096.
+  </p><p>
+   <code class="varname">SHMALL</code> est mesuré en page de 4 ko sur cette
+   plateforme.
+  </p><p>
+   Il est possible de tous les modifier en ligne sauf
+   <code class="varname">SHMMNI</code>, grâce à <span class="application">sysctl</span>. Mais
+   il est toujours préférable de configurer vos valeurs préférées dans
+   <code class="filename">/etc/sysctl.conf</code>, pour que les nouvelles valeurs
+   soient conservées après un redémarrage.
+  </p></dd><dt><span class="term"><span class="systemitem">Solaris</span><br /></span><span class="term"><span class="systemitem">illumos</span></span></dt><dd><p>
+   La configuration de la mémoire partagée et des sémaphores par défaut
+   sont habituellement suffisamment bonnes pour la majorité des
+   configurations de <span class="productname">PostgreSQL</span>. La valeur par
+   défaut de Solaris pour <code class="varname">SHMMAX</code> correspond maintenant
+   à un quart de la mémoire disponible sur le système. Pour configurer
+   plus finement ce paramètre, vous devez utiliser une configuration de
+   projet associé à l'utilisateur <code class="literal">postgres</code>. Par
+   exemple, exécutez ce qui suit en tant qu'utilisateur
+   <code class="literal">root</code> :
+   </p><pre class="programlisting">
+projadd -c "PostgreSQL DB User" -K "project.max-shm-memory=(privileged,8GB,deny)" -U postgres -G postgres user.postgres
+   </pre><p>
+  </p><p>
+   Cette commande ajoute le projet  <code class="literal">user.postgres</code>
+   et configure le maximum de mémoire partagée pour l'utilisateur
+   <code class="literal">postgres</code> à 8 Go. Cela prend effet à chaque
+   fois que l'utilisateur se connecte et quand vous redémarrez
+   <span class="productname">PostgreSQL</span>. La ligne ci-dessus
+   suppose que <span class="productname">PostgreSQL</span> est exécuté
+   par l'utilisateur <code class="literal">postgres</code> dans le groupe
+   <code class="literal">postgres</code>. Aucun redémarrage du serveur n'est
+   requis.
+  </p><p>
+   Sur un serveur de bases de données ayant beaucoup de connexions,
+   les autres modifications recommandées pour le noyau sont :
+   </p><pre class="programlisting">
+project.max-shm-ids=(priv,32768,deny)
+project.max-sem-ids=(priv,4096,deny)
+project.max-msg-ids=(priv,4096,deny)
+   </pre><p>
+
+  </p><p>
+   De plus, si vous exécutez <span class="productname">PostgreSQL</span>
+   dans une zone, vous pourriez avoir besoin d'augmenter les limites
+   d'utilisation des ressources pour la zone. Voir
+   <span class="foreignphrase"><em class="foreignphrase">Chapter2:  Projects and Tasks</em></span> dans
+   <em class="citetitle">System Administrator's Guide</em>
+   pour plus d'informations sur les <code class="literal">projets</code> et
+   <code class="command">prctl</code>.
+  </p></dd></dl></div></div><div class="sect2" id="SYSTEMD-REMOVEIPC"><div class="titlepage"><div><div><h3 class="title">18.4.2. systemd RemoveIPC <a href="#SYSTEMD-REMOVEIPC" class="id_link">#</a></h3></div></div></div><a id="id-1.6.5.7.4.2" class="indexterm"></a><p>
+Si <span class="productname">systemd</span> est utilisé, certaines précautions
+sont de mise pour que les ressources IPC (incluant la mémoire partagée)
+ne soient pas supprimées par le système d'exploitation. Cela est
+particulièrement important lors de l'installation de PostgreSQL via les
+sources. Les utilisateurs de versions packagées par la distribution ont moins
+de chance d'être affectés, l'utilisateur <code class="literal">postgres</code> étant
+habituellement créé en tant qu'utilisateur système.
+</p><p>
+Le paramètre <code class="literal">RemoveIPC</code> dans <code class="filename">logind.conf</code>
+contrôle si les objets IPC sont supprimés lors de déconnexion
+complète d'un utilisateur. Les utilisateurs système sont exclus.
+Ce paramètre est par défaut actif sur la version originale de
+<span class="productname">systemd</span>, mais certaines distributions
+positionnent ce paramètre à off.
+</p><p>
+Un effet typique observé quand ce paramètre est activé est que les objets
+en mémoire partagée utilisés pour l'exécution des requêtes en parallèle
+sont supprimés à des moments en apparence aléatoires, amenant ainsi des
+erreurs et messages d'avertissement lors des tentatives de les ouvrir ou
+supprimer, comme :
+</p><pre class="screen">
+WARNING:  could not remove shared memory segment "/PostgreSQL.1450751626": No such file or directory
+</pre><p>
+Différents types d'objets IPC (mémoire partagée et sémaphores, System V et
+POSIX) sont traités de manière légèrement différente par
+<span class="productname">systemd</span>, et l'on peut observer que certaines
+ressources IPC ne sont pas supprimées de la même manière que les
+autres. Il n'est toutefois pas conseillé de compter sur ces subtiles
+différences.
+</p><p>
+Une <span class="quote">« <span class="quote">déconnexion utilisateur</span> »</span> peut survenir lors d'une
+opération de maintenance ou manuellement lorsqu'un administrateur se
+connecte avec le compte <code class="literal">postgres</code> ou un compte similaire,
+ce qui est difficile à éviter en général.
+</p><p>
+Ce qu'est un <span class="quote">« <span class="quote">utilisateur système</span> »</span> est déterminé à la
+compilation de <span class="productname">systemd</span> par le paramètre
+<code class="symbol">SYS_UID_MAX</code> dans <code class="filename">/etc/login.defs</code>.
+</p><p>
+Les scripts de packaging et déploiement devront faire attention à créer
+l'utilisateur <code class="literal">postgres</code> en tant qu'utilisateur système
+avec <code class="literal">useradd -r</code>, <code class="literal">adduser --system</code>,
+ou une commande équivalente.
+</p><p>
+Sinon, si le compte utilisateur a été créé de manière incorrecte ou ne peut
+être modifié, il est recommandé de configurer
+</p><pre class="programlisting">
+RemoveIPC=no
+</pre><p>
+dans <code class="filename">/etc/systemd/logind.conf</code> ou un autre fichier de
+configuration approprié.
+</p><div class="caution"><h3 class="title">Attention</h3><p>
+ Au moins une de ces deux choses doit être garantie, sinon le serveur
+ PostgreSQL ne pourra être considéré comme fiable.
+</p></div></div><div class="sect2" id="KERNEL-RESOURCES-LIMITS"><div class="titlepage"><div><div><h3 class="title">18.4.3. Limites de ressources <a href="#KERNEL-RESOURCES-LIMITS" class="id_link">#</a></h3></div></div></div><p>
+Les systèmes d'exploitation style Unix renforcent différents types de
+limites de ressources qui pourraient interférer avec les opérations de votre
+serveur <span class="productname">PostgreSQL</span>. Les limites sur le nombre de
+processus par utilisateur, le nombre de fichiers ouverts par un processus et la
+taille mémoire disponible pour chaque processus sont d'une grande
+importance. Chacun d'entre elles ont une limite <span class="quote">« <span class="quote">dure</span> »</span> et une
+limite <span class="quote">« <span class="quote">souple</span> »</span>. La limite souple est réellement ce qui compte
+mais cela pourrait être changé par l'utilisateur jusqu'à la limite dure. La
+limite dure pourrait seulement être modifiée par l'utilisateur root. L'appel
+système <code class="function">setrlimit</code> est responsable de l'initialisation
+de ces paramètres. La commande interne du shell <code class="command">ulimit</code>
+(shells Bourne) ou <code class="command">limit</code> (<span class="application">csh</span>) est
+utilisé pour contrôler les limites de ressource à partir de la ligne de
+commande. Sur les systèmes dérivés BSD, le fichier
+<code class="filename">/etc/login.conf</code> contrôle les différentes limites de
+ressource initialisées à la connexion. Voir la documentation du système
+d'exploitation pour les détails. Les paramètres en question sont
+<code class="varname">maxproc</code>, <code class="varname">openfiles</code> et
+<code class="varname">datasize</code>. par exemple :
+</p><pre class="programlisting">default:\
+...
+        :datasize-cur=256M:\
+        :maxproc-cur=256:\
+        :openfiles-cur=256:\
+...</pre><p>
+    (<code class="literal">-cur</code> est la limite douce. Ajoutez
+    <code class="literal">-max</code> pour configurer la limite dure.)
+   </p><p>
+    Les noyaux peuvent aussi avoir des limites sur le système complet pour
+    certaines ressources.
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Sur <span class="productname">linux</span>, le paramètre noyau
+       <code class="varname">fs.file-max</code> détermine le nombre maximum de fichiers
+       ouverts que le noyau supportera. Ce nombre est modifiable avec
+       <code class="literal">sysctl -w fs.file-max=<em class="replaceable"><code>N</code></em></code>.
+       Pour rendre la configuration persistante après un redémarrage, ajouter
+       cette affectation dans le fichier <code class="filename">/etc/sysctl.conf</code>.
+       La limite des fichiers par processus est fixée lors de la compilation du
+       noyau ; voir
+       <code class="filename">/usr/src/linux/documentation/proc.txt</code> pour plus
+       d'informations.
+      </p></li></ul></div><p>
+   </p><p>
+    Le serveur <span class="productname">PostgreSQL</span> utilise un processus par
+    connexion de façon à ce que vous puissiez fournir au moins autant de
+    processus que de connexions autorisées, en plus de ce dont vous avez besoin
+    pour le reste de votre système. Ceci n'est habituellement pas un problème
+    mais si vous exécutez plusieurs serveurs sur une seule machine, cela
+    pourrait devenir étroit.
+   </p><p>
+    La limite par défaut des fichiers ouverts est souvent initialisée pour être
+    <span class="quote">« <span class="quote">amicalement sociale</span> »</span>, pour permettre à de nombreux
+    utilisateurs de coexister sur une machine sans utiliser une fraction
+    inappropriée des ressources du système. Si vous lancez un grand nombre de
+    serveurs sur une machine, cela pourrait être quelque chose que vous
+    souhaitez mais sur les serveurs dédiés, vous pourriez vouloir augmenter
+    cette limite.
+   </p><p>
+    D'un autre côté, certains systèmes autorisent l'ouverture d'un grand
+    nombre de fichiers à des processus individuels ; si un plus grand
+    nombre le font, alors les limites du système peuvent facilement être
+    dépassées. Si vous rencontrez ce cas et que vous ne voulez pas modifier la
+    limite du système, vous pouvez initialiser le paramètre de configuration
+    <a class="xref" href="runtime-config-resource.html#GUC-MAX-FILES-PER-PROCESS">max_files_per_process</a> de
+    <span class="productname">PostgreSQL</span> pour limiter la consommation de
+    fichiers ouverts.
+   </p><p>
+    Une autre limite du noyau qui pourrait avoir un impact pour accepter un très
+    grand nombre de connexions est la longueur maximale de la queue de connexion
+    du socket. Si un plus grand nombre de demandes de connexion arrive dans une
+    petite période de temps, certaines pourraient être rejetées avant que le
+    serveur  <span class="productname">PostgreSQL</span> ne puisse traiter les demandes,
+    avec des clients
+    recevant des messages d'erreurs de connexion qui aident peu à résoudre le
+    problème (par exemple <span class="quote">« <span class="quote">Resource temporarily unavailable</span> »</span> ou
+    <span class="quote">« <span class="quote">Connection refused</span> »</span>, en français respectivement
+    <span class="quote">« <span class="quote">Ressource temporairement indisponible</span> »</span> ou <span class="quote">« <span class="quote">Connexion
+    refusée</span> »</span>.  La longueur limite de la queue par défaut est de 128 sur
+    un grand nombre de plateformes.  Pour l'augmenter, ajustez le paramètre
+    noyau approprié avec <span class="application">sysctl</span>, puis redémarrez
+    le serveur  <span class="productname">PostgreSQL</span>. Le paramètre a différents
+    noms :
+    <code class="varname">net.core.somaxconn</code> sous Linux,
+    <code class="varname">kern.ipc.soacceptqueue</code> sous les FreeBSD récents, et
+    <code class="varname">kern.ipc.somaxconn</code> sur macOS et d'autres variantes BSD.
+   </p></div><div class="sect2" id="LINUX-MEMORY-OVERCOMMIT"><div class="titlepage"><div><div><h3 class="title">18.4.4. Linux memory overcommit <a href="#LINUX-MEMORY-OVERCOMMIT" class="id_link">#</a></h3></div></div></div><a id="id-1.6.5.7.6.2" class="indexterm"></a><a id="id-1.6.5.7.6.3" class="indexterm"></a><a id="id-1.6.5.7.6.4" class="indexterm"></a><p>
+    Le comportement par défaut de la mémoire
+    virtuelle sur Linux n'est pas optimal pour <span class="productname">PostgreSQL</span>.
+    Du fait de l'implémentation du <span class="quote">« <span class="quote">memory overcommit</span> »</span> par le
+    noyau, celui-ci peut arrêter le serveur
+    <span class="productname">PostgreSQL</span> (le processus serveur
+    principal, <span class="quote">« <span class="quote">postmaster</span> »</span>) si les demandes de mémoire de
+    <span class="productname">PostgreSQL</span> ou d'un autre processus provoque un
+    manque de mémoire virtuelle au niveau du système.
+   </p><p>
+    Si cela se produit, un message du noyau qui ressemble à ceci
+    (consulter la documentation et la configuration du système pour savoir
+    où chercher un tel message) :
+</p><pre class="programlisting">Out of Memory: Killed process 12345 (postgres)</pre><p>
+    peut survenir.
+    Ceci indique que le processus <code class="filename">postgres</code> a été terminé
+    à cause d'un problème de mémoire. Bien que les connexions en cours
+    continuent de fonctionner normalement, aucune nouvelle
+    connexion n'est acceptée. Pour revenir à un état normal,
+    <span class="productname">PostgreSQL</span> doit être relancé.
+   </p><p>
+    Une façon d'éviter ce problème revient à lancer
+    <span class="productname">PostgreSQL</span> sur une machine où vous pouvez vous
+    assurer que les autres processus ne mettront pas la machine en manque de
+    mémoire. S'il y a peu de mémoire, augmenter la swap peut aider à éviter
+    le problème car un système peut tuer des processus lorsque la mémoire
+    physique et la mémoire swap sont utilisées entièrement.
+   </p><p>
+    Si <span class="productname">PostgreSQL</span> lui-même est la cause d'un manque
+    de mémoire du système, vous pouvez éviter le problème en modifiant votre
+    configuration. Dans certains cas, baisser les paramètres de configuration
+    de la mémoire peut aider, tout particulièrement
+    <a class="link" href="runtime-config-resource.html#GUC-SHARED-BUFFERS"><code class="varname">shared_buffers</code></a>,
+    <a class="link" href="runtime-config-resource.html#GUC-WORK-MEM"><code class="varname">work_mem</code></a> et
+    <a class="link" href="runtime-config-resource.html#GUC-HASH-MEM-MULTIPLIER"><code class="varname">hash_mem_multiplier</code></a>. Dans
+    d'autres cas, le problème peut être causé par l'autorisation d'un trop grand
+    nombre de connexions au serveur de bases de données. Dans beaucoup de cas,
+    il est préférable de réduire <a class="link" href="runtime-config-connection.html#GUC-MAX-CONNECTIONS"><code class="varname">max_connections</code></a> et
+    d'utiliser à la place un logiciel de multiplexage de connexions
+    (<span class="foreignphrase"><em class="foreignphrase">connection pooling</em></span>).
+   </p><p>
+    Il est possible de modifier
+    le comportement du noyau avec le <span class="quote">« <span class="quote">overcommit memory</span> »</span>.
+    Bien que ce paramétrage n'empêchera pas ce <a class="ulink" href="https://lwn.net/Articles/104179/" target="_top">comportement</a>, il réduira sa
+    fréquence de façon significative et contribuera du coup à un système
+    plus robuste. Ceci se fait en sélectionnant le mode strict de
+    l'overcommit via <code class="command">sysctl</code> :
+</p><pre class="programlisting">sysctl -w vm.overcommit_memory=2</pre><p>
+    ou en plaçant une entrée équivalente dans <code class="filename">/etc/sysctl.conf</code>.
+    Vous pourriez souhaiter modifier le paramétrage relatif
+    <code class="varname">vm.overcommit_ratio</code>. Pour les détails, voir la documentation du
+    noyau (<a class="ulink" href="https://www.kernel.org/doc/Documentation/vm/overcommit-accounting" target="_top">https://www.kernel.org/doc/Documentation/vm/overcommit-accounting</a>).
+   </p><p>
+    Une autre approche, qui peut aussi utiliser la modification de
+    <code class="varname">vm.overcommit_memory</code>, est de configurer la valeur de
+    la variable d'<em class="firstterm">ajustement du score OOM</em>, valeur par
+    processus, pour le processus postmaster à <code class="literal">-1000</code>,
+    garantissant ainsi qu'il ne sera pas la cible de OOM. La façon la plus
+    simple de le faire est d'exécuter
+</p><pre class="programlisting">
+echo -1000 &gt; /proc/self/oom_score_adj
+</pre><p>
+    dans le script de démarrage de <span class="productname">PostgreSQL</span> juste
+    avant d'appeler
+    postmaster. Notez que cette action doit être faite en tant qu'utilisateur
+    root. Dans le cas contraire, elle n'aura aucun effet. Du coup, un script
+    de démarrage, exécuté par root, est le meilleur endroit où placer ce
+    code. Si vous le faites, vous devriez aussi configurer ces variables
+    d'environnement dans le script de démarrage avant d'invoquer le processus
+    <code class="filename">postgres</code> :
+</p><pre class="programlisting">
+export PG_OOM_ADJUST_FILE=/proc/self/oom_score_adj
+export PG_OOM_ADJUST_VALUE=0
+</pre><p>
+    Ces paramètres vont faire en sorte que les processus fils du postmaster
+    s'exécuteront avec l'ajustement de score OOm normal (0), pour que l'OOM
+    puisse encore les cibler si cela s'avère nécessaire. Vous pouvez utiliser
+    d'autres valeurs pour <code class="envar">PG_OOM_ADJUST_VALUE</code> si vous voulez
+    que les processus fils s'exécutent avec un autre ajustement de score.
+    (<code class="envar">PG_OOM_ADJUST_VALUE</code> peut aussi être omis, auquel cas sa
+    valeur par défaut est zéro.) Si vous ne voulez pas configurer
+    <code class="envar">PG_OOM_ADJUST_FILE</code>, les processus fils s'exécuteront avec
+    le même ajustement de score OOM que le processus père postmaster, ce qui
+    n'est pas conseillé car le but est de s'assurer que le processus
+    postmaster soit protégé par la configuration.
+   </p></div><div class="sect2" id="LINUX-HUGE-PAGES"><div class="titlepage"><div><div><h3 class="title">18.4.5. Pages mémoire de grande taille
+    (<span class="foreignphrase"><em class="foreignphrase">huge pages</em></span>) sous Linux <a href="#LINUX-HUGE-PAGES" class="id_link">#</a></h3></div></div></div><p>
+    L'utilisation des <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span> réduit la
+    surcharge lors de l'utilisation de gros morceaux contigus de mémoire, ce que
+    fait <span class="productname">PostgreSQL</span>, tout particulièrement lors de
+    l'utilisation de grosses valeurs pour <a class="xref" href="runtime-config-resource.html#GUC-SHARED-BUFFERS">shared_buffers</a>.
+    Pour activer cette fonctionnalité avec
+    <span class="productname">PostgreSQL</span>, vous avez besoin d'un noyau compilé
+    avec <code class="varname">CONFIG_HUGETLBFS=y</code> et
+    <code class="varname">CONFIG_HUGETLB_PAGE=y</code>. Vous aurez aussi besoin de
+    configurer le système d'exploitation pour qu'il fournisse suffisament de
+    Huge Pages de la taille désirée. Le paramètre <a class="xref" href="runtime-config-preset.html#GUC-SHARED-MEMORY-SIZE-IN-HUGE-PAGES">shared_memory_size_in_huge_pages</a>, calculé à l'exécution
+    renvoie le nombre de Huge Pages requis. Ce paramètre peut être visualisé
+    avant de démarrer le serveur avec une commande <code class="command">postgres</code>
+    comme :
+
+</p><pre class="programlisting">
+$ <strong class="userinput"><code>postgres -D $PGDATA -C shared_memory_size_in_huge_pages</code></strong>
+$ <strong class="userinput"><code>grep ^Hugepagesize /proc/meminfo</code></strong>
+Hugepagesize:       2048 kB
+$ <strong class="userinput"><code>ls /sys/kernel/mm/hugepages</code></strong>
+hugepages-1048576kB  hugepages-2048kB
+</pre><p>
+
+    Dans cet exemple, la valeur par défaut est de 2 Mo, vous pouvez aussi
+    demander explicitement soit 2 Mo soit 1 Go avec <a class="xref" href="runtime-config-resource.html#GUC-HUGE-PAGE-SIZE">huge_page_size</a>.  Pour s'adapter au nombre de blocs calculés
+    par <code class="varname">shared_memory_size_in_huge_pages</code>.  Alors que nous
+    avons besoin d'au moins <code class="literal">3170</code> Huge Pages dans cet exemple,
+    une configuration plus importante serait appropriée si les autres programmes
+    sur la machine ont besoin de Huge Pages eux-aussi.  Nous pouvons les
+    configurer avec :
+
+</p><pre class="programlisting">
+# <strong class="userinput"><code>sysctl -w vm.nr_hugepages=3170</code></strong>
+</pre><p>
+
+    N'oubliez pas d'ajouter cette configuration à
+    <code class="filename">/etc/sysctl.conf</code> pour qu'elle soit appliquée à
+    chaque redémarrage. Pour les tailles personnalisées de Huge Page, nous
+    pouvons utiliser à la place :
+
+</p><pre class="programlisting">
+# <strong class="userinput"><code>echo 3170 &gt; /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages</code></strong>
+</pre><p>
+
+    Il est aussi possible de fournir ces paramètres au démarrage en utilisant
+    les paramètres noyau tels que <code class="literal">hugepagesz=2M
+    hugepages=3170</code>.
+   </p><p>
+    Parfois, le noyau n'est pas capable d'allouer immédiatement le nombre
+    souhaité de  <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span> à cause de la
+    fragmentation, donc il peut être nécessaire de répéter cette commande ou
+    de redémarrer. (Tout de suite après un redémarrage, la plupart de la
+    mémoire de la machine doit être disponible à une conversion en
+    <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span>.) Pour vérifier la situation au
+    niveau de l'allocation des  <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span>
+    pour une taille donnée, utilisez :
+</p><pre class="programlisting">
+$ <strong class="userinput"><code>cat /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages</code></strong>
+</pre><p>
+   </p><p>
+    Il pourrait être nécessaire de donner le droit à l'utilisateur du système
+    d'exploitation du serveur de bases de données en configurant
+    <code class="varname">vm.hugetlb_shm_group</code> via
+    <span class="application">sysctl</span>, et/ou en donnant le droit de
+    verrouiller la mémoire avec <code class="command">ulimit -l</code>.
+   </p><p>
+    Il est aussi nécessaire de donner le droit d'utiliser les
+    <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span> à l'utilisateur système qui
+    exécute PostgreSQL. Cela se fait en configurant
+    <code class="varname">vm.hugetlb_shm_group</code> via
+    <span class="application">sysctl</span>, et le droit de verrouiller la mémoire
+    avec <code class="command">ulimit -l</code>.
+   </p><p>
+    Le comportement par défaut pour les <span class="foreignphrase"><em class="foreignphrase">huge
+    pages</em></span> dans <span class="productname">PostgreSQL</span> est de
+    les utiliser quand cela est possible, avec la taille par défaut des Huge
+    Pages du système, et de revenir aux pages normales dans le cas contraire.
+    Pour forcer l'utilisation des  <span class="foreignphrase"><em class="foreignphrase">huge pages</em></span>,
+    vous pouvez configurer <a class="xref" href="runtime-config-resource.html#GUC-HUGE-PAGES">huge_pages</a> à
+    <code class="literal">on</code> dans le fichier
+    <code class="filename">postgresql.conf</code>. Notez que, avec ce paramètre
+    configuré ainsi, <span class="productname">PostgreSQL</span> refusera de
+    démarrer s'il ne peut pas récupérer suffisamment de <span class="foreignphrase"><em class="foreignphrase">huge
+    pages</em></span>.
+   </p><p>
+
+    Pour une description détaillée des <span class="foreignphrase"><em class="foreignphrase">huge
+    pages</em></span> sous <span class="productname">Linux</span>, lisez <a class="ulink" href="https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt" target="_top">https://www.kernel.org/doc/Documentation/vm/hugetlbpage.txt</a>.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/kernel-resources.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:31 GMT -->
+</html>

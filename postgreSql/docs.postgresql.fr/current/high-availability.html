@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/high-availability.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:41:35 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapitre 26. Haute disponibilité, répartition de charge et réplication</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="continuous-archiving.html" title="25.3. Archivage continu et récupération d'un instantané (PITR)" /><link rel="next" href="different-replication-solutions.html" title="26.1. Comparaison de différentes solutions" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/high-availability.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/high-availability.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/high-availability.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/high-availability.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/high-availability.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/high-availability.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/high-availability.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/high-availability.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/high-availability.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/high-availability.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/high-availability.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/high-availability.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/high-availability.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/high-availability.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/high-availability.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/high-availability.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/high-availability.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/high-availability.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/high-availability.html">8.2</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/high-availability.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-node">Haute disponibilité, répartition de charge et réplication</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="continuous-archiving.html" title="25.3. Archivage continu et récupération d'un instantané (PITR)">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="admin.html" title="Partie III. Administration du serveur">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="different-replication-solutions.html" title="26.1. Comparaison de différentes solutions">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">25.3. Archivage continu et récupération d'un instantané (PITR) </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 26.1. Comparaison de différentes solutions</td></tr></table></div><div class="chapter" id="HIGH-AVAILABILITY"><div class="titlepage"><div><div><h2 class="title">Chapitre 26. Haute disponibilité, répartition de charge et réplication</h2></div></div></div><div class="toc"><p><strong>Table des matières</strong></p><dl class="toc"><dt><span class="sect1"><a href="different-replication-solutions.html">26.1. Comparaison de différentes solutions</a></span></dt><dt><span class="sect1"><a href="warm-standby.html">26.2. Serveurs secondaires par transfert de journaux</a></span></dt><dd><dl><dt><span class="sect2"><a href="warm-standby.html#STANDBY-PLANNING">26.2.1. Préparatifs</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#STANDBY-SERVER-OPERATION">26.2.2. Fonctionnement du serveur secondaire</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#PREPARING-PRIMARY-FOR-STANDBY">26.2.3. Préparer le primaire pour les serveurs secondaires</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#STANDBY-SERVER-SETUP">26.2.4. Paramétrer un serveur secondaire</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#STREAMING-REPLICATION">26.2.5. Réplication en flux</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#STREAMING-REPLICATION-SLOTS">26.2.6. Slots de réplication</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#CASCADING-REPLICATION">26.2.7. Réplication en cascade</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#SYNCHRONOUS-REPLICATION">26.2.8. Réplication synchrone</a></span></dt><dt><span class="sect2"><a href="warm-standby.html#CONTINUOUS-ARCHIVING-IN-STANDBY">26.2.9. Archivage continu côté secondaire</a></span></dt></dl></dd><dt><span class="sect1"><a href="warm-standby-failover.html">26.3. Bascule (<span class="foreignphrase"><em class="foreignphrase">Failover</em></span>)</a></span></dt><dt><span class="sect1"><a href="hot-standby.html">26.4. Hot Standby</a></span></dt><dd><dl><dt><span class="sect2"><a href="hot-standby.html#HOT-STANDBY-USERS">26.4.1. Aperçu pour l'utilisateur</a></span></dt><dt><span class="sect2"><a href="hot-standby.html#HOT-STANDBY-CONFLICT">26.4.2. Gestion des conflits avec les requêtes</a></span></dt><dt><span class="sect2"><a href="hot-standby.html#HOT-STANDBY-ADMIN">26.4.3. Aperçu pour l'administrateur</a></span></dt><dt><span class="sect2"><a href="hot-standby.html#HOT-STANDBY-PARAMETERS">26.4.4. Référence des paramètres de Hot Standby</a></span></dt><dt><span class="sect2"><a href="hot-standby.html#HOT-STANDBY-CAVEATS">26.4.5. Avertissements</a></span></dt></dl></dd></dl></div><a id="id-1.6.13.2" class="indexterm"></a><a id="id-1.6.13.3" class="indexterm"></a><a id="id-1.6.13.4" class="indexterm"></a><a id="id-1.6.13.5" class="indexterm"></a><a id="id-1.6.13.6" class="indexterm"></a><a id="id-1.6.13.7" class="indexterm"></a><p>
+  Des serveurs de bases de données peuvent travailler ensemble pour permettre
+  à un serveur secondaire (<span class="foreignphrase"><em class="foreignphrase">standby</em></span> dans la
+  version originale) de prendre rapidement la main si le serveur principal
+  échoue (haute disponibilité, ou <span class="foreignphrase"><em class="foreignphrase">high
+  availability</em></span>), ou pour permettre à plusieurs serveurs de
+  servir les mêmes données (répartition de charge, ou <span class="foreignphrase"><em class="foreignphrase">load
+  balancing</em></span>). Idéalement, les serveurs de bases de données
+  peuvent travailler ensemble sans jointure.
+ </p><p>
+  Il est aisé de faire coopérer des serveurs web qui traitent des pages web statiques
+  en répartissant la charge des requêtes web sur plusieurs
+  machines. Dans les faits, les serveurs de bases de données en lecture seule peuvent
+  également coopérer facilement. Malheureusement, la plupart des
+  serveurs de bases de données traitent des requêtes de lecture/écriture et,
+  de ce fait, collaborent plus difficilement. En effet, alors qu'il suffit de
+  placer une seule fois les données en lecture seule sur chaque serveur, une
+  écriture sur n'importe quel serveur doit, elle, être propagée à tous les
+  serveurs afin que les lectures suivantes sur ces serveurs renvoient des résultats
+  cohérents.
+ </p><p>
+  Ce problème de synchronisation représente la difficulté fondamentale à la
+  collaboration entre serveurs. Comme la solution au problème de
+  synchronisation n'est pas unique pour tous les cas pratiques, plusieurs
+  solutions coexistent. Chacune répond de façon différente et minimise
+  cet impact au regard d'une charge spécifique.
+ </p><p>
+  Certaines solutions gèrent la synchronisation en autorisant les
+  modifications des données sur un seul serveur. Les serveurs qui peuvent
+  modifier les données sont appelés serveur en lecture/écriture,
+  <em class="firstterm">primaire</em> ou serveur <em class="firstterm">primaire</em>.
+  Les serveurs qui suivent les modifications du primaire sont appelés des
+  serveurs <em class="firstterm">standby</em> ou des serveurs
+  <em class="firstterm">secondaires</em>. Un serveur secondaire auquel on ne peut
+  pas se connecter tant qu'il n'a pas été promu en serveur primaire est
+  appelé un <em class="firstterm">warm standby</em>, et un serveur qui peut
+  accepter des connexions et répondre à des requêtes en lecture seule est
+  appelé un <em class="firstterm">hot standby</em>.
+ </p><p>
+  Certaines solutions sont synchrones, ce qui signifie qu'une transaction de
+  modification de données n'est pas considérée valide tant que tous les
+  serveurs n'ont pas validé la transaction. Ceci garantit qu'un
+  <span class="foreignphrase"><em class="foreignphrase">failover</em></span> ne perd pas de données et que tous
+  les serveurs en répartition de charge retournent des résultats cohérents, quel
+  que soit le serveur interrogé. Au contraire, les solutions asynchrones
+  autorisent un délai entre la validation et sa propagation aux
+  autres serveurs. Cette solution implique une éventuelle perte de transactions
+  lors de la bascule sur un serveur de sauvegarde, ou l'envoi de données
+  obsolètes par les serveurs à charge répartie. La communication asynchrone est
+  utilisée lorsque la version synchrone est trop lente.
+ </p><p>
+  Les solutions peuvent aussi être catégorisées par leur granularité. Certaines
+  ne gèrent que la totalité d'un serveur de bases de données alors que
+  d'autres autorisent un contrôle par table ou par base.
+ </p><p>
+  Il importe de considérer les performances dans tout choix. Il y
+  a généralement un compromis à trouver entre les fonctionnalités et les
+  performances. Par exemple, une solution complètement synchrone sur un réseau
+  lent peut diviser les performances par plus de deux, alors qu'une
+  solution asynchrone peut n'avoir qu'un impact minimal sur les performances.
+ </p><p>
+  Le reste de cette section souligne différentes solutions de
+  <span class="foreignphrase"><em class="foreignphrase">failover</em></span>, de réplication et de répartition de
+  charge.
+ </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/high-availability.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:41:35 GMT -->
+</html>

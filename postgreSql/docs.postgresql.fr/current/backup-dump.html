@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/backup-dump.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>25.1. Sauvegarde SQL</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="backup.html" title="Chapitre 25. Sauvegardes et restaurations" /><link rel="next" href="backup-file.html" title="25.2. Sauvegarde de niveau système de fichiers" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/backup-dump.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/backup-dump.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/backup-dump.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/backup-dump.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/backup-dump.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/backup-dump.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/backup-dump.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/backup-dump.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/backup-dump.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/backup-dump.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="backup.html">Sauvegardes et restaurations</a></span> » <span class="breadcrumb-node">Sauvegarde <acronym class="acronym">SQL</acronym></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="backup.html" title="Chapitre 25. Sauvegardes et restaurations">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="backup.html" title="Chapitre 25. Sauvegardes et restaurations">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="backup-file.html" title="25.2. Sauvegarde de niveau système de fichiers">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">Chapitre 25. Sauvegardes et restaurations </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 25.2. Sauvegarde de niveau système de fichiers</td></tr></table></div><div class="sect1" id="BACKUP-DUMP"><div class="titlepage"><div><div><h2 class="title" style="clear: both">25.1. Sauvegarde <acronym class="acronym">SQL</acronym> <a href="#BACKUP-DUMP" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="backup-dump.html#BACKUP-DUMP-RESTORE">25.1.1. Restaurer la sauvegarde</a></span></dt><dt><span class="sect2"><a href="backup-dump.html#BACKUP-DUMP-ALL">25.1.2. Utilisation de <span class="application">pg_dumpall</span></a></span></dt><dt><span class="sect2"><a href="backup-dump.html#BACKUP-DUMP-LARGE">25.1.3. Gérer les grosses bases de données</a></span></dt></dl></div><p>
+   Le principe est de produire un fichier texte de commandes SQL
+   (appelé <span class="quote">« <span class="quote">fichier dump</span> »</span>), qui, si on le renvoie au serveur,
+   recrée une base de données identique à celle sauvegardée.
+   <span class="productname">PostgreSQL</span> propose pour cela le programme
+   utilitaire <a class="xref" href="app-pgdump.html" title="pg_dump"><span class="refentrytitle"><span class="application">pg_dump</span></span></a>. L'usage basique est :
+
+   </p><pre class="synopsis">pg_dump <em class="replaceable"><code>base_de_donnees</code></em> &gt; <em class="replaceable"><code>fichier_sauvegarde</code></em></pre><p>
+
+   <span class="application">pg_dump</span> écrit son résultat sur la sortie
+   standard. Son utilité est expliquée plus loin. Bien que la commande
+   ci-dessus crée un fichier texte, <span class="application">pg_dump</span> peut
+   créer des fichiers dans d'autres formats qui permettent le parallélisme et
+   un contrôle plus fin de la restauration des objets.
+  </p><p>
+   <span class="application">pg_dump</span> est un programme client
+   <span class="productname">PostgreSQL</span> classique (mais plutôt intelligent).
+   Cela signifie que la sauvegarde peut être effectuée depuis n'importe quel
+   ordinateur ayant accès à la base. Mais <span class="application">pg_dump</span>
+   n'a pas de droits spéciaux. En particulier, il doit avoir un accès en
+   lecture à toutes les tables que vous voulez sauvegarder, donc pour
+   sauvegarder une base complète, vous devez pratiquement toujours utiliser
+   un superutilisateur. si vous n'avez pas les droits suffisants pour
+   sauvegarder la base entière, vous pouvez toujours sauvegarder les parties
+   pour lesquels vous avez le droit d'accès en utilisant des options telles
+   que <code class="option">-n <em class="replaceable"><code>schéma</code></em></code> et <code class="option">-t
+   <em class="replaceable"><code>table</code></em></code>.)
+  </p><p>
+   Pour préciser le serveur de bases de données que
+   <span class="application">pg_dump</span> doit contacter, on utilise les options
+   de ligne de commande <code class="option">-h
+   <em class="replaceable"><code>serveur</code></em></code> et <code class="option">-p
+   <em class="replaceable"><code>port</code></em></code>. Le serveur par défaut est le
+   serveur local ou celui indiqué par la variable d'environnement
+   <code class="envar">PGHOST</code>. De la même façon, le port par défaut est indiqué
+   par la variable d'environnement <code class="envar">PGPORT</code> ou, en son absence,
+   par la valeur par défaut précisée à la compilation. Le serveur a
+   normalement reçu les mêmes valeurs par défaut à la compilation.
+  </p><p>
+   Comme tout programme client <span class="productname">PostgreSQL</span>,
+   <span class="application">pg_dump</span> se connecte par défaut avec
+   l'utilisateur de base de données de même nom que l'utilisateur système
+   courant. L'utilisation de l'option <code class="option">-U</code> ou de la variable
+   d'environnement <code class="envar">PGUSER</code> permettent de modifier le
+   comportement par défaut. Les connexions de
+   <span class="application">pg_dump</span> sont soumises aux mécanismes normaux
+   d'authentification des programmes clients (décrits dans le <a class="xref" href="client-authentication.html" title="Chapitre 20. Authentification du client">Chapitre 20</a>).
+  </p><p>
+   Un des gros avantages de <span class="application">pg_dump</span> sur les autres
+   méthodes de sauvegarde décrites après est que la sortie de
+   <span class="application">pg_dump</span> peut être généralement re-chargée dans
+   des versions plus récentes de <span class="productname">PostgreSQL</span>, alors
+   que les sauvegardes au niveau fichier et les sauvegardes continues sont
+   toutes les deux très spécifiques à la version du serveur.
+   <span class="application">pg_dump</span> est aussi la seule méthode qui
+   fonctionnera lors du transfert d'une base de données vers une machine
+   d'une architecture différente (comme par exemple d'un serveur 32 bits à un
+   serveur 64 bits).
+  </p><p>
+   Les sauvegardes créées par <span class="application">pg_dump</span> sont
+   cohérentes, ce qui signifie que la sauvegarde représente une image de la
+   base de données au moment où commence l'exécution de
+   <span class="application">pg_dump</span>. <span class="application">pg_dump</span> ne
+   bloque pas les autres opérations sur la base lorsqu'il fonctionne
+   (sauf celles qui nécessitent un verrou exclusif, comme la plupart des
+   formes d'<code class="command">ALTER TABLE</code>.)
+  </p><div class="sect2" id="BACKUP-DUMP-RESTORE"><div class="titlepage"><div><div><h3 class="title">25.1.1. Restaurer la sauvegarde <a href="#BACKUP-DUMP-RESTORE" class="id_link">#</a></h3></div></div></div><p>
+    Les fichiers texte créés par <span class="application">pg_dump</span> peuvent
+    être lus par le programme <span class="application">psql</span> en utilisant sa
+    configuration par défaut. La syntaxe
+    générale d'une commande de restauration est :
+
+</p><pre class="synopsis">psql -X <em class="replaceable"><code>base_de_donnees</code></em> &lt; <em class="replaceable"><code>fichier_sauvegarde</code></em></pre><p>
+
+    où <em class="replaceable"><code>fichier_sauvegarde</code></em> est le
+    fichier en sortie de la commande <span class="application">pg_dump</span>. La
+    base de données <em class="replaceable"><code>base_de_donnees</code></em> n'est pas créée par cette
+    commande. Elle doit être créée à partir de <code class="literal">template0</code>
+    avant d'exécuter <span class="application">psql</span> (par exemple avec
+    <code class="literal">createdb -T template0 <em class="replaceable"><code>base_de_donnees</code></em></code>).
+    Pour s'assurer que <span class="application">psql</span> s'exécute avec sa
+    configuration par défaut, utilisez l'option <code class="option">-X</code>
+    (<code class="option">--no-psqlrc</code>).
+    <span class="application">psql</span> propose des options similaires à celles
+    de <span class="application">pg_dump</span> pour indiquer le serveur de bases
+    de données sur lequel se connecter et le nom d'utilisateur à utiliser. La
+    page de référence de <a class="xref" href="app-psql.html" title="psql"><span class="refentrytitle" id="APP-PSQL-TITLE"><span class="application">psql</span></span></a> donne plus
+    d'informations.
+   </p><p>
+    Les sauvegardes binaires doivent être restaurées en utilisant
+    l'outil <a class="xref" href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle"><span class="application">pg_restore</span></span></a>.
+   </p><p>
+    Tous les utilisateurs possédant des objets ou ayant certains droits sur
+    les objets de la base sauvegardée doivent exister préalablement à la
+    restauration de la sauvegarde. S'ils n'existent pas, la restauration
+    échoue pour la création des objets dont ils sont propriétaires ou sur
+    lesquels ils ont des droits (quelque fois, cela est souhaitable mais ce
+    n'est pas toujours le cas).
+   </p><p>
+    Par défaut, le script <span class="application">psql</span> continue de
+    s'exécuter après la détection d'une erreur SQL. Vous pouvez exécuter
+    <span class="application">psql</span> avec la variable
+    <code class="literal">ON_ERROR_STOP</code> configurée pour modifier ce
+    comportement. <span class="application">psql</span> quitte alors avec un code
+    d'erreur 3 si une erreur SQL survient :
+
+</p><pre class="programlisting">psql -X --set ON_ERROR_STOP=on <em class="replaceable"><code>base_de_données</code></em> &lt; <em class="replaceable"><code>fichier_sauvegarde</code></em></pre><p>
+
+    Dans tous les cas, une sauvegarde partiellement restaurée est obtenue. Si
+    cela n'est pas souhaitable, il est possible d'indiquer que la sauvegarde
+    complète doit être restaurée au cours d'une transaction unique. De ce
+    fait, soit la restauration est validée dans son ensemble, soit elle est
+    entièrement annulée. Ce mode est choisi en passant l'option
+    <code class="option">-1</code> ou <code class="option">--single-transaction</code> en ligne de
+    commande à <span class="application">psql</span>. Dans ce mode, la plus petite
+    erreur peut annuler une restauration en cours depuis plusieurs heures.
+    Néanmoins, c'est probablement préférable au nettoyage manuel d'une base
+    rendu complexe par une sauvegarde partiellement restaurée.
+   </p><p>
+    La capacité de <span class="application">pg_dump</span> et
+    <span class="application">psql</span> à écrire et à lire dans des tubes permet
+    de sauvegarder une base de données directement d'un serveur sur un autre.
+    Par exemple :
+
+</p><pre class="programlisting">pg_dump -h <em class="replaceable"><code>serveur1</code></em> <em class="replaceable"><code>base_de_donnees</code></em> | psql -X -h <em class="replaceable"><code>serveur2</code></em> <em class="replaceable"><code>base_de_donnees</code></em></pre><p>
+
+   </p><div class="important"><h3 class="title">Important</h3><p>
+     Les fichiers de sauvegarde produits par <span class="application">pg_dump</span>
+     sont relatifs à <code class="literal">template0</code>. Cela signifie que chaque
+     langage, procédure, etc. ajouté à <code class="literal">template1</code> est aussi
+     sauvegardé par <span class="application">pg_dump</span>. En conséquence, si une
+     base <code class="literal">template1</code> modifiée est utilisée lors de la
+     restauration, il faut créer la base vide à partir de
+     <code class="literal">template0</code>, comme dans l'exemple ci-dessus.
+    </p></div><p>
+    Après la restauration d'une sauvegarde, il est conseillé d'exécuter <a class="link" href="sql-analyze.html" title="ANALYZE"><code class="command">ANALYZE</code></a> sur chaque base
+    de données pour que l'optimiseur de requêtes dispose de statistiques
+    utiles ; voir <a class="xref" href="routine-vacuuming.html#VACUUM-FOR-STATISTICS" title="24.1.3. Maintenir les statistiques de l'optimiseur">Section 24.1.3</a> et <a class="xref" href="routine-vacuuming.html#AUTOVACUUM" title="24.1.6. Le démon auto-vacuum">Section 24.1.6</a> pour plus d'informations. Pour plus de conseils
+    sur le chargement efficace de grosses quantités de données dans
+    <span class="productname">PostgreSQL</span>, on peut se référer à la <a class="xref" href="populate.html" title="14.4. Remplir une base de données">Section 14.4</a>.
+   </p></div><div class="sect2" id="BACKUP-DUMP-ALL"><div class="titlepage"><div><div><h3 class="title">25.1.2. Utilisation de <span class="application">pg_dumpall</span> <a href="#BACKUP-DUMP-ALL" class="id_link">#</a></h3></div></div></div><p>
+    <span class="application">pg_dump</span> ne sauvegarde qu'une seule base à la
+    fois, et ne sauvegarde pas les informations relatives aux rôles et
+    <span class="foreignphrase"><em class="foreignphrase">tablespaces</em></span> (parce que ceux-ci portent sur
+    l'ensemble des bases du cluster, et non sur une base particulière). Pour
+    permettre une sauvegarde aisée de tout le contenu d'une instance, le
+    programme <a class="xref" href="app-pg-dumpall.html" title="pg_dumpall"><span class="refentrytitle"><span class="application">pg_dumpall</span></span></a> est fourni.
+    <span class="application">pg_dumpall</span> sauvegarde toutes les bases de
+    données d'une instance <span class="productname">PostgreSQL</span> et préserve
+    les données communes à l'instance, telles que les rôles et tablespaces.
+    L'utilisation basique de cette commande est :
+
+</p><pre class="synopsis">pg_dumpall &gt; <em class="replaceable"><code>fichier_sauvegarde</code></em></pre><p>
+
+    Le fichier de sauvegarde résultant peut être restauré avec
+    <span class="application">psql</span> :
+
+</p><pre class="synopsis">psql -X -f <em class="replaceable"><code>fichier_sauvegarde</code></em> postgres</pre><p>
+
+    (N'importe quelle base de données peut être utilisée pour la connexion
+    mais si le rechargement est exécuté sur une instance vide, il est
+    préférable d'utiliser <code class="literal">postgres</code>.) Il faut
+    obligatoirement avoir le profil superutilisateur pour restaurer une
+    sauvegarde faite avec <span class="application">pg_dumpall</span>, afin de
+    pouvoir restaurer les informations sur les rôles et les tablespaces. Si
+    les <span class="foreignphrase"><em class="foreignphrase">tablespaces</em></span> sont utilisés, il faut
+    s'assurer que leurs chemins sauvegardés sont appropriés à la nouvelle
+    installation.
+   </p><p>
+    <span class="application">pg_dumpall</span> fonctionne en émettant des commandes
+    pour recréer les rôles, les <span class="foreignphrase"><em class="foreignphrase">tablespaces</em></span> et
+    les bases vides, puis en invoquant <span class="application">pg_dump</span>
+    pour chaque base de données. Cela signifie que, bien que chaque base de
+    données est cohérente en interne, les images des différentes bases de
+    données ne sont pas synchronisées.
+   </p><p>
+    Les données globales à l'instance peuvent être sauvegardées seules en
+    utilisant l'option <code class="option">--globals-only</code> de
+    <span class="application">pg_dumpall</span>. Ceci est nécessaire pour
+    sauvegarder entièrement l'instance si la commande
+    <span class="application">pg_dump</span> est utilisée pour sauvegarder les
+    bases individuelles.
+   </p></div><div class="sect2" id="BACKUP-DUMP-LARGE"><div class="titlepage"><div><div><h3 class="title">25.1.3. Gérer les grosses bases de données <a href="#BACKUP-DUMP-LARGE" class="id_link">#</a></h3></div></div></div><p>
+    Certains systèmes d'exploitation ont des limites sur la taille maximale
+    des fichiers qui peuvent poser problème lors de la création de gros
+    fichiers de sauvegarde avec <span class="application">pg_dump</span>.
+    Heureusement, <span class="application">pg_dump</span> peut écrire sur la
+    sortie standard, donc vous pouvez utiliser les outils Unix standards pour
+    contourner ce problème potentiel. Il existe plusieurs autres
+    méthodes :
+   </p><p><strong>Compresser le fichier de sauvegarde. </strong>
+     Tout programme de compression habituel est utilisable. Par exemple
+     <span class="application">gzip</span> :
+
+</p><pre class="programlisting">pg_dump <em class="replaceable"><code>base_de_donnees</code></em> | gzip &gt; <em class="replaceable"><code>nom_fichier</code></em>.gz</pre><p>
+
+     Pour restaurer :
+
+</p><pre class="programlisting">gunzip -c <em class="replaceable"><code>nom_fichier</code></em>.gz | psql <em class="replaceable"><code>base_de_donnees</code></em></pre><p>
+
+     ou
+
+</p><pre class="programlisting">cat <em class="replaceable"><code>nom_fichier</code></em>.gz | gunzip | psql <em class="replaceable"><code>base_de_donnees</code></em></pre><p>
+    </p><p><strong>Couper le fichier avec <code class="command">split</code>. </strong>
+     La commande <code class="command">split</code> permet de découper le fichier en
+     fichiers plus petits, de taille acceptable par le système de fichiers
+     sous-jacent. Par exemple, pour faire des morceaux de 2 Go :
+
+</p><pre class="programlisting">pg_dump <em class="replaceable"><code>base_de_donnees</code></em> | split -b 2G - <em class="replaceable"><code>nom_fichier</code></em></pre><p>
+
+     Pour restaurer :
+
+</p><pre class="programlisting">cat <em class="replaceable"><code>nom_fichier</code></em>* | psql <em class="replaceable"><code>base_de_donnees</code></em></pre><p>
+
+     Si vous utilisez GNU <span class="application">split</span>, il est possible de
+     l'utiliser avec <span class="application">gzip</span> :
+
+</p><pre class="programlisting">
+pg_dump <em class="replaceable"><code>dbname</code></em> | split -b 2G --filter='gzip &gt; $FILE.gz'
+</pre><p>
+
+     Le résultat peut être restauré en utilisant <code class="command">zcat</code>.
+    </p><p><strong>Utilisation du format de sauvegarde personnalisé de
+     <span class="application">pg_dump</span>. </strong>
+     Si <span class="productname">PostgreSQL</span> est installé sur un système où
+     la bibliothèque de compression <span class="application">zlib</span> est
+     disponible, le format de sauvegarde personnalisé peut être utilisé pour
+     compresser les données à la volée. Pour les bases de données
+     volumineuses, cela produit un fichier de sauvegarde d'une taille
+     comparable à celle du fichier produit par <code class="command">gzip</code>, avec
+     l'avantage supplémentaire de permettre de restaurer des tables
+     sélectivement. La commande qui suit sauvegarde une base de données en
+     utilisant ce format de sauvegarde :
+
+</p><pre class="programlisting">pg_dump -Fc <em class="replaceable"><code>base_de_donnees</code></em> &gt; <em class="replaceable"><code>nom_fichier</code></em></pre><p>
+
+     Le format de sauvegarde personnalisé ne produit pas un script utilisable
+     par <span class="application">psql</span>. Ce script doit être restauré avec
+     <span class="application">pg_restore</span>, par exemple :
+
+</p><pre class="programlisting">
+pg_restore -d <em class="replaceable"><code>nom_base</code></em> <em class="replaceable"><code>nom_fichier</code></em></pre><p>
+
+     Voir les pages de référence de <a class="xref" href="app-pgdump.html" title="pg_dump"><span class="refentrytitle"><span class="application">pg_dump</span></span></a> et <a class="xref" href="app-pgrestore.html" title="pg_restore"><span class="refentrytitle"><span class="application">pg_restore</span></span></a> pour plus de détails.
+
+    </p><p>
+    Pour les très grosses bases de données, il peut être nécessaire de
+    combiner <code class="command">split</code> avec une des deux autres approches.
+   </p><p><strong>Utiliser la fonctionnalité de sauvegarde en parallèle de
+     <span class="application">pg_dump</span>. </strong>
+     Pour accélérer la sauvegarde d'une grosse base de données, vous pouvez
+     utiliser le mode parallélisé de <span class="application">pg_dump</span>. Cela
+     sauvegardera plusieurs tables à la fois. Vous pouvez contrôler le degré
+     de parallélisme avec le paramètre <code class="command">-j</code>. Les sauvegardes
+     en parallèle n'acceptent que le format répertoire.
+
+</p><pre class="programlisting">pg_dump -j <em class="replaceable"><code>num</code></em> -F d -f <em class="replaceable"><code>sortie.dir</code></em> <em class="replaceable"><code>nom_base</code></em></pre><p>
+
+     Vous pouvez utiliser <code class="command">pg_restore -j</code> pour restaurer une
+     sauvegarde en parallèle. Ceci fonctionnera pour n'importe quelle
+     archive, qu'elle soit dans le mode personnalisé ou répertoire. Elle n'a
+     pas besoin d'avoir été créée avec le mode parallélisé de
+     <code class="command">pg_dump</code>.
+    </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/backup-dump.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+</html>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/hash-index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:17 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>64.6. Index Hash</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="brin.html" title="64.5. Index BRIN" /><link rel="next" href="storage.html" title="Chapitre 65. Stockage physique de la base de données" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/hash-index.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/hash-index.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/hash-index.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/hash-index.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/hash-index.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/hash-index.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/hash-index.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/hash-index.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/hash-index.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/hash-index.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="indextypes.html">Méthodes d'accès natives des index</a></span> » <span class="breadcrumb-node">Index Hash</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="brin.html" title="64.5. Index BRIN">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="indextypes.html" title="Chapitre 64. Méthodes d'accès natives des index">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="storage.html" title="Chapitre 65. Stockage physique de la base de données">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">64.5. Index BRIN </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 65. Stockage physique de la base de données</td></tr></table></div><div class="sect1" id="HASH-INDEX"><div class="titlepage"><div><div><h2 class="title" style="clear: both">64.6. Index Hash <a href="#HASH-INDEX" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="hash-index.html#HASH-INTRO">64.6.1. Aperçu</a></span></dt><dt><span class="sect2"><a href="hash-index.html#HASH-IMPLEMENTATION">64.6.2. Implémentation</a></span></dt></dl></div><a id="id-1.10.17.7.2" class="indexterm"></a><div class="sect2" id="HASH-INTRO"><div class="titlepage"><div><div><h3 class="title">64.6.1. Aperçu <a href="#HASH-INTRO" class="id_link">#</a></h3></div></div></div><p>
+  <span class="productname">PostgreSQL</span> propose une implémentation d'index
+  hash sur disque, qui est résistant aux crashs. Tout type de données peut
+  être indexé par un index hash, y compris les types de données qui n'ont pas
+  un ordre linéaire bien défini. Les index hash stockent seulement la valeur
+  hachée de la donnée en cours d'indexation. De ce fait, il n'y a pas de
+  restrictions sur la taille de la colonne en cours d'indexation.
+ </p><p>
+  Les index hash supportent seulement les index à une colonne et ne gèrent pas
+  l'unicité des valeurs.
+ </p><p>
+  Les index hash acceptent uniquement l'opérateur <code class="literal">=</code>, donc
+  les clauses WHERE qui spécifient des opérations sur des intervalles ne
+  seront pas capables de tirer avantages des index hash.
+ </p><p>
+  Chaque ligne d'un index hash stocke la valeur hachée sur 4 octets, pas la
+  valeur réelle de la colonne. Ceci a pour conséquence qu'un index hash peut
+  être bien plus petit que le même index en B-tree lors de l'indexation de
+  données volumineuses, telles que des UUID, des URL, etc. L'absence de la
+  valeur dans la colonne rend aussi tous les parcours d'index à perte. Les
+  index hash peuvent prendre part à des parcours d'index bitmap et à des
+  parcours inverses.
+ </p><p>
+  Les index hash sont plus optimisés pour des charges de travail fortes en
+  SELECT et UPDATE qui font des recherches d'égalité sur des tables
+  volumineuses. Dans un index B-tree, les recherches doivent descendre dans
+  l'arbre jusqu'à trouver le bloc feuille. Dans les tables avec des millions
+  de lignes, cette descente peut augmenter le temps d'accès aux données.
+  L'équivalent du bloc feuille dans un index hash est appelé un bloc bucket.
+  Dans le cas d'un index hash, l'accès à ce bloc bucket est direct, réduisant
+  ainsi le temps d'accès dans les tables volumineuses. Cette réduction des
+  I/O logiques est encore plus prononcée sur les index/données qui sont plus
+  volumineuses que le cache (shared_buffers) et la RAM.
+ </p><p>
+  Les index hash ont été conçus pour faire face à des distributions inégales
+  des valeurs hachées. L'accès direct aux blocs bucket fonctionne bien si les
+  valeurs hachées sont distribuées de façon égale. Quand des insertions
+  remplissent le bloc bucket, des blocs overflow supplémentaires sont chaînés
+  à ce bloc bucket, étendant localement le stockage des lignes d'index qui
+  correspondent à cette valeur hachée. Lors du parcours d'un bucket pour
+  l'exécution des requêtes, nous avons besoin de parcourir tous les blocs
+  overflow. De ce fait, un index hash non balancé pourrait se révéler pire
+  qu'un B-Tree en terme de nombre d'accès aux blocs requis pour certaines
+  données.
+ </p><p>
+  En résultat des cas d'overflow, nous pouvons dire que les index hash sont
+  préférables dans le cas de données uniques, ou tout du moins pratiquement
+  uniques, ou de données avec un petit nombre de lignes par bucket. Une façon
+  d'éviter les problèmes est d'exclure les valeurs très fréquentes de l'index
+  en utilisant une condition d'index partiel mais ceci n'est pas réalisable
+  dans beaucoup de cas.
+ </p><p>
+  Tout comme les B-Trees, les index hash réalisent de simples suppressions de
+  lignes d'index. Une opération de maintenance supprime les lignes d'index
+  connues pour pouvoir être supprimées sans risque (ceux dont le bit LP_DEAD
+  de l'identifiant de l'élément est déjà initialisé). Si une insertion ne
+  trouve pas d'espace disponible sur un bloc, nous essayons d'éviter de créer
+  un nouveau bloc overflow en tentant de supprimer les lignes d'index mortes.
+  La suppression ne peut survenir si le bloc est verrouillé à ce moment. La
+  suppression des pointeurs d'index morts survient aussi lors du VACUUM.
+ </p><p>
+  S'il peut, VACUUM essaiera aussi de faire tenir les lignes d'index dans
+  aussi peu de blocs overflow que possible, minimisant ainsi la chaîne
+  d'overflow. Si un bloc overflow devient vide, les blocs d'overflow peuvent
+  être recyclés pour réutilisation dans les autres buckets, bien que nous ne
+  les renvoyons jamais au système d'exploitation. Il n'y a actuellement
+  aucune fonctionnalité pour réduire un index hash, autrement qu'en le
+  reconstruisant avec REINDEX. Il n'existe pas non plus de fonctionnalité
+  pour réduire le nombre de buckets.
+ </p><p>
+  Les index hash peuvent étendre le nombre de blocs bucket au fur et à mesure
+  de l'augmentation du nombre de lignes indexées. La correspondance clé de
+  hachage - numéro de bucket est choisie pour que l'index puisse croître de
+  façon incrémentale. Quand un nouveau bucket est à ajouter à l'index, un
+  seul bucket existant devra être divisé, avec certains de ses
+  enregistrements transférés dans le nouveau bucket suivant la correspondance
+  mise à jour clé - numéro de bucket.
+ </p><p>
+  Cet agrandissement survient en avant-plan, ce qui pourrait augmenter la
+  durée d'exécution des insertions par les utilisateurs. De ce fait, les
+  index hash pourraient ne pas convenir pour des tables ayant un nombre de
+  lignes augmentant rapidement.
+ </p></div><div class="sect2" id="HASH-IMPLEMENTATION"><div class="titlepage"><div><div><h3 class="title">64.6.2. Implémentation <a href="#HASH-IMPLEMENTATION" class="id_link">#</a></h3></div></div></div><p>
+  Il existe quatre types de blocs dans un index hash : le bloc de
+  méta-données (bloc zéro), qui contient des informations de contrôle
+  allouées statiquement ; les blocs des buckets principaux  les
+  blocs overflow ; et les blocs bitmap qui conservent la trace des blocs
+  overflow libérés et disponibles pour réutilisation. Dans un but
+  d'adressage, les blocs bitmap sont vus comme un sous-ensemble des blocs
+  overflow.
+ </p><p>
+  À la fois le parcours de l'index et l'insertion de lignes nécessitent de
+  localiser le bucket où une ligne donnée doit être située. Pour faire cela,
+  nous avons besoin du nombre de buckets, de la valeur haute
+  (<span class="foreignphrase"><em class="foreignphrase">highmask</em></span>) et de la valeur basse
+  (<span class="foreignphrase"><em class="foreignphrase">lowmask</em></span>) partir de le bloc de
+  méta-données ; néanmoins, il n'est pas souhaitable pour des raisons de
+  performance d'avoir à verrouiller le bloc de méta-données à chaque fois
+  qu'il est nécessaire de réaliser cette opération.
+ </p><p>
+  Les blocs buckets primaires et les blocs overflow sont alloués
+  indépendamment car n'importe quel index pourrait avoir plus ou moins de
+  blocs overflow suivant son nombre de buckets. Le code des index hash
+  utilise un ensemble intéressant de règles d'adressage pour accepter un
+  nombre variable de blocs overflow sans avoir à déplacer des blocs buckets
+  primaires après leur création.
+ </p><p>
+  Chaque ligne dans la table indexée est représentée par un seul enregistrement
+  dans l'index hash. Les enregistrements de l'index hash sont stockés dans
+  des blocs buckets et, s'ils existent, dans des blocs overflow. Nous
+  accélérons les recherches en conservant les entrées d'index de tout bloc
+  d'index triées par son code de hachage, permettant ainsi l'utilisation de
+  recherche binaire dans un bloc d'index. Notez néanmoins qu'il n'y a pas de
+  garantie d'un ordre des codes de hachage sur plusieurs blocs d'index d'un
+  bucket.
+ </p><p>
+  Les algorithmes de division de bucket pour étendre un index hash sont trop
+  complexes pour être mentionnés ici, mais ils sont décrits dans le fichier
+  <code class="filename">src/backend/access/hash/README</code>. L'algorithme de
+  division est garanti contre les crashs et peut être relancé s'il ne s'est
+  pas terminé correctement.
+ </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/hash-index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:17 GMT -->
+</html>

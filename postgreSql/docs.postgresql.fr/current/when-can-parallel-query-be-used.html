@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/when-can-parallel-query-be-used.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>15.2. Quand la parallélisation des requêtes peut-elle être utilisée ?</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="how-parallel-query-works.html" title="15.1. Comment fonctionne la parallélisation des requêtes" /><link rel="next" href="parallel-plans.html" title="15.3. Plans parallélisés" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/when-can-parallel-query-be-used.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/when-can-parallel-query-be-used.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/when-can-parallel-query-be-used.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/when-can-parallel-query-be-used.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/when-can-parallel-query-be-used.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/when-can-parallel-query-be-used.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/when-can-parallel-query-be-used.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/when-can-parallel-query-be-used.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/when-can-parallel-query-be-used.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/when-can-parallel-query-be-used.html">9.6</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/when-can-parallel-query-be-used.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="parallel-query.html">Requêtes parallélisées</a></span> » <span class="breadcrumb-node">Quand la parallélisation des requêtes peut-elle être utilisée ?</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="how-parallel-query-works.html" title="15.1. Comment fonctionne la parallélisation des requêtes">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="parallel-query.html" title="Chapitre 15. Requêtes parallélisées">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="parallel-plans.html" title="15.3. Plans parallélisés">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">15.1. Comment fonctionne la parallélisation des requêtes </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 15.3. Plans parallélisés</td></tr></table></div><div class="sect1" id="WHEN-CAN-PARALLEL-QUERY-BE-USED"><div class="titlepage"><div><div><h2 class="title" style="clear: both">15.2. Quand la parallélisation des requêtes peut-elle être utilisée ? <a href="#WHEN-CAN-PARALLEL-QUERY-BE-USED" class="id_link">#</a></h2></div></div></div><p>
+   Il existe plusieurs paramètres pouvant empêcher le planificateur
+   de la requête de générer un plan parallélisé quelles que soient les
+   circonstances. Pour faire en sorte que des plans parallélisés puissent
+   être générés, les paramètres suivants doivent être configurés ainsi :
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+     <a class="xref" href="runtime-config-resource.html#GUC-MAX-PARALLEL-WORKERS-PER-GATHER">max_parallel_workers_per_gather</a> doit être
+     configuré à une valeur strictement positive. Ceci est un cas spécial
+     du principe plus général qu'il n'y aura pas plus de
+     <span class="foreignphrase"><em class="foreignphrase">workers</em></span> que le nombre configuré via
+     <code class="varname">max_parallel_workers_per_gather</code>.
+    </p></li></ul></div><p>
+   De plus, le système ne doit pas fonctionner en mode mono-utilisateur.
+   Comme le système de bases de données entier fonctionne alors avec un seul
+   processus, aucun <span class="foreignphrase"><em class="foreignphrase">background
+    worker</em></span> ne sera disponible.
+  </p><p>
+   Même quand il est possible, dans l'absolu, de générer des plans pour
+   des requêtes parallélisées, le planificateur n'en générera pas
+   pour une requête donnée si une des conditions suivantes se vérifie :
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+     La requête écrit des données ou verrouille des lignes de la base. Si une
+     requête contient une opération de modification de données, soit au
+     niveau supérieur, soit dans une CTE, aucun plan parallèle ne peut être
+     généré pour cette requête. Il existe des exceptions : les commandes
+     suivantes qui créent une nouvelle table et la remplissent. Un plan
+     parallélisé peut être utilisé pour le <code class="literal">SELECT</code>
+     sous-jacent de la requête :
+
+     </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: circle; "><li class="listitem"><p><code class="command">CREATE TABLE ... AS</code></p></li><li class="listitem"><p><code class="command">SELECT INTO</code></p></li><li class="listitem"><p><code class="command">CREATE MATERIALIZED VIEW</code></p></li><li class="listitem"><p><code class="command">REFRESH MATERIALIZED VIEW</code></p></li></ul></div><p>
+    </p></li><li class="listitem"><p>
+     La requête est susceptible d'être suspendue durant l'exécution. Dans des
+     situations où le système pense qu'une exécution pourrait être partielle ou
+     incrémentale, aucun plan parallèle n'est généré.
+     Par exemple, un curseur créé avec <a class="link" href="sql-declare.html" title="DECLARE">DECLARE CURSOR</a> n'utilisera jamais un plan
+     parallélisé. De façon similaire, une boucle PL/pgSQL de la forme
+     <code class="literal">FOR x IN query LOOP .. END LOOP</code> n'utilisera jamais
+     un plan parallélisé, car le système est incapable de vérifier que le
+     code dans la boucle peut s'exécuter en toute sécurité avec une requête
+     parallélisée.
+    </p></li><li class="listitem"><p>
+     La requête utilise une fonction marquée
+     <code class="literal">PARALLEL UNSAFE</code> (à parallélisation non sûre).
+     La plupart des fonctions systèmes sont
+     <code class="literal">PARALLEL SAFE</code> (à parallélisation sûre),
+     mais les fonctions utilisateurs sont marquées
+     <code class="literal">PARALLEL UNSAFE</code> par défaut. Voir la discussion
+     de <a class="xref" href="parallel-safety.html" title="15.4. Sécurité de la parallélisation">Section 15.4</a>.
+    </p></li><li class="listitem"><p>
+     La requête est exécutée à l'intérieur d'une autre requête qui est déjà
+     parallélisée. Par exemple, si une fonction appelée par une requête
+     parallélisée exécute elle-même une requête SQL, celle-ci
+     n'utilisera jamais un plan parallélisé. Ceci est une limitation de
+     l'implémentation actuelle, mais il ne serait pas forcément souhaitable de la
+     supprimer, car cela pourrait mener à ce qu'une seule requête
+     utilise un très grand nombre de processus.
+    </p></li></ul></div><p>
+   Même quand un plan parallélisé est généré pour une requête donnée,
+   certaines circonstances rendront impossible l'exécution en
+   parallèle. Si cela arrive, le
+   <span class="foreignphrase"><em class="foreignphrase">leader</em></span> exécutera tout seul la portion du
+   plan sous le nœud <code class="literal">Gather</code>, pratiquement comme s'il
+   n'était pas là. Ceci
+   surviendra si une des conditions suivantes est vérifiée :
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+     Aucun <span class="foreignphrase"><em class="foreignphrase">background worker</em></span> ne peut être
+     obtenu à cause de la limitation sur le nombre total de
+     <span class="foreignphrase"><em class="foreignphrase">background workers</em></span>, due au paramètre
+     <a class="xref" href="runtime-config-resource.html#GUC-MAX-WORKER-PROCESSES">max_worker_processes</a>.
+    </p></li><li class="listitem"><p>
+     Aucun background worker ne peut être obtenu à cause de la limitation
+     sur le nombre total de <span class="foreignphrase"><em class="foreignphrase">background workers</em></span>,
+     démarrés dans le cadre de requêtes parallèles,
+     qui ne peut pas dépasser <a class="xref" href="runtime-config-resource.html#GUC-MAX-PARALLEL-WORKERS">max_parallel_workers</a>.
+    </p></li><li class="listitem"><p>
+     Le client envoie un message Execute avec un nombre de lignes à récupérer
+     différent de zéro. Voir la discussion sur le <a class="link" href="protocol-flow.html#PROTOCOL-FLOW-EXT-QUERY" title="53.2.3. Requête étendue">protocole de requête étendu</a>.
+     Comme la bibliothèque <a class="link" href="libpq.html" title="Chapitre 32. libpq -- Bibliothèque C">libpq</a> ne fournit
+     actuellement aucun moyen pour envoyer ce type de message, cela ne peut
+     survenir qu'en utilisant un client qui ne se base
+     pas sur la libpq. Si cela arrive fréquemment, ce pourrait être une
+     bonne idée de configurer <a class="xref" href="runtime-config-resource.html#GUC-MAX-PARALLEL-WORKERS-PER-GATHER">max_parallel_workers_per_gather</a> à zéro pour les
+     sessions concernées, pour éviter de générer des plans
+     de requêtes non optimaux s'ils sont exécutés de façon sérialisée.
+    </p></li></ul></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/when-can-parallel-query-be-used.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+</html>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/parallel-safety.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>15.4. Sécurité de la parallélisation</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="parallel-plans.html" title="15.3. Plans parallélisés" /><link rel="next" href="admin.html" title="Partie III. Administration du serveur" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/parallel-safety.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/parallel-safety.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/parallel-safety.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/parallel-safety.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/parallel-safety.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/parallel-safety.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/parallel-safety.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/parallel-safety.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/parallel-safety.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/parallel-safety.html">9.6</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/parallel-safety.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="parallel-query.html">Requêtes parallélisées</a></span> » <span class="breadcrumb-node">Sécurité de la parallélisation</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="parallel-plans.html" title="15.3. Plans parallélisés">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="parallel-query.html" title="Chapitre 15. Requêtes parallélisées">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="admin.html" title="Partie III. Administration du serveur">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">15.3. Plans parallélisés </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Partie III. Administration du serveur</td></tr></table></div><div class="sect1" id="PARALLEL-SAFETY"><div class="titlepage"><div><div><h2 class="title" style="clear: both">15.4. Sécurité de la parallélisation <a href="#PARALLEL-SAFETY" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="parallel-safety.html#PARALLEL-LABELING">15.4.1. Marquage de parallélisation pour les fonctions et agrégats</a></span></dt></dl></div><p>
+   Le planificateur classifie les opérations impliquées dans une requête
+   comme étant à <em class="firstterm">parallélisation sûre</em>,
+   <em class="firstterm">parallélisation restreinte</em>, ou
+   <em class="firstterm">parallélisation non sûre</em>. Une opération
+   à parallélisation sûre
+   est une opération n'entrant pas en conflit avec une
+   requête parallélisée. Une opération à parallélisation restreinte
+   ne peut pas être exécutée par un
+   <span class="foreignphrase"><em class="foreignphrase">worker</em></span> parallélisé, mais peut l'être
+   par le <span class="foreignphrase"><em class="foreignphrase">leader</em></span> pendant
+   l'exécution. De ce fait, les opérations à parallélisation
+   restreinte ne peuvent jamais survenir sous un nœud
+   <code class="literal">Gather</code> ou <code class="literal">Gather Merge</code>. Une
+   opération à parallélisation non sûre ne peut être exécutée dans une
+   requête parallélisée, y compris au niveau du
+   <span class="foreignphrase"><em class="foreignphrase">leader</em></span>. Quand une requête contient quoi que
+   ce soit de non sûr à paralléliser, la parallélisation y est
+   complètement désactivée.
+  </p><p>
+   Les opérations suivantes sont toujours à parallélisation restreinte.
+  </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+     Parcours de CTE (<span class="foreignphrase"><em class="foreignphrase">Common Table Expressions</em></span>).
+    </p></li><li class="listitem"><p>
+     Parcours de tables temporaires.
+    </p></li><li class="listitem"><p>
+     Parcours de tables externes, sauf si le wrapper de données distantes a
+     une API <code class="literal">IsForeignScanParallelSafe</code> qui indique le
+     contraire.
+    </p></li><li class="listitem"><p>
+     Nœuds du plan qui référencent un <code class="literal">SubPlan</code> corrélé.
+    </p></li></ul></div><div class="sect2" id="PARALLEL-LABELING"><div class="titlepage"><div><div><h3 class="title">15.4.1. Marquage de parallélisation pour les fonctions et agrégats <a href="#PARALLEL-LABELING" class="id_link">#</a></h3></div></div></div><p>
+    Le planificateur ne peut pas déterminer automatiquement si une fonction ou
+    un agrégat définis par un utilisateur est à parallélisation sûre,
+    restreinte ou non sûre, car cela nécessiterait de pouvoir prédire
+    chaque opération réalisable par la fonction. En général, c'est équivalent au
+    problème de l'arrêt et de ce fait, impossible.
+    Même pour des fonctions simples où cela pourrait se faire, nous n'essayons
+    pas, car ce serait coûteux et sujet à erreurs. À la place, toutes les
+    fonctions définies par des utilisateurs sont supposées à parallélisation non sûre
+    sauf indication contraire. Lors de l'utilisation des
+    instructions <a class="xref" href="sql-createfunction.html" title="CREATE FUNCTION"><span class="refentrytitle">CREATE FUNCTION</span></a> et <a class="xref" href="sql-alterfunction.html" title="ALTER FUNCTION"><span class="refentrytitle">ALTER FUNCTION</span></a>, un marquage est possible en spécifiant
+    <code class="literal">PARALLEL SAFE</code>, <code class="literal">PARALLEL RESTRICTED</code>
+    ou <code class="literal">PARALLEL UNSAFE</code> suivant ce qui est approprié. Lors
+    de l'utilisation de <a class="xref" href="sql-createaggregate.html" title="CREATE AGGREGATE"><span class="refentrytitle">CREATE AGGREGATE</span></a>, l'option
+    <code class="literal">PARALLEL</code> peut être spécifiée comme
+    <code class="literal">SAFE</code>, <code class="literal">RESTRICTED</code> ou
+    <code class="literal">UNSAFE</code>.
+   </p><p>
+    Les fonctions et agrégats doivent être marqués <code class="literal">PARALLEL
+    UNSAFE</code> s'ils écrivent dans la base, modifient l'état de la
+    transaction (autrement qu'en utilisant une sous-transaction pour une
+    récupération après erreur),
+    accèdent à des séquences, ou font des modifications persistantes sur les
+    paramètres. De façon similaire, les fonctions doivent être marquées
+    <code class="literal">PARALLEL RESTRICTED</code> si elles accèdent à des tables
+    temporaires, à l'état de connexion du client, à des curseurs, à des
+    requêtes préparées ou à un quelconque état local du processus serveur que le système
+    ne peut pas synchroniser entre les différents
+    <span class="foreignphrase"><em class="foreignphrase">workers</em></span>. Par exemple,
+    <code class="literal">setseed</code> et <code class="literal">random</code> sont à
+    parallélisation restreinte pour cette dernière raison.
+   </p><p>
+    En général, si une fonction est marquée comme étant sûre alors qu'elle ne
+    l'est pas, ou si elle est marquée restreinte alors que sa
+    parallélisation en fait n'est pas sûre, elle
+    peut être cause d'erreurs ou de réponses fausses lors de
+    l'utilisation dans une requête parallélisée. Les fonctions en langage C
+    peuvent en théorie avoir des comportements indéfinis en cas de mauvais
+    marquage, car le système n'a aucun moyen de se défendre contre du code C
+    arbitraire. Cela étant dit, dans la plupart des cas, le résultat ne sera pas
+    pire qu'avec toute autre fonction. En cas de doute, le mieux est probablement
+    de marquer les fonctions en tant que <code class="literal">UNSAFE</code>.
+   </p><p>
+    Si une fonction exécutée avec un <span class="foreignphrase"><em class="foreignphrase">worker</em></span>
+    parallèle acquiert des verrous non détenus par le
+    <span class="foreignphrase"><em class="foreignphrase">leader</em></span>, par exemple en exécutant une
+    requête sur une table non référencée dans la requête, ces verrous seront
+    relâchés à la sortie du <span class="foreignphrase"><em class="foreignphrase">worker</em></span>, et non pas
+    à la fin de la transaction. Si vous écrivez une fonction qui fait cela et
+    que cette différence de comportement a une importance pour vous, marquez ces
+    fonctions comme <code class="literal">PARALLEL RESTRICTED</code> pour vous assurer
+    qu'elles ne s'exécutent qu'au sein du
+    <span class="foreignphrase"><em class="foreignphrase">leader</em></span>.
+   </p><p>
+    Notez que le planificateur de requêtes ne cherche pas à différer
+    l'évaluation des fonctions ou agrégats à parallélisation restreinte
+    impliqués dans la requête pour obtenir un meilleur plan. Donc, par
+    exemple, si une clause <code class="literal">WHERE</code> appliquée à une table
+    particulière est à parallélisation restreinte, le planificateur ne
+    tentera pas de placer le parcours de cette table dans une portion
+    parallélisée du plan. Dans certains cas, il serait possible
+    (voire efficace) d'inclure le parcours de cette table dans la
+    partie parallélisée de la requête et de différer l'évaluation de la
+    clause <code class="literal">WHERE</code> afin qu'elle se déroule au-dessus du
+    nœud <code class="literal">Gather</code>. Néanmoins, le planificateur ne le
+    fait pas.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/parallel-safety.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+</html>

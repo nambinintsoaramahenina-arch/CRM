@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/bgworker.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:44:12 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapitre 46. Processus en tâche de fond (background worker)</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="spi-exemples.html" title="45.6. Exemples" /><link rel="next" href="logicaldecoding.html" title="Chapitre 47. Décodage logique (Logical Decoding)" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/bgworker.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/bgworker.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/bgworker.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/bgworker.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/bgworker.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/bgworker.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/bgworker.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/bgworker.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/bgworker.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/bgworker.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/bgworker.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/bgworker.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/bgworker.html">9.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/bgworker.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-node">Processus en tâche de fond (background worker)</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="spi-exemples.html" title="45.6. Exemples">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="server-programming.html" title="Partie V. Programmation serveur">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="logicaldecoding.html" title="Chapitre 47. Décodage logique (Logical Decoding)">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">45.6. Exemples </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 47. Décodage logique (Logical Decoding)</td></tr></table></div><div class="chapter" id="BGWORKER"><div class="titlepage"><div><div><h2 class="title">Chapitre 46. Processus en tâche de fond (background worker)</h2></div></div></div><a id="id-1.8.13.2" class="indexterm"></a><p>
+  PostgreSQL peut être étendu pour lancer du code utilisateur dans des processus
+  séparés. Ces processus sont démarrés, arrêtés et supervisés par
+  <code class="command">postgres</code>, ce qui leur permet d'avoir un cycle de vie
+  étroitement lié au statut du serveur. Ces processus sont attachés à la zone de
+  mémoire partagée de <span class="productname">PostgreSQL</span> et ont l'option de
+  se connecter aux bases de manière interne ; ils peuvent également
+  exécuter de multiples transactions séquentiellement, comme n'importe quel
+  processus client standard connecté au serveur. De plus, en se liant avec la
+  bibliothèque <span class="application">libpq</span>, ils peuvent se connecter au
+  serveur et se comporter comme une application cliente standard.
+ </p><div class="warning"><h3 class="title">Avertissement</h3><p>
+   Il y a de considérables risques de robustesse et sécurité lorsque l'on utilise
+   des processus background worker. En effet, ceux-ci étant écrits en langage
+   <code class="literal">C</code>, ils ont un accès total aux données. Les administrateurs
+   désirant activer des modules incluant des processus background worker devraient
+   prendre énormément de précautions. Seuls les modules soigneusement testés
+   devraient être autorisés à lancer des processus background worker.
+  </p></div><p>
+  Les processus en tâche de fond peuvent être initialisés au moment où
+  <span class="productname">PostgreSQL</span> est démarré en incluant le nom du
+  module dans <code class="varname">shared_preload_libraries</code>.  Un module qui
+  souhaite fonctionner comme un processus en tâche de fond peut s'enregistrer en
+  appelant <code class="function">RegisterBackgroundWorker(<code class="type">BackgroundWorker</code>
+   <em class="parameter"><code>*worker</code></em>)</code> dans son
+  <code class="function">_PG_init()</code>.  Les processus en tâche de fond peuvent
+  également être démarrés après que le système ait démarré et soit en
+  fonctionnement en appelant la fonction
+  <code class="function">RegisterDynamicBackgroundWorker( <code class="type">BackgroundWorker</code>
+   <em class="parameter"><code>*worker</code></em>, <code class="type">BackgroundWorkerHandle</code>
+   <em class="parameter"><code>**handle</code></em>)</code>. À la différence de
+  <code class="function">RegisterBackgroundWorker</code>, qui ne peut être appelée que
+  depuis le processus
+  postmaster,<code class="function">RegisterDynamicBackgroundWorker</code> doit être
+  appelée depuis un processus client standard ou un processus en tâche de
+  fond.
+ </p><p>
+  La structure <code class="structname">BackgroundWorker</code> est définie ainsi :
+  </p><pre class="programlisting">
+typedef void (*bgworker_main_type)(Datum main_arg);
+typedef struct BackgroundWorker
+{
+    char        bgw_name[BGW_MAXLEN];
+    char        bgw_type[BGW_MAXLEN];
+    int         bgw_flags;
+    BgWorkerStartTime bgw_start_time;
+    int         bgw_restart_time;       /* in seconds, or BGW_NEVER_RESTART */
+    char        bgw_library_name[MAXPGPATH];
+    char        bgw_function_name[BGW_MAXLEN];
+    Datum       bgw_main_arg;
+    char        bgw_extra[BGW_EXTRALEN];
+    pid_t       bgw_notify_pid;
+} BackgroundWorker;
+  </pre><p>
+ </p><p>
+  <code class="structfield">bgw_name</code> et <code class="structfield">bgw_type</code>
+  sont des chaînes de caractères à utiliser
+  dans les messages de trace, liste de processus et autres listes similaires.
+  <code class="structfield">bgw_type</code> devrait être identique pour tous les
+  processus en tâche de fond du même type pour qu'il soit possible de grouper
+  ces processus avec une liste des processus par exemple. Par contre,
+  <code class="structfield">bgw_name</code> peut contenir des informations
+  supplémentaires sur ce processus spécifique. (Typiquement, la chaîne de
+  <code class="structfield">bgw_name</code> contiendra le type en quelque sort, mais
+  ce n'est pas requis strictement.)
+ </p><p>
+  <code class="structfield">bgw_flags</code> est un masque de bit OR indiquant les
+  capacités que veut le module. Les valeurs possibles sont
+  </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">BGWORKER_SHMEM_ACCESS</code></span></dt><dd><p>
+      <a id="id-1.8.13.8.2.1.2.1.1" class="indexterm"></a>
+      Réclame un accès à la mémoire partagée. C'est requis.
+     </p></dd><dt><span class="term"><code class="literal">BGWORKER_BACKEND_DATABASE_CONNECTION</code></span></dt><dd><p>
+      <a id="id-1.8.13.8.2.2.2.1.1" class="indexterm"></a>
+      Réclame la capacité à établir une connexion à une base à partir de
+      laquelle il peut ensuite exécuter des transactions et des requêtes. Un
+      processus en tâche de fond utilisant
+      <code class="literal">BGWORKER_BACKEND_DATABASE_CONNECTION</code> pour se connecter
+      à une base doit aussi s'attacher à la mémoire partagée en utilisant
+      <code class="literal">BGWORKER_SHMEM_ACCESS</code>. Dans le cas contraire, son
+      démarrage échouera.
+     </p></dd></dl></div><p>
+
+ </p><p>
+  <code class="structfield">bgw_start_time</code> spécifie l'état du serveur dans lequel
+  <code class="command">postgres</code> devrait démarrer le processus ; les valeurs possibles
+  sont <code class="literal">BgWorkerStart_PostmasterStart</code> (démarrer dès que
+  <code class="command">postgres</code> lui-même a fini sa propre initialisation ;
+  les processus réclamant celà ne sont pas éligibles à une connexion à la base de données),
+  <code class="literal">BgWorkerStart_ConsistentState</code> (démarrer dès qu'un état cohérent
+  a été atteint sur un serveur esclave en lecture seule, permettant aux processus de se
+  connecter aux bases et d'exécuter des requêtes en lecture seule), et
+  <code class="literal">BgWorkerStart_RecoveryFinished</code> (démarrer dès que le système
+  est entré dans un état de lecture-écriture normal). Notez que les deux dernières
+  valeurs sont équivalentes sur un serveur qui n'est pas un esclave en lecture seule.
+  Notez également que ces valeurs indiquent uniquement quand les processus doivent
+  être démarrés ; ils ne s'arrêtent pas quand un état différent est atteint.
+ </p><p>
+  <code class="structfield">bgw_restart_time</code> est un intervalle, en secondes,
+  que <code class="command">postgres</code> doit attendre avant de redémarrer un
+  processus, si celui-ci a subi un arrêt brutal. Cet intervalle peut être une valeur
+  positive ou <code class="literal">BGW_NEVER_RESTART</code>, indiquant de ne pas redémarrer
+  le processus suite à un arrêt brutal.
+ </p><p>
+  <code class="structfield">bgw_library_name</code> est le nom d'une bibliothèque
+  dans laquelle le point d'entrée initial pour le processus en tâche de fond
+  devrait être recherché. La bibliothèque nommée sera chargée dynamiquement
+  par le processus en tâche de fond et <code class="structfield">bgw_function_name</code>
+  sera utiliser pour identifier la fonction à appeler. S'il appelle une fonction
+  du code du moteur, il faudrait plutôt le configurer à
+  <code class="literal">"postgres"</code>.
+ </p><p>
+  <code class="structfield">bgw_function_name</code> est le nom de la fonction à utiliser
+  comme point d'entrée vers le nouveau background worker. Si cette fonction est
+  dans une bibliothèque chargée dynamiquement, elle doit être marquée
+  <code class="literal">PGDLLEXPORT</code> (et non pas <code class="literal">static</code>).
+ </p><p>
+  <code class="structfield">bgw_main_arg</code> est l'argument <code class="type">Datum</code> de
+  la fonction principale du processus. Cette fonction principale devrait prendre
+  un seul argument de type <code class="type">Datum</code> et renvoyer <code class="type">void</code>.
+  <code class="structfield">bgw_main_arg</code> sera passé comme argument. De plus,
+  la variable globale <code class="literal">MyBgworkerEntry</code> pointe vers une copie
+  de la structure <code class="structname">BackgroundWorker</code> passé au moment de
+  l'enregistrement ; le processus pourrait trouver utile d'examiner cette
+  structure.
+ </p><p>
+  Sur Windows (et partout où <code class="literal">EXEC_BACKEND</code> est défini) ou
+  dans des processus en tâche de fond dynamiques, il n'est pas sûr de passer
+  un <code class="type">Datum</code> par référence, il faut le passer par valeur. Si un
+  argument est requis, il est plus sûr de passer un int32 ou toute autre petite
+  valeur et l'utiliser comme un index d'un tableau alloué en mémoire partagée.
+  Si une valeur comme un <code class="type">cstring</code> ou un <code class="type">text</code> est
+  passée, alors le pointeur ne sera pas valide à partir du nouveau processus
+  en tâche de fond.
+ </p><p>
+  <code class="structfield">bgw_extra</code> peut contenir des données
+  supplémentaires à fournir au background worker. Contrairement à
+  <code class="structfield">bgw_main_arg</code>, cette donnée n'est pas fourni comme
+  argument de la fonction principale du processus. Elle est accessible via la
+  variable <code class="literal">MyBgworkerEntry</code>, comme discuté ci-dessus.
+ </p><p>
+  <code class="structfield">bgw_notify_pid</code> est le PID d'un processus client
+  PostgreSQL auquel le postmaster devrait envoyer un signal <code class="literal">SIGUSR1</code>
+  quand le processus est démarré ou quitte.  Il devrait valoir 0 pour les
+  processus en tâche de fond enregistrés lors du démarrage du postmaster, ou
+  quand le processus client enregistrant le processus en tâche de fond ne
+  souhaite pas attendre que le processus en tâche de fond ne démarre.  Sinon,
+  il devrait être initialisé à <code class="literal">MyProcPid</code>.
+ </p><p>Une fois démarré, le processus peut se connecter à une base en appelant
+  <code class="function">BackgroundWorkerInitializeConnection(<em class="parameter"><code>char *dbname</code></em>, <em class="parameter"><code>char *username</code></em>, <em class="parameter"><code>uint32 flags</code></em>)</code> ou
+  <code class="function">BackgroundWorkerInitializeConnectionByOid(<em class="parameter"><code>Oid dboid</code></em>, <em class="parameter"><code>Oid useroid</code></em>, <em class="parameter"><code>uint32 flags</code></em>)</code>.
+  Cela autorise le processus à exécuter des transactions et des requêtes en
+  utilisant l'interface <code class="literal">SPI</code>. Si <code class="varname">dbname</code>
+  vaut NULL ou que <code class="varname">dboid</code> vaut
+  <code class="literal">InvalidOid</code>, la session n'est pas connectée à une base en
+  particulier, mais les catalogues partagés peuvent être accédés. Si
+  <code class="varname">username</code> vaut NULL ou que <code class="varname">useroid</code> vaut
+  <code class="literal">InvalidOid</code>, le processus sera démarré avec le superutilisateur
+  créé durant <code class="command">initdb</code>. Si
+  <code class="literal">BGWORKER_BYPASS_ALLOWCONN</code> est indiqué pour le paramètre
+  <code class="varname">flags</code>, il est possible de contourner la restriction de se
+  connecter aux bases de données ne permettant pas une connexions des
+  utilisateurs.
+  Si <code class="literal">BGWORKER_BYPASS_ROLELOGINCHECK</code> est indiqué pour le
+  paramètre <code class="varname">flags</code>, il est possible de contourner la
+  vérification du compte pour le rôle utilisé pour se connecter aux bases.
+  Un background worker ne peut être appelé que par une de ces
+  deux fonctions, et seulement une fois. Il n'est pas possible de changer de
+  base de données.
+ </p><p>
+  Les signaux sont initialement bloqués jusqu'à ce que le contrôle atteigne
+  la fonction principale du background worker, et doivent être débloqués
+  par elle ; cela permet une personnalisation des
+  gestionnaires de signaux du processus, si nécessaire. Les signaux peuvent
+  être débloqués dans le nouveau processus en appellant
+  <code class="function">BackgroundWorkerUnblockSignals</code> et bloqués en appelant
+  <code class="function">BackgroundWorkerBlockSignals</code>.
+ </p><p>
+  Si <code class="structfield">bgw_restart_time</code> est configuré à
+  <code class="literal">BGW_NEVER_RESTART</code> pour un processus en tâche de fond ou
+  s'il quitte avec un code de sortie 0, ou encore s'il est terminé par
+  <code class="function">TerminateBackgroundWorker</code>, il sera automatiquement
+  désenregistré par le postmaster lors de sa sortie.  Sinon, il sera redémarré
+  après que la période de temps configurée via
+  <code class="structfield">bgw_restart_time</code>, ou immédiatement si le
+  postmaster réinitialise l'instance à cause d'une défaillance d'un processus
+  client.  Les processus en tâche de fond qui nécessitent de suspendre leur
+  exécution seulement temporairement devraient utiliser un sommeil interruptible
+  plutôt que de quitter. Vérifiez que le drapeau
+  <code class="literal">WL_POSTMASTER_DEATH</code> est positionné lors de l'appel à cette
+  fonction, et vérifiez le code retour pour une sortie rapide dans le cas
+  d'urgence où <code class="command">postgres</code> lui-même se termine.
+ </p><p>
+  Quand un processus en tâche de fond est enregistré en utilisant la fonction
+  <code class="function">RegisterDynamicBackgroundWorker</code>, le processus client
+  effectuant cet enregistrement peut obtenir des informations concernant le
+  statut du processus en tâche de fond.  Les processus clients souhaitant faire
+  cela devraient fournir l'adresse d'un <code class="type">BackgroundWorkerHandle *</code>
+  comme second argument pour <code class="function">RegisterDynamicBackgroundWorker</code>.
+  Si l'enregistrement du processus en tâche de fond est réussi, ce pointeur
+  sera initialisé avec un handle opaque qui peut alors être fourni à
+  <code class="function">GetBackgroundWorkerPid(<em class="parameter"><code>BackgroundWorkerHandle *</code></em>, <em class="parameter"><code>pid_t *</code></em>)</code> ou
+  <code class="function">TerminateBackgroundWorker(<em class="parameter"><code>BackgroundWorkerHandle *</code></em>)</code>.
+  <code class="function">GetBackgroundWorkerPid</code> peut être utilisé pour interroger
+  le statut du processus en tâche de fond : une valeur de retour valant
+  <code class="literal">BGWH_NOT_YET_STARTED</code> indique que le processus en tâche de
+  fond n'a pas encore été démarré par le postmaster;
+  <code class="literal">BGWH_STOPPED</code> indique qu'il a été démarré mais n'est plus
+  en fonctionnement; et <code class="literal">BGWH_STARTED</code> indique qu'il est
+  actuellement en fonctionnement.  Dans le dernier cas, le PID sera également
+  renvoyé via le deuxième argument.
+  <code class="function">TerminateBackgroundWorker</code> demande postmaster d'envoyer
+  un signal  <code class="literal">SIGTERM</code> au processus en tâche de fond s'il est
+  en train de fonctionner, et de le désenregistrer dès qu'il ne sera plus en
+  fonctionnement.
+ </p><p>
+  Dans certains cas, un processus qui enregistre un processus en tâche de
+  fond peut souhaiter attendre le démarrage du processus en tâche de fond.
+  Ceci peut être fait en initialisant <code class="structfield">bgw_notify_pid</code>
+  à <code class="literal">MyProcPid</code> et en fournissant ensuite le
+  <code class="type">BackgroundWorkerHandle *</code> obtenu au moment de l'enregistrement à
+  la fonction
+  <code class="function">WaitForBackgroundWorkerStartup(<em class="parameter"><code>BackgroundWorkerHandle
+    *handle</code></em>, <em class="parameter"><code>pid_t *</code></em>)</code>.
+  Cette fonctionne bloquera jusqu'à ce que le postmaster ait tenté de démarrer
+  le processus en tâche de fond, ou jusqu'à l'arrêt du postmaster.  Si le
+  processus en tâche de fond est en fonctionnement, la valeur retournée sera
+  <code class="literal">BGWH_STARTED</code>, et le PID sera écrit à l'adresse fournie.
+  Sinon, la valeur de retour sera <code class="literal">BGWH_STOPPED</code> ou
+  <code class="literal">BGWH_POSTMASTER_DIED</code>.
+ </p><p>
+  Un processus peut aussi attendre l'arrêt d'un autre processus en tâche de
+  fond, en utilisant la fonction
+  <code class="function">WaitForBackgroundWorkerShutdown(<em class="parameter"><code>BackgroundWorkerHandle
+    *handle</code></em>)</code> et en passant le
+  <code class="type">BackgroundWorkerHandle *</code> obtenu à l'enregistrement. Cette
+  fonction bloquera l'exécution jusqu'à l'arrêt de l'autre processus ou
+  jusqu'à la mort de postmaster. Quand le processus en tâche de fond quitte,
+  la valeur de retour est <code class="literal">BGWH_STOPPED</code>. Si postmaster
+  meurt, il renverra <code class="literal">BGWH_POSTMASTER_DIED</code>.
+ </p><p>
+  Les processus en tâche de fond peuvent envoyer des messages de notificatio
+  asynchrones, soit en utilisant la commande <code class="command">NOTIFY</code> via
+  <acronym class="acronym">SPI</acronym>, soit directement avec <code class="function">Async_Notify
+  ()</code>. De telles notifications seront envoyées au moment du commit.
+  Les processus en tâche de fond ne doivent pas s'enregistrer pour recevoir
+  des notifications asynchrones avec la commande <code class="command">LISTEN</code>,
+  car il n'existe pas d'infrastructure pour qu'un tel processus puisse
+  consommer ce type de notifications.
+ </p><p>
+  Le module contrib <code class="filename">src/test/modules/worker_spi</code> contient
+  un exemple fonctionnel, qui démontre quelques techniques utiles.
+ </p><p>
+  Le nombre maximum de processus en tâche de fond enregistré est limité par
+  <a class="xref" href="runtime-config-resource.html#GUC-MAX-WORKER-PROCESSES">max_worker_processes</a>.
+ </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/bgworker.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:44:12 GMT -->
+</html>

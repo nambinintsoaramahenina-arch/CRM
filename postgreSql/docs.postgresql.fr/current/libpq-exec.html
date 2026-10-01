@@ -1,0 +1,1187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/libpq-exec.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:36 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>32.3. Fonctions d'exécution de commandes</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="libpq-status.html" title="32.2. Fonctions de statut de connexion" /><link rel="next" href="libpq-async.html" title="32.4. Traitement des commandes asynchrones" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/libpq-exec.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/libpq-exec.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/libpq-exec.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/libpq-exec.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/libpq-exec.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/libpq-exec.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/libpq-exec.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/libpq-exec.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/libpq-exec.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/libpq-exec.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/libpq-exec.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/libpq-exec.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/libpq-exec.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/libpq-exec.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/libpq-exec.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/libpq-exec.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/libpq-exec.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/libpq-exec.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/libpq-exec.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/libpq-exec.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/libpq-exec.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="client-interfaces.html">Interfaces client</a></span> » <span class="breadcrumb-link"><a href="libpq.html"><span class="application">libpq</span>  --  Bibliothèque C</a></span> » <span class="breadcrumb-node">Fonctions d'exécution de commandes</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="libpq-status.html" title="32.2. Fonctions de statut de connexion">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="libpq.html" title="Chapitre 32. libpq  --  Bibliothèque C">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="libpq-async.html" title="32.4. Traitement des commandes asynchrones">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">32.2. Fonctions de statut de connexion </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 32.4. Traitement des commandes asynchrones</td></tr></table></div><div class="sect1" id="LIBPQ-EXEC"><div class="titlepage"><div><div><h2 class="title" style="clear: both">32.3. Fonctions d'exécution de commandes <a href="#LIBPQ-EXEC" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="libpq-exec.html#LIBPQ-EXEC-MAIN">32.3.1. Fonctions principales</a></span></dt><dt><span class="sect2"><a href="libpq-exec.html#LIBPQ-EXEC-SELECT-INFO">32.3.2. Récupérer l'information dans le résultat des requêtes</a></span></dt><dt><span class="sect2"><a href="libpq-exec.html#LIBPQ-EXEC-NONSELECT">32.3.3. Récupérer d'autres informations de résultats</a></span></dt><dt><span class="sect2"><a href="libpq-exec.html#LIBPQ-EXEC-ESCAPE-STRING">32.3.4. Échapper les chaînes dans les commandes SQL</a></span></dt></dl></div><p>
+   Une fois la connexion au serveur de la base de données établie avec
+   succès, les fonctions décrites ici sont utilisées pour exécuter les requêtes
+   SQL et les commandes.
+  </p><div class="sect2" id="LIBPQ-EXEC-MAIN"><div class="titlepage"><div><div><h3 class="title">32.3.1. Fonctions principales <a href="#LIBPQ-EXEC-MAIN" class="id_link">#</a></h3></div></div></div><p>
+    </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQEXEC"><span class="term"><code class="function">PQexec</code><a id="id-1.7.3.10.3.2.1.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQEXEC" class="id_link">#</a></dt><dd><p>
+        Soumet une commande au serveur et attend le résultat.
+        </p><pre class="synopsis">PGresult *PQexec(PGconn *conn, const char *command);
+        </pre><p>
+       </p><p>
+        Renvoie un pointeur <code class="structname">PGresult</code> ou peut-être un
+        pointeur NULL.
+        Un pointeur non NULL sera généralement renvoyé sauf dans des
+        conditions particulières comme un manque de mémoire ou lors d'erreurs
+        sérieuses telles que l'incapacité à envoyer la commande au serveur.
+        La fonction <a class="xref" href="libpq-exec.html#LIBPQ-PQRESULTSTATUS"><code class="function">PQresultStatus</code></a> devrait être appelée pour
+        vérifier le code retour  pour toute erreur (incluant la valeur d'un
+        pointeur NULL, auquel cas il renverra <code class="symbol">PGRES_FATAL_ERROR</code>).
+        Utilisez <a class="xref" href="libpq-status.html#LIBPQ-PQERRORMESSAGE">
+      <code class="function">PQerrorMessage</code>
+      
+     </a> pour obtenir plus
+        d'informations sur l'erreur.
+       </p></dd></dl></div><p>
+
+    La chaîne de la commande peut inclure plusieurs commandes SQL (séparées par des points
+    virgules). Les requêtes multiples envoyées
+    dans un unique appel à <a class="xref" href="libpq-exec.html#LIBPQ-PQEXEC"><code class="function">PQexec</code></a> sont exécutées dans une seule
+    transaction, sauf si des commandes <code class="command">BEGIN</code>/<code class="command">COMMIT
+    </code>  explicites sont incluses dans la chaîne
+    de requête pour la diviser en de multiples transactions. (Voir <a class="xref" href="protocol-flow.html#PROTOCOL-FLOW-MULTI-STATEMENT" title="53.2.2.1. Plusieurs requêtes dans le mode requête simple">Section 53.2.2.1</a> pour plus de détails sur comment le
+    serveur traite les chaînes multi-requêtes.) Notez néanmoins
+    que la structure <code class="structname">PGresult</code> renvoyée décrit seulement
+    le résultat de la dernière commande exécutée à partir de la chaîne. Si une des
+    commandes échoue, l'exécution de la chaîne s'arrête et le
+    <code class="structname">PGresult</code> renvoyé décrit la condition d'erreur.
+   </p><p>
+    </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQEXECPARAMS"><span class="term"><code class="function">PQexecParams</code><a id="id-1.7.3.10.3.3.1.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQEXECPARAMS" class="id_link">#</a></dt><dd><p>
+        Soumet une commande au serveur et attend le résultat, avec la
+        possibilité de passer des paramètres séparément du texte de la
+        commande SQL.
+        </p><pre class="synopsis">PGresult *PQexecParams(PGconn *conn,
+                            const char *command,
+                            int nParams,
+                            const Oid *paramTypes,
+                            const char * const *paramValues,
+                            const int *paramLengths,
+                            const int *paramFormats,
+                            int resultFormat);
+        </pre><p>
+       </p><p>
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQEXECPARAMS"><code class="function">PQexecParams</code></a> est identique à <a class="xref" href="libpq-exec.html#LIBPQ-PQEXEC"><code class="function">PQexec</code></a>
+        mais offre des
+        fonctionnalités supplémentaires : des valeurs de paramètres peuvent être
+        spécifiées séparément de la chaîne de commande et les résultats de la requête
+        peuvent être demandés soit au format texte soit au format binaire.
+       </p><p>
+        Voici les arguments de la fonction :
+
+        </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><em class="parameter"><code>conn</code></em></span></dt><dd><p>
+            L'objet connexion où envoyer la commande.
+           </p></dd><dt><span class="term"><em class="parameter"><code>command</code></em></span></dt><dd><p>
+            La chaîne SQL à exécuter. Si les paramètres sont utilisés, ils sont
+            référencés dans la chaîne avec <code class="literal">$1</code>,
+            <code class="literal">$2</code>, etc.
+           </p></dd><dt><span class="term"><em class="parameter"><code>nParams</code></em></span></dt><dd><p>
+            Le nombre de paramètres fournis ; il s'agit de la longueur des
+            tableaux <em class="parameter"><code>paramTypes[]</code></em>,
+            <em class="parameter"><code>paramValues[]</code></em>,
+            <em class="parameter"><code>paramLengths[]</code></em> et
+            <em class="parameter"><code>paramFormats[]</code></em>. (Les pointeurs de tableau peuvent
+            être <code class="symbol">NULL</code> quand <em class="parameter"><code>nParams</code></em> vaut
+            zéro.)
+           </p></dd><dt><span class="term"><em class="parameter"><code>paramTypes[]</code></em></span></dt><dd><p>
+            Spécifie, par OID, les types de données à affecter aux symboles de
+            paramètres. Si <em class="parameter"><code>paramTypes</code></em> est <code class="symbol">NULL</code>
+            ou si tout élément spécifique du tableau est zéro, le serveur infère un
+            type de donnée pour le symbole de paramètre de la même façon qu'il le
+            ferait pour une chaîne littérale sans type.
+           </p></dd><dt><span class="term"><em class="parameter"><code>paramValues[]</code></em></span></dt><dd><p>
+            Spécifie les vraies valeurs des paramètres. Un pointeur NULL dans ce
+            tableau signifie que le paramètre correspondant est NULL ; sinon,
+            le pointeur pointe vers une chaîne texte terminée par un octet nul
+            (pour le format texte) ou vers des données binaires dans le format
+            attendu par le serveur (pour le format binaire).
+           </p></dd><dt><span class="term"><em class="parameter"><code>paramLengths[]</code></em></span></dt><dd><p>
+            Spécifie les longueurs des données réelles des paramètres du format
+            binaire. Il est ignoré pour les paramètres NULL et les paramètres de
+            format texte. Le pointeur du tableau peut être NULL quand il n'y a pas
+            de paramètres binaires.
+           </p></dd><dt><span class="term"><em class="parameter"><code>paramFormats[]</code></em></span></dt><dd><p>
+            Spécifie si les paramètres sont du texte (place un 0 dans la ligne du
+            tableau pour le paramètre correspondant) ou binaire (place un 1 dans la
+            ligne du tableau pour le paramètre correspondant). Si le pointeur du
+            tableau est nul, alors tous les paramètres sont présumés être des chaînes
+            de texte.
+           </p><p>
+            Les valeurs passées dans le format binaire nécessitent de connaître la
+            représentation interne attendue par le processus backend. Par exemple, les entiers
+            doivent être passés dans l'ordre réseau pour les octets. Passer des
+            valeurs <code class="type">numeric</code> requiert de connaître le format de stockage
+            du serveur, comme implémenté dans
+            <code class="filename">src/backend/utils/adt/numeric.c::numeric_send()</code> et
+            <code class="filename">src/backend/utils/adt/numeric.c::numeric_recv()</code>.
+           </p></dd><dt><span class="term"><em class="parameter"><code>resultFormat</code></em></span></dt><dd><p>
+            Indiquez zéro pour obtenir les résultats dans un format texte et un pour
+            les obtenir dans un format binaire. (Il n'est actuellement pas possible
+            d'obtenir des formats différents pour des colonnes de résultats
+            différentes bien que le protocole le permette.)
+           </p></dd></dl></div><p>
+       </p></dd></dl></div><p>
+   </p><p>
+    Le principal avantage de <a class="xref" href="libpq-exec.html#LIBPQ-PQEXECPARAMS"><code class="function">PQexecParams</code></a> sur
+    <a class="xref" href="libpq-exec.html#LIBPQ-PQEXEC"><code class="function">PQexec</code></a> est que les valeurs de paramètres peuvent être
+    séparées à partir de la chaîne de commande, évitant ainsi le besoin
+    de guillemets et d'échappements, toujours pénibles et sources d'erreurs.
+   </p><p>
+    Contrairement à <a class="xref" href="libpq-exec.html#LIBPQ-PQEXEC"><code class="function">PQexec</code></a>, <a class="xref" href="libpq-exec.html#LIBPQ-PQEXECPARAMS"><code class="function">PQexecParams</code></a> autorise au plus
+    une commande SQL dans une chaîne donnée (il peut y avoir des points-virgules
+    mais pas plus d'une commande non vide). C'est une limitation du protocole
+    sous-jacent mais cela a quelque utilité comme défense supplémentaire contre les
+    attaques par injection de SQL.
+   </p><div class="tip"><h3 class="title">Astuce</h3><p>
+     Spécifier les types de paramètres via des OID est difficile,
+     surtout si vous préférez ne pas coder en dur des valeurs OID
+     particulières dans vos programmes. Néanmoins vous pouvez éviter de le faire,
+     même dans des cas où le serveur lui-même ne peut pas déterminer le type du
+     paramètre ou choisit un type différent de celui que vous voulez. Dans le
+     texte de la commande SQL, ajoutez une conversion explicite au symbole de
+     paramètre pour indiquer le type de données que vous enverrez. Par exemple :
+     </p><pre class="programlisting">SELECT * FROM ma_table WHERE x = $1::bigint;
+     </pre><p>
+     Ceci impose le traitement du paramètre <code class="literal">$1</code> en tant que <code class="type">bigint</code>
+     alors que, par défaut, il se serait vu affecté le même type que <code class="literal">x</code>.
+     Forcer la décision du type de paramètre, soit de cette façon soit en spécifiant
+     l'OID du type numérique, est fortement recommandé lors de l'envoi des valeurs
+     des paramètres au format binaire car le format binaire a moins de redondance que
+     le format texte et, du coup, il y a moins de chance que le serveur détecte une
+     erreur de correspondance de type pour vous.
+    </p></div><p>
+    </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQPREPARE"><span class="term"><code class="function">PQprepare</code>
+       <a id="id-1.7.3.10.3.7.1.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQPREPARE" class="id_link">#</a></dt><dd><p>
+        Soumet une requête pour créer une instruction préparée avec les
+        paramètres donnés et attends la fin de son exécution.
+        </p><pre class="synopsis">PGresult *PQprepare(PGconn *conn,
+         const char *stmtName,
+         const char *query,
+         int nParams,
+         const Oid *paramTypes);</pre><p>
+       </p><p>
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQPREPARE"><code class="function">PQprepare</code>
+       </a> crée une instruction préparée pour une
+        exécution ultérieure avec <a class="xref" href="libpq-exec.html#LIBPQ-PQEXECPREPARED"><code class="function">PQexecPrepared</code></a>. Cette
+        fonction autorise les commandes à être exécutées de façon répétée sans
+        être analysées et planifiées à chaque fois ; voir <a class="xref" href="sql-prepare.html" title="PREPARE"><span class="refentrytitle">PREPARE</span></a> pour les détails.
+       </p><p>
+        La fonction crée une instruction préparée nommée <em class="parameter"><code>stmtName</code></em>
+        à partir de la chaîne <em class="parameter"><code>query</code></em>,
+        qui ne doit contenir qu'une seule commande SQL.
+        <em class="parameter"><code>stmtName</code></em> peut être  <code class="literal">""</code> pour
+        créer une instruction non nommée, auquel cas toute instruction non nommée
+        déjà existante est automatiquement remplacée par cette dernière 
+        sinon une erreur sera levée si le nom de l'instruction est déjà définie
+        dans la session en cours. Si des paramètres sont utilisés, ils sont
+        référencés dans la requête avec <code class="literal">$1</code>, <code class="literal">$2</code>, etc.
+        <em class="parameter"><code>nParams</code></em> est le nombre de paramètres pour lesquels des types
+        sont prédéfinis dans le tableau <em class="parameter"><code>paramTypes[]</code></em> (le pointeur
+        du tableau pourrait être <code class="symbol">NULL</code> quand
+        <em class="parameter"><code>nParams</code></em> vaut zéro). <em class="parameter"><code>paramTypes[]</code></em> spécifie
+        les types de données à affecter aux symboles de paramètres par leur OID.
+        Si <em class="parameter"><code>paramTypes</code></em> est <code class="symbol">NULL</code> ou si un élément
+        particulier du tableau vaut zéro, le serveur affecte un type de données
+        au symbole du paramètre de la même façon qu'il le ferait pour une chaîne
+        littérale non typée. De plus, la requête peut utiliser des symboles
+        de paramètre avec des nombres plus importants que
+        <em class="parameter"><code>nParams</code></em> ; les types de données seront aussi inférés
+        pour ces symboles. (Voir <a class="xref" href="libpq-exec.html#LIBPQ-PQDESCRIBEPREPARED"><code class="function">PQdescribePrepared</code></a> pour un
+        moyen de trouver les types de données inférés.)
+       </p><p>
+        Comme avec <a class="xref" href="libpq-exec.html#LIBPQ-PQEXEC"><code class="function">PQexec</code></a>, le résultat est normalement un objet
+        <code class="structname">PGresult</code> dont le contenu indique le succès ou
+        l'échec côté serveur. Un résultat NULL indique un manque de mémoire ou
+        une incapacité à envoyer la commande. Utilisez
+        <a class="xref" href="libpq-status.html#LIBPQ-PQERRORMESSAGE">
+      <code class="function">PQerrorMessage</code>
+      
+     </a> pour obtenir plus d'informations sur
+        de telles erreurs.
+       </p></dd></dl></div><p>
+
+    Les instructions préparées avec <a class="xref" href="libpq-exec.html#LIBPQ-PQEXECPREPARED"><code class="function">PQexecPrepared</code></a> peuvent aussi être
+    créées en exécutant les instructions SQL <a class="xref" href="sql-prepare.html" title="PREPARE"><span class="refentrytitle">PREPARE</span></a>.
+   </p><p>
+    </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQEXECPREPARED"><span class="term"><code class="function">PQexecPrepared</code><a id="id-1.7.3.10.3.8.1.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQEXECPREPARED" class="id_link">#</a></dt><dd><p>
+        Envoie une requête pour exécuter une instruction séparée avec les
+        paramètres donnés, et attend le résultat.
+        </p><pre class="synopsis">PGresult *PQexecPrepared(PGconn *conn,
+                                const char *stmtName,
+                                int nParams,
+                                const char * const *paramValues,
+                                const int *paramLengths,
+                                const int *paramFormats,
+                                int resultFormat);
+        </pre><p>
+       </p><p>
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQEXECPREPARED"><code class="function">PQexecPrepared</code></a> est identique à <a class="xref" href="libpq-exec.html#LIBPQ-PQEXECPARAMS"><code class="function">PQexecParams</code></a> mais la
+        commande à exécuter est spécifiée en nommant l'instruction préparée précédemment
+        au lieu de donner une chaîne de requête. Cette fonctionnalité permet aux
+        commandes utilisées de façon répétée d'être analysées et planifiées seulement
+        une fois plutôt que chaque fois qu'ils sont exécutés.
+        L'instruction doit avoir été préparée précédemment dans la session en cours.
+       </p><p>
+        Les paramètres sont identiques à <a class="xref" href="libpq-exec.html#LIBPQ-PQEXECPARAMS"><code class="function">PQexecParams</code></a>, sauf que le nom
+        d'une instruction préparée est donné au lieu d'une chaîne de requête et
+        que le paramètre <em class="parameter"><code>paramTypes[]</code></em> n'est pas présent (il n'est pas
+        nécessaire car les types des paramètres de l'instruction préparée ont été
+        déterminés à la création).
+       </p></dd><dt id="LIBPQ-PQDESCRIBEPREPARED"><span class="term"><code class="function">PQdescribePrepared</code><a id="id-1.7.3.10.3.8.1.2.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQDESCRIBEPREPARED" class="id_link">#</a></dt><dd><p>
+        Soumet une requête pour obtenir des informations sur l'instruction
+        préparée indiquée et attend le retour de la requête.
+        </p><pre class="synopsis">
+         PGresult *PQdescribePrepared(PGconn *conn, const char *stmtName);
+        </pre><p>
+       </p><p>
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQDESCRIBEPREPARED"><code class="function">PQdescribePrepared</code></a> permet à une application d'obtenir des
+        informations sur une instruction préparée précédente.
+       </p><p>
+        <em class="parameter"><code>stmtName</code></em> peut être <code class="literal">""</code> ou  <code class="symbol">NULL</code> pour
+        référencer l'instruction non nommée. Sinon, ce doit être le nom d'une instruction
+        préparée existante. En cas de succès, un <code class="structname">PGresult</code> est
+        renvoyé avec le code retour <code class="literal">PGRES_COMMAND_OK</code>. Les fonctions
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQNPARAMS"><code class="function">PQnparams</code></a> et <a class="xref" href="libpq-exec.html#LIBPQ-PQPARAMTYPE"><code class="function">PQparamtype</code></a> peuvent
+        utiliser ce <code class="structname">PGresult</code> pour obtenir des
+        informations sur les paramètres de l'instruction préparée, et les fonctions
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQNFIELDS"><code class="function">PQnfields</code></a>, <a class="xref" href="libpq-exec.html#LIBPQ-PQFNAME"><code class="function">PQfname</code></a>,
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQFTYPE"><code class="function">PQftype</code></a>, etc. fournissent des informations sur les colonnes
+        résultantes (s'il y en a) de l'instruction.
+       </p></dd><dt id="LIBPQ-PQDESCRIBEPORTAL"><span class="term"><code class="function">PQdescribePortal</code><a id="id-1.7.3.10.3.8.1.3.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQDESCRIBEPORTAL" class="id_link">#</a></dt><dd><p>
+        Soumet une requête pour obtenir des informations sur le portail
+        indiqué et attend le retour de la requête.
+        </p><pre class="synopsis">
+         PGresult *PQdescribePortal(PGconn *conn, const char *portalName);
+        </pre><p>
+       </p><p>
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQDESCRIBEPORTAL"><code class="function">PQdescribePortal</code></a> permet à une application d'obtenir des
+        informations sur un portail précédemment créé. (<span class="application">libpq</span>
+        ne fournit pas d'accès direct aux portails mais vous pouvez utiliser cette
+        fonction pour inspecter les propriétés d'un curseur créé avec la commande
+        SQL <code class="command">DECLARE CURSOR</code>.)
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQDESCRIBEPORTAL"><code class="function">PQdescribePortal</code></a> est seulement supporté dans les connexions
+        en protocole 3.0 et ultérieurs ; il échouera lors de l'utilisation du
+        protocole 2.0.
+       </p><p>
+        <em class="parameter"><code>portalName</code></em> peut être <code class="literal">""</code> ou <code class="symbol">NULL</code> pour
+        référencer un portail sans nom. Sinon, il doit correspondre au nom d'un portail
+        existant. En cas de succès, un <code class="structname">PGresult</code> est renvoyé
+        avec le code de retour <code class="literal">PGRES_COMMAND_OK</code>. Les fonctions
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQNFIELDS"><code class="function">PQnfields</code></a>, <a class="xref" href="libpq-exec.html#LIBPQ-PQFNAME"><code class="function">PQfname</code></a>,
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQFTYPE"><code class="function">PQftype</code></a>, etc. peuvent utiliser ce
+        <code class="structname">PGresult</code> pour obtenir des informations sur les colonnes
+        résultantes (s'il y en a) du portail.
+       </p></dd><dt id="LIBPQ-PQCLOSEPREPARED"><span class="term"><code class="function">PQclosePrepared</code><a id="id-1.7.3.10.3.8.1.4.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCLOSEPREPARED" class="id_link">#</a></dt><dd><p>
+        Soumet une demande de fermeture de la requête préparée indiquée, et
+        attend la fin de cette demande.
+</p><pre class="synopsis">
+PGresult *PQclosePrepared(PGconn *conn, const char *stmtName);
+</pre><p>
+       </p><p>
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQCLOSEPREPARED"><code class="function">PQclosePrepared</code></a> permet à une application de
+        fermer une requête précédemment préparée. Fermer une requête relâche
+        toutes les ressources associées sur le serveur et permet la
+        réutilisation de son nom.
+       </p><p>
+        <em class="parameter"><code>stmtName</code></em> peut avoir <code class="literal">""</code> ou
+        <code class="symbol">NULL</code> pour faire référence à la requête sans nom. Cela
+        ne pose pas de problème si aucune requête n'a ce nom, l'opération ne
+        fait rien. En cas de succès, une structure
+        <code class="structname">PGresult</code> de statut
+        <code class="literal">PGRES_COMMAND_OK</code> est renvoyée.
+       </p></dd><dt id="LIBPQ-PQCLOSEPORTAL"><span class="term"><code class="function">PQclosePortal</code><a id="id-1.7.3.10.3.8.1.5.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCLOSEPORTAL" class="id_link">#</a></dt><dd><p>
+        Soumet une demande de fermeture du portail indiqué, et attend la fin de
+        cette demande.
+</p><pre class="synopsis">
+PGresult *PQclosePortal(PGconn *conn, const char *portalName);
+</pre><p>
+       </p><p>
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQCLOSEPORTAL"><code class="function">PQclosePortal</code></a> permet à une application de
+        déclencher la fermeture d'un portail précédemment créer. Fermer un
+        portail libère toutes les ressources associées sur le serveur et permet
+        la réutilisation de son nom. (<span class="application">libpq</span> ne fournit
+        pas un accès direct aux portails, mais vous pouvez utiliser cette
+        fonction pour fermer un curseur créé avec une commande SQL
+        <code class="command">DECLARE CURSOR</code>.)
+       </p><p>
+        <em class="parameter"><code>portalName</code></em> peut valoir <code class="literal">""</code> ou
+        <code class="symbol">NULL</code> pour référencer le portail sans nom. Cela ne pose
+        pas de problème si aucun portail de ce nom n'existe. Dans ce cas,
+        l'opération ne fait rien. En cas de succès, une structure
+        <code class="structname">PGresult</code> de statut
+        <code class="literal">PGRES_COMMAND_OK</code> est renvoyée.
+       </p></dd></dl></div><p>
+   </p><p>
+    La structure
+    <code class="structname">PGresult</code><a id="id-1.7.3.10.3.9.2" class="indexterm"></a>
+    encapsule le résultat renvoyé par le serveur. Les développeurs d'applications
+    <span class="application">libpq</span> devraient faire attention au maintien de
+    l'abstraction de <code class="structname">PGresult</code>. Utilisez les fonctions
+    d'accès ci-dessous pour obtenir le contenu de <code class="structname">PGresult</code>.
+    Évitez de référencer directement les champs de la structure <code class="structname">PGresult</code>
+    car ils sont sujets à changements dans le futur.
+
+    </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQRESULTSTATUS"><span class="term"><code class="function">PQresultStatus</code><a id="id-1.7.3.10.3.9.7.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQRESULTSTATUS" class="id_link">#</a></dt><dd><p>
+        Renvoie l'état du résultat d'une commande.
+        </p><pre class="synopsis">ExecStatusType PQresultStatus(const PGresult *res);
+        </pre><p>
+       </p><p>
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQRESULTSTATUS"><code class="function">PQresultStatus</code></a> peut renvoyer une des valeurs
+        suivantes :
+
+        </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PGRES-EMPTY-QUERY"><span class="term"><code class="literal">PGRES_EMPTY_QUERY</code></span> <a href="#LIBPQ-PGRES-EMPTY-QUERY" class="id_link">#</a></dt><dd><p>La chaîne envoyée au serveur était vide.</p></dd><dt id="LIBPQ-PGRES-COMMAND-OK"><span class="term"><code class="literal">PGRES_COMMAND_OK</code></span> <a href="#LIBPQ-PGRES-COMMAND-OK" class="id_link">#</a></dt><dd><p>Fin avec succès d'une commande ne renvoyant aucune donnée.</p></dd><dt id="LIBPQ-PGRES-TUPLES-OK"><span class="term"><code class="literal">PGRES_TUPLES_OK</code></span> <a href="#LIBPQ-PGRES-TUPLES-OK" class="id_link">#</a></dt><dd><p>Fin avec succès d'une commande renvoyant des données (telle que
+            <code class="command">SELECT</code> ou <code class="command">SHOW</code>).</p></dd><dt id="LIBPQ-PGRES-COPY-OUT"><span class="term"><code class="literal">PGRES_COPY_OUT</code></span> <a href="#LIBPQ-PGRES-COPY-OUT" class="id_link">#</a></dt><dd><p>Début de l'envoi (à partir du serveur) d'un flux de données.</p></dd><dt id="LIBPQ-PGRES-COPY-IN"><span class="term"><code class="literal">PGRES_COPY_IN</code></span> <a href="#LIBPQ-PGRES-COPY-IN" class="id_link">#</a></dt><dd><p>Début de la réception (sur le serveur) d'un flux de
+            données.</p></dd><dt id="LIBPQ-PGRES-BAD-RESPONSE"><span class="term"><code class="literal">PGRES_BAD_RESPONSE</code></span> <a href="#LIBPQ-PGRES-BAD-RESPONSE" class="id_link">#</a></dt><dd><p>La réponse du serveur n'a pas été comprise.</p></dd><dt id="LIBPQ-PGRES-NONFATAL-ERROR"><span class="term"><code class="literal">PGRES_NONFATAL_ERROR</code></span> <a href="#LIBPQ-PGRES-NONFATAL-ERROR" class="id_link">#</a></dt><dd><p>Une erreur non fatale (une note ou un avertissement) est
+            survenue.</p></dd><dt id="LIBPQ-PGRES-FATAL-ERROR"><span class="term"><code class="literal">PGRES_FATAL_ERROR</code></span> <a href="#LIBPQ-PGRES-FATAL-ERROR" class="id_link">#</a></dt><dd><p>Une erreur fatale est survenue.</p></dd><dt id="LIBPQ-PGRES-COPY-BOTH"><span class="term"><code class="literal">PGRES_COPY_BOTH</code></span> <a href="#LIBPQ-PGRES-COPY-BOTH" class="id_link">#</a></dt><dd><p>
+            Lancement du transfert de données Copy In/Out (vers et à
+            partir du serveur). Cette fonctionnalité est seulement
+            utilisée par la réplication en flux,
+            ce statut ne devrait donc pas apparaître dans les applications
+            ordinaires.
+           </p></dd><dt id="LIBPQ-PGRES-SINGLE-TUPLE"><span class="term"><code class="literal">PGRES_SINGLE_TUPLE</code></span> <a href="#LIBPQ-PGRES-SINGLE-TUPLE" class="id_link">#</a></dt><dd><p>
+            La structure <code class="structname">PGresult</code> contient une seule
+            ligne de résultat provenant de la commande courante. Ce statut
+            n'intervient que lorsque le mode ligne-à-ligne a été sélectionné
+            pour cette requête (voir <a class="xref" href="libpq-single-row-mode.html" title="32.6. Récupérer le résultats des requêtes par morceau">Section 32.6</a>).
+           </p></dd><dt id="LIBPQ-PGRES-TUPLES-CHUNK"><span class="term"><code class="literal">PGRES_TUPLES_CHUNK</code></span> <a href="#LIBPQ-PGRES-TUPLES-CHUNK" class="id_link">#</a></dt><dd><p>
+            La structure <code class="structname">PGresult</code> contient plusieurs
+            lignes du résultat de la commande actuelle. Ce statut arrive
+            uniquement quand le mode par morceau a été sélectionné pour la
+            requête (voir <a class="xref" href="libpq-single-row-mode.html" title="32.6. Récupérer le résultats des requêtes par morceau">Section 32.6</a>). Le nombre
+            de lignes ne dépassera pas la limite donnée à
+            <a class="xref" href="libpq-single-row-mode.html#LIBPQ-PQSETCHUNKEDROWSMODE"><code class="function">PQsetChunkedRowsMode</code></a>.
+           </p></dd><dt id="LIBPQ-PGRES-PIPELINE-SYNC"><span class="term"><code class="literal">PGRES_PIPELINE_SYNC</code></span> <a href="#LIBPQ-PGRES-PIPELINE-SYNC" class="id_link">#</a></dt><dd><p>
+            La structure <code class="structname">PGresult</code> représente
+            un point de synchronisation dans le mode pipeline, réclamé par
+            <a class="xref" href="libpq-pipeline-mode.html#LIBPQ-PQPIPELINESYNC"><code class="function">PQpipelineSync</code></a> ou
+            <a class="xref" href="libpq-pipeline-mode.html#LIBPQ-PQSENDPIPELINESYNC"><code class="function">PQsendPipelineSync</code></a>.
+            Ce statut survient seulement quand le mode pipeline a été
+            sélectionné.
+           </p></dd><dt id="LIBPQ-PGRES-PIPELINE-ABORTED"><span class="term"><code class="literal">PGRES_PIPELINE_ABORTED</code></span> <a href="#LIBPQ-PGRES-PIPELINE-ABORTED" class="id_link">#</a></dt><dd><p>
+            La structure <code class="structname">PGresult</code> représente un
+            pipeline qui a reçu une erreur du serveur.
+            <code class="function">PQgetResult</code> doit être appelé de façon répété
+            et, chaque fois, il renverra ce code de statut jusqu'à la fin du
+            pipeline courant, auquel cas il renverra
+            <code class="literal">PGRES_PIPELINE_SYNC</code> et le traitement normal
+            pourra recommencer.
+           </p></dd></dl></div><p>
+
+        Si le statut du résultat est <code class="literal">PGRES_TUPLES_OK</code>,
+        <code class="literal">PGRES_SINGLE_TUPLE</code> ou <code class="literal">PGRES_TUPLES_CHUNK</code>, alors les
+        fonctions décrites ci-dessous peuvent être utilisées pour récupérer les lignes
+        renvoyées par la requête. Notez qu'une commande <code class="command">SELECT</code> qui
+        récupère zéro ligne affichera toujours
+        <code class="literal">PGRES_TUPLES_OK</code>. <code class="literal">PGRES_COMMAND_OK</code> est
+        pour les commandes qui ne peuvent jamais renvoyer de lignes
+        (<code class="command">INSERT</code> ou <code class="command">UPDATE</code> sans une clause <code class="literal">RETURNING</code>, etc.). Une réponse
+        <code class="literal">PGRES_EMPTY_QUERY</code> pourrait indiquer un bogue dans le
+        logiciel client.
+       </p><p>
+        Un résultat de statut <code class="symbol">PGRES_NONFATAL_ERROR</code> ne sera jamais
+        renvoyé directement par <code class="function">PQexec</code> ou d'autres fonctions
+        d'exécution de requêtes ; les résultats de ce type sont passés à
+        l'exécuteur de notifications (voir la <a class="xref" href="libpq-notice-processing.html" title="32.13. Traitement des messages">Section 32.13</a>).
+       </p></dd><dt id="LIBPQ-PQRESSTATUS"><span class="term"><code class="function">PQresStatus</code><a id="id-1.7.3.10.3.9.7.2.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQRESSTATUS" class="id_link">#</a></dt><dd><p>
+        Convertit le type énuméré renvoyé par <a class="xref" href="libpq-exec.html#LIBPQ-PQRESULTSTATUS"><code class="function">PQresultStatus</code></a> en
+        une constante de type chaîne décrivant le code d'état. L'appelant ne
+        devrait pas libérer le résultat.
+        </p><pre class="synopsis">char *PQresStatus(ExecStatusType status);
+        </pre><p>
+       </p></dd><dt id="LIBPQ-PQRESULTERRORMESSAGE"><span class="term"><code class="function">PQresultErrorMessage</code><a id="id-1.7.3.10.3.9.7.3.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQRESULTERRORMESSAGE" class="id_link">#</a></dt><dd><p>
+        Renvoie le message d'erreur associé avec la commande ou une chaîne vide s'il
+        n'y a pas eu d'erreurs.
+        </p><pre class="synopsis">char *PQresultErrorMessage(const PGresult *res);
+        </pre><p>
+        S'il y a eu une erreur, la chaîne renvoyée incluera un retour chariot en fin.
+        L'appelant ne devrait pas libérer directement le résultat. Il sera libéré quand
+        le pointeur <code class="structname">PGresult</code> associé sera passé à
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQCLEAR"><code class="function">PQclear</code></a>.
+       </p><p>
+        Immédiatement après un appel à <a class="xref" href="libpq-exec.html#LIBPQ-PQEXEC"><code class="function">PQexec</code></a> ou
+        <a class="xref" href="libpq-async.html#LIBPQ-PQGETRESULT"><code class="function">PQgetResult</code></a>,
+        <a class="xref" href="libpq-status.html#LIBPQ-PQERRORMESSAGE">
+      <code class="function">PQerrorMessage</code>
+      
+     </a> (sur la
+        connexion) renverra la même chaîne que <a class="xref" href="libpq-exec.html#LIBPQ-PQRESULTERRORMESSAGE"><code class="function">PQresultErrorMessage</code></a>
+        (sur le résultat). Néanmoins, un <code class="structname">PGresult</code> conservera
+        son message d'erreur jusqu'à destruction, alors que le message d'erreur de la
+        connexion changera avec les opérations suivantes. Utilisez
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQRESULTERRORMESSAGE"><code class="function">PQresultErrorMessage</code></a> quand vous voulez connaître le statut
+        associé avec un <code class="structname">PGresult</code> particulier ; utilisez
+        <a class="xref" href="libpq-status.html#LIBPQ-PQERRORMESSAGE">
+      <code class="function">PQerrorMessage</code>
+      
+     </a> lorsque vous souhaitez connaître le statut
+        à partir de la dernière opération sur la connexion.
+       </p></dd><dt id="LIBPQ-PQRESULTVERBOSEERRORMESSAGE"><span class="term"><code class="function">PQresultVerboseErrorMessage</code><a id="id-1.7.3.10.3.9.7.4.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQRESULTVERBOSEERRORMESSAGE" class="id_link">#</a></dt><dd><p>
+        Renvoie une version reformatée du message d'erreur associé avec un objet
+        <code class="structname">PGresult</code>.
+        </p><pre class="synopsis">
+char *PQresultVerboseErrorMessage(const PGresult *res,
+                                  PGVerbosity verbosity,
+                                  PGContextVisibility show_context);
+        </pre><p>
+        Dans certaines situations, un client pourrait vouloir une
+        version plus détaillée d'une erreur déjà rapportée.
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQRESULTVERBOSEERRORMESSAGE"><code class="function">PQresultVerboseErrorMessage</code></a> couvre ce besoin en
+        traitant le message tel qu'il aurait été produit par
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQRESULTERRORMESSAGE"><code class="function">PQresultErrorMessage</code></a> si la configuration souhaitée
+        de la verbosité était activée pour la connexion au moment où l'objet
+        <code class="structname">PGresult</code> indiqué a été généré. Si le
+        <code class="structname">PGresult</code> ne correspond pas une erreur,
+        <span class="quote">« <span class="quote">PGresult is not an error result</span> »</span> est renvoyé à la place.
+        La chaîne renvoyée inclut un retour à la ligne en fin de chaîne.
+       </p><p>
+        Contrairement à la plupart des autres fonctions d'extraction de données
+        à partir d'un objet <code class="structname">PGresult</code>, le résultat de
+        cette fonction est une chaîne tout juste allouée. L'appelant doit la
+        libérer en utilisant <code class="function">PQfreemem()</code> quand la chaîne
+        n'est plus nécessaire.
+       </p><p>
+        Un NULL en retour est possible s'il n'y a pas suffisamment de mémoire.
+       </p></dd><dt id="LIBPQ-PQRESULTERRORFIELD"><span class="term"><code class="function">PQresultErrorField</code><a id="id-1.7.3.10.3.9.7.5.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQRESULTERRORFIELD" class="id_link">#</a></dt><dd><p>
+        Renvoie un champ individuel d'un rapport d'erreur.
+        </p><pre class="synopsis">char *PQresultErrorField(const PGresult *res, int fieldcode);
+        </pre><p>
+        <em class="parameter"><code>fieldcode</code></em> est un identifiant de champ d'erreur ; voir les
+        symboles listés ci-dessous. <code class="symbol">NULL</code> est renvoyé si
+        <code class="structname">PGresult</code> n'est pas un résultat d'erreur ou
+        d'avertissement, ou n'inclut pas le champ spécifié. Les valeurs de champ
+        n'incluront normalement pas un retour chariot en fin. L'appelant ne devrait pas
+        libérer directement le résultat. Il sera libéré quand le pointeur
+        <code class="structname">PGresult</code> associé sera passé à
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQCLEAR"><code class="function">PQclear</code></a>.
+       </p><p>
+        Les codes de champs suivants sont disponibles :
+        </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PG-DIAG-SEVERITY"><span class="term"><code class="symbol">PG_DIAG_SEVERITY</code></span> <a href="#LIBPQ-PG-DIAG-SEVERITY" class="id_link">#</a></dt><dd><p>
+            La sévérité ; le contenu du champ peut être <code class="literal">ERROR</code>,
+            <code class="literal">FATAL</code> ou <code class="literal">PANIC</code> dans un message d'erreur, ou
+            <code class="literal">WARNING</code>, <code class="literal">NOTICE</code>, <code class="literal">DEBUG</code>,
+            <code class="literal">INFO</code> ou <code class="literal">LOG</code> dans un message de notification, ou une
+            traduction localisée d'un de ceux-ci. Toujours présent.
+           </p></dd><dt id="LIBPQ-PG-DIAG-SEVERITY-NONLOCALIZED"><span class="term"><code class="symbol">PG_DIAG_SEVERITY_NONLOCALIZED</code></span> <a href="#LIBPQ-PG-DIAG-SEVERITY-NONLOCALIZED" class="id_link">#</a></dt><dd><p>
+            La sévérité ; le contenu du champ peut être
+            <code class="literal">ERROR</code>, <code class="literal">FATAL</code> ou
+            <code class="literal">PANIC</code> (dans un message d'erreur), ou
+            <code class="literal">WARNING</code>, <code class="literal">NOTICE</code>,
+            <code class="literal">DEBUG</code>, <code class="literal">INFO</code> ou
+            <code class="literal">LOG</code> (dans un message de notification). C'est
+            identique au champ <code class="symbol">PG_DIAG_SEVERITY</code> sauf que le
+            contenu n'est jamais traduit. Il est présent uniquement dans les
+            rapports générés par les versions 9.6 et ultérieurs de
+            <span class="productname">PostgreSQL</span>.
+           </p></dd><dt id="LIBPQ-PG-DIAG-SQLSTATE"><span class="term"><code class="symbol">PG_DIAG_SQLSTATE</code><a id="id-1.7.3.10.3.9.7.5.2.2.1.3.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PG-DIAG-SQLSTATE" class="id_link">#</a></dt><dd><p>
+            Le code SQLSTATE de l'erreur. Ce code identifie le type d'erreur qui est
+            survenu ; il peut être utilisé par des interfaces utilisateur pour
+            des opérations spécifiques (telles que la gestion des erreurs) en réponse à une
+            erreur particulière de la base de données. Pour une liste des codes SQLSTATE
+            possibles, voir l'<a class="xref" href="errcodes-appendix.html" title="Annexe A. Codes d'erreur de PostgreSQL">Annexe A</a>. Ce champ n'est pas
+            localisable et est toujours présent.
+           </p></dd><dt id="LIBPQ-PG-DIAG-MESSAGE-PRIMARY"><span class="term"><code class="symbol">PG_DIAG_MESSAGE_PRIMARY</code></span> <a href="#LIBPQ-PG-DIAG-MESSAGE-PRIMARY" class="id_link">#</a></dt><dd><p>
+            Le message d'erreur principal, compréhensible par un humain (typiquement sur
+            une ligne). Toujours présent.
+           </p></dd><dt id="LIBPQ-PG-DIAG-MESSAGE-DETAIL"><span class="term"><code class="symbol">PG_DIAG_MESSAGE_DETAIL</code></span> <a href="#LIBPQ-PG-DIAG-MESSAGE-DETAIL" class="id_link">#</a></dt><dd><p>
+            Détail : un message d'erreur secondaire et optionnel proposant plus
+            d'informations sur le problème. Pourrait courir sur plusieurs lignes.
+           </p></dd><dt id="LIBPQ-PG-DIAG-MESSAGE-HINT"><span class="term"><code class="symbol">PG_DIAG_MESSAGE_HINT</code></span> <a href="#LIBPQ-PG-DIAG-MESSAGE-HINT" class="id_link">#</a></dt><dd><p>
+            Astuce : une suggestion supplémentaire sur ce qu'il faut faire suite à
+            ce problème. Elle a pour but de différer du détail car elle
+            offre un conseil (potentiellement inapproprié) plutôt que des faits établis.
+            Pourrait courir sur plusieurs lignes.
+           </p></dd><dt id="LIBPQ-PG-DIAG-STATEMENT-POSITION"><span class="term"><code class="symbol">PG_DIAG_STATEMENT_POSITION</code></span> <a href="#LIBPQ-PG-DIAG-STATEMENT-POSITION" class="id_link">#</a></dt><dd><p>
+            Une chaîne contenant un entier décimal indiquant une position du curseur d'erreur
+            comme index dans la chaîne d'instruction originale. Le premier caractère
+            a l'index 1 et les positions sont mesurées en caractères, et non en
+            octets.
+           </p></dd><dt id="LIBPQ-PG-DIAG-INTERNAL-POSITION"><span class="term"><code class="symbol">PG_DIAG_INTERNAL_POSITION</code></span> <a href="#LIBPQ-PG-DIAG-INTERNAL-POSITION" class="id_link">#</a></dt><dd><p>
+            Ceci est défini de la même façon que le champ <code class="symbol">PG_DIAG_STATEMENT_POSITION</code>
+            mais est utilisé quand la position du curseur fait référence à une commande
+            générée en interne plutôt qu'une soumise par le client. Le champ
+            <code class="symbol">PG_DIAG_INTERNAL_QUERY</code> apparaîtra toujours quand ce champ apparaît.
+           </p></dd><dt id="LIBPQ-PG-DIAG-INTERNAL-QUERY"><span class="term"><code class="symbol">PG_DIAG_INTERNAL_QUERY</code></span> <a href="#LIBPQ-PG-DIAG-INTERNAL-QUERY" class="id_link">#</a></dt><dd><p>
+            Le texte d'une commande générée en interne et échouée. Ce pourrait être, par
+            exemple, une requête SQL lancée par une fonction PL/pgSQL.
+           </p></dd><dt id="LIBPQ-PG-DIAG-CONTEXT"><span class="term"><code class="symbol">PG_DIAG_CONTEXT</code></span> <a href="#LIBPQ-PG-DIAG-CONTEXT" class="id_link">#</a></dt><dd><p>
+            Une indication du contexte dans lequel l'erreur est apparue. Actuellement, cela
+            inclut une trace de la pile d'appels des fonctions du langage
+            procédural actif et de requêtes générées en interne. La trace a une
+            entrée par ligne, la plus récente au début.
+           </p></dd><dt id="LIBPQ-PG-DIAG-SCHEMA-NAME"><span class="term"><code class="symbol">PG_DIAG_SCHEMA_NAME</code></span> <a href="#LIBPQ-PG-DIAG-SCHEMA-NAME" class="id_link">#</a></dt><dd><p>
+            Si l'erreur était associée à un objet spécifique de la base de
+            données, nom du schéma contenant cet objet.
+           </p></dd><dt id="LIBPQ-PG-DIAG-TABLE-NAME"><span class="term"><code class="symbol">PG_DIAG_TABLE_NAME</code></span> <a href="#LIBPQ-PG-DIAG-TABLE-NAME" class="id_link">#</a></dt><dd><p>
+            Si l'erreur était associée à une table spécifique, nom de cette
+            table. (Fait référence au champ du nom du schéma pour le nom du
+            schéma de la table.)
+           </p></dd><dt id="LIBPQ-PG-DIAG-COLUMN-NAME"><span class="term"><code class="symbol">PG_DIAG_COLUMN_NAME</code></span> <a href="#LIBPQ-PG-DIAG-COLUMN-NAME" class="id_link">#</a></dt><dd><p>
+            Si l'erreur était associée à une colonne spécifique d'une table,
+            nom de cette colonne. (Fait référence aux champs de noms du schéma
+            et de la table pour identifier la table.)
+           </p></dd><dt id="LIBPQ-PG-DIAG-DATATYPE-NAME"><span class="term"><code class="symbol">PG_DIAG_DATATYPE_NAME</code></span> <a href="#LIBPQ-PG-DIAG-DATATYPE-NAME" class="id_link">#</a></dt><dd><p>
+            Si l'erreur était associée à un type de données spécifique, nom de
+            ce type de données. (Fait référence au champ du nom du schéma pour
+            le schéma du type de données.)
+           </p></dd><dt id="LIBPQ-PG-DIAG-CONSTRAINT-NAME"><span class="term"><code class="symbol">PG_DIAG_CONSTRAINT_NAME</code></span> <a href="#LIBPQ-PG-DIAG-CONSTRAINT-NAME" class="id_link">#</a></dt><dd><p>
+            Si l'erreur était associée à une contrainte spécifique, nom de cette
+            contrainte. Cela fait référence aux champs listés ci-dessus pour la
+            table ou le domaine associé. (Dans ce cadre, les index
+            sont traités comme des contraintes, même s'ils n'ont pas été
+            créés avec la syntaxe des contraintes.)
+           </p></dd><dt id="LIBPQ-PG-DIAG-SOURCE-FILE"><span class="term"><code class="symbol">PG_DIAG_SOURCE_FILE</code></span> <a href="#LIBPQ-PG-DIAG-SOURCE-FILE" class="id_link">#</a></dt><dd><p>
+            Le nom du fichier contenant le code source où l'erreur a été rapportée.
+           </p></dd><dt id="LIBPQ-PG-DIAG-SOURCE-LINE"><span class="term"><code class="symbol">PG_DIAG_SOURCE_LINE</code></span> <a href="#LIBPQ-PG-DIAG-SOURCE-LINE" class="id_link">#</a></dt><dd><p>
+            Le numéro de ligne dans le code source où l'erreur a été rapportée.
+           </p></dd><dt id="LIBPQ-PG-DIAG-SOURCE-FUNCTION"><span class="term"><code class="symbol">PG_DIAG_SOURCE_FUNCTION</code></span> <a href="#LIBPQ-PG-DIAG-SOURCE-FUNCTION" class="id_link">#</a></dt><dd><p>
+            Le nom de la fonction dans le code source où l'erreur a été rapportée.
+           </p></dd></dl></div><p>
+       </p><div class="note"><h3 class="title">Note</h3><p>
+         Les champs pour les noms du schéma, de la table, de la colonne, du
+         type de données et de la contrainte sont fournis seulement pour un
+         nombre limité de types d'erreurs ; voir <a class="xref" href="errcodes-appendix.html" title="Annexe A. Codes d'erreur de PostgreSQL">Annexe A</a>. Ne supposez pas que la présence d'un
+         de ces champs garantisse la présence d'un autre champ. Les sources
+         d'erreurs du moteur observent les relations notées ci-dessus mais les
+         fonctions utilisateurs peuvent utiliser ces champs d'une autre
+         façon. Dans la même idée, ne supposez pas que ces champs indiquent
+         des objets encore existants dans la base de données courante.
+        </p></div><p>
+        Le client est responsable du formatage des informations affichées suivant
+        ses besoins ; en particulier, il doit supprimer les longues
+        lignes si nécessaires. Les caractères de retour chariot apparaissant dans les
+        champs de message d'erreur devraient être traités comme des changements de
+        paragraphes, pas comme des changements de lignes.
+       </p><p>
+        Les erreurs générées en interne par <span class="application">libpq</span> auront une
+        sévérité et un message principal mais aucun autre champ.
+       </p><p>
+        Notez que les champs d'erreurs sont seulement disponibles pour les objets
+        <code class="structname">PGresult</code>, et non pas pour les objets
+        <code class="structname">PGconn</code> ; il n'existe pas de fonction
+        <code class="function">PQerrorField</code>.
+       </p></dd><dt id="LIBPQ-PQCLEAR"><span class="term"><code class="function">PQclear</code><a id="id-1.7.3.10.3.9.7.6.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCLEAR" class="id_link">#</a></dt><dd><p>
+        Libère le stockage associé avec un <code class="structname">PGresult</code>.
+        Chaque résultat de commande devrait être libéré via
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQCLEAR"><code class="function">PQclear</code></a> lorsqu'il n'est plus nécessaire.
+        </p><pre class="synopsis">void PQclear(PGresult *res);
+        </pre><p>
+
+        Si l'argument est un pointeur <code class="symbol">NULL</code>, aucune opération
+        n'est réalisée.
+       </p><p>
+        Vous pouvez conserver un objet <code class="structname">PGresult</code>
+        aussi longtemps que vous en avez besoin ; il ne part pas lorsque
+        vous lancez une nouvelle commande, même pas si vous fermez la
+        connexion. Pour vous en débarrasser, vous devez appeler
+        <a class="xref" href="libpq-exec.html#LIBPQ-PQCLEAR"><code class="function">PQclear</code></a>. En cas d'oubli, le résultat sera une
+        fuite de mémoire dans votre application.
+       </p></dd></dl></div><p>
+   </p></div><div class="sect2" id="LIBPQ-EXEC-SELECT-INFO"><div class="titlepage"><div><div><h3 class="title">32.3.2. Récupérer l'information dans le résultat des requêtes <a href="#LIBPQ-EXEC-SELECT-INFO" class="id_link">#</a></h3></div></div></div><p>
+    Ces fonctions sont utilisées pour extraire des informations provenant d'un objet
+    <code class="structname">PGresult</code> représentant un résultat valide pour une
+    requête (statut <code class="literal">PGRES_TUPLES_OK</code>,
+    <code class="literal">PGRES_SINGLE_TUPLE</code> ou <code class="literal">PGRES_TUPLES_CHUNK</code>).
+    Elles peuvent aussi être
+    utilisés pour extraire des informations à partir d'une opération Describe
+    réussie : le résultat d'un Describe a les mêmes informations de colonnes
+    qu'une exécution réelle de la requête aurait fournie, mais avec zéro ligne.
+    Pour les objets avec d'autres valeurs de statut, ces fonctions agiront comme
+    si le résultat avait zéro ligne et zéro colonne.
+   </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQNTUPLES"><span class="term"><code class="function">PQntuples</code><a id="id-1.7.3.10.4.3.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQNTUPLES" class="id_link">#</a></dt><dd><p>
+       Renvoie le nombre de lignes (enregistrements, ou
+       <span class="foreignphrase"><em class="foreignphrase">tuples</em></span>) du résultat de la requête.
+       (Notez que les objets <code class="structname">PGresult</code> sont limités à
+       au plus <code class="literal">INT_MAX</code> lignes, donc un résultat de type
+       <code class="type">int</code> est suffisant.)
+       </p><pre class="synopsis">int PQntuples(const PGresult *res);
+       </pre><p>
+      </p></dd><dt id="LIBPQ-PQNFIELDS"><span class="term"><code class="function">PQnfields</code><a id="id-1.7.3.10.4.3.2.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQNFIELDS" class="id_link">#</a></dt><dd><p>
+       Renvoie le nombre de colonnes (champs) de chaque ligne du résultat de
+       la requête.
+       </p><pre class="synopsis">int PQnfields(const PGresult *res);
+       </pre><p>
+      </p></dd><dt id="LIBPQ-PQFNAME"><span class="term"><code class="function">PQfname</code><a id="id-1.7.3.10.4.3.3.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQFNAME" class="id_link">#</a></dt><dd><p>
+       Renvoie le nom de la colonne associé avec le numéro de colonne donnée.
+       Les numéros de colonnes commencent à zéro. L'appelant ne devrait pas
+       libérer directement le résultat. Il sera libéré quand le pointeur
+       <code class="structname">PGresult</code> associée est passée à
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQCLEAR"><code class="function">PQclear</code></a>.
+       </p><pre class="synopsis">char *PQfname(const PGresult *res,
+                      int column_number);
+       </pre><p>
+      </p><p>
+       <code class="symbol">NULL</code> est renvoyé si le numéro de colonne est en dehors de la
+       plage.
+      </p></dd><dt id="LIBPQ-PQFNUMBER"><span class="term"><code class="function">PQfnumber</code><a id="id-1.7.3.10.4.3.4.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQFNUMBER" class="id_link">#</a></dt><dd><p>
+       Renvoie le numéro de colonne associé au nom de la colonne donné.
+       </p><pre class="synopsis">int PQfnumber(const PGresult *res,
+                     const char *column_name);
+       </pre><p>
+      </p><p>
+       -1 est renvoyé si le nom donné ne correspond à aucune colonne.
+      </p><p>
+       Le nom donné est traité comme un identifiant dans une commande SQL,
+       c'est-à-dire qu'il est mis en minuscule sauf s'il est entre des
+       guillemets doubles. Par exemple, pour le résultat de la requête
+       suivante :
+       </p><pre class="programlisting">SELECT 1 AS FOO, 2 AS "BAR";
+       </pre><p>
+       nous devons obtenir les résultats suivants :
+       </p><pre class="programlisting">PQfname(res, 0)              <em class="lineannotation"><span class="lineannotation">foo</span></em>
+      PQfname(res, 1)              <em class="lineannotation"><span class="lineannotation">BAR</span></em>
+      PQfnumber(res, "FOO")        <em class="lineannotation"><span class="lineannotation">0</span></em>
+      PQfnumber(res, "foo")        <em class="lineannotation"><span class="lineannotation">0</span></em>
+      PQfnumber(res, "BAR")        <em class="lineannotation"><span class="lineannotation">-1</span></em>
+      PQfnumber(res, "\"BAR\"")    <em class="lineannotation"><span class="lineannotation">1</span></em>
+       </pre><p>
+      </p></dd><dt id="LIBPQ-PQFTABLE"><span class="term"><code class="function">PQftable</code><a id="id-1.7.3.10.4.3.5.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQFTABLE" class="id_link">#</a></dt><dd><p>
+       Renvoie l'OID de la table à partir de laquelle la colonne donnée a été
+       récupérée. Les numéros de colonnes commencent à 0.
+       </p><pre class="synopsis">Oid PQftable(const PGresult *res,
+                    int column_number);
+       </pre><p>
+      </p><p>
+       <code class="literal">InvalidOid</code> est renvoyé si le numéro de colonne est
+       en dehors de la plage, ou si la colonne spécifiée n'est pas une simple
+       référence à une colonne de table. Vous pouvez requêter la table
+       système <code class="literal">pg_class</code> pour déterminer exactement quelle
+       table est référencée.
+      </p><p>
+       Le type <code class="type">Oid</code> et la constante
+       <code class="literal">InvalidOid</code> seront définis lorsque vous incluerez le
+       fichier d'en-tête <span class="application">libpq</span>. Ils auront le même
+       type entier.
+      </p></dd><dt id="LIBPQ-PQFTABLECOL"><span class="term"><code class="function">PQftablecol</code><a id="id-1.7.3.10.4.3.6.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQFTABLECOL" class="id_link">#</a></dt><dd><p>
+       Renvoie le numéro de colonne (dans sa table) de la colonne
+       correspondant à la colonne spécifiée de résultat de la requête. Les numéros de
+       colonne du résultat commencent à 0, mais les colonnes de table ont des
+       numéros supérieurs à zéro.
+       </p><pre class="synopsis">int PQftablecol(const PGresult *res,
+                      int column_number);
+       </pre><p>
+      </p><p>
+       Zéro est renvoyé si le numéro de colonne est en dehors de la plage, ou si la
+       colonne spécifiée n'est pas une simple référence à une colonne de table, ou
+       lors de l'utilisation d'un protocole antérieur à la version 3.0.
+      </p></dd><dt id="LIBPQ-PQFFORMAT"><span class="term"><code class="function">PQfformat</code><a id="id-1.7.3.10.4.3.7.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQFFORMAT" class="id_link">#</a></dt><dd><p>
+       Renvoie le code de format indiquant le format de la colonne donné. Les numéros
+       de colonnes commencent à zéro.
+       </p><pre class="synopsis">int PQfformat(const PGresult *res,
+                     int column_number);
+       </pre><p>
+      </p><p>
+       Le code de format zéro indique une représentation textuelle des données,
+       alors qu'un code un indique une représentation binaire (les
+       autres codes sont réservés pour des définitions futures).
+      </p></dd><dt id="LIBPQ-PQFTYPE"><span class="term"><code class="function">PQftype</code><a id="id-1.7.3.10.4.3.8.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQFTYPE" class="id_link">#</a></dt><dd><p>
+       Renvoie le type de données associé avec le numéro de colonne donné.
+       L'entier renvoyé est le numéro OID interne du type. Les numéros de
+       colonnes commencent à zéro.
+       </p><pre class="synopsis">Oid PQftype(const PGresult *res,
+                   int column_number);
+       </pre><p>
+      </p><p>
+       Vous pouvez lancer des requêtes sur la table système
+       <code class="literal">pg_type</code> pour obtenir les noms et propriétés des
+       différents types de données. Les <acronym class="acronym">OID</acronym> des types de
+       données intégrés sont définis dans le fichier
+       <code class="filename">catalog/pg_type_d.h</code> du répertoire
+       <code class="filename">include</code> de l'installation de
+       <span class="productname">PostgreSQL</span>.
+      </p></dd><dt id="LIBPQ-PQFMOD"><span class="term"><code class="function">PQfmod</code><a id="id-1.7.3.10.4.3.9.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQFMOD" class="id_link">#</a></dt><dd><p>
+       Renvoie le modificateur de type de la colonne associée avec le numéro
+       de colonne donné. Les numéros de colonnes commencent à zéro.
+       </p><pre class="synopsis">int PQfmod(const PGresult *res,
+                  int column_number);
+       </pre><p>
+      </p><p>
+       L'interprétation des valeurs du modificateur est spécifique au type ;
+       typiquement elles indiquent la précision ou les limites de taille.
+       La valeur -1 est
+       utilisée pour indiquer <span class="quote">« <span class="quote">aucune information disponible</span> »</span>. La
+       plupart des types de données n'utilisent pas les modificateurs, auquel cas la
+       valeur est toujours -1.
+      </p></dd><dt id="LIBPQ-PQFSIZE"><span class="term"><code class="function">PQfsize</code><a id="id-1.7.3.10.4.3.10.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQFSIZE" class="id_link">#</a></dt><dd><p>
+       Renvoie la taille en octets de la colonne associée au numéro de
+       colonne donné. Les numéros de colonnes commencent à 0.
+       </p><pre class="synopsis">int PQfsize(const PGresult *res,
+                   int column_number);
+       </pre><p>
+      </p><p>
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQFSIZE"><code class="function">PQfsize</code></a> renvoie l'espace alloué pour cette colonne dans une ligne
+       de la base de données, en d'autres termes la taille de la représentation
+       interne du serveur du type de données (en conséquence ce n'est pas
+       réellement utile pour les clients). Une valeur négative indique que les types de
+       données ont une longueur variable.
+      </p></dd><dt id="LIBPQ-PQBINARYTUPLES"><span class="term"><code class="function">PQbinaryTuples</code><a id="id-1.7.3.10.4.3.11.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQBINARYTUPLES" class="id_link">#</a></dt><dd><p>
+       Renvoie 1 si <code class="structname">PGresult</code> contient des données binaires et 0 s'il
+       contient des données texte.
+       </p><pre class="synopsis">int PQbinaryTuples(const PGresult *res);
+       </pre><p>
+      </p><p>
+       Cette fonction est obsolète (sauf dans le cas d'une utilisation en relation avec
+       <code class="command">COPY</code>) car un seul <code class="structname">PGresult</code> peut contenir du texte
+       dans certaines colonnes et des données binaires dans d'autres.
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQFFORMAT"><code class="function">PQfformat</code></a> est à préférer. <a class="xref" href="libpq-exec.html#LIBPQ-PQBINARYTUPLES"><code class="function">PQbinaryTuples</code></a>
+       renvoie 1 seulement si toutes les colonnes du résultat sont dans un format
+       binaire (format 1).
+      </p></dd><dt id="LIBPQ-PQGETVALUE"><span class="term"><code class="function">PQgetvalue</code><a id="id-1.7.3.10.4.3.12.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQGETVALUE" class="id_link">#</a></dt><dd><p>
+       Renvoie la valeur d'un seul champ d'une seule ligne d'un
+       <code class="structname">PGresult</code>. Les numéros de lignes et de
+       colonnes commencent à zéro. L'appelant ne devrait pas libérer
+       directement le résultat. Il sera libéré quand le pointeur
+       <code class="structname">PGresult</code> associé sera passé à
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQCLEAR"><code class="function">PQclear</code></a>.
+       </p><pre class="synopsis">char* PQgetvalue(const PGresult *res,
+                        int row_number,
+                        int column_number);
+       </pre><p>
+      </p><p>
+       Pour les données au format texte, la valeur renvoyée par
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQGETVALUE"><code class="function">PQgetvalue</code></a> est une représentation au format chaîne de
+       caractères terminée par un octet nul de la valeur du champ. Pour les données au
+       format binaire, la valeur dans la représentation binaire est déterminée par le
+       type de la donnée, fonctions <code class="function">typsend</code> et
+       <code class="function">typreceive</code>. (La valeur est en fait suivie d'un octet
+       zéro dans ce cas aussi, mais ce n'est pas réellement utile car la valeur
+       a des chances de contenir d'autres valeurs NULL embarquées).
+      </p><p>
+       Une chaîne vide est renvoyée si la valeur du champ est NULL. Voir
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQGETISNULL"><code class="function">PQgetisnull</code></a> pour distinguer les valeurs NULL des
+       chaînes vides.
+      </p><p>
+       Le pointeur renvoyé par <a class="xref" href="libpq-exec.html#LIBPQ-PQGETVALUE"><code class="function">PQgetvalue</code></a> pointe vers le stockage
+       qui fait partie de la structure <code class="structname">PGresult</code>. Personne ne
+       devrait modifier les données vers lesquelles il pointe, et tout le monde
+       devrait copier les données dans un autre stockage explicitement si elles
+       doivent être utilisées après la durée de vie de la structure
+       <code class="structname">PGresult</code>.
+      </p></dd><dt id="LIBPQ-PQGETISNULL"><span class="term"><code class="function">PQgetisnull</code><a id="id-1.7.3.10.4.3.13.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQGETISNULL" class="id_link">#</a></dt><dd><a id="id-1.7.3.10.4.3.13.2.1" class="indexterm"></a><p>
+       Teste un champ pour savoir s'il est NULL. Les numéros de lignes et de
+       colonnes commencent à 0.
+       </p><pre class="synopsis">int PQgetisnull(const PGresult *res,
+                       int row_number,
+                       int column_number);
+       </pre><p>
+      </p><p>
+       Cette fonction renvoie 1 si le champ est nul et 0 s'il contient une valeur non
+       NULL (notez que <a class="xref" href="libpq-exec.html#LIBPQ-PQGETVALUE"><code class="function">PQgetvalue</code></a> renverra une chaîne vide, et
+       non pas un pointeur NULL, pour un champ NULL).
+      </p></dd><dt id="LIBPQ-PQGETLENGTH"><span class="term"><code class="function">PQgetlength</code><a id="id-1.7.3.10.4.3.14.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQGETLENGTH" class="id_link">#</a></dt><dd><p>
+       Renvoie la longueur réelle de la valeur d'un champ en octet. Les
+       numéros de lignes et de colonnes commencent à 0.
+       </p><pre class="synopsis">int PQgetlength(const PGresult *res,
+                      int row_number,
+                      int column_number);
+       </pre><p>
+      </p><p>
+       C'est la longueur réelle des données pour cette donnée en particulier,
+       c'est-à-dire la taille de l'objet pointé par <a class="xref" href="libpq-exec.html#LIBPQ-PQGETVALUE"><code class="function">PQgetvalue</code></a>.
+       Pour le format textuel, c'est identique à <code class="function">strlen()</code>. Pour le format
+       binaire, c'est une information essentielle. Notez que l'on ne devrait
+       <span class="emphasis"><em>pas</em></span> se fier à <a class="xref" href="libpq-exec.html#LIBPQ-PQFSIZE"><code class="function">PQfsize</code></a> pour
+       obtenir la taille réelle des données.
+      </p></dd><dt id="LIBPQ-PQNPARAMS"><span class="term"><code class="function">PQnparams</code><a id="id-1.7.3.10.4.3.15.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQNPARAMS" class="id_link">#</a></dt><dd><p>
+       Renvoie le nombre de paramètres d'une instruction préparée.
+       </p><pre class="synopsis">
+       int PQnparams(const PGresult *res);
+       </pre><p>
+      </p><p>
+       Cette fonction est utile seulement pour inspecter le résultat de
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQDESCRIBEPREPARED"><code class="function">PQdescribePrepared</code></a>. Pour les autres types de
+       résultats, elle renverra zéro.
+      </p></dd><dt id="LIBPQ-PQPARAMTYPE"><span class="term"><code class="function">PQparamtype</code><a id="id-1.7.3.10.4.3.16.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQPARAMTYPE" class="id_link">#</a></dt><dd><p>
+       Renvoie le type de donnée du paramètre indiqué dans l'instruction.
+       Les numéros des paramètres commencent à 0.
+       </p><pre class="synopsis">
+       Oid PQparamtype(const PGresult *res, int param_number);
+       </pre><p>
+      </p><p>
+       Cette fonction est utile seulement pour inspecter le résultat de
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQDESCRIBEPREPARED"><code class="function">PQdescribePrepared</code></a>. Pour les autres types de
+       résultats, elle renverra zéro.
+      </p></dd><dt id="LIBPQ-PQPRINT"><span class="term"><code class="function">PQprint</code><a id="id-1.7.3.10.4.3.17.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQPRINT" class="id_link">#</a></dt><dd><p>
+       Affiche toutes les lignes et, optionnellement, les noms des colonnes
+       dans le flux de sortie spécifié.
+       </p><pre class="synopsis">void PQprint(FILE* fout,      /* flux de sortie */
+                   const PGresult *res,
+                   const PQprintOpt *po);
+
+        typedef struct
+        {
+            pqbool  header;      /* affiche les en-têtes des champs et le nombre de
+                                    lignes */
+            pqbool  align;       /* aligne les champs */
+            pqbool  standard;    /* vieux format (mort) */
+            pqbool  html3;       /* affiche les tables en HTML */
+            pqbool  expanded;    /* étend les tables */
+            pqbool  pager;       /* utilise le paginateur pour la sortie si nécessaire
+                                    */
+            char    *fieldSep;   /* séparateur de champ */
+            char    *tableOpt;   /* attributs des éléments de table HTML */
+            char    *caption;    /* titre de la table HTML */
+            char    **fieldName; /* Tableau terminé par un NULL des noms de remplacement
+                                    des champs */
+        } PQprintOpt;
+       </pre><p>
+      </p><p>
+       Cette fonction était auparavant utilisée par <span class="application">psql</span>
+       pour afficher les résultats des requêtes mais ce n'est plus le cas. Notez
+       qu'elle assume que les données sont dans un format textuel.
+      </p></dd></dl></div></div><div class="sect2" id="LIBPQ-EXEC-NONSELECT"><div class="titlepage"><div><div><h3 class="title">32.3.3. Récupérer d'autres informations de résultats <a href="#LIBPQ-EXEC-NONSELECT" class="id_link">#</a></h3></div></div></div><p>
+    Ces fonctions sont utilisées pour extraire d'autres informations des objets
+    <code class="structname">PGresult</code>.
+   </p><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQCMDSTATUS"><span class="term"><code class="function">PQcmdStatus</code><a id="id-1.7.3.10.5.3.1.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCMDSTATUS" class="id_link">#</a></dt><dd><p>
+       Renvoie l'état de la commande de l'instruction SQL qui a généré le
+       <code class="structname">PGresult</code>.
+       </p><pre class="synopsis">char * PQcmdStatus(PGresult *res);
+       </pre><p>
+      </p><p>
+       D'habitude, c'est juste le nom de la commande mais elle peut inclure des
+       données supplémentaires comme le nombre de lignes traitées.
+       L'appelant ne devrait pas libérer directement le résultat. Il sera libéré
+       quand le pointeur <code class="structname">PGresult</code> associée sera passé à
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQCLEAR"><code class="function">PQclear</code></a>.
+      </p></dd><dt id="LIBPQ-PQCMDTUPLES"><span class="term"><code class="function">PQcmdTuples</code><a id="id-1.7.3.10.5.3.2.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQCMDTUPLES" class="id_link">#</a></dt><dd><p>
+       Renvoie le nombre de lignes affectées par la commande SQL.
+       </p><pre class="synopsis">char * PQcmdTuples(PGresult *res);
+       </pre><p>
+      </p><p>
+       Cette fonction renvoie une chaîne contenant le nombre de lignes affectées
+       par l'instruction <acronym class="acronym">SQL</acronym> qui a généré
+       <code class="structname">PGresult</code>. Cette fonction ne peut être utilisée
+       qu'après l'exécution d'une instruction <code class="command">SELECT</code>,
+       <code class="command">CREATE TABLE AS</code>, <code class="command">INSERT</code>,
+       <code class="command">UPDATE</code>, <code class="command">DELETE</code>,
+       <code class="command">MERGE</code>, <code class="command">MOVE</code>,
+       <code class="command">FETCH</code> ou <code class="command">COPY</code>, ou un
+       <code class="command">EXECUTE</code> d'une instruction préparée contenant une
+       instruction <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+       <code class="command">DELETE</code> ou <code class="command">MERGE</code>. Si la commande qui
+       a généré <code class="structname">PGresult</code> était autre chose, <a class="xref" href="libpq-exec.html#LIBPQ-PQCMDTUPLES"><code class="function">PQcmdTuples</code></a> renverrait directement une chaîne vide.
+       L'appelant ne devrait pas libérer la valeur de retour directement. Elle
+       sera libérée quand le pointeur <code class="structname">PGresult</code> associée
+       sera passé à <a class="xref" href="libpq-exec.html#LIBPQ-PQCLEAR"><code class="function">PQclear</code></a>.
+      </p></dd><dt id="LIBPQ-PQOIDVALUE"><span class="term"><code class="function">PQoidValue</code><a id="id-1.7.3.10.5.3.3.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQOIDVALUE" class="id_link">#</a></dt><dd><p>
+       Renvoie l'OID<a id="id-1.7.3.10.5.3.3.2.1.1" class="indexterm"></a> de la ligne insérée, si la commande
+       <acronym class="acronym">SQL</acronym> était un
+       <code class="command">INSERT</code> qui a inséré exactement une ligne dans une
+       table comprenant des OID, ou un <code class="command">EXECUTE</code> d'une requête
+       préparée contenant une instruction <code class="command">INSERT</code> convenable.
+       Sinon cette fonction renvoie <code class="literal">InvalidOid</code>. Cette
+       fonction renverra aussi <code class="literal">InvalidOid</code> si la table
+       touchée par l'instruction <code class="command">INSERT</code> ne contient pas d'OID.
+       </p><pre class="synopsis">Oid PQoidValue(const PGresult *res);
+       </pre><p>
+      </p></dd><dt id="LIBPQ-PQOIDSTATUS"><span class="term"><code class="function">PQoidStatus</code><a id="id-1.7.3.10.5.3.4.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQOIDSTATUS" class="id_link">#</a></dt><dd><p>
+       Cette fonction est obsolète. Utilisez plutôt
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQOIDVALUE"><code class="function">PQoidValue</code></a>. De plus, elle n'est pas compatible
+       avec les threads. Elle renvoie une chaîne contenant l'OID de la
+       ligne insérée alors que <a class="xref" href="libpq-exec.html#LIBPQ-PQOIDVALUE"><code class="function">PQoidValue</code></a> renvoie
+       la valeur de l'OID.
+       </p><pre class="synopsis">char * PQoidStatus(const PGresult *res);
+       </pre><p>
+      </p></dd></dl></div></div><div class="sect2" id="LIBPQ-EXEC-ESCAPE-STRING"><div class="titlepage"><div><div><h3 class="title">32.3.4. Échapper les chaînes dans les commandes SQL <a href="#LIBPQ-EXEC-ESCAPE-STRING" class="id_link">#</a></h3></div></div></div><a id="id-1.7.3.10.6.2" class="indexterm"></a><div class="variablelist"><dl class="variablelist"><dt id="LIBPQ-PQESCAPELITERAL"><span class="term">
+      <code class="function">PQescapeLiteral</code>
+      <a id="id-1.7.3.10.6.3.1.1.2" class="indexterm"></a>
+     </span> <a href="#LIBPQ-PQESCAPELITERAL" class="id_link">#</a></dt><dd><p>
+       </p><pre class="synopsis">
+        char *PQescapeLiteral(PGconn *conn, const char *str, size_t length);
+       </pre><p>
+      </p><p>
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPELITERAL">
+      <code class="function">PQescapeLiteral</code>
+      
+     </a> échappe une chaîne pour l'utiliser
+       dans une commande SQL. C'est utile pour insérer des données comme des
+       constantes dans des commandes SQL. Certains caractères, comme les
+       guillemets et les antislashs, doivent être traités avec des caractères
+       d'échappement pour éviter qu'ils ne soient traités d'après leur
+       signification spéciale par l'analyseur SQL.
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPELITERAL">
+      <code class="function">PQescapeLiteral</code>
+      
+     </a> réalise cette opération.
+      </p><p>
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPELITERAL">
+      <code class="function">PQescapeLiteral</code>
+      
+     </a> renvoie une version échappée du
+       paramètre <em class="parameter"><code>str</code></em> dans une mémoire allouée avec
+       <code class="function">malloc()</code>. Cette mémoire devra être libérée en
+       utilisant <code class="function">PQfreemem()</code> quand le résultat ne sera
+       plus utile. Un octet zéro final n'est pas requis et ne doit pas être
+       compté dans <em class="parameter"><code>length</code></em>. (Si un octet zéro est
+       découvert avant le traitement de <em class="parameter"><code>length</code></em>
+       octets, <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPELITERAL">
+      <code class="function">PQescapeLiteral</code>
+      
+     </a> s'arrête au zéro ; ce
+       comportement est celui de <code class="function">strncpy</code>.) Les
+       caractères spéciaux de la chaîne en retour ont été remplacés pour qu'ils
+       puissent être traités correctement par l'analyseur de chaînes de
+       <span class="productname">PostgreSQL</span>. Un octet zéro final est aussi
+       ajouté. Les guillemets simples qui doivent entourer les chaînes littérales
+       avec <span class="productname">PostgreSQL</span> sont inclus dans la chaîne
+       résultante.
+      </p><p>
+       En cas d'erreur, <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPELITERAL">
+      <code class="function">PQescapeLiteral</code>
+      
+     </a> renvoie
+       <code class="symbol">NULL</code> et
+       un message adéquat est stocké dans l'objet
+       <em class="parameter"><code>conn</code></em>.
+      </p><div class="tip"><h3 class="title">Astuce</h3><p>
+        Il est particulièrement important de faire un échappement propre lors
+        de l'utilisation de chaînes provenant d'une source qui n'est pas
+        de confiance. Sinon, il existe un risque de sécurité :
+        vous vous exposez à une attaque de type <span class="quote">« <span class="quote">injection SQL</span> »</span>
+        avec des commandes SQL non voulues injectées dans votre base de
+        données.
+       </p></div><p>
+       Notez qu'il n'est pas nécessaire ni correct de faire un échappement quand
+       une valeur est passée en tant que paramètre séparé dans
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQEXECPARAMS"><code class="function">PQexecParams</code></a> ou ses routines sœurs.
+      </p></dd><dt id="LIBPQ-PQESCAPEIDENTIFIER"><span class="term">
+      <code class="function">PQescapeIdentifier</code>
+      <a id="id-1.7.3.10.6.3.2.1.2" class="indexterm"></a>
+     </span> <a href="#LIBPQ-PQESCAPEIDENTIFIER" class="id_link">#</a></dt><dd><p>
+       </p><pre class="synopsis">
+        char *PQescapeIdentifier(PGconn *conn, const char *str, size_t length);
+       </pre><p>
+      </p><p>
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPEIDENTIFIER">
+      <code class="function">PQescapeIdentifier</code>
+      
+     </a> échappe une chaîne pour qu'elle
+       puisse être utilisé en tant qu'identifiant SQL, par exemple pour le
+       nom d'une table, d'une colonne ou d'une fonction. C'est utile quand un
+       identifiant fourni par un utilisateur pourrait contenir des caractères
+       spéciaux, qui sinon ne seraient pas interprétés comme faisant
+       partie de l'identifiant par l'analyseur SQL, ou lorsque l'identifiant
+       pourrait contenir des caractères en majuscule, dont la casse doit
+       être préservée.
+      </p><p>
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPEIDENTIFIER">
+      <code class="function">PQescapeIdentifier</code>
+      
+     </a> renvoie une version du paramètre
+       <em class="parameter"><code>str</code></em> échappée comme doit l'être un identifiant SQL,
+       dans une mémoire allouée avec <code class="function">malloc()</code>. Cette
+       mémoire doit être libérée en utilisant <code class="function">PQfreemem()</code>
+       quand le résultat n'est plus nécessaire. Un octet zéro final n'est pas
+       nécessaire et ne doit pas être comptabilisé dans
+       <em class="parameter"><code>length</code></em>. (Si un octet zéro est trouvé avant
+       le traitement de <em class="parameter"><code>length</code></em> octets,
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPEIDENTIFIER">
+      <code class="function">PQescapeIdentifier</code>
+      
+     </a> s'arrête au zéro ; ce
+       comportement est celui de <code class="function">strncpy</code>.) Les
+       caractères spéciaux de la chaîne en retour ont été remplacés pour que
+       ce dernier soit traité proprement comme un identifiant SQL. Un octet
+       zéro final est aussi ajouté. La chaîne de retour sera aussi entourée de
+       guillemets doubles.
+      </p><p>
+       En cas d'erreur, <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPEIDENTIFIER">
+      <code class="function">PQescapeIdentifier</code>
+      
+     </a> renvoie
+       <code class="symbol">NULL</code> et
+       un message d'erreur adéquat est stocké dans l'objet
+       <em class="parameter"><code>conn</code></em>.
+      </p><div class="tip"><h3 class="title">Astuce</h3><p>
+        Comme avec les chaînes littérales, pour empêcher les attaques par injection
+        SQL, les identifiants SQL doivent être échappés lorsqu'ils proviennent
+        d'une source non sûre.
+       </p></div></dd><dt id="LIBPQ-PQESCAPESTRINGCONN"><span class="term">
+      <code class="function">PQescapeStringConn</code>
+      <a id="id-1.7.3.10.6.3.3.1.2" class="indexterm"></a>
+     </span> <a href="#LIBPQ-PQESCAPESTRINGCONN" class="id_link">#</a></dt><dd><p>
+       </p><pre class="synopsis">
+        size_t PQescapeStringConn (PGconn *conn,
+                                   char *to, const char *from, size_t length,
+                                   int *error);
+       </pre><p>
+      </p><p>
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPESTRINGCONN">
+      <code class="function">PQescapeStringConn</code>
+      
+     </a>&gt; échappe les chaînes littérales de
+       la même façon que <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPELITERAL">
+      <code class="function">PQescapeLiteral</code>
+      
+     </a>. Contrairement à
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPELITERAL">
+      <code class="function">PQescapeLiteral</code>
+      
+     </a>, l'appelant doit fournir un tampon
+       d'une taille appropriée. De plus, <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPESTRINGCONN">
+      <code class="function">PQescapeStringConn</code>
+      
+     </a>&gt;
+       n'ajoute pas de guillemets simples autour des chaînes littérales de
+       <span class="productname">PostgreSQL</span> ; elles doivent être ajoutées
+       dans la commande SQL où ce résultat sera inséré. Le paramètre
+       <em class="parameter"><code>from</code></em> pointe vers le premier caractère de la chaîne
+       à échapper, et le paramètre <em class="parameter"><code>length</code></em> précise le
+       nombre d'octets contenus dans cette chaîne. Un octet zéro final n'est
+       pas nécessaire et ne doit pas être comptabilisé dans
+       <em class="parameter"><code>length</code></em>. (Si un octet zéro est trouvé avant
+       le traitement de <em class="parameter"><code>length</code></em> octets,
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPESTRINGCONN">
+      <code class="function">PQescapeStringConn</code>
+      
+     </a> s'arrête au zéro ; ce
+       comportement est celui de <code class="function">strncpy</code>.)
+       <em class="parameter"><code>to</code></em> doit pointer vers un tampon qui peut contenir
+       au moins un octet de plus que deux fois la valeur de
+       <em class="parameter"><code>length</code></em>, sinon le comportement de la fonction
+       est indéfini. Le comportement est indéfini si les chaînes
+       <em class="parameter"><code>to</code></em> et <em class="parameter"><code>from</code></em> se recouvrent.
+      </p><p>
+       Si le paramètre <em class="parameter"><code>error</code></em> est différent de <code class="symbol">NULL</code>,
+       alors <code class="literal">*error</code> est configuré à zéro en cas de succès,
+       et est différent de zéro en cas d'erreur. Actuellement, les seules
+       conditions permettant une erreur impliquent des encodages multi-octets
+       dans la chaîne source. La chaîne en sortie est toujours générée en cas
+       d'erreur mais on peut s'attendre à ce que le serveur la rejette comme une
+       chaîne malformée. En cas d'erreur, un message adéquat est stocké dans
+       l'objet <em class="parameter"><code>conn</code></em>, que <em class="parameter"><code>error</code></em>
+       soit <code class="symbol">NULL</code> ou non.
+      </p><p>
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPESTRINGCONN">
+      <code class="function">PQescapeStringConn</code>
+      
+     </a> renvoie le nombre d'octets écrits
+       dans <em class="parameter"><code>to</code></em>, sans inclure l'octet zéro final.
+      </p></dd><dt id="LIBPQ-PQESCAPESTRING"><span class="term"><code class="function">PQescapeString</code><a id="id-1.7.3.10.6.3.4.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQESCAPESTRING" class="id_link">#</a></dt><dd><p>
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPESTRING"><code class="function">PQescapeString</code></a> est une version ancienne et obsolète de
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPESTRINGCONN">
+      <code class="function">PQescapeStringConn</code>
+      
+     </a>.
+       </p><pre class="synopsis">
+        size_t PQescapeString (char *to, const char *from, size_t length);
+       </pre><p>
+      </p><p>
+       La seule différence avec <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPESTRINGCONN">
+      <code class="function">PQescapeStringConn</code>
+      
+     </a> tient
+       dans le fait que <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPESTRING"><code class="function">PQescapeString</code></a> n'a pas de
+       paramètres <em class="parameter"><code>conn</code></em> et <em class="parameter"><code>error</code></em>.
+       À cause de cela, elle ne peut ajuster son
+       comportement en fonction des propriétés de la connexion (comme l'encodage des
+       cnécssairearactères) et du coup, <span class="emphasis"><em>elle pourrait fournir des résultats
+        erronés</em></span>. De plus, elle ne peut pas renvoyer de conditions
+       d'erreur.
+      </p><p>
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPESTRING"><code class="function">PQescapeString</code></a> peut être utilisé en toute sécurité avec
+       des programmes client utilisant une seule connexion
+       <span class="productname">PostgreSQL</span> à la fois (dans ce cas,
+       il peut trouver ce qui l'intéresse <span class="quote">« <span class="quote">en arrière-plan</span> »</span>).
+       Dans d'autres contextes, c'est un risque en terme de sécurité. Cette
+       fonction devrait être évitée et remplacée par
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPESTRINGCONN">
+      <code class="function">PQescapeStringConn</code>
+      
+     </a>.
+      </p></dd><dt id="LIBPQ-PQESCAPEBYTEACONN"><span class="term"><code class="function">PQescapeByteaConn</code><a id="id-1.7.3.10.6.3.5.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQESCAPEBYTEACONN" class="id_link">#</a></dt><dd><p>
+       Échappe des données binaires à utiliser à l'intérieur d'une commande SQL avec
+       le type <code class="type">bytea</code>. Comme avec <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPESTRINGCONN">
+      <code class="function">PQescapeStringConn</code>
+      
+     </a>,
+       c'est seulement utilisé pour insérer des données directement dans une chaîne
+       de commande SQL.
+       </p><pre class="synopsis">unsigned char *PQescapeByteaConn(PGconn *conn,
+                                const unsigned char *from,
+                                size_t from_length,
+                                size_t *to_length);</pre><p>
+      </p><p>
+       Certaines valeurs d'octets <span class="emphasis"><em>doivent</em></span> être échappées
+       lorsqu'elles font partie d'un littéral <code class="type">bytea</code> dans une
+       instruction <acronym class="acronym">SQL</acronym>. <code class="function">PQescapeByteaConn</code>
+       échappe les octets en utilisant soit un codage hexadécimal soit un
+       échappement avec des antislashs. Voir <a class="xref" href="datatype-binary.html" title="8.4. Types de données binaires">Section 8.4</a> pour
+       plus d'informations.
+      </p><p>
+       Le paramètre <em class="parameter"><code>from</code></em> pointe sur le premier octet de la
+       chaîne à échapper et le paramètre <em class="parameter"><code>from_length</code></em> donne le
+       nombre d'octets de cette chaîne binaire (un octet zéro final n'est
+       ni nécessaire ni compté). Le paramètre <em class="parameter"><code>to_length</code></em>
+       pointe vers une variable qui contiendra la longueur de la chaîne échappée
+       résultante. Cette longueur inclut l'octet zéro de terminaison.
+      </p><p>
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPEBYTEACONN"><code class="function">PQescapeByteaConn</code></a> renvoie une version échappée du paramètre
+       <em class="parameter"><code>from</code></em> dans la mémoire allouée avec
+       <code class="function">malloc()</code>. Cette mémoire doit être libérée avec
+       <code class="function">PQfreemem</code> lorsque le résultat n'est plus nécessaire. Tous les
+       caractères spéciaux de la chaîne de retour sont remplacés de façon à ce
+       qu'ils puissent être traités proprement par l'analyseur de chaînes littérales
+       de <span class="productname">PostgreSQL</span> et par la fonction d'entrée
+       <code class="type">bytea</code>. Un octet zéro final est aussi
+       ajouté. Les guillemets simples qui encadrent les chaînes littérales de
+       <span class="productname">PostgreSQL</span> ne font pas partie de la chaîne
+       résultante.
+      </p><p>
+       En cas d'erreur, un pointeur NULL est renvoyé et un message d'erreur adéquat
+       est stocké dans l'objet <em class="parameter"><code>conn</code></em>. Actuellement, la seule erreur
+       possible est une mémoire insuffisante pour stocker la chaîne résultante.
+      </p></dd><dt id="LIBPQ-PQESCAPEBYTEA"><span class="term"><code class="function">PQescapeBytea</code><a id="id-1.7.3.10.6.3.6.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQESCAPEBYTEA" class="id_link">#</a></dt><dd><p>
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPEBYTEA"><code class="function">PQescapeBytea</code></a> est une version ancienne et obsolète de
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPEBYTEACONN"><code class="function">PQescapeByteaConn</code></a>.
+       </p><pre class="synopsis">
+        unsigned char *PQescapeBytea(const unsigned char *from,
+                                     size_t from_length,
+                                     size_t *to_length);
+       </pre><p>
+      </p><p>
+       La seule différence avec <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPEBYTEACONN"><code class="function">PQescapeByteaConn</code></a> est que
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPEBYTEA"><code class="function">PQescapeBytea</code></a> ne prend pas de paramètre
+       <code class="structname">PGconn</code>. De ce fait, <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPEBYTEA"><code class="function">PQescapeBytea</code></a>
+       ne peut être utilisé en toute sécurité que dans des programmes qui n'utilisent
+       qu'une seule connexion <span class="productname">PostgreSQL</span> à la fois (dans
+       ce cas, il peut trouver ce dont il a besoin <span class="quote">« <span class="quote">en arrière-plan</span> »</span>).
+       Elle <span class="emphasis"><em>pourrait donner des résultats erronés</em></span> si elle est
+       utilisé dans des programmes qui utilisent plusieurs connexions de bases de
+       données (dans ce cas, utilisez <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPEBYTEACONN"><code class="function">PQescapeByteaConn</code></a>).
+      </p></dd><dt id="LIBPQ-PQUNESCAPEBYTEA"><span class="term"><code class="function">PQunescapeBytea</code><a id="id-1.7.3.10.6.3.7.1.2" class="indexterm"></a></span> <a href="#LIBPQ-PQUNESCAPEBYTEA" class="id_link">#</a></dt><dd><p>
+       Convertit une représentation de la chaîne en donnés binaires  -- 
+       l'inverse de <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPEBYTEA"><code class="function">PQescapeBytea</code></a>. Ceci est nécessaire lors de
+       la récupération de données <code class="type">bytea</code> en format texte, mais pas lors
+       de sa récupération au format binaire.
+
+       </p><pre class="synopsis">unsigned char *PQunescapeBytea(const unsigned char *from, size_t *to_length);
+       </pre><p>
+      </p><p>
+       Le paramètre <em class="parameter"><code>from</code></em> pointe vers une chaîne de
+       telle qu'elle pourrait provenir de <a class="xref" href="libpq-exec.html#LIBPQ-PQGETVALUE"><code class="function">PQgetvalue</code></a>
+       lorsque la colonne est de type <code class="type">bytea</code>.
+       <a class="xref" href="libpq-exec.html#LIBPQ-PQUNESCAPEBYTEA"><code class="function">PQunescapeBytea</code></a> convertit cette représentation de la
+       chaîne en sa représentation binaire. Elle renvoie un pointeur vers le tampon
+       alloué avec <code class="function">malloc()</code>, ou <code class="symbol">NULL</code> en cas d'erreur, et place
+       la taille du tampon dans <em class="parameter"><code>to_length</code></em>. Le résultat doit
+       être libéré en utilisant <a class="xref" href="libpq-misc.html#LIBPQ-PQFREEMEM"><code class="function">PQfreemem</code></a> lorsqu'il n'est plus
+       nécessaire.
+      </p><p>
+       Cette conversion n'est pas l'inverse exacte de <a class="xref" href="libpq-exec.html#LIBPQ-PQESCAPEBYTEA"><code class="function">PQescapeBytea</code></a>
+       car la chaîne n'est pas supposée être "échappée" tel qu'elle est renvoyée
+       par <a class="xref" href="libpq-exec.html#LIBPQ-PQGETVALUE"><code class="function">PQgetvalue</code></a>. Cela veut dire, notamment,
+       qu'il n'y a pas besoin de réfléchir à la mise entre
+       guillemets de la chaîne, et donc pas besoin d'un paramètre <code class="structname">PGconn</code>.
+      </p></dd></dl></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/libpq-exec.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:36 GMT -->
+</html>

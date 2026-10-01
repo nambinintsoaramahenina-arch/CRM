@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/sql-analyze.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:52 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>ANALYZE</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="sql-alterview.html" title="ALTER VIEW" /><link rel="next" href="sql-begin.html" title="BEGIN" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/sql-analyze.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/sql-analyze.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/sql-analyze.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/sql-analyze.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/sql-analyze.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/sql-analyze.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/sql-analyze.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/sql-analyze.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/sql-analyze.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/sql-analyze.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/sql-analyze.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/sql-analyze.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/sql-analyze.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/sql-analyze.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/sql-analyze.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/sql-analyze.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/sql-analyze.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/sql-analyze.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/sql-analyze.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/sql-analyze.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/sql-analyze.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="reference.html">Référence</a></span> » <span class="breadcrumb-link"><a href="sql-commands.html">Commandes SQL</a></span> » <span class="breadcrumb-node">ANALYZE</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="sql-alterview.html" title="ALTER VIEW">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="sql-commands.html" title="Commandes SQL">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="sql-begin.html" title="BEGIN">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">ALTER VIEW </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> BEGIN</td></tr></table></div><div class="refentry" id="SQL-ANALYZE"><div class="titlepage"></div><a id="id-1.9.3.46.1" class="indexterm"></a><div class="refnamediv"><h2><span class="refentrytitle" id="SQL-ANALYZE-TITLE">ANALYZE</span></h2><p>ANALYZE — Collecter les statistiques d'une base de données</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><pre class="synopsis">
+ANALYZE [ ( <em class="replaceable"><code>option</code></em> [, ...] ) ] [ <em class="replaceable"><code>table_et_colonnes</code></em> [, ...] ]
+
+<span class="phrase">où <em class="replaceable"><code>option</code></em> peut valoir :</span>
+
+    VERBOSE [ <em class="replaceable"><code>booléen</code></em> ]
+    SKIP_LOCKED [ <em class="replaceable"><code>booléen</code></em> ]
+    BUFFER_USAGE_LIMIT <em class="replaceable"><code>taille</code></em>
+
+<span class="phrase">et <em class="replaceable"><code>table_et_colonnes</code></em> est :</span>
+
+    <em class="replaceable"><code>nom_table</code></em> [ ( <em class="replaceable"><code>nom_colonne</code></em> [, ...] ) ]
+  </pre></div><div class="refsect1" id="id-1.9.3.46.5"><h2>Description</h2><p>
+   <code class="command">ANALYZE</code> collecte des statistiques sur le contenu des
+   tables de la base de données et stocke les résultats dans le catalogue
+   système <a class="link" href="catalog-pg-statistic.html" title="51.51. pg_statistic"><code class="structname">pg_statistic</code></a>.
+   L'optimiseur de requêtes les utilise pour déterminer les plans d'exécution
+   les plus efficaces.
+  </p><p>
+   Sans une liste de <em class="replaceable"><code>table_et_colonnes</code></em>, <code class="command">ANALYZE</code>
+   examine chaque table et vue matérialisée de la base de données courante
+   lisible par l'utilisateur courant. Avec cette liste,
+   <code class="command">ANALYZE</code> n'examine que les tables de cette liste. Il est
+   également possible de donner une liste de noms de colonnes pour une table,
+   auquel cas seules les statistiques concernant ces colonnes sont collectées.
+  </p></div><div class="refsect1" id="id-1.9.3.46.6"><h2>Paramètres</h2><div class="variablelist"><dl class="variablelist"><dt><span class="term"><code class="literal">VERBOSE</code></span></dt><dd><p>
+      L'affichage de messages de progression est activé.
+     </p></dd><dt><span class="term"><code class="literal">SKIP_LOCKED</code></span></dt><dd><p>
+      Précise qu'une commande <code class="command">ANALYZE</code>, quand elle commence à
+      travailler sur une relation, ne doit pas attendre la libération de verrous
+      en conflit :si une relation ne peut être verrouillée immédiatement et
+      sans attente, la relation est ignorée.  Notez que même avec cette option,
+      <code class="command">ANALYZE</code> peut se retrouver bloqué en ouvrant les index
+      d'une relation, ou en récupérant des échantillons de lignes de partitions,
+      de tables héritant d'une autre, et de certains types de tables étrangères.
+      Notez aussi que <code class="command">ANALYZE</code> traite habituellement toutes
+      les partitions des tables partitionnées demandées, mais il ignorera toutes
+      les partitions s'il y a un verrou en conflit sur la table partitionnée.
+     </p></dd><dt><span class="term"><code class="literal">BUFFER_USAGE_LIMIT</code></span></dt><dd><p>
+      Précise la taille du cache
+      (<a class="glossterm" href="glossary.html#GLOSSARY-BUFFER-ACCESS-STRATEGY"><em class="glossterm"><a class="glossterm" href="glossary.html#GLOSSARY-BUFFER-ACCESS-STRATEGY" title="Stratégie d'accès aux buffers (Buffer Access Strategy">Buffer Access Strategy</a></em></a>)
+      utilisé par la commande <code class="command">ANALYZE</code>. Cette taille est
+      utilisée pour calculer le nombre de buffers du cache disque de PostgreSQL
+      qui seront utilisés dans le cadre de cette stratégie. <code class="literal">0</code>
+      désactive l'utilisation d'une <code class="literal">stratégie d'accès aux
+      buffers</code>. Quand cette option n'est pas indiquée,
+      <code class="command">ANALYZE</code> utilise la valeur provenant de
+      <a class="xref" href="runtime-config-resource.html#GUC-VACUUM-BUFFER-USAGE-LIMIT">vacuum_buffer_usage_limit</a>. Des configurations plus
+      hautes peuvent permettre d'exécuter <code class="command">ANALYZE</code> plus
+      rapidement mais une configuration trop élevée pourraient causer l'éviction
+      d'un trop grand nombre de blocs utiles. La valeur minimale est
+      <code class="literal">128 ko</code> et la valeur maximale est
+      <code class="literal">16 Go</code>.
+     </p></dd><dt><span class="term"><em class="replaceable"><code>booléen</code></em></span></dt><dd><p>
+      Indique si l'option sélectionnée doit être activée ou désactivée. Vous
+      pouvez écrire <code class="literal">TRUE</code>, <code class="literal">ON</code> ou
+      <code class="literal">1</code> pour activer l'option, et <code class="literal">FALSE</code>,
+      <code class="literal">OFF</code> ou <code class="literal">0</code> pour la désactiver. La
+      valeur <em class="replaceable"><code>booléen</code></em> peut aussi
+      être omise, auquel cas <code class="literal">TRUE</code> est supposé.
+     </p></dd><dt><span class="term"><em class="replaceable"><code>taille</code></em></span></dt><dd><p>
+      Indique une quantité de mémoire en ko. Les tailles peuvent être
+      indiquées sous la forme d'une chaîne de caractères contenant la taille
+      numérique suivie d'une des unités de mémoire suivantes :
+      <code class="literal">B</code> (octets), <code class="literal">kB</code> (kilo-octets),
+      <code class="literal">MB</code> (méga-octets), <code class="literal">GB</code> (giga-octets)
+      ou <code class="literal">TB</code> (tera-octets).
+     </p></dd><dt><span class="term"><em class="replaceable"><code>nom_table</code></em></span></dt><dd><p>
+      Le nom (éventuellement qualifié du nom du schéma) de la table à analyser.
+      S'il n'est pas spécifié, toutes les tables standards, les tables
+      partitionnées et les vues matérialisées dans la base de données courante
+      sont analysées (mais pas les tables distantes). Si la table spécifiée est
+      une table partitionnée, les statistiques héritées de la table partitionnée
+      dans son ensemble ainsi que les statistiques des partitions individuelles
+      sont mises à jour.
+     </p></dd><dt><span class="term"><em class="replaceable"><code>nom_colonne</code></em></span></dt><dd><p>
+      Le nom d'une colonne à analyser. Par défaut, toutes les colonnes le sont.
+     </p></dd></dl></div></div><div class="refsect1" id="id-1.9.3.46.7"><h2>Sorties</h2><p>
+   Quand <code class="literal">VERBOSE</code> est spécifié, <code class="command">ANALYZE</code>
+   affiche des messages de progression pour indiquer la table en cours de
+   traitement. Diverses statistiques sur les tables sont aussi affichées.
+  </p></div><div class="refsect1" id="id-1.9.3.46.8"><h2>Notes</h2><p>
+   Pour analyser une table, l'utilisateur doit avoir le droit
+   <code class="literal">MAINTAIN</code> sur la table.
+   Néanmoins, les propriétaires des bases ont le droit
+   d'analyser toutes les tables situées dans leur bases, sauf les catalogues
+   partagés. <code class="command">ANALYZE</code> ignorera toutes les
+   tables pour lesquelles l'utilisateur n'a pas le droit d'analyse.
+  </p><p>
+   Les tables distantes sont analysées seulement lorsqu'elles sont explicitement
+   ciblées. Certains wrappers de données distantes ne supportent pas encore
+   <code class="command">ANALYZE</code>. Si le wrapper de la table distante ne supporte
+   pas <code class="command">ANALYZE</code>, la commande affiche un message
+   d'avertissement et ne fait rien de plus.
+  </p><p>
+   Dans la configuration par défaut de <span class="productname">PostgreSQL</span>,
+   le démon autovacuum (voir <a class="xref" href="routine-vacuuming.html#AUTOVACUUM" title="24.1.6. Le démon auto-vacuum">Section 24.1.6</a>) s'occupe de l'analyse
+   automatique des tables lorsqu'elles sont chargées pour la première fois avec
+   des données, puis à chaque fois qu'elles sont modifiées via les opérations
+   habituelles. Quand l'autovacuum est désactivé,
+   il est intéressant de lancer <code class="command">ANALYZE</code> périodiquement ou
+   juste après avoir effectué de grosses modifications sur le contenu d'une table.
+   Des statistiques à jour aident l'optimiseur à choisir le plan de
+   requête le plus approprié et améliorent ainsi la vitesse du traitement
+   des requêtes. Une stratégie habituelle pour les bases de données principalement
+   en lecture consiste à lancer <a class="link" href="sql-vacuum.html" title="VACUUM"><code class="command">VACUUM</code></a> et
+   <code class="command">ANALYZE</code> une fois par jour, au moment où le serveur est le
+   moins sollicité.
+   (Cela ne sera pas suffisant en cas de grosse activité en mise à jour.)
+  </p><p>
+   Lors de l'exécution d'<code class="command">ANALYZE</code>, le paramètre <a class="xref" href="runtime-config-client.html#GUC-SEARCH-PATH">search_path</a> est modifié temporairement en
+   <code class="literal">pg_catalog, pg_temp</code>.
+  </p><p>
+   <code class="command">ANALYZE</code> ne requiert qu'un verrou en lecture sur la table
+   cible. Il peut donc être lancé en parallèle à d'autres activités non DDL
+   sur la table.
+  </p><p>
+   Les statistiques récupérées par <code class="command">ANALYZE</code> incluent
+   habituellement une liste des quelques valeurs les plus communes dans chaque
+   colonne et un histogramme affichant une distribution approximative des
+   données dans chaque colonne. L'un ou les deux peuvent être omis si
+   <code class="command">ANALYZE</code> les juge inintéressants (par exemple, dans une
+   colonne à clé unique, il n'y a pas de valeurs communes) ou si le type de
+   données de la colonne ne supporte pas les opérateurs appropriés. Il y a plus
+   d'informations sur les statistiques dans le <a class="xref" href="maintenance.html" title="Chapitre 24. Planifier les tâches de maintenance">Chapitre 24</a>.
+  </p><p>
+   Pour les grosses tables, <code class="command">ANALYZE</code> prend aléatoirement
+   plusieurs lignes de la table, au hasard, plutôt que d'examiner chaque ligne.
+   Ceci permet à des tables très larges d'être examinées rapidement.  Néanmoins,
+   les statistiques ne sont qu'approximatives et changent légèrement à chaque
+   fois qu'<code class="command">ANALYZE</code> est lancé, même si le contenu réel de la
+   table n'a pas changé. Cela peut résulter en de petites modifications dans les
+   coûts estimés par l'optimiseur affichés par <a class="link" href="sql-explain.html" title="EXPLAIN"><code class="command">EXPLAIN</code></a>. Dans de rares
+   situations, ce non-déterminisme entraîne le choix par l'optimiseur d'un plan
+   de requête différent entre deux lancements d'<code class="command">ANALYZE</code>. Afin
+   d'éviter cela, le nombre de statistiques récupérées par
+   <code class="command">ANALYZE</code> peut être augmenté, comme cela est décrit
+   ci-dessous.
+  </p><p>
+   L'étendue de l'analyse est contrôlée par l'ajustement de la variable de
+   configuration <a class="xref" href="runtime-config-query.html#GUC-DEFAULT-STATISTICS-TARGET">default_statistics_target</a> ou colonne par
+   colonne en initialisant la cible des statistiques par colonne avec <a class="link" href="sql-altertable.html" title="ALTER TABLE"><code class="command">ALTER TABLE ... ALTER COLUMN ... SET
+   STATISTICS</code></a>. Cette valeur cible initialise le nombre maximum
+   d'entrées dans la liste des valeurs les plus communes et le nombre maximum de
+   points dans l'histogramme. La valeur cible par défaut est fixée à 100 mais
+   elle peut être ajustée vers le haut ou vers le bas afin d'obtenir un bon
+   compromis entre la précision des estimations de l'optimiseur, le temps pris
+   par <code class="command">ANALYZE</code> et l'espace total occupé dans
+   <code class="literal">pg_statistic</code>. En particulier, initialiser la cible des
+   statistiques à zéro désactive la collecte de statistiques pour cette colonne.
+   Cela peut s'avérer utile pour les colonnes qui ne sont jamais utilisées dans
+   les clauses <code class="literal">WHERE</code>, <code class="literal">GROUP BY</code> ou
+   <code class="literal">ORDER BY</code> des requêtes puisque l'optimiseur ne fait aucune
+   utilisation des statistiques de ces colonnes.
+  </p><p>
+   La plus grande cible de statistiques parmi les colonnes en cours d'analyse
+   détermine le nombre de lignes testées pour préparer les statistiques de la
+   table. Augmenter cette cible implique une augmentation proportionnelle du
+   temps et de l'espace nécessaires à l'exécution d'<code class="command">ANALYZE</code>.
+  </p><p>
+   Une des valeurs estimées par <code class="command">ANALYZE</code> est le nombre de
+   valeurs distinctes qui apparaissent dans chaque colonne. Comme seul un
+   sous-ensemble des lignes est examiné, cette estimation peut parfois être
+   assez inexacte, même avec la cible statistique la plus large possible.  Si
+   cette inexactitude amène de mauvais plans de requêtes, une valeur plus
+   précise peut être déterminée manuellement, puis configurée avec <a class="link" href="sql-altertable.html" title="ALTER TABLE"><code class="command">ALTER TABLE ... ALTER COLUMN ... SET
+   (n_distinct = ...)</code></a>.
+  </p><p>
+   Si la table en cours d'analyse a des enfants en héritage,
+   <code class="command">ANALYZE</code> récupère deux ensembles de statistiques : un
+   sur les lignes de la table parent seule et un autre incluant les lignes du
+   parent et de tous les enfants. Le deuxième ensemble de statistiques est
+   nécessaire lors de l'optimisation de requêtes traitant l'arbre de tables
+   comme un ensemble. Les enfants eux-même ne sont pas analysés dans ce cas.
+   Néanmoins, le démon autovacuum ne prendra en
+   considération que les insertions et les mises à jour sur la table parent
+   elle-même pour décider de déclencher une analyse automatique sur cette table.
+   Si cette table a rarement des insertions ou des mises à jour, les
+   statistiques sur l'arbre d'héritage complet ne seront pas à jour tant que
+   vous n'exécuterez pas <code class="command">ANALYZE</code> manuellement.
+  </p><p>
+   Pour les tables partitionnées, <code class="command">ANALYZE</code> récupère les
+   statistiques en échantillonnant les lignes à partir de toutes les
+   partitions ; de plus, il va parcourir chaque partition récursivement et
+   mettre à jour ses statistiques.  Chaque partition feuille est analysée
+   seulement une fois, y compris dans le cas d'un partitionnement à plusieurs
+   niveaux. Aucune statistique n'est récupérée pour la table parent seule (sans
+   les données de ces partitions), parce qu'avec le partitionnement, elle est
+   garantie d'être vide.
+  </p><p>
+   Le démon autovacuum ne traite pas les tables partitionnées, pas plus qu'il ne
+   traite les parents en héritage si seules les tables filles sont modifiées.
+   Il est généralement nécessaire d'exécuter périodiquement un
+   <code class="command">ANALYZE</code> manuel pour conserver des statistiques à jour sur
+   la hiérarchie de tables.
+  </p><p>
+   Si certaines tables filles ou partitions sont des tables externes dont les
+   wrappers de données externes ne supportent pas <code class="command">ANALYZE</code>,
+   ces tables sont ignorées lors de la récupération de statistiques pour
+   l'héritage.
+  </p><p>
+   Si la table en cours d'analyse est entièrement vide,
+   <code class="command">ANALYZE</code> n'enregistrera pas les nouvelles statistiques pour
+   cette table. Toutes les statistiques existantes seront conservées.
+  </p><p>
+   Chaque processus exécutant <code class="command">ANALYZE</code> indiquera sa
+   progression dans la vue <code class="structname">pg_stat_progress_analyze</code>.
+   Voir <a class="xref" href="progress-reporting.html#ANALYZE-PROGRESS-REPORTING" title="27.4.1. Rapporter la progression d'ANALYZE">Section 27.4.1</a> pour les détails.
+  </p></div><div class="refsect1" id="id-1.9.3.46.9"><h2>Compatibilité</h2><p>
+   Il n'existe pas d'instruction <code class="command">ANALYZE</code> dans le standard
+   SQL.
+  </p><p>
+   La syntaxe suivante a été utilisée avant la version 11 de
+   <span class="productname">PostgreSQL</span> et est toujours acceptée :
+</p><pre class="synopsis">
+ANALYZE [ VERBOSE ] [ <em class="replaceable"><code>table_et_colonnes</code></em> , ...] ]</pre><p>
+  </p></div><div class="refsect1" id="id-1.9.3.46.10"><h2>Voir aussi</h2><span class="simplelist"><a class="xref" href="sql-vacuum.html" title="VACUUM"><span class="refentrytitle" id="SQL-VACUUM-TITLE">VACUUM</span></a>, <a class="xref" href="app-vacuumdb.html" title="vacuumdb"><span class="refentrytitle"><span class="application">vacuumdb</span></span></a>, <a class="xref" href="runtime-config-resource.html#RUNTIME-CONFIG-RESOURCE-VACUUM-COST" title="19.4.4. Report du VACUUM en fonction de son coût">Section 19.4.4</a>, <a class="xref" href="routine-vacuuming.html#AUTOVACUUM" title="24.1.6. Le démon auto-vacuum">Section 24.1.6</a>, <a class="xref" href="progress-reporting.html#ANALYZE-PROGRESS-REPORTING" title="27.4.1. Rapporter la progression d'ANALYZE">Section 27.4.1</a></span></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/sql-analyze.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:52 GMT -->
+</html>

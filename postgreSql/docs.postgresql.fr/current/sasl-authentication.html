@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/sasl-authentication.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:14 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>53.3. Authentification SASL</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="protocol-flow.html" title="53.2. Flot de messages" /><link rel="next" href="protocol-replication.html" title="53.4. Protocole de réplication en flux" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/sasl-authentication.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/sasl-authentication.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/sasl-authentication.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/sasl-authentication.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/sasl-authentication.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/sasl-authentication.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/sasl-authentication.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/sasl-authentication.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/sasl-authentication.html">10</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/sasl-authentication.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="internals.html">Internes</a></span> » <span class="breadcrumb-link"><a href="protocol.html">Protocole Frontend/Backend</a></span> » <span class="breadcrumb-node">Authentification SASL</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="protocol-flow.html" title="53.2. Flot de messages">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="protocol.html" title="Chapitre 53. Protocole Frontend/Backend">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="protocol-replication.html" title="53.4. Protocole de réplication en flux">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">53.2. Flot de messages </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 53.4. Protocole de réplication en flux</td></tr></table></div><div class="sect1" id="SASL-AUTHENTICATION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">53.3. Authentification SASL <a href="#SASL-AUTHENTICATION" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="sasl-authentication.html#SASL-SCRAM-SHA-256">53.3.1. Authentification SCRAM-SHA-256</a></span></dt></dl></div><p>
+   <em class="firstterm">SASL</em> est un cadre pour l'authentification dans des
+   protocoles orientés connexions. Actuellement,
+   <span class="productname">PostgreSQL</span> implémente deux mécanismes
+   d'authentification SASL, SCRAM-SHA-256 et SCRAM-SHA-256-PLUS. D'autres
+   pourraient être ajoutés dans le futur. Les étapes ci-dessous illustrent
+   comment l'authentification SASL est réalisé en général, alors que la
+   sous-section suivante donne plus de détails sur SCRAM-SHA-256 et
+   SCRAM-SHA-256-PLUS.
+  </p><div class="procedure" id="id-1.10.6.8.3"><p class="title"><strong>Flot de message d'authentification SASL</strong></p><ol class="procedure" type="1"><li class="step" id="SASL-AUTH-BEGIN"><p>
+     Pour commencer un échange d'authentification SASL, le serveur envoie un
+     message AuthenticationSASL. Il inclut une liste des mécanismes
+     d'authentification SASL que le serveur peut accepter, dans l'ordre de
+     préférence du serveur.
+    </p></li><li class="step" id="SASL-AUTH-INITIAL-RESPONSE"><p>
+     Le client sélectionne un des mécanismes supportés dans la liste, et envoie
+     un message SASLInitialResponse au serveur. Le message inclut le nom du
+     mécanisme sélectionné, et un optionnel <code class="literal">Initial Client
+     Response</code>, si le mécanisme sélectionné utilise cela.
+    </p></li><li class="step" id="SASL-AUTH-CONTINUE"><p>
+     Un ou plusieurs messages <code class="literal">server-challenge</code> et
+     <code class="literal">client-response</code> suivront. Chaque message
+     <code class="literal">server-challenge</code> est envoyé dans un message
+     AuthenticationSASLContinue, suivi par une réponse d'un client dans un
+     message SASLResponse. Les particularités des messages sont spécifiques au
+     mécanisme.
+    </p></li><li class="step" id="SASL-AUTH-END"><p>
+     Enfin, quand l'échange d'authentification est terminé avec succès, le
+     serveur envoie un message AuthenticationSASLFinal, suivi immédiatement par
+     un message AuthenticationOk. Le message AuthenticationSASLFinal contient
+     des données supplémentaires du serveur au client, dont le contenu est
+     spécifique au mécanisme d'authentification sélectionné. Si le mécanisme
+     d'authentification n'utilise pas les données supplémentaires envoyées en
+     fin, le message AuthenticationSASLFinal n'est pas envoyé.
+    </p></li></ol></div><p>
+   En cas d'erreur, le serveur peut annuler l'authentification à tout moment,
+   et envoie un message ErrorMessage.
+  </p><div class="sect2" id="SASL-SCRAM-SHA-256"><div class="titlepage"><div><div><h3 class="title">53.3.1. Authentification SCRAM-SHA-256 <a href="#SASL-SCRAM-SHA-256" class="id_link">#</a></h3></div></div></div><p>
+    Les mécanismes SASL implémentés actuellement sont
+    <code class="literal">SCRAM-SHA-256</code> et son variant avec la liaison de canal
+    <code class="literal">SCRAM-SHA-256-PLUS</code>. Ils sont décrits en détails dans
+    <a class="ulink" href="https://datatracker.ietf.org/doc/html/rfc7677" target="_top">RFC 7677</a> et <a class="ulink" href="https://datatracker.ietf.org/doc/html/rfc5802" target="_top">RFC 5802</a>.
+   </p><p>
+    Quand SCRAM-SHA-256 est utilisé dans PostgreSQL, le serveur ignorera le nom
+    d'utilisateur que le client envoie dans
+    <code class="structname">client-first-message</code>. Le nom d'utilisateur qui
+    était déjà envoyé dans le message de démarrage est utilisé à la place.
+    <span class="productname">PostgreSQL</span> accepte plusieurs encodages de
+    caractères, alors que SCRAM impose l'utilisation d'UTF-8 pour le nom
+    d'utilisateur, donc il pourrait être impossible de représenter le nom
+    d'utilisateur PostgreSQL en UTF-8.
+   </p><p>
+    La spécification SCRAM impose que le mot de passe soit aussi en UTF-8, et
+    soit traité avec l'algorithme <em class="firstterm">SASLprep</em>. Néanmoins,
+    <span class="productname">PostgreSQL</span> ne requiert pas l'utilisation d'UTF-8
+    pour le mot de passE. Quand le mot de passe d'un utilisateur est configuré,
+    il est traité avec SASLprep comme s'il était en UTF-8, quelque soit
+    l'encodage réel. Néanmoins, s'il ne s'agit pas d'une séquence légale
+    d'octets UTF-8 ou s'il contient des séquences d'octets UTF-8 qui sont
+    interdites par l'algorithme SASLprep, le mot de passe brut sera utilisé sans
+    le traitement de SASLprep, au lieu de renvoyer une erreur. Ceci permet au
+    mot de passe d'être normalisé quand il est en UTF-8, en autorisant toujours
+    l'utilisation d'un mot de passe non UTF-8, sans nécessiter que le système
+    connaisse l'encodage du mot de passe.
+   </p><p>
+    La liaison de canal (<em class="firstterm">Channel binding</em>) est accepté par
+    PostgreSQL si ce dernier a été compilé avec le support de SSL. Le nom du
+    mécanisme SASL pour SCRAM avec liaison de canal est
+    <code class="literal">SCRAM-SHA-256-PLUS</code>. Le type de liaison utilisé par
+    PostgreSQL est <code class="literal">tls-server-end-point</code>.
+   </p><p>
+    Dans <acronym class="acronym">SCRAM</acronym> sans liaison de canal, le serveur choisit un
+    nombre aléatoire qui est transmis au client pour être mélangé avec le mot de
+    passe fourni par l'utilisateur dans le hachage transmis du mot de passe.
+    Bien que ceci empêche le hachage du mot de passe d'être retransmis avec
+    succès dans une session ultérieure, cela n'empêche pas un faux serveur entre
+    le serveur réel et le client de passer la valeur aléatoire du serveur et de
+    s'authentifier avec succès.
+   </p><p>
+    <acronym class="acronym">SCRAM</acronym> avec liaison de canal empêche ce type d'attaques
+    <span class="foreignphrase"><em class="foreignphrase">man-in-the-middle</em></span> en mélangeant la signature
+    du certificat du serveur dans le hachage transmis du mot de passe. Bien
+    qu'un faux serveur peut retransmettre le certificat du vrai serveur, il n'a
+    pas accès à la clé privée correspondant à ce certificat et ne peut donc pas
+    prouver qu'il en est le propriétaire, imposant de ce fait un échec de la
+    connexion SSL.
+   </p><div class="procedure" id="id-1.10.6.8.5.8"><p class="title"><strong>Exemple</strong></p><ol class="procedure" type="1"><li class="step" id="SCRAM-BEGIN"><p>
+      Le serveur envoie un message AuthenticationSASL. Il inclut une liste des
+      mécanismes d'authentification SASL que le serveur peut accepter. Ce sera
+      <code class="literal">SCRAM-SHA-256-PLUS</code> et <code class="literal">SCRAM-SHA-256</code>
+      si le serveur dispose du support de SSL. Dans le cas contraire, ce sera
+      uniquement le dernier.
+     </p></li><li class="step" id="SCRAM-CLIENT-FIRST"><p>
+      Le client répond en envoyant un message SASLInitialResponse, qui indique
+      le mécanisme choisi, <code class="literal">SCRAM-SHA-256</code> ou
+      <code class="literal">SCRAM-SHA-256-PLUS</code>. (Un client est libre de choisir un
+      mécanisme mais pour une sécurité plus forte, il devra choisir la variante
+      à liaison de canal s'il le gère.) Dans le champ <code class="literal">Initial Client
+      response</code>, le message contient le message SCRAM
+      <code class="structname">client-first-message</code>. Le message
+      <code class="structname">client-first-message</code> contient aussi le type de
+      liaison de canal choisi par le client.
+     </p></li><li class="step" id="SCRAM-SERVER-FIRST"><p>
+      Le serveur envoie un message AuthenticationSASLContinue, avec un message
+      SCRAM <code class="structname">server-first-message</code> comme contenu.
+     </p></li><li class="step" id="SCRAM-CLIENT-FINAL"><p>
+      Le client envoie un message SASLResponse, avec le message SCRAM
+      <code class="structname">client-final-message</code> comme contenu.
+     </p></li><li class="step" id="SCRAM-SERVER-FINAL"><p>
+      Le serveur envoie un message AuthenticationSASLFinal, avec le message
+      SCRAM <code class="structname">server-final-message</code>, suivi immédiatement
+      par un message AuthenticationOk.
+     </p></li></ol></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/sasl-authentication.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:14 GMT -->
+</html>

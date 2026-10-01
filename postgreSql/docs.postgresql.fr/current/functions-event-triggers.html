@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/functions-event-triggers.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:29 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>9.30. Fonctions de trigger d'événement</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="functions-trigger.html" title="9.29. Fonctions trigger" /><link rel="next" href="functions-statistics.html" title="9.31. Fonctions d'informations statistiques" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/functions-event-triggers.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/functions-event-triggers.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/functions-event-triggers.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/functions-event-triggers.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/functions-event-triggers.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/functions-event-triggers.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/functions-event-triggers.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/functions-event-triggers.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/functions-event-triggers.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/functions-event-triggers.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/functions-event-triggers.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/functions-event-triggers.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/functions-event-triggers.html">9.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/functions-event-triggers.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="functions.html">Fonctions et opérateurs</a></span> » <span class="breadcrumb-node">Fonctions de trigger d'événement</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="functions-trigger.html" title="9.29. Fonctions trigger">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="functions.html" title="Chapitre 9. Fonctions et opérateurs">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="functions-statistics.html" title="9.31. Fonctions d'informations statistiques">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">9.29. Fonctions trigger </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 9.31. Fonctions d'informations statistiques</td></tr></table></div><div class="sect1" id="FUNCTIONS-EVENT-TRIGGERS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">9.30. Fonctions de trigger d'événement <a href="#FUNCTIONS-EVENT-TRIGGERS" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="functions-event-triggers.html#PG-EVENT-TRIGGER-DDL-COMMAND-END-FUNCTIONS">9.30.1. Capturer les modifications à la fin d'une commande</a></span></dt><dt><span class="sect2"><a href="functions-event-triggers.html#PG-EVENT-TRIGGER-SQL-DROP-FUNCTIONS">9.30.2. Traitement des objets supprimés par une commande DDL</a></span></dt><dt><span class="sect2"><a href="functions-event-triggers.html#PG-EVENT-TRIGGER-TABLE-REWRITE-FUNCTIONS">9.30.3. Gérer un événement de réécriture de table</a></span></dt></dl></div><p>
+<span class="productname">PostgreSQL</span> fournit des fonctions d'aide pour
+récupérer des informations sur les triggers d'événement.
+</p><p>
+Pour plus d'informations sur les triggers d'événement, voir <a class="xref" href="event-triggers.html" title="Chapitre 38. Triggers sur événement">Chapitre 38</a>.
+</p><div class="sect2" id="PG-EVENT-TRIGGER-DDL-COMMAND-END-FUNCTIONS"><div class="titlepage"><div><div><h3 class="title">9.30.1. Capturer les modifications à la fin d'une commande <a href="#PG-EVENT-TRIGGER-DDL-COMMAND-END-FUNCTIONS" class="id_link">#</a></h3></div></div></div><a id="id-1.5.8.36.4.2" class="indexterm"></a><pre class="synopsis">
+<code class="function">pg_event_trigger_ddl_commands</code> () → <code class="returnvalue">setof record</code>
+</pre><p>
+ <code class="function">pg_event_trigger_ddl_commands</code> renvoie une liste de
+ commandes <acronym class="acronym">DDL</acronym> exécutées par chaque action utilisateur,
+ lorsqu'elles sont appelées dans une fonction attachée à un trigger
+ d'événement <code class="literal">ddl_command_end</code>. Si appelé d'un autre
+ contexte, une erreur est levée.
+ <code class="function">pg_event_trigger_ddl_commands</code> renvoie une ligne pour
+ chaque commande de base exécutée ; certaines commandes qui sont une
+ simple phrase SQL pourraient renvoyer plus d'une ligne. Cette fonction
+ renvoie les colonnes suivantes :
+
+ </p><div class="informaltable"><table class="informaltable" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Nom</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">classid</code></td><td><code class="type">oid</code></td><td>OID du catalogue d'appartenance de l'objet</td></tr><tr><td><code class="literal">objid</code></td><td><code class="type">oid</code></td><td>OID de l'objet lui-même</td></tr><tr><td><code class="literal">objsubid</code></td><td><code class="type">integer</code></td><td>identifiant du sous-objet (par exemple, le numéro d'attribut
+      pour une colonne)</td></tr><tr><td><code class="literal">command_tag</code></td><td><code class="type">text</code></td><td>Balise de commande</td></tr><tr><td><code class="literal">object_type</code></td><td><code class="type">text</code></td><td>Type de l'objet</td></tr><tr><td><code class="literal">schema_name</code></td><td><code class="type">text</code></td><td>
+      Nom du schéma d'appartenance de l'objet, s'il existe ;
+      sinon <code class="literal">NULL</code>. Aucun guillemet n'est utilisé.
+     </td></tr><tr><td><code class="literal">object_identity</code></td><td><code class="type">text</code></td><td>
+      Texte indiquant l'identité de l'objet, qualifié du schéma. Chaque
+      identifiant inclus dans l'identifié est entre guillemets si
+      nécessaire.
+     </td></tr><tr><td><code class="literal">in_extension</code></td><td><code class="type">boolean</code></td><td>True si la commande fait partie d'un script d'extension</td></tr><tr><td><code class="literal">command</code></td><td><code class="type">pg_ddl_command</code></td><td>
+      Une représentation complète de la commande dans le format interne.
+      Ceci ne peut être affiché directement mais peut être passé à d'autres
+      fonctions pour obtenir différentes pièces d'information sur la
+      commande.
+     </td></tr></tbody></table></div><p>
+</p></div><div class="sect2" id="PG-EVENT-TRIGGER-SQL-DROP-FUNCTIONS"><div class="titlepage"><div><div><h3 class="title">9.30.2. Traitement des objets supprimés par une commande DDL <a href="#PG-EVENT-TRIGGER-SQL-DROP-FUNCTIONS" class="id_link">#</a></h3></div></div></div><a id="id-1.5.8.36.5.2" class="indexterm"></a><pre class="synopsis">
+<code class="function">pg_event_trigger_dropped_objects</code> () → <code class="returnvalue">setof record</code>
+</pre><p>
+ <code class="function">pg_event_trigger_dropped_objects</code> renvoie une liste de
+ tous les objets supprimés par la commande pour laquelle l'événement
+ <code class="literal">sql_drop</code> a été appelé. Si elle est appelée dans un
+ autre contexte, une erreur est levée. Cette fonction renvoie les colonnes
+ suivantes :
+
+ </p><div class="informaltable"><table class="informaltable" border="1"><colgroup><col /><col /><col /></colgroup><thead><tr><th>Nom</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code class="literal">classid</code></td><td><code class="type">oid</code></td><td>OID du catalogue d'appartenance de l'objet</td></tr><tr><td><code class="literal">objid</code></td><td><code class="type">oid</code></td><td>OID de l'objet lui-même</td></tr><tr><td><code class="literal">objsubid</code></td><td><code class="type">integer</code></td><td>Identifiant du sous-objet (par exemple le numéro d'attribut
+      d'une colonne)</td></tr><tr><td><code class="literal">original</code></td><td><code class="type">boolean</code></td><td>True s'il s'agit d'un des objets racines de la suppression</td></tr><tr><td><code class="literal">normal</code></td><td><code class="type">boolean</code></td><td>
+      True s'il y avait une relation de dépendance normale dans le graphe
+      de dépendance amenant à cet objet
+     </td></tr><tr><td><code class="literal">is_temporary</code></td><td><code class="type">boolean</code></td><td>
+      True si c'était un objet temporaire
+     </td></tr><tr><td><code class="literal">object_type</code></td><td><code class="type">text</code></td><td>Type de l'objet</td></tr><tr><td><code class="literal">schema_name</code></td><td><code class="type">text</code></td><td>
+      Nom du schéma d'appartenance de l'objet, s'il existe ;
+      sinon <code class="literal">NULL</code>. Aucun guillemet n'est utilisé.
+     </td></tr><tr><td><code class="literal">object_name</code></td><td><code class="type">text</code></td><td>
+      Nom de l'objet, si la combinaison du schéma et du nom peut être
+      utilisée comme un identifiant unique pour l'objet ; sinon
+      <code class="literal">NULL</code>. Aucun guillemet n'est utilisé, et le nom
+      n'est jamais qualifié du schéma.
+     </td></tr><tr><td><code class="literal">object_identity</code></td><td><code class="type">text</code></td><td>
+      Texte indiquant l'identité de l'objet, qualifié du schéma. Chaque
+      identifiant inclus dans l'identifié est entre guillemets si
+      nécessaire.
+     </td></tr><tr><td><code class="literal">address_names</code></td><td><code class="type">text[]</code></td><td>
+      Un tableau qui, avec <code class="literal">object_type</code> et
+      <code class="literal">address_args</code>, peut être utilisé dans la fonction
+      <code class="function">pg_get_object_address</code> pour recréer l'adresse de
+      l'objet dans un serveur distant contenant un objet nommé de façon
+      identique et de même type.
+     </td></tr><tr><td><code class="literal">address_args</code></td><td><code class="type">text[]</code></td><td>
+      Complément pour <code class="literal">address_names</code>
+     </td></tr></tbody></table></div><p>
+</p><p>
+ La fonction <code class="function">pg_event_trigger_dropped_objects</code> peut être
+ utilisée dans un trigger d'événement tel que :
+ </p><pre class="programlisting">
+CREATE FUNCTION test_event_trigger_for_drops()
+        RETURNS event_trigger LANGUAGE plpgsql AS $$
+DECLARE
+    obj record;
+BEGIN
+    FOR obj IN SELECT * FROM pg_event_trigger_dropped_objects()
+    LOOP
+        RAISE NOTICE '% dropped object: % %.% %',
+                     tg_tag,
+                     obj.object_type,
+                     obj.schema_name,
+                     obj.object_name,
+                     obj.object_identity;
+    END LOOP;
+END
+$$;
+CREATE EVENT TRIGGER test_event_trigger_for_drops
+   ON sql_drop
+   EXECUTE FUNCTION test_event_trigger_for_drops();
+ </pre><p>
+</p></div><div class="sect2" id="PG-EVENT-TRIGGER-TABLE-REWRITE-FUNCTIONS"><div class="titlepage"><div><div><h3 class="title">9.30.3. Gérer un événement de réécriture de table <a href="#PG-EVENT-TRIGGER-TABLE-REWRITE-FUNCTIONS" class="id_link">#</a></h3></div></div></div><p>
+ Les fonctions listées dans <a class="xref" href="functions-event-triggers.html#FUNCTIONS-EVENT-TRIGGER-TABLE-REWRITE" title="Tableau 9.108. Fonctions d'informations sur la réécriture de table">Tableau 9.108</a> fournissent des
+ informations sur une table pour laquelle l'événement
+ <code class="literal">table_rewrite</code> a été justement appelé. Si appelée dans
+ un autre contexte, une erreur est levée.
+</p><div class="table" id="FUNCTIONS-EVENT-TRIGGER-TABLE-REWRITE"><p class="title"><strong>Tableau 9.108. Fonctions d'informations sur la réécriture de table</strong></p><div class="table-contents"><table class="table" summary="Fonctions d'informations sur la réécriture de table" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+      Fonction
+     </p>
+     <p>
+      Description
+     </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.36.6.3.2.2.1.1.1.1" class="indexterm"></a>
+      <code class="function">pg_event_trigger_table_rewrite_oid</code> ()
+      → <code class="returnvalue">oid</code>
+     </p>
+     <p>
+      Renvoie l'OID de la table à réécrire.
+     </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+      <a id="id-1.5.8.36.6.3.2.2.2.1.1.1" class="indexterm"></a>
+      <code class="function">pg_event_trigger_table_rewrite_reason</code> ()
+      → <code class="returnvalue">integer</code>
+     </p>
+     <p>
+      Renvoie un code expliquant les raisons de la réécriture. La valeur est un
+      champ de bits construit à partir des valeurs suivantes :
+      <code class="literal">1</code> (la persistence de la table a été modifiée),
+      <code class="literal">2</code> (la valeur par défaut d'une colonne a été modifiée),
+      <code class="literal">4</code> (le type de données de la colonne a été modifié) et
+      <code class="literal">8</code> (la méthode d'accès à la table a été modifiée).
+     </p></td></tr></tbody></table></div></div><br class="table-break" /><p>
+ Ces fonctions peuvent être utilisées dans un trigger d'événement
+ ainsi :
+ </p><pre class="programlisting">
+CREATE FUNCTION test_event_trigger_table_rewrite_oid()
+ RETURNS event_trigger
+ LANGUAGE plpgsql AS
+$$
+BEGIN
+  RAISE NOTICE 'rewriting table % for reason %',
+                pg_event_trigger_table_rewrite_oid()::regclass,
+                pg_event_trigger_table_rewrite_reason();
+END;
+$$;
+
+CREATE EVENT TRIGGER test_table_rewrite_oid
+                  ON table_rewrite
+   EXECUTE FUNCTION test_event_trigger_table_rewrite_oid();
+ </pre><p>
+</p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/functions-event-triggers.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:29 GMT -->
+</html>

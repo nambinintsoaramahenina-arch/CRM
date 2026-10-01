@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/cube.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:20 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.10. cube -- un type de données cube multidimensionnel</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="citext.html" title="F.9. citext -- un type chaîne de caractères insensible à la casse" /><link rel="next" href="dblink.html" title="F.11. dblink -- se connecter à d'autres bases de données PostgreSQL" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/cube.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/cube.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/cube.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/cube.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/cube.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/cube.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/cube.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/cube.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/cube.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/cube.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/cube.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/cube.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/cube.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/cube.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/cube.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/cube.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/cube.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/cube.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/cube.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="appendixes.html">Annexes</a></span> » <span class="breadcrumb-link"><a href="contrib.html">Modules et extensions supplémentaires fournis</a></span> » <span class="breadcrumb-node">cube  --  un type de données cube multidimensionnel</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="citext.html" title="F.9. citext  --  un type chaîne de caractères insensible à la casse">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="dblink.html" title="F.11. dblink  --  se connecter à d'autres bases de données PostgreSQL">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">F.9. citext  --  un type chaîne de caractères insensible à la casse </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> F.11. dblink  --  se connecter à d'autres bases de données PostgreSQL</td></tr></table></div><div class="sect1" id="CUBE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.10. cube  --  un type de données cube multidimensionnel <a href="#CUBE" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="cube.html#CUBE-SYNTAX">F.10.1. Syntaxe</a></span></dt><dt><span class="sect2"><a href="cube.html#CUBE-PRECISION">F.10.2. Précision</a></span></dt><dt><span class="sect2"><a href="cube.html#CUBE-USAGE">F.10.3. Utilisation</a></span></dt><dt><span class="sect2"><a href="cube.html#CUBE-DEFAULTS">F.10.4. Par défaut</a></span></dt><dt><span class="sect2"><a href="cube.html#CUBE-NOTES">F.10.5. Notes</a></span></dt><dt><span class="sect2"><a href="cube.html#CUBE-CREDITS">F.10.6. Crédits</a></span></dt></dl></div><a id="id-1.11.7.21.2" class="indexterm"></a><p>
+  Ce module code le type de données <code class="type">cube</code> pour
+  représenter des cubes à plusieurs dimensions.
+ </p><p>
+  Ce module est considéré comme <span class="quote">« <span class="quote">trusted</span> »</span>, ce qui signifie qu'il
+  peut être installé par des utilisateurs simples (sans attribut
+  <code class="literal">SUPERUSER</code>) et qui ont l'attribut <code class="literal">CREATE</code>
+  sur la base de données courante.
+ </p><div class="sect2" id="CUBE-SYNTAX"><div class="titlepage"><div><div><h3 class="title">F.10.1. Syntaxe <a href="#CUBE-SYNTAX" class="id_link">#</a></h3></div></div></div><p>
+   <a class="xref" href="cube.html#CUBE-REPR-TABLE" title="Tableau F.1. Représentations externes d'un cube">Tableau F.1</a> affiche les représentations externes
+   valides pour le type <code class="type">cube</code>. <em class="replaceable"><code>x</code></em>,
+   <em class="replaceable"><code>y</code></em>, etc. dénotent des nombres flottants.
+  </p><div class="table" id="CUBE-REPR-TABLE"><p class="title"><strong>Tableau F.1. Représentations externes d'un cube</strong></p><div class="table-contents"><table class="table" summary="Représentations externes d'un cube" border="1"><colgroup><col /><col /></colgroup><thead><tr><th>Syntaxe externe</th><th>Signification</th></tr></thead><tbody><tr><td><code class="literal"><em class="replaceable"><code>x</code></em></code></td><td>point uni-dimensionnel (ou intervalle unidimensionnel de longueur
+       nulle)
+      </td></tr><tr><td><code class="literal">(<em class="replaceable"><code>x</code></em>)</code></td><td>Identique à ci-dessus</td></tr><tr><td><code class="literal"><em class="replaceable"><code>x1</code></em>,<em class="replaceable"><code>x2</code></em>,...,<em class="replaceable"><code>xn</code></em></code></td><td>Un point dans un espace à n dimensions, représenté en interne
+       comme un cube de volume nul
+      </td></tr><tr><td><code class="literal">(<em class="replaceable"><code>x1</code></em>,<em class="replaceable"><code>x2</code></em>,...,<em class="replaceable"><code>xn</code></em>)</code></td><td>Identique à ci-dessus</td></tr><tr><td><code class="literal">(<em class="replaceable"><code>x</code></em>),(<em class="replaceable"><code>y</code></em>)</code></td><td>Intervalle uni-dimensionnel débutant à
+       <em class="replaceable"><code>x</code></em> et finissant à
+       <em class="replaceable"><code>y</code></em> ou vice-versa ; l'ordre n'importe pas
+      </td></tr><tr><td><code class="literal">[(<em class="replaceable"><code>x</code></em>),(<em class="replaceable"><code>y</code></em>)]</code></td><td>Identique à ci-dessus</td></tr><tr><td><code class="literal">(<em class="replaceable"><code>x1</code></em>,...,<em class="replaceable"><code>xn</code></em>),(<em class="replaceable"><code>y1</code></em>,...,<em class="replaceable"><code>yn</code></em>)</code></td><td>Cube à n dimensions représenté par paires de coins diagonalement opposés
+      </td></tr><tr><td><code class="literal">[(<em class="replaceable"><code>x1</code></em>,...,<em class="replaceable"><code>xn</code></em>),(<em class="replaceable"><code>y1</code></em>,...,<em class="replaceable"><code>yn</code></em>)]</code></td><td>Identique à ci-dessus</td></tr></tbody></table></div></div><br class="table-break" /><p>
+   L'ordre de saisie des coins opposés d'un cube n'a aucune importance. Les
+   fonctions <code class="type">cube</code> s'occupent de la bascule nécessaire à
+   l'obtention d'une représentation uniforme <span class="quote">« <span class="quote">bas gauche, haut
+    droit</span> »</span>. Quand les coins coincident, le type <code class="type">cube</code>
+   enregistre un coin ainsi que le drapeau <span class="quote">« <span class="quote">is point</span> »</span> pour éviter
+   de perdre de l'espace.
+  </p><p>
+   Les espaces sont ignorées,
+   <code class="literal">[(<em class="replaceable"><code>x</code></em>),(<em class="replaceable"><code>y</code></em>)]</code>
+   est donc identique à
+   <code class="literal">[ ( <em class="replaceable"><code>x</code></em> ), ( <em class="replaceable"><code>y</code></em> ) ]</code>.
+  </p></div><div class="sect2" id="CUBE-PRECISION"><div class="titlepage"><div><div><h3 class="title">F.10.2. Précision <a href="#CUBE-PRECISION" class="id_link">#</a></h3></div></div></div><p>
+   Les valeurs sont enregistrées en interne sous la forme de nombres en
+   virgule flottante. Cela signifie que les nombres avec plus de 16 chiffres
+   significatifs sont tronqués.
+  </p></div><div class="sect2" id="CUBE-USAGE"><div class="titlepage"><div><div><h3 class="title">F.10.3. Utilisation <a href="#CUBE-USAGE" class="id_link">#</a></h3></div></div></div><p>
+   <a class="xref" href="cube.html#CUBE-OPERATORS-TABLE" title="Tableau F.2. Opérateurs pour cube">Tableau F.2</a> affiche les opérateurs spécialisés
+   fournis par le type <code class="type">cube</code>.
+  </p><div class="table" id="CUBE-OPERATORS-TABLE"><p class="title"><strong>Tableau F.2. Opérateurs pour cube</strong></p><div class="table-contents"><table class="table" summary="Opérateurs pour cube" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+        Opérateur
+       </p>
+       <p>
+        Description
+       </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">cube</code> <code class="literal">&amp;&amp;</code> <code class="type">cube</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que les cubes se superposent ?
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">cube</code> <code class="literal">@&gt;</code> <code class="type">cube</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier cube contient le second ?
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">cube</code> <code class="literal">&lt;@</code> <code class="type">cube</code>
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Est-ce que le premier cube est contenu dans le second ?
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">cube</code> <code class="literal">-&gt;</code> <code class="type">integer</code>
+        → <code class="returnvalue">float8</code>
+       </p>
+       <p>
+        Extrait les <em class="parameter"><code>n</code></em>-ième coordonnées du cube
+        (à partir de 1)
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">cube</code> <code class="literal">~&gt;</code> <code class="type">integer</code>
+        → <code class="returnvalue">float8</code>
+       </p>
+       <p>
+        Extrait les <em class="parameter"><code>n</code></em>-ième coordonnées du cube,
+        en comptant ainsi :  <em class="parameter"><code>n</code></em> = 2
+        * <em class="parameter"><code>k</code></em> - 1 indique la limite inférieure de la
+        <em class="parameter"><code>k</code></em>-ième dimension, <em class="parameter"><code>n</code></em> = 2
+        * <em class="parameter"><code>k</code></em> indique la limite supérieure de la
+        <em class="parameter"><code>k</code></em>-ième dimension. Un paramètre négatif
+        <em class="parameter"><code>n</code></em> désigne la valeur inverse de la coordonnée
+        positive correspondante. Cet opérateur est conçu pour le support
+        KNN-GiST.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">cube</code> <code class="literal">&lt;-&gt;</code> <code class="type">cube</code>
+        → <code class="returnvalue">float8</code>
+       </p>
+       <p>
+        Calcule la distance Euclidienne entre deux cubes.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">cube</code> <code class="literal">&lt;#&gt;</code> <code class="type">cube</code>
+        → <code class="returnvalue">float8</code>
+       </p>
+       <p>
+        Calcule la distance taxicab (métrique L-1) entre deux cubes.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="type">cube</code> <code class="literal">&lt;=&gt;</code> <code class="type">cube</code>
+        → <code class="returnvalue">float8</code>
+       </p>
+       <p>
+        Calcule la distance Chebyshev (métrique L-inf) entre deux cubes.
+       </p></td></tr></tbody></table></div></div><br class="table-break" /><p>
+   En plus des opérateurs ci-dessus, les opérateurs de comparaison usuels
+   indiqués dans <a class="xref" href="functions-comparison.html#FUNCTIONS-COMPARISON-OP-TABLE" title="Tableau 9.1. Opérateurs de comparaison">Tableau 9.1</a> sont disponibles
+   pour le type <code class="type">cube</code>. Ces opérateurs comparent tout d'abord les
+   premiers coordonnées et, si ces derniers sont égaux, comparent les
+   deuxièmes coordonnées. Ils existent principalement pour supporter la classe
+   d'opérateur d'index b-tree pour <code class="type">cube</code>, qui peut seulement être
+   utile par exemple si vous souhaitez une contrainte UNIQUE sur une colonne
+   <code class="type">cube</code>.
+   Autrement, l'ordonnancement n'a pas d'usage concret.
+  </p><p>
+   Le module <code class="filename">cube</code> fournit aussi une classe d'opérateurs
+   pour index GiST pour les valeurs <code class="type">cube</code>. Un index GiST peut être
+   utilisé sur le type <code class="type">cube</code> pour chercher des valeurs en
+   utilisant les opérateurs <code class="literal">=</code>,
+   <code class="literal">&amp;&amp;</code>, <code class="literal">@&gt;</code> et
+   <code class="literal">&lt;@</code> dans les clauses <code class="literal">WHERE</code>.
+  </p><p>
+   De plus, un index GiST <code class="type">cube</code> peut être utilisé pour trouver
+   les plus proches voisins en utilisant les opérateurs de métriques
+   <code class="literal">&lt;-&gt;</code>, <code class="literal">&lt;#&gt;</code> et
+   <code class="literal">&lt;=&gt;</code> dans les clauses <code class="literal">ORDER BY</code>.
+   Par exemple, le plus proche voisin du point 3-D (0.5, 0.5, 0.5) peut
+   être trouvé de façon efficace avec :
+   </p><pre class="programlisting">
+SELECT c FROM test ORDER BY c &lt;-&gt; cube(array[0.5,0.5,0.5]) LIMIT 1;
+   </pre><p>
+  </p><p>
+   L'opérateur <code class="literal">~&gt;</code> peut aussi être utilisé de cette façon
+   pour récupérer efficacement les premières valeurs triées par une coordonnée
+   sélectionnée. Par exemple, pour obtenir les quelques premiers cubes triés
+   par la première coordonnée (coin bas gauche) ascendante, il est possible
+   d'utiliser la requête suivante :
+   </p><pre class="programlisting">
+SELECT c FROM test ORDER BY c ~&gt; 1 LIMIT 5;
+   </pre><p>
+   Et pour obtenir des cubes 2-D triés par la première coordonnée du coin
+   haut droit descendant :
+   </p><pre class="programlisting">
+SELECT c FROM test ORDER BY c ~&gt; 3 DESC LIMIT 5;
+   </pre><p>
+  </p><p>
+   <a class="xref" href="cube.html#CUBE-FUNCTIONS-TABLE" title="Tableau F.3. Fonctions cube">Tableau F.3</a> indique les fonctions disponibles.
+  </p><div class="table" id="CUBE-FUNCTIONS-TABLE"><p class="title"><strong>Tableau F.3. Fonctions cube</strong></p><div class="table-contents"><table class="table" summary="Fonctions cube" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+        Fonction
+       </p>
+       <p>
+        Description
+       </p>
+       <p>
+        Exemple(s)
+       </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube</code> ( <code class="type">float8</code> )
+        → <code class="returnvalue">cube</code>
+       </p>
+       <p>
+        Crée un cube uni-dimensionnel de coordonnées identiques.
+       </p>
+       <p>
+        <code class="literal">cube(1)</code>
+        → <code class="returnvalue">(1)</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube</code> ( <code class="type">float8</code>, <code class="type">float8</code> )
+        → <code class="returnvalue">cube</code>
+       </p>
+       <p>
+        Crée un cube uni-dimensionnel.
+       </p>
+       <p>
+        <code class="literal">cube(1, 2)</code>
+        → <code class="returnvalue">(1),(2)</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube</code> ( <code class="type">float8[]</code> )
+        → <code class="returnvalue">cube</code>
+       </p>
+       <p>
+        Crée un cube de volume nul en utilisant les coordonnées
+        définies par le tableau.
+       </p>
+       <p>
+        <code class="literal">cube(ARRAY[1,2,3])</code>
+        → <code class="returnvalue">(1, 2, 3)</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube</code> ( <code class="type">float8[]</code>, <code class="type">float8[]</code> )
+        → <code class="returnvalue">cube</code>
+       </p>
+       <p>
+        Crée un cube avec les coordonnées haut droit et
+        bas gauche définies par deux tableaux de flottants, obligatoirement
+        de même taille.
+       </p>
+       <p>
+        <code class="literal">cube(ARRAY[1,2], ARRAY[3,4])</code>
+        → <code class="returnvalue">(1, 2),(3, 4)</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube</code> ( <code class="type">cube</code>, <code class="type">float8</code> )
+        → <code class="returnvalue">cube</code>
+       </p>
+       <p>
+        Crée un nouveau cube en ajoutant une dimension à un cube
+        existant, avec les mêmes valeurs pour les deux points finaux de la
+        nouvelle coordonnée. Ceci est utile pour construire des cubes pièce par
+        pièce à partir de valeurs calculées.
+       </p>
+       <p>
+        <code class="literal">cube('(1,2),(3,4)'::cube, 5)</code>
+        → <code class="returnvalue">(1, 2, 5),(3, 4, 5)</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube</code> ( <code class="type">cube</code>, <code class="type">float8</code>, <code class="type">float8</code> )
+        → <code class="returnvalue">cube</code>
+       </p>
+       <p>
+        Crée un nouveau cube en ajoutant une dimension à un cube existant.
+        Ceci est utile pour construire des cubes pièce par pièce à partir de
+        valeurs calculées.
+       </p>
+       <p>
+        <code class="literal">cube('(1,2),(3,4)'::cube, 5, 6)</code>
+        → <code class="returnvalue">(1, 2, 5),(3, 4, 6)</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube_dim</code> ( <code class="type">cube</code> )
+        → <code class="returnvalue">integer</code>
+       </p>
+       <p>
+        Renvoie le nombre de dimensions du cube.
+       </p>
+       <p>
+        <code class="literal">cube_dim('(1,2),(3,4)')</code>
+        → <code class="returnvalue">2</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube_ll_coord</code> ( <code class="type">cube</code>, <code class="type">integer</code> )
+        → <code class="returnvalue">float8</code>
+       </p>
+       <p>
+        Renvoie la <em class="replaceable"><code>n</code></em>-ième valeur de coordonnée pour
+        le coin bas gauche du cube.
+       </p>
+       <p>
+        <code class="literal">cube_ll_coord('(1,2),(3,4)', 2)</code>
+        → <code class="returnvalue">2</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube_ur_coord</code> ( <code class="type">cube</code>, <code class="type">integer</code> )
+        → <code class="returnvalue">float8</code>
+       </p>
+       <p>
+        Renvoie la <em class="replaceable"><code>n</code></em>-ième valeur de coordonnée pour
+        le coin haut droite du cube.
+       </p>
+       <p>
+        <code class="literal">cube_ur_coord('(1,2),(3,4)', 2)</code>
+        → <code class="returnvalue">4</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube_is_point</code> ( <code class="type">cube</code> )
+        → <code class="returnvalue">boolean</code>
+       </p>
+       <p>
+        Renvoie true si le cube est un point, autrement dit si
+        les deux coins de définition sont identiques.
+       </p>
+       <p>
+        <code class="literal">cube_is_point(cube(1,1))</code>
+        → <code class="returnvalue">t</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube_distance</code> ( <code class="type">cube</code>, <code class="type">cube</code> )
+        → <code class="returnvalue">float8</code>
+       </p>
+       <p>
+        Renvoie la distance entre deux cubes. Si les deux cubes sont des
+        points, il s'agit de la fonction de distance habituelle.
+       </p>
+       <p>
+        <code class="literal">cube_distance('(1,2)', '(3,4)')</code>
+        → <code class="returnvalue">2.8284271247461903</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube_subset</code> ( <code class="type">cube</code>, <code class="type">integer[]</code> )
+        → <code class="returnvalue">cube</code>
+       </p>
+       <p>
+        Crée un nouveau cube à partir d'un cube existant, en utilisant
+        une liste d'index de dimension à partir d'un tableau. Peut être utilisé
+        pour extraire les points finaux d'une seule dimension ou pour supprimer
+        les dimensions, ou pour les réordonner comme souhaité.
+       </p>
+       <p>
+        <code class="literal">cube_subset(cube('(1,3,5),(6,7,8)'), ARRAY[2])</code>
+        → <code class="returnvalue">(3),(7)</code>
+       </p>
+       <p>
+        <code class="literal">cube_subset(cube('(1,3,5),(6,7,8)'), ARRAY[3,2,1,1])</code>
+        → <code class="returnvalue">(5, 3, 1, 1),(8, 7, 6, 6)</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube_union</code> ( <code class="type">cube</code>, <code class="type">cube</code> )
+        → <code class="returnvalue">cube</code>
+       </p>
+       <p>
+        Produit l'union de deux cubes.
+       </p>
+       <p>
+        <code class="literal">cube_union('(1,2)', '(3,4)')</code>
+        → <code class="returnvalue">(1, 2),(3, 4)</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube_inter</code> ( <code class="type">cube</code>, <code class="type">cube</code> )
+        → <code class="returnvalue">cube</code>
+       </p>
+       <p>
+        Produit l'intersection de deux cubes.
+       </p>
+       <p>
+        <code class="literal">cube_inter('(1,2)', '(3,4)')</code>
+        → <code class="returnvalue">(3, 4),(1, 2)</code>
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">cube_enlarge</code> ( <em class="parameter"><code>c</code></em> <code class="type">cube</code>, <em class="parameter"><code>r</code></em> <code class="type">double</code>, <em class="parameter"><code>n</code></em> <code class="type">integer</code> )
+        → <code class="returnvalue">cube</code>
+       </p>
+       <p>
+        Augmente la taille du cube suivant le radius
+        <em class="replaceable"><code>r</code></em> spécifié sur au moins
+        <em class="replaceable"><code>n</code></em> dimensions. Si le radius est négatif, le
+        cube est réduit. Toutes les dimensions définies sont modifiées par le
+        radius <em class="replaceable"><code>r</code></em>. Les coordonnées bas-gauche sont
+        réduites de <em class="replaceable"><code>r</code></em> et les coordonnées haut-droite
+        sont augmentées de <em class="replaceable"><code>r</code></em>. Si une coordonnée bas-
+        gauche est augmentée suffisamment pour être plus importante que la
+        coordonnée haute-droite (ceci peut seulement survenir quand
+        <em class="replaceable"><code>r</code></em> &lt; 0), alors les deux coordonnées sont
+        configurées avec leur moyenne. Si <em class="replaceable"><code>n</code></em> est
+        supérieur au nombre de dimensions définies et que le cube est grossi
+        (<em class="replaceable"><code>r</code></em> &gt; 0), alors les dimensions
+        supplémentaires sont ajoutées pour tout
+        <em class="replaceable"><code>n</code></em> ; 0 est utilisé comme valeur initiale
+        pour les coordonnées supplémentaires. Cette fonction est utile pour
+        créer les <span class="quote">« <span class="quote">bounding boxes</span> »</span> autour d'un point permettant de
+        chercher les points les plus proches.
+       </p>
+       <p>
+        <code class="literal">cube_enlarge('(1,2),(3,4)', 0.5, 3)</code>
+        → <code class="returnvalue">(0.5, 1.5, -0.5),(3.5, 4.5, 0.5)</code>
+       </p></td></tr></tbody></table></div></div><br class="table-break" /></div><div class="sect2" id="CUBE-DEFAULTS"><div class="titlepage"><div><div><h3 class="title">F.10.4. Par défaut <a href="#CUBE-DEFAULTS" class="id_link">#</a></h3></div></div></div><p>
+   Cette union :
+  </p><pre class="programlisting">
+select cube_union('(0,5,2),(2,3,1)', '0');
+cube_union
+-------------------
+(0, 0, 0),(2, 5, 2)
+(1 row)
+  </pre><p>
+   n'est pas en contradiction avec le bon sens. Pas plus que l'intersection :
+  </p><pre class="programlisting">
+select cube_inter('(0,-1),(1,1)', '(-2),(2)');
+cube_inter
+-------------
+(0, 0),(1, 0)
+(1 row)
+  </pre><p>
+   Dans toutes les opérations binaires sur des boîtes de tailles différentes,
+   la plus petite est une projection cartésienne,
+   c'est-à-dire qu'il y a des zéros à la place des coordonnées omises dans la représentation
+   sous forme de chaîne. Les exemples ci-dessus sont équivalents à :
+  </p><pre class="programlisting">
+cube_union('(0,5,2),(2,3,1)','(0,0,0),(0,0,0)');
+cube_inter('(0,-1),(1,1)','(-2,0),(2,0)');
+  </pre><p>
+   Le prédicat de contenance suivant utilise la syntaxe en points alors qu'en
+   fait, le second argument est représenté en interne par une boîte. Cette
+   syntaxe rend inutile la définition du type point et des fonctions
+   pour les prédicats (boîte,point).
+  </p><pre class="programlisting">
+select cube_contains('(0,0),(1,1)', '0.5,0.5');
+cube_contains
+--------------
+t
+(1 row)
+  </pre></div><div class="sect2" id="CUBE-NOTES"><div class="titlepage"><div><div><h3 class="title">F.10.5. Notes <a href="#CUBE-NOTES" class="id_link">#</a></h3></div></div></div><p>
+   Pour des exemples d'utilisation, voir les tests de régression
+   <code class="filename">sql/cube.sql</code>.
+  </p><p>
+   Pour éviter toute mauvaise utilisation, le nombre de dimensions des cubes
+   est limité à 100. Cela se configure dans <code class="filename">cubedata.h</code>.
+  </p></div><div class="sect2" id="CUBE-CREDITS"><div class="titlepage"><div><div><h3 class="title">F.10.6. Crédits <a href="#CUBE-CREDITS" class="id_link">#</a></h3></div></div></div><p>
+   Auteur d'origine : Gene Selkov, Jr. <code class="email">&lt;<a class="email" href="mailto:selkovjr@mcs.anl.gov">selkovjr@mcs.anl.gov</a>&gt;</code>,
+   Mathematics and Computer Science Division, Argonne National Laboratory.
+  </p><p>
+   Mes remerciements vont tout particulièrement au professeur Joe Hellerstein
+   (<a class="ulink" href="https://dsf.berkeley.edu/jmh/" target="_top">https://dsf.berkeley.edu/jmh/</a>) qui a su extraire
+   l'idée centrale de GiST (<a class="ulink" href="http://gist.cs.berkeley.edu/" target="_top">http://gist.cs.berkeley.edu/</a>), et à son étudiant précédant,
+   Andy Dong pour son
+   exemple rédigé dans Illustra. Mes remerciements vont également aux
+   développeurs de PostgreSQL qui m'ont permis de créer mon propre monde
+   et de pouvoir y vivre sans être dérangé. Toute ma gratitude aussi à
+   Argonne Lab et au département américain de l'énergie pour les années de
+   support dans mes recherches sur les bases de données.
+  </p><p>
+   Des modifications mineures ont été effectuées sur ce module par Bruno Wolff
+   III <code class="email">&lt;<a class="email" href="mailto:bruno@wolff.to">bruno@wolff.to</a>&gt;</code> en août/septembre 2002. Elles incluent
+   la modification de la précision (de simple à double) et l'ajout de
+   quelques nouvelles fonctions.
+  </p><p>
+   Des mises à jour supplémentaires ont été réalisées par Joshua Reich
+   <code class="email">&lt;<a class="email" href="mailto:josh@root.net">josh@root.net</a>&gt;</code> en juillet 2006. Elles concernent
+   l'ajout de <code class="literal">cube(float8[], float8[])</code> et le nettoyage du code pour
+   utiliser le protocole d'appel V1 à la place de la forme V0 maintenant
+   obsolète.
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/cube.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:20 GMT -->
+</html>

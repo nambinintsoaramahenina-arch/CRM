@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/pgsurgery.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.32. pg_surgery -- réaliser des opérations bas niveau sur les données des relations</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="pgstattuple.html" title="F.31. pgstattuple -- obtenir des statistiques au niveau ligne" /><link rel="next" href="pgtrgm.html" title="F.33. pg_trgm -- support de la similarité de texte en utilisant la correspondance de trigrammes" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/pgsurgery.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/pgsurgery.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/pgsurgery.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/pgsurgery.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/pgsurgery.html">14</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/pgsurgery.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="appendixes.html">Annexes</a></span> » <span class="breadcrumb-link"><a href="contrib.html">Modules et extensions supplémentaires fournis</a></span> » <span class="breadcrumb-node">pg_surgery  --  réaliser des opérations bas niveau sur les données
+  des relations</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="pgstattuple.html" title="F.31. pgstattuple  --  obtenir des statistiques au niveau ligne">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="pgtrgm.html" title="F.33. pg_trgm  -- &#10;  support de la similarité de texte en utilisant la correspondance de trigrammes">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">F.31. pgstattuple  --  obtenir des statistiques au niveau ligne </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> F.33. pg_trgm  -- 
+  support de la similarité de texte en utilisant la correspondance de trigrammes</td></tr></table></div><div class="sect1" id="PGSURGERY"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.32. pg_surgery  --  réaliser des opérations bas niveau sur les données
+  des relations <a href="#PGSURGERY" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="pgsurgery.html#PGSURGERY-FUNCS">F.32.1. Fonctions</a></span></dt><dt><span class="sect2"><a href="pgsurgery.html#PGSURGERY-AUTHORS">F.32.2. Auteurs</a></span></dt></dl></div><a id="id-1.11.7.43.2" class="indexterm"></a><p>
+  Le module <code class="filename">pg_surgery</code> fournit différentes fonctions pour
+  réaliser des opérations sur une relation endommagée. Ces fonctions sont
+  dangereuses de par leur concept et les utiliser pourrait corrompre
+  (ou corrompre encore plus) votre base de données. Par exemple, ces
+  fonctions peuvent facilement être utilisées pour rendre une table
+  incohérente avec ses propres index, causant des violations de contraintes
+  <code class="literal">UNIQUE</code> ou <code class="literal">FOREIGN KEY</code>, voire même de
+  rendre des lignes visibles qui, lorsqu'elles sont lues, vont causer un
+  crash du serveur de bases de données. Vous devez faire très attention en
+  les utilisant. Leur utilisation doit rester pour les cas désespérés.
+ </p><div class="sect2" id="PGSURGERY-FUNCS"><div class="titlepage"><div><div><h3 class="title">F.32.1. Fonctions <a href="#PGSURGERY-FUNCS" class="id_link">#</a></h3></div></div></div><div class="variablelist"><dl class="variablelist"><dt><span class="term">
+     <code class="function">heap_force_kill(regclass, tid[]) returns void</code>
+    </span></dt><dd><p>
+      <code class="function">heap_force_kill</code> marque les pointeurs de lignes
+      <span class="quote">« <span class="quote">utilisées</span> »</span> comme <span class="quote">« <span class="quote">mortes</span> »</span> sans examiner les
+      lignes. Le but de cette fonction est de forcer la suppression de lignes
+      autrement inaccessibles. Par exemple :
+</p><pre class="programlisting">
+test=&gt; select * from t1 where ctid = '(0, 1)';
+ERROR:  could not access status of transaction 4007513275
+DETAIL:  Could not open file "pg_xact/0EED": No such file or directory.
+
+test=# select heap_force_kill('t1'::regclass, ARRAY['(0, 1)']::tid[]);
+ heap_force_kill 
+-----------------
+ 
+(1 row)
+
+test=# select * from t1 where ctid = '(0, 1)';
+(0 rows)
+
+</pre><p>
+    </p></dd><dt><span class="term">
+     <code class="function">heap_force_freeze(regclass, tid[]) returns void</code>
+    </span></dt><dd><p>
+      <code class="function">heap_force_freeze</code> marque les lignes comme gelées
+      sans examiner les données des lignes. Le but de cette fonction est de
+      rendre accessibles des lignes qui étaient auparavant inaccessibles à
+      cause de la corruption des informations de visibilité, ou qui
+      empêchaient la réussite d'un vacuum sur la table à cause de corruption
+      sur les informations de visibilité. Par exemple :
+</p><pre class="programlisting">
+test=&gt; vacuum t1;
+ERROR:  found xmin 507 from before relfrozenxid 515
+CONTEXT:  while scanning block 0 of relation "public.t1"
+
+test=# select ctid from t1 where xmin = 507;
+ ctid  
+-------
+ (0,3)
+(1 row)
+
+test=# select heap_force_freeze('t1'::regclass, ARRAY['(0, 3)']::tid[]);
+ heap_force_freeze 
+-------------------
+ 
+(1 row)
+
+test=# select ctid from t1 where xmin = 2;
+ ctid
+-------
+ (0,3)
+(1 row)
+
+</pre><p>
+    </p></dd></dl></div></div><div class="sect2" id="PGSURGERY-AUTHORS"><div class="titlepage"><div><div><h3 class="title">F.32.2. Auteurs <a href="#PGSURGERY-AUTHORS" class="id_link">#</a></h3></div></div></div><p>
+   Ashutosh Sharma <code class="email">&lt;<a class="email" href="mailto:ashu.coek88@gmail.com">ashu.coek88@gmail.com</a>&gt;</code>
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/pgsurgery.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+</html>

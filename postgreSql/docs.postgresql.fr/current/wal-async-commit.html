@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/wal-async-commit.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>28.4. Validation asynchrone (Asynchronous Commit)</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="wal-intro.html" title="28.3. Write-Ahead Logging (WAL)" /><link rel="next" href="wal-configuration.html" title="28.5. Configuration des journaux de transaction" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/wal-async-commit.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/wal-async-commit.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/wal-async-commit.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/wal-async-commit.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/wal-async-commit.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/wal-async-commit.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/wal-async-commit.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/wal-async-commit.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/wal-async-commit.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/wal-async-commit.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/wal-async-commit.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/wal-async-commit.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/wal-async-commit.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/wal-async-commit.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/wal-async-commit.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/wal-async-commit.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/wal-async-commit.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/wal-async-commit.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/wal-async-commit.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="wal.html">Fiabilité et journaux de transaction</a></span> » <span class="breadcrumb-node">Validation asynchrone (Asynchronous Commit)</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="wal-intro.html" title="28.3. Write-Ahead Logging (WAL)">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="wal.html" title="Chapitre 28. Fiabilité et journaux de transaction">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="wal-configuration.html" title="28.5. Configuration des journaux de transaction">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">28.3. Write-Ahead Logging (<acronym class="acronym">WAL</acronym>) </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 28.5. Configuration des journaux de transaction</td></tr></table></div><div class="sect1" id="WAL-ASYNC-COMMIT"><div class="titlepage"><div><div><h2 class="title" style="clear: both">28.4. Validation asynchrone (Asynchronous Commit) <a href="#WAL-ASYNC-COMMIT" class="id_link">#</a></h2></div></div></div><a id="id-1.6.15.6.2" class="indexterm"></a><a id="id-1.6.15.6.3" class="indexterm"></a><p>
+   La <em class="firstterm">validation asynchrone</em> est une option qui
+   permet aux transactions de se terminer plus rapidement. Le risque encouru
+   est de perdre les transactions les plus récentes dans le cas où le serveur
+   s'arrête brutalement. Dans beaucoup d'applications, le compromis est
+   acceptable.
+  </p><p>
+   Comme le décrit la section précédente, la validation d'une
+   transaction est habituellement <em class="firstterm">synchrone</em> :
+   le serveur attend que les enregistrements des journaux de transaction
+   soient bien sauvegardés sur le stockage permanent
+   avant d'informer le client du succès de l'opération.
+   Le client a donc la garantie qu'une
+   transaction validée est stockée de façon sûre, donc même
+   en cas d'arrêt brutal immédiatement après. Néanmoins, pour les petites
+   transactions, ce délai est une partie importante de la durée totale
+   d'exécution de la transaction. Sélectionner le mode de validation
+   asynchrone signifie que le serveur annonce le succès de l'opération dès
+   que la transaction est terminée logiquement, donc avant que les
+   enregistrements du journal de transaction que cette transaction a
+   générés ne soient réellement stockés sur disque. Ceci peut apporter
+   une accélération importante pour les petites transactions.
+  </p><p>
+   La validation asynchrone introduit le risque des pertes de données.
+   Il existe un petit délai entre le moment où le rapport de la fin d'une
+   transaction est envoyé au client et celui où la transaction est réellement
+   enregistrée (c'est-à-dire le moment où le résultat de cette transaction
+   ne pourra pas être perdu même en cas d'arrêt brutal du serveur). Du coup,
+   la validation asynchrone ne devrait pas être utilisée si le client
+   se base sur le fait que la transaction est enregistrée de façon sûre.
+   Par exemple, une banque ne devra pas utiliser la validation asynchrone
+   pour une transaction enregistrant la sortie d'argent
+   d'un distributeur bancaire.
+   Dans de nombreux autres scénarios, comme la trace
+   d'événements, il n'y a pas besoin de garantie forte de ce type.
+  </p><p>
+   Le risque pris avec l'utilisation de la validation asynchrone concerne
+   la perte de données, pas la corruption de données. Si le serveur s'arrête
+   brutalement, il redémarrera en rejouant les journaux de transaction
+   jusqu'au dernier enregistrement vidé sur disque.
+   La base sera donc restaurée dans un état cohérent mais toutes les transactions
+   qui n'auront pas été enregistrées sur disque n'y apparaîtront pas.
+   L'effet immédiat est donc la perte des toutes dernières transactions.
+   Comme les
+   transactions sont rejouées dans l'ordre de validation, aucune incohérence
+   ne sera introduite  --  par exemple, si la transaction B fait des
+   modifications sur les effets d'une précédente transaction A, il n'est pas
+   possible que les effets de A soient perdus alors que les effets de B
+   sont préservés.
+  </p><p>
+   L'utilisateur peut sélectionner le mode de validation de chaque
+   transaction ; il est donc possible d'avoir en même temps des transactions
+   validées en synchrone et en asynchrone.
+   Cela offre une grande flexibilité dans le choix entre la performance
+   et la certitude de la durabilité des transactions.
+   Le mode de validation est contrôlé par le paramètre utilisateur
+   <a class="xref" href="runtime-config-wal.html#GUC-SYNCHRONOUS-COMMIT">synchronous_commit</a>, qui peut être modifié comme
+   tout autre paramètre utilisateur. Le mode utilisé pour une
+   transaction dépend de la valeur de <code class="varname">synchronous_commit</code>
+   quand démarre la validation de la transaction.
+  </p><p>
+   Certaines commandes, par exemple <code class="command">DROP TABLE</code>, sont
+   forcées en mode synchrone quelle que soit la valeur du paramètre
+   <code class="varname">synchronous_commit</code>. Ceci a pour but de s'assurer de
+   la cohérence entre le système de fichiers du serveur et l'état logique
+   de la base de données. Les commandes gérant la validation en deux phases
+   (<span class="foreignphrase"><em class="foreignphrase">two-phase commit</em></span>),
+   comme <code class="command">PREPARE TRANSACTION</code>, sont aussi toujours
+   synchrones.
+  </p><p>
+   Si la base de données s'arrête brutalement dans la fenêtre de
+   vulnérabilité entre une validation asynchrone
+   et l'écriture des enregistrements dans le journal
+   des transactions, les modifications réalisées lors de cette transaction
+   <span class="emphasis"><em>seront</em></span> perdues. Cette fenêtre est limitée
+   car un processus en tâche de fond (le <span class="quote">« <span class="quote">wal writer</span> »</span>)
+   écrit sur le disque
+   les enregistrements non écrits des journaux de transaction
+   toutes les <a class="xref" href="runtime-config-wal.html#GUC-WAL-WRITER-DELAY">wal_writer_delay</a> millisecondes.
+   La fenêtre de vulnérabilité s'étend en réalité à trois fois
+   <code class="varname">wal_writer_delay</code> car le processus d'écriture des
+   journaux de transaction est conçu pour favoriser l'écriture de pages
+   complètes lors des périodes de grosses activités.
+  </p><div class="caution"><h3 class="title">Attention</h3><p>
+    Un arrêt en mode immédiat est équivalent à un arrêt brutal et causera
+    du coup la perte des validations asynchrones.
+   </p></div><p>
+   La validation asynchrone fournit un comportement différent de la simple
+   désactivation de <a class="xref" href="runtime-config-wal.html#GUC-FSYNC">fsync</a>. <code class="varname">fsync</code> est
+   un paramètre pour le serveur entier qui modifie le comportement de toutes
+   les transactions.
+   Il désactive dans <span class="productname">PostgreSQL</span>
+   toute la logique qui tente de synchroniser les
+   écritures dans les différentes parties de la base,
+   et donc un arrêt brutal (plus précisément
+   un arrêt brutal du matériel ou du système d'exploitation, pas un plantage
+   de <span class="productname">PostgreSQL</span> lui-même) pourrait résulter
+   en une corruption arbitraire de l'état de la base de données. Dans de
+   nombreux scénarios, la validation asynchrone fournit la majorité des
+   améliorations de performances obtenues par la désactivation de
+   <code class="varname">fsync</code>, mais sans le risque de la corruption de données.
+  </p><p>
+   <a class="xref" href="runtime-config-wal.html#GUC-COMMIT-DELAY">commit_delay</a> semble aussi très similaire à la
+   validation asynchrone mais il s'agit en fait d'une méthode de validation
+   synchrone (en fait, <code class="varname">commit_delay</code> est ignoré lors d'une
+   validation asynchrone). <code class="varname">commit_delay</code>
+   provoque un délai avant la mise à jour sur disque
+   du <acronym class="acronym">WAL</acronym> d'une transaction,
+   dans l'espoir que l'opération profite à d'autres transactions
+   commitées à peu près au même moment. Ce paramètre peut
+   être vu comme le moyen d'augmenter la fenêtre de temps durant laquelle
+   chaque transaction peut participer à un même vidage sur disque, pour amortir
+   son coût sur plusieurs transactions.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/wal-async-commit.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+</html>

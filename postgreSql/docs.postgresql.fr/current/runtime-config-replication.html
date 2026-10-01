@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-replication.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>19.6. Réplication</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="runtime-config-wal.html" title="19.5. Write Ahead Log" /><link rel="next" href="runtime-config-query.html" title="19.7. Planification des requêtes" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/runtime-config-replication.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/runtime-config-replication.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/runtime-config-replication.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/runtime-config-replication.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/runtime-config-replication.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/runtime-config-replication.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/runtime-config-replication.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/runtime-config-replication.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/runtime-config-replication.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/runtime-config-replication.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/runtime-config-replication.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/runtime-config-replication.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/runtime-config-replication.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/runtime-config-replication.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/runtime-config-replication.html">9.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/runtime-config-replication.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="runtime-config.html">Configuration du serveur</a></span> » <span class="breadcrumb-node">Réplication</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="runtime-config-wal.html" title="19.5. Write Ahead Log">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="runtime-config-query.html" title="19.7. Planification des requêtes">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">19.5. Write Ahead Log </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 19.7. Planification des requêtes</td></tr></table></div><div class="sect1" id="RUNTIME-CONFIG-REPLICATION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">19.6. Réplication <a href="#RUNTIME-CONFIG-REPLICATION" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="runtime-config-replication.html#RUNTIME-CONFIG-REPLICATION-SENDER">19.6.1. Serveurs d'envoi</a></span></dt><dt><span class="sect2"><a href="runtime-config-replication.html#RUNTIME-CONFIG-REPLICATION-PRIMARY">19.6.2. Serveur primaire</a></span></dt><dt><span class="sect2"><a href="runtime-config-replication.html#RUNTIME-CONFIG-REPLICATION-STANDBY">19.6.3. Serveurs secondaire/standby</a></span></dt><dt><span class="sect2"><a href="runtime-config-replication.html#RUNTIME-CONFIG-REPLICATION-SUBSCRIBER">19.6.4. Souscripteurs</a></span></dt></dl></div><p>
+  Ces paramètres contrôlent le comportement de la fonctionnalité interne
+  de <em class="firstterm">réplication en flux</em> (voir
+  <a class="xref" href="warm-standby.html#STREAMING-REPLICATION" title="26.2.5. Réplication en flux">Section 26.2.5</a>), et le mécanisme intégré
+  de <em class="firstterm">réplication logique</em> (voir
+  <a class="xref" href="logical-replication.html" title="Chapitre 29. Réplication logique">Chapitre 29</a>).
+ </p><p>
+  Pour la <span class="emphasis"><em>réplication en flux</em></span>, les serveurs seront soit
+  primaire soit secondaire. Les primaires peuvent envoyer des données alors
+  que les secondaires sont toujours des récepteurs des données de réplication.
+  Quand la réplication en cascade est utilisée (voir <a class="xref" href="warm-standby.html#CASCADING-REPLICATION" title="26.2.7. Réplication en cascade">Section 26.2.7</a>), les secondaires peuvent aussi
+  envoyer des données en plus de les réceptionner. Les paramètres sont
+  principalement pour les serveurs d'envoi et en standby, bien que
+  certains n'ont un intérêt que pour le serveur primaire. Les
+  paramètres peuvent varier dans l'instance sans problèmes si cela est
+  requis.
+ </p><p>
+  Pour la <span class="emphasis"><em>réplication logique</em></span>, les serveurs <em class="firstterm">publieurs</em>
+  (serveurs qui exécutent <a class="link" href="sql-createpublication.html" title="CREATE PUBLICATION"><code class="command">CREATE PUBLICATION</code></a>)
+  répliquent les données vers les <em class="firstterm">abonnés</em>
+  (serveurs qui exécutent <a class="link" href="sql-createsubscription.html" title="CREATE SUBSCRIPTION"><code class="command">CREATE SUBSCRIPTION</code></a>).
+  Les serveurs peuvent également être publieur et abonné en même temps.
+  Les sections suivantes font référence aux publieurs comme émetteurs. Plus
+  de détails concernant les paramètres de configuration de la réplication logique
+  sur la page dédiée <a class="xref" href="logical-replication-config.html" title="29.11. Paramètres de configuration">Section 29.11</a>.
+ </p><div class="sect2" id="RUNTIME-CONFIG-REPLICATION-SENDER"><div class="titlepage"><div><div><h3 class="title">19.6.1. Serveurs d'envoi <a href="#RUNTIME-CONFIG-REPLICATION-SENDER" class="id_link">#</a></h3></div></div></div><p>
+  Ces paramètres peuvent être configurés sur les serveur qui
+  va envoyer les données de réplication à un ou plusieurs serveurs.
+  Le primaire est toujours un serveur en envoi. Donc ces paramètres doivent
+  être configurés sur le primaire. Le rôle et la signification de ces
+  paramètres ne changent pas après qu'un serveur standby soit devenu le
+  serveur primaire.
+ </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-MAX-WAL-SENDERS"><span class="term"><code class="varname">max_wal_senders</code> (<code class="type">integer</code>)</span> <a href="#GUC-MAX-WAL-SENDERS" class="id_link">#</a></dt><dd><a id="id-1.6.6.9.5.3.1.2.1" class="indexterm"></a><p>
+     Indique le nombre maximum de serveurs standby (autrement dit, le nombre
+     maximum de processus walsender en cours d'exécution). La valeur par
+     défaut est <code class="literal">10</code>. La valeur <code class="literal">0</code> signifie
+     que la réplication est désactivée. Une déconnexion abrute d'un client de
+     réplication pourrait avoir pour effet un slot de connexion orpheline
+     jusqu'au dépassement d'un délai, donc ce paramètre peut être configuré
+     un peu au-dessus du nombre maximum de clients attendus pour que les
+     clients déconnectés puissent immédiatement se reconnecter. Ce paramètre
+     n'est configurable qu'au démarrage du serveur.
+     <code class="varname">wal_level</code> doit être configuré au minimum à
+     <code class="literal">replica</code> pour permettre des connexions des serveurs
+     secondaires.
+    </p><p>
+      Lors de l'exécution d'un serveur standby, vous devez configurer ce
+      paramètre à la même valeur ou à une valeur supérieure à celle se
+      trouvant sur le serveur d'envoi. Dans le cas contraire, les requêtes ne
+      seront pas autorisées sur le serveur standby.
+     </p></dd><dt id="GUC-MAX-REPLICATION-SLOTS"><span class="term"><code class="varname">max_replication_slots</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.9.5.3.2.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MAX-REPLICATION-SLOTS" class="id_link">#</a></dt><dd><p>
+     Indique le nombre maximum de slots de réplication (voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION-SLOTS" title="26.2.6. Slots de réplication">Section 26.2.6</a>) que le serveur peut accepter.
+     La valeur par défaut est 10. Ce paramètre est seulement configurable
+     au lancement du serveur.
+     Descendre ce paramètre à une valeur inférieure au nombre de slots de
+     réplication existants empêchera le serveur de démarrer.
+     <code class="varname">wal_level</code> doit aussi être positionné à
+     <code class="literal">replica</code> ou au-delà pour permettre l'utilisation des
+     slots de réplication.
+    </p><p>
+     Notez que ce paramètre est également pris en compte par les abonnés,
+     mais avec une signification différente.
+    </p></dd><dt id="GUC-WAL-KEEP-SIZE"><span class="term"><code class="varname">wal_keep_size</code> (<code class="type">integer</code>)</span> <a href="#GUC-WAL-KEEP-SIZE" class="id_link">#</a></dt><dd><a id="id-1.6.6.9.5.3.3.2.1" class="indexterm"></a><p>
+     Indique la taille minimale de journaux de transactions passés à conserver dans
+     le répertoire <code class="filename">pg_wal</code>, au cas où un serveur en
+     attente a besoin de les récupérer pour la réplication en flux.
+     Si un serveur en attente connecté
+     au primaire se laisse distancer par le serveur en envoi pour plus de
+     <code class="varname">wal_keep_size</code> méga-octets, le serveur en envoi pourrait
+     supprimer un journal de transactions toujours utile au serveur en
+     attente, auquel cas la connexion de réplication serait fermée.
+     Les connexions en aval seront également vouées à l'échec.
+     (Néanmoins, le serveur en attente peut continuer la restauration en
+     récupérant le segment des archives si l'archivage des journaux de
+     transactions est utilisé.)
+    </p><p>
+     Cette option ne configure que la volumétrie minimale de fichiers à
+     conserver dans <code class="filename">pg_wal</code> ; le système pourrait
+     avoir besoin de conserver plus de fichiers pour l'archivage ou pour
+     restaurer à partir d'un CHECKPOINT. Si <code class="varname">wal_keep_size</code>
+     vaut zéro (ce qui est la valeur par défaut), le système ne conserve aucun
+     fichier supplémentaire pour les serveurs en attente et le nombre des
+     anciens journaux disponibles pour les serveurs en attente est seulement
+     basé sur l'emplacement du dernier CHECKPOINT ainsi que sur l'état de
+     l'archivage des journaux de transactions. Si cette valeur est configurée
+     sans unité, elle est prise comme des méga-octets. Ce paramètre peut
+     seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+     serveur.
+    </p></dd><dt id="GUC-MAX-SLOT-WAL-KEEP-SIZE"><span class="term"><code class="varname">max_slot_wal_keep_size</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.9.5.3.4.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MAX-SLOT-WAL-KEEP-SIZE" class="id_link">#</a></dt><dd><p>
+    Indique la taille maximale des journaux de transaction que les <a class="link" href="warm-standby.html#STREAMING-REPLICATION-SLOTS" title="26.2.6. Slots de réplication">slots de réplication</a> sont
+    autorisés à conserver dans le répertoire <code class="filename">pg_wal</code> lors
+    d'un checkpoint. Si <code class="varname">max_slot_wal_keep_size</code> vaut -1
+    (valeur par défaut), les slots de réplication contiennent une quantité
+    illimitée de fichiers de journaux de transactions. Si la valeur du
+    restart_lsn d'un slot de réplication est en retard de plus de ce nombre de
+    mégaoctets depuis le LSN actuel, le standby utilisant le slot pourrait ne
+    plus pouvoir continuer la réplication du fait de la suppression des fichiers
+    WAL requis. Vous pouvez avoir la disponibilité des journaux de transactions
+    pour les slots de réplication dans la vue <a class="link" href="view-pg-replication-slots.html" title="52.19. pg_replication_slots">pg_replication_slots</a>.  Si cette
+    valeur est indiquée sans unité, elle est prise pour des mégaoctets.  Ce
+    paramètre peut seulement être configuré dans le fichier
+    <code class="filename">postgresql.conf</code> ou sur la ligne de commande du serveur.
+   </p></dd><dt id="GUC-WAL-SENDER-TIMEOUT"><span class="term"><code class="varname">wal_sender_timeout</code> (<code class="type">integer</code>)</span> <a href="#GUC-WAL-SENDER-TIMEOUT" class="id_link">#</a></dt><dd><a id="id-1.6.6.9.5.3.5.2.1" class="indexterm"></a><p>
+     Termine les connexions de réplication qui sont inactives pour plus
+     longtemps que cette durée. Ceci est utile pour que le serveur d'envoi
+     détecte le crash d'un standby ou une perte réseau. Si cette valeur est
+     spécifiée sans unité, elle est comprise comme un nombre de millisecondes.
+     La valeur par défaut est de 60 secondes. À zéro, le mécanisme est
+     désactivé.
+    </p><p>
+     Avec un cluster distribué sur plusieurs lieux géographiques, utiliser
+     plusieurs valeurs par lieu fournit plus de flexibilité dans la gestion
+     du cluster. Une valeur plus petite est utile pour une détection plus
+     rapide des problèmes avec un standby ayant un réseau à basse latence.
+     Une valeur plus haute aide à mieux juger la santé d'un standby si ce
+     dernier est situé sur un lieu distant, avec une connexion réseau à
+     haute latence.
+    </p></dd><dt id="GUC-TRACK-COMMIT-TIMESTAMP"><span class="term"><code class="varname">track_commit_timestamp</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.9.5.3.6.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-TRACK-COMMIT-TIMESTAMP" class="id_link">#</a></dt><dd><p>
+     Enregistre la date et l'heure des transactions validées. Ce
+     paramètre peut seulement être configuré au démarrage du serveur.
+     La valeur par défaut est <code class="literal">off</code>.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-REPLICATION-PRIMARY"><div class="titlepage"><div><div><h3 class="title">19.6.2. Serveur primaire <a href="#RUNTIME-CONFIG-REPLICATION-PRIMARY" class="id_link">#</a></h3></div></div></div><p>
+  Ces paramètres peuvent être configurés sur le serveur primaire
+  pour envoyer des données de réplication à un ou plusieurs serveurs en
+  standby. Notez qu'en plus de ces paramètres,
+  <a class="xref" href="runtime-config-wal.html#GUC-WAL-LEVEL">wal_level</a> doit être configuré correctement sur
+  le serveur primaire et que l'archivage des journaux de transactions
+  peut aussi être activé (voir <a class="xref" href="runtime-config-wal.html#RUNTIME-CONFIG-WAL-ARCHIVING" title="19.5.3. Archivage">Section 19.5.3</a>).
+  Les valeurs de ces paramètres ne sont pas pris en compte sur les serveurs
+  en standby. Il peut être intéressant de les mettre en place malgré tout en
+  préparation de la possibilité qu'un secondaire devienne le primaire.
+ </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-SYNCHRONOUS-STANDBY-NAMES"><span class="term"><code class="varname">synchronous_standby_names</code> (<code class="type">string</code>)</span> <a href="#GUC-SYNCHRONOUS-STANDBY-NAMES" class="id_link">#</a></dt><dd><a id="id-1.6.6.9.6.3.1.2.1" class="indexterm"></a><p>
+     Précise une liste de noms de serveurs en standby acceptant une <em class="firstterm">réplication
+      synchrone</em>, comme décrite dans <a class="xref" href="warm-standby.html#SYNCHRONOUS-REPLICATION" title="26.2.8. Réplication synchrone">Section 26.2.8</a>. À tout moment, il y aura au
+     moins un serveur standby synchrone actif ; les
+     transactions en attente de validation seront autorisées à
+     continuer après que les serveurs standbys synchrones auront confirmé la réception
+     des données. Les standbys synchrones sont les serveurs standbys
+     nommés dans cette liste, qui sont à la fois connectés et qui récupèrent
+     les données en temps réel (comme indiqué par l'état
+     <code class="literal">streaming</code> dans la vue
+     <a class="link" href="monitoring-stats.html#MONITORING-PG-STAT-REPLICATION-VIEW" title="27.2.4. pg_stat_replication">
+     <code class="structname">pg_stat_replication</code></a>).
+     Indiquer plus d'un serveur standby synchrone permet une meilleure haute-
+     disponibilité et une meilleure protection contre les pertes de données.
+    </p><p>
+     Le nom d'un serveur standby est indiqué dans ce cas au niveau du
+     paramètre <code class="varname">application_name</code> du standby, tel qu'il est
+     configuré dans l'information de connexion du standby. Dans le cas d'un
+     standby en réplication physique, ceci doit être configuré dans le
+     paramètre <code class="varname">primary_conninfo</code>. La valeur par défaut est
+     la configuration de <a class="xref" href="runtime-config-logging.html#GUC-CLUSTER-NAME">cluster_name</a> si configuré, et
+     sinon <code class="literal">walreceiver</code>. Pour la réplication logique, cela
+     peut se configurer dans l'information de connexion de la souscription, et
+     vaut par défaut le nom de la souscription. Pour les autres consommateurs
+     de flux de réplication, veuillez consulter leur documentation.
+    </p><p>
+     Ce paramètre indique une liste de serveurs standbys en utilisant une des
+     deux syntaxes suivantes :
+</p><pre class="synopsis">
+[FIRST] <em class="replaceable"><code>nb_sync</code></em> ( <em class="replaceable"><code>nom_standby</code></em> [, ...] )
+ANY <em class="replaceable"><code>nb_sync</code></em> ( <em class="replaceable"><code>nom_standby</code></em> [, ...] )
+<em class="replaceable"><code>nom_standby</code></em> [, ...]
+     </pre><p>
+     où <em class="replaceable"><code>num_sync</code></em> est le nombre de
+     standbys synchrones dont les transactions doivent attendre des réponses,
+     et <em class="replaceable"><code>nom_standby</code></em> est le nom
+     d'un serveur secondaire (standby).
+     <code class="literal">FIRST</code> et <code class="literal">ANY</code> spécifie la méthode
+     pour choisir les serveurs secondaires synchrones dans la liste des
+     serveurs.
+    </p><p>
+     Le mot-clé <code class="literal">FIRST</code>, utilisé avec
+     <em class="replaceable"><code>num_sync</code></em>, spécifie une
+     réplication synchrone basée sur la priorité, si bien que chaque validation
+     de transaction attendra jusqu'à ce que les enregistrements des WAL soient
+     répliqués de manière synchrone sur <em class="replaceable"><code>num_sync</code></em> serveurs secondaires, choisis
+     en fonction de leur priorités.  Par exemple, utiliser la valeur
+     <code class="literal">FIRST 3 (s1, s2, s3, s4)</code> forcera chaque commit à
+     attendre la réponse de trois serveurs secondaires de plus haute priorité
+     choisis parmis les serveurs secondaires <code class="literal">s1</code>,
+     <code class="literal">s2</code>, <code class="literal">s3</code> et <code class="literal">s4</code>.
+     Les noms de serveurs secondaires qui apparaissent avant dans la liste
+     reçoivent des priorités plus importantes et seront pris en considération
+     pour être synchrones. Les autres serveurs secondaires apparaissant plus
+     loin dans cette liste représentent les serveurs secondaire potentiellement
+     synchrones. Si l'un des serveurs secondaires actuellement synchrones se
+     déconnecte pour quelque raison que ce soit, il sera remplacé par le
+     serveur secondaire de priorité la plus proche.  Le mot clé
+     <code class="literal">FIRST</code> est facultatif.
+    </p><p>
+     Le mot-clé <code class="literal">ANY</code>, utilisé avec
+     <em class="replaceable"><code>num_sync</code></em>, spécifie une
+     réplication synchrone basée sur un quorum, si bien que chaque validation
+     de transaction attendra jusqu'à ce que les enregistrements des WAL soient
+     répliqués de manière synchrone sur <span class="emphasis"><em>au moins</em></span>
+     <em class="replaceable"><code>num_sync</code></em> des serveurs
+     secondaires listés.  Par exemple, utiliser la valeur
+     <code class="literal">ANY 3 (s1, s2, s3, s4)</code> ne bloquera chaque commit que le
+     temps qu'au moins trois des serveurs de la liste <code class="literal">s1</code>,
+     <code class="literal">s2</code>, <code class="literal">s3</code> and <code class="literal">s4</code>
+     aient répondu, quels qu'ils soient.
+    </p><p>
+     <code class="literal">FIRST</code> et <code class="literal">ANY</code> sont insensibles à la
+     casse.  Si ces mots-clés sont utilisés comme nom d'un serveur secondaire,
+     le paramètre <em class="replaceable"><code>standby_name</code></em>
+     doit être entouré de guillemets doubles.
+    </p><p>
+     La troisième syntaxe était utilisée avant
+     <span class="productname">PostgreSQL</span> version 9.6 est toujours
+     supportée. Cela revient à la nouvelle syntaxe avec
+     <code class="literal">FIRST</code> et <em class="replaceable"><code>num_sync</code></em> égal à 1.  Par exemple,
+     <code class="literal">FIRST 1 (s1, s2)</code> et <code class="literal">s1, s2</code> ont la
+     même signification : soit <code class="literal">s1</code> soit <code class="literal">s2</code>
+     est choisit comme serveur secondaire synchrone.
+    </p><p>
+     L'entrée spéciale <code class="literal">*</code> correspond à tout nom de standby.
+    </p><p>
+     Il n'existe pas de mécanisme pour forcer l'unicité des noms de standby.
+     Dans le cas de noms en double, un des standbys concernés sera considéré
+     d'une priorité plus haute mais il n'est pas possible de prévoir lequel.
+    </p><div class="note"><h3 class="title">Note</h3><p>
+      Chaque <em class="replaceable"><code>nom_standby</code></em> doit
+      avoir la forme d'un identifiant SQL valide, sauf si <code class="literal">*</code>
+      est utilisé. Vous pouvez utiliser des guillemets doubles si nécessaire
+      mais notez que les <em class="replaceable"><code>nom_standby</code></em> sont comparés au nom
+      d'application des standbys sans faire attention à la casse, qu'ils aient
+      des guillemets doubles ou non.
+     </p></div><p>
+     Si aucun nom de serveur en standby synchrone n'est indiqué ici, alors
+     la réplication synchrone n'est pas activée et la validation
+     des transactions n'attendra jamais la réplication. Ceci est la
+     configuration par défaut. Même si la réplication synchrone est
+     activée, les transactions individuelles peuvent être configurées
+     pour ne pas avoir à attendre la réplication en configurant le
+     paramètre <a class="xref" href="runtime-config-wal.html#GUC-SYNCHRONOUS-COMMIT">synchronous_commit</a> à
+     <code class="literal">local</code> ou <code class="literal">off</code>.
+    </p><p>
+     Ce paramètre peut seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande
+     du serveur.
+    </p></dd><dt id="GUC-SYNCHRONIZED-STANDBY-SLOTS"><span class="term"><code class="varname">synchronized_standby_slots</code> (<code class="type">string</code>)
+   <a id="id-1.6.6.9.6.3.2.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SYNCHRONIZED-STANDBY-SLOTS" class="id_link">#</a></dt><dd><p>
+     Une liste séparée par des virgules des noms des slots pour les serveurs
+     secondaires et que les processus WAL sender de réplication logique
+     attendent. Les processus WAL sender enverront les modifications décodées
+     aux plugins uniquement après que les slots de réplication indiquées aient
+     confirmés la réception des WAL. Ceci garantit que les slots de réplication
+     logique pour le failover ne consomment pas les modifications jusqu'à ce
+     que ces modifications soient reçues et vidées vers les secondaires
+     physiques correspondants. Si une connexion de réplication logique doit
+     basculer vers un secondaire physique une fois que le secondaire est promu,
+     le slot de réplication physique pour le secondaire devra être indiqué ici.
+     Notez que la réplication logique ne continuera pas si les slots indiqués
+     dans <code class="varname">synchronized_standby_slots</code> n'existent pas ou sont invalides.
+     De plus, les fonctions de gestion de la réplication
+     <a class="link" href="functions-admin.html#PG-REPLICATION-SLOT-ADVANCE">
+     <code class="function">pg_replication_slot_advance</code></a>,
+     <a class="link" href="functions-admin.html#PG-LOGICAL-SLOT-GET-CHANGES">
+     <code class="function">pg_logical_slot_get_changes</code></a>, et
+     <a class="link" href="functions-admin.html#PG-LOGICAL-SLOT-PEEK-CHANGES">
+     <code class="function">pg_logical_slot_peek_changes</code></a>,
+     lorsqu'ils sont utilisés avec des slots logiques de failover, bloqueront
+     jusqu'à ce que tous les slots physiques indiqués dans
+     <code class="varname">synchronized_standby_slots</code> aient confirmés la réception des
+     WAL.
+    </p><p>
+     Les secondaires correspondant aux slots de réplication physique dans
+     <code class="varname">synchronized_standby_slots</code> doivent configurer
+     <code class="literal">sync_replication_slots = true</code> pour qu'ils puissent
+     recevoir les modifications des slots logiques de failover à partir du
+     primaire.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-REPLICATION-STANDBY"><div class="titlepage"><div><div><h3 class="title">19.6.3. Serveurs secondaire/standby <a href="#RUNTIME-CONFIG-REPLICATION-STANDBY" class="id_link">#</a></h3></div></div></div><p>
+  Ces paramètres contrôlent le comportement d'un <a class="link" href="warm-standby.html#STANDBY-SERVER-OPERATION" title="26.2.2. Fonctionnement du serveur secondaire">serveur en attente</a> pour
+  qu'il puisse recevoir les données de réplication. Leur configuration
+  sur le serveur primaire n'a aucune importance.
+ </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-PRIMARY-CONNINFO"><span class="term"><code class="varname">primary_conninfo</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.9.7.3.1.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-PRIMARY-CONNINFO" class="id_link">#</a></dt><dd><p>
+     Indique une chaîne de connexion à utiliser pour la connexion du serveur
+     standby vers le serveur primaire. Cette chaîne doit être dans le format
+     décrit dans <a class="xref" href="libpq-connect.html#LIBPQ-CONNSTRING" title="32.1.1. Chaînes de connexion">Section 32.1.1</a>. Si une option n'est pas
+     spécifiée dans cette chaîne, alors la variable d'environnement
+     correspondante (voir <a class="xref" href="libpq-envars.html" title="32.15. Variables d'environnement">Section 32.15</a>) est vérifiée. Si la
+     variable d'environnement n'est pas configurée, la valeur par défaut est
+     utilisée.
+    </p><p>
+     La chaîne de connexion doit indiquer le nom d'hôte (ou l'adresse) du
+     serveur d'envoi, ainsi que le numéro de port s'il ne s'agit pas du même
+     numéro de port que la valeur par défaut du serveur standby. De plus,
+     indiquez un nom d'utilisateur correspondant à un rôle suffisamment
+     privilégié du serveur d'envoi (voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION-AUTHENTICATION" title="26.2.5.1. Authentification">Section 26.2.5.1</a>). Un mot de passe doit
+     aussi être fourni si le serveur d'envoi réclame une authentification par
+     mot de passe. Il peut être indiqué dans la chaîne
+     <code class="varname">primary_conninfo</code> ou dans un fichier
+     <code class="filename">~/.pgpass</code> sur le serveur standby (utiliser
+     <code class="literal">replication</code> comme nom de base).
+    </p><p>
+     Pour la synchronisation des slots de réplication (voir
+     <a class="xref" href="logicaldecoding-explanation.html#LOGICALDECODING-REPLICATION-SLOTS-SYNCHRONIZATION" title="47.2.3. Synchronisation du slot de réplication">Section 47.2.3</a>),
+     il est aussi nécessaire d'indiquer un <code class="literal">dbname</code> valide
+     dans la chaîne <code class="varname">primary_conninfo</code>. Cela sera uniquement
+     utilisé pour la synchronisation du slot. C'est ignoré pour le streaming.
+    </p><p>
+     Ce paramètre peut seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+     serveur. Si ce paramètre est modifié alors que le processus walreceiver
+     est en cours d'exécution, le processus reçoit une demandé d'arrêt et sera
+     redémarré avec la nouvelle configuration (sauf si
+     <code class="varname">primary_conninfo</code> est une chaîne vide). Il n'a pas
+     d'effet si le serveur n'est pas en mode standby.
+    </p></dd><dt id="GUC-PRIMARY-SLOT-NAME"><span class="term"><code class="varname">primary_slot_name</code> (<code class="type">string</code>)
+    <a id="id-1.6.6.9.7.3.2.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-PRIMARY-SLOT-NAME" class="id_link">#</a></dt><dd><p>
+     Indique en option un slot de réplication existant à utiliser lors de la
+     connexion au serveur d'envoi via la réplication en flux pour contrôler la
+     suppression des journaux du serveur d'envoi (voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION-SLOTS" title="26.2.6. Slots de réplication">Section 26.2.6</a>). Ce paramètre peut seulement
+     être configuré dans le fichier <code class="filename">postgresql.conf</code> ou
+     sur la ligne de commande du serveur. Si ce paramètre est modifié alors
+     que le processus walreceiver est en cours d'exécution, le processus
+     reçoit une demandé d'arrêt et sera redémarré avec la nouvelle
+     configuration (sauf si <code class="varname">primary_conninfo</code> est une chaîne
+     vide). Il n'a pas d'effet si <code class="varname">primary_conninfo</code> n'est
+     pas configuré ou si le serveur n'est pas en mode standby.
+    </p></dd><dt id="GUC-HOT-STANDBY"><span class="term"><code class="varname">hot_standby</code> (<code class="type">boolean</code>)</span> <a href="#GUC-HOT-STANDBY" class="id_link">#</a></dt><dd><a id="id-1.6.6.9.7.3.3.2.1" class="indexterm"></a><p>
+     Indique si vous pouvez vous connecter et exécuter des requêtes lors de
+     la restauration, comme indiqué dans <a class="xref" href="hot-standby.html" title="26.4. Hot Standby">Section 26.4</a>.
+     Activé par défaut. Ce paramètre peut seulement être configuré au
+     lancement du serveur. Il a un effet seulement lors de la restauration
+     des archives ou en mode serveur en attente.
+    </p></dd><dt id="GUC-MAX-STANDBY-ARCHIVE-DELAY"><span class="term"><code class="varname">max_standby_archive_delay</code> (<code class="type">integer</code>)</span> <a href="#GUC-MAX-STANDBY-ARCHIVE-DELAY" class="id_link">#</a></dt><dd><a id="id-1.6.6.9.7.3.4.2.1" class="indexterm"></a><p>
+     Quand le Hot Standby est activé, ce paramètre détermine le temps
+     maximum d'attente que le serveur secondaire doit observer avant d'annuler
+     les requêtes en lecture qui entreraient en conflit avec des
+     enregistrements des journaux de transactions à appliquer, comme c'est
+     décrit dans <a class="xref" href="hot-standby.html#HOT-STANDBY-CONFLICT" title="26.4.2. Gestion des conflits avec les requêtes">Section 26.4.2</a>.
+     <code class="varname">max_standby_archive_delay</code> est utilisé quand les
+     données de journaux de transactions sont lues à partir des archives
+     de journaux de transactions (et du coup accuse un certain retard par
+     rapport au serveur primaire). Si cette valeur est indiquée sans unité, elle
+     est comprise comme un nombre de millisecondes. La valeur par défaut est de 30 secondes.
+     L'unité est la milliseconde si cette dernière n'est pas spécifiée.
+     Une valeur de -1 autorise le serveur en attente à attendre indéfiniment
+     la fin d'exécution des requêtes en conflit. Ce paramètre peut seulement
+     être configuré dans le fichier <code class="filename">postgresql.conf</code>
+     ou sur la ligne de commande du serveur.
+    </p><p>
+     Notez que <code class="varname">max_standby_archive_delay</code> ne correspond
+     pas au temps d'exécution maximum d'une requête avant son
+     annulation ; il s'agit plutôt du temps maximum autorisé pour
+     enregistrer les données d'un journal de transactions. Donc, si une
+     requête a occasionné un délai significatif au début du traitement d'un
+     journal de transactions, les requêtes suivantes auront un délai
+     beaucoup moins important.
+    </p></dd><dt id="GUC-MAX-STANDBY-STREAMING-DELAY"><span class="term"><code class="varname">max_standby_streaming_delay</code> (<code class="type">integer</code>)</span> <a href="#GUC-MAX-STANDBY-STREAMING-DELAY" class="id_link">#</a></dt><dd><a id="id-1.6.6.9.7.3.5.2.1" class="indexterm"></a><p>
+     Quand Hot Standby est activé, ce paramètre détermine le délai maximum
+     d'attente que le serveur secondaire doit observer avant d'annuler les
+     requêtes en lecture qui entreraient en conflit avec les enregistrements
+     de transactions à appliquer, comme c'est décrit dans <a class="xref" href="hot-standby.html#HOT-STANDBY-CONFLICT" title="26.4.2. Gestion des conflits avec les requêtes">Section 26.4.2</a>.
+     <code class="varname">max_standby_streaming_delay</code> est utilisé quand les
+     données des journaux de données sont reçues via la connexion de la
+     réplication en flux. Si cette valeur est indiquée sans unité, elle
+     est comprise comme un nombre de millisecondes. La valeur par défaut est de 30 secondes.
+     L'unité est la milliseconde si cette dernière n'est pas spécifiée.
+     Une valeur de -1 autorise le serveur en attente à attendre indéfiniment
+     la fin d'exécution des requêtes en conflit. Ce paramètre peut seulement
+     être configuré dans le fichier <code class="filename">postgresql.conf</code>
+     ou sur la ligne de commande du serveur.
+    </p><p>
+     Notez que <code class="varname">max_standby_streaming_delay</code> ne correspond
+     pas au temps d'exécution maximum d'une requête avant son
+     annulation ; il s'agit plutôt du temps maximum autorisé pour
+     enregistrer les données d'un journal de transactions une fois qu'elles
+     ont été récupérées du serveur primaire. Donc, si une requête a
+     occasionné un délai significatif au début du traitement d'un journal
+     de transactions, les requêtes suivantes auront un délai beaucoup moins
+     important.
+    </p></dd><dt id="GUC-WAL-RECEIVER-CREATE-TEMP-SLOT"><span class="term"><code class="varname">wal_receiver_create_temp_slot</code> (<code class="type">boolean</code>)
+    <a id="id-1.6.6.9.7.3.6.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-WAL-RECEIVER-CREATE-TEMP-SLOT" class="id_link">#</a></dt><dd><p>
+     Indique si le processus walreceiver doit créer un slot de réplication
+     temporaire sur l'instance distante lorsqu'aucun slot de réplication
+     permanent n'a été configuré (en utilisant <a class="xref" href="runtime-config-replication.html#GUC-PRIMARY-SLOT-NAME">primary_slot_name</a>). La valeur par défaut est off. Ce
+     paramètre peut seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+     serveur. Si ce paramètre est modifié alors que le processus walreceiver
+     est en cours d'exécution, alors ce processus reçoit un signal pour
+     s'arrêter et utilisera le nouveau paramètre à son redémarrage.
+    </p></dd><dt id="GUC-WAL-RECEIVER-STATUS-INTERVAL"><span class="term"><code class="varname">wal_receiver_status_interval</code> (<code class="type">integer</code>)</span> <a href="#GUC-WAL-RECEIVER-STATUS-INTERVAL" class="id_link">#</a></dt><dd><a id="id-1.6.6.9.7.3.7.2.1" class="indexterm"></a><p>
+     Indique la fréquence minimale pour que le processus de réception
+     (walreceiver) sur le serveur de standby envoie des informations sur la
+     progression de la réplication au serveur en envoi, où elles sont
+     disponibles en utilisant la vue <a class="link" href="monitoring-stats.html#MONITORING-PG-STAT-REPLICATION-VIEW" title="27.2.4. pg_stat_replication">
+     <code class="structname">pg_stat_replication</code></a>. Le serveur en
+     standby renvoie la dernière position écrite dans le journal de
+     transactions, la dernière position vidée sur disque du journal de
+     transactions, et la dernière position rejouée. La valeur de ce paramètre
+     est la durée maximale entre les rapports. Les mises à jour sont envoyées
+     à chaque fois que les positions d'écriture ou de vidage ont changées et
+     aussi fréquemment que l'indique ce paramètre s'il est configuré à une
+     valeur autre que zéro. Il existe aussi des cas ou les mises à jour sont
+     envoyées en ignorant ce paramètre. Par exemple, lorsque le traitement du
+     WAL courant se termine ou lorsque <code class="varname">synchronous_commit</code>
+     est configuré à <code class="literal">remote_apply</code>. Du coup, la position de
+     rejeu pourrait avoir un certain retard par rapport à la vraie position.
+     Si cette valeur est indiquée sans unité, elle est considérée en
+     secondes. La valeur par défaut est de 10 secondes. Ce paramètre peut
+     seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+     serveur.
+    </p></dd><dt id="GUC-HOT-STANDBY-FEEDBACK"><span class="term"><code class="varname">hot_standby_feedback</code> (<code class="type">boolean</code>)</span> <a href="#GUC-HOT-STANDBY-FEEDBACK" class="id_link">#</a></dt><dd><a id="id-1.6.6.9.7.3.8.2.1" class="indexterm"></a><p>
+     Spécifie si un serveur en Hot Standby enverra des informations
+     au serveur en envoi sur les requêtes en cours d'exécution sur
+     le serveur en standby. Ce paramètre peut être utilisé pour
+     éliminer les annulations de requêtes nécessaires au nettoyage des
+     enregistrements. Par contre, il peut causer une fragmentation
+     plus importante sur le serveur principal pour certaines charges.
+     Les messages d'informations ne seront pas envoyés plus fréquemment
+     qu'une fois par <code class="varname">wal_receiver_status_interval</code>.
+     La valeur par défaut est <code class="literal">off</code>. Ce paramètre
+     peut seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande
+     du serveur.
+    </p><p>
+     Si la réplication en cascade est utilisée, les informations sont passées
+     à l'émetteur jusqu'à arriver au serveur primaire. Les serveurs en
+     standby ne font aucun usage des informations qu'ils reçoivent, en dehors
+     de les envoyer à leur émetteur des données de réplication.
+    </p></dd><dt id="GUC-WAL-RECEIVER-TIMEOUT"><span class="term"><code class="varname">wal_receiver_timeout</code> (<code class="type">integer</code>)</span> <a href="#GUC-WAL-RECEIVER-TIMEOUT" class="id_link">#</a></dt><dd><a id="id-1.6.6.9.7.3.9.2.1" class="indexterm"></a><p>
+     Termine les connexions de réplication qui sont inactives pour plus
+     longtemps que cette durée. Ceci est utile pour que le serveur de
+     réception détecte le crash d'un serveur primaire ou une perte réseau. Si
+     cette valeur est spécifiée sans unité, elle est comprise comme un nombre
+     de millisecondes. La valeur par défaut est de 60 secondes. À zéro, le
+     mécanisme est désactivé. Ce paramètre peut seulement être configuré dans
+     le fichier <code class="filename">postgresql.conf</code> ou en ligne de commande.
+    </p></dd><dt id="GUC-WAL-RETRIEVE-RETRY-INTERVAL"><span class="term"><code class="varname">wal_retrieve_retry_interval</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.9.7.3.10.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-WAL-RETRIEVE-RETRY-INTERVAL" class="id_link">#</a></dt><dd><p>
+     Indique combien de temps le serveur standby doit attendre lorsque les
+     données des WAL ne sont pas disponibles auprès des sources habituelles
+     (réplication en continu, localement à partir de
+     <code class="filename">pg_wal</code> ou de l'archivage des WAL) avant d'essayer à
+     nouveau de récupérer les WAL. Si cette valeur est spécifiée sans unité,
+     elle est comprise comme un nombre de millisecondes. La valeur par défaut
+     est de 5 secondes. Ce paramètre peut seulement être configuré dans le
+     fichier <code class="filename">postgresql.conf</code> ou sur la ligne de commande
+     du serveur.
+    </p><p>
+     Ce paramètre est utile dans les configurations où un nœud en
+     cours de restauration a besoin de contrôler le temps à attendre
+     pour la disponibilité de nouveaux WAL. Par exemple, en mode
+     restauration à partir des archives, il est possible d'avoir une
+     restauration plus réactive dans la détection d'un nouveau fichier
+     WAL en réduisant la valeur de ce paramètre. Sur un système avec
+     une génération faible de WAL, l'augmenter réduit le nombre de
+     requêtes nécessaires pour accèder aux WAL archivés, quelque
+     chose utile par exemple dans les environnements cloud où le nombre
+     de fois où l'infrastructure est accédée est pris en compte.
+    </p></dd><dt id="GUC-RECOVERY-MIN-APPLY-DELAY"><span class="term"><code class="varname">recovery_min_apply_delay</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.9.7.3.11.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-RECOVERY-MIN-APPLY-DELAY" class="id_link">#</a></dt><dd><p>
+     Par défaut, un serveur standby restaure les enregistrements des WAL du
+     serveur d'envoi dès que possible. Il peut être utile d'avoir une copie
+     qui appliquer les données de réplication avec un délai spécifié pour
+     prévenir en cas de perte de données. Ce paramètre vous permet de
+     repousser l'application de la restauration sur une période de temps
+     fixée. Par exemple, si vous configurez ce paramètre à
+     <code class="literal">5min</code>, le standby ne rejouera chaque validation de
+     transaction seulement quand l'heure système sur le standby est au moins
+     cinq minutes après l'heure de validation rapportée par le primaire. Si
+     cette valeur est spécifiée sans unité, elle est comprise comme un nombre
+     de millisecondes. La valeur par défaut est zéro, pour ne pas ajouter de
+     délai.
+    </p><p>
+     Il est possible que le délai de réplication entre les serveurs dépasse la
+     valeur de ce paramètre, auquel cas aucun délai n'est ajouté. Notez que le
+     délai est calculé entre l'horodatage du WAL écrit sur le primaire et
+     l'heure système actuel sur le secondaire. Les délais dans le transfert, à
+     cause d'un retard réseau ou de configuration de réplication en cascade,
+     pourraient réduire le temps d'attente de façon importante. Si les
+     horloges systèmes du primaire et du secondaire ne sont pas synchronisées,
+     ceci pourrait amener la restauration à appliquer des enregistrements plus
+     rapidement que souhaité. Ceci n'est pas un problème important parce que
+     la configuration intéressante de ce paramètre est bien plus importante
+     que les déviations habituelles d'horloge entre serveurs.
+    </p><p>
+     Le délai n'est appliqué que sur les enregistrements WAL des validations
+     de transaction. Les autres enregistrements sont rejoués aussi rapidement
+     que possible, ce qui n'est pas un problème vu que les règles de
+     visibilité avec MVCC nous assurent que les effets ne sont pas visibles
+     tant que l'enregistrement de validation correspondant n'est pas appliqué.
+    </p><p>
+     Le délai survient une fois que la base de données en restauration a
+     atteint un point de cohérence, et jusqu'à ce que le standby soit promu.
+     Après cela, le standby arrêtera toute restauration et sans délai.
+    </p><p>
+     Les enregistrements des journaux de transactions sont conservés sur le
+     serveur secondaire jusqu'à ce qu'ils soient prêts à être appliqués.  De ce
+     fait, des délais plus importants peuvent résulter en une accumulation plus
+     importante de journaux de transactions, augmentant ainsi les besoins en
+     espace disque du répertoire <code class="filename">pg_wal</code> sur le secondaire.
+    </p><p>
+     Ce paramètre vise les déploiements de réplication par flux. Néanmoins,
+     la configuration de ce paramètre sera honorée dans tous les cas,
+     sauf dans le cas de la restauration après un crash.
+     <code class="varname">hot_standby_feedback</code> se verra imposé le délai, ce qui
+     peut amener de la fragmentation sur le serveur primaire. N'activez les
+     deux qu'avec précaution.
+
+     </p><div class="warning"><h3 class="title">Avertissement</h3><p>
+       La réplication synchrone est affectée par ce paramétrage quand
+       <code class="varname">synchronous_commit</code> est configuré à
+       <code class="literal">remote_apply</code> ; chaque <code class="literal">COMMIT</code>
+       aura besoin d'attendre son application.
+      </p></div><p>
+    </p><p>
+     Ce paramètre peut seulement être configuré dans le fichier
+     <code class="filename">postgresql.conf</code> ou sur la ligne de commande du
+     serveur.
+    </p></dd><dt id="GUC-SYNC-REPLICATION-SLOTS"><span class="term"><code class="varname">sync_replication_slots</code> (<code class="type">boolean</code>)
+   <a id="id-1.6.6.9.7.3.12.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-SYNC-REPLICATION-SLOTS" class="id_link">#</a></dt><dd><p>
+     Il permet à un secondaire de synchroniser les slots de failover logiques
+     à partir du serveur primaire pour que les abonnés puissent continuer leur
+     réplication à partir d'un nouveau serveur primaire après une bascule failover.
+    </p><p>
+     C'est désactivé par défaut. Ce paramètre peut seulement être configuré dans
+     le fichier <code class="filename">postgresql.conf</code> ou sur la ligne de
+     commande.
+    </p></dd></dl></div></div><div class="sect2" id="RUNTIME-CONFIG-REPLICATION-SUBSCRIBER"><div class="titlepage"><div><div><h3 class="title">19.6.4. Souscripteurs <a href="#RUNTIME-CONFIG-REPLICATION-SUBSCRIBER" class="id_link">#</a></h3></div></div></div><p>
+  Ces réglages contrôlent le comportement d'un souscripteur de réplication
+  logique.  Leurs valeurs sur le serveur publiant les données est sans
+  importance.
+  See <a class="xref" href="logical-replication-config.html" title="29.11. Paramètres de configuration">Section 29.11</a> for more details.
+ </p><div class="variablelist"><dl class="variablelist"><dt id="GUC-MAX-REPLICATION-SLOTS-SUBSCRIBER"><span class="term"><code class="varname">max_replication_slots</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.9.8.3.1.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MAX-REPLICATION-SLOTS-SUBSCRIBER" class="id_link">#</a></dt><dd><p>
+     Spécifie combien d'origines de réplication (voir <a class="xref" href="replication-origins.html" title="Chapitre 48. Tracer la progression de la réplication">Chapitre 48</a>)
+     peuvent être suivies simultanément, limitant donc le nombre de
+     souscriptions à des réplications logiques qu'il est possible de créer sur
+     le serveur.
+     Modifier ce paramètre à une valeur inférieure au nombre de replications
+     suivies (remontées par la vue <a class="link" href="view-pg-replication-origin-status.html" title="52.18. pg_replication_origin_status">pg_replication_origin_status</a>)
+     empêchera le serveur de démarrer.
+     <code class="literal">max_replication_slots</code> doit être fixé au moins au
+     nombre d'abonnements qui seront ajoutés au souscripteur, avec une réserve
+     pour la synchronisation des tables.
+
+    </p><p>
+     Notez que ce paramètre est également pris en compte par le serveur émetteur,
+     mais avec une signification différente.
+    </p></dd><dt id="GUC-MAX-LOGICAL-REPLICATION-WORKERS"><span class="term"><code class="varname">max_logical_replication_workers</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.9.8.3.2.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MAX-LOGICAL-REPLICATION-WORKERS" class="id_link">#</a></dt><dd><p>
+     Spécifie le nombre maximal de workers de réplication logique.  Cela
+     inclut à la fois les leader apply workers, les parallel apply workers
+     ainsi que les workers de synchronisation de table.
+    </p><p>
+     Les workers de réplication logique sont pris de la réserve définie par
+     <code class="varname">max_worker_processes</code>.
+    </p><p>
+     La valeur par défaut est 4. Ce paramètre peut seulement être configuré au
+     démarrage du serveur.
+    </p></dd><dt id="GUC-MAX-SYNC-WORKERS-PER-SUBSCRIPTION"><span class="term"><code class="varname">max_sync_workers_per_subscription</code> (<code class="type">integer</code>)
+    <a id="id-1.6.6.9.8.3.3.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MAX-SYNC-WORKERS-PER-SUBSCRIPTION" class="id_link">#</a></dt><dd><p>
+     Le nombre maximal de workers de synchronisation par souscription.  Ce
+     paramètre contrôle la quantité de parallélisme pour la copie initiale
+     de données durant l'initialisation de la souscription ou quand de
+     nouvelles tables sont ajoutées.
+    </p><p>
+     Pour le moment, il ne peut y avoir qu'un seul worker de synchronisation
+     par table.
+    </p><p>
+     Les workers de synchronisation sont pris de la réserve définie par
+     <code class="varname">max_logical_replication_workers</code>.
+    </p><p>
+     La valeur par défaut est 2. Ce paramètre peut seulement être configuré
+     dans le fichier <code class="filename">postgresql.conf</code> ou sur la ligne
+     de commande du serveur.
+    </p></dd><dt id="GUC-MAX-PARALLEL-APPLY-WORKERS-PER-SUBSCRIPTION"><span class="term"><code class="varname">max_parallel_apply_workers_per_subscription</code> (<code class="type">integer</code>)
+   <a id="id-1.6.6.9.8.3.4.1.3" class="indexterm"></a>
+   </span> <a href="#GUC-MAX-PARALLEL-APPLY-WORKERS-PER-SUBSCRIPTION" class="id_link">#</a></dt><dd><p>
+     Le nombre maximal de workers parallélisés pour un abonnement. Ce paramètre
+     permet de contrôler le niveau de parallélisme pour le flux de
+     de transaction en cours avec un paramètre d'abonnement <code class="literal">streaming = parallel</code>.
+    </p><p>
+     Les workers parallélisés sont pris de la réserve définie par
+     <code class="varname">max_logical_replication_workers</code>.
+    </p><p>
+     La valeur par défaut est 2. Ce paramètre peut seulement être configuré
+     dans le fichier <code class="filename">postgresql.conf</code> ou sur la ligne
+     de commande du serveur.
+    </p></dd></dl></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/runtime-config-replication.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:32 GMT -->
+</html>

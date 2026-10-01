@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/warm-standby-failover.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>26.3. Bascule (Failover)</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="warm-standby.html" title="26.2. Serveurs secondaires par transfert de journaux" /><link rel="next" href="hot-standby.html" title="26.4. Hot Standby" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/warm-standby-failover.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/warm-standby-failover.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/warm-standby-failover.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/warm-standby-failover.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/warm-standby-failover.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/warm-standby-failover.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/warm-standby-failover.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/warm-standby-failover.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/warm-standby-failover.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/warm-standby-failover.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/warm-standby-failover.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/warm-standby-failover.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/warm-standby-failover.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/warm-standby-failover.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/warm-standby-failover.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/warm-standby-failover.html">9.0</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/warm-standby-failover.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="high-availability.html">Haute disponibilité, répartition de charge et réplication</a></span> » <span class="breadcrumb-node">Bascule (<span class="foreignphrase"><em class="foreignphrase">Failover</em></span>)</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="warm-standby.html" title="26.2. Serveurs secondaires par transfert de journaux">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="high-availability.html" title="Chapitre 26. Haute disponibilité, répartition de charge et réplication">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="hot-standby.html" title="26.4. Hot Standby">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">26.2. Serveurs secondaires par transfert de journaux </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 26.4. Hot Standby</td></tr></table></div><div class="sect1" id="WARM-STANDBY-FAILOVER"><div class="titlepage"><div><div><h2 class="title" style="clear: both">26.3. Bascule (<span class="foreignphrase"><em class="foreignphrase">Failover</em></span>) <a href="#WARM-STANDBY-FAILOVER" class="id_link">#</a></h2></div></div></div><p>
+   Si le serveur primaire plante alors le serveur secondaire devrait commencer
+   les procédures de failover.
+  </p><p>
+   Si le serveur secondaire plante alors il n'est pas nécessaire d'effectuer un failover. Si le
+   serveur secondaire peut être redémarré, même plus tard, alors le processus de récupération
+   peut aussi être redémarré au même moment, en bénéficiant du fait que la récupération sait reprendre
+   où elle en était. Si le serveur secondaire ne peut pas être redémarré, alors
+   une nouvelle instance secondaire complète devrait être créée.
+  </p><p>
+   Si le serveur primaire plante, que le serveur secondaire devient le
+   nouveau primaire, et que l'ancien primaire redémarre, vous devez avoir
+   un mécanisme pour informer l'ancien primaire qu'il n'est plus primaire. C'est aussi
+   quelquefois appelé <acronym class="acronym">STONITH</acronym> (Shoot The Other Node In The Head, ou
+   Tire Dans La Tête De L'Autre Nœud), qui est nécessaire pour éviter les situations où
+   les deux systèmes pensent qu'ils sont le primaire, ce qui amènerait de la confusion, et
+   finalement de la perte de données.
+  </p><p>
+   Beaucoup de systèmes de failover n'utilisent que deux systèmes, le primaire et le secondaire,
+   connectés par un mécanisme de type ligne de vie (heartbeat) pour vérifier continuellement la
+   connexion entre les deux et la viabilité du primaire. Il est aussi
+   possible d'utiliser un troisième système (appelé un serveur témoin) pour éviter
+   certains cas de bascule inappropriés, mais la complexité supplémentaire
+   peut ne pas être justifiée à moins d'être mis en place avec suffisamment
+   de précautions et des tests rigoureux.
+  </p><p>
+   <span class="productname">PostgreSQL</span> ne fournit pas le logiciel
+   système nécessaire pour identifier un incident sur le primaire et notifier
+   le serveur de bases de données secondaire. De nombreux outils de ce genre existent et sont bien
+   intégrés avec les fonctionnalités du système d'exploitation nécessaires à la bascule,
+   telles que la migration d'adresse IP.
+  </p><p>
+   Une fois que la bascule vers le secondaire se produit, il n'y a plus qu'un
+   seul serveur en fonctionnement. C'est ce qu'on appelle un état dégradé.
+   L'ancien secondaire est maintenant le primaire, mais l'ancien primaire est arrêté
+   et pourrait rester arrêté. Pour revenir à un fonctionnement normal, un serveur
+   secondaire doit être recréé,
+   soit sur l'ancien système primaire quand il redevient disponible, ou sur un troisième,
+   peut-être nouveau, système. L'utilitaire <a class="xref" href="app-pgrewind.html" title="pg_rewind"><span class="refentrytitle"><span class="application">pg_rewind</span></span></a> peut être utilisé
+   pour accélérer ce processus sur de gros clusters. Une fois que ceci est
+   effectué, le primaire et le secondaire peuvent
+   être considérés comme ayant changé de rôle. Certaines personnes choisissent d'utiliser un troisième
+   serveur pour fournir une sauvegarde du nouveau primaire jusqu'à ce que le nouveau serveur
+   secondaire soit recréé,
+   bien que ceci complique visiblement la configuration du système et les procédures d'exploitation.
+  </p><p>
+   Par conséquent, basculer du primaire vers le serveur secondaire peut être rapide mais requiert
+   du temps pour re-préparer le cluster de failover. Une bascule régulière du
+   primaire vers le secondaire est utile, car cela permet une période d'interruption de production sur
+   chaque système pour maintenance. Cela vous permet aussi pour vous assurer que
+   votre mécanisme de bascule fonctionnera réellement quand vous en aurez besoin.
+   Il est conseillé que les procédures d'administration soient écrites.
+  </p><p>
+   Si vous avez opté pour la synchronisation du slot de réplication logique
+   (voir
+   <a class="xref" href="logicaldecoding-explanation.html#LOGICALDECODING-REPLICATION-SLOTS-SYNCHRONIZATION" title="47.2.3. Synchronisation du slot de réplication">Section 47.2.3</a>),
+   alors avant de basculer vers le serveur secondaire, il est recommandé
+   de vérifier si les slots de réplication synchronisés sur le serveur
+   secondaire sont prêts pour basculer. Ceci peut se faire en suivant les
+   étapes décrites dans
+   <a class="xref" href="logical-replication-failover.html" title="29.3. Failover en réplication logique">Section 29.3</a>.
+  </p><p>
+   Pour déclencher une bascule failover sur un serveur secondaire en log-shipping,
+   exécutez <code class="command">pg_ctl promote</code> ou appelez <code class="function">pg_promote()</code>.
+   Si vous configurez des serveurs utilisés uniquement pour décharger le primaire
+   des requêtes en lecture seule, et donc pas pour de la haute disponibilité,
+   vous n'avez pas besoin de promouvoir un secondaire.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/warm-standby-failover.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+</html>

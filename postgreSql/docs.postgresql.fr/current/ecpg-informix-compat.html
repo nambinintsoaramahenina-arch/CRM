@@ -1,0 +1,994 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/ecpg-informix-compat.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:38 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>34.15. Mode de Compatibilité Informix</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="ecpg-sql-whenever.html" title="WHENEVER" /><link rel="next" href="ecpg-oracle-compat.html" title="34.16. Mode de compatibilité Oracle" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/ecpg-informix-compat.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/ecpg-informix-compat.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/ecpg-informix-compat.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/ecpg-informix-compat.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/ecpg-informix-compat.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/ecpg-informix-compat.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/ecpg-informix-compat.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/ecpg-informix-compat.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/ecpg-informix-compat.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/ecpg-informix-compat.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/ecpg-informix-compat.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/ecpg-informix-compat.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/ecpg-informix-compat.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/ecpg-informix-compat.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/ecpg-informix-compat.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/ecpg-informix-compat.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/ecpg-informix-compat.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/ecpg-informix-compat.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/ecpg-informix-compat.html">8.2</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/ecpg-informix-compat.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="client-interfaces.html">Interfaces client</a></span> » <span class="breadcrumb-link"><a href="ecpg.html"><span class="application">ECPG</span>  --  <acronym class="acronym">SQL</acronym> embarqué en C</a></span> » <span class="breadcrumb-node">Mode de Compatibilité <span class="productname">Informix</span></span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ecpg-sql-whenever.html" title="WHENEVER">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="ecpg.html" title="Chapitre 34. ECPG  --  SQL embarqué en C">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="ecpg-oracle-compat.html" title="34.16. Mode de compatibilité Oracle">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">WHENEVER </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 34.16. Mode de compatibilité <span class="productname">Oracle</span></td></tr></table></div><div class="sect1" id="ECPG-INFORMIX-COMPAT"><div class="titlepage"><div><div><h2 class="title" style="clear: both">34.15. Mode de Compatibilité <span class="productname">Informix</span> <a href="#ECPG-INFORMIX-COMPAT" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="ecpg-informix-compat.html#ECPG-INFORMIX-TYPES">34.15.1. Types supplémentaires</a></span></dt><dt><span class="sect2"><a href="ecpg-informix-compat.html#ECPG-INFORMIX-STATEMENTS">34.15.2. Ordres SQL Embarqués Supplémentaires/Manquants</a></span></dt><dt><span class="sect2"><a href="ecpg-informix-compat.html#ECPG-INFORMIX-SQLDA">34.15.3. Zones de Descripteurs SQLDA Compatibles Informix</a></span></dt><dt><span class="sect2"><a href="ecpg-informix-compat.html#ECPG-INFORMIX-FUNCTIONS">34.15.4. Fonctions Additionnelles</a></span></dt><dt><span class="sect2"><a href="ecpg-informix-compat.html#ECPG-INFORMIX-CONSTANTS">34.15.5. Constantes Supplémentaires</a></span></dt></dl></div><p>
+  <code class="command">ecpg</code> peut être exécuté dans un mode appelé <em class="firstterm">mode de compatibilité
+   Informix</em>. Si ce mode est actif, il essaie de se comporté comme s'il était le
+  précompilateur <span class="productname">Informix</span> pour <span class="productname">Informix</span> E/SQL.
+  En gros, cela va vous permettre d'utiliser le signe dollar au lieu de la primitive
+  <code class="literal">EXEC SQL</code> pour fournir des commandes SQL embarquées:
+  </p><pre class="programlisting">
+$int j = 3;
+$CONNECT TO :dbname;
+$CREATE TABLE test(i INT PRIMARY KEY, j INT);
+$INSERT INTO test(i, j) VALUES (7, :j);
+$COMMIT;
+  </pre><p>
+ </p><div class="note"><h3 class="title">Note</h3><p>
+   Il ne doit par y avoir d'espace entre le <code class="literal">$</code>
+   et la directive de préprocesseur qui le suit, c'est à
+   dire <code class="literal">include</code>, <code class="literal">define</code>,
+   <code class="literal">ifdef</code>, etc. Sinon, le préprocesseur comprendra
+   le mot comme une variable hôte.
+  </p></div><p>
+  Il y a deux modes de compatibilité: <code class="literal">INFORMIX</code>, <code class="literal">INFORMIX_SE</code>
+ </p><p>
+  Quand vous liez des programmes qui sont dans ce mode de compatibilité, rappelez
+  vous de lier avec <code class="literal">libcompat</code> qui est fournie avec ECPG.
+ </p><p>
+  En plus du liant syntaxique expliqué précédemment, le mode de compatibilité <span class="productname">Informix</span>
+  porte d'ESQL vers ECPG quelques fonctions pour l'entrée, la sortie et la transformation des données, ainsi
+  que pour le SQL embarqué.
+ </p><p>
+  Le mode de compatibilité <span class="productname">Informix</span> est
+  fortement connecté à la librairie pgtypeslib d'ECPG. pgtypeslib met
+  en correspondance les types de données SQL et les types de données du
+  programme hôte C et la plupart des fonctions additionnelles du mode
+  de compatibilité <span class="productname">Informix</span> vous permettent
+  de manipuler ces types C des programmes hôtes. Notez toutefois que
+  l'étendue de cette compatibilité est limitée. Il n'essaie pas de
+  copier le comportement d'<span class="productname">Informix</span>; il vous
+  permet de faire plus ou mois les mêmes opérations et vou fournit des
+  fonctions qui ont le même nom et ont à la base le même comportement,
+  mais ce n'est pas un produit de remplacement transparent si vous
+  utilisez <span class="productname">Informix</span> à l'heure actuelle. De
+  plus, certains types de données sont différents. Par exemple, les
+  types datetime et interval de <span class="productname">PostgreSQL</span>
+  ne savent pas traiter des ranges comme par exemple <code class="literal">YEAR TO
+   MINUTE</code>, donc vous n'aurez pas de support pour cela dans
+  ECPG non plus.
+ </p><div class="sect2" id="ECPG-INFORMIX-TYPES"><div class="titlepage"><div><div><h3 class="title">34.15.1. Types supplémentaires <a href="#ECPG-INFORMIX-TYPES" class="id_link">#</a></h3></div></div></div><p>
+   Le pseudo-type "string" spécifique à Informix pour stocker des
+   chaînes de caractères ajustées à droite est maintenant
+   supporté dans le mode Informix sans avoir besoin d'utiliser
+   <code class="literal">typedef</code>. En fait, en mode Informix, ECPG refuse
+   de traiter les fichiers sources qui contiennent <code class="literal">typedef
+    untype string;</code>
+   </p><pre class="programlisting">
+EXEC SQL BEGIN DECLARE SECTION;
+string userid; /* cette variable contient des données ajustées */
+EXEC SQL END DECLARE SECTION;
+
+EXEC SQL FETCH MYCUR INTO :userid;
+   </pre><p>
+  </p></div><div class="sect2" id="ECPG-INFORMIX-STATEMENTS"><div class="titlepage"><div><div><h3 class="title">34.15.2. Ordres SQL Embarqués Supplémentaires/Manquants <a href="#ECPG-INFORMIX-STATEMENTS" class="id_link">#</a></h3></div></div></div><p>
+   </p><div class="variablelist"><dl class="variablelist"><dt id="ECPG-INFORMIX-STATEMENTS-CLOSE-DATABASE"><span class="term"><code class="literal">CLOSE DATABASE</code></span> <a href="#ECPG-INFORMIX-STATEMENTS-CLOSE-DATABASE" class="id_link">#</a></dt><dd><p>
+       Cet ordre ferme la connexion courante. En fait, c'est un synonyme
+       du <code class="literal">DISCONNECT CURRENT</code> d'ECPG:
+       </p><pre class="programlisting">
+$CLOSE DATABASE;                /* ferme la connexion courante */
+EXEC SQL CLOSE DATABASE;
+       </pre><p>
+      </p></dd><dt id="ECPG-INFORMIX-STATEMENTS-FREE-CURSOR-NAME"><span class="term"><code class="literal">FREE nom_curseur</code></span> <a href="#ECPG-INFORMIX-STATEMENTS-FREE-CURSOR-NAME" class="id_link">#</a></dt><dd><p>
+       En raison des différences sur la façon dont ECPG fonctionne
+       par rapport à l'ESQL/C d'Informix (c'est à dire quelles étapes
+       sont purement des transformations grammaticales et quelles étapes
+       s'appuient sur la librairie sous-jacente), il n'y a pas d'ordre
+       <code class="literal">FREE nom_curseur</code> dans ECPG. C'est parce
+       que, dans ECPG, <code class="literal">DECLARE CURSOR</code> ne génère
+       pas un appel de fonction à la librairie qui utilise le nom du
+       curseur. Ce qui implique qu'il n'y a pas à gérer les curseurs
+       SQL à l'exécution dans la librairie ECPG, seulement dans le
+       serveur PostgreSQL.
+      </p></dd><dt id="ECPG-INFORMIX-STATEMENTS-FREE-STATEMENT-NAME"><span class="term"><code class="literal">FREE nom_requete</code></span> <a href="#ECPG-INFORMIX-STATEMENTS-FREE-STATEMENT-NAME" class="id_link">#</a></dt><dd><p>
+       <code class="literal">FREE nom_requete</code> est un synonyme de <code class="literal">DEALLOCATE PREPARE nom_requete</code>.
+      </p></dd></dl></div><p>
+  </p></div><div class="sect2" id="ECPG-INFORMIX-SQLDA"><div class="titlepage"><div><div><h3 class="title">34.15.3. Zones de Descripteurs SQLDA Compatibles Informix <a href="#ECPG-INFORMIX-SQLDA" class="id_link">#</a></h3></div></div></div><p>
+   Le mode de compatibilité Informix supporte une structure différente
+   de celle décrite dans <a class="xref" href="ecpg-descriptors.html#ECPG-SQLDA-DESCRIPTORS" title="34.7.2. Zones de Descripteurs SQLDA">Section 34.7.2</a>. Voyez
+   ci-dessous:
+   </p><pre class="programlisting">
+struct sqlvar_compat
+{
+    short   sqltype;
+    int     sqllen;
+    char   *sqldata;
+    short  *sqlind;
+    char   *sqlname;
+    char   *sqlformat;
+    short   sqlitype;
+    short   sqlilen;
+    char   *sqlidata;
+    int     sqlxid;
+    char   *sqltypename;
+    short   sqltypelen;
+    short   sqlownerlen;
+    short   sqlsourcetype;
+    char   *sqlownername;
+    int     sqlsourceid;
+    char   *sqlilongdata;
+    int     sqlflags;
+    void   *sqlreserved;
+};
+
+struct sqlda_compat
+{
+    short  sqld;
+    struct sqlvar_compat *sqlvar;
+    char   desc_name[19];
+    short  desc_occ;
+    struct sqlda_compat *desc_next;
+    void  *reserved;
+};
+
+typedef struct sqlvar_compat    sqlvar_t;
+typedef struct sqlda_compat     sqlda_t;
+   </pre><p>
+  </p><p>
+   Les propriétés globales sont:
+   </p><div class="variablelist"><dl class="variablelist"><dt id="ECPG-INFORMIX-SQLDA-SQLD"><span class="term"><code class="literal">sqld</code></span> <a href="#ECPG-INFORMIX-SQLDA-SQLD" class="id_link">#</a></dt><dd><p>
+       Le nombre de champs dans le descripteur <code class="literal">SQLDA</code>.
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-SQLVAR"><span class="term"><code class="literal">sqlvar</code></span> <a href="#ECPG-INFORMIX-SQLDA-SQLVAR" class="id_link">#</a></dt><dd><p>
+       Un pointeur vers les propriétés par champ.
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-DESC-NAME"><span class="term"><code class="literal">desc_name</code></span> <a href="#ECPG-INFORMIX-SQLDA-DESC-NAME" class="id_link">#</a></dt><dd><p>
+       Inutilisé, rempli d'octets à zéro.
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-DESC-OCC"><span class="term"><code class="literal">desc_occ</code></span> <a href="#ECPG-INFORMIX-SQLDA-DESC-OCC" class="id_link">#</a></dt><dd><p>
+       La taille de la structure allouée.
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-DESC-NEXT"><span class="term"><code class="literal">desc_next</code></span> <a href="#ECPG-INFORMIX-SQLDA-DESC-NEXT" class="id_link">#</a></dt><dd><p>
+       Un pointeur vers la structure SQLDA suivante si le jeu de
+       résultat contient plus d'un enregistrement.
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-RESERVED"><span class="term"><code class="literal">reserved</code></span> <a href="#ECPG-INFORMIX-SQLDA-RESERVED" class="id_link">#</a></dt><dd><p>
+       Pointeur inutilisé, contient NULL. Gardé pour la compatibilité
+       Informix.
+      </p></dd></dl></div><p>
+
+   Les propriétés par champ sont ci-dessous, elles sont stockées
+   dans le tableau <code class="literal">sqlvar</code>:
+
+   </p><div class="variablelist"><dl class="variablelist"><dt id="ECPG-INFORMIX-SQLDA-SQLTYPE"><span class="term"><code class="literal">sqltype</code></span> <a href="#ECPG-INFORMIX-SQLDA-SQLTYPE" class="id_link">#</a></dt><dd><p>
+       Type du champ. Les constantes sont dans
+       <code class="literal">sqltypes.h</code>
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-SQLLEN"><span class="term"><code class="literal">sqllen</code></span> <a href="#ECPG-INFORMIX-SQLDA-SQLLEN" class="id_link">#</a></dt><dd><p>
+       La longueur du champ de données.
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-SQLDATA"><span class="term"><code class="literal">sqldata</code></span> <a href="#ECPG-INFORMIX-SQLDA-SQLDATA" class="id_link">#</a></dt><dd><p>
+       Un pointeur vers le champ de données. Ce pointeur est de type
+       <code class="literal">char*</code>, la donnée pointée par lui est en
+       format binaire. Par exemple:
+       </p><pre class="programlisting">
+int intval;
+
+switch (sqldata-&gt;sqlvar[i].sqltype)
+{
+    case SQLINTEGER:
+        intval = *(int *)sqldata-&gt;sqlvar[i].sqldata;
+        break;
+  ...
+}
+       </pre><p>
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-SQLIND"><span class="term"><code class="literal">sqlind</code></span> <a href="#ECPG-INFORMIX-SQLDA-SQLIND" class="id_link">#</a></dt><dd><p>
+       Un pointeur vers l'indicateur NULL. Si retourné par DESCRIBE
+       ou FETCH alors c'est toujours un pointeur valide. Si utilisé
+       comme valeur d'entrée pour <code class="literal">EXECUTE ... USING
+        sqlda;</code> alors une valeur de pointeur NULL signifie
+       que la valeur pour ce champ est non nulle. Sinon, un pointeur
+       valide et <code class="literal">sqlitype</code> doivent être positionnés
+       correctement. Par exemple:
+       </p><pre class="programlisting">
+if (*(int2 *)sqldata-&gt;sqlvar[i].sqlind != 0)
+    printf("value is NULL\n");
+       </pre><p>
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-SQLNAME"><span class="term"><code class="literal">sqlname</code></span> <a href="#ECPG-INFORMIX-SQLDA-SQLNAME" class="id_link">#</a></dt><dd><p>
+       Le nom du champ. Chaîne terminée par 0.
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-SQLFORMAT"><span class="term"><code class="literal">sqlformat</code></span> <a href="#ECPG-INFORMIX-SQLDA-SQLFORMAT" class="id_link">#</a></dt><dd><p>
+       Réservé dans Informix, valeurs de <a class="xref" href="libpq-exec.html#LIBPQ-PQFFORMAT"><code class="function">PQfformat</code></a> pour le champ.
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-SQLITYPE"><span class="term"><code class="literal">sqlitype</code></span> <a href="#ECPG-INFORMIX-SQLDA-SQLITYPE" class="id_link">#</a></dt><dd><p>
+       Type de l'indicateur de données NULL. C'est toujours SQLSMINT
+       quand les données sont retournées du serveur. Quand la
+       <code class="literal">SQLDA</code> est utilisée pour une requête
+       paramétrique, la donnée est traitée en fonction du type de
+       donnée positionné.
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-SQLILEN"><span class="term"><code class="literal">sqlilen</code></span> <a href="#ECPG-INFORMIX-SQLDA-SQLILEN" class="id_link">#</a></dt><dd><p>
+       Longueur de l'indicateur de données NULL.
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-SQLXID"><span class="term"><code class="literal">sqlxid</code></span> <a href="#ECPG-INFORMIX-SQLDA-SQLXID" class="id_link">#</a></dt><dd><p>
+       Type étendu du champ, résultat de <a class="xref" href="libpq-exec.html#LIBPQ-PQFTYPE"><code class="function">PQftype</code></a>.
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-SQLTYPENAME"><span class="term"><code class="literal">sqltypename</code><br /></span><span class="term"><code class="literal">sqltypelen</code><br /></span><span class="term"><code class="literal">sqlownerlen</code><br /></span><span class="term"><code class="literal">sqlsourcetype</code><br /></span><span class="term"><code class="literal">sqlownername</code><br /></span><span class="term"><code class="literal">sqlsourceid</code><br /></span><span class="term"><code class="literal">sqlflags</code><br /></span><span class="term"><code class="literal">sqlreserved</code></span> <a href="#ECPG-INFORMIX-SQLDA-SQLTYPENAME" class="id_link">#</a></dt><dd><p>
+       Inutilisé.
+      </p></dd><dt id="ECPG-INFORMIX-SQLDA-SQLILONGDATA"><span class="term"><code class="literal">sqlilongdata</code></span> <a href="#ECPG-INFORMIX-SQLDA-SQLILONGDATA" class="id_link">#</a></dt><dd><p>
+       C'est égal à <code class="literal">sqldata</code> si <code class="literal">sqllen</code>
+       est plus grand que 32nbsp;ko.
+      </p></dd></dl></div><p>
+
+   Par exemple:
+   </p><pre class="programlisting">
+EXEC SQL INCLUDE sqlda.h;
+
+    sqlda_t        *sqlda; /* Ceci n'a pas besoin d'être dans la DECLARE SECTION embarquée */
+
+    EXEC SQL BEGIN DECLARE SECTION;
+    char *prep_stmt = "select * from table1";
+    int i;
+    EXEC SQL END DECLARE SECTION;
+
+    ...
+
+    EXEC SQL PREPARE mystmt FROM :prep_stmt;
+
+    EXEC SQL DESCRIBE mystmt INTO sqlda;
+
+    printf("# of fields: %d\n", sqlda-&gt;sqld);
+    for (i = 0; i &lt; sqlda-&gt;sqld; i++)
+      printf("field %d: \"%s\"\n", sqlda-&gt;sqlvar[i]-&gt;sqlname);
+
+    EXEC SQL DECLARE mycursor CURSOR FOR mystmt;
+    EXEC SQL OPEN mycursor;
+    EXEC SQL WHENEVER NOT FOUND GOTO out;
+
+    while (1)
+    {
+      EXEC SQL FETCH mycursor USING sqlda;
+    }
+
+    EXEC SQL CLOSE mycursor;
+
+    free(sqlda); /* La structure principale doit être totalement libérée par free()
+                  * sqlda and sqlda-&gt;sqlvar sont dans une seule zone allouée */
+   </pre><p>
+   Pour plus d'informations, voyez l'entête
+   <code class="literal">sqlda.h</code> et le test de non-régression
+   <code class="literal">src/interfaces/ecpg/test/compat_informix/sqlda.pgc</code>.
+  </p></div><div class="sect2" id="ECPG-INFORMIX-FUNCTIONS"><div class="titlepage"><div><div><h3 class="title">34.15.4. Fonctions Additionnelles <a href="#ECPG-INFORMIX-FUNCTIONS" class="id_link">#</a></h3></div></div></div><p>
+   </p><div class="variablelist"><dl class="variablelist"><dt id="ECPG-INFORMIX-FUNCTIONS-DECADD"><span class="term"><code class="function">decadd</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DECADD" class="id_link">#</a></dt><dd><p>
+       Ajoute deux valeurs décimales.
+       </p><pre class="synopsis">
+int decadd(decimal *arg1, decimal *arg2, decimal *sum);
+       </pre><p>
+       La fonction reçoit un poiteur sur la première opérande de
+       type decimal (<code class="literal">arg1</code>), un pointeur sur la
+       seconde opérande de type decimal (<code class="literal">arg2</code>)
+       et un pointeur sur la valeur de type decimal qui contiendra la
+       somme (<code class="literal">sum</code>). En cas de succès, la fonction
+       retourne 0. <code class="symbol">ECPG_INFORMIX_NUM_OVERFLOW</code>
+       est retourné en cas de dépassement et
+       <code class="symbol">ECPG_INFORMIX_NUM_UNDERFLOW</code> en cas de
+       soupassement. -1 est retourné pour les autres échecs et
+       <code class="varname">errno</code> est positionné au nombre correspondant
+       <code class="varname">errno</code> de pgtypeslib.
+       pgtypeslib.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DECCMP"><span class="term"><code class="function">deccmp</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DECCMP" class="id_link">#</a></dt><dd><p>
+       Compare deux variables de type decimal.
+       </p><pre class="synopsis">
+int deccmp(decimal *arg1, decimal *arg2);
+       </pre><p>
+       La fonction reçoit un pointeur vers la première valeur decimal (<code class="literal">arg1</code>), un pointeur vers la seconde valeur decimal (<code class="literal">arg2</code>) et retourne une valeur entière qui indique quelle elle la plus grosse valeur.
+       </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+          1, si la valeur pointée par <code class="literal">arg1</code> est plus grande que
+          celle pointée par <code class="literal">arg2</code>.
+         </p></li><li class="listitem"><p>
+          -1 si la valeur pointée par <code class="literal">arg1</code> est plus
+          petite que la valeur pointée par <code class="literal">arg2</code>.
+         </p></li><li class="listitem"><p>
+          0 si les deux valeurs pointées par <code class="literal">arg1</code>
+          et <code class="literal">arg2</code> sont égales.
+         </p></li></ul></div><p>
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DECCOPY"><span class="term"><code class="function">deccopy</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DECCOPY" class="id_link">#</a></dt><dd><p>
+       Copie une valeur decimal.
+       </p><pre class="synopsis">
+void deccopy(decimal *src, decimal *target);
+       </pre><p>
+       La fonction reçoit un pointeur vers la valeur decimal qui doit
+       être copiée comme premier argument (<code class="literal">src</code>)
+       et un pointeur vers la structure de type décimale cible
+       (<code class="literal">target</code>) comme second argument.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DECCVASC"><span class="term"><code class="function">deccvasc</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DECCVASC" class="id_link">#</a></dt><dd><p>
+       Convertit une valeur de sa représentation ASCII vers un type decimal.
+       </p><pre class="synopsis">
+int deccvasc(char *cp, int len, decimal *np);
+       </pre><p>
+       La fonction reçoit un pointeur vers une chaîne
+       qui contient la représentation chaîne du nombre à
+       convertir (<code class="literal">cp</code>) ainsi que sa longueur
+       <code class="literal">len</code>. <code class="literal">np</code> est un pointeur
+       vers la valeur decimal dans laquelle sauver le résultat de
+       l'opération.
+      </p><p>
+       Voici quelques formats valides:
+       <code class="literal">-2</code>,
+       <code class="literal">.794</code>,
+       <code class="literal">+3.44</code>,
+       <code class="literal">592.49E07</code> ou
+       <code class="literal">-32.84e-4</code>.
+      </p><p>
+       La fonction retourne 0 en cas de succès. Si un
+       dépassement ou un soupassement se produisent,
+       <code class="literal">ECPG_INFORMIX_NUM_OVERFLOW</code>
+       ou <code class="literal">ECPG_INFORMIX_NUM_UNDERFLOW</code> est
+       retourné. Si la représentation ASCII n'a pas pu être
+       interprétée, <code class="literal">ECPG_INFORMIX_BAD_NUMERIC</code> est retourné
+       ou <code class="literal">ECPG_INFORMIX_BAD_EXPONENT</code> si le problème
+       s'est produit lors de l'analyse de l'exposant.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DECCVDBL"><span class="term"><code class="function">deccvdbl</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DECCVDBL" class="id_link">#</a></dt><dd><p>
+       Convertit une valeur de type double vers une valeur de type decimal.
+       </p><pre class="synopsis">
+int deccvdbl(double dbl, decimal *np);
+       </pre><p>
+       La fonction reçoit la variable de type double qui devrait être
+       convertie comme premier argument (<code class="literal">dbl</code>). Comme
+       second argument (<code class="literal">np</code>), la fonction reçoit
+       un pointeur vers la variable decimal qui recevra le résultat
+       de l'opération.
+      </p><p>
+       La fonction retourne 0 en cas de succès et une valeur négative si
+       la conversion a échoué.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DECCVINT"><span class="term"><code class="function">deccvint</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DECCVINT" class="id_link">#</a></dt><dd><p>
+       Convertit une valeur de type int vers une valeur de type decimal.
+       </p><pre class="synopsis">
+int deccvint(int in, decimal *np);
+       </pre><p>
+       La fonction reçoit la variable de type int à convertir comme
+       premier argument (<code class="literal">in</code>). Comme second argument
+       (<code class="literal">np</code>), la fonction reçoit un pointeur vers
+       la variable decimal qui recevra le résultat de l'opération.
+      </p><p>
+       La fonction retourne 0 en cas de succès et une valeur négative si
+       la conversion a échoué.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DECCVLONG"><span class="term"><code class="function">deccvlong</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DECCVLONG" class="id_link">#</a></dt><dd><p>
+       Convertit une valeur de type long vers une valeur de type decimal.
+       </p><pre class="synopsis">
+int deccvlong(long lng, decimal *np);
+       </pre><p>
+       La fonction reçoit la variable de type long à convertir comme
+       premier argument (<code class="literal">lng</code>). Comme second argument
+       (<code class="literal">np</code>), la fonction reçoit un pointeur vers
+       la variable decimal qui recevra le résultat de l'opération.
+      </p><p>
+       La fonction retourne 0 en cas de succès et une valeur négative si
+       la conversion a échoué.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DECDIV"><span class="term"><code class="function">decdiv</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DECDIV" class="id_link">#</a></dt><dd><p>
+       Divise deux variables de type decimal.
+       </p><pre class="synopsis">
+int decdiv(decimal *n1, decimal *n2, decimal *result);
+       </pre><p>
+       La fonction reçoit des pointeurs vers les deux
+       variables qui sont le premier (<code class="literal">n1</code>)
+       et le second (<code class="literal">n2</code>) opérandes et
+       calcule <code class="literal">n1</code>/<code class="literal">n2</code>.
+       <code class="literal">result</code> est un pointeur vers la variable qui
+       recevra le résultat de l'opération.
+      </p><p>
+       En cas de succès, 0 est retourné, et une valeur négative si la
+       division échoue.  En cas de dépassement ou de soupassement, la
+       fonction retourne <code class="literal">ECPG_INFORMIX_NUM_OVERFLOW</code> ou
+       <code class="literal">ECPG_INFORMIX_NUM_UNDERFLOW</code> respectivement. Si
+       une tentative de division par zéro se produit, la fonction
+       retourne <code class="literal">ECPG_INFORMIX_NUM_OVERFLOW</code>.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DECMUL"><span class="term"><code class="function">decmul</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DECMUL" class="id_link">#</a></dt><dd><p>
+       Multiplie deux valeurs decimal.
+       </p><pre class="synopsis">
+int decmul(decimal *n1, decimal *n2, decimal *result);
+       </pre><p>
+       La fonction reçoit des pointeurs vers les deux
+       variables qui sont le premier (<code class="literal">n1</code>)
+       et le second (<code class="literal">n2</code>) opérandes et
+       calcule <code class="literal">n1</code>/<code class="literal">n2</code>.
+       <code class="literal">result</code> est un pointeur vers la variable qui
+       recevra le résultat de l'opération.
+      </p><p>
+       En cas de succès, 0 est retourné, et une valeur négative si la
+       division échoue.  En cas de dépassement ou de soupassement, la
+       fonction retourne <code class="literal">ECPG_INFORMIX_NUM_OVERFLOW</code> ou
+       <code class="literal">ECPG_INFORMIX_NUM_UNDERFLOW</code> respectivement.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DECSUB"><span class="term"><code class="function">decsub</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DECSUB" class="id_link">#</a></dt><dd><p>
+       Soustrait une valeur decimal d'une autre.
+       </p><pre class="synopsis">
+int decsub(decimal *n1, decimal *n2, decimal *result);
+       </pre><p>
+       La fonction reçoit des pointeurs vers les deux
+       variables qui sont le premier (<code class="literal">n1</code>)
+       et le second (<code class="literal">n2</code>) opérandes et
+       calcule <code class="literal">n1</code>/<code class="literal">n2</code>.
+       <code class="literal">result</code> est un pointeur vers la variable qui
+       recevra le résultat de l'opération.
+      </p><p>
+       En cas de succès, 0 est retourné, et une valeur négative si la
+       division échoue.  En cas de dépassement ou de soupassement, la
+       fonction retourne <code class="literal">ECPG_INFORMIX_NUM_OVERFLOW</code> ou
+       <code class="literal">ECPG_INFORMIX_NUM_UNDERFLOW</code> respectivement.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DECTOASC"><span class="term"><code class="function">dectoasc</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DECTOASC" class="id_link">#</a></dt><dd><p>
+       Convertit une variable de type decimal vers sa représentation
+       ASCII sous forme de chaîne C char*.
+       </p><pre class="synopsis">
+int dectoasc(decimal *np, char *cp, int len, int right)
+       </pre><p>
+       La fonction reçoit un pointeur vers une variable de type
+       decimal (<code class="literal">np</code>) qu'elle convertit vers
+       sa représentation textuelle. <code class="literal">cp</code> est le
+       tampon qui devra contenir le résultat de l'opération. Le
+       paramètre <code class="literal">right</code> spécifie combien de
+       chiffres après la virgule doivent être inclus dans la
+       sortie. Le résultat sera arrondi à ce nombre de chiffres
+       décimaux. Positionner <code class="literal">right</code> à -1 indique
+       que tous les chiffres décimaux disponibles devraient être
+       inclus dans la sortie. Si la longueur du tampon de sortie, qui
+       est indiquée par <code class="literal">len</code> n'est pas suffisante
+       pour contenir toute la représentation en incluant le caractère
+       NUL final, seul un caractère unique <code class="literal">*</code> est
+       stocké dans le résultat, et -1 est retourné.
+      </p><p>
+       La fonction retourne -1 si le tampon <code class="literal">cp</code> était
+       trop petit ou <code class="literal">ECPG_INFORMIX_OUT_OF_MEMORY</code>
+       si plus de mémoire n'était disponible.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DECTODBL"><span class="term"><code class="function">dectodbl</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DECTODBL" class="id_link">#</a></dt><dd><p>
+       Convertit une variable de type decimal vers un double.
+       </p><pre class="synopsis">
+int dectodbl(decimal *np, double *dblp);
+       </pre><p>
+       La fonction reçoit un pointeur vers la valeur decimal à
+       convertir (<code class="literal">np</code>) et un pointeur vers la
+       variable double qui devra recevoir le résultat de l'opération
+       (<code class="literal">dblp</code>).
+      </p><p>
+       La fonction retourne 0 en cas de succès et une valeur négative si
+       la conversion a échoué.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DECTOINT"><span class="term"><code class="function">dectoint</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DECTOINT" class="id_link">#</a></dt><dd><p>
+       Convertit une variable de type decimal vers un integer.
+       </p><pre class="synopsis">
+int dectoint(decimal *np, int *ip);
+       </pre><p>
+       La fonction reçoit un pointeur vers la valeur decimal à
+       convertir (<code class="literal">np</code>) et un pointeur vers la
+       variable integer qui devra recevoir le résultat de l'opération
+       (<code class="literal">ip</code>).
+      </p><p>
+       La fonction retourne 0 en cas de succès et une valeur négative
+       si la conversion a échoué. Si un dépassement s'est produit,
+       <code class="literal">ECPG_INFORMIX_NUM_OVERFLOW</code> est retourné.
+      </p><p>
+       Notez que l'implémentation d'ECPG diffère
+       de celle d'<span class="productname">Informix</span>.
+       <span class="productname">Informix</span> limite un integer entre
+       -32767 et 32767, alors que la limite de l'implémentation d'ECPG
+       dépend de l'architecture (<code class="literal">-INT_MAX .. INT_MAX</code>).
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DECTOLONG"><span class="term"><code class="function">dectolong</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DECTOLONG" class="id_link">#</a></dt><dd><p>
+       Convertit une variable de type decimal vers un long integer.
+       </p><pre class="synopsis">
+int dectolong(decimal *np, long *lngp);
+       </pre><p>
+       La fonction reçoit un pointeur vers la valeur decimal à
+       convertir (<code class="literal">np</code>) et un pointeur vers la
+       variable long qui devra recevoir le résultat de l'opération
+       (<code class="literal">lngp</code>).
+      </p><p>
+       La fonction retourne 0 en cas de succès et une valeur négative
+       si la conversion a échoué. Si un dépassement s'est produit,
+       <code class="literal">ECPG_INFORMIX_NUM_OVERFLOW</code> est retourné.
+      </p><p>
+       Notez que l'implémentation d'ECPG diffère
+       de celle d'<span class="productname">Informix</span>.
+       <span class="productname">Informix</span> limite un integer entre
+       --2,147,483,647 à 2,147,483,647 alors que la limite de l'implémentation d'ECPG
+       dépend de l'architecture (<code class="literal">-LONG_MAX .. LONG_MAX</code>).
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RDATESTR"><span class="term"><code class="function">rdatestr</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RDATESTR" class="id_link">#</a></dt><dd><p>
+       Convertit une date vers une chaîne char* C.
+       </p><pre class="synopsis">
+int rdatestr(date d, char *str);
+       </pre><p>
+       La fonction reçoit deux arguments, le premier est la date à
+       convertir (<code class="literal">d</code>) et le second est un pointeur
+       vers la chaîne cible. Le format de sortie est toujours
+       <code class="literal">yyyy-mm-dd</code>, vous aurez donc à allouer au
+       moins 11 octets (en incluant le terminateur NUL) pour la chaîne.
+      </p><p>
+       La fonction retourne 0 en cas de succès et une valeur négative
+       si la conversion a échoué.
+      </p><p>
+       Notez que l'implémentation d'ECPG diffère de
+       celle de <span class="productname">Informix</span>. Dans
+       <span class="productname">Informix</span> le format peut être modifié
+       par le positionnement de variable d'enregistrement. Dans ECPG
+       par contre, vous ne pouvez pas changer le format de sortie.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RSTRDATE"><span class="term"><code class="function">rstrdate</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RSTRDATE" class="id_link">#</a></dt><dd><p>
+       Convertit la représentation textuelle d'une date.
+       </p><pre class="synopsis">
+int rstrdate(char *str, date *d);
+       </pre><p>
+       La fonction reçoit la représentation textuelle d'une date
+       à convertir (<code class="literal">str</code>) et un pointeur vers une
+       variable de type date (<code class="literal">d</code>). Cette fonction ne
+       vous permet pas de fournir un masque de formatage. Il utilise
+       le format par défaut d'<span class="productname">Informix</span> qui
+       est <code class="literal">mm/dd/yyyy</code>. En interne, cette fonction est
+       implémentée au travers de <code class="function">rdefmtdate</code>. Par
+       conséquent, <code class="function">rstrdate</code> n'est pas plus
+       rapide et si vous avez le choix, vous devriez opter pour
+       <code class="function">rdefmtdate</code>, qui vous permet de spécifier
+       le masque de formatage explicitement.
+      </p><p>
+       La fonction retourne les mêmes valeurs que <code class="function">rdefmtdate</code>.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RTODAY"><span class="term"><code class="function">rtoday</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RTODAY" class="id_link">#</a></dt><dd><p>
+       Récupère la date courante.
+       </p><pre class="synopsis">
+void rtoday(date *d);
+       </pre><p>
+       La fonction reçoit un poiteur vers une variable de type date
+       (<code class="literal">d</code>) qu'elle positionne à la date courante.
+      </p><p>
+       En interne, cette fonction utilise la fonction <a class="xref" href="ecpg-pgtypes.html#PGTYPESDATETODAY"><code class="function">PGTYPESdate_today</code></a>.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RJULMDY"><span class="term"><code class="function">rjulmdy</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RJULMDY" class="id_link">#</a></dt><dd><p>
+       Extrait les valeurs pour le jour, le mois et l'année d'une
+       variable de type date.
+       </p><pre class="synopsis">
+int rjulmdy(date d, short mdy[3]);
+       </pre><p>
+       La fonction reçoit la date <code class="literal">d</code>
+       et un pointeur vers un tableau de 3 entiers courts
+       <code class="literal">mdy</code>. Le nom de la variable indique l'ordre
+       séquentiel: <code class="literal">mdy[0]</code> contiendra le numéro du
+       mois, <code class="literal">mdy[1]</code> contiendra le numéro du jour,
+       et <code class="literal">mdy[2]</code> contiendra l'année.
+      </p><p>
+       La fonction retourne toujours 0 pour le moment.
+      </p><p>
+       En interne, cette fonction utilise la fonction <a class="xref" href="ecpg-pgtypes.html#PGTYPESDATEJULMDY"><code class="function">PGTYPESdate_julmdy</code></a>.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RDEFMTDATE"><span class="term"><code class="function">rdefmtdate</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RDEFMTDATE" class="id_link">#</a></dt><dd><p>
+       Utilise un masque de formatage pour convertir une chaîne de
+       caractère vers une valeur de type date.
+       </p><pre class="synopsis">
+int rdefmtdate(date *d, char *fmt, char *str);
+       </pre><p>
+       La fonction reçoit un pointeur vers une valeur date qui devra
+       contenir le résultat de l'opération (<code class="literal">d</code>),
+       le masque de formatage à utiliser pour traiter la date
+       (<code class="literal">fmt</code>) et la chaîne de caractère char*
+       C qui contient la représentation textuelle de la date
+       (<code class="literal">str</code>). La représentation textuelle
+       doit correspondre au masque de formatage. La fonction
+       n'analyse qu'en ordre séquentiel et recherche les littéraux
+       <code class="literal">yy</code> ou <code class="literal">yyyy</code> qui indiquent
+       la position de l'année, <code class="literal">mm</code> qui indique la
+       position du mois et <code class="literal">dd</code> qui indique la position
+       du jour.
+      </p><p>
+       La fonction retourne les valeurs suivantes:
+       </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+          0 - La fonction s'est terminée avec succès.
+         </p></li><li class="listitem"><p>
+          <code class="literal">ECPG_INFORMIX_ENOSHORTDATE</code> - La date
+          ne contient pas de délimiteur entre le jour, le mois et
+          l'année. Dans ce cas, la chaîne en entrée doit faire
+          exactement 6 ou 8 caractères, mais ce n'est pas le cas.
+         </p></li><li class="listitem"><p>
+          <code class="literal">ECPG_INFORMIX_ENOTDMY</code> - La chaîne de
+          formatage n'indique pas correctement l'ordre séquentiel de
+          l'année, du mois, et du jour.
+         </p></li><li class="listitem"><p>
+          <code class="literal">ECPG_INFORMIX_BAD_DAY</code> - La chaîne d'entrée
+          ne contient pas de jour valide.
+         </p></li><li class="listitem"><p>
+          <code class="literal">ECPG_INFORMIX_BAD_MONTH</code> - La chaîne d'entrée
+          ne contient pas de mois valide.
+         </p></li><li class="listitem"><p>
+          <code class="literal">ECPG_INFORMIX_BAD_YEAR</code> - La chaîne d'entrée
+          ne contient pas d'année valide.
+         </p></li></ul></div><p>
+      </p><p>
+       En interne, cette fonction est implémentée en utilisant la fonction
+       <a class="xref" href="ecpg-pgtypes.html#PGTYPESDATEDEFMTASC"><code class="function">PGTYPESdate_defmt_asc</code></a>. Voyez la référence à cet endroi
+       pour la table d'exemples.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RFMTDATE"><span class="term"><code class="function">rfmtdate</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RFMTDATE" class="id_link">#</a></dt><dd><p>
+       Convertit une variable de type date vers sa représentation
+       textuelle en utilisant un masque de formatage.
+       </p><pre class="synopsis">
+int rfmtdate(date d, char *fmt, char *str);
+       </pre><p>
+       La fonction reçoit une date à convertir (<code class="literal">d</code>), le masque de formatage (<code class="literal">fmt</code>) et la chaîne qui contiendra la représentation textuelle de la date (<code class="literal">str</code>).
+      </p><p>
+       La fonction retourne 0 en cas de succès et une valeur négative
+      </p><p>
+       En interne, cette fonction utilise la fonction
+       <a class="xref" href="ecpg-pgtypes.html#PGTYPESDATEFMTASC"><code class="function">PGTYPESdate_fmt_asc</code></a>, voyez la référence pour des exemples.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RMDYJUL"><span class="term"><code class="function">rmdyjul</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RMDYJUL" class="id_link">#</a></dt><dd><p>
+       Crée une valeur date à partir d'un tableau de 3 entiers courts
+       qui spécifient le jour, le mois et l'année de la date.
+       </p><pre class="synopsis">
+int rmdyjul(short mdy[3], date *d);
+       </pre><p>
+       La fonction reçoit le tableau des 3 entiers courst
+       (<code class="literal">mdy</code>) et un pointeur vers une variable de
+       type date qui contiendra le résultat de l'opération.
+      </p><p>
+       La fonction retourne toujours 0 à l'heure actuelle.
+      </p><p>
+       En interne la fonction est implémentée en utilisant la fonction
+       <a class="xref" href="ecpg-pgtypes.html#PGTYPESDATEMDYJUL"><code class="function">PGTYPESdate_mdyjul</code></a>.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RDAYOFWEEK"><span class="term"><code class="function">rdayofweek</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RDAYOFWEEK" class="id_link">#</a></dt><dd><p>
+       Retourne un nombre représentant le jour de la semaine pour une valeur de date.
+       </p><pre class="synopsis">
+int rdayofweek(date d);
+       </pre><p>
+       La fonction reçoit la variable date <code class="literal">d</code> comme
+       seul argument et retourne un entier qui indique le jour de la
+       semaine pour cette date.
+       </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+          0 - Dimanche
+         </p></li><li class="listitem"><p>
+          1 - Lundi
+         </p></li><li class="listitem"><p>
+          2 - Mardi
+         </p></li><li class="listitem"><p>
+          3 - Mercredi
+         </p></li><li class="listitem"><p>
+          4 - Jeudi
+         </p></li><li class="listitem"><p>
+          5 - Vendredi
+         </p></li><li class="listitem"><p>
+          6 - Samedi
+         </p></li></ul></div><p>
+      </p><p>
+       En interne, cette fonction est implémentée en utilisant la fonction
+       <a class="xref" href="ecpg-pgtypes.html#PGTYPESDATEDAYOFWEEK"><code class="function">PGTYPESdate_dayofweek</code></a>.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DTCURRENT"><span class="term"><code class="function">dtcurrent</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DTCURRENT" class="id_link">#</a></dt><dd><p>
+       Récupère le timestamp courant.
+       </p><pre class="synopsis">
+void dtcurrent(timestamp *ts);
+       </pre><p>
+       La fonction récupère le timestamp courant et l'enregistre dans
+       la variable timestamp vers laquelle <code class="literal">ts</code> pointe.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DTCVASC"><span class="term"><code class="function">dtcvasc</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DTCVASC" class="id_link">#</a></dt><dd><p>
+       Convertit un timestamp de sa représentation textuelle vers une
+       variable timestamp.
+       </p><pre class="synopsis">
+int dtcvasc(char *str, timestamp *ts);
+       </pre><p>
+       La fonction reçoit la chaîne à traiter (<code class="literal">str</code>)
+       et un pointeur vers la variable timestamp qui contiendra le
+       résultat de l'opération (<code class="literal">ts</code>).
+      </p><p>
+       La fonction retourne 0 en cas de succès et une valeur négative
+      </p><p>
+       En interne, cette fonction utilise la fonction
+       <a class="xref" href="ecpg-pgtypes.html#PGTYPESTIMESTAMPFROMASC"><code class="function">PGTYPEStimestamp_from_asc</code></a>. Voyez la référence pour
+       un tableau avec des exemples de formats.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DTCVFMTASC"><span class="term"><code class="function">dtcvfmtasc</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DTCVFMTASC" class="id_link">#</a></dt><dd><p>
+       Convertit un timestamp de sa représentation textuelle vers une
+       variable timestamp en utilisant un masque de formatage.
+       </p><pre class="synopsis">
+dtcvfmtasc(char *inbuf, char *fmtstr, timestamp *dtvalue)
+       </pre><p>
+       La fonction reçoit la chaîne à traiter
+       (<code class="literal">inbuf</code>), le masque de formatage à utiliser
+       (<code class="literal">fmtstr</code>) et un pointeur vers la variable
+       timestamp qui contiendra le résultat de l'opération
+       (<code class="literal">dtvalue</code>).
+      </p><p>
+       Cette fonction est implémentée en utilisant la fonction
+       <a class="xref" href="ecpg-pgtypes.html#PGTYPESTIMESTAMPDEFMTASC"><code class="function">PGTYPEStimestamp_defmt_asc</code></a>. Voyez la documentation
+       à cet endroit pour la liste des spécificateurs de formats qui
+       peuvent être utilisés.
+      </p><p>
+       La fonction retourne 0 en cas de succès et une valeur négative
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DTSUB"><span class="term"><code class="function">dtsub</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DTSUB" class="id_link">#</a></dt><dd><p>
+       Soustrait un timestamp d'un autre et retourne une variable de
+       type interval.
+       </p><pre class="synopsis">
+int dtsub(timestamp *ts1, timestamp *ts2, interval *iv);
+       </pre><p>
+       La fonction soustrait la variable timestamp vers laquelle
+       <code class="literal">ts2</code> pointe de la variable timestamp vers
+       laquelle <code class="literal">ts1</code> pointe et stockera le résultat
+       dans la variable intervalle vers laquelle <code class="literal">iv</code>
+       pointe.
+      </p><p>
+       En cas de succès, la fonction retourne 0, et une valeur négative
+       si une erreur s'est produite.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DTTOASC"><span class="term"><code class="function">dttoasc</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DTTOASC" class="id_link">#</a></dt><dd><p>
+       Convertit une variable timestamp vers une chaîne char* C.
+       </p><pre class="synopsis">
+int dttoasc(timestamp *ts, char *output);
+       </pre><p>
+       La fonction reçoit un pointeur vers une variable timestamp à
+       convertir (<code class="literal">ts</code>) et la chaîne qui devra contenir
+       le résultat de l'opération (<code class="literal">output</code>). Elle
+       convertit <code class="literal">ts</code> vers sa représentation textuelle
+       comme spécifié par le standard SQL, qui est <code class="literal">YYYY-MM-DD
+        HH:MM:SS</code>.
+      </p><p>
+       En cas de succès, la fonction retourne 0, et une valeur négative
+       si une erreur s'est produite.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-DTTOFMTASC"><span class="term"><code class="function">dttofmtasc</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-DTTOFMTASC" class="id_link">#</a></dt><dd><p>
+       Convertit une variable timestamp vers un char* C en utilisant
+       un masque de formatage.
+       </p><pre class="synopsis">
+int dttofmtasc(timestamp *ts, char *output, int str_len, char *fmtstr);
+       </pre><p>
+       La fonction reçoit un pointeur vers le timestamp à convertir
+       comme premier argument (<code class="literal">ts</code>), un pointeur
+       vers le tampon de sortie (<code class="literal">output</code>), la
+       longueur maximale qui a été allouée pour le tampon de sortie
+       (<code class="literal">str_len</code>) et le masque de formatage à utiliser
+       pour la conversion (<code class="literal">fmtstr</code>).
+      </p><p>
+       En cas de succès, la fonction retourne 0, et une valeur négative
+       si une erreur s'est produite.
+      </p><p>
+       En interne, cette fonction utilise la fonction
+       <a class="xref" href="ecpg-pgtypes.html#PGTYPESTIMESTAMPFMTASC"><code class="function">PGTYPEStimestamp_fmt_asc</code></a>. Voyez la référence
+       pour des informations sur les spécifications de masque de formatage
+       qui sont utilisables.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-INTOASC"><span class="term"><code class="function">intoasc</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-INTOASC" class="id_link">#</a></dt><dd><p>
+       Convertit une variable interval en chaîne char* C.
+       </p><pre class="synopsis">
+int intoasc(interval *i, char *str);
+       </pre><p>
+       La fonction reçoit un pointeur vers la variable interval à
+       convertir (<code class="literal">i</code>) et la chaîne qui contiendra le
+       résultat de l'opération (<code class="literal">str</code>). Elle convertit
+       <code class="literal">i</code> vers sa représentation textuelle suivant
+       le standard SQL, qui est <code class="literal">YYYY-MM-DD HH:MM:SS</code>.
+      </p><p>
+       En cas de succès, la fonction retourne 0, et une valeur négative
+       si une erreur s'est produite.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RFMTLONG"><span class="term"><code class="function">rfmtlong</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RFMTLONG" class="id_link">#</a></dt><dd><p>
+       Convertit une valeur long integer vers sa représentation
+       textuelle en utilisant un masque de formatage.
+       </p><pre class="synopsis">
+int rfmtlong(long lng_val, char *fmt, char *outbuf);
+       </pre><p>
+       La fonction reçoit la valeur long <code class="literal">lng_val</code>,
+       le masque de formatage <code class="literal">fmt</code> et un pointeur
+       vers le tampon de sortie <code class="literal">outbuf</code>. Il convertit
+       la valeur long vers sa représentation textuelle en fonction du
+       masque de formatage.
+      </p><p>
+       Le masque de formatage peut être composé des caractères
+       suivants de spécification:
+       </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+          <code class="literal">*</code> (asterisk) - si cette position était blanc sans cela, mettez y un astérisque.
+         </p></li><li class="listitem"><p>
+          <code class="literal">&amp;</code> (ampersand) - si cette position était blanc sans cela, mettez y un zéro.
+         </p></li><li class="listitem"><p>
+          <code class="literal">#</code> - transforme les zéros initiaux en blancs.
+         </p></li><li class="listitem"><p>
+          <code class="literal">&lt;</code> - justifie à gauche le nombre dans la chaîne.
+         </p></li><li class="listitem"><p>
+          <code class="literal">,</code> (virgule) - Groupe les nombres de 4
+          chiffres ou plus en groupes de 3 chiffres séparés par
+          des virgules.
+         </p></li><li class="listitem"><p>
+          <code class="literal">.</code> (point) - Ce caractère sépare la partie
+          entière du nombre de sa partie fractionnaire.
+         </p></li><li class="listitem"><p>
+          <code class="literal">-</code> (moins) - le signe moins apparaît si
+          le nombre est négatif.
+         </p></li><li class="listitem"><p>
+          <code class="literal">+</code> (plus) - le signe plus apparaît si
+          le nombre est positif.
+         </p></li><li class="listitem"><p>
+          <code class="literal">(</code> - ceci remplace le signe moins devant
+          une valeur négative. Le signe moins n'apparaîtra pas.
+         </p></li><li class="listitem"><p>
+          <code class="literal">)</code> - Ce caractère remplace le signe moins
+          et est affiché après la valeur négative.
+         </p></li><li class="listitem"><p>
+          <code class="literal">$</code> - le symbole monétaire.
+         </p></li></ul></div><p>
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RUPSHIFT"><span class="term"><code class="function">rupshift</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RUPSHIFT" class="id_link">#</a></dt><dd><p>
+       Passe une chaîne en majuscule.
+       </p><pre class="synopsis">
+void rupshift(char *str);
+       </pre><p>
+       La fonction reçoit un pointeur vers une chaîne et convertit
+       tous ses caractères en majuscules.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-BYLENG"><span class="term"><code class="function">byleng</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-BYLENG" class="id_link">#</a></dt><dd><p>
+       Retourne le nombre de caractères dans une chaîne sans compter les blancs finaux.
+       </p><pre class="synopsis">
+int byleng(char *str, int len);
+       </pre><p>
+       La fonction attend une chaîne de longueur fixe comme premier
+       argument (<code class="literal">str</code>) et sa longueur comme second
+       argument (<code class="literal">len</code>). Elle retourne le nombre
+       de caractères significatifs, c'est à dire la longueur de la
+       chaîne sans ses blancs finaux.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-LDCHAR"><span class="term"><code class="function">ldchar</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-LDCHAR" class="id_link">#</a></dt><dd><p>
+       Copie une chaîne de longueur fixe vers une chaîne terminée
+       par un NUL.
+       </p><pre class="synopsis">
+void ldchar(char *src, int len, char *dest);
+       </pre><p>
+       La fonction reçoit la chaîne de longueur fixe
+       à copier (<code class="literal">src</code>), sa longueur
+       (<code class="literal">len</code>) et un pointeur vers la mémoire
+       destinataire (<code class="literal">dest</code>). Notez que vous aurez
+       besoin de réserver au moins <code class="literal">len+1</code> octets pour
+       la chaine vers laquelle pointe <code class="literal">dest</code>. Cette
+       fonction copie au plus <code class="literal">len</code> octets vers le
+       nouvel emplacement (moins si la chaîne source a des blancs
+       finaux) et ajoute le terminateur NUL.
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RGETMSG"><span class="term"><code class="function">rgetmsg</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RGETMSG" class="id_link">#</a></dt><dd><p>
+       </p><pre class="synopsis">
+int rgetmsg(int msgnum, char *s, int maxsize);
+       </pre><p>
+       Cette fonction existe mais n'est pas implémentée pour le moment!
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RTYPALIGN"><span class="term"><code class="function">rtypalign</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RTYPALIGN" class="id_link">#</a></dt><dd><p>
+       </p><pre class="synopsis">
+int rtypalign(int offset, int type);
+       </pre><p>
+       Cette fonction existe mais n'est pas implémentée pour le moment!
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RTYPMSIZE"><span class="term"><code class="function">rtypmsize</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RTYPMSIZE" class="id_link">#</a></dt><dd><p>
+       </p><pre class="synopsis">
+int rtypmsize(int type, int len);
+       </pre><p>
+       Cette fonction existe mais n'est pas implémentée pour le moment!
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RTYPWIDTH"><span class="term"><code class="function">rtypwidth</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RTYPWIDTH" class="id_link">#</a></dt><dd><p>
+       </p><pre class="synopsis">
+int rtypwidth(int sqltype, int sqllen);
+       </pre><p>
+       Cette fonction existe mais n'est pas implémentée pour le moment!
+      </p></dd><dt id="RSETNULL"><span class="term"><code class="function">rsetnull</code></span> <a href="#RSETNULL" class="id_link">#</a></dt><dd><p>
+       Set a variable to NULL.
+       </p><pre class="synopsis">
+int rsetnull(int t, char *ptr);
+       </pre><p>
+       La fonction reçoit un entier qui indique le type de variable
+       et un pointeur vers la variable elle même, transtypé vers un
+       pointeur char*.
+      </p><p>
+       Les types suivants existent :
+       </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+          <code class="literal">CCHARTYPE</code> - Pour une variable de type <code class="type">char</code> ou <code class="type">char*</code>
+         </p></li><li class="listitem"><p>
+          <code class="literal">CSHORTTYPE</code> - Pour une variable de type <code class="type">short int</code>
+         </p></li><li class="listitem"><p>
+          <code class="literal">CINTTYPE</code> - Pour une variable de type <code class="type">int</code>
+         </p></li><li class="listitem"><p>
+          <code class="literal">CBOOLTYPE</code> - Pour une variable de type <code class="type">boolean</code>
+         </p></li><li class="listitem"><p>
+          <code class="literal">CFLOATTYPE</code> - Pour une variable de type <code class="type">float</code>
+         </p></li><li class="listitem"><p>
+          <code class="literal">CLONGTYPE</code> - Pour une variable de type <code class="type">long</code>
+         </p></li><li class="listitem"><p>
+          <code class="literal">CDOUBLETYPE</code> - Pour une variable de type <code class="type">double</code>
+         </p></li><li class="listitem"><p>
+          <code class="literal">CDECIMALTYPE</code> - Pour une variable de type <code class="type">decimal</code>
+         </p></li><li class="listitem"><p>
+          <code class="literal">CDATETYPE</code> - Pour une variable de type <code class="type">date</code>
+         </p></li><li class="listitem"><p>
+          <code class="literal">CDTIMETYPE</code> - Pour une variable de type <code class="type">timestamp</code>
+         </p></li></ul></div><p>
+      </p><p>
+       Voici un exemple d'appel à cette fonction:
+       </p><pre class="programlisting">
+$char c[] = "abc       ";
+$short s = 17;
+$int i = -74874;
+
+rsetnull(CCHARTYPE, (char *) c);
+rsetnull(CSHORTTYPE, (char *) &amp;s);
+rsetnull(CINTTYPE, (char *) &amp;i);
+
+       </pre><p>
+      </p></dd><dt id="ECPG-INFORMIX-FUNCTIONS-RISNULL"><span class="term"><code class="function">risnull</code></span> <a href="#ECPG-INFORMIX-FUNCTIONS-RISNULL" class="id_link">#</a></dt><dd><p>
+       Teste si une variable est NULL.
+       </p><pre class="synopsis">
+int risnull(int t, char *ptr);
+       </pre><p>
+       Cette fonction reçoit le type d'une variable à tester
+       (<code class="literal">t</code>) ainsi qu'un pointeur vers cette
+       variable (<code class="literal">ptr</code>). Notez que ce dernier doit
+       être transtypé vers un char*. Voyez la fonction <a class="xref" href="ecpg-informix-compat.html#RSETNULL"><code class="function">rsetnull</code></a> pour une liste de types de variables
+       possibles.
+      </p><p>
+       Voici un exemple de comment utiliser cette fonction:
+       </p><pre class="programlisting">
+$char c[] = "abc       ";
+$short s = 17;
+$int i = -74874;
+
+risnull(CCHARTYPE, (char *) c);
+risnull(CSHORTTYPE, (char *) &amp;s);
+risnull(CINTTYPE, (char *) &amp;i);
+
+       </pre><p>
+      </p></dd></dl></div><p>
+  </p></div><div class="sect2" id="ECPG-INFORMIX-CONSTANTS"><div class="titlepage"><div><div><h3 class="title">34.15.5. Constantes Supplémentaires <a href="#ECPG-INFORMIX-CONSTANTS" class="id_link">#</a></h3></div></div></div><p>
+   Notez que toutes les constantes ici décrivent des erreurs et qu'elles
+   sont toutes définies pour représenter des valeurs négatives. Dans
+   les descriptions des différentes constantes vous pouvez aussi trouver
+   la valeur que les constantes représentent dans l'implémentation
+   actuelle. Toutefois, vous ne devriez pas vous fier à ce nombre. Vous
+   pouvez toutefois vous appuyer sur le faite que toutes sont définies
+   comme des valeurs négatives.
+   values.
+   </p><div class="variablelist"><dl class="variablelist"><dt id="ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-NUM-OVERFLOW"><span class="term"><code class="literal">ECPG_INFORMIX_NUM_OVERFLOW</code></span> <a href="#ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-NUM-OVERFLOW" class="id_link">#</a></dt><dd><p>
+       Les fonctions retournent cette valeur si un dépassement s'est
+       produit dans un calcul. En interne, elle est définie à -1200
+       (la définition <span class="productname">Informix</span>).
+      </p></dd><dt id="ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-NUM-UNDERFLOW"><span class="term"><code class="literal">ECPG_INFORMIX_NUM_UNDERFLOW</code></span> <a href="#ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-NUM-UNDERFLOW" class="id_link">#</a></dt><dd><p>
+       Les fonctions retournent cette valeur si un soupassement s'est
+       produit dans un calcul. En interne, elle est définie à -1201
+       (la définition <span class="productname">Informix</span>).
+      </p></dd><dt id="ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-DIVIDE-ZERO"><span class="term"><code class="literal">ECPG_INFORMIX_DIVIDE_ZERO</code></span> <a href="#ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-DIVIDE-ZERO" class="id_link">#</a></dt><dd><p>
+       Les fonctions retournent cette valeur si une division par zéro
+       a été tentée. En interne, elle est définie à -1202
+       (la définition <span class="productname">Informix</span>).
+      </p></dd><dt id="ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-BAD-YEAR"><span class="term"><code class="literal">ECPG_INFORMIX_BAD_YEAR</code></span> <a href="#ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-BAD-YEAR" class="id_link">#</a></dt><dd><p>
+       Les fonctions retournent cette valeur si une mauvaise valeur
+       pour une année a été trouvée lors de l'analyse d'une date. En
+       interne elle est définie à -1204
+       (la définition <span class="productname">Informix</span>).
+      </p></dd><dt id="ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-BAD-MONTH"><span class="term"><code class="literal">ECPG_INFORMIX_BAD_MONTH</code></span> <a href="#ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-BAD-MONTH" class="id_link">#</a></dt><dd><p>
+       Les fonctions retournent cette valeur si une mauvaise valeur
+       pour un mois a été trouvée lors de l'analyse d'une date. En
+       interne elle est définie à -1205
+       (la définition <span class="productname">Informix</span>).
+      </p></dd><dt id="ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-BAD-DAY"><span class="term"><code class="literal">ECPG_INFORMIX_BAD_DAY</code></span> <a href="#ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-BAD-DAY" class="id_link">#</a></dt><dd><p>
+       Les fonctions retournent cette valeur si une mauvaise valeur
+       pour un jour a été trouvée lors de l'analyse d'une date. En
+       interne elle est définie à -1206
+       (la définition <span class="productname">Informix</span>).
+      </p></dd><dt id="ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-ENOSHORTDATE"><span class="term"><code class="literal">ECPG_INFORMIX_ENOSHORTDATE</code></span> <a href="#ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-ENOSHORTDATE" class="id_link">#</a></dt><dd><p>
+       Les fonctions retournent cette valeur si une routine d'analyse
+       a besoin d'une représentation courte de date mais que la
+       chaîne passée n'était pas de la bonne longueur. En
+       interne elle est définie à -1206 (la définition
+       <span class="productname">Informix</span>).
+      </p></dd><dt id="ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-DATE-CONVERT"><span class="term"><code class="literal">ECPG_INFORMIX_DATE_CONVERT</code></span> <a href="#ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-DATE-CONVERT" class="id_link">#</a></dt><dd><p>
+       Les fonctions retournent cette valeur si une erreur s'est produite durant
+       un formatage de date. En interne, elle est
+       définie à -1210 (la définition <span class="productname">Informix</span>).
+      </p></dd><dt id="ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-OUT-OF-MEMORY"><span class="term"><code class="literal">ECPG_INFORMIX_OUT_OF_MEMORY</code></span> <a href="#ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-OUT-OF-MEMORY" class="id_link">#</a></dt><dd><p>
+       Les fonctions retournent cette valeur si elles se sont retrouvées à
+       court de mémoire durant leur fonctionnement. En interne, elle est
+       définie à -1211 (la définition <span class="productname">Informix</span>).
+      </p></dd><dt id="ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-ENOTDMY"><span class="term"><code class="literal">ECPG_INFORMIX_ENOTDMY</code></span> <a href="#ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-ENOTDMY" class="id_link">#</a></dt><dd><p>
+       Les fonctions retournent cette valeur si la routine d'analyse devait
+       recevoir un masque de formatage (comme <code class="literal">mmddyy</code>) mai
+       que tous les champs n'étaient pas listés correctement.
+       En interne, elle est définie à -1212 (la définition <span class="productname">Informix</span>).
+      </p></dd><dt id="ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-BAD-NUMERIC"><span class="term"><code class="literal">ECPG_INFORMIX_BAD_NUMERIC</code></span> <a href="#ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-BAD-NUMERIC" class="id_link">#</a></dt><dd><p>
+       Les fonctions retournent cette valeur soit parce qu'une routine
+       d'analyse ne peut pas analyser la représentation textuelle d'une
+       valeur numérique parce qu'elle contient des erreurs, soit parce
+       qu'une routine ne peut pas terminer un calcul impliquant des
+       variables numeric parce qu'au moins une des variables numeric est
+       invalide. En interne, elle est définie à -1213 (la définition
+       <span class="productname">Informix</span>).
+      </p></dd><dt id="ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-BAD-EXPONENT"><span class="term"><code class="literal">ECPG_INFORMIX_BAD_EXPONENT</code></span> <a href="#ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-BAD-EXPONENT" class="id_link">#</a></dt><dd><p>
+       Les fonctions retournent cette valeur si elles n'ont pas
+       réussi à analyser l'exposant de la représentation textuelle
+       d'une valeur numérique.
+       En interne, elle est définie à -1216 (la définition
+       <span class="productname">Informix</span>).
+      </p></dd><dt id="ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-BAD-DATE"><span class="term"><code class="literal">ECPG_INFORMIX_BAD_DATE</code></span> <a href="#ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-BAD-DATE" class="id_link">#</a></dt><dd><p>
+       Les fonctions retournent cette valeur si une chaîne de
+       date invalide leur a été passée.
+       En interne, elle est définie à -1218 (la définition
+       <span class="productname">Informix</span>).
+      </p></dd><dt id="ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-EXTRA-CHARS"><span class="term"><code class="literal">ECPG_INFORMIX_EXTRA_CHARS</code></span> <a href="#ECPG-INFORMIX-CONSTANTS-ECPG-INFORMIX-EXTRA-CHARS" class="id_link">#</a></dt><dd><p>
+       Les fonctions retournent cette valeur si trop de caractères
+       ont été trouvés dans la représentation textuelle d'un format
+       date.
+       En interne, elle est définie à -1264 (la définition
+       <span class="productname">Informix</span>).
+      </p></dd></dl></div><p>
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/ecpg-informix-compat.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:38 GMT -->
+</html>

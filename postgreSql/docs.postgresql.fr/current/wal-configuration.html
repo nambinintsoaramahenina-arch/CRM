@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/wal-configuration.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>28.5. Configuration des journaux de transaction</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="wal-async-commit.html" title="28.4. Validation asynchrone (Asynchronous Commit)" /><link rel="next" href="wal-internals.html" title="28.6. Vue interne des journaux de transaction" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/wal-configuration.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/wal-configuration.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/wal-configuration.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/wal-configuration.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/wal-configuration.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/wal-configuration.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/wal-configuration.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/wal-configuration.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/wal-configuration.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/wal-configuration.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/wal-configuration.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/wal-configuration.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/wal-configuration.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/wal-configuration.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/wal-configuration.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/wal-configuration.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/wal-configuration.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/wal-configuration.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/wal-configuration.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/wal-configuration.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/wal-configuration.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="wal.html">Fiabilité et journaux de transaction</a></span> » <span class="breadcrumb-node">Configuration des journaux de transaction</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="wal-async-commit.html" title="28.4. Validation asynchrone (Asynchronous Commit)">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="wal.html" title="Chapitre 28. Fiabilité et journaux de transaction">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="wal-internals.html" title="28.6. Vue interne des journaux de transaction">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">28.4. Validation asynchrone (Asynchronous Commit) </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 28.6. Vue interne des journaux de transaction</td></tr></table></div><div class="sect1" id="WAL-CONFIGURATION"><div class="titlepage"><div><div><h2 class="title" style="clear: both">28.5. Configuration des journaux de transaction <a href="#WAL-CONFIGURATION" class="id_link">#</a></h2></div></div></div><p>
+   Il y a plusieurs paramètres de configuration associés aux
+   journaux de transaction qui affectent les performances de la base.
+   Cette section explique leur utilisation. Consultez
+   <a class="xref" href="runtime-config.html" title="Chapitre 19. Configuration du serveur">Chapitre 19</a> pour des détails sur la
+   mise en place de ces paramètres.
+  </p><p>
+   Dans la séquence des transactions, les
+   <span class="foreignphrase"><em class="foreignphrase">checkpoints</em></span>
+   (ou <em class="firstterm">points de contrôle</em>)
+   sont des points qui garantissent que les fichiers de données
+   des tables et des index ont été mis à
+   jour avec toutes les informations enregistrées dans le journal avant le
+   checkpoint. Au moment du checkpoint, toutes les
+   pages de données modifiées (<span class="foreignphrase"><em class="foreignphrase">dirty</em></span>)
+   sont écrites sur le disque et une
+   entrée spéciale, pour le checkpoint, est écrite dans le
+   journal. (Les modifications étaient déjà envoyées dans les journaux de
+   transactions.)
+   En cas de défaillance, la procédure de récupération recherche le
+   dernier enregistrement d'un checkpoint
+   (enregistrement connu sous le nom de <span class="quote">« <span class="quote">redo log</span> »</span>)
+   pour déterminer le point des journaux
+   à partir duquel il devra lancer l'opération de REDO.
+   Toute modification effectuée sur les fichiers de données avant ce point
+   a la garantie d'avoir été enregistrée sur disque. Du coup, après un
+   checkpoint, tous les segments représentant des journaux de
+   transaction précédant celui
+   contenant le <span class="quote">« <span class="quote">redo record</span> »</span> ne sont plus nécessaires et peuvent
+   être soit recyclés, soit supprimés (quand l'archivage des journaux de
+   transaction est activé, ces derniers doivent être archivés avant d'être
+   recyclés ou supprimés).
+  </p><p>
+   Un checkpoint doit écrire toutes les pages de données modifiées sur disque, ce
+   qui peut causer une charge disque importante.
+   Pour cette raison, l'activité d'un checkpoint
+   est diluée de façon à ce que les entrées/sorties disque
+   commencent au début du checkpoint et se terminent avant le démarrage du
+   checkpoint suivant ; ceci minimise la dégradation des performances
+   lors des checkpoints.
+  </p><p>
+   Le processus checkpointer lance automatiquement un checkpoint
+   de temps en temps. Il démarre toutes les
+   <a class="xref" href="runtime-config-wal.html#GUC-CHECKPOINT-TIMEOUT">checkpoint_timeout</a> secondes
+   ou si <a class="xref" href="runtime-config-wal.html#GUC-MAX-WAL-SIZE">max_wal_size</a> risque d'être dépassé,
+   suivant ce qui arrive en premier.
+   La configuration par défaut de ces deux paramètres est,
+   respectivement, 5 minutes et 1 Go.
+   Si aucun enregistrement WAL n'a été écrit depuis le dernier checkpoint,
+   il n'y en aura pas de nouveaux, même si la durée
+   <code class="varname">checkpoint_timeout</code> est dépassée.
+   (Si l'archivage des WAL est en place et que vous voulez définir une limite
+   basse correspondant à la fréquence d'archivage des fichiers de
+   manière à limiter la perte potentielle de données, vous devez ajuster le
+   paramètre <a class="xref" href="runtime-config-wal.html#GUC-ARCHIVE-TIMEOUT">archive_timeout</a> plutôt que les paramètres
+   affectant les checkpoints.)
+   Il est aussi possible de forcer un checkpoint en utilisant la commande SQL
+   <code class="command">CHECKPOINT</code>.
+  </p><p>
+   La réduction de <code class="varname">checkpoint_timeout</code> et/ou
+   <code class="varname">max_wal_size</code> provoque des checkpoints plus fréquents.
+   Cela permet une récupération plus rapide après arrêt brutal puisqu'il y
+   aura moins d'écritures à refaire. Cependant, il faut équilibrer cela avec
+   le coût d'écritures plus fréquentes des pages modifiées. Si <a class="xref" href="runtime-config-wal.html#GUC-FULL-PAGE-WRITES">full_page_writes</a> est configuré (ce qui est le défaut), il
+   reste un autre facteur à considérer. Pour s'assurer de la cohérence des
+   pages de données, la première modification d'une page de données après
+   chaque checkpoint résulte dans la journalisation du contenu de la page en
+   entier. Dans ce cas, un intervalle de checkpoints plus petit augmentera le
+   volume d'écriture des journaux de transaction, annulant en partie
+   l'intérêt d'utiliser cet intervalle plus petit et générant de toute façon
+   plus d'entrées/sorties au niveau disque.
+  </p><p>
+   Les checkpoints sont assez coûteux, tout d'abord parce qu'ils écrivent tous
+   les tampons modifiés jusqu'à ce moment, et ensuite parce qu'ils génèrent
+   un trafic supplémentaire dans les journaux de transaction, comme indiqué
+   ci-dessus. Du coup, il est conseillé de configurer les paramètres des
+   checkpoints assez haut pour qu'ils ne surviennent pas trop fréquemment.
+   Pour une vérification rapide de l'adéquation de vos paramètres, vous
+   pouvez configurer le paramètre <a class="xref" href="runtime-config-wal.html#GUC-CHECKPOINT-WARNING">checkpoint_warning</a>.
+   Si les checkpoints se déclenchent à moins de
+   <code class="varname">checkpoint_warning</code> secondes d'intervalle, un message
+   est affiché dans les journaux applicatifs du serveur recommandant
+   d'accroître <code class="varname">max_wal_size</code>. L'apparition occasionnelle
+   d'un tel message ne doit pas vous alarmer mais, s'il apparaît souvent,
+   alors les paramètres de contrôle devraient être augmentés. Les opérations
+   en masse, comme les transferts importants de données via
+   <code class="command">COPY</code>, peuvent faire apparaître nombre de ces messages
+   d'avertissement si vous n'avez pas configuré
+   <code class="varname">max_wal_size</code> avec une valeur suffisamment haute.
+  </p><p>
+   Pour éviter de saturer les entrées/sorties avec de très nombreuses
+   écritures de pages modifiées, leur écriture pendant le checkpoint est
+   étalée sur une période de temps. Elle est contrôlée par <a class="xref" href="runtime-config-wal.html#GUC-CHECKPOINT-COMPLETION-TARGET">checkpoint_completion_target</a>, donné comme une fraction de
+   l'intervalle des checkpoints(configuré en utilisant
+   <code class="varname">checkpoint_timeout</code>). Le taux d'entrées/sorties est
+   ajusté pour que le checkpoint se termine quand la fraction indiquée de
+   <code class="varname">checkpoint_timeout</code> secondes s'est écoulée, ou avant que
+   <code class="varname">max_wal_size</code> soit dépassé, selon ce qui arrivera en
+   premier. Avec la valeur par défaut de 0,9, on peut s'attendre à ce que
+   <span class="productname">PostgreSQL</span> termine chaque checkpoint un peu
+   avant le prochain checkpoint planifié (à environ 90% de la durée du
+   dernier checkpoint). Ceci étant les I/O autant que possible pour que la
+   charge en I/O des checkpoints soit lissée pendant tout l'intervalle des
+   checkpoints. L'inconvénient est que prolonger les checkpoints affecte le
+   temps de redémarrage après crash parce qu'un plus grand nombre de segments
+   WAL devront être conservés pour une possible utilisation après crash. Un
+   utilisateur inquiet par la durée requise pour la restauration après crash
+   pourrait vouloir réduire <code class="varname">checkpoint_timeout</code> pour que
+   les checkpoints surviennent plus fréquemment, tout en diluant les I/O sur
+   l'intervalle des checkpoints. Alternativement,
+   <code class="varname">checkpoint_completion_target</code> pourrait être réduit mais
+   cela résulterait en des moments avec des I/O plus intenses (lors du
+   checkpoint) et des momentsavec des I/O moins intenses (après la fin du
+   checkpoint mais avant le début du suivant). De ce fait, cela n'est pas
+   recommandé. Bien que <code class="varname">checkpoint_completion_target</code>
+   puisse être configuré aussi haut que 1,0, il est typiquement recommandé de
+   le configurer pas plus haut que 0,9 (la valeur par défaut) car les
+   checkpoints ont quelques autres activités en dehors de l'écriture du cache
+   modifié. Une valeur de 1,0 peut résulter en checkpoints qui ne se
+   terminent pas à temps, ce qui entraînerait des baisses de performance à
+   cause de variations inattendues dans le nombre de journaux nécessaires.
+  </p><p>
+   Sur les plateformes Linux et POSIX, <a class="xref" href="runtime-config-wal.html#GUC-CHECKPOINT-FLUSH-AFTER">checkpoint_flush_after</a> vous permet de forcer le système
+   d'exploitation à vider sur disque les pages écrites par un checkpoint
+   après qu'un nombre configurable d'octets a été écrit. Sinon ces pages
+   pourraient rester dans le cache disque du système d'exploitation,
+   provoquant un blocage quand <code class="literal">fsync</code> est exécuté à la fin
+   d'un checkpoint. Cette configuration aide souvent à réduire la latence des
+   transactions mais il peut aussi avoir un effet inverse sur les
+   performances, particulièrement pour des charges supérieures à <a class="xref" href="runtime-config-resource.html#GUC-SHARED-BUFFERS">shared_buffers</a> mais plus petites que le cache disque du
+   système d'exploitation.
+  </p><p>
+   Le nombre de fichiers de segments WAL dans le répertoire
+   <code class="filename">pg_wal</code> dépend des paramètres
+   <code class="varname">min_wal_size</code>, <code class="varname">max_wal_size</code> et de la
+   quantité de WAL générée lors des cycles de checkpoints précédents. Quand
+   les anciens fichiers de segments ne sont plus nécessaires, ils sont
+   supprimés ou recyclés (c'est-à-dire renommés pour devenir les segments
+   suivants selon les numéros de la séquence). Si, à cause d'un bref pic du
+   débit des WAL, <code class="varname">max_wal_size</code> est dépassé, les fichiers
+   inutiles seront supprimés jusqu'à ce que le système revienne sous cette
+   limite. En-dessous de cette limite, le système recycle suffisamment de
+   fichiers WAL pour couvrir le besoin estimé jusqu'au checkpoint suivant, et
+   supprime le reste. L'estimation est basée sur une moyenne glissante du
+   nombre de fichiers WAL utilisés dans les cycles de checkpoint précédents.
+   Elle est augmentée immédiatement si l'utilisation en cours dépasse
+   l'estimation, pour correspondre aux pics d'utilisation plutôt qu'à
+   l'utilisation moyenne, jusqu'à un certain point.
+   <code class="varname">min_wal_size</code> définit un nombre minimum de fichiers WAL
+   recyclés pour une utilisation future, même si le système est inutilisé et
+   que l'estimation suggère que peu de WAL sont nécessaires.
+  </p><p>
+   Indépendamment de <code class="varname">max_wal_size</code>, les
+   <a class="xref" href="runtime-config-replication.html#GUC-WAL-KEEP-SIZE">wal_keep_size</a> méga-octets les plus récents des fichiers
+   WAL et un fichier WAL supplémentaire sont conservés en
+   permanence. De plus, si l'archivage est activé, les anciens segments ne
+   sont ni supprimés ni recyclés jusqu'à la réussite de leur archivage. Si
+   l'archivage des WAL n'est pas assez rapide pour tenir le rythme de
+   la génération des WAL, ou si <code class="varname">archive_command</code> ou
+   <code class="varname">archive_library</code> échoue de manière répétée, les anciens
+   fichiers WAL s'accumuleront dans le répertoire <code class="filename">pg_wal</code>
+   jusqu'à ce que ce problème soit résolu. Un serveur standby lent ou en échec,
+   et qui utilise un slot de réplication, aura le même effet (voir <a class="xref" href="warm-standby.html#STREAMING-REPLICATION-SLOTS" title="26.2.6. Slots de réplication">Section 26.2.6</a>). De façon similaire, si le <a class="link" href="runtime-config-wal.html#RUNTIME-CONFIG-WAL-SUMMARIZATION" title="19.5.7. Résumé de WAL">résumé des WAL</a> est activé,
+   les anciens segments sont conservés jusqu'à ce qu'ils soient résumés.
+  </p><p>
+   En mode de restauration d'archive et en mode standby, le serveur
+   réalise périodiquement des <em class="firstterm">restartpoints</em>
+   <a id="id-1.6.15.7.12.2" class="indexterm"></a> (points de
+   redémarrage), qui sont similaires aux checkpoints lors du fonctionnement
+   normal : le serveur force l'écriture de son état sur disque, met à
+   jour le fichier <code class="filename">pg_control</code> pour indiquer que les
+   données déjà traitées des journaux de transactions n'ont plus besoin d'être
+   parcourues de nouveau, puis recycle les anciens journaux de transactions
+   trouvés dans le répertoire <code class="filename">pg_wal</code>. Les restartpoints
+   ne peuvent être réalisés plus fréquemment que les checkpoints du primaire car
+   les restartpoints peuvent seulement être réalisés aux enregistrements de
+   checkpoint.
+   Un restartpoint peut être demandé suite à un dépassement de délai ou par
+   une demande externe. Le compteur
+   <code class="structfield">restartpoints_timed</code> dans la vue <a class="link" href="monitoring-stats.html#MONITORING-PG-STAT-CHECKPOINTER-VIEW" title="27.2.15. pg_stat_checkpointer"><code class="structname">pg_stat_checkpointer</code></a>
+   dénombre les premières alors que
+   <code class="structfield">restartpoints_req</code> dénombre les secondes. Un
+   restartpoint est déclenché suite à un dépassement de délai si un
+   enregistrement de checkpoint record est atteint alors qu'au moins <a class="xref" href="runtime-config-wal.html#GUC-CHECKPOINT-TIMEOUT">checkpoint_timeout</a> secondes sont passées depuis le dernier
+   restartpoint ou quand ma tentative précédente de restartpoint a échoué.
+   Dans ce dernier cas, le prochain restartpoint sera prévu dans 15 secondes.
+   Un restartpoint est déclenché suite à une demande pour des raisons
+   similaires au checkpoint mais principalement si la volumétrie des fichiers
+   WAL va dépasser <a class="xref" href="runtime-config-wal.html#GUC-MAX-WAL-SIZE">max_wal_size</a>. Néanmoins, à cause de
+   limitations sur le moment de déclenchement d'un restartpoint,
+   <code class="varname">max_wal_size</code> est souvent dépassé lors de la
+   restauration par au moins un cycle de checkpoint.
+   (<code class="varname">max_wal_size</code> n'est de toute façon jamais une limite
+   dure, donc vous devriez laisser suffisamment d'espace pour éviter de
+   manquer d'espace disque.) Le compteur
+   <code class="structfield">restartpoints_done</code> de la vue <a class="link" href="monitoring-stats.html#MONITORING-PG-STAT-CHECKPOINTER-VIEW" title="27.2.15. pg_stat_checkpointer"><code class="structname">pg_stat_checkpointer</code></a>
+   dénombre les restartpoints totalement réalisés.
+  </p><p>
+   Dans certains cas, quand la volumétrie des WAL augmente fortement sur le
+   serveur primaire, par exemple suite à des INSERT massifs, le compteur
+   <code class="structfield">restartpoints_req</code> du serveur standby peut
+   monter une augmentation en pic. Ceci survient parce que les demandes de
+   créer un nouveau restartpoint dûes à la forte consommation de fichiers WAL
+   ne peuvent être réalisées car l'enregistrement de checkpoint depuis le
+   dernier restartpoint n'a pas encore été rejoué sur le serveur secondaire.
+   Ce comportement est normal et n'amène pas une augmentation de la
+   consommation des ressources du système. Seul le compteur
+   <code class="structfield">restartpoints_done</code> parmi ceux concernant le
+   restartpoint indique que des ressources systèmes ont été consommées.
+  </p><p>
+   Il existe deux fonctions <acronym class="acronym">WAL</acronym> internes couramment
+   utilisées :
+   <code class="function">XLogInsertRecord</code> et <code class="function">XLogFlush</code>.
+   <code class="function">XLogInsertRecord</code> est utilisée pour placer une
+   nouvelle entrée à l'intérieur des tampons <acronym class="acronym">WAL</acronym> en mémoire
+   partagée. S'il n'y a plus
+   d'espace pour la nouvelle entrée, <code class="function">XLogInsertRecord</code>
+   devra écrire (autrement dit, déplacer dans le cache du noyau) quelques
+   tampons <acronym class="acronym">WAL</acronym> remplis. Ceci n'est pas souhaitable parce que
+   <code class="function">XLogInsertRecord</code> est utilisée à chaque
+   modification bas niveau de la base (par exemple, lors de l'insertion d'une
+   ligne) quand un verrou exclusif est posé sur les pages de données
+   affectées, et l'opération doit donc être aussi rapide que possible.
+   Pire encore, écrire des tampons <acronym class="acronym">WAL</acronym>
+   peut aussi forcer la création d'un nouveau journal, ce qui
+   prend encore plus de temps. Normalement, les tampons
+   <acronym class="acronym">WAL</acronym> doivent être écrits et vidés par un appel
+   à <code class="function">XLogFlush</code> fait, la plupart du
+   temps, au moment de la validation d'une transaction pour assurer
+   que les entrées de la transaction sont écrites vers un stockage
+   permanent. Sur les systèmes avec une importante écriture de journaux,
+   les requêtes de <code class="function">XLogFlush</code> peuvent ne pas
+   arriver assez souvent pour empêcher <code class="function">XLogInsert</code> d'avoir
+   à écrire lui-même. Sur de tels systèmes, on devrait augmenter le
+   nombre de tampons
+   <acronym class="acronym">WAL</acronym> en modifiant le paramètre <a class="xref" href="runtime-config-wal.html#GUC-WAL-BUFFERS">wal_buffers</a>. Quand <a class="xref" href="runtime-config-wal.html#GUC-FULL-PAGE-WRITES">full_page_writes</a> est configuré
+   et que le système est très occupé, configurer <code class="varname">wal_buffers</code> avec une valeur
+   plus importante aide à lisser les temps de réponse
+   dans la période suivant immédiatement chaque checkpoint.
+  </p><p>
+   Le paramètre <a class="xref" href="runtime-config-wal.html#GUC-COMMIT-DELAY">commit_delay</a> définit combien de
+   micro-secondes un processus maître d'un groupe de commit
+   va s'endormir après avoir obtenu un verrou avec <code class="function">XLogFlush</code>,
+   pendant que les autres processus du groupe vont s'ajouter à la queue
+   derrière le maître. Ce délai permet aux autres processus serveur
+   d'ajouter leurs enregistrements de commit aux buffers WAL, pour
+   qu'ils soient tous écrits par un éventuel vidage sur disque du
+   maître. Il n'y aura pas d'endormissement si <a class="xref" href="runtime-config-wal.html#GUC-FSYNC">fsync</a> n'est
+   pas activé, ou si moins de <a class="xref" href="runtime-config-wal.html#GUC-COMMIT-SIBLINGS">commit_siblings</a> autres
+   sessions sont actuellement dans une transaction active ; ce
+   mécanisme évite l'endormissement quand il est improbable que d'autres sessions
+   valident bientôt leurs transactions. Il est à noter que, sur
+   certaines plateformes, la résolution d'une requête d'endormissement est de dix
+   millisecondes, ce qui implique que toute valeur comprise entre 1 et 10000 pour
+   le paramètre <code class="varname">commit_delay</code> aura le même effet. Notez aussi
+   que, sur certaines plateformes, les opérations d'endormissement
+   peuvent être légèrement plus longues que ce qui a été demandé par le paramètre.
+  </p><p>
+   Comme l'objet de <code class="varname">commit_delay</code> est de permettre d'amortir
+   le coût de chaque opération de vidage sur disque sur plusieurs transactions concurrentes
+   (potentiellement au prix de la latence des transactions), il est nécessaire de
+   quantifier ce coût pour choisir intelligemment la valeur de ce paramètre. Plus le
+   coût est élevé, plus <code class="varname">commit_delay</code> sera efficace
+   au sein d'un débit de transactions croissant,
+   jusqu'à un certain point. Le programme <a class="xref" href="pgtestfsync.html" title="pg_test_fsync"><span class="refentrytitle"><span class="application">pg_test_fsync</span></span></a> peut être
+   utilisé pour mesurer le temps moyen en microsecondes que prend une seule
+   opération de vidage de WAL.
+   La moitié du temps moyen rapporté par ce
+   programme pour une mise à jour d'une simple opération d'écriture de 8 ko
+   est la valeur la plus souvent recommandée comme point de départ de
+   l'optimisation d'une
+   charge particulière. Bien que l'ajustement de la valeur de
+   <code class="varname">commit_delay</code> soit particulièrement utile lorsque les
+   journaux WAL sont stockés sur des disques à latence élevée, le gain peut
+   aussi être significatif sur les supports de stockage avec des temps de
+   synchronisation très rapides, comme les SSD ou les grappes RAID
+   avec des caches en écriture dotés de batterie ; mais dans tous les cas,
+   cela doit être testé avec une charge représentative de la réalité. Des
+   valeurs plus élevées de <code class="varname">commit_siblings</code> peuvent être
+   utilisées dans ce cas, alors que de petites valeurs de
+   <code class="varname">commit_siblings</code> sont souvent utiles sur des supports de
+   grande latence. À noter qu'il est possible qu'une valeur trop élevée de
+   <code class="varname">commit_delay</code> augmente la latence des transactions
+   à un tel point que le débit des transactions en souffre.
+  </p><p>
+   Lorsque <code class="varname">commit_delay</code> est défini à zéro (il s'agit de la
+   valeur par défaut), il est toujours possible qu'un regroupement de commits se
+   produise, mais chaque groupe ne consistera qu'en sessions atteignant
+   le moment de l'enregistrement de commit pendant le laps de temps
+   où la précédente opération de vidage (s'il y en a) opère.
+   Avec un grand nombre de clients, un <span class="quote">« <span class="quote">effet tunnel</span> »</span>
+   (<span class="foreignphrase"><em class="foreignphrase">gangway effect</em></span>) a tendance à se produire,
+   et ainsi les effets du regroupement de commits deviennent significatifs même
+   lorsque <code class="varname">commit_delay</code> est à zéro, et dans ce cas
+   <code class="varname">commit_delay</code> devient inutile. Définir
+   <code class="varname">commit_delay</code> n'est utile que quand
+   (1) il existe des transactions concurrentes, et
+   (2) le débit est limité dans une certaine mesure
+   par la vitesse de commit ; mais, dans le cas d'un temps de latence
+   du disque élevé, ce paramètre peut augmenter efficacement le flux de transaction
+   avec seulement deux clients
+   (c'est-à-dire un unique client qui valide, et une transaction sœur).
+  </p><p>
+   Le paramètre <a class="xref" href="runtime-config-wal.html#GUC-WAL-SYNC-METHOD">wal_sync_method</a> détermine comment
+   <span class="productname">PostgreSQL</span> demande au noyau de forcer les mises
+   à jour des journaux de transaction sur le disque. Toutes les différentes
+   options devraient être identiques en terme de fiabilité, à l'exception de
+   <code class="literal">fsync_writethrough</code>, qui peut parfois forcer une écriture
+   du cache disque même quand d'autres options ne le font pas. Néanmoins,
+   connaître l'option la plus rapide est assez dépendant de la plateforme.
+   Vous pouvez tester les vitesses des différentes
+   options en utilisant le programme <a class="xref" href="pgtestfsync.html" title="pg_test_fsync"><span class="refentrytitle"><span class="application">pg_test_fsync</span></span></a>. Notez que ce paramètre est ignoré si
+   <code class="varname">fsync</code> a été désactivé.
+  </p><p>
+   Activer le paramètre de configuration <a class="xref" href="runtime-config-developer.html#GUC-WAL-DEBUG">wal_debug</a> (à
+   supposer que <span class="productname">PostgreSQL</span> ait été compilé avec le
+   support de ce paramètre) permet d'enregistrer chaque appel
+   <acronym class="acronym">WAL</acronym> à <code class="function">XLogInsertRecord</code> et
+   <code class="function">XLogFlush</code> dans les journaux applicatifs du serveur.
+   Cette option
+   pourrait être remplacée par un mécanisme plus général dans le futur.
+  </p><p>
+   Il existe deux fonctions internes pour écrire des données WAL sur
+   disque : <code class="function">XLogWrite</code> et
+   <code class="function">issue_xlog_fsync</code>. Quand <a class="xref" href="runtime-config-statistics.html#GUC-TRACK-WAL-IO-TIMING">track_wal_io_timing</a> est activé, le nombre total de fois où
+   <code class="function">XLogWrite</code> écrit et
+   <code class="function">issue_xlog_fsync</code> synchronise des données WAL sur
+   disque est compté comme, respectivement, <code class="literal">wal_write_time</code>
+   et <code class="literal">wal_sync_time</code> dans <a class="xref" href="monitoring-stats.html#PG-STAT-WAL-VIEW" title="Tableau 27.26. Vue pg_stat_wal">pg_stat_wal</a>. <code class="function">XLogWrite</code> est
+   normalement appelé par <code class="function">XLogInsertRecord</code> (quand il n'y
+   a plus d'espace pour le nouvel enregistrement dans le cachedes WAL),
+   <code class="function">XLogFlush</code> et le walwriter, pour écrire le cache WAL
+   sur disque et appeler <code class="function">issue_xlog_fsync</code>.
+   <code class="function">issue_xlog_fsync</code> est normalement appelé par
+   <code class="function">XLogWrite</code> pour synchroniser les fichiers WAL sur
+   disque. Si <code class="varname">wal_sync_method</code> vaut soit
+   <code class="literal">open_datasync</code> soit <code class="literal">open_sync</code>, une
+   opération d'écriture dans <code class="function">XLogWrite</code> garantit de
+   synchroniser les données des WAL écrites sur disque et
+   <code class="function">issue_xlog_fsync</code> ne fait rien. Si
+   <code class="varname">wal_sync_method</code> vaut soit <code class="literal">fdatasync</code>,
+   soit <code class="literal">fsync</code>, soit <code class="literal">fsync_writethrough</code>,
+   les opérations en écriture déplacent le cache WAL dans le cache du noyau
+   et <code class="function">issue_xlog_fsync</code> les synchronise sur disque.
+   Quelle que soit la configuration de <code class="varname">track_wal_io_timing</code>,
+   le nombre de fois où <code class="function">XLogWrite</code> écrit et que
+   <code class="function">issue_xlog_fsync</code> synchronise les données WAL sur
+   disque sont aussi comptées dans, respectivement,
+   <code class="literal">wal_write</code> et <code class="literal">wal_sync</code> de la vue
+   <code class="structname">pg_stat_wal</code>.
+  </p><p>
+   Le paramètre <a class="xref" href="runtime-config-wal.html#GUC-RECOVERY-PREFETCH">recovery_prefetch</a> peut être utilisé pour
+   réduite les durées d'attente en entrée/sortie pendant une restauration en
+   indiquant au niveau d'initier des lecteurs de blocs disques qui seront
+   bientôt nécessaires mais qui ne sont pas actuellement dans le cache disque de
+   <span class="productname">PostgreSQL</span>. Les paramètres <a class="xref" href="runtime-config-resource.html#GUC-MAINTENANCE-IO-CONCURRENCY">maintenance_io_concurrency</a> et <a class="xref" href="runtime-config-wal.html#GUC-WAL-DECODE-BUFFER-SIZE">wal_decode_buffer_size</a> limitent, respectivement, la
+   concurrence et la distance sur les lectures en avance. Par défaut, c'est
+   configuré à <code class="literal">try</code>, ce qui active la fonctionnalité sur les
+   systèmes où <code class="function">posix_fadvise</code> est disponible.
+  </p></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/wal-configuration.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:35 GMT -->
+</html>

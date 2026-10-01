@@ -1,0 +1,536 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/rules-views.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:43 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>39.2. Vues et système de règles</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="querytree.html" title="39.1. Arbre de requêtes" /><link rel="next" href="rules-materializedviews.html" title="39.3. Vues matérialisées" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/rules-views.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/rules-views.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/rules-views.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/rules-views.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/rules-views.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/rules-views.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/rules-views.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/rules-views.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/rules-views.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/rules-views.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/rules-views.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/rules-views.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/rules-views.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/rules-views.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/rules-views.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/rules-views.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/rules-views.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/rules-views.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/rules-views.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/rules-views.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/rules-views.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="server-programming.html">Programmation serveur</a></span> » <span class="breadcrumb-link"><a href="rules.html">Système de règles</a></span> » <span class="breadcrumb-node">Vues et système de règles</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="querytree.html" title="39.1. Arbre de requêtes">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="rules.html" title="Chapitre 39. Système de règles">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="rules-materializedviews.html" title="39.3. Vues matérialisées">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">39.1. Arbre de requêtes </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 39.3. Vues matérialisées</td></tr></table></div><div class="sect1" id="RULES-VIEWS"><div class="titlepage"><div><div><h2 class="title" style="clear: both">39.2. Vues et système de règles <a href="#RULES-VIEWS" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="rules-views.html#RULES-SELECT">39.2.1. Fonctionnement des règles <code class="command">select</code></a></span></dt><dt><span class="sect2"><a href="rules-views.html#RULES-VIEWS-NON-SELECT">39.2.2. Règles de vue dans des instructions autres que <code class="command">select</code></a></span></dt><dt><span class="sect2"><a href="rules-views.html#RULES-VIEWS-POWER">39.2.3. Puissance des vues dans <span class="productname">PostgreSQL</span></a></span></dt><dt><span class="sect2"><a href="rules-views.html#RULES-VIEWS-UPDATE">39.2.4. Mise à jour d'une vue</a></span></dt></dl></div><a id="id-1.8.6.7.2" class="indexterm"></a><a id="id-1.8.6.7.3" class="indexterm"></a><p>
+   Avec <span class="productname">PostgreSQL</span>, les vues sont implémentées en
+   utilisant le système de règles. Une vue est de manière basique une table
+   vide (sans données stockées) avec une règle <code class="literal">ON SELECT DO
+   INSTEAD</code>. Par convention, cette règle est nommée
+   <code class="literal">_RETURN</code>.
+   Donc une vue comme
+
+   </p><pre class="programlisting">CREATE VIEW ma_vue AS SELECT * FROM ma_table;
+   </pre><p>
+
+   est pratiquement identique à
+
+   </p><pre class="programlisting">CREATE TABLE ma_vue (<em class="replaceable"><code>liste de colonnes identique à celle de ma_table</code></em>);
+CREATE RULE "_RETURN" AS ON SELECT TO ma_vue DO INSTEAD
+    SELECT * FROM ma_table;
+   </pre><p>
+
+   sauf que vous ne pouvez pas l'écrire ainsi car les tables ne sont pas
+   autorisées à avoir des règles <code class="literal">ON SELECT</code>.
+  </p><p>
+   Une vue peut aussi avoir d'autres types de règles <code class="literal">DO
+   INSTEAD</code>, autorisant l'exécution de commandes
+   <code class="command">INSERT</code>, <code class="command">UPDATE</code> ou
+   <code class="command">DELETE</code> sur la vue malgré qu'elle ne stocke
+   pas de données. Ceci est discuté plus bas, dans
+   <a class="xref" href="rules-views.html#RULES-VIEWS-UPDATE" title="39.2.4. Mise à jour d'une vue">Section 39.2.4</a>.
+  </p><div class="sect2" id="RULES-SELECT"><div class="titlepage"><div><div><h3 class="title">39.2.1. Fonctionnement des règles <code class="command">select</code> <a href="#RULES-SELECT" class="id_link">#</a></h3></div></div></div><a id="id-1.8.6.7.6.2" class="indexterm"></a><p>
+    Les règles <code class="literal">on select</code> sont appliquées à toutes les requêtes comme
+    la dernière étape, même si la commande donnée est un
+    <code class="command">insert</code>, <code class="command">update</code> ou
+    <code class="command">delete</code>. Et ils ont une sémantique différente à partir
+    des règles sur les autres types de commandes dans le fait qu'elles modifient
+    l'arbre de requêtes en place au lieu d'en créer un nouveau. Donc, les règles
+    <code class="command">select</code> sont décrites avant.
+   </p><p>
+    Actuellement, il n'existe qu'une action dans une règle <code class="literal">on
+     SELECT</code> et elle doit être une action <code class="command">select</code>
+    inconditionnelle qui est <code class="literal">instead</code>. Cette restriction était
+    requise pour rendre les règles assez sûres pour les ouvrir aux utilisateurs
+    ordinaires et cela restreint les règles <code class="literal">on select</code> à agir comme
+    des vues.
+   </p><p>
+    Pour ce chapitre, les exemples sont deux vues jointes réalisant quelques
+    calculs et quelques vues supplémentaires les utilisant à leur tour. Une
+    des deux premières vues est personnalisée plus tard en ajoutant des règles
+    pour des opérations <code class="command">insert</code>, <code class="command">update</code> et
+    <code class="command">delete</code> de façon à ce que le résultat final sera une vue
+    qui se comporte comme une vraie table avec quelques fonctionnalités
+    magiques. Il n'existe pas un tel exemple pour commencer et ceci rend les
+    choses plus difficiles à obtenir. Mais il est mieux d'avoir un exemple
+    couvrant tous les points discutés étape par étape plutôt que plusieurs
+    exemples, rendant la compréhension plus difficile.
+   </p><p>
+    Les tables réelles dont nous avons besoin dans les deux
+    premières descriptions du système de règles sont les suivantes :
+
+    </p><pre class="programlisting">CREATE TABLE donnees_chaussure (
+    nom_chaussure         text,     -- clé primaire
+    dispo_chaussure       integer,  -- nombre de pairs disponibles
+    couleur_chaussure     text,     -- couleur de lacet préférée
+    long_min_chaussure    real,     -- longueur minimum du lacet
+    long_max_chaussure    real,     -- longueur maximum du lacet
+    unite_long_chaussure  text      -- unité de longueur
+);
+
+CREATE TABLE donnees_lacet (
+    nom_lacet             text,     -- clé primaire
+    dispo_lacet           integer,  -- nombre de pairs disponibles
+    couleur_lacet         text,     -- couleur du lacet
+    longueur_lacet        real,     -- longueur du lacet
+    unite_lacet           text      -- unité de longueur
+);
+
+CREATE TABLE unite (
+    nom_unite             text,     -- clé primaire
+    facteur_unite         real      -- facteur pour le transformer en cm
+);
+    </pre><p>
+
+    Comme vous pouvez le constater, elles représentent les données d'un magasin
+    de chaussures.
+   </p><p>
+    Les vues sont créées avec :
+
+    </p><pre class="programlisting">CREATE VIEW chaussure AS
+    SELECT sh.nom_chaussure,
+           sh.dispo_chaussure,
+           sh.couleur_chaussure,
+           sh.long_min_chaussure,
+           sh.long_min_chaussure * un.facteur_unite AS long_min_chaussure_cm,
+           sh.long_max_chaussure,
+           sh.long_max_chaussure * un.facteur_unite AS long_max_chaussure_cm,
+           sh.unite_long_chaussure
+      FROM donnees_chaussure sh, unite un
+     WHERE sh.unite_long_chaussure = un.nom_unite;
+
+CREATE VIEW lacet AS
+    SELECT s.nom_lacet,
+           s.dispo_lacet,
+           s.couleur_lacet,
+           s.longueur_lacet,
+           s.unite_lacet,
+           s.longueur_lacet * u.facteur_unite AS longueur_lacet_cm
+      FROM donnees_lacet s, unite u
+     WHERE s.unite_lacet = u.nom_unite;
+
+CREATE VIEW chaussure_prete AS
+    SELECT rsh.nom_chaussure,
+           rsh.dispo_chaussure,
+           rsl.nom_lacet,
+           rsl.dispo_lacet,
+           least(rsh.dispo, rsl.dispo_lacet) AS total_avail
+      FROM chaussure rsh, lacet rsl
+     WHERE rsl.couleur_lacet = rsh.couleur
+       AND rsl.longueur_lacet_cm &gt;= rsh.long_min_chaussure_cm
+       AND rsl.longueur_lacet_cm &lt;= rsh.long_max_chaussure_cm;
+    </pre><p>
+
+    La commande <code class="command">create view</code> pour la vue
+    <code class="literal">lacet</code> (qui est la plus simple que nous avons) écrira
+    une relation <code class="literal">lacet</code> et une entrée dans
+    <code class="structname">pg_rewrite</code> indiquant la présence d'une règle de
+    réécriture devant être appliquée à chaque fois que la relation
+    <code class="literal">lacet</code> est référencée dans une table de la requête.
+    La règle n'a aucune qualification de règle (discuté plus tard, avec les
+    règles autres que <code class="command">select</code> car les règles <code class="command">select</code> ne
+    le sont pas encore) et qu'il s'agit de <code class="literal">instead</code>. Notez que les
+    qualifications de règles ne sont pas identiques aux qualifications de
+    requêtes. L'action de notre règle a une qualification de requête. L'action
+    de la règle a un arbre de requête qui est une copie de l'instruction
+    <code class="command">select</code> dans la commande de création de la vue.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Les deux entrées supplémentaires de la table d'échelles pour <code class="literal">new</code>
+     et <code class="literal">old</code> que vous pouvez voir
+     dans l'entrée de <code class="structname">pg_rewrite</code> ne sont d'aucun intérêt
+     pour les règles <code class="command">select</code>.
+    </p></div><p>
+    Maintenant, nous remplissons <code class="literal">unit</code>,
+    <code class="literal">donnees_chaussure</code> et <code class="literal">donnees_lacet</code>,
+    puis nous lançons une requête simple sur une vue :
+
+    </p><pre class="programlisting">INSERT INTO unite VALUES ('cm', 1.0);
+INSERT INTO unite VALUES ('m', 100.0);
+INSERT INTO unite VALUES ('inch', 2.54);
+
+INSERT INTO donnees_chaussure VALUES ('sh1', 2, 'black', 70.0, 90.0, 'cm');
+INSERT INTO donnees_chaussure VALUES ('sh2', 0, 'black', 30.0, 40.0, 'inch');
+INSERT INTO donnees_chaussure VALUES ('sh3', 4, 'brown', 50.0, 65.0, 'cm');
+INSERT INTO donnees_chaussure VALUES ('sh4', 3, 'brown', 40.0, 50.0, 'inch');
+
+INSERT INTO donnees_lacet VALUES ('sl1', 5, 'black', 80.0, 'cm');
+INSERT INTO donnees_lacet VALUES ('sl2', 6, 'black', 100.0, 'cm');
+INSERT INTO donnees_lacet VALUES ('sl3', 0, 'black', 35.0 , 'inch');
+INSERT INTO donnees_lacet VALUES ('sl4', 8, 'black', 40.0 , 'inch');
+INSERT INTO donnees_lacet VALUES ('sl5', 4, 'brown', 1.0 , 'm');
+INSERT INTO donnees_lacet VALUES ('sl6', 0, 'brown', 0.9 , 'm');
+INSERT INTO donnees_lacet VALUES ('sl7', 7, 'brown', 60 , 'cm');
+INSERT INTO donnees_lacet VALUES ('sl8', 1, 'brown', 40 , 'inch');
+
+SELECT * FROM lacet;
+
+ nom_lacet   | dispo_lacet | couleur_lacet | longueur_lacet | unite_lacet | longueur_lacet_cm
+-------------+-------------+---------------+----------------+-------------+------------------
+ sl1         |           5 | black         |             80 | cm          |               80
+ sl2         |           6 | black         |            100 | cm          |              100
+ sl7         |           7 | brown         |             60 | cm          |               60
+ sl3         |           0 | black         |             35 | inch        |             88.9
+ sl4         |           8 | black         |             40 | inch        |            101.6
+ sl8         |           1 | brown         |             40 | inch        |            101.6
+ sl5         |           4 | brown         |              1 | m           |              100
+ sl6         |           0 | brown         |            0.9 | m           |               90
+(8 rows)
+    </pre><p>
+   </p><p>
+    C'est la requête <code class="command">select</code> la plus simple que vous pouvez
+    lancer sur nos vues, donc nous prenons cette opportunité d'expliquer les
+    bases des règles de vues. <code class="literal">select * from lacet</code> a été
+    interprété par l'analyseur et a produit l'arbre de requête :
+
+    </p><pre class="programlisting">SELECT lacet.nom_lacet, lacet.dispo_lacet,
+       lacet.couleur_lacet, lacet.longueur_lacet,
+       lacet.unite_lacet, lacet.longueur_lacet_cm
+  FROM lacet lacet;
+    </pre><p>
+
+    et ceci est transmis au système de règles. Ce système traverse la table
+    d'échelle et vérifie s'il existe des règles pour chaque relation. Lors du
+    traitement d'une entrée de la table d'échelles pour
+    <code class="literal">lacet</code> (la seule jusqu'à maintenant), il trouve la
+    règle <code class="literal">_return</code> avec l'arbre de requête :
+
+    </p><pre class="programlisting">SELECT s.nom_lacet, s.dispo_lacet,
+       s.couleur_lacet, s.longueur_lacet, s.unite_lacet,
+       s.longueur_lacet * u.facteur_unite AS longueur_lacet_cm
+  FROM lacet old, lacet new,
+       donnees_lacet s, unit u
+ WHERE s.unite_lacet = u.nom_unite;
+    </pre><p>
+   </p><p>
+    Pour étendre la vue, la réécriture crée simplement une entrée de la table
+    d'échelle de sous-requête contenant l'arbre de requête de l'action de la règle
+    et substitue cette entrée avec l'original référencé dans la vue. L'arbre
+    d'échelle résultant de la réécriture est pratiquement identique à celui que
+    vous avez saisi :
+
+    </p><pre class="programlisting">SELECT lacet.nom_lacet, lacet.dispo_lacet,
+       lacet.couleur_lacet, lacet.longueur_lacet,
+       lacet.unite_lacet, lacet.longueur_lacet_cm
+  FROM (SELECT s.nom_lacet,
+               s.dispo_lacet,
+               s.couleur_lacet,
+               s.longueur_lacet,
+               s.unite_lacet,
+               s.longueur_lacet * u.facteur_unite AS longueur_lacet_cm
+          FROM donnees_lacet s, unit u
+         WHERE s.unite_lacet = u.nom_unite) lacet;
+    </pre><p>
+
+    Néanmoins, il y a une différence : la table d'échelles de la
+    sous-requête a deux entrées supplémentaires, <code class="literal">lacet old</code> et
+    <code class="literal">lacet new</code>. Ces entrées ne participent pas directement dans
+    la requête car elles ne sont pas référencées par l'arbre de jointure de la
+    sous-requête ou par la liste cible. La réécriture les utilise pour
+    enregistrer l'information de vérification des droits d'accès qui étaient
+    présents à l'origine dans l'entrée de table d'échelles référencée par la
+    vue. De cette façon, l'exécution vérifiera toujours que l'utilisateur a les
+    bons droits pour accéder à la vue même s'il n'y a pas d'utilisation directe
+    de la vue dans la requête réécrite.
+   </p><p>
+    C'était la première règle appliquée. Le système de règles continuera de
+    vérifier les entrées restantes de la table d'échelles dans la requête
+    principale (dans cet exemple, il n'en existe pas plus), et il vérifiera
+    récursivement les entrées de la table d'échelles dans la sous-requête ajoutée
+    pour voir si une d'elle référence les vues. (Mais il n'étendra ni
+    <code class="literal">old</code> ni <code class="literal">new</code>  --  sinon nous aurions une récursion
+    infinie !) Dans cet exemple, il n'existe pas de règles de réécriture
+    pour <code class="literal">donnees_lacet</code> ou <code class="literal">unit</code>, donc la réécriture est
+    terminée et ce qui est ci-dessus est le résultat final donné au
+    planificateur.
+   </p><p>
+    Maintenant, nous voulons écrire une requête qui trouve les chaussures
+    en magasin dont nous avons les lacets correspondants
+    (couleur et longueur) et pour lesquels le nombre total de pairs
+    correspondants exactement est supérieur ou égal à deux.
+
+    </p><pre class="programlisting">SELECT * FROM chaussure_prete WHERE total_avail &gt;= 2;
+
+ nom_chaussure | dispo | nom_lacet | dispo_lacet | total_avail
+---------------+-------+-----------+-------------+-------------
+ sh1           |     2 | sl1       |           5 |           2
+ sh3           |     4 | sl7       |           7 |           4
+(2 rows)
+    </pre><p>
+   </p><p>
+    Cette fois, la sortie de l'analyseur est l'arbre de requête :
+
+    </p><pre class="programlisting">SELECT chaussure_prete.nom_chaussure, chaussure_prete.dispo,
+       chaussure_prete.nom_lacet, chaussure_prete.dispo_lacet,
+       chaussure_prete.total_avail
+  FROM chaussure_prete chaussure_prete
+ WHERE chaussure_prete.total_avail &gt;= 2;
+    </pre><p>
+
+    La première règle appliquée sera celle de la vue
+    <code class="literal">chaussure_prete</code> et cela résultera en cet arbre de
+    requête :
+
+    </p><pre class="programlisting">SELECT chaussure_prete.nom_chaussure, chaussure_prete.dispo,
+       chaussure_prete.nom_lacet, chaussure_prete.dispo_lacet,
+       chaussure_prete.total_avail
+  FROM (SELECT rsh.nom_chaussure,
+               rsh.dispo,
+               rsl.nom_lacet,
+               rsl.dispo_lacet,
+               least(rsh.dispo, rsl.dispo_lacet) AS total_avail
+          FROM chaussure rsh, lacet rsl
+         WHERE rsl.couleur_lacet = rsh.couleur
+          AND rsl.longueur_lacet_cm &gt;= rsh.long_min_chaussure_cm
+          AND rsl.longueur_lacet_cm &lt;= rsh.long_max_chaussure_cm) chaussure_prete
+ WHERE chaussure_prete.total_avail &gt;= 2;
+    </pre><p>
+
+    De façon similaire, les règles pour <code class="literal">chaussure</code> et
+    <code class="literal">lacet</code> sont substituées dans la table d'échelles de
+    la sous-requête, amenant à l'arbre de requête final à trois niveaux :
+
+    </p><pre class="programlisting">SELECT chaussure_prete.nom_chaussure, chaussure_prete.dispo,
+       chaussure_prete.nom_lacet, chaussure_prete.dispo_lacet,
+       chaussure_prete.total_avail
+  FROM (SELECT rsh.nom_chaussure,
+               rsh.dispo,
+               rsl.nom_lacet,
+               rsl.dispo_lacet,
+               least(rsh.dispo, rsl.dispo_lacet) AS total_avail
+          FROM (SELECT sh.nom_chaussure,
+                       sh.dispo,
+                       sh.couleur,
+                       sh.long_min_chaussure,
+                       sh.long_min_chaussure * un.facteur_unite AS long_min_chaussure_cm,
+                       sh.long_max_chaussure,
+                       sh.long_max_chaussure * un.facteur_unite AS long_max_chaussure_cm,
+                       sh.unite_long_chaussure
+                  FROM donnees_chaussure sh, unit un
+                 WHERE sh.unite_long_chaussure = un.nom_unite) rsh,
+               (SELECT s.nom_lacet,
+                       s.dispo_lacet,
+                       s.couleur_lacet,
+                       s.longueur_lacet,
+                       s.unite_lacet,
+                       s.longueur_lacet * u.facteur_unite AS longueur_lacet_cm
+                  FROM donnees_lacet s, unit u
+                 WHERE s.unite_lacet = u.nom_unite) rsl
+         WHERE rsl.couleur_lacet = rsh.couleur
+           AND rsl.longueur_lacet_cm &gt;= rsh.long_min_chaussure_cm
+           AND rsl.longueur_lacet_cm &lt;= rsh.long_max_chaussure_cm) chaussure_prete
+ WHERE chaussure_prete.total_avail &gt; 2;
+    </pre><p>
+   </p><p>
+    Ceci pourrait sembler inefficace mais le planificateur rassemblera ceci en
+    un arbre de requête à un seul niveau en <span class="quote">« <span class="quote">remontant</span> »</span> les
+    sous-requêtes, puis il planifiera les jointures comme si nous les avions
+    écrites manuellement. Donc remonter l'arbre de requête est une
+    optimisation dont le système de réécriture n'a pas à se soucier lui-même.
+   </p></div><div class="sect2" id="RULES-VIEWS-NON-SELECT"><div class="titlepage"><div><div><h3 class="title">39.2.2. Règles de vue dans des instructions autres que <code class="command">select</code> <a href="#RULES-VIEWS-NON-SELECT" class="id_link">#</a></h3></div></div></div><p>
+    Deux détails de l'arbre de requête n'ont pas été abordés dans la
+    description des règles de vue ci-dessus. Ce sont le type de commande et la
+    relation résultante. En fait, le type de commande n'est pas nécessaire
+    pour les règles de la vue mais la relation résultante pourrait affecter
+    la façon dont la requête sera réécrite car une attention particulière doit
+    être prise si la relation résultante est une vue.
+   </p><p>
+    Il existe seulement quelques différences entre un arbre de requête pour un
+    <code class="command">select</code> et un pour une autre commande. de façon évidente,
+    ils ont un type de commande différent et pour une commande autre qu'
+    un <code class="command">select</code>, la relation résultante pointe vers l'entrée de
+    table d'échelles où le résultat devrait arriver. Tout le reste est absolument
+    identique. Donc, avec deux tables <code class="literal">t1</code> et <code class="literal">t2</code> avec les
+    colonnes <code class="literal">a</code> et <code class="literal">b</code>, les arbres de requêtes pour les
+    deux commandes :
+
+    </p><pre class="programlisting">SELECT t2.b FROM t1, t2 WHERE t1.a = t2.a;
+
+UPDATE t1 SET b = t2.b FROM t2 WHERE t1.a = t2.a;
+    </pre><p>
+
+    sont pratiquement identiques. En particulier :
+
+    </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+       Les tables d'échelle contiennent des entrées pour les tables
+       <code class="literal">t1</code> et <code class="literal">t2</code>.
+      </p></li><li class="listitem"><p>
+       Les listes cibles contiennent une variable pointant vers la colonne
+       <code class="literal">b</code> de l'entrée de la table d'échelles pour la table
+       <code class="literal">t2</code>.
+      </p></li><li class="listitem"><p>
+       Les expressions de qualification comparent les colonnes
+       <code class="literal">a</code> des deux entrées de table d'échelles pour une égalité.
+      </p></li><li class="listitem"><p>
+       Les arbres de jointure affichent une jointure simple entre
+       <code class="literal">t1</code> et <code class="literal">t2</code>.
+      </p></li></ul></div><p>
+   </p><p>
+    La conséquence est que les deux arbres de requête résultent en des plans
+    d'exécution similaires : ce sont tous les deux des jointures sur les
+    deux tables. Pour l'<code class="command">update</code>, les colonnes manquantes
+    de <code class="literal">t1</code> sont ajoutées à la liste cible par le planificateur et
+    l'arbre de requête final sera lu de cette façon :
+
+    </p><pre class="programlisting">UPDATE t1 SET a = t1.a, b = t2.b FROM t2 WHERE t1.a = t2.a;
+    </pre><p>
+
+    et, du coup, l'exécuteur lancé sur la jointure produira exactement le même
+    résultat qu'un :
+
+    </p><pre class="programlisting">SELECT t1.a, t2.b FROM t1, t2 WHERE t1.a = t2.a;
+    </pre><p>
+
+    Mais il existe un petit problème dans <code class="command">UPDATE</code> : la
+    partie du plan d'exécution qui fait la jointure ne prête pas attention à
+    l'intérêt des résultats de la jointure. Il produit un ensemble de lignes.
+    Le fait qu'il y a une commande <code class="command">SELECT</code> et une commande
+    <code class="command">UPDATE</code> est géré plus haut dans l'exécuteur où cette
+    partie sait qu'il s'agit d'une commande <code class="command">UPDATE</code>, et elle
+    sait que ce résultat va aller dans la table <code class="literal">t1</code>. Mais
+    lesquels de ces lignes vont être remplacées par la nouvelle ligne ?
+   </p><p>
+    Pour résoudre ce problème, une autre entrée est ajoutée dans la liste
+    cible de l'<code class="command">update</code> (et aussi dans les instructions
+    <code class="command">delete</code>) : l'identifiant actuel du tuple
+    (<acronym class="acronym">ctid</acronym>, acronyme de <span class="foreignphrase"><em class="foreignphrase">current tuple
+     ID</em></span>).<a id="id-1.8.6.7.7.5.5" class="indexterm"></a> cette colonne système
+    contient le numéro de bloc du fichier et la position dans le bloc pour
+    cette ligne. Connaissant la table, le <acronym class="acronym">ctid</acronym> peut être utilisé
+    pour récupérer la ligne originale de <code class="literal">t1</code> à mettre à jour. Après
+    avoir ajouté le <acronym class="acronym">ctid</acronym> dans la liste cible, la requête ressemble à
+    ceci :
+
+    </p><pre class="programlisting">SELECT t1.a, t2.b, t1.ctid FROM t1, t2 WHERE t1.a = t2.a;
+    </pre><p>
+
+    Maintenant, un autre détail de <span class="productname">PostgreSQL</span> entre
+    en jeu. Les anciennes lignes de la table ne sont pas surchargées et cela
+    explique pourquoi <code class="command">rollback</code> est rapide. Avec un
+    <code class="command">update</code>, la nouvelle ligne résultat est insérée dans la
+    table (après avoir enlevé le <acronym class="acronym">ctid</acronym>) et, dans le nouvel en-tête de
+    ligne de l'ancienne ligne, vers où pointe le <acronym class="acronym">ctid</acronym>, les entrées
+    <code class="literal">cmax</code> et <code class="literal">xmax</code> sont configurées par le compteur de
+    commande actuel et par l'identifiant de transaction actuel. Du coup,
+    l'ancienne ligne est cachée et, après validation de la transaction, le
+    nettoyeur (vacuum) peut éventuellement la supprimer.
+   </p><p>
+    Connaissant tout ceci, nous pouvons simplement appliquer les règles de vues
+    de la même façon que toute autre commande. Il n'y a pas de différence.
+   </p></div><div class="sect2" id="RULES-VIEWS-POWER"><div class="titlepage"><div><div><h3 class="title">39.2.3. Puissance des vues dans <span class="productname">PostgreSQL</span> <a href="#RULES-VIEWS-POWER" class="id_link">#</a></h3></div></div></div><p>
+    L'exemple ci-dessus démontre l'incorporation des définitions de
+    vues par le système de règles dans l'arbre de requête original. Dans le
+    deuxième exemple, un simple <code class="command">select</code> d'une vue a créé un
+    arbre de requête final qui est une jointure de quatre tables
+    (<code class="literal">unit</code> a été utilisé deux fois avec des noms différents).
+   </p><p>
+    Le bénéfice de l'implémentation des vues avec le système de règles est que
+    le planificateur a toute l'information sur les tables à parcourir et sur
+    les relations entre ces tables et les qualifications restrictives à partir
+    des vues et les qualifications à partir de la requête originale dans un
+    seul arbre de requête. Et c'est toujours la situation quand la requête
+    originale est déjà une jointure sur des vues. Le planificateur doit décider
+    du meilleur chemin pour exécuter la requête et plus le planificateur a
+    d'informations, meilleure sera la décision. Le système de règles implémenté
+    dans <span class="productname">PostgreSQL</span> s'en assure, c'est toute
+    l'information disponible sur la requête à ce moment.
+   </p></div><div class="sect2" id="RULES-VIEWS-UPDATE"><div class="titlepage"><div><div><h3 class="title">39.2.4. Mise à jour d'une vue <a href="#RULES-VIEWS-UPDATE" class="id_link">#</a></h3></div></div></div><p>
+    Qu'arrive-t'il si une vue est nommée comme la relation cible d'un
+    <code class="command">INSERT</code>, <code class="command">UPDATE</code>,
+    <code class="command">DELETE</code> ou <code class="command">MERGE</code> ? Faire
+    simplement les substitutions
+    décrites ci-dessus donnerait un arbre de requêtes dont le résultat
+    pointerait vers une entrée de la table en sous-requête. Cela ne
+    fonctionnera pas. Néanmoins, il existe différents moyens permettant à
+    <span class="productname">PostgreSQL</span> de supporter la mise à jour d'une
+    vue. Dans l'ordre de complexité pour l'expérience utilisateur :
+    substituer automatiquement la table sous-jacente par la vue, exécuter un
+    trigger utilisateur, ou réécrire la requête par une règle utilisateur.
+    Ces options sont discutées ci-dessous.
+   </p><p>
+    Si la sous-requête fait une sélection à partir d'une relation simple et
+    qu'elle est suffisamment simple, le processus de réécriture peut
+    automatiquement remplacer la sous-requête avec la relation sous-jacente
+    pour que l'<code class="command">INSERT</code>, l'<code class="command">UPDATE</code>,
+    le <code class="command">DELETE</code> ou le <code class="command">MERGE</code> soit appliqué
+    correctement sur la relation
+    de base. Les vues qui sont <span class="quote">« <span class="quote">suffisamment simples</span> »</span> pour cela
+    sont appelées des vues <em class="firstterm">automatiquement modifiables</em>.
+    Pour des informations détaillées sur ce type de vue, voir
+    <a class="xref" href="sql-createview.html" title="CREATE VIEW"><span class="refentrytitle">CREATE VIEW</span></a>.
+   </p><p>
+    Sinon, l'opération peut être gérée par un trigger <code class="literal">INSTEAD
+    OF</code>, créé par l'utilisateur, sur la vue (see <a class="xref" href="sql-createtrigger.html" title="CREATE TRIGGER"><span class="refentrytitle">CREATE TRIGGER</span></a>).
+    La réécriture fonctionne légèrement différemment dans ce cas. Pour
+    <code class="command">INSERT</code>, la réécriture ne fait rien du tout avec la vue,
+    la laissant comme relation résultante de la requête. Pour
+    <code class="command">UPDATE</code>, <code class="command">DELETE</code> et
+    <code class="command">MERGE</code>, il est toujours nécessaire d'étendre la requête
+    de la vue pour récupérer les <span class="quote">« <span class="quote">anciennes</span> »</span> lignes que la commande
+    va essayer de mettre à jour, supprimer ou fusionner. Donc la vue est étendue comme
+    d'habitude mais une autre entrée de table non étendue est ajoutée à la
+    requête pour représenter la vue en tant que relation résultante.
+   </p><p>
+    Le problème qui survient maintenant est d'identifier les lignes à mettre à
+    jour dans la vue. Rappelez-vous que, quand la relation résultante est une
+    table, une entrée <acronym class="acronym">CTID</acronym> spéciale est ajoutée à la liste
+    cible pour identifier les emplacements physiques des lignes à mettre à jour.
+    Ceci ne fonctionne pas si la relation résultante est une vue car une vue
+    n'a pas de <acronym class="acronym">CTID</acronym>, car ses lignes n'ont pas d'emplacements
+    physiques réels. À la place, pour une opération <code class="command">UPDATE</code>,
+    <code class="command">DELETE</code> ou <code class="command">MERGE</code>, une entrée <code class="literal">wholerow</code> (ligne
+    complète) spéciale est ajoutée à la liste cible, qui s'étend pour inclure
+    toutes les colonnes d'une vue. L'exécuteur utilise cette valeur pour
+    fournir l'<span class="quote">« <span class="quote">ancienne</span> »</span> ligne au trigger <code class="literal">INSTEAD
+     OF</code>. C'est au trigger de savoir ce que la mise à jour est supposée
+    faire sur les valeurs des anciennes et nouvelles lignes.
+   </p><p>
+    Une autre possibilité est que l'utilisateur définisse des vues
+    <code class="literal">INSTEAD</code> qui indiquent les actions à substituer pour les
+    commandes <code class="command">INSERT</code>, <code class="command">UPDATE</code> et
+    <code class="command">DELETE</code> sur une vue. Ces règles vont réécrire la commande,
+    typiquement en une commande qui met à jour une ou plusieurs tables, plutôt
+    que des vues. C'est le thème de <a class="xref" href="rules-update.html" title="39.4. Règles sur insert, update et delete">Section 39.4</a>. Notez
+    que ceci ne fonctionnera pas avec <code class="command">MERGE</code>, qui
+    actuellement ne supporte pas les règles autres que
+    <code class="command">SELECT</code> sur la relation cible.
+   </p><p>
+    Notez que les règles sont évaluées en premier, réécrivant la requête
+    originale avant qu'elle ne soit optimisée et exécutée. Du coup, si une vue
+    a des triggers <code class="literal">INSTEAD OF</code> en plus de règles sur
+    <code class="command">INSERT</code>, <code class="command">UPDATE</code> ou
+    <code class="command">DELETE</code>, alors les règles seront évaluées en premier et,
+    suivant le résultat, les triggers pourraient être utilisés.
+   </p><p>
+    La réécriture automatique d'une requête <code class="command">INSERT</code>,
+    <code class="command">UPDATE</code>, <code class="command">DELETE</code> ou <code class="command">MERGE</code>
+    sur une vue simple
+    est toujours essayée en dernier. Du coup, si une vue a des règles ou des
+    triggers, ces derniers surchargeront le comportement par défaut des vues
+    automatiquement modifiables.
+   </p><p>
+    S'il n'y a pas de règles <code class="literal">INSTEAD</code> ou de triggers
+    <code class="literal">INSTEAD OF</code> sur la vue et que le processus de
+    réécriture ne peut pas réécrire automatiquement la requête sous la forme
+    d'une mise à jour de la relation sous-jacente, une erreur sera renvoyée
+    car l'exécuteur ne peut pas modifier une vue.
+   </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/rules-views.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:43 GMT -->
+</html>

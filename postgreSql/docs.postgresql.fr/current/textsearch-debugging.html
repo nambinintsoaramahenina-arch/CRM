@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/textsearch-debugging.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>12.8. Tester et déboguer la recherche plein texte</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="textsearch-configuration.html" title="12.7. Exemple de configuration" /><link rel="next" href="textsearch-indexes.html" title="12.9. Types d'index préférés pour la recherche plein texte" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/textsearch-debugging.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/textsearch-debugging.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/textsearch-debugging.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/textsearch-debugging.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/textsearch-debugging.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/textsearch-debugging.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/textsearch-debugging.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/textsearch-debugging.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/textsearch-debugging.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/textsearch-debugging.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/textsearch-debugging.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/textsearch-debugging.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/textsearch-debugging.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/textsearch-debugging.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/textsearch-debugging.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/textsearch-debugging.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/textsearch-debugging.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/textsearch-debugging.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/textsearch-debugging.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="sql.html">Langage SQL</a></span> » <span class="breadcrumb-link"><a href="textsearch.html">Recherche plein texte</a></span> » <span class="breadcrumb-node">Tester et déboguer la recherche plein texte</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="textsearch-configuration.html" title="12.7. Exemple de configuration">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="textsearch.html" title="Chapitre 12. Recherche plein texte">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="textsearch-indexes.html" title="12.9. Types d'index préférés pour la recherche plein texte">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">12.7. Exemple de configuration </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> 12.9. Types d'index préférés pour la recherche plein texte</td></tr></table></div><div class="sect1" id="TEXTSEARCH-DEBUGGING"><div class="titlepage"><div><div><h2 class="title" style="clear: both">12.8. Tester et déboguer la recherche plein texte <a href="#TEXTSEARCH-DEBUGGING" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="textsearch-debugging.html#TEXTSEARCH-CONFIGURATION-TESTING">12.8.1. Test d'une configuration</a></span></dt><dt><span class="sect2"><a href="textsearch-debugging.html#TEXTSEARCH-PARSER-TESTING">12.8.2. Test de l'analyseur</a></span></dt><dt><span class="sect2"><a href="textsearch-debugging.html#TEXTSEARCH-DICTIONARY-TESTING">12.8.3. Test des dictionnaires</a></span></dt></dl></div><p>
+   Le comportement d'une configuration personnalisée de recherche plein texte
+   peut facilement devenir confus. Les fonctions décrites dans cette section
+   sont utiles pour tester les objets de recherche plein texte. Vous pouvez
+   tester une configuration complète ou tester séparément analyseurs et
+   dictionnaires.
+  </p><div class="sect2" id="TEXTSEARCH-CONFIGURATION-TESTING"><div class="titlepage"><div><div><h3 class="title">12.8.1. Test d'une configuration <a href="#TEXTSEARCH-CONFIGURATION-TESTING" class="id_link">#</a></h3></div></div></div><p>
+    La fonction <code class="function">ts_debug</code> permet un test facile d'une
+    configuration de recherche plein texte.
+   </p><a id="id-1.5.11.11.3.3" class="indexterm"></a><pre class="synopsis">
+   ts_debug([<span class="optional"> <em class="replaceable"><code>config</code></em> <code class="type">regconfig</code>, </span>] <em class="replaceable"><code>document</code></em> <code class="type">text</code>,
+            OUT <em class="replaceable"><code>alias</code></em> <code class="type">text</code>,
+            OUT <em class="replaceable"><code>description</code></em> <code class="type">text</code>,
+            OUT <em class="replaceable"><code>token</code></em> <code class="type">text</code>,
+            OUT <em class="replaceable"><code>dictionaries</code></em> <code class="type">regdictionary[]</code>,
+            OUT <em class="replaceable"><code>dictionary</code></em> <code class="type">regdictionary</code>,
+            OUT <em class="replaceable"><code>lexemes</code></em> <code class="type">text[]</code>)
+            returns setof record
+   </pre><p>
+    <code class="function">ts_debug</code> affiche des informations sur chaque jeton d'un
+    <em class="replaceable"><code>document</code></em> tel qu'il est produit
+    par l'analyseur et traité par les dictionnaires configurés. Elle utilise la
+    configuration indiquée par <em class="replaceable"><code>config</code></em>,
+    ou <code class="varname">default_text_search_config</code> si cet argument est omis.
+   </p><p>
+    <code class="function">ts_debug</code> renvoie une ligne pour chaque jeton identifié
+    dans le texte par l'analyseur. Les colonnes renvoyées sont :
+
+    </p><div class="itemizedlist"><ul class="itemizedlist compact" style="list-style-type: bullet; "><li class="listitem" style="list-style-type: disc"><p>
+       <em class="replaceable"><code>alias</code></em> <code class="type">text</code>  --  nom court
+       du type de jeton
+      </p></li><li class="listitem" style="list-style-type: disc"><p>
+       <em class="replaceable"><code>description</code></em> <code class="type">text</code>  -- 
+       description du type de jeton
+      </p></li><li class="listitem" style="list-style-type: disc"><p>
+       <em class="replaceable"><code>token</code></em> <code class="type">text</code>  --  texte du jeton
+      </p></li><li class="listitem" style="list-style-type: disc"><p>
+       <em class="replaceable"><code>dictionaries</code></em> <code class="type">regdictionary[]</code>  -- 
+       les dictionnaires sélectionnés par la configuration pour ce type de jeton
+      </p></li><li class="listitem" style="list-style-type: disc"><p>
+       <em class="replaceable"><code>dictionary</code></em> <code class="type">regdictionary</code>  -- 
+       le dictionnaire qui a reconnu le jeton, ou <code class="literal">NULL</code> dans
+       le cas contraire
+      </p></li><li class="listitem" style="list-style-type: disc"><p>
+       <em class="replaceable"><code>lexemes</code></em> <code class="type">text[]</code>  --  le ou les
+       lexèmes produits par le dictionnaire qui a reconnu le jeton, ou
+       <code class="literal">NULL</code> dans le cas contraire ; un tableau vide
+       (<code class="literal">{}</code>) signifie qu'il a été reconnu comme un terme
+       courant
+      </p></li></ul></div><p>
+   </p><p>
+    Voici un exemple simple :
+
+    </p><pre class="screen">
+SELECT * FROM ts_debug('english', 'a fat  cat sat on a mat - it ate a fat rats');
+   alias   |   description   | token |  dictionaries  |  dictionary  | lexemes
+-----------+-----------------+-------+----------------+--------------+---------
+ asciiword | Word, all ASCII | a     | {english_stem} | english_stem | {}
+ blank     | Space symbols   |       | {}             |              |
+ asciiword | Word, all ASCII | fat   | {english_stem} | english_stem | {fat}
+ blank     | Space symbols   |       | {}             |              |
+ asciiword | Word, all ASCII | cat   | {english_stem} | english_stem | {cat}
+ blank     | Space symbols   |       | {}             |              |
+ asciiword | Word, all ASCII | sat   | {english_stem} | english_stem | {sat}
+ blank     | Space symbols   |       | {}             |              |
+ asciiword | Word, all ASCII | on    | {english_stem} | english_stem | {}
+ blank     | Space symbols   |       | {}             |              |
+ asciiword | Word, all ASCII | a     | {english_stem} | english_stem | {}
+ blank     | Space symbols   |       | {}             |              |
+ asciiword | Word, all ASCII | mat   | {english_stem} | english_stem | {mat}
+ blank     | Space symbols   |       | {}             |              |
+ blank     | Space symbols   | -     | {}             |              |
+ asciiword | Word, all ASCII | it    | {english_stem} | english_stem | {}
+ blank     | Space symbols   |       | {}             |              |
+ asciiword | Word, all ASCII | ate   | {english_stem} | english_stem | {ate}
+ blank     | Space symbols   |       | {}             |              |
+ asciiword | Word, all ASCII | a     | {english_stem} | english_stem | {}
+ blank     | Space symbols   |       | {}             |              |
+ asciiword | Word, all ASCII | fat   | {english_stem} | english_stem | {fat}
+ blank     | Space symbols   |       | {}             |              |
+ asciiword | Word, all ASCII | rats  | {english_stem} | english_stem | {rat}
+    </pre><p>
+   </p><p>
+    Pour une démonstration plus importante, nous créons tout d'abord une
+    configuration <code class="literal">public.english</code> et un dictionnaire
+    ispell pour l'anglais :
+   </p><pre class="programlisting">
+CREATE TEXT SEARCH CONFIGURATION public.english ( COPY = pg_catalog.english );
+
+CREATE TEXT SEARCH DICTIONARY english_ispell (
+    TEMPLATE = ispell,
+    DictFile = english,
+    AffFile = english,
+    StopWords = english
+);
+
+ALTER TEXT SEARCH CONFIGURATION public.english
+   ALTER MAPPING FOR asciiword WITH english_ispell, english_stem;
+   </pre><pre class="screen">
+SELECT * FROM ts_debug('public.english', 'The Brightest supernovaes');
+   alias   |   description   |    token    |         dictionaries          |   dictionary   |   lexemes
+-----------+-----------------+-------------+-------------------------------+----------------+-------------
+ asciiword | Word, all ASCII | The         | {english_ispell,english_stem} | english_ispell | {}
+ blank     | Space symbols   |             | {}                            |                |
+ asciiword | Word, all ASCII | Brightest   | {english_ispell,english_stem} | english_ispell | {bright}
+ blank     | Space symbols   |             | {}                            |                |
+ asciiword | Word, all ASCII | supernovaes | {english_ispell,english_stem} | english_stem   | {supernova}
+   </pre><p>
+    Dans cet exemple, le mot <code class="literal">Brightest</code> a été reconnu par
+    l'analyseur comme un <code class="literal">mot ASCII</code> (alias
+    <code class="literal">asciiword</code>). Pour ce type de jeton, la liste de dictionnaire
+    est <code class="literal">english_ispell</code> et <code class="literal">english_stem</code>. Le
+    mot a été reconnu par <code class="literal">english_ispell</code>, qui l'a réduit avec
+    le mot <code class="literal">bright</code>. Le mot <code class="literal">supernovaes</code> est
+    inconnu dans le dictionnaire <code class="literal">english_ispell</code> donc il
+    est passé au dictionnaire suivant et, heureusement, est reconnu (en fait,
+    <code class="literal">english_stem</code> est un dictionnaire Snowball qui reconnaît
+    tout ; c'est pourquoi il est placé en dernier dans la liste des
+    dictionnaires).
+   </p><p>
+    Le mot <code class="literal">The</code> est reconnu par le dictionnaire
+    <code class="literal">english_ispell</code> comme étant un terme courant (<a class="xref" href="textsearch-dictionaries.html#TEXTSEARCH-STOPWORDS" title="12.6.1. Termes courants">Section 12.6.1</a>) et n'est donc pas indexé. Les espaces
+    sont aussi ignorées, car la configuration ne fournit aucun dictionnaire
+    pour eux.
+   </p><p>
+    Vous pouvez réduire le volume en sortie en spécifiant explicitement les
+    colonnes que vous voulez voir :
+
+    </p><pre class="screen">
+SELECT alias, token, dictionary, lexemes
+FROM ts_debug('public.english', 'The Brightest supernovaes');
+   alias   |    token    |   dictionary   |   lexemes
+-----------+-------------+----------------+-------------
+ asciiword | The         | english_ispell | {}
+ blank     |             |                |
+ asciiword | Brightest   | english_ispell | {bright}
+ blank     |             |                |
+ asciiword | supernovaes | english_stem   | {supernova}
+    </pre><p>
+   </p></div><div class="sect2" id="TEXTSEARCH-PARSER-TESTING"><div class="titlepage"><div><div><h3 class="title">12.8.2. Test de l'analyseur <a href="#TEXTSEARCH-PARSER-TESTING" class="id_link">#</a></h3></div></div></div><p>
+    Les fonctions suivantes permettent un test direct d'un analyseur de recherche
+    plein texte.
+   </p><a id="id-1.5.11.11.4.3" class="indexterm"></a><pre class="synopsis">
+   ts_parse(<em class="replaceable"><code>parser_name</code></em> <code class="type">text</code>, <em class="replaceable"><code>document</code></em> <code class="type">text</code>, OUT <em class="replaceable"><code>tokid</code></em> <code class="type">integer</code>, OUT <em class="replaceable"><code>token</code></em> <code class="type">text</code>) returns <code class="type">setof record</code>
+   ts_parse(<em class="replaceable"><code>parser_oid</code></em> <code class="type">oid</code>, <em class="replaceable"><code>document</code></em> <code class="type">text</code>, OUT <em class="replaceable"><code>tokid</code></em> <code class="type">integer</code>, OUT <em class="replaceable"><code>token</code></em> <code class="type">text</code>) returns <code class="type">setof record</code>
+   </pre><p>
+    <code class="function">ts_parse</code> analyse le <em class="replaceable"><code>document</code></em>
+    indiqué et renvoie une série d'enregistrements, un pour chaque jeton produit
+    par l'analyse. Chaque enregistrement inclut un <code class="varname">tokid</code>
+    montrant le type de jeton affecté et un jeton (<code class="varname">token</code>) qui
+    est le texte dudit jeton. Par exemple :
+
+    </p><pre class="screen">
+SELECT * FROM ts_parse('default', '123 - a number');
+ tokid | token
+-------+--------
+    22 | 123
+    12 |
+    12 | -
+     1 | a
+    12 |
+     1 | number
+    </pre><p>
+   </p><a id="id-1.5.11.11.4.6" class="indexterm"></a><pre class="synopsis">
+   ts_token_type(<em class="replaceable"><code>parser_name</code></em> <code class="type">text</code>, OUT <em class="replaceable"><code>tokid</code></em> <code class="type">integer</code>, OUT <em class="replaceable"><code>alias</code></em> <code class="type">text</code>, OUT <em class="replaceable"><code>description</code></em> <code class="type">text</code>) returns <code class="type">setof record</code>
+   ts_token_type(<em class="replaceable"><code>parser_oid</code></em> <code class="type">oid</code>, OUT <em class="replaceable"><code>tokid</code></em> <code class="type">integer</code>, OUT <em class="replaceable"><code>alias</code></em> <code class="type">text</code>, OUT <em class="replaceable"><code>description</code></em> <code class="type">text</code>) returns <code class="type">setof record</code>
+   </pre><p>
+    <code class="function">ts_token_type</code> renvoie une table qui décrit chaque type
+    de jeton que l'analyseur indiqué peut reconnaître. Pour chaque type de jeton,
+    la table donne l'entier <code class="varname">tokid</code> que l'analyseur utilise pour
+    labeliser un jeton de ce type, l'<code class="varname">alias</code> qui nomme le type
+    de jeton dans les commandes de configuration et une courte
+    <code class="varname">description</code>. Par exemple :
+
+    </p><pre class="screen">
+SELECT * FROM ts_token_type('default');
+ tokid |      alias      |               description
+-------+-----------------+------------------------------------------
+     1 | asciiword       | Word, all ASCII
+     2 | word            | Word, all letters
+     3 | numword         | Word, letters and digits
+     4 | email           | Email address
+     5 | url             | URL
+     6 | host            | Host
+     7 | sfloat          | Scientific notation
+     8 | version         | Version number
+     9 | hword_numpart   | Hyphenated word part, letters and digits
+    10 | hword_part      | Hyphenated word part, all letters
+    11 | hword_asciipart | Hyphenated word part, all ASCII
+    12 | blank           | Space symbols
+    13 | tag             | XML tag
+    14 | protocol        | Protocol head
+    15 | numhword        | Hyphenated word, letters and digits
+    16 | asciihword      | Hyphenated word, all ASCII
+    17 | hword           | Hyphenated word, all letters
+    18 | url_path        | URL path
+    19 | file            | File or path name
+    20 | float           | Decimal notation
+    21 | int             | Signed integer
+    22 | uint            | Unsigned integer
+    23 | entity          | XML entity
+    </pre><p>
+   </p></div><div class="sect2" id="TEXTSEARCH-DICTIONARY-TESTING"><div class="titlepage"><div><div><h3 class="title">12.8.3. Test des dictionnaires <a href="#TEXTSEARCH-DICTIONARY-TESTING" class="id_link">#</a></h3></div></div></div><p>
+    La fonction <code class="function">ts_lexize</code> facilite le test des
+    dictionnaires.
+   </p><a id="id-1.5.11.11.5.3" class="indexterm"></a><pre class="synopsis">
+    ts_lexize(<em class="replaceable"><code>dict</code></em> <code class="type">regdictionary</code>, <em class="replaceable"><code>token</code></em> <code class="type">text</code>) returns <code class="type">text[]</code>
+   </pre><p>
+    <code class="function">ts_lexize</code> renvoie un tableau de lexèmes si le jeton
+    (<em class="replaceable"><code>token</code></em>) en entrée est connu du dictionnaire ou
+    un tableau vide si le jeton est connu du dictionnaire en tant que terme
+    courant, ou enfin <code class="literal">NULL</code> si le mot n'est pas connu.
+   </p><p>
+    Exemples :
+
+    </p><pre class="screen">
+SELECT ts_lexize('english_stem', 'stars');
+ ts_lexize
+-----------
+ {star}
+
+SELECT ts_lexize('english_stem', 'a');
+ ts_lexize
+-----------
+ {}
+    </pre><p>
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     La fonction <code class="function">ts_lexize</code> attend un seul jeton, pas du
+     texte. Voici un cas où cela peut devenir source de confusion :
+
+     </p><pre class="screen">
+SELECT ts_lexize('thesaurus_astro', 'supernovae stars') is null;
+ ?column?
+----------
+ t
+     </pre><p>
+
+     Le dictionnaire thésaurus <code class="literal">thesaurus_astro</code> connaît la
+     phrase <code class="literal">supernovae stars</code>, mais
+     <code class="function">ts_lexize</code> échoue, car il ne peut pas analyser le texte
+     en entrée, mais le traite bien en tant
+     que simple jeton. Utilisez <code class="function">plainto_tsquery</code> ou
+     <code class="function">to_tsvector</code> pour tester les dictionnaires thésaurus.
+     Par exemple :
+
+     </p><pre class="screen">
+SELECT plainto_tsquery('supernovae stars');
+ plainto_tsquery
+-----------------
+ 'sn'
+     </pre><p>
+    </p></div></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/textsearch-debugging.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:30 GMT -->
+</html>

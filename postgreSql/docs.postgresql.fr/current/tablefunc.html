@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/tablefunc.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>F.41. tablefunc -- fonctions qui renvoient des tables (crosstab et autres)</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="sslinfo.html" title="F.40. sslinfo -- obtenir des informations SSL du client" /><link rel="next" href="tcn.html" title="F.42. tcn -- une fonction trigger pour notifier les processus en écoute de modifications sur le contenu de la table" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/tablefunc.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/tablefunc.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/tablefunc.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/tablefunc.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/tablefunc.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/tablefunc.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/tablefunc.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/tablefunc.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/tablefunc.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/tablefunc.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/tablefunc.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/tablefunc.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/tablefunc.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/tablefunc.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/tablefunc.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/tablefunc.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/tablefunc.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/tablefunc.html">8.3</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/tablefunc.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="appendixes.html">Annexes</a></span> » <span class="breadcrumb-link"><a href="contrib.html">Modules et extensions supplémentaires fournis</a></span> » <span class="breadcrumb-node">tablefunc  --  fonctions qui renvoient des tables (<code class="function">crosstab</code> et autres)</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="sslinfo.html" title="F.40. sslinfo  --  obtenir des informations SSL du client">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="contrib.html" title="Annexe F. Modules et extensions supplémentaires fournis">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="tcn.html" title="F.42. tcn  --  une fonction trigger pour notifier les processus en écoute&#10;  de modifications sur le contenu de la table">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">F.40. sslinfo  --  obtenir des informations SSL du client </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> F.42. tcn  --  une fonction trigger pour notifier les processus en écoute
+  de modifications sur le contenu de la table</td></tr></table></div><div class="sect1" id="TABLEFUNC"><div class="titlepage"><div><div><h2 class="title" style="clear: both">F.41. tablefunc  --  fonctions qui renvoient des tables (<code class="function">crosstab</code> et autres) <a href="#TABLEFUNC" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="tablefunc.html#TABLEFUNC-FUNCTIONS-SECT">F.41.1. Fonctions</a></span></dt><dt><span class="sect2"><a href="tablefunc.html#TABLEFUNC-AUTHOR">F.41.2. Auteur</a></span></dt></dl></div><a id="id-1.11.7.52.2" class="indexterm"></a><p>
+  Le module <code class="filename">tablefunc</code> inclut plusieurs fonctions
+  permettant de renvoyer des tables (c'est-à-dire plusieurs lignes). Ces
+  fonctions sont utiles directement et comme exemples sur la façon d'écrire
+  des fonctions C qui renvoient plusieurs lignes.
+ </p><p>
+  Ce module est considéré comme <span class="quote">« <span class="quote">trusted</span> »</span>, ce qui signifie qu'il
+  peut être installé par des utilisateurs simples (sans attribut
+  <code class="literal">SUPERUSER</code>) et qui ont l'attribut <code class="literal">CREATE</code>
+  sur la base de données courante.
+ </p><div class="sect2" id="TABLEFUNC-FUNCTIONS-SECT"><div class="titlepage"><div><div><h3 class="title">F.41.1. Fonctions <a href="#TABLEFUNC-FUNCTIONS-SECT" class="id_link">#</a></h3></div></div></div><p>
+   <a class="xref" href="tablefunc.html#TABLEFUNC-FUNCTIONS" title="Tableau F.31. Fonctions tablefunc">Tableau F.31</a> résume les fonctions fournies par le
+   module <code class="filename">tablefunc</code>.
+  </p><div class="table" id="TABLEFUNC-FUNCTIONS"><p class="title"><strong>Tableau F.31. Fonctions <code class="filename">tablefunc</code></strong></p><div class="table-contents"><table class="table" summary="Fonctions tablefunc" border="1"><colgroup><col /></colgroup><thead><tr><th class="func_table_entry"><p class="func_signature">
+        Fonction
+       </p>
+       <p>
+        Description
+       </p></th></tr></thead><tbody><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">normal_rand</code> ( <em class="parameter"><code>numvals</code></em> <code class="type">integer</code>, <em class="parameter"><code>mean</code></em> <code class="type">float8</code>, <em class="parameter"><code>stddev</code></em> <code class="type">float8</code> )
+        → <code class="returnvalue">setof float8</code>
+       </p>
+       <p>
+        Produit un ensemble de valeurs aléatoire avec une distribution normale.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">crosstab</code> ( <em class="parameter"><code>sql</code></em> <code class="type">text</code> )
+        → <code class="returnvalue">setof record</code>
+       </p>
+       <p>
+        Produit une <span class="quote">« <span class="quote">table pivot</span> »</span> contenant les noms des lignes
+        ainsi que <em class="replaceable"><code>N</code></em> colonnes de valeur, où
+        <em class="replaceable"><code>N</code></em> est déterminé par le type de ligne
+        spécifié dans la requête appelante.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">crosstab<em class="replaceable"><code>N</code></em></code> ( <em class="parameter"><code>sql</code></em> <code class="type">text</code> )
+        → <code class="returnvalue">setof table_crosstab_<em class="replaceable"><code>N</code></em></code>
+       </p>
+       <p>
+        Produit une <span class="quote">« <span class="quote">table pivot</span> »</span> contenant les noms des lignes
+        ainsi que <em class="replaceable"><code>N</code></em> colonnes de valeur.
+        <code class="function">crosstab2</code>, <code class="function">crosstab3</code> et
+        <code class="function">crosstab4</code> sont prédéfinies mais vous pouvez créer
+        les fonctions
+        <code class="function">crosstab<em class="replaceable"><code>N</code></em></code>
+        supplémentaires comme décrit ci-dessous.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">crosstab</code> ( <em class="parameter"><code>source_sql</code></em> <code class="type">text</code>, <em class="parameter"><code>category_sql</code></em> <code class="type">text</code> )
+        → <code class="returnvalue">setof record</code>
+       </p>
+       <p>
+        Produit une <span class="quote">« <span class="quote">table pivot</span> »</span> avec les colonnes de valeur
+        indiquées par une deuxième requête.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <code class="function">crosstab</code> ( <em class="parameter"><code>sql</code></em> <code class="type">text</code>, <em class="parameter"><code>N</code></em> <code class="type">integer</code> )
+        → <code class="returnvalue">setof record</code>
+       </p>
+       <p>
+        Version obsolète de <code class="function">crosstab(text)</code>. Le paramètre
+        <em class="parameter"><code>N</code></em> est maintenant ignoré car le nombre de
+        colonnes de valeur est toujours déterminé par la requête appelante.
+       </p></td></tr><tr><td class="func_table_entry"><p class="func_signature">
+        <a id="id-1.11.7.52.5.3.2.2.6.1.1.1" class="indexterm"></a>
+        <code class="function">connectby</code> ( <em class="parameter"><code>relname</code></em> <code class="type">text</code>, <em class="parameter"><code>keyid_fld</code></em> <code class="type">text</code>, <em class="parameter"><code>parent_keyid_fld</code></em> <code class="type">text</code>
+        [<span class="optional">, <em class="parameter"><code>orderby_fld</code></em> <code class="type">text</code> </span>], <em class="parameter"><code>start_with</code></em> <code class="type">text</code>, <em class="parameter"><code>max_depth</code></em> <code class="type">integer</code>
+        [<span class="optional">, <em class="parameter"><code>branch_delim</code></em> <code class="type">text</code> </span>] )
+        → <code class="returnvalue">setof record</code>
+       </p>
+       <p>
+        Produit une représentation d'une structure d'arbre hiérarchique.
+       </p></td></tr></tbody></table></div></div><br class="table-break" /><div class="sect3" id="TABLEFUNC-FUNCTIONS-NORMAL-RAND"><div class="titlepage"><div><div><h4 class="title">F.41.1.1. <code class="function">normal_rand</code> <a href="#TABLEFUNC-FUNCTIONS-NORMAL-RAND" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.52.5.4.2" class="indexterm"></a><pre class="synopsis">
+normal_rand(int numvals, float8 mean, float8 stddev) returns setof float8
+   </pre><p>
+    <code class="function">normal_rand</code> produit un ensemble de valeurs
+    distribuées au hasard (distribution gaussienne).
+   </p><p>
+    <em class="parameter"><code>numvals</code></em> est le nombre de valeurs que la fonction
+    doit renvoyer. <em class="parameter"><code>mean</code></em> est la moyenne de la
+    distribution normale des valeurs et <em class="parameter"><code>stddev</code></em> est la
+    déviation standard de la distribution normale des valeurs.
+   </p><p>
+    Par exemple, cet appel demande 1000 valeurs avec une moyenne de 5 et une
+    déviation standard de 3 :
+   </p><pre class="screen">
+test=# SELECT * FROM normal_rand(1000, 5, 3);
+     normal_rand
+----------------------
+     1.56556322244898
+     9.10040991424657
+     5.36957140345079
+   -0.369151492880995
+    0.283600703686639
+       .
+       .
+       .
+     4.82992125404908
+     9.71308014517282
+     2.49639286969028
+(1000 rows)
+   </pre></div><div class="sect3" id="TABLEFUNC-FUNCTIONS-CROSSTAB-TEXT"><div class="titlepage"><div><div><h4 class="title">F.41.1.2. <code class="function">crosstab(text)</code> <a href="#TABLEFUNC-FUNCTIONS-CROSSTAB-TEXT" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.52.5.5.2" class="indexterm"></a><pre class="synopsis">
+crosstab(text sql)
+crosstab(text sql, int N)
+   </pre><p>
+    La fonction <code class="function">crosstab</code> est utilisé pour créer un
+    affichage <span class="quote">« <span class="quote">pivot</span> »</span> où les données sont listées de gauche à
+    droite plutôt que de haut en bas. Par exemple, avec ces données
+    </p><pre class="programlisting">
+row1    val11
+row1    val12
+row1    val13
+...
+row2    val21
+row2    val22
+row2    val23
+...
+    </pre><p>
+    l'affiche ressemble à ceci
+    </p><pre class="programlisting">
+row1    val11   val12   val13   ...
+row2    val21   val22   val23   ...
+...
+    </pre><p>
+    La fonction <code class="function">crosstab</code> prend un paramètre texte qui est
+    une requête SQL produisant des données brutes formatées de la façon
+    habituelle et produit une table avec un autre formatage.
+   </p><p>
+    Le paramètre <em class="parameter"><code>sql</code></em> est une instruction SQL qui produit
+    l'ensemble source des données. Cette instruction doit renvoyer une colonne
+    <code class="structfield">row_name</code>, une colonne
+    <code class="structfield">category</code> et une colonne
+    <code class="structfield">value</code>. <em class="parameter"><code>N</code></em> est un paramètre
+    obsolète, ignoré quand il est fourni (auparavant, il devait correspondre
+    au nombre de colonnes de valeurs en sortie, mais maintenant ceci est
+    déterminé par la requête appelant).
+   </p><p>
+    Par exemple, la requête fournie peut produire un ensemble ressemblant à
+    ceci :
+   </p><pre class="programlisting">
+ row_name    cat    value
+----------+-------+-------
+  row1      cat1    val1
+  row1      cat2    val2
+  row1      cat3    val3
+  row1      cat4    val4
+  row2      cat1    val5
+  row2      cat2    val6
+  row2      cat3    val7
+  row2      cat4    val8
+   </pre><p>
+    La fonction <code class="function">crosstab</code> déclare renvoyer un <code class="type">setof
+     record</code>, donc les noms et types réels des colonnes doivent être
+    définis dans la clause <code class="literal">FROM</code> de l'instruction
+    <code class="command">SELECT</code> appelante. Par exemple :
+    statement, for example:
+   </p><pre class="programlisting">
+    SELECT * FROM crosstab('...') AS ct(row_name text, category_1 text, category_2 text);
+   </pre><p>
+    Cet exemple produit un ensemble ressemblant à ceci :
+   </p><pre class="programlisting">
+           &lt;== value  columns  ==&gt;
+row_name   category_1   category_2
+ ---------+------------+------------
+   row1        val1         val2
+   row2        val5         val6
+   </pre><p>
+    La clause <code class="literal">FROM</code> doit définir la sortie comme une
+    colonne <code class="structfield">row_name</code> (du même type que la première
+    colonne du résultat de la requête SQL) suivie par N colonnes
+    <code class="structfield">value</code> (tous du même type de données que la
+    troisième colonne du résultat de la requête SQL). Vous pouvez configurer
+    autant de colonnes de valeurs en sortie que vous voulez. Les noms des
+    colonnes en sortie n'ont pas d'importance en soi.
+   </p><p>
+    La fonction <code class="function">crosstab</code> produit une ligne en sortie
+    pour chaque groupe consécutif de lignes en entrée avec la même valeur
+    <code class="structfield">row_name</code>. Elle remplit les colonnes de
+    <code class="structfield">value</code>, de gauche à droite, avec les champs
+    <code class="structfield">value</code> provenant de ces lignes. S'il y a moins
+    de lignes dans un groupe que de colonnes <code class="structfield">value</code>
+    en sortie, les colonnes supplémentaires sont remplies avec des valeurs
+    NULL ; s'il y a trop de ligne, les colonnes en entrée supplémentaires
+    sont ignorées.
+   </p><p>
+    En pratique, la requête SQL devrait toujours spécifier <code class="literal">ORDER BY
+     1,2</code> pour s'assurer que les lignes en entrée sont bien ordonnées,
+    autrement dit que les valeurs de même <code class="structfield">row_name</code>
+    sont placées ensemble et sont correctement ordonnées dans la ligne. Notez
+    que <code class="function">crosstab</code> ne fait pas attention à la deuxième
+    colonne du résultat de la requête ; elle est là pour permettre le
+    tri, pour contrôler l'ordre dans lequel les valeurs de la troisième
+    colonne apparaissent dans la page.
+   </p><p>
+    Voici un exemple complet :
+   </p><pre class="programlisting">
+CREATE TABLE ct(id SERIAL, rowid TEXT, attribute TEXT, value TEXT);
+INSERT INTO ct(rowid, attribute, value) VALUES('test1','att1','val1');
+INSERT INTO ct(rowid, attribute, value) VALUES('test1','att2','val2');
+INSERT INTO ct(rowid, attribute, value) VALUES('test1','att3','val3');
+INSERT INTO ct(rowid, attribute, value) VALUES('test1','att4','val4');
+INSERT INTO ct(rowid, attribute, value) VALUES('test2','att1','val5');
+INSERT INTO ct(rowid, attribute, value) VALUES('test2','att2','val6');
+INSERT INTO ct(rowid, attribute, value) VALUES('test2','att3','val7');
+INSERT INTO ct(rowid, attribute, value) VALUES('test2','att4','val8');
+
+SELECT *
+FROM crosstab(
+  'select rowid, attribute, value
+   from ct
+   where attribute = ''att2'' or attribute = ''att3''
+   order by 1,2')
+AS ct(row_name text, category_1 text, category_2 text, category_3 text);
+
+ row_name | category_1 | category_2 | category_3
+----------+------------+------------+------------
+ test1    | val2       | val3       |
+ test2    | val6       | val7       |
+(2 rows)
+   </pre><p>
+    Vous pouvez toujours éviter d'avoir à écrire une clause
+    <code class="literal">FROM</code> pour définir les colonnes en sortie, en définissant
+    une fonction crosstab personnalisée qui a le type de ligne désiré en
+    sortie en dur dans sa définition. Ceci est décrit dans la prochaine
+    section. Une autre possibilité est d'embarquer la clause
+    <code class="literal">FROM</code> requise dans la définition d'une vue.
+   </p><div class="note"><h3 class="title">Note</h3><p>
+     Voir aussi la commande <code class="command"><a class="link" href="app-psql.html#APP-PSQL-META-COMMANDS-CROSSTABVIEW">\crosstabview</a></code>
+     dans <span class="application">psql</span>. Elle fournit des fonctionnalités
+     similaires à <code class="function">crosstab()</code>.
+    </p></div></div><div class="sect3" id="TABLEFUNC-FUNCTIONS-CROSSTAB-N-TEXT"><div class="titlepage"><div><div><h4 class="title">F.41.1.3. <code class="function">crosstab<em class="replaceable"><code>N</code></em>(text)</code> <a href="#TABLEFUNC-FUNCTIONS-CROSSTAB-N-TEXT" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.52.5.6.2" class="indexterm"></a><pre class="synopsis">
+crosstab<em class="replaceable"><code>N</code></em>(text sql)
+   </pre><p>
+    Les fonctions <code class="function">crosstab<em class="replaceable"><code>N</code></em></code>
+    sont des exemples de configuration de fonctions d'emballage pour la
+    fonction généraliste <code class="function">crosstab</code>. Cela vous permet de
+    ne pas avoir à écrire les noms et types des colonnes dans la requête
+    <code class="command">SELECT</code> appelante. Le module
+    <code class="filename">tablefunc</code> inclut
+    <code class="function">crosstab2</code>, <code class="function">crosstab3</code> et
+    <code class="function">crosstab4</code>, dont les types de ligne en sortie sont
+    définis ainsi :
+   </p><pre class="programlisting">
+CREATE TYPE tablefunc_crosstab_N AS (
+    row_name TEXT,
+    category_1 TEXT,
+    category_2 TEXT,
+        .
+        .
+        .
+    category_N TEXT
+);
+   </pre><p>
+    Du coup, ces fonctions peuvent être utilisées directement quand la
+    requête en entrée produit des colonnes <code class="structfield">row_name</code>
+    et <code class="structfield">value</code> de type <code class="type">text</code>, et que vous
+    voulez 2, 3 ou 4 colonnes de valeur en sortie. Autrement, elles se
+    comportent exactement la fonction <code class="function">crosstab</code> décrite
+    précédemment.
+   </p><p>
+    L'exemple de la section précédente pourrait aussi fonctionner ainsi :
+   </p><pre class="programlisting">
+SELECT *
+FROM crosstab3(
+  'select rowid, attribute, value
+   from ct
+   where attribute = ''att2'' or attribute = ''att3''
+   order by 1,2');
+   </pre><p>
+    Ces fonctions sont fournies principalement comme exemples. Vous pouvez
+    créer vos propres types de retour et fonctions basées sur la fonction
+    <code class="function">crosstab()</code>. Il existe deux façons de le faire :
+   </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+      Créer un type composite décrivant les colonnes désirées en sortie,
+      similaire aux exemples disponibles dans le fichier
+      <code class="filename">contrib/tablefunc/tablefunc--1.0.sql</code>. Ensuite, définir un
+      nom de fonction unique acceptant un paramètre de type <code class="type">text</code>
+      et renvoyant <code class="type">setof nom_de_votre_type</code>, mais renvoyant à
+      la fonction C <code class="function">crosstab</code>. Par exemple, si votre
+      source de données produit des noms de ligne qui sont de type
+      <code class="type">text</code>, et des valeurs qui sont de type <code class="type">float8</code>,
+      et que vous voulez cinq colonnes de valeurs :
+     </p><pre class="programlisting">
+      CREATE TYPE my_crosstab_float8_5_cols AS (
+          my_row_name text,
+          my_category_1 float8,
+          my_category_2 float8,
+          my_category_3 float8,
+          my_category_4 float8,
+          my_category_5 float8
+      );
+
+      CREATE OR REPLACE FUNCTION crosstab_float8_5_cols(text)
+        RETURNS setof my_crosstab_float8_5_cols
+        AS '$libdir/tablefunc','crosstab' LANGUAGE C STABLE STRICT;
+     </pre></li><li class="listitem"><p>
+      Utiliser des paramètres <code class="literal">OUT</code> pour définir
+      implicitement le type en retour. Le même exemple pourrait s'écrire
+      ainsi :
+     </p><pre class="programlisting">
+      CREATE OR REPLACE FUNCTION crosstab_float8_5_cols(
+          IN text,
+          OUT my_row_name text,
+          OUT my_category_1 float8,
+          OUT my_category_2 float8,
+          OUT my_category_3 float8,
+          OUT my_category_4 float8,
+          OUT my_category_5 float8)
+        RETURNS setof record
+        AS '$libdir/tablefunc','crosstab' LANGUAGE C STABLE STRICT;
+     </pre></li></ul></div></div><div class="sect3" id="TABLEFUNC-FUNCTIONS-CROSSTAB-TEXT-2"><div class="titlepage"><div><div><h4 class="title">F.41.1.4. <code class="function">crosstab(text, text)</code> <a href="#TABLEFUNC-FUNCTIONS-CROSSTAB-TEXT-2" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.52.5.7.2" class="indexterm"></a><pre class="synopsis">
+crosstab(text source_sql, text category_sql)
+   </pre><p>
+    La limite principale de la forme à un paramètre de
+    <code class="function">crosstab</code> est qu'elle traite toutes les valeurs d'un
+    groupe de la même façon, en insérant chaque valeur dans la première
+    colonne disponible. Si vous voulez les colonnes de valeur correspondant
+    à des catégories spécifiques de données, et que certains groupes n'ont pas
+    de données pour certaines des catégories, alors cela ne fonctionne pas.
+    La forme à deux paramètres de la fonction <code class="function">crosstab</code>
+    gère ce cas en fournissant une liste explicite des catégories correspondant
+    aux colonnes en sortie.
+   </p><p>
+    <em class="parameter"><code>source_sql</code></em> est une instruction SQL qui produit
+    l'ensemble source des données. Cette instruction doit renvoyer une colonne
+    <code class="structfield">row_name</code>, une colonne
+    <code class="structfield">category</code> et une colonne
+    <code class="structfield">value</code>. Elle pourrait aussi avoir une ou
+    plusieurs colonnes <span class="quote">« <span class="quote">extra</span> »</span>. La colonne
+    <code class="structfield">row_name</code> doit être la première. Les colonnes
+    <code class="structfield">category</code> et <code class="structfield">value</code>
+    doivent être les deux dernières colonnes, dans cet ordre. Toutes les
+    colonnes entre <code class="structfield">row_name</code> et
+    <code class="structfield">category</code> sont traitées en <span class="quote">« <span class="quote">extra</span> »</span>.
+    Les colonnes <span class="quote">« <span class="quote">extra</span> »</span> doivent être les mêmes pour toutes les
+    lignes avec la même valeur <code class="structfield">row_name</code>.
+   </p><p>
+    Par exemple, <em class="parameter"><code>source_sql</code></em> produit un ensemble
+    ressemblant à ceci :
+   </p><pre class="programlisting">SELECT row_name, extra_col, cat, value FROM foo ORDER BY 1;
+
+ row_name    extra_col   cat    value
+----------+------------+-----+---------
+  row1         extra1    cat1    val1
+  row1         extra1    cat2    val2
+  row1         extra1    cat4    val4
+  row2         extra2    cat1    val5
+  row2         extra2    cat2    val6
+  row2         extra2    cat3    val7
+  row2         extra2    cat4    val8</pre><p>
+    <em class="parameter"><code>category_sql</code></em> est une instruction SQL qui produit
+    l'ensemble des catégories. Cette instruction doit renvoyer seulement une
+    colonne. Cela doit produire au moins une ligne, sinon une erreur sera
+    générée. De plus, cela ne doit pas produire de valeurs dupliquées, sinon
+    une erreur sera aussi générée. <em class="parameter"><code>category_sql</code></em> doit
+    ressembler à ceci :
+   </p><pre class="programlisting">
+SELECT DISTINCT cat FROM foo ORDER BY 1;
+    cat
+  -------
+    cat1
+    cat2
+    cat3
+    cat4
+   </pre><p>
+    La fonction <code class="function">crosstab</code> déclare renvoyer <code class="type">setof
+     record</code>, donc les noms et types réels des colonnes en sortie
+    doivent être définis dans la clause <code class="literal">FROM</code> de la requête
+    <code class="command">SELECT</code> appelante, par exemple :
+   </p><pre class="programlisting">
+    SELECT * FROM crosstab('...', '...')
+      AS ct(row_name text, extra text, cat1 text, cat2 text, cat3 text, cat4 text);
+   </pre><p>
+    Ceci produira un résultat ressemblant à ceci :
+   </p><pre class="programlisting">
+                              &lt;==  value  columns   ==&gt;
+           row_name   extra   cat1   cat2   cat3   cat4
+           ---------+-------+------+------+------+------
+             row1     extra1  val1   val2          val4
+             row2     extra2  val5   val6   val7   val8
+   </pre><p>
+    La clause <code class="literal">FROM</code> doit définir le bon nombre de colonnes en
+    sortie avec les bons types de données. S'il y a <em class="replaceable"><code>N</code></em>
+    colonnes dans le résultat de la requête <em class="parameter"><code>source_sql</code></em>,
+    les <em class="replaceable"><code>N</code></em>-2 premiers d'entre eux doivent
+    correspondre aux <em class="replaceable"><code>N</code></em>-2 premières colonnes en
+    sortie. Les colonnes restantes en sortie doivent avoir le type de la
+    dernière colonne du résultat de la requête The remaining output columns
+    <em class="parameter"><code>source_sql</code></em>, et il doit y en avoir autant que de
+    lignes dans le résultat de la requête <em class="parameter"><code>category_sql</code></em>.
+   </p><p>
+    La fonction <code class="function">crosstab</code> produit une ligne en sortie
+    pour chaque groupe consécutif de lignes en entrée avec la même valeur
+    <code class="structfield">row_name</code>. La colonne en sortie
+    <code class="structfield">row_name</code> ainsi que toutes colonnes
+    <span class="quote">« <span class="quote">extra</span> »</span> sont copiées à partir de la première ligne du
+    groupe. Les colonnes <code class="structfield">value</code> en sortie sont
+    remplies avec les champs <code class="structfield">value</code> à partir des
+    lignes ayant une correspondance avec des valeurs
+    <code class="structfield">category</code>. Si la
+    <code class="structfield">category</code> d'une ligne ne correspond pas à une
+    sortie de la requête <em class="parameter"><code>category_sql</code></em>, sa
+    <code class="structfield">value</code> est ignorée. Les colonnes en sortie dont
+    la catégorie correspondante est absente de toute ligne en entrée du
+    groupe sont remplies avec des valeurs NULL.
+   </p><p>
+    En pratique, la requête <em class="parameter"><code>source_sql</code></em> doit toujours
+    spécifier <code class="literal">ORDER BY 1</code> pour s'assurer que les valeurs du
+    même <code class="structfield">row_name</code> sont assemblées. Néanmoins,
+    l'ordre des catégories dans un groupe n'est pas important. De plus, il est
+    essentiel que l'ordre du résultat de la requête
+    <em class="parameter"><code>category_sql</code></em> corresponde à l'ordre des colonnes
+    spécifiées en sortie.
+   </p><p>
+    Voici deux exemples complets :
+   </p><pre class="programlisting">
+create table sales(year int, month int, qty int);
+insert into sales values(2007, 1, 1000);
+insert into sales values(2007, 2, 1500);
+insert into sales values(2007, 7, 500);
+insert into sales values(2007, 11, 1500);
+insert into sales values(2007, 12, 2000);
+insert into sales values(2008, 1, 1000);
+
+select * from crosstab(
+  'select year, month, qty from sales order by 1',
+  'select m from generate_series(1,12) m'
+) as (
+  year int,
+  "Jan" int,
+  "Feb" int,
+  "Mar" int,
+  "Apr" int,
+  "May" int,
+  "Jun" int,
+  "Jul" int,
+  "Aug" int,
+  "Sep" int,
+  "Oct" int,
+  "Nov" int,
+  "Dec" int
+);
+ year | Jan  | Feb  | Mar | Apr | May | Jun | Jul | Aug | Sep | Oct | Nov  | Dec
+------+------+------+-----+-----+-----+-----+-----+-----+-----+-----+------+------
+ 2007 | 1000 | 1500 |     |     |     |     | 500 |     |     |     | 1500 | 2000
+ 2008 | 1000 |      |     |     |     |     |     |     |     |     |      |
+(2 rows)
+   </pre><pre class="programlisting">
+CREATE TABLE cth(rowid text, rowdt timestamp, attribute text, val text);
+INSERT INTO cth VALUES('test1','01 March 2003','temperature','42');
+INSERT INTO cth VALUES('test1','01 March 2003','test_result','PASS');
+INSERT INTO cth VALUES('test1','01 March 2003','volts','2.6987');
+INSERT INTO cth VALUES('test2','02 March 2003','temperature','53');
+INSERT INTO cth VALUES('test2','02 March 2003','test_result','FAIL');
+INSERT INTO cth VALUES('test2','02 March 2003','test_startdate','01 March 2003');
+INSERT INTO cth VALUES('test2','02 March 2003','volts','3.1234');
+
+SELECT * FROM crosstab
+(
+  'SELECT rowid, rowdt, attribute, val FROM cth ORDER BY 1',
+  'SELECT DISTINCT attribute FROM cth ORDER BY 1'
+)
+AS
+(
+       rowid text,
+       rowdt timestamp,
+       temperature int4,
+       test_result text,
+       test_startdate timestamp,
+       volts float8
+);
+ rowid |          rowdt           | temperature | test_result |      test_startdate      | volts
+-------+--------------------------+-------------+-------------+--------------------------+--------
+ test1 | Sat Mar 01 00:00:00 2003 |          42 | PASS        |                          | 2.6987
+ test2 | Sun Mar 02 00:00:00 2003 |          53 | FAIL        | Sat Mar 01 00:00:00 2003 | 3.1234
+(2 rows)
+   </pre><p>
+    Vous pouvez créer des fonctions prédéfinies pour éviter d'avoir à écrire
+    les noms et types des colonnes en résultat dans chaque requête. Voir les
+    exemples dans la section précédente. La fonction C sous-jacente pour cette
+    forme de <code class="function">crosstab</code> est appelée
+    <code class="literal">crosstab_hash</code>.
+   </p></div><div class="sect3" id="TABLEFUNC-FUNCTIONS-CONNECTBY"><div class="titlepage"><div><div><h4 class="title">F.41.1.5. <code class="function">connectby</code> <a href="#TABLEFUNC-FUNCTIONS-CONNECTBY" class="id_link">#</a></h4></div></div></div><a id="id-1.11.7.52.5.8.2" class="indexterm"></a><pre class="synopsis">
+connectby(text relname, text keyid_fld, text parent_keyid_fld
+          [, text orderby_fld ], text start_with, int max_depth
+          [, text branch_delim ])
+   </pre><p>
+    La fonction <code class="function">connectby</code> réalise un affichage de données
+    hiérarchiques stockées dans une table. La table doit avoir un champ clé
+    qui identifie de façon unique les lignes et un champ clé qui référence
+    le parent de chaque ligne. <code class="function">connectby</code> peut afficher le
+    sous-arbre à partir de n'importe quelle ligne.
+   </p><p>
+    <a class="xref" href="tablefunc.html#TABLEFUNC-CONNECTBY-PARAMETERS" title="Tableau F.32. Paramètres connectby">Tableau F.32</a> explique les paramètres.
+   </p><div class="table" id="TABLEFUNC-CONNECTBY-PARAMETERS"><p class="title"><strong>Tableau F.32. Paramètres <code class="function">connectby</code></strong></p><div class="table-contents"><table class="table" summary="Paramètres connectby" border="1"><colgroup><col /><col /></colgroup><thead><tr><th>Paramètre</th><th>Description</th></tr></thead><tbody><tr><td><em class="parameter"><code>relname</code></em></td><td>Nom de la relation source</td></tr><tr><td><em class="parameter"><code>keyid_fld</code></em></td><td>Nom du champ clé</td></tr><tr><td><em class="parameter"><code>parent_keyid_fld</code></em></td><td>Nom du champ clé du parent</td></tr><tr><td><em class="parameter"><code>orderby_fld</code></em></td><td>Nom du champ des autres relations (optionnel)</td></tr><tr><td><em class="parameter"><code>start_with</code></em></td><td>Valeur de la clé de la ligne de début</td></tr><tr><td><em class="parameter"><code>max_depth</code></em></td><td>Profondeur maximum pour la descente, ou zéro pour une
+        profondeur illimitée</td></tr><tr><td><em class="parameter"><code>branch_delim</code></em></td><td>Chaîne pour séparer les clés des branches (optionnel)</td></tr></tbody></table></div></div><br class="table-break" /><p>
+    Les champs clé et clé du parent peuvent être de tout type mais ils
+    doivent être du même type. Notez que la valeur
+    <em class="parameter"><code>start_with</code></em> doit être saisi comme une chaîne de
+    caractères, quelque soit le type du champ clé.
+   </p><p>
+    La fonction <code class="function">connectby</code> déclare renvoyer un <code class="type">setof
+     record</code>, donc les noms et types réels des colonnes en sortie
+    doivent être définis dans la clause <code class="literal">FROM</code> de
+    l'instruction <code class="command">SELECT</code> appelante, par exemple :
+   </p><pre class="programlisting">
+    SELECT * FROM connectby('connectby_tree', 'keyid', 'parent_keyid', 'pos', 'row2', 0, '~')
+      AS t(keyid text, parent_keyid text, level int, branch text, pos int);
+   </pre><p>
+    Des deux premières colonnes en sortie sont utilisées pour la clé de la
+    ligne en cours et la clé de son parent ; elles doivent correspondre
+    au type du champ clé de la table. La troisième colonne est la
+    profondeur de l'arbre et doit être du type <code class="type">integer</code>. Si un
+    paramètre <em class="parameter"><code>branch_delim</code></em> est renseigné, la prochaine
+    colonne en sortie est l'affichage de la branche et doit être de type
+    <code class="type">text</code>. Enfin, si le paramètre
+    <em class="parameter"><code>orderby_fld</code></em> est renseigné, la dernière colonne en
+    sortie est un numéro de série et doit être de type <code class="type">integer</code>.
+   </p><p>
+    La colonne <span class="quote">« <span class="quote">branch</span> »</span> en sortie affiche le chemin des clés
+    utilisé pour atteindre la ligne actuelle. Les clés sont séparées
+    par la chaîne <em class="parameter"><code>branch_delim</code></em> spécifiée. Si l'affichage
+    des branches n'est pas voulu, omettez le paramètre
+    <em class="parameter"><code>branch_delim</code></em> et la colonne branche dans la liste
+    des colonnes en sortie.
+   </p><p>
+    Si l'ordre des relations du même parent est important, incluez le
+    paramètre <em class="parameter"><code>orderby_fld</code></em> pour indiquer par quel
+    champ ordonner les relations. Ce champ doit être de tout type de données
+    triable. La liste des colonnes en sortie doit inclure une colonne numéro
+    de série de type integer si, et seulement si,
+    <em class="parameter"><code>orderby_fld</code></em> est spécifiée.
+   </p><p>
+    Les paramètres représentant table et noms de champs sont copiés tels
+    quel dans les requêtes SQL que <code class="function">connectby</code> génère en
+    interne. Du coup, ajoutez des guillemets doubles si les noms utilisent
+    majuscules et minuscules ou s'ils contiennent des caractères spéciaux.
+    Vous pouvez aussi avoir besoin de qualifier le nom de la table avec le
+    nom du schéma.
+   </p><p>
+    Dans les grosses tables, les performances seront faibles sauf si un index
+    est créé sur le champ clé parent.
+   </p><p>
+    Il est important que la chaîne <em class="parameter"><code>branch_delim</code></em>
+    n'apparaisse pas dans les valeurs des clés, sinon
+    <code class="function">connectby</code> pourrait rapporter des erreurs de récursion
+    infinie totalement erronées. Notez que si
+    <em class="parameter"><code>branch_delim</code></em> n'est pas fourni, une valeur par défaut
+    <code class="literal">~</code> est utilisé pour des raisons de détection de
+    récursion.
+    
+   </p><p>
+    Voici un exemple :
+   </p><pre class="programlisting">
+CREATE TABLE connectby_tree(keyid text, parent_keyid text, pos int);
+
+INSERT INTO connectby_tree VALUES('row1',NULL, 0);
+INSERT INTO connectby_tree VALUES('row2','row1', 0);
+INSERT INTO connectby_tree VALUES('row3','row1', 0);
+INSERT INTO connectby_tree VALUES('row4','row2', 1);
+INSERT INTO connectby_tree VALUES('row5','row2', 0);
+INSERT INTO connectby_tree VALUES('row6','row4', 0);
+INSERT INTO connectby_tree VALUES('row7','row3', 0);
+INSERT INTO connectby_tree VALUES('row8','row6', 0);
+INSERT INTO connectby_tree VALUES('row9','row5', 0);
+
+-- with branch, without orderby_fld (order of results is not guaranteed)
+SELECT * FROM connectby('connectby_tree', 'keyid', 'parent_keyid', 'row2', 0, '~')
+ AS t(keyid text, parent_keyid text, level int, branch text);
+ keyid | parent_keyid | level |       branch
+-------+--------------+-------+---------------------
+ row2  |              |     0 | row2
+ row4  | row2         |     1 | row2~row4
+ row6  | row4         |     2 | row2~row4~row6
+ row8  | row6         |     3 | row2~row4~row6~row8
+ row5  | row2         |     1 | row2~row5
+ row9  | row5         |     2 | row2~row5~row9
+(6 rows)
+
+-- without branch, without orderby_fld (order of results is not guaranteed)
+SELECT * FROM connectby('connectby_tree', 'keyid', 'parent_keyid', 'row2', 0)
+ AS t(keyid text, parent_keyid text, level int);
+ keyid | parent_keyid | level
+-------+--------------+-------
+ row2  |              |     0
+ row4  | row2         |     1
+ row6  | row4         |     2
+ row8  | row6         |     3
+ row5  | row2         |     1
+ row9  | row5         |     2
+(6 rows)
+
+-- with branch, with orderby_fld (notice that row5 comes before row4)
+SELECT * FROM connectby('connectby_tree', 'keyid', 'parent_keyid', 'pos', 'row2', 0, '~')
+ AS t(keyid text, parent_keyid text, level int, branch text, pos int);
+ keyid | parent_keyid | level |       branch        | pos
+-------+--------------+-------+---------------------+-----
+ row2  |              |     0 | row2                |   1
+ row5  | row2         |     1 | row2~row5           |   2
+ row9  | row5         |     2 | row2~row5~row9      |   3
+ row4  | row2         |     1 | row2~row4           |   4
+ row6  | row4         |     2 | row2~row4~row6      |   5
+ row8  | row6         |     3 | row2~row4~row6~row8 |   6
+(6 rows)
+
+-- without branch, with orderby_fld (notice that row5 comes before row4)
+SELECT * FROM connectby('connectby_tree', 'keyid', 'parent_keyid', 'pos', 'row2', 0)
+ AS t(keyid text, parent_keyid text, level int, pos int);
+ keyid | parent_keyid | level | pos
+-------+--------------+-------+-----
+ row2  |              |     0 |   1
+ row5  | row2         |     1 |   2
+ row9  | row5         |     2 |   3
+ row4  | row2         |     1 |   4
+ row6  | row4         |     2 |   5
+ row8  | row6         |     3 |   6
+(6 rows)
+   </pre></div></div><div class="sect2" id="TABLEFUNC-AUTHOR"><div class="titlepage"><div><div><h3 class="title">F.41.2. Auteur <a href="#TABLEFUNC-AUTHOR" class="id_link">#</a></h3></div></div></div><p>
+   Joe Conway
+  </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/tablefunc.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:49:21 GMT -->
+</html>

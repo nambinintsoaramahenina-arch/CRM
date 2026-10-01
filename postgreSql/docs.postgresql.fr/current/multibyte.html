@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from docs.postgresql.fr/current/multibyte.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>23.3. Support des jeux de caractères</title><link rel="stylesheet" type="text/css" href="pgfr.css" /><link rel="stylesheet" type="text/css" href="../../www.postgresql.org/media/css/docs-complete.css" /><link rev="made" href="pgsql-docs%40lists.postgresql.html" /><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot" /><link rel="prev" href="collation.html" title="23.2. Support des collations" /><link rel="next" href="maintenance.html" title="Chapitre 24. Planifier les tâches de maintenance" /></head><body id="docContent" class="container-fluid col-10"><div id="top"><div id="pgHeader"><span id="pgHeaderLogoLeft"><a href="https://docs.postgresql.fr/" title="PostgreSQL"><img src="hdr_left.png" width="230" height="80" alt="PostgreSQL" /></a></span><span id="pgHeaderLogoRight"><a href="https://docs.postgresql.fr/" title="La base de données la plus sophistiquée au monde."><img src="hdr_right.png" width="210" height="80" alt="La base de données la plus sophistiquée au monde." /></a></span></div></div><div class="pgTopNav"><div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height="23" alt="" /></div><div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height="23" alt="" /></div><ul class="pgTopNavList"><li><a href="https://www.postgresql.fr/" title="Accueil">Accueil</a></li><li><a href="https://blog.postgresql.fr/" title="Lire les actualités">Actualités</a></li><li><a href="https://docs.postgresql.fr/" title="Lire la documentation officielle">Documentation</a></li><li><a href="https://forums.postgresql.fr/" title="Pour poser des questions">Forums</a></li><li><a href="https://asso.postgresql.fr/" title="La vie de l'association">Association</a></li><li><a href="https://www.postgresql.fr/devel:accueil" title="Informations pour les développeurs/traducteurs">Développeurs</a></li><li><a href="https://planete.postgresql.fr/" title="La planète francophone sur PostgreSQL">Planète</a></li><li><a href="https://support.postgresql.fr/" title="Support sur PostgreSQL">Support</a></li></ul></div>
+	<div class="pgTopNav">
+<div class="pgTopNavLeft"><img src="nav_lft.png" width="7" height=
+"23" alt="" /></div>
+<div class="pgTopNavRight"><img src="nav_rgt.png" width="7" height=
+"23" alt="" /></div>
+<ul class="pgTopNavList">
+<li>Versions supportées <a href="https://docs.postgresql.fr/18/multibyte.html">18</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/17/multibyte.html">17</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/16/multibyte.html">16</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/15/multibyte.html">15</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/14/multibyte.html">14</a>&nbsp;&nbsp;</li><li>Versions obsolètes <a href="https://docs.postgresql.fr/13/multibyte.html">13</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/12/multibyte.html">12</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/11/multibyte.html">11</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/10/multibyte.html">10</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.6/multibyte.html">9.6</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.5/multibyte.html">9.5</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.4/multibyte.html">9.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.3/multibyte.html">9.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.2/multibyte.html">9.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.1/multibyte.html">9.1</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/9.0/multibyte.html">9.0</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.4/multibyte.html">8.4</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.3/multibyte.html">8.3</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.2/multibyte.html">8.2</a>&nbsp;&nbsp;<a href="https://docs.postgresql.fr/8.1/multibyte.html">8.1</a>&nbsp;&nbsp;</li><li>Version originale <a href="https://www.postgresql.org/docs/current/multibyte.html">EN</a>&nbsp;&nbsp;</li></ul>
+</div>
+	<div class="pgContent"><form method="post" action="https://docs.postgresql.fr/search.php">
+	    	      <input id="q" name="q" type="text" size="16" maxlength="255"
+                     title='Vous pouvez utiliser les opérateurs suivants : "and", "&","not","!","or","|","<->" ("suivi de" pour recherche de phrase)'
+		     onfocus="if( this.value=='Rechercher' ) this.value='';"
+		     value="Rechercher"
+                     accesskey="s" />
+              <select id="v" name="v">
+<option value="18">18 (1167 pages)</option><option value="17">17 (1162 pages)</option><option value="16">16 (1190 pages)</option><option value="15">15 (1189 pages)</option><option value="14">14 (1179 pages)</option><option value="13">13 (1161 pages)</option><option value="12">12 (1152 pages)</option><option value="11">11 (1143 pages)</option><option value="10">10 (1105 pages)</option><option value="9.6">9.6 (984 pages)</option><option value="9.5">9.5 (966 pages)</option><option value="9.4">9.4 (944 pages)</option><option value="9.3">9.3 (1208 pages)</option><option value="9.2">9.2 (1162 pages)</option><option value="9.1">9.1 (1112 pages)</option><option value="9.0">9.0 (1035 pages)</option><option value="8.4">8.4 (980 pages)</option><option value="8.3">8.3 (924 pages)</option><option value="8.2">8.2 (796 pages)</option><option value="8.1">8.1 (741 pages)</option><option value="0">Toutes versions</option>              </select>
+              <input id="submit" name="submit" type="submit" value="Rechercher" />
+	    </form></div><div class="pgContent"><span class="breadcrumb-link"><a href="index-2.html">Documentation PostgreSQL 17.10</a></span> » <span class="breadcrumb-link"><a href="admin.html">Administration du serveur</a></span> » <span class="breadcrumb-link"><a href="charset.html">Localisation</a></span> » <span class="breadcrumb-node">Support des jeux de caractères</span><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="collation.html" title="23.2. Support des collations">Précédent</a> </td><td width="20%" align="center"><a accesskey="u" href="charset.html" title="Chapitre 23. Localisation">Niveau supérieur</a></td><td width="40%" align="right"> <a accesskey="n" href="maintenance.html" title="Chapitre 24. Planifier les tâches de maintenance">Suivant</a></td></tr><tr><td width="40%" align="left" valign="top">23.2. Support des collations </td><td width="20%" align="center"><a accesskey="h" href="index-2.html" title="Documentation PostgreSQL 17.10">Sommaire</a></td><td width="40%" align="right" valign="top"> Chapitre 24. Planifier les tâches de maintenance</td></tr></table></div><div class="sect1" id="MULTIBYTE"><div class="titlepage"><div><div><h2 class="title" style="clear: both">23.3. Support des jeux de caractères <a href="#MULTIBYTE" class="id_link">#</a></h2></div></div></div><div class="toc"><dl class="toc"><dt><span class="sect2"><a href="multibyte.html#MULTIBYTE-CHARSET-SUPPORTED">23.3.1. Jeux de caractères supportés</a></span></dt><dt><span class="sect2"><a href="multibyte.html#MULTIBYTE-SETTING">23.3.2. Choisir le jeu de caractères</a></span></dt><dt><span class="sect2"><a href="multibyte.html#MULTIBYTE-AUTOMATIC-CONVERSION">23.3.3. Conversion automatique d'encodage entre serveur et client</a></span></dt><dt><span class="sect2"><a href="multibyte.html#MULTIBYTE-CONVERSIONS-SUPPORTED">23.3.4. Conversions disponibles entre jeux de caractères</a></span></dt><dt><span class="sect2"><a href="multibyte.html#MULTIBYTE-FURTHER-READING">23.3.5. Pour aller plus loin</a></span></dt></dl></div><a id="id-1.6.10.5.2" class="indexterm"></a><p>
+      
+   <span class="productname">PostgreSQL</span>
+   permet d'insérer du texte dans différents jeux de caractères (aussi appelés
+   encodages), soit mono-octet comme série ISO 8859, soit multi-octets comme
+   <acronym class="acronym">EUC</acronym> (Extended Unix Code), UTF-8 ou le codage interne Mule.
+   Tous les jeux de caractères supportés peuvent être utilisés de façon
+   transparente par les clients, mais certains ne sont pas supportés par le
+   serveur (c'est-à-dire comme encodage côté serveur).
+   Le jeu de caractères par défaut est choisi pendant l'initialisation
+   de l'instance avec <code class="command">initdb</code>. Ce choix peut
+   être surchargé à la création de la base. Il est donc possible de disposer
+   de bases utilisant chacune un jeu de caractères différent.
+  </p><p>
+   Cependant, une importante restriction existe : le jeu de caractère
+   de chaque base doit être compatible avec les variables
+   <code class="envar">LC_CTYPE</code> (classification des caractères) et
+   <code class="envar">LC_COLLATE</code> (ordre de tri des chaînes) de cette même base.
+   Pour les locales <code class="literal">C</code> ou <code class="literal">POSIX</code>, tous
+   les jeux de caractères sont autorisés, mais pour d'autres locales provenant de la libc,
+   il n'y a qu'un seul jeu de caractères qui fonctionne correctement.
+   (Néanmoins, sur Windows, l'encodage UTF-8 peut être utilisé avec toute
+   locale.)
+   Si le support d'ICU est configuré, les locales fournies par ICU peuvent
+   être utilisées avec la plupart des encodages côté serveur.
+  </p><div class="sect2" id="MULTIBYTE-CHARSET-SUPPORTED"><div class="titlepage"><div><div><h3 class="title">23.3.1. Jeux de caractères supportés <a href="#MULTIBYTE-CHARSET-SUPPORTED" class="id_link">#</a></h3></div></div></div><p>
+    Le <a class="xref" href="multibyte.html#CHARSET-TABLE" title="Tableau 23.3. Jeux de caractères de PostgreSQL">Tableau 23.3</a> présente les jeux de caractères
+    utilisables avec <span class="productname">PostgreSQL</span>.
+   </p><div class="table" id="CHARSET-TABLE"><p class="title"><strong>Tableau 23.3. Jeux de caractères de <span class="productname">PostgreSQL</span></strong></p><div class="table-contents"><table class="table" summary="Jeux de caractères de PostgreSQL" border="1"><colgroup><col class="col1" /><col class="col2" /><col class="col3" /><col class="col4" /><col class="col5" /><col class="col6" /><col class="col7" /></colgroup><thead><tr><th>Nom</th><th>Description</th><th>Langue</th><th>Serveur ?</th><th>ICU ?</th><th>Octets/​Caractère</th><th>Alias</th></tr></thead><tbody><tr><td><code class="literal">BIG5</code></td><td>Big Five</td><td>Chinois traditionnel</td><td>Non</td><td>Non</td><td>1–2</td><td><code class="literal">WIN950</code>, <code class="literal">Windows950</code></td></tr><tr><td><code class="literal">EUC_CN</code></td><td>Code-CN Unix étendu</td><td>Chinois simplifié</td><td>Oui</td><td>Oui</td><td>1–3</td><td> </td></tr><tr><td><code class="literal">EUC_JP</code></td><td>Code-JP Unix étendu</td><td>Japonais</td><td>Oui</td><td>Oui</td><td>1–3</td><td> </td></tr><tr><td><code class="literal">EUC_JIS_2004</code></td><td>Code-JP Unix étendu, JIS X 0213</td><td>Japonais</td><td>Oui</td><td>Non</td><td>1–3</td><td> </td></tr><tr><td><code class="literal">EUC_KR</code></td><td>Code-KR Unix étendu</td><td>Coréen</td><td>Oui</td><td>Oui</td><td>1–3</td><td> </td></tr><tr><td><code class="literal">EUC_TW</code></td><td>Code-TW Unix étendu</td><td>Chinois traditionnel, taïwanais</td><td>Oui</td><td>Oui</td><td>1–4</td><td> </td></tr><tr><td><code class="literal">GB18030</code></td><td>Standard national</td><td>Chinois</td><td>Non</td><td>Non</td><td>1–4</td><td> </td></tr><tr><td><code class="literal">GBK</code></td><td>Standard national étendu</td><td>Chinois simplifié</td><td>Non</td><td>Non</td><td>1–2</td><td><code class="literal">WIN936</code>, <code class="literal">Windows936</code></td></tr><tr><td><code class="literal">ISO_8859_5</code></td><td>ISO 8859-5, <acronym class="acronym">ECMA</acronym> 113</td><td>Latin/Cyrillique</td><td>Oui</td><td>Oui</td><td>1</td><td> </td></tr><tr><td><code class="literal">ISO_8859_6</code></td><td>ISO 8859-6, <acronym class="acronym">ECMA</acronym> 114</td><td>Latin/Arabe</td><td>Oui</td><td>Oui</td><td>1</td><td> </td></tr><tr><td><code class="literal">ISO_8859_7</code></td><td>ISO 8859-7, <acronym class="acronym">ECMA</acronym> 118</td><td>Latin/Grec</td><td>Oui</td><td>Oui</td><td>1</td><td> </td></tr><tr><td><code class="literal">ISO_8859_8</code></td><td>ISO 8859-8, <acronym class="acronym">ECMA</acronym> 121</td><td>Latin/Hébreu</td><td>Oui</td><td>Oui</td><td>1</td><td> </td></tr><tr><td><code class="literal">JOHAB</code></td><td><acronym class="acronym">JOHAB</acronym></td><td>Coréen (Hangul)</td><td>Non</td><td>Non</td><td>1-3</td><td> </td></tr><tr><td><code class="literal">KOI8R</code></td><td><acronym class="acronym">KOI</acronym>8-R</td><td>Cyrillique (Russie)</td><td>Oui</td><td>Oui</td><td>1</td><td><code class="literal">KOI8</code></td></tr><tr><td><code class="literal">KOI8U</code></td><td><acronym class="acronym">KOI</acronym>8-U</td><td>Cyrillique (Ukraine)</td><td>Oui</td><td>Oui</td><td>1</td><td> </td></tr><tr><td><code class="literal">LATIN1</code></td><td>ISO 8859-1, <acronym class="acronym">ECMA</acronym> 94</td><td>Europe de l'ouest</td><td>Oui</td><td>Oui</td><td>1</td><td><code class="literal">ISO88591</code></td></tr><tr><td><code class="literal">LATIN2</code></td><td>ISO 8859-2, <acronym class="acronym">ECMA</acronym> 94</td><td>Europe centrale</td><td>Oui</td><td>Oui</td><td>1</td><td><code class="literal">ISO88592</code></td></tr><tr><td><code class="literal">LATIN3</code></td><td>ISO 8859-3, <acronym class="acronym">ECMA</acronym> 94</td><td>Europe du sud</td><td>Oui</td><td>Oui</td><td>1</td><td><code class="literal">ISO88593</code></td></tr><tr><td><code class="literal">LATIN4</code></td><td>ISO 8859-4, <acronym class="acronym">ECMA</acronym> 94</td><td>Europe du nord</td><td>Oui</td><td>Oui</td><td>1</td><td><code class="literal">ISO88594</code></td></tr><tr><td><code class="literal">LATIN5</code></td><td>ISO 8859-9, <acronym class="acronym">ECMA</acronym> 128</td><td>Turque</td><td>Oui</td><td>Oui</td><td>1</td><td><code class="literal">ISO88599</code></td></tr><tr><td><code class="literal">LATIN6</code></td><td>ISO 8859-10, <acronym class="acronym">ECMA</acronym> 144</td><td>Nordique</td><td>Oui</td><td>Oui</td><td>1</td><td><code class="literal">ISO885910</code></td></tr><tr><td><code class="literal">LATIN7</code></td><td>ISO 8859-13</td><td>Baltique</td><td>Oui</td><td>Oui</td><td>1</td><td><code class="literal">ISO885913</code></td></tr><tr><td><code class="literal">LATIN8</code></td><td>ISO 8859-14</td><td>Celtique</td><td>Oui</td><td>Oui</td><td>1</td><td><code class="literal">ISO885914</code></td></tr><tr><td><code class="literal">LATIN9</code></td><td>ISO 8859-15</td><td><code class="literal">LATIN1</code> avec l'Euro et les accents</td><td>Oui</td><td>Oui</td><td>1</td><td>ISO885915</td></tr><tr><td><code class="literal">LATIN10</code></td><td>ISO 8859-16, <acronym class="acronym">ASRO</acronym> SR 14111</td><td>Roumain</td><td>Oui</td><td>Non</td><td>1</td><td><code class="literal">ISO885916</code></td></tr><tr><td><code class="literal">MULE_INTERNAL</code></td><td>Code interne Mule</td><td>Emacs multi-langues</td><td>Oui</td><td>Non</td><td>1–4</td><td> </td></tr><tr><td><code class="literal">SJIS</code></td><td>Shift JIS</td><td>Japonais</td><td>Non</td><td>Non</td><td>1–2</td><td><code class="literal">Mskanji</code>, <code class="literal">ShiftJIS</code>, <code class="literal">WIN932</code>, <code class="literal">Windows932</code></td></tr><tr><td><code class="literal">SHIFT_JIS_2004</code></td><td>Shift JIS, JIS X 0213</td><td>Japonais</td><td>Non</td><td>Non</td><td>1–2</td><td> </td></tr><tr><td><code class="literal">SQL_ASCII</code></td><td>non spécifié (voir le texte)</td><td><span class="emphasis"><em>toutes</em></span></td><td>Oui</td><td>Non</td><td>1</td><td> </td></tr><tr><td><code class="literal">UHC</code></td><td>Code unifié Hangul</td><td>Coréen</td><td>Non</td><td>Non</td><td>1–2</td><td><code class="literal">WIN949</code>, <code class="literal">Windows949</code></td></tr><tr><td><code class="literal">UTF8</code></td><td>Unicode, 8-bit</td><td><span class="emphasis"><em>toutes</em></span></td><td>Oui</td><td>Oui</td><td>1–4</td><td><code class="literal">Unicode</code></td></tr><tr><td><code class="literal">WIN866</code></td><td>Windows CP866</td><td>Cyrillique</td><td>Oui</td><td>Oui</td><td>1</td><td><code class="literal">ALT</code></td></tr><tr><td><code class="literal">WIN874</code></td><td>Windows CP874</td><td>Thaï</td><td>Oui</td><td>Non</td><td>1</td><td> </td></tr><tr><td><code class="literal">WIN1250</code></td><td>Windows CP1250</td><td>Europe centrale</td><td>Oui</td><td>Oui</td><td>1</td><td> </td></tr><tr><td><code class="literal">WIN1251</code></td><td>Windows CP1251</td><td>Cyrillique</td><td>Oui</td><td>Oui</td><td>1</td><td><code class="literal">WIN</code></td></tr><tr><td><code class="literal">WIN1252</code></td><td>Windows CP1252</td><td>Europe de l'ouest</td><td>Oui</td><td>Oui</td><td>1</td><td> </td></tr><tr><td><code class="literal">WIN1253</code></td><td>Windows CP1253</td><td>Grec</td><td>Oui</td><td>Oui</td><td>1</td><td> </td></tr><tr><td><code class="literal">WIN1254</code></td><td>Windows CP1254</td><td>Turque</td><td>Oui</td><td>Oui</td><td>1</td><td> </td></tr><tr><td><code class="literal">WIN1255</code></td><td>Windows CP1255</td><td>Hébreux</td><td>Oui</td><td>Oui</td><td>1</td><td> </td></tr><tr><td><code class="literal">WIN1256</code></td><td>Windows CP1256</td><td>Arabe</td><td>Oui</td><td>Oui</td><td>1</td><td> </td></tr><tr><td><code class="literal">WIN1257</code></td><td>Windows CP1257</td><td>Baltique</td><td>Oui</td><td>Oui</td><td>1</td><td> </td></tr><tr><td><code class="literal">WIN1258</code></td><td>Windows CP1258</td><td>Vietnamien</td><td>Oui</td><td>Oui</td><td>1</td><td><code class="literal">ABC</code>, <code class="literal">TCVN</code>, <code class="literal">TCVN5712</code>, <code class="literal">VSCII</code></td></tr></tbody></table></div></div><br class="table-break" /><p>
+    Toutes les <acronym class="acronym">API</acronym> clients ne supportent pas tous les jeux
+    de caractères de
+    la liste. Le pilote JDBC de <span class="productname">PostgreSQL</span>, par
+    exemple, ne supporte pas <code class="literal">MULE_INTERNAL</code>,
+    <code class="literal">LATIN6</code>, <code class="literal">LATIN8</code> et
+    <code class="literal">LATIN10</code>.
+   </p><p>
+    <code class="literal">SQL_ASCII</code> se comporte de façon considérablement
+    différente des autres valeurs. Quand le jeu de caractères du
+    serveur est <code class="literal">SQL_ASCII</code>, le serveur interprète les valeurs
+    des octets 0–127 suivant le standard ASCII alors que les valeurs
+    d'octets 128–255 sont considérées comme des caractères non interprétés.
+    Aucune conversion de codage n'est effectuée avec
+    <code class="literal">SQL_ASCII</code>. De ce fait, cette valeur ne déclare pas
+    tant un encodage spécifique que l'ignorance de l'encodage. Dans la
+    plupart des cas, si des données non ASCII doivent être traitées, il est
+    déconseillé d'utiliser la valeur <code class="literal">SQL_ASCII</code> car
+    <span class="productname">PostgreSQL</span> est alors
+    incapable de convertir ou de valider les caractères non ASCII.
+   </p></div><div class="sect2" id="MULTIBYTE-SETTING"><div class="titlepage"><div><div><h3 class="title">23.3.2. Choisir le jeu de caractères <a href="#MULTIBYTE-SETTING" class="id_link">#</a></h3></div></div></div><p>
+    <code class="command">initdb</code> définit le jeu de caractères par défaut (encodage)
+    pour une instance. Par exemple,
+
+    </p><pre class="screen">initdb -E EUC_JP</pre><p>
+
+     paramètre le jeu de caractères à
+     <code class="literal">EUC_JP</code> (Extended Unix Code for Japanese).
+     Vous préférerez peut-être l'option longue <code class="option">--encoding</code>
+     à la place de <code class="option">-E</code>. Si ni
+     <code class="option">-E</code> ni <code class="option">--encoding</code> n'est
+     donné, <code class="command">initdb</code> tente de déterminer l'encodage approprié
+     en se basant sur la locale indiquée ou celle par défaut.
+    </p><p>
+     Vous pouvez indiquer un encodage autre que celui par défaut lors de la
+     création de la base de données, à condition que l'encodage soit compatible
+     avec la locale sélectionnée :
+
+</p><pre class="screen">createdb -E EUC_KR -T template0 --lc-collate=ko_KR.euckr --lc-ctype=ko_KR.euckr korean</pre><p>
+
+     Cela crée une base de données appelée <code class="literal">korean</code> qui
+     utilise le jeu de caractères <code class="literal">EUC_KR</code>, et la locale
+     <code class="literal">ko_KR</code>. Un autre moyen de réaliser cela est d'utiliser
+     la commande SQL suivante :
+
+</p><pre class="programlisting">CREATE DATABASE korean WITH ENCODING 'EUC_KR' LC_COLLATE='ko_KR.euckr' LC_CTYPE='ko_KR.euckr' TEMPLATE=template0;
+    </pre><p>
+
+    Notez que les commandes ci-dessus précisent de copier la base de données
+    <code class="literal">template0</code>. Lors de la copie d'une autre base, les
+    paramètres d'encodage et de locale repris de la base de données source
+    ne peuvent pas être modifiés, car cela pourrait corrompre les données. Pour
+    plus d'informations, voir <a class="xref" href="manage-ag-templatedbs.html" title="22.3. Bases de données modèles">Section 22.3</a>.
+   </p><p>
+    L'encodage de la base de données est conservé dans le catalogue système
+    <code class="literal">pg_database</code>. Cela est visible à l'aide de
+    l'option <code class="option">-l</code> ou de la commande <code class="command">\l</code> de
+    <code class="command">psql</code>.
+
+    </p><pre class="screen">$ <strong class="userinput"><code>psql -l</code></strong>
+                                         List of databases
+   Name    |  Owner   | Encoding  |  Collation  |    Ctype    |          Access Privileges
+-----------+----------+-----------+-------------+-------------+-------------------------------------
+ clocaledb | hlinnaka | SQL_ASCII | C           | C           |
+ englishdb | hlinnaka | UTF8      | en_GB.UTF8  | en_GB.UTF8  |
+ japanese  | hlinnaka | UTF8      | ja_JP.UTF8  | ja_JP.UTF8  |
+ korean    | hlinnaka | EUC_KR    | ko_KR.euckr | ko_KR.euckr |
+ postgres  | hlinnaka | UTF8      | fi_FI.UTF8  | fi_FI.UTF8  |
+ template0 | hlinnaka | UTF8      | fi_FI.UTF8  | fi_FI.UTF8  | {=c/hlinnaka,hlinnaka=CTc/hlinnaka}
+ template1 | hlinnaka | UTF8      | fi_FI.UTF8  | fi_FI.UTF8  | {=c/hlinnaka,hlinnaka=CTc/hlinnaka}
+(7 rows)</pre><p>
+    </p><div class="important"><h3 class="title">Important</h3><p>
+      Sur la plupart des systèmes d'exploitation modernes,
+      <span class="productname">PostgreSQL</span> peut déterminer le jeu de
+      caractères impliqué par la variable <code class="envar">LC_CTYPE</code>,
+      et s'assurer que l'encodage correspondant de la base de données est
+      utilisé. Sur les systèmes plus anciens, il est de la responsabilité de
+      l'utilisateur de s'assurer que l'encodage attendu par la locale est bien
+      utilisé. Une erreur à ce niveau risque fort de conduire à un comportement
+      étrange des opérations liées à la locale, tel le tri.
+     </p><p>
+      <span class="productname">PostgreSQL</span> autorise les superutilisateurs à créer des bases de données
+      avec le jeu de caractère <code class="literal">SQL_ASCII</code> même lorsque la variable <code class="envar">LC_CTYPE</code>
+      n'est pas à <code class="literal">C</code> ou <code class="literal">POSIX</code>.
+      Comme indiqué plus haut,
+      <code class="literal">SQL_ASCII</code> n'impose aucun encodage particulier aux
+      données stockées en base, ce qui rend ce paramétrage vulnérable aux
+      comportements erratiques lors d'opérations liées à la locale.
+      Cette combinaison de paramètres est dépréciée et pourrait un jour être
+      interdite.
+     </p></div></div><div class="sect2" id="MULTIBYTE-AUTOMATIC-CONVERSION"><div class="titlepage"><div><div><h3 class="title">23.3.3. Conversion automatique d'encodage entre serveur et client <a href="#MULTIBYTE-AUTOMATIC-CONVERSION" class="id_link">#</a></h3></div></div></div><p>
+     <span class="productname">PostgreSQL</span> automatise la conversion de jeux de
+     caractères entre client et serveur pour un grand nombre de combinaisons
+     de jeux de caractères (la <a class="xref" href="multibyte.html#MULTIBYTE-CONVERSIONS-SUPPORTED" title="23.3.4. Conversions disponibles entre jeux de caractères">Section 23.3.4</a>
+     montre lesquels).
+    </p><p>
+     Pour activer la conversion automatique des jeux de caractères, il
+     faut indiquer à <span class="productname">PostgreSQL</span>
+     le jeu de caractères (encodage) souhaité côté client. Il y a plusieurs
+     façons de le faire :
+
+     </p><div class="itemizedlist"><ul class="itemizedlist" style="list-style-type: disc; "><li class="listitem"><p>
+        en utilisant la commande <code class="command">\encoding</code> dans
+        <span class="application">psql</span>.
+        <code class="command">\encoding</code> permet de changer l'encodage
+        client à la volée. Par exemple, pour changer le codage en
+        <code class="literal">SJIS</code>, taper :
+
+</p><pre class="programlisting">\encoding SJIS</pre><p>
+       </p></li><li class="listitem"><p>
+        <span class="application">la libpq</span> (<a class="xref" href="libpq-control.html" title="32.11. Fonctions de contrôle">Section 32.11</a>)
+        a des fonctions de contrôle de l'encodage client ;
+       </p></li><li class="listitem"><p>
+        en utilisant <code class="command">SET client_encoding TO</code>.
+
+        L'encodage client peut être fixé avec la commande SQL suivante :
+
+</p><pre class="programlisting">SET CLIENT_ENCODING TO '<em class="replaceable"><code>valeur</code></em>';</pre><p>
+
+        La syntaxe SQL plus standard <code class="literal">SET NAMES</code> peut
+        également être utilisée pour cela :
+
+</p><pre class="programlisting">SET NAMES '<em class="replaceable"><code>valeur</code></em>';</pre><p>
+
+        Pour connaître l'encodage client courant :
+
+</p><pre class="programlisting">SHOW client_encoding;</pre><p>
+
+        Pour revenir à l'encodage par défaut :
+
+</p><pre class="programlisting">RESET client_encoding;</pre><p>
+       </p></li><li class="listitem"><p>
+        en utilisant <code class="envar">PGCLIENTENCODING</code>.
+        Si la variable d'environnement <code class="envar">PGCLIENTENCODING</code> est définie
+        dans l'environnement client, cet encodage client est automatiquement
+        sélectionné lors de l'établissement d'une connexion au serveur (cette
+        variable peut être surchargée à l'aide de toute autre méthode
+        décrite ci-dessus) ;
+       </p></li><li class="listitem"><p>
+      en utilisant la variable de configuration
+      <a class="xref" href="runtime-config-client.html#GUC-CLIENT-ENCODING">client_encoding</a>.
+      Si la variable <code class="varname">client_encoding</code> est définie,
+      l'encodage client est automatiquement sélectionné lors de
+      l'établissement d'une connexion au serveur (cette variable peut être
+      surchargée à l'aide de toute autre méthode décrite ci-dessus).
+       </p></li></ul></div><p>
+    </p><p>
+     Si la conversion d'un caractère particulier n'est pas possible  -- 
+     par exemple dans le cas d'encodages <code class="literal">EUC_JP</code> pour le serveur
+     et <code class="literal">LATIN1</code> pour le client, et que certains caractères
+     japonais renvoyés n'ont pas de représentation en <code class="literal">LATIN1</code>
+      --  une erreur est remontée.
+    </p><p>
+     Si l'encodage client est défini en tant que <code class="literal">SQL_ASCII</code>,
+     la conversion de l'encodage est désactivée quelque soit celui du serveur.
+     (Toutefois, si l'encodage serveur n'est pas
+     <code class="literal">SQL_ASCII</code>, le serveur testera toujours que les données
+     en entrée sont valides pour son encodage ; le résultat final est identique
+     à avoir comme encodage client celui du serveur).
+     Comme pour le serveur, <code class="literal">SQL_ASCII</code> est déconseillé, sauf à ne
+     travailler qu'avec des données ASCII.
+    </p></div><div class="sect2" id="MULTIBYTE-CONVERSIONS-SUPPORTED"><div class="titlepage"><div><div><h3 class="title">23.3.4. Conversions disponibles entre jeux de caractères <a href="#MULTIBYTE-CONVERSIONS-SUPPORTED" class="id_link">#</a></h3></div></div></div><p>
+     <span class="productname">PostgreSQL</span> permet les conversions entre deux
+     jeux de caractères quand une fonction de conversion est listée dans
+     le catalogue système
+     <a class="link" href="catalog-pg-conversion.html" title="51.14. pg_conversion"><code class="structname">pg_conversion</code></a>.
+     <span class="productname">PostgreSQL</span> est fourni avec des conversions prédéfinies,
+     comme résumé dans
+     <a class="xref" href="multibyte.html#MULTIBYTE-TRANSLATION-TABLE" title="Tableau 23.4. Conversions client/serveur fournies de base pour les jeux de caractères">Tableau 23.4</a> et détaillé dans
+     <a class="xref" href="multibyte.html#BUILTIN-CONVERSIONS-TABLE" title="Tableau 23.5. Toutes les conversions fournies de base entre jeux de caractères">Tableau 23.5</a>. On peut créer une nouvelle
+     conversion en utilisant la commande SQL
+     <a class="xref" href="sql-createconversion.html" title="CREATE CONVERSION"><span class="refentrytitle">CREATE CONVERSION</span></a>. (Pour être utilisée pour les
+     conversions client/serveur automatiques, une conversion doit être marquée
+     en tant que <span class="quote">« <span class="quote">default</span> »</span> pour son couple de jeux de caractères).
+    </p><div class="table" id="MULTIBYTE-TRANSLATION-TABLE"><p class="title"><strong>Tableau 23.4. Conversions client/serveur fournies de base pour les jeux de caractères</strong></p><div class="table-contents"><table class="table" summary="Conversions client/serveur fournies de base pour les jeux de caractères" border="1"><colgroup><col class="col1" /><col class="col2" /></colgroup><thead><tr><th>Jeux de caractères sur le serveur</th><th>Jeux de caractères disponibles sur le client</th></tr></thead><tbody><tr><td><code class="literal">BIG5</code></td><td><span class="emphasis"><em>non supporté comme encodage serveur</em></span>
+        </td></tr><tr><td><code class="literal">EUC_CN</code></td><td><span class="emphasis"><em>EUC_CN</em></span>,
+        <code class="literal">MULE_INTERNAL</code>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">EUC_JP</code></td><td><span class="emphasis"><em>EUC_JP</em></span>,
+        <code class="literal">MULE_INTERNAL</code>,
+        <code class="literal">SJIS</code>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">EUC_JIS_2004</code></td><td><span class="emphasis"><em>EUC_JIS_2004</em></span>,
+        <code class="literal">SHIFT_JIS_2004</code>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">EUC_KR</code></td><td><span class="emphasis"><em>EUC_KR</em></span>,
+        <code class="literal">MULE_INTERNAL</code>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">EUC_TW</code></td><td><span class="emphasis"><em>EUC_TW</em></span>,
+        <code class="literal">BIG5</code>,
+        <code class="literal">MULE_INTERNAL</code>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">GB18030</code></td><td><span class="emphasis"><em>non supporté comme encodage serveur</em></span>
+        </td></tr><tr><td><code class="literal">GBK</code></td><td><span class="emphasis"><em>non supporté comme encodage serveur</em></span>
+        </td></tr><tr><td><code class="literal">ISO_8859_5</code></td><td><span class="emphasis"><em>ISO_8859_5</em></span>,
+        <code class="literal">KOI8R</code>,
+        <code class="literal">MULE_INTERNAL</code>,
+        <code class="literal">UTF8</code>,
+        <code class="literal">WIN866</code>,
+        <code class="literal">WIN1251</code>
+        </td></tr><tr><td><code class="literal">ISO_8859_6</code></td><td><span class="emphasis"><em>ISO_8859_6</em></span>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">ISO_8859_7</code></td><td><span class="emphasis"><em>ISO_8859_7</em></span>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">ISO_8859_8</code></td><td><span class="emphasis"><em>ISO_8859_8</em></span>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">JOHAB</code></td><td><span class="emphasis"><em>non supporté comme encodage serveur</em></span>
+        </td></tr><tr><td><code class="literal">KOI8R</code></td><td><span class="emphasis"><em>KOI8R</em></span>,
+        <code class="literal">ISO_8859_5</code>,
+        <code class="literal">MULE_INTERNAL</code>,
+        <code class="literal">UTF8</code>,
+        <code class="literal">WIN866</code>,
+        <code class="literal">WIN1251</code>
+        </td></tr><tr><td><code class="literal">KOI8U</code></td><td><span class="emphasis"><em>KOI8U</em></span>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">LATIN1</code></td><td><span class="emphasis"><em>LATIN1</em></span>,
+        <code class="literal">MULE_INTERNAL</code>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">LATIN2</code></td><td><span class="emphasis"><em>LATIN2</em></span>,
+        <code class="literal">MULE_INTERNAL</code>,
+        <code class="literal">UTF8</code>,
+        <code class="literal">WIN1250</code>
+        </td></tr><tr><td><code class="literal">LATIN3</code></td><td><span class="emphasis"><em>LATIN3</em></span>,
+        <code class="literal">MULE_INTERNAL</code>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">LATIN4</code></td><td><span class="emphasis"><em>LATIN4</em></span>,
+        <code class="literal">MULE_INTERNAL</code>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">LATIN5</code></td><td><span class="emphasis"><em>LATIN5</em></span>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">LATIN6</code></td><td><span class="emphasis"><em>LATIN6</em></span>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">LATIN7</code></td><td><span class="emphasis"><em>LATIN7</em></span>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">LATIN8</code></td><td><span class="emphasis"><em>LATIN8</em></span>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">LATIN9</code></td><td><span class="emphasis"><em>LATIN9</em></span>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">LATIN10</code></td><td><span class="emphasis"><em>LATIN10</em></span>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">MULE_INTERNAL</code></td><td><span class="emphasis"><em>MULE_INTERNAL</em></span>,
+         <code class="literal">BIG5</code>,
+         <code class="literal">EUC_CN</code>,
+         <code class="literal">EUC_JP</code>,
+         <code class="literal">EUC_KR</code>,
+         <code class="literal">EUC_TW</code>,
+         <code class="literal">ISO_8859_5</code>,
+         <code class="literal">KOI8R</code>,
+         <code class="literal">LATIN1</code> to <code class="literal">LATIN4</code>,
+         <code class="literal">SJIS</code>,
+         <code class="literal">WIN866</code>,
+         <code class="literal">WIN1250</code>,
+         <code class="literal">WIN1251</code>
+        </td></tr><tr><td><code class="literal">SJIS</code></td><td><span class="emphasis"><em>non supporté comme encodage serveur</em></span>
+        </td></tr><tr><td><code class="literal">SHIFT_JIS_2004</code></td><td><span class="emphasis"><em>non supporté comme encodage serveur</em></span>
+        </td></tr><tr><td><code class="literal">SQL_ASCII</code></td><td><span class="emphasis"><em>tous (aucune conversion ne sera effectuée)</em></span>
+        </td></tr><tr><td><code class="literal">UHC</code></td><td><span class="emphasis"><em>non supporté comme encodage serveur</em></span>
+        </td></tr><tr><td><code class="literal">UTF8</code></td><td><span class="emphasis"><em>tous les encodages supportés</em></span>
+        </td></tr><tr><td><code class="literal">WIN866</code></td><td><span class="emphasis"><em>WIN866</em></span>,
+         <code class="literal">ISO_8859_5</code>,
+         <code class="literal">KOI8R</code>,
+         <code class="literal">MULE_INTERNAL</code>,
+         <code class="literal">UTF8</code>,
+         <code class="literal">WIN1251</code>
+        </td></tr><tr><td><code class="literal">WIN874</code></td><td><span class="emphasis"><em>WIN874</em></span>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">WIN1250</code></td><td><span class="emphasis"><em>WIN1250</em></span>,
+         <code class="literal">LATIN2</code>,
+         <code class="literal">MULE_INTERNAL</code>,
+         <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">WIN1251</code></td><td><span class="emphasis"><em>WIN1251</em></span>,
+         <code class="literal">ISO_8859_5</code>,
+         <code class="literal">KOI8R</code>,
+         <code class="literal">MULE_INTERNAL</code>,
+         <code class="literal">UTF8</code>,
+         <code class="literal">WIN866</code>
+        </td></tr><tr><td><code class="literal">WIN1252</code></td><td><span class="emphasis"><em>WIN1252</em></span>,
+         <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">WIN1253</code></td><td><span class="emphasis"><em>WIN1253</em></span>,
+         <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">WIN1254</code></td><td><span class="emphasis"><em>WIN1254</em></span>,
+         <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">WIN1255</code></td><td><span class="emphasis"><em>WIN1255</em></span>,
+         <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">WIN1256</code></td><td><span class="emphasis"><em>WIN1256</em></span>,
+        <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">WIN1257</code></td><td><span class="emphasis"><em>WIN1257</em></span>,
+         <code class="literal">UTF8</code>
+        </td></tr><tr><td><code class="literal">WIN1258</code></td><td><span class="emphasis"><em>WIN1258</em></span>,
+        <code class="literal">UTF8</code>
+        </td></tr></tbody></table></div></div><br class="table-break" /><div class="table" id="BUILTIN-CONVERSIONS-TABLE"><p class="title"><strong>Tableau 23.5. Toutes les conversions fournies de base entre jeux de caractères</strong></p><div class="table-contents"><table class="table" summary="Toutes les conversions fournies de base entre jeux de caractères" border="1"><colgroup><col class="col1" /><col class="col2" /><col class="col3" /></colgroup><thead><tr><th>Nom de la conversion
+         <a href="#ftn.id-1.6.10.5.8.4.2.4.1.1.1" class="footnote"><sup class="footnote" id="id-1.6.10.5.8.4.2.4.1.1.1">[a]</sup></a>
+        </th><th>Encodage source</th><th>Encodage de destination</th></tr></thead><tbody><tr><td><code class="literal">big5_to_euc_tw</code></td><td><code class="literal">BIG5</code></td><td><code class="literal">EUC_TW</code></td></tr><tr><td><code class="literal">big5_to_mic</code></td><td><code class="literal">BIG5</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">big5_to_utf8</code></td><td><code class="literal">BIG5</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">euc_cn_to_mic</code></td><td><code class="literal">EUC_CN</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">euc_cn_to_utf8</code></td><td><code class="literal">EUC_CN</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">euc_jp_to_mic</code></td><td><code class="literal">EUC_JP</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">euc_jp_to_sjis</code></td><td><code class="literal">EUC_JP</code></td><td><code class="literal">SJIS</code></td></tr><tr><td><code class="literal">euc_jp_to_utf8</code></td><td><code class="literal">EUC_JP</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">euc_kr_to_mic</code></td><td><code class="literal">EUC_KR</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">euc_kr_to_utf8</code></td><td><code class="literal">EUC_KR</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">euc_tw_to_big5</code></td><td><code class="literal">EUC_TW</code></td><td><code class="literal">BIG5</code></td></tr><tr><td><code class="literal">euc_tw_to_mic</code></td><td><code class="literal">EUC_TW</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">euc_tw_to_utf8</code></td><td><code class="literal">EUC_TW</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">gb18030_to_utf8</code></td><td><code class="literal">GB18030</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">gbk_to_utf8</code></td><td><code class="literal">GBK</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_10_to_utf8</code></td><td><code class="literal">LATIN6</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_13_to_utf8</code></td><td><code class="literal">LATIN7</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_14_to_utf8</code></td><td><code class="literal">LATIN8</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_15_to_utf8</code></td><td><code class="literal">LATIN9</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_16_to_utf8</code></td><td><code class="literal">LATIN10</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_1_to_mic</code></td><td><code class="literal">LATIN1</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">iso_8859_1_to_utf8</code></td><td><code class="literal">LATIN1</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_2_to_mic</code></td><td><code class="literal">LATIN2</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">iso_8859_2_to_utf8</code></td><td><code class="literal">LATIN2</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_2_to_windows_1250</code></td><td><code class="literal">LATIN2</code></td><td><code class="literal">WIN1250</code></td></tr><tr><td><code class="literal">iso_8859_3_to_mic</code></td><td><code class="literal">LATIN3</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">iso_8859_3_to_utf8</code></td><td><code class="literal">LATIN3</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_4_to_mic</code></td><td><code class="literal">LATIN4</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">iso_8859_4_to_utf8</code></td><td><code class="literal">LATIN4</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_5_to_koi8_r</code></td><td><code class="literal">ISO_8859_5</code></td><td><code class="literal">KOI8R</code></td></tr><tr><td><code class="literal">iso_8859_5_to_mic</code></td><td><code class="literal">ISO_8859_5</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">iso_8859_5_to_utf8</code></td><td><code class="literal">ISO_8859_5</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_5_to_windows_1251</code></td><td><code class="literal">ISO_8859_5</code></td><td><code class="literal">WIN1251</code></td></tr><tr><td><code class="literal">iso_8859_5_to_windows_866</code></td><td><code class="literal">ISO_8859_5</code></td><td><code class="literal">WIN866</code></td></tr><tr><td><code class="literal">iso_8859_6_to_utf8</code></td><td><code class="literal">ISO_8859_6</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_7_to_utf8</code></td><td><code class="literal">ISO_8859_7</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_8_to_utf8</code></td><td><code class="literal">ISO_8859_8</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">iso_8859_9_to_utf8</code></td><td><code class="literal">LATIN5</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">johab_to_utf8</code></td><td><code class="literal">JOHAB</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">koi8_r_to_iso_8859_5</code></td><td><code class="literal">KOI8R</code></td><td><code class="literal">ISO_8859_5</code></td></tr><tr><td><code class="literal">koi8_r_to_mic</code></td><td><code class="literal">KOI8R</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">koi8_r_to_utf8</code></td><td><code class="literal">KOI8R</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">koi8_r_to_windows_1251</code></td><td><code class="literal">KOI8R</code></td><td><code class="literal">WIN1251</code></td></tr><tr><td><code class="literal">koi8_r_to_windows_866</code></td><td><code class="literal">KOI8R</code></td><td><code class="literal">WIN866</code></td></tr><tr><td><code class="literal">koi8_u_to_utf8</code></td><td><code class="literal">KOI8U</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">mic_to_big5</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">BIG5</code></td></tr><tr><td><code class="literal">mic_to_euc_cn</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">EUC_CN</code></td></tr><tr><td><code class="literal">mic_to_euc_jp</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">EUC_JP</code></td></tr><tr><td><code class="literal">mic_to_euc_kr</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">EUC_KR</code></td></tr><tr><td><code class="literal">mic_to_euc_tw</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">EUC_TW</code></td></tr><tr><td><code class="literal">mic_to_iso_8859_1</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">LATIN1</code></td></tr><tr><td><code class="literal">mic_to_iso_8859_2</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">LATIN2</code></td></tr><tr><td><code class="literal">mic_to_iso_8859_3</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">LATIN3</code></td></tr><tr><td><code class="literal">mic_to_iso_8859_4</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">LATIN4</code></td></tr><tr><td><code class="literal">mic_to_iso_8859_5</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">ISO_8859_5</code></td></tr><tr><td><code class="literal">mic_to_koi8_r</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">KOI8R</code></td></tr><tr><td><code class="literal">mic_to_sjis</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">SJIS</code></td></tr><tr><td><code class="literal">mic_to_windows_1250</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">WIN1250</code></td></tr><tr><td><code class="literal">mic_to_windows_1251</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">WIN1251</code></td></tr><tr><td><code class="literal">mic_to_windows_866</code></td><td><code class="literal">MULE_INTERNAL</code></td><td><code class="literal">WIN866</code></td></tr><tr><td><code class="literal">sjis_to_euc_jp</code></td><td><code class="literal">SJIS</code></td><td><code class="literal">EUC_JP</code></td></tr><tr><td><code class="literal">sjis_to_mic</code></td><td><code class="literal">SJIS</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">sjis_to_utf8</code></td><td><code class="literal">SJIS</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">windows_1258_to_utf8</code></td><td><code class="literal">WIN1258</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">uhc_to_utf8</code></td><td><code class="literal">UHC</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">utf8_to_big5</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">BIG5</code></td></tr><tr><td><code class="literal">utf8_to_euc_cn</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">EUC_CN</code></td></tr><tr><td><code class="literal">utf8_to_euc_jp</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">EUC_JP</code></td></tr><tr><td><code class="literal">utf8_to_euc_kr</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">EUC_KR</code></td></tr><tr><td><code class="literal">utf8_to_euc_tw</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">EUC_TW</code></td></tr><tr><td><code class="literal">utf8_to_gb18030</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">GB18030</code></td></tr><tr><td><code class="literal">utf8_to_gbk</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">GBK</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_1</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN1</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_10</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN6</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_13</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN7</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_14</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN8</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_15</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN9</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_16</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN10</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_2</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN2</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_3</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN3</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_4</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN4</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_5</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">ISO_8859_5</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_6</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">ISO_8859_6</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_7</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">ISO_8859_7</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_8</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">ISO_8859_8</code></td></tr><tr><td><code class="literal">utf8_to_iso_8859_9</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">LATIN5</code></td></tr><tr><td><code class="literal">utf8_to_johab</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">JOHAB</code></td></tr><tr><td><code class="literal">utf8_to_koi8_r</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">KOI8R</code></td></tr><tr><td><code class="literal">utf8_to_koi8_u</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">KOI8U</code></td></tr><tr><td><code class="literal">utf8_to_sjis</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">SJIS</code></td></tr><tr><td><code class="literal">utf8_to_windows_1258</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1258</code></td></tr><tr><td><code class="literal">utf8_to_uhc</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">UHC</code></td></tr><tr><td><code class="literal">utf8_to_windows_1250</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1250</code></td></tr><tr><td><code class="literal">utf8_to_windows_1251</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1251</code></td></tr><tr><td><code class="literal">utf8_to_windows_1252</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1252</code></td></tr><tr><td><code class="literal">utf8_to_windows_1253</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1253</code></td></tr><tr><td><code class="literal">utf8_to_windows_1254</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1254</code></td></tr><tr><td><code class="literal">utf8_to_windows_1255</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1255</code></td></tr><tr><td><code class="literal">utf8_to_windows_1256</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1256</code></td></tr><tr><td><code class="literal">utf8_to_windows_1257</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN1257</code></td></tr><tr><td><code class="literal">utf8_to_windows_866</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN866</code></td></tr><tr><td><code class="literal">utf8_to_windows_874</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">WIN874</code></td></tr><tr><td><code class="literal">windows_1250_to_iso_8859_2</code></td><td><code class="literal">WIN1250</code></td><td><code class="literal">LATIN2</code></td></tr><tr><td><code class="literal">windows_1250_to_mic</code></td><td><code class="literal">WIN1250</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">windows_1250_to_utf8</code></td><td><code class="literal">WIN1250</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">windows_1251_to_iso_8859_5</code></td><td><code class="literal">WIN1251</code></td><td><code class="literal">ISO_8859_5</code></td></tr><tr><td><code class="literal">windows_1251_to_koi8_r</code></td><td><code class="literal">WIN1251</code></td><td><code class="literal">KOI8R</code></td></tr><tr><td><code class="literal">windows_1251_to_mic</code></td><td><code class="literal">WIN1251</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">windows_1251_to_utf8</code></td><td><code class="literal">WIN1251</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">windows_1251_to_windows_866</code></td><td><code class="literal">WIN1251</code></td><td><code class="literal">WIN866</code></td></tr><tr><td><code class="literal">windows_1252_to_utf8</code></td><td><code class="literal">WIN1252</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">windows_1256_to_utf8</code></td><td><code class="literal">WIN1256</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">windows_866_to_iso_8859_5</code></td><td><code class="literal">WIN866</code></td><td><code class="literal">ISO_8859_5</code></td></tr><tr><td><code class="literal">windows_866_to_koi8_r</code></td><td><code class="literal">WIN866</code></td><td><code class="literal">KOI8R</code></td></tr><tr><td><code class="literal">windows_866_to_mic</code></td><td><code class="literal">WIN866</code></td><td><code class="literal">MULE_INTERNAL</code></td></tr><tr><td><code class="literal">windows_866_to_utf8</code></td><td><code class="literal">WIN866</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">windows_866_to_windows_1251</code></td><td><code class="literal">WIN866</code></td><td><code class="literal">WIN</code></td></tr><tr><td><code class="literal">windows_874_to_utf8</code></td><td><code class="literal">WIN874</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">euc_jis_2004_to_utf8</code></td><td><code class="literal">EUC_JIS_2004</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">utf8_to_euc_jis_2004</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">EUC_JIS_2004</code></td></tr><tr><td><code class="literal">shift_jis_2004_to_utf8</code></td><td><code class="literal">SHIFT_JIS_2004</code></td><td><code class="literal">UTF8</code></td></tr><tr><td><code class="literal">utf8_to_shift_jis_2004</code></td><td><code class="literal">UTF8</code></td><td><code class="literal">SHIFT_JIS_2004</code></td></tr><tr><td><code class="literal">euc_jis_2004_to_shift_jis_2004</code></td><td><code class="literal">EUC_JIS_2004</code></td><td><code class="literal">SHIFT_JIS_2004</code></td></tr><tr><td><code class="literal">shift_jis_2004_to_euc_jis_2004</code></td><td><code class="literal">SHIFT_JIS_2004</code></td><td><code class="literal">EUC_JIS_2004</code></td></tr></tbody><tbody class="footnotes"><tr><td colspan="3"><div id="ftn.id-1.6.10.5.8.4.2.4.1.1.1" class="footnote"><p><a href="#id-1.6.10.5.8.4.2.4.1.1.1" class="para"><sup class="para">[a] </sup></a>
+           Les noms des conversions suivent un standard de nommage :
+           le nom officiel de l'encodage source, avec tous les caractères
+           non alphanumériques remplacés par un souligné,
+           suivi de <code class="literal">_to_</code>, suivi du nom de l'encodage
+           de destination transformé de la même manière.
+           Par conséquent, ces noms diffèrent parfois des noms d'encodage
+           montrés dans le <a class="xref" href="multibyte.html#CHARSET-TABLE" title="Tableau 23.3. Jeux de caractères de PostgreSQL">Tableau 23.3</a>.
+          </p></div></td></tr></tbody></table></div></div><br class="table-break" /></div><div class="sect2" id="MULTIBYTE-FURTHER-READING"><div class="titlepage"><div><div><h3 class="title">23.3.5. Pour aller plus loin <a href="#MULTIBYTE-FURTHER-READING" class="id_link">#</a></h3></div></div></div><p>
+     Il existe quelques sources intéressantes pour commencer à découvrir les différents
+     systèmes d'encodage.
+
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term"><em class="citetitle">CJKV Information Processing: Chinese, Japanese, Korean &amp; Vietnamese Computing</em></span></dt><dd><p>
+         Contient des explications détaillées sur <code class="literal">EUC_JP</code>,
+         <code class="literal">EUC_CN</code>, <code class="literal">EUC_KR</code>,
+         <code class="literal">EUC_TW</code>.
+        </p></dd><dt><span class="term"><a class="ulink" href="https://www.unicode.org/" target="_top">https://www.unicode.org/</a></span></dt><dd><p>
+         Le site web du consortium Unicode.
+        </p></dd><dt><span class="term"><a class="ulink" href="https://datatracker.ietf.org/doc/html/rfc3629" target="_top">RFC 3629</a></span></dt><dd><p>
+         <acronym class="acronym">UTF</acronym>-8 (8-bit UCS/Unicode Transformation
+         Format) est défini là.
+        </p></dd></dl></div><p>
+    </p></div></div></div></body>
+<!-- Mirrored from docs.postgresql.fr/current/multibyte.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 25 Aug 2026 17:48:34 GMT -->
+</html>
