@@ -40,6 +40,7 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<Page<User>> getAllUsers(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String role,
@@ -73,6 +74,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         User user = userService.meObtenirParId(id);
         return ResponseEntity.ok(user);

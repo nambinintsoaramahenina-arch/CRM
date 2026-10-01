@@ -4,7 +4,7 @@ export interface User {
   id: number;
   nomComplet: string;
   email: string;
-  telephone?: string;
+  telephone?: string;   // Numéro de téléphone de l'utilisateur
   login: string;
   role: string;
   statut?: string;
