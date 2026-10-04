@@ -210,7 +210,7 @@ export const UsersCrudTable: React.FC = () => {
           {[
             { id: 'ALL', label: 'Tous' },
             { id: 'MANAGER', label: 'Manager' },
-            { id: 'USER', label: 'Client' },
+            { id: 'USER', label: 'Agent' },
           ].map((f) => (
             <button
               key={f.id}
@@ -345,8 +345,12 @@ export const UsersCrudTable: React.FC = () => {
       {/* Compteur */}
       {!loading && filteredUsers.length > 0 && (
         <p className="text-[11px] text-[var(--text-muted)] font-medium px-1">
-          {filteredUsers.length} utilisateur{filteredUsers.length > 1 ? 's' : ''} affiche{filteredUsers.length > 1 ? 's' : ''}
-          {users.length !== filteredUsers.length && ` sur ${users.length} au total`}
+          {filteredUsers.length} utilisateur{filteredUsers.length > 1 ? 's' : ''} affiché{filteredUsers.length > 1 ? 's' : ''}
+          {(() => {
+            // Total excluant les comptes ADMIN (non affichés dans l'interface)
+            const totalVisible = users.filter((u) => u.role !== 'ADMIN').length;
+            return filteredUsers.length !== totalVisible ? ` sur ${totalVisible} au total` : '';
+          })()}
         </p>
       )}
 
@@ -414,7 +418,7 @@ export const UsersCrudTable: React.FC = () => {
                   <label className="text-[11px] font-bold text-[var(--text-secondary)] uppercase">Role</label>
                   <select id="form-role" value={formRole} onChange={(e) => setFormRole(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all">
-                    <option value="USER">Client</option>
+                    <option value="USER">Agent</option>
                     <option value="MANAGER">Manager</option>
                   </select>
                 </div>

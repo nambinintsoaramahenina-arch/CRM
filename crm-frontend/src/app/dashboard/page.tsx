@@ -109,7 +109,7 @@ export default function DashboardPage() {
   const isManager = role === "MANAGER" || isAdmin;
 
   const roleDisplayTitle =
-    role === "ADMIN" ? "Admin" : role === "MANAGER" ? "Manager" : "Client";
+    role === "ADMIN" ? "Admin" : role === "MANAGER" ? "Manager" : "Agent";
   const initials = roleDisplayTitle.slice(0, 2).toUpperCase();
 
   return (

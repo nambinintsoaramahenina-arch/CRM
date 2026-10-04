@@ -67,16 +67,6 @@ export const PublicFooter: React.FC = () => {
                   Connexion à la plateforme
                 </Link>
               </li>
-              <li>
-                <Link href="/dashboard" className="hover:text-cyan-400 hover:translate-x-1 inline-block transition-all">
-                  Tableau de bord ADMIN
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard" className="hover:text-cyan-400 hover:translate-x-1 inline-block transition-all">
-                  Espace MANAGER
-                </Link>
-              </li>
             </ul>
 
             {/* Coordonnées */}

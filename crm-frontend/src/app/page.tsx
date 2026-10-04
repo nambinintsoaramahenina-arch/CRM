@@ -158,9 +158,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════
-          PIED DE PAGE
-      ═══════════════════════════════════════════ */}
+      {}
       <PublicFooter />
     </div>
   );

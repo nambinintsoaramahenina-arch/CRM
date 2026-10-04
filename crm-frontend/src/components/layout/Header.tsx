@@ -53,7 +53,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
   const getRoleDisplay = () => {
     if (role === 'ADMIN') return 'Admin';
     if (role === 'MANAGER') return 'Manager';
-    return 'Client';
+    return 'Agent';
   };
 
   const getInitials = () => {

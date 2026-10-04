@@ -1,12 +1,63 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ContactsIcon, ArrowRightIcon } from '@/components/ui/Icons';
+import { ContactsCrudTable } from '@/components/dashboard/ContactsCrudTable';
+import { ShieldCheckIcon, ArrowRightIcon } from '@/components/ui/Icons';
+
+type UserRole = 'ADMIN' | 'MANAGER' | 'USER';
 
 export default function ContactsPage() {
+  const router = useRouter();
+  const [role, setRole]   = useState<UserRole | null>(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('crm-token');
+    if (!token) { router.push('/login'); return; }
+
+    const savedRole = (localStorage.getItem('crm-role') || 'USER') as UserRole;
+    setRole(savedRole);
+    setReady(true);
+  }, [router]);
+
+  // ── Spinner pendant le chargement ──
+  if (!ready) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="w-8 h-8 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  // ── Seuls ADMIN et MANAGER accèdent à ce module ──
+  const canAccess = role === 'ADMIN' || role === 'MANAGER';
+
+  if (!canAccess) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center p-6 text-center space-y-4">
+        <div className="p-4 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-500">
+          <ShieldCheckIcon size={32} />
+        </div>
+        <h2 className="text-xl font-black text-[var(--text-primary)]">Accès Restreint</h2>
+        <p className="text-xs text-[var(--text-secondary)] max-w-md">
+          Cette page de gestion des contacts est réservée aux Administrateurs et Managers de la SPAT.
+        </p>
+        <Link
+          href="/dashboard"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-cyan-600 hover:bg-cyan-500 transition-all"
+        >
+          <span>Retour au Tableau de Bord</span>
+          <ArrowRightIcon size={14} />
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6 pb-12">
+      {/* Fil d'ariane */}
       <div className="flex items-center gap-2 text-xs text-[var(--text-muted)] font-medium">
         <Link href="/dashboard" className="hover:text-cyan-500 transition-colors">
           Tableau de bord
@@ -15,28 +66,8 @@ export default function ContactsPage() {
         <span className="text-[var(--text-primary)] font-bold">Gestion des contacts</span>
       </div>
 
-      <div className="bg-[var(--bg-surface)] rounded-3xl p-8 border border-[var(--bg-border)] shadow-xl space-y-6">
-        <div className="flex items-center gap-3">
-          <div className="p-3 rounded-2xl bg-cyan-500/10 text-cyan-600 border border-cyan-500/20">
-            <ContactsIcon size={24} />
-          </div>
-          <div>
-            <h2 className="text-xl sm:text-2xl font-black text-[var(--text-primary)]">Gestion des Contacts</h2>
-            <p className="text-xs text-[var(--text-secondary)]">Annuaire centralisé des personnes et organisations partenaires de la SPAT.</p>
-          </div>
-        </div>
-
-        <div className="p-8 text-center border-2 border-dashed border-[var(--bg-border)] rounded-2xl space-y-3">
-          <p className="text-sm font-bold text-[var(--text-primary)]">Module Contacts Ready</p>
-          <p className="text-xs text-[var(--text-secondary)] max-w-md mx-auto">
-            Ce module permet de consulter et d'administrer les fiches partenaires et contacts d'affaires du Port de Toamasina.
-          </p>
-          <Link href="/dashboard" className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-cyan-600 hover:bg-cyan-500 transition-all">
-            <span>Retour au tableau de bord</span>
-            <ArrowRightIcon size={14} />
-          </Link>
-        </div>
-      </div>
+      {/* Composant CRUD Contacts */}
+      <ContactsCrudTable />
     </div>
   );
 }
