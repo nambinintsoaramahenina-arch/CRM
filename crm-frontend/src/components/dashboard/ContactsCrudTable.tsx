@@ -560,7 +560,7 @@ export const ContactsCrudTable: React.FC = () => {
                 </h4>
                 <p className="text-xs text-[var(--text-muted)] mt-0.5">
                   {editingContact
-                    ? `Modification de la fiche de ${editingContact.prenom} ${editingContact.nom}`
+                    ? `Modification de la fiche de ${editingContact.nomComplet}`
                     : 'Renseignez les informations du nouveau contact SPAT.'}
                 </p>
               </div>

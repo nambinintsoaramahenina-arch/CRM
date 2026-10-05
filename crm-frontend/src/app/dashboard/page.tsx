@@ -49,7 +49,7 @@ const ROLE_CONFIG: Record<
     icon: UsersIcon,
   },
   USER: {
-    label: "Client",
+    label: "Agent",
     color: "text-slate-600 dark:text-slate-400",
     bg: "bg-slate-100 border-slate-200 dark:bg-slate-900 dark:border-slate-800",
     icon: ProfileIcon,
