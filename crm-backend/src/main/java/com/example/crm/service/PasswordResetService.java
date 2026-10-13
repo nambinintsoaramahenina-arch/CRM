@@ -133,7 +133,7 @@ public class PasswordResetService {
         response.put("status", 200);
         response.put("message",
                 "Votre demande a bien été enregistrée. L'administrateur validera votre " +
-                "identité et vous enverra un nouveau mot de passe par e-mail sous 24 à 48h.");
+                "identité et vous enverra un nouveau mot de passe par e-mail.");
         response.put("alreadyPending", false);
 
         return response;

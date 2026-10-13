@@ -134,7 +134,7 @@ export default function DashboardPage() {
                 className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/30 text-amber-200 text-xs font-semibold transition-all"
               >
                 <ShieldCheckIcon size={15} />
-                <span>Demandes MDP</span>
+                <span>Demandes Mot de passe </span>
               </Link>
             )}
           </div>

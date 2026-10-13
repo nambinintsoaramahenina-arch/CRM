@@ -30,9 +30,10 @@ import java.util.stream.Collectors;
  *
  * Étape 1 — Utilisateur : soumet une demande → enregistrée en PENDING en base.
  * Étape 2 — Admin       : consulte les demandes PENDING via l'API admin.
- * Étape 3 — Admin       : valide la demande → génère un mot de passe temporaire,
- *                         le hache avec BCrypt, met à jour l'utilisateur,
- *                         et envoie un e-mail réel à l'utilisateur via JavaMailSender.
+ * Étape 3 — Admin       : valide la demande → génère un code/token sécurisé,
+ *                         l'enregistre sur l'utilisateur en base,
+ *                         et envoie un e-mail réel à l'utilisateur avec le code.
+ * Étape 4 — Utilisateur : utilise le code + nouveau mot de passe pour réinitialiser.
  */
 @Service
 public class PasswordRequestAdminService {
@@ -41,6 +42,9 @@ public class PasswordRequestAdminService {
 
     private static final String CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789@#$!";
     private static final int    PWD_LENGTH = 10;
+    private static final String CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    private static final int    CODE_LENGTH = 6;
+    private static final int    TOKEN_EXPIRATION_HOURS = 24;
 
     private final UserRepository userRepository;
     private final PasswordResetRequestRepository requestRepository;
@@ -96,7 +100,7 @@ public class PasswordRequestAdminService {
             resp.put("status", 200);
             resp.put("message",
                     "Une demande est déjà en attente de validation par l'administrateur. " +
-                    "Veuillez patienter (délai : 24 à 48h).");
+                    "Veuillez patienter! L'administrateur vous enverra un code de réinitialisation par e-mail.");
             resp.put("alreadyPending", true);
             return resp;
         }
@@ -115,7 +119,7 @@ public class PasswordRequestAdminService {
         resp.put("status", 200);
         resp.put("message",
                 "Votre demande a bien été enregistrée. L'administrateur validera votre " +
-                "identité et vous enverra un nouveau mot de passe par e-mail sous 24 à 48h.");
+                "identité et vous enverra un nouveau mot de passe par e-mail.");
         resp.put("alreadyPending", false);
         return resp;
     }
@@ -150,13 +154,17 @@ public class PasswordRequestAdminService {
 
     /**
      * Valide une demande PENDING :
-     * 1. Génère un mot de passe temporaire ou applique celui saisi par l'admin
-     * 2. Le hache avec BCrypt et met à jour l'utilisateur en base
-     * 3. Envoie le mot de passe temporaire à l'utilisateur par e-mail
+     * 1. Génère un code/token sécurisé de réinitialisation (6 caractères)
+     * 2. Enregistre le code sur l'utilisateur en base (sans modifier le mot de passe)
+     * 3. Envoie un e-mail à l'utilisateur contenant le code
      * 4. Marque la demande comme APPROVED
+     * 5. Renvoie le token au frontend admin dans la réponse JSON
+     *
+     * L'utilisateur utilisera ensuite ce code + son nouveau mot de passe
+     * sur la page de réinitialisation (POST /api/auth/reset-password).
      *
      * @param demandeId        ID de la demande à approuver
-     * @param customMdp        Mot de passe facultatif saisi par l'admin (si null/vide, auto-généré)
+     * @param customMdp        Ignoré dans le flux token/code (conservé pour compatibilité)
      * @param commentaireAdmin Commentaire optionnel de l'admin
      */
     @Transactional
@@ -171,22 +179,18 @@ public class PasswordRequestAdminService {
         }
 
         User user = demande.getUser();
-        String mdpEffectif = (customMdp != null && !customMdp.trim().isEmpty())
-                ? customMdp.trim()
-                : genererMotDePasseTemporaire();
 
-        // Génération du token de réinitialisation pour lien direct optionnel
-        String resetToken = java.util.UUID.randomUUID().toString();
-        LocalDateTime expiryDate = LocalDateTime.now().plusHours(24);
+        // Génération d'un code sécurisé de réinitialisation (6 caractères alphanumériques)
+        String resetCode = genererCodeReinitialisation();
+        LocalDateTime expiryDate = LocalDateTime.now().plusHours(TOKEN_EXPIRATION_HOURS);
 
-        // Mise à jour du mot de passe utilisateur (haché BCrypt) et token
-        user.setMdp(passwordEncoder.encode(mdpEffectif));
-        user.setResetToken(resetToken);
+        // Enregistrement du code sur l'utilisateur (PAS de modification du mot de passe)
+        user.setResetToken(resetCode);
         user.setResetTokenExpiry(expiryDate);
         userRepository.save(user);
 
-        // Envoi réel de l'e-mail avec le mot de passe temporaire et le token via EmailService
-        emailService.envoyerMotDePasseTemporaire(user.getEmail(), user.getNomComplet(), mdpEffectif, resetToken);
+        // Envoi de l'e-mail avec le code de réinitialisation via EmailService
+        emailService.envoyerCodeReinitialisation(user.getEmail(), user.getNomComplet(), resetCode, TOKEN_EXPIRATION_HOURS);
 
         // Marquer la demande comme traitée
         demande.setStatut(PasswordResetRequest.Statut.APPROVED);
@@ -194,17 +198,15 @@ public class PasswordRequestAdminService {
         demande.setCommentaireAdmin(commentaireAdmin != null ? commentaireAdmin.trim() : "Approuvé par l'administrateur");
         requestRepository.save(demande);
 
-        String resetLink = emailService.getFrontendUrl() + "/reset-password?token=" + resetToken;
+        log.info("[PWD APPROVE] Demande {} approuvée — code envoyé à : {}", demandeId, user.getEmail());
 
         Map<String, Object> resp = new LinkedHashMap<>();
         resp.put("status", 200);
         resp.put("message",
-                "Demande approuvée. Un nouveau mot de passe a été envoyé à " + user.getEmail() + ".");
+                "Demande approuvée. Un code de réinitialisation a été envoyé à " + user.getEmail() + ".");
         resp.put("userId", user.getId());
         resp.put("userEmail", user.getEmail());
-        resp.put("temporaryPassword", mdpEffectif);
-        resp.put("resetToken", resetToken);
-        resp.put("resetLink", resetLink);
+        resp.put("resetToken", resetCode);
         return resp;
     }
 
@@ -215,11 +217,14 @@ public class PasswordRequestAdminService {
     }
 
     /**
-     * Étape 3 — Réinitialise le mot de passe directement via l'ID utilisateur :
+     * Étape 3 — Génère un code de réinitialisation directement via l'ID utilisateur :
      * Endpoint : POST /api/admin/users/{id}/reset-password
      *
+     * Génère un code sécurisé, l'enregistre sur l'utilisateur (sans changer le mot de passe)
+     * et envoie un e-mail avec le code.
+     *
      * @param userId           ID de l'utilisateur concerné
-     * @param customMdp        Mot de passe facultatif (si non fourni, généré automatiquement)
+     * @param customMdp        Ignoré dans le flux token/code (conservé pour compatibilité)
      * @param commentaireAdmin Commentaire optionnel
      */
     @Transactional
@@ -227,17 +232,12 @@ public class PasswordRequestAdminService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable avec l'ID : " + userId));
 
-        String mdpEffectif = (customMdp != null && !customMdp.trim().isEmpty())
-                ? customMdp.trim()
-                : genererMotDePasseTemporaire();
+        // Génération d'un code sécurisé de réinitialisation
+        String resetCode = genererCodeReinitialisation();
+        LocalDateTime expiryDate = LocalDateTime.now().plusHours(TOKEN_EXPIRATION_HOURS);
 
-        // Génération du token de réinitialisation pour lien direct optionnel
-        String resetToken = java.util.UUID.randomUUID().toString();
-        LocalDateTime expiryDate = LocalDateTime.now().plusHours(24);
-
-        // Hachage BCrypt et persistance
-        user.setMdp(passwordEncoder.encode(mdpEffectif));
-        user.setResetToken(resetToken);
+        // Enregistrement du code (PAS de modification du mot de passe)
+        user.setResetToken(resetCode);
         user.setResetTokenExpiry(expiryDate);
         userRepository.save(user);
 
@@ -250,19 +250,17 @@ public class PasswordRequestAdminService {
                     requestRepository.save(demande);
                 });
 
-        // Envoi réel de l'e-mail avec le mot de passe via EmailService
-        emailService.envoyerMotDePasseTemporaire(user.getEmail(), user.getNomComplet(), mdpEffectif, resetToken);
+        // Envoi de l'e-mail avec le code de réinitialisation
+        emailService.envoyerCodeReinitialisation(user.getEmail(), user.getNomComplet(), resetCode, TOKEN_EXPIRATION_HOURS);
 
-        String resetLink = emailService.getFrontendUrl() + "/reset-password?token=" + resetToken;
+        log.info("[PWD RESET DIRECT] Code envoyé à : {} (userId={})", user.getEmail(), userId);
 
         Map<String, Object> resp = new LinkedHashMap<>();
         resp.put("status", 200);
-        resp.put("message", "Nouveau mot de passe généré et envoyé avec succès par e-mail à " + user.getEmail() + ".");
+        resp.put("message", "Code de réinitialisation généré et envoyé par e-mail à " + user.getEmail() + ".");
         resp.put("userId", user.getId());
         resp.put("userEmail", user.getEmail());
-        resp.put("temporaryPassword", mdpEffectif);
-        resp.put("resetToken", resetToken);
-        resp.put("resetLink", resetLink);
+        resp.put("resetToken", resetCode);
         return resp;
     }
 
@@ -308,6 +306,16 @@ public class PasswordRequestAdminService {
         StringBuilder sb = new StringBuilder(PWD_LENGTH);
         for (int i = 0; i < PWD_LENGTH; i++) {
             sb.append(CHARS.charAt(rng.nextInt(CHARS.length())));
+        }
+        return sb.toString();
+    }
+
+    /** Génère un code de réinitialisation sécurisé (6 caractères alphanumériques majuscules). */
+    private String genererCodeReinitialisation() {
+        SecureRandom rng = new SecureRandom();
+        StringBuilder sb = new StringBuilder(CODE_LENGTH);
+        for (int i = 0; i < CODE_LENGTH; i++) {
+            sb.append(CODE_CHARS.charAt(rng.nextInt(CODE_CHARS.length())));
         }
         return sb.toString();
     }

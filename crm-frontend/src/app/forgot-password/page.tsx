@@ -53,6 +53,32 @@ const LockIcon: React.FC<{ className?: string }> = ({ className = '' }) => (
   </svg>
 );
 
+const EyeIcon: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <svg
+    width="18" height="18" viewBox="0 0 24 24"
+    fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const EyeOffIcon: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <svg
+    width="18" height="18" viewBox="0 0 24 24"
+    fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94" />
+    <path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19" />
+    <path d="M14.12 14.12a3 3 0 11-4.24-4.24" />
+    <line x1="1" y1="1" x2="23" y2="23" />
+  </svg>
+);
+
 const CheckCircleIcon: React.FC<{ className?: string }> = ({ className = '' }) => (
   <svg
     width="48" height="48" viewBox="0 0 24 24"
@@ -84,6 +110,11 @@ export default function ForgotPasswordPage() {
   const [confirmMdp, setConfirmMdp]       = useState('');
   const [resetLoading, setResetLoading]   = useState(false);
   const [resetSuccess, setResetSuccess]   = useState(false);
+
+  // Visibilité des champs (toggle œil)
+  const [showToken, setShowToken]         = useState(false);
+  const [showNewPwd, setShowNewPwd]       = useState(false);
+  const [showConfirmPwd, setShowConfirmPwd] = useState(false);
   const [resetError, setResetError]       = useState('');
 
   // Initialiser le token depuis l'URL si présent
@@ -188,7 +219,7 @@ export default function ForgotPasswordPage() {
               Réinitialisation validée par l&apos;administrateur
             </h2>
             <p className="text-sm text-slate-300 leading-relaxed font-normal">
-              Votre demande sera examinée et traitée par l&apos;administrateur SPAT. Un nouveau mot de passe vous sera communiqué par e-mail sous 24 à 48h.
+              Votre demande sera examinée et traitée par l&apos;administrateur SPAT. Un nouveau mot de passe vous sera communiqué par e-mail.
             </p>
           </div>
         </div>
@@ -258,23 +289,34 @@ export default function ForgotPasswordPage() {
 
                   <form onSubmit={handleResetPassword} className="space-y-5" id="reset-password-form">
 
-                    {/* Champ token */}
+                    {/* Champ code */}
                     <div className="space-y-2">
                       <label
                         htmlFor="reset-token"
                         className="block text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider"
                       >
-                        Token de réinitialisation
+                        Code de réinitialisation
                       </label>
-                      <input
-                        id="reset-token"
-                        type="text"
-                        value={resetToken}
-                        onChange={(e) => setResetToken(e.target.value)}
-                        placeholder="Collez le token reçu par e-mail"
-                        className="w-full px-4 py-3 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all font-mono text-xs"
-                        required
-                      />
+                      <div className="relative">
+                        <input
+                          id="reset-token"
+                          type={showToken ? 'text' : 'password'}
+                          value={resetToken}
+                          onChange={(e) => setResetToken(e.target.value)}
+                          placeholder="Saisissez le code reçu par email"
+                          className="w-full px-4 py-3 pr-12 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all font-mono text-xs"
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowToken(!showToken)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                          tabIndex={-1}
+                          title={showToken ? 'Masquer le code' : 'Afficher le code'}
+                        >
+                          {showToken ? <EyeOffIcon /> : <EyeIcon />}
+                        </button>
+                      </div>
                     </div>
 
                     {/* Nouveau mot de passe */}
@@ -285,17 +327,28 @@ export default function ForgotPasswordPage() {
                       >
                         Nouveau mot de passe
                       </label>
-                      <input
-                        id="new-password"
-                        type="password"
-                        value={nouveauMdp}
-                        onChange={(e) => setNouveauMdp(e.target.value)}
-                        placeholder="Minimum 6 caractères"
-                        className="w-full px-4 py-3 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all font-medium"
-                        required
-                        minLength={6}
-                        autoFocus
-                      />
+                      <div className="relative">
+                        <input
+                          id="new-password"
+                          type={showNewPwd ? 'text' : 'password'}
+                          value={nouveauMdp}
+                          onChange={(e) => setNouveauMdp(e.target.value)}
+                          placeholder="Minimum 6 caractères"
+                          className="w-full px-4 py-3 pr-12 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all font-medium"
+                          required
+                          minLength={6}
+                          autoFocus
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowNewPwd(!showNewPwd)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                          tabIndex={-1}
+                          title={showNewPwd ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                        >
+                          {showNewPwd ? <EyeOffIcon /> : <EyeIcon />}
+                        </button>
+                      </div>
                     </div>
 
                     {/* Confirmation */}
@@ -306,16 +359,27 @@ export default function ForgotPasswordPage() {
                       >
                         Confirmer le mot de passe
                       </label>
-                      <input
-                        id="confirm-password"
-                        type="password"
-                        value={confirmMdp}
-                        onChange={(e) => setConfirmMdp(e.target.value)}
-                        placeholder="Ressaisissez votre mot de passe"
-                        className="w-full px-4 py-3 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all font-medium"
-                        required
-                        minLength={6}
-                      />
+                      <div className="relative">
+                        <input
+                          id="confirm-password"
+                          type={showConfirmPwd ? 'text' : 'password'}
+                          value={confirmMdp}
+                          onChange={(e) => setConfirmMdp(e.target.value)}
+                          placeholder="Ressaisissez votre mot de passe"
+                          className="w-full px-4 py-3 pr-12 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all font-medium"
+                          required
+                          minLength={6}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPwd(!showConfirmPwd)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
+                          tabIndex={-1}
+                          title={showConfirmPwd ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+                        >
+                          {showConfirmPwd ? <EyeOffIcon /> : <EyeIcon />}
+                        </button>
+                      </div>
                     </div>
 
                     {/* Erreur */}
@@ -383,7 +447,7 @@ export default function ForgotPasswordPage() {
                   <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                     {alreadyPending
                       ? <>Une demande est déjà <strong className="text-amber-600 dark:text-amber-400">en attente de validation</strong> pour votre compte.</>
-                      : <>Votre demande a bien été transmise à l&apos;administrateur SPAT pour traitement. Vous recevrez un <strong className="text-emerald-600 dark:text-emerald-400">e-mail avec un mot de passe temporaire</strong> sous 24 à 48h.</>
+                      : <>Votre demande a bien été transmise à l&apos;administrateur SPAT pour traitement. Vous recevrez un <strong className="text-emerald-600 dark:text-emerald-400">e-mail avec un mot de passe temporaire</strong> </>
                     }
                   </p>
                 </div>
@@ -401,7 +465,6 @@ export default function ForgotPasswordPage() {
                     className="inline-flex items-center justify-center gap-2 w-full py-3.5 px-4 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 shadow-lg shadow-emerald-900/20 transition-all active:scale-[0.99]"
                   >
                     <LockIcon className="w-4 h-4" />
-                    <span>J&apos;ai reçu mon token — Définir mon mot de passe</span>
                   </button>
                   <Link
                     href="/login"
@@ -467,7 +530,7 @@ export default function ForgotPasswordPage() {
                   <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-amber-500/5 border border-amber-500/20 text-[var(--text-secondary)] text-xs">
                     <span className="text-amber-500 shrink-0 font-bold mt-0.5">⏱</span>
                     <span>
-                      Votre demande sera examinée par un <strong>administrateur SPAT</strong>. Un nouveau mot de passe vous sera communiqué par e-mail sous <strong>24 à 48h</strong>.
+                      Votre demande sera examinée par un <strong>administrateur SPAT</strong>. Un nouveau mot de passe vous sera communiqué par e-mail  <strong></strong>.
                     </span>
                   </div>
 
@@ -499,7 +562,7 @@ export default function ForgotPasswordPage() {
                     className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 transition-colors inline-flex items-center gap-1.5 group"
                   >
                     <LockIcon className="w-3 h-3" />
-                    J&apos;ai déjà un token — Définir mon mot de passe
+
                   </button>
                   <div>
                     <Link

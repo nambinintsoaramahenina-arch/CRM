@@ -78,7 +78,6 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ type, request, onConfirm, o
   const [commentaire, setCommentaire] = useState(
     type === 'approve' ? 'Identité vérifiée — Approuvé par l\'administrateur' : ''
   );
-  const [customPassword, setCustomPassword] = useState('');
 
   const isApprove = type === 'approve';
 
@@ -95,7 +94,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ type, request, onConfirm, o
           </div>
           <div>
             <h4 className="text-sm font-black text-[var(--text-primary)]">
-              {isApprove ? 'Approuver et envoyer le mot de passe' : 'Rejeter la demande'}
+              {isApprove ? 'Approuver et envoyer l\'e-mail' : 'Rejeter la demande'}
             </h4>
             <p className="text-xs text-[var(--text-secondary)]">
               {request.nomComplet} — {request.email} ({request.login})
@@ -106,34 +105,16 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ type, request, onConfirm, o
         {/* Description */}
         {isApprove && (
           <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-700 dark:text-emerald-300 leading-relaxed">
-            ✅ En cliquant sur &quot;Approuver&quot;, le backend va :<br />
-            <strong>1.</strong> Générer un mot de passe temporaire (ou utiliser celui saisi ci-dessous)<br />
-            <strong>2.</strong> Le hasher avec BCrypt et l&apos;enregistrer en base de données<br />
-            <strong>3.</strong> Envoyer un e-mail à <strong>{request.email}</strong> avec le mot de passe temporaire
+            ✅ En cliquant sur &quot;Approuver&quot;, le système va :<br />
+            <strong>1.</strong> Générer un code de réinitialisation sécurisé (6 caractères)<br />
+            <strong>2.</strong> Enregistrer ce code sur le compte utilisateur (validité : 24h)<br />
+            <strong>3.</strong> Envoyer un e-mail à <strong>{request.email}</strong> contenant le code
           </div>
         )}
 
         {!isApprove && (
           <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-700 dark:text-rose-300 leading-relaxed">
             ⚠️ La demande sera marquée comme rejetée. Aucun e-mail ni modification de mot de passe ne sera effectué.
-          </div>
-        )}
-
-        {/* Saisie d'un mot de passe personnalisé (optionnel) */}
-        {isApprove && (
-          <div className="space-y-1.5">
-            <label className="text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider flex items-center justify-between">
-              <span>Mot de passe personnalisé (optionnel)</span>
-              <span className="text-[10px] text-cyan-500 normal-case font-normal">Vide = Génération automatique</span>
-            </label>
-            <input
-              id="modal-custom-password"
-              type="text"
-              value={customPassword}
-              onChange={(e) => setCustomPassword(e.target.value)}
-              placeholder="Laisser vide pour générer un mot de passe aléatoire sécurisé"
-              className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all font-mono"
-            />
           </div>
         )}
 
@@ -163,7 +144,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ type, request, onConfirm, o
           </button>
           <button
             id={`modal-${type}-confirm`}
-            onClick={() => onConfirm(commentaire, customPassword)}
+            onClick={() => onConfirm(commentaire)}
             disabled={loading}
             className={`px-5 py-2.5 rounded-xl text-xs font-bold text-white shadow-md transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed flex items-center gap-2 ${
               isApprove
@@ -179,7 +160,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ type, request, onConfirm, o
             ) : (
               <>
                 {isApprove ? <CheckIcon size={13} /> : <XIcon size={13} />}
-                <span>{isApprove ? 'Approuver / Envoyer le mot de passe' : 'Rejeter la demande'}</span>
+                <span>{isApprove ? 'Approuver et envoyer l\'e-mail' : 'Rejeter la demande'}</span>
               </>
             )}
           </button>
@@ -230,48 +211,27 @@ const ApproveResultModal: React.FC<ApproveResultModalProps> = ({ result, onClose
               ✅ Demande approuvée avec succès
             </h4>
             <p className="text-xs text-[var(--text-secondary)]">
-              L&apos;e-mail avec le mot de passe temporaire a été envoyé à <strong>{result.userEmail}</strong>
+              L&apos;e-mail avec le code de réinitialisation a été envoyé à <strong>{result.userEmail}</strong>
             </p>
           </div>
         </div>
 
         {/* Informations générées */}
         <div className="space-y-3">
-          {/* Mot de passe temporaire */}
-          {result.temporaryPassword && (
+          {/* Code de réinitialisation */}
+          {result.resetToken && (
             <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20 space-y-2">
               <p className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
-                Mot de passe temporaire
+                Code de réinitialisation
               </p>
               <div className="flex items-center gap-2">
-                <code className="flex-1 px-3 py-2 rounded-lg bg-[var(--bg-surface-2)] border border-[var(--bg-border)] text-sm font-mono font-bold text-[var(--text-primary)] tracking-wider">
-                  {result.temporaryPassword}
-                </code>
-                <button
-                  onClick={() => handleCopy(result.temporaryPassword!, 'password')}
-                  className="shrink-0 p-2 rounded-lg bg-[var(--bg-surface-2)] border border-[var(--bg-border)] hover:border-emerald-500 text-[var(--text-secondary)] hover:text-emerald-500 transition-all"
-                  title="Copier le mot de passe"
-                >
-                  {copiedField === 'password' ? <CheckIcon size={14} className="text-emerald-500" /> : <CopyIcon size={14} />}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Token */}
-          {result.resetToken && (
-            <div className="p-4 rounded-xl bg-cyan-500/5 border border-cyan-500/20 space-y-2">
-              <p className="text-[11px] font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">
-                Token de réinitialisation
-              </p>
-              <div className="flex items-center gap-2">
-                <code className="flex-1 px-3 py-2 rounded-lg bg-[var(--bg-surface-2)] border border-[var(--bg-border)] text-[11px] font-mono text-[var(--text-secondary)] break-all">
+                <code className="flex-1 px-3 py-2 rounded-lg bg-[var(--bg-surface-2)] border border-[var(--bg-border)] text-lg font-mono font-bold text-[var(--text-primary)] tracking-[0.25em] text-center">
                   {result.resetToken}
                 </code>
                 <button
                   onClick={() => handleCopy(result.resetToken!, 'token')}
-                  className="shrink-0 p-2 rounded-lg bg-[var(--bg-surface-2)] border border-[var(--bg-border)] hover:border-cyan-500 text-[var(--text-secondary)] hover:text-cyan-500 transition-all"
-                  title="Copier le token"
+                  className="shrink-0 p-2 rounded-lg bg-[var(--bg-surface-2)] border border-[var(--bg-border)] hover:border-emerald-500 text-[var(--text-secondary)] hover:text-emerald-500 transition-all"
+                  title="Copier le code"
                 >
                   {copiedField === 'token' ? <CheckIcon size={14} className="text-emerald-500" /> : <CopyIcon size={14} />}
                 </button>
@@ -305,7 +265,7 @@ const ApproveResultModal: React.FC<ApproveResultModalProps> = ({ result, onClose
         <div className="flex items-start gap-2.5 p-3 rounded-xl bg-amber-500/5 border border-amber-500/20 text-xs text-amber-700 dark:text-amber-300">
           <span className="shrink-0 font-bold mt-0.5">📧</span>
           <span>
-            L&apos;utilisateur a reçu cet e-mail avec le mot de passe temporaire. Il pourra également utiliser le token pour définir son propre mot de passe sur la page de réinitialisation.
+            L&apos;utilisateur a reçu un e-mail contenant le code de réinitialisation. Il devra saisir ce code sur la page &laquo;&nbsp;Mot de passe oublié&nbsp;&raquo; pour définir son nouveau mot de passe.
           </span>
         </div>
 
@@ -592,7 +552,7 @@ export default function PasswordRequestsPage() {
                     <td className="py-3.5 px-4 text-right">
                       {r.statut === 'PENDING' ? (
                         <div className="flex items-center justify-end gap-2">
-                          {/* Approuver et envoyer */}
+                          {}
                           <button
                             id={`btn-approve-${r.id}`}
                             onClick={() => setModal({ type: 'approve', request: r })}
@@ -600,7 +560,7 @@ export default function PasswordRequestsPage() {
                             title="Approuver la demande — Génère le mot de passe, l'enregistre en base et envoie l'e-mail"
                           >
                             <CheckIcon size={12} />
-                            Approuver / Envoyer
+                            Approuver 
                           </button>
                           {/* Rejeter */}
                           <button
