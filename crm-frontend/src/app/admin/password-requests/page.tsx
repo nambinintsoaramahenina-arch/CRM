@@ -41,6 +41,13 @@ const MailIcon = ({ size = 14, className = '' }) => (
   </svg>
 );
 
+const CopyIcon = ({ size = 14, className = '' }) => (
+  <svg width={size} height={size} className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <rect x="9" y="9" width="13" height="13" rx="2" ry="2" strokeWidth={2} />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+  </svg>
+);
+
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 const formatDate = (iso?: string) => {
@@ -88,7 +95,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ type, request, onConfirm, o
           </div>
           <div>
             <h4 className="text-sm font-black text-[var(--text-primary)]">
-              {isApprove ? 'Valider et envoyer le nouveau mot de passe' : 'Rejeter la demande'}
+              {isApprove ? 'Approuver et envoyer le mot de passe' : 'Rejeter la demande'}
             </h4>
             <p className="text-xs text-[var(--text-secondary)]">
               {request.nomComplet} — {request.email} ({request.login})
@@ -99,7 +106,10 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ type, request, onConfirm, o
         {/* Description */}
         {isApprove && (
           <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-700 dark:text-emerald-300 leading-relaxed">
-            ✅ Un <strong>mot de passe temporaire</strong> sera hashé avec BCrypt, sauvegardé pour l&apos;utilisateur et envoyé directement à <strong>{request.email}</strong> par e-mail via JavaMailSender.
+            ✅ En cliquant sur &quot;Approuver&quot;, le backend va :<br />
+            <strong>1.</strong> Générer un mot de passe temporaire (ou utiliser celui saisi ci-dessous)<br />
+            <strong>2.</strong> Le hasher avec BCrypt et l&apos;enregistrer en base de données<br />
+            <strong>3.</strong> Envoyer un e-mail à <strong>{request.email}</strong> avec le mot de passe temporaire
           </div>
         )}
 
@@ -169,9 +179,143 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({ type, request, onConfirm, o
             ) : (
               <>
                 {isApprove ? <CheckIcon size={13} /> : <XIcon size={13} />}
-                <span>{isApprove ? 'Valider / Envoyer un nouveau mot de passe' : 'Rejeter la demande'}</span>
+                <span>{isApprove ? 'Approuver / Envoyer le mot de passe' : 'Rejeter la demande'}</span>
               </>
             )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── Modal de résultat d'approbation (affiche le mot de passe temporaire) ─────
+
+interface ApproveResultModalProps {
+  result: {
+    message: string;
+    userEmail: string;
+    temporaryPassword?: string;
+    resetToken?: string;
+    resetLink?: string;
+    userId?: number;
+  };
+  onClose: () => void;
+}
+
+const ApproveResultModal: React.FC<ApproveResultModalProps> = ({ result, onClose }) => {
+  const [copiedField, setCopiedField] = useState<string | null>(null);
+
+  const handleCopy = async (text: string, field: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedField(field);
+      setTimeout(() => setCopiedField(null), 2000);
+    } catch {
+      // Fallback silencieux
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm">
+      <div className="w-full max-w-lg bg-[var(--bg-surface)] rounded-2xl border border-[var(--bg-border)] shadow-2xl p-6 space-y-5">
+
+        {/* Header */}
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 bg-emerald-500/15 text-emerald-500">
+            <CheckIcon size={18} />
+          </div>
+          <div>
+            <h4 className="text-sm font-black text-[var(--text-primary)]">
+              ✅ Demande approuvée avec succès
+            </h4>
+            <p className="text-xs text-[var(--text-secondary)]">
+              L&apos;e-mail avec le mot de passe temporaire a été envoyé à <strong>{result.userEmail}</strong>
+            </p>
+          </div>
+        </div>
+
+        {/* Informations générées */}
+        <div className="space-y-3">
+          {/* Mot de passe temporaire */}
+          {result.temporaryPassword && (
+            <div className="p-4 rounded-xl bg-emerald-500/5 border border-emerald-500/20 space-y-2">
+              <p className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                Mot de passe temporaire
+              </p>
+              <div className="flex items-center gap-2">
+                <code className="flex-1 px-3 py-2 rounded-lg bg-[var(--bg-surface-2)] border border-[var(--bg-border)] text-sm font-mono font-bold text-[var(--text-primary)] tracking-wider">
+                  {result.temporaryPassword}
+                </code>
+                <button
+                  onClick={() => handleCopy(result.temporaryPassword!, 'password')}
+                  className="shrink-0 p-2 rounded-lg bg-[var(--bg-surface-2)] border border-[var(--bg-border)] hover:border-emerald-500 text-[var(--text-secondary)] hover:text-emerald-500 transition-all"
+                  title="Copier le mot de passe"
+                >
+                  {copiedField === 'password' ? <CheckIcon size={14} className="text-emerald-500" /> : <CopyIcon size={14} />}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Token */}
+          {result.resetToken && (
+            <div className="p-4 rounded-xl bg-cyan-500/5 border border-cyan-500/20 space-y-2">
+              <p className="text-[11px] font-bold text-cyan-600 dark:text-cyan-400 uppercase tracking-wider">
+                Token de réinitialisation
+              </p>
+              <div className="flex items-center gap-2">
+                <code className="flex-1 px-3 py-2 rounded-lg bg-[var(--bg-surface-2)] border border-[var(--bg-border)] text-[11px] font-mono text-[var(--text-secondary)] break-all">
+                  {result.resetToken}
+                </code>
+                <button
+                  onClick={() => handleCopy(result.resetToken!, 'token')}
+                  className="shrink-0 p-2 rounded-lg bg-[var(--bg-surface-2)] border border-[var(--bg-border)] hover:border-cyan-500 text-[var(--text-secondary)] hover:text-cyan-500 transition-all"
+                  title="Copier le token"
+                >
+                  {copiedField === 'token' ? <CheckIcon size={14} className="text-emerald-500" /> : <CopyIcon size={14} />}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Lien de réinitialisation */}
+          {result.resetLink && (
+            <div className="p-4 rounded-xl bg-slate-500/5 border border-slate-500/20 space-y-2">
+              <p className="text-[11px] font-bold text-[var(--text-muted)] uppercase tracking-wider">
+                Lien de réinitialisation
+              </p>
+              <div className="flex items-center gap-2">
+                <code className="flex-1 px-3 py-2 rounded-lg bg-[var(--bg-surface-2)] border border-[var(--bg-border)] text-[10px] font-mono text-[var(--text-secondary)] break-all">
+                  {result.resetLink}
+                </code>
+                <button
+                  onClick={() => handleCopy(result.resetLink!, 'link')}
+                  className="shrink-0 p-2 rounded-lg bg-[var(--bg-surface-2)] border border-[var(--bg-border)] hover:border-cyan-500 text-[var(--text-secondary)] hover:text-cyan-500 transition-all"
+                  title="Copier le lien"
+                >
+                  {copiedField === 'link' ? <CheckIcon size={14} className="text-emerald-500" /> : <CopyIcon size={14} />}
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Info */}
+        <div className="flex items-start gap-2.5 p-3 rounded-xl bg-amber-500/5 border border-amber-500/20 text-xs text-amber-700 dark:text-amber-300">
+          <span className="shrink-0 font-bold mt-0.5">📧</span>
+          <span>
+            L&apos;utilisateur a reçu cet e-mail avec le mot de passe temporaire. Il pourra également utiliser le token pour définir son propre mot de passe sur la page de réinitialisation.
+          </span>
+        </div>
+
+        {/* Fermer */}
+        <div className="flex justify-end pt-2 border-t border-[var(--bg-border)]">
+          <button
+            onClick={onClose}
+            className="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-400 hover:to-blue-400 shadow-md transition-all active:scale-95"
+          >
+            Fermer
           </button>
         </div>
       </div>
@@ -192,6 +336,14 @@ export default function PasswordRequestsPage() {
   const [modal, setModal]             = useState<{
     type: 'approve' | 'reject';
     request: PasswordRequest;
+  } | null>(null);
+  const [approveResult, setApproveResult] = useState<{
+    message: string;
+    userEmail: string;
+    temporaryPassword?: string;
+    resetToken?: string;
+    resetLink?: string;
+    userId?: number;
   } | null>(null);
 
   const showToast = (type: 'success' | 'error', msg: string) => {
@@ -223,8 +375,16 @@ export default function PasswordRequestsPage() {
     setActionLoading(true);
     try {
       if (modal.type === 'approve') {
-        await approvePasswordRequest(token, modal.request.id, commentaire, customPassword);
-        showToast('success', `✅ Nouveau mot de passe envoyé à ${modal.request.email} avec succès.`);
+        const result = await approvePasswordRequest(token, modal.request.id, commentaire, customPassword);
+        // Afficher le modal de résultat avec le mot de passe temporaire et le token
+        setApproveResult({
+          message: result.message,
+          userEmail: result.userEmail,
+          temporaryPassword: result.temporaryPassword,
+          resetToken: result.resetToken,
+          resetLink: result.resetLink,
+        });
+        showToast('success', `✅ Demande approuvée — mot de passe envoyé à ${modal.request.email}`);
       } else {
         await rejectPasswordRequest(token, modal.request.id, commentaire);
         showToast('success', `Demande de ${modal.request.nomComplet} rejetée.`);
@@ -254,7 +414,7 @@ export default function PasswordRequestsPage() {
         </div>
       )}
 
-      {/* Modal */}
+      {/* Modal de confirmation */}
       {modal && (
         <ConfirmModal
           type={modal.type}
@@ -262,6 +422,14 @@ export default function PasswordRequestsPage() {
           onConfirm={handleAction}
           onCancel={() => setModal(null)}
           loading={actionLoading}
+        />
+      )}
+
+      {/* Modal de résultat d'approbation */}
+      {approveResult && (
+        <ApproveResultModal
+          result={approveResult}
+          onClose={() => setApproveResult(null)}
         />
       )}
 
@@ -429,10 +597,10 @@ export default function PasswordRequestsPage() {
                             id={`btn-approve-${r.id}`}
                             onClick={() => setModal({ type: 'approve', request: r })}
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 shadow-sm transition-all active:scale-95"
-                            title="Valider la demande et envoyer un nouveau mot de passe à l'utilisateur"
+                            title="Approuver la demande — Génère le mot de passe, l'enregistre en base et envoie l'e-mail"
                           >
                             <CheckIcon size={12} />
-                            Valider / Envoyer un nouveau mot de passe
+                            Approuver / Envoyer
                           </button>
                           {/* Rejeter */}
                           <button

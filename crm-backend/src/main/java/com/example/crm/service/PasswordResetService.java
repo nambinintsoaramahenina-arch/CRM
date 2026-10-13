@@ -21,9 +21,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Service gérant le cycle de vie de réinitialisation autonome du mot de passe :
- * 1. Génération de token sécurisé & expédition d'e-mail avec lien cliquable vers le frontend.
- * 2. Validation du token et mise à jour chiffrée (BCrypt) du mot de passe.
+ * Service gérant le cycle de vie de réinitialisation de mot de passe :
+ * 1. Enregistrement de la demande en PENDING et notification de l'administrateur.
+ * 2. Validation du token et mise à jour chiffrée (BCrypt) du mot de passe
+ *    (déclenché uniquement après approbation admin).
  */
 @Service
 public class PasswordResetService {
@@ -58,8 +59,9 @@ public class PasswordResetService {
 
     /**
      * Étape 1 : Demande de réinitialisation de mot de passe par l'utilisateur.
-     * Accepte un e-mail ou un matricule/login, génère un token aléatoire unique (UUID),
-     * définit sa date d'expiration (30 minutes) et déclenche l'envoi asynchrone de l'e-mail HTML.
+     * Enregistre la demande en base (statut PENDING) et notifie l'administrateur.
+     * Aucun mot de passe ni lien n'est envoyé à l'utilisateur à cette étape.
+     * C'est l'administrateur qui approuvera et déclenchera l'envoi.
      *
      * @param request DTO contenant l'e-mail ou l'identifiant
      * @return Confirmation JSON immédiate
@@ -89,47 +91,50 @@ public class PasswordResetService {
             throw new IllegalArgumentException("Ce compte est désactivé. Veuillez contacter l'administrateur.");
         }
 
-        // 1. Génération du token unique et expiration
-        String resetToken = UUID.randomUUID().toString();
-        LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(TOKEN_EXPIRATION_MINUTES);
-
-        user.setResetToken(resetToken);
-        user.setResetTokenExpiry(expiryDate);
-        userRepository.save(user);
-
-        // 2. Traçabilité optionnelle dans la table des demandes pour consultation admin
+        // 1. Vérifier s'il y a déjà une demande PENDING en cours
         if (requestRepository != null) {
             try {
                 boolean dejaEnAttente = requestRepository.existsByUserAndStatut(user, PasswordResetRequest.Statut.PENDING);
-                if (!dejaEnAttente) {
-                    PasswordResetRequest demande = new PasswordResetRequest(user);
-                    demande.setCommentaireAdmin("Lien envoyé par e-mail");
-                    requestRepository.save(demande);
+                if (dejaEnAttente) {
+                    Map<String, Object> resp = new LinkedHashMap<>();
+                    resp.put("status", 200);
+                    resp.put("message",
+                            "Une demande est déjà en attente de validation par l'administrateur. " +
+                            "Veuillez patienter (délai : 24 à 48h).");
+                    resp.put("alreadyPending", true);
+                    return resp;
                 }
+            } catch (Exception e) {
+                log.warn("[PASSWORD RESET] Vérification demande existante ignorée : {}", e.getMessage());
+            }
+        }
+
+        // 2. Création et persistance de la demande PENDING (sans générer de token/mot de passe)
+        if (requestRepository != null) {
+            try {
+                PasswordResetRequest demande = new PasswordResetRequest(user);
+                requestRepository.save(demande);
+                log.info("[PASSWORD RESET] Nouvelle demande PENDING enregistrée pour : {} ({})",
+                        user.getLogin(), user.getEmail());
             } catch (Exception e) {
                 log.warn("[PASSWORD RESET] Impossible d'enregistrer la demande en historique : {}", e.getMessage());
             }
         }
 
-        // 3. Construction du lien de redirection vers Next.js
-        String baseUrl = (frontendUrl != null && !frontendUrl.isBlank()) ? frontendUrl.replaceAll("/+$", "") : "http://localhost:3000";
-        String resetLink = baseUrl + "/reset-password?token=" + resetToken;
-
-        // 4. Envoi asynchrone de l'e-mail réel
+        // 3. Notification de l'administrateur uniquement (aucun e-mail à l'utilisateur)
         if (emailService != null) {
-            emailService.envoyerLienReinitialisation(user.getEmail(), user.getNomComplet(), resetLink, TOKEN_EXPIRATION_MINUTES);
-            log.info("[PASSWORD RESET] Lien de réinitialisation généré et expédié à : {}", user.getEmail());
+            emailService.notifierAdminNouvelleDemande(user.getLogin(), user.getEmail(), user.getNomComplet());
+            log.info("[PASSWORD RESET] Notification envoyée à l'administrateur pour : {}", user.getEmail());
         } else {
-            log.warn("[PASSWORD RESET] EmailService non injecté. Token généré : {}", resetToken);
+            log.warn("[PASSWORD RESET] EmailService non injecté. Demande enregistrée pour : {}", user.getEmail());
         }
 
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("status", 200);
-        response.put("message", "Un e-mail contenant les instructions de réinitialisation a été envoyé à " + user.getEmail() + ".");
-        response.put("email", user.getEmail());
-        response.put("resetToken", resetToken);
-        response.put("expiresAt", expiryDate.toString());
-        response.put("expiresInMinutes", TOKEN_EXPIRATION_MINUTES);
+        response.put("message",
+                "Votre demande a bien été enregistrée. L'administrateur validera votre " +
+                "identité et vous enverra un nouveau mot de passe par e-mail sous 24 à 48h.");
+        response.put("alreadyPending", false);
 
         return response;
     }

@@ -1,25 +1,51 @@
 package com.example.crm.service;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.crm.dto.UserCreateRequest;
+import com.example.crm.entity.PasswordResetRequest;
 import com.example.crm.entity.Role;
 import com.example.crm.entity.User;
+import com.example.crm.repository.PasswordResetRequestRepository;
 import com.example.crm.repository.UserRepository;
 
 @Service
 public class UserService {
 
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    private static final String CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789@#$!";
+    private static final int PWD_LENGTH = 10;
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
+    private final PasswordResetRequestRepository requestRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    @Autowired
+    public UserService(UserRepository userRepository,
+                       PasswordEncoder passwordEncoder,
+                       @Autowired(required = false) EmailService emailService,
+                       @Autowired(required = false) PasswordResetRequestRepository requestRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
+        this.requestRepository = requestRepository;
+    }
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this(userRepository, passwordEncoder, null, null);
     }
 
     /**
