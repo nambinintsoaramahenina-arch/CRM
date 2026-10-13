@@ -25,10 +25,14 @@ public class UserController {
 
     private final UserService userService;
     private final UserRepository userRepository;
+    private final com.example.crm.service.PasswordRequestAdminService passwordRequestAdminService;
 
-    public UserController(UserService userService, UserRepository userRepository) {
+    public UserController(UserService userService,
+                          UserRepository userRepository,
+                          com.example.crm.service.PasswordRequestAdminService passwordRequestAdminService) {
         this.userService = userService;
         this.userRepository = userRepository;
+        this.passwordRequestAdminService = passwordRequestAdminService;
     }
 
     // Le reste de tes méthodes reste inchangé...
@@ -92,5 +96,26 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.meSupprimerUtilisateur(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Étape 3 — Réinitialise le mot de passe d'un utilisateur par son ID (admin sécurisé).
+     * POST /api/admin/users/{id}/reset-password
+     * POST /api/users/{id}/reset-password
+     *
+     * Permet à l'admin soit de saisir un nouveau mot de passe, soit de laisser le système en générer un,
+     * le hache avec BCrypt, met à jour l'utilisateur et lui envoie un email avec le mot de passe temporaire.
+     */
+    @PostMapping("/{id}/reset-password")
+    public ResponseEntity<java.util.Map<String, Object>> resetPassword(
+            @PathVariable Long id,
+            @RequestBody(required = false) java.util.Map<String, String> body) {
+        String commentaire = (body != null) ? body.get("commentaire") : null;
+        String nouveauMdp = null;
+        if (body != null) {
+            nouveauMdp = body.getOrDefault("nouveauMdp", body.get("password"));
+        }
+        java.util.Map<String, Object> result = passwordRequestAdminService.reinitialiserMotDePasseParUserId(id, nouveauMdp, commentaire);
+        return ResponseEntity.ok(result);
     }
 }

@@ -22,7 +22,7 @@ public class AuthenticationController {
     public AuthenticationController(AuthenticationService authenticationService,
                                     PasswordResetService passwordResetService) {
         this.authenticationService = authenticationService;
-        this.passwordResetService = passwordResetService;
+        this.passwordResetService  = passwordResetService;
     }
 
     /**
@@ -35,23 +35,31 @@ public class AuthenticationController {
     }
 
     /**
-     * 1. Demande de réinitialisation de mot de passe (Mot de passe oublié)
-     * POST /api/auth/forgot-password
-     * Body: { "email": "user@crm.com" }
+     * Étape 1 — Demande de réinitialisation de mot de passe :
+     * POST /api/auth/forgot-password ou /api/v1/auth/forgot-password
+     * Body : { "email": "user@crm.com" }
+     *
+     * Génère un token sécurisé unique (UUID), définit sa validité à 30 min,
+     * et expédie de manière asynchrone un e-mail HTML avec le lien cliquable vers le frontend.
      */
     @PostMapping("/forgot-password")
-    public ResponseEntity<Map<String, Object>> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+    public ResponseEntity<Map<String, Object>> forgotPassword(
+            @Valid @RequestBody ForgotPasswordRequest request) {
         Map<String, Object> result = passwordResetService.processForgotPassword(request);
         return ResponseEntity.ok(result);
     }
 
     /**
-     * 2. Réinitialisation effective du mot de passe
-     * POST /api/auth/reset-password
-     * Body: { "token": "...", "nouveauMdp": "..." }
+     * Étape 2 — Réinitialisation effective du mot de passe avec token reçu par e-mail :
+     * POST /api/auth/reset-password ou /api/v1/auth/reset-password
+     * Body : { "token": "...", "nouveauMdp": "..." }
+     *
+     * Valide le token, son délai d'expiration, chiffre le mot de passe avec BCrypt
+     * et invalide le token.
      */
     @PostMapping("/reset-password")
-    public ResponseEntity<Map<String, Object>> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+    public ResponseEntity<Map<String, Object>> resetPassword(
+            @Valid @RequestBody ResetPasswordRequest request) {
         Map<String, Object> result = passwordResetService.processResetPassword(request);
         return ResponseEntity.ok(result);
     }

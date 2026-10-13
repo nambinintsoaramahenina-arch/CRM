@@ -1,18 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { fetchUsers } from "@/services/userServices";
 import { useRouter } from "next/navigation";
 import { StatCards } from "@/components/dashboard/StatCards";
 import { TasksOverview } from "@/components/dashboard/TasksOverview";
 import { RecentActivities } from "@/components/dashboard/RecentActivities";
 import { UsersCrudTable } from "@/components/dashboard/UsersCrudTable";
 import {
-  LogInIcon,
   BellIcon,
   UsersIcon,
   ShieldCheckIcon,
-  ProfileIcon,
 } from "@/components/ui/Icons";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import Link from "next/link";
@@ -26,35 +23,6 @@ interface SessionInfo {
   email: string;
 }
 
-// ─── Couleurs et labels de rôle
-const ROLE_CONFIG: Record<
-  UserRole,
-  {
-    label: string;
-    color: string;
-    bg: string;
-    icon: React.FC<{ size?: number; className?: string }>;
-  }
-> = {
-  ADMIN: {
-    label: "Admin",
-    color: "text-blue-600 dark:text-blue-400",
-    bg: "bg-blue-50 border-blue-200 dark:bg-blue-950/50 dark:border-blue-800",
-    icon: ShieldCheckIcon,
-  },
-  MANAGER: {
-    label: "Manager",
-    color: "text-indigo-600 dark:text-indigo-400",
-    bg: "bg-indigo-50 border-indigo-200 dark:bg-indigo-950/50 dark:border-indigo-800",
-    icon: UsersIcon,
-  },
-  USER: {
-    label: "Agent",
-    color: "text-slate-600 dark:text-slate-400",
-    bg: "bg-slate-100 border-slate-200 dark:bg-slate-900 dark:border-slate-800",
-    icon: ProfileIcon,
-  },
-};
 
 /**
  * Tableau de bord CRM SPAT
@@ -103,8 +71,6 @@ export default function DashboardPage() {
   }
 
   const role = session.role;
-  const cfg = ROLE_CONFIG[role] || ROLE_CONFIG["USER"];
-  const RoleIcon = cfg.icon;
   const isAdmin = role === "ADMIN";
   const isManager = role === "MANAGER" || isAdmin;
 
@@ -137,19 +103,7 @@ export default function DashboardPage() {
                   {roleDisplayTitle}
                 </span>
               </h2>
-              <div className="flex items-center gap-2 mt-1">
-                <span
-                  className={`inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold border ${cfg.bg} ${cfg.color}`}
-                >
-                  <RoleIcon size={12} />
-                  {cfg.label}
-                </span>
-                {session.email && (
-                  <span className="text-[11px] text-slate-400 font-medium">
-                    ({session.email})
-                  </span>
-                )}
-              </div>
+
             </div>
           </div>
 
@@ -174,15 +128,17 @@ export default function DashboardPage() {
               </Link>
             )}
 
-            <button
-              onClick={handleLogout}
-              id="logout-btn"
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-600/20 hover:bg-rose-600/40 border border-rose-500/30 text-rose-300 hover:text-white text-xs font-bold transition-all"
-            >
-              <LogInIcon size={15} className="rotate-180" />
-              <span>Déconnexion</span>
-            </button>
+            {isAdmin && (
+              <Link
+                href="/admin/password-requests"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/30 text-amber-200 text-xs font-semibold transition-all"
+              >
+                <ShieldCheckIcon size={15} />
+                <span>Demandes MDP</span>
+              </Link>
+            )}
           </div>
+
         </div>
       </div>
 

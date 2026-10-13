@@ -22,6 +22,24 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Valide le login selon le rôle :
+     * - ADMIN : texte libre accepté (ex : "admin")
+     * - MANAGER / USER : le login doit être exclusivement numérique (matricule)
+     */
+    private void validerLoginParRole(String login, String roleStr) {
+        if (login == null || login.trim().isEmpty()) return;
+        if (roleStr == null) return;
+        String role = roleStr.trim().toUpperCase();
+        if ("ADMIN".equals(role)) return; // L'ADMIN peut avoir un login textuel
+        // Pour MANAGER et USER : uniquement des chiffres
+        if (!login.trim().matches("\\d+")) {
+            throw new IllegalArgumentException(
+                "Le login/matricule doit être exclusivement numérique pour le rôle " + role +
+                ". Valeur fournie : '" + login + "'.");
+        }
+    }
+
     // CREATE
     public User meCreerUtilisateur(UserCreateRequest dto) {
         if (dto.getLogin() == null || dto.getLogin().trim().isEmpty()) {
@@ -40,6 +58,10 @@ public class UserService {
         if (userRepository.existsByEmail(dto.getEmail().trim())) {
             throw new IllegalArgumentException("L'e-mail est déjà utilisé : " + dto.getEmail());
         }
+
+        // Validation du login selon le rôle AVANT la création
+        String roleStrCreate = dto.getRole() != null ? dto.getRole().trim().toUpperCase() : "USER";
+        validerLoginParRole(dto.getLogin(), roleStrCreate);
 
         User user = new User();
         user.setLogin(dto.getLogin().trim());
@@ -136,6 +158,12 @@ public class UserService {
             }
         }
 
+        // Validation login selon le rôle effectif après mise à jour
+        String roleEffectif = (user.getRole() != null) ? user.getRole().name() : "USER";
+        if (dto.getLogin() != null && !dto.getLogin().trim().isEmpty()) {
+            validerLoginParRole(dto.getLogin(), roleEffectif);
+        }
+
         if (dto.getStatut() != null && !dto.getStatut().trim().isEmpty()) {
             user.setStatut(dto.getStatut().trim().toUpperCase());
         }
@@ -154,4 +182,4 @@ public class UserService {
         }
         userRepository.deleteById(id);
     }
-}
+}

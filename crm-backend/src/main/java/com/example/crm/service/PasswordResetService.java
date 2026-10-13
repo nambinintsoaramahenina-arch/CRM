@@ -2,10 +2,14 @@ package com.example.crm.service;
 
 import com.example.crm.dto.ForgotPasswordRequest;
 import com.example.crm.dto.ResetPasswordRequest;
+import com.example.crm.entity.PasswordResetRequest;
 import com.example.crm.entity.User;
+import com.example.crm.repository.PasswordResetRequestRepository;
 import com.example.crm.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,8 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Service gérant le cycle de vie de réinitialisation autonome du mot de passe :
+ * 1. Génération de token sécurisé & expédition d'e-mail avec lien cliquable vers le frontend.
+ * 2. Validation du token et mise à jour chiffrée (BCrypt) du mot de passe.
+ */
 @Service
 public class PasswordResetService {
 
@@ -23,28 +33,63 @@ public class PasswordResetService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
+    private final PasswordResetRequestRepository requestRepository;
 
-    public PasswordResetService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    @Value("${app.frontend.url:http://localhost:3000}")
+    private String frontendUrl;
+
+    @Autowired
+    public PasswordResetService(UserRepository userRepository,
+                                PasswordEncoder passwordEncoder,
+                                EmailService emailService,
+                                @Autowired(required = false) PasswordResetRequestRepository requestRepository) {
+        this.userRepository    = userRepository;
+        this.passwordEncoder   = passwordEncoder;
+        this.emailService      = emailService;
+        this.requestRepository = requestRepository;
+    }
+
+    /** Constructeur pour tests unitaires */
+    public PasswordResetService(UserRepository userRepository,
+                                PasswordEncoder passwordEncoder) {
+        this(userRepository, passwordEncoder, null, null);
     }
 
     /**
-     * Étape 1 : Traitement de la demande de réinitialisation de mot de passe.
-     * Recherche l'utilisateur par e-mail, génère un token unique, définit son expiration,
-     * et simule l'envoi d'e-mail dans les logs du serveur.
+     * Étape 1 : Demande de réinitialisation de mot de passe par l'utilisateur.
+     * Accepte un e-mail ou un matricule/login, génère un token aléatoire unique (UUID),
+     * définit sa date d'expiration (30 minutes) et déclenche l'envoi asynchrone de l'e-mail HTML.
+     *
+     * @param request DTO contenant l'e-mail ou l'identifiant
+     * @return Confirmation JSON immédiate
      */
     @Transactional
     public Map<String, Object> processForgotPassword(ForgotPasswordRequest request) {
-        String email = request.getEmail();
-        if (email == null || email.trim().isEmpty()) {
-            throw new IllegalArgumentException("L'adresse e-mail est obligatoire.");
+        String identifiant = request.getEmail();
+        if (identifiant == null || identifiant.trim().isEmpty()) {
+            throw new IllegalArgumentException("L'adresse e-mail ou le matricule est obligatoire.");
         }
 
-        User user = userRepository.findByEmail(email.trim())
-                .orElseThrow(() -> new IllegalArgumentException("Aucun compte n'est associé à cette adresse e-mail : " + email));
+        String searchKey = identifiant.trim();
+        Optional<User> userOpt = userRepository.findByEmail(searchKey);
+        if (userOpt.isEmpty()) {
+            try {
+                Optional<User> byLogin = userRepository.findByLogin(searchKey);
+                if (byLogin != null && byLogin.isPresent()) {
+                    userOpt = byLogin;
+                }
+            } catch (Exception ignored) {
+                // Ignore si findByLogin n'est pas implémenté ou mocké
+            }
+        }
+        User user = userOpt.orElseThrow(() -> new IllegalArgumentException("Aucun compte n'est associé à cette adresse e-mail : " + searchKey));
 
-        // Génération du token unique et calcul de la date d'expiration
+        if ("INACTIF".equalsIgnoreCase(user.getStatut())) {
+            throw new IllegalArgumentException("Ce compte est désactivé. Veuillez contacter l'administrateur.");
+        }
+
+        // 1. Génération du token unique et expiration
         String resetToken = UUID.randomUUID().toString();
         LocalDateTime expiryDate = LocalDateTime.now().plusMinutes(TOKEN_EXPIRATION_MINUTES);
 
@@ -52,30 +97,50 @@ public class PasswordResetService {
         user.setResetTokenExpiry(expiryDate);
         userRepository.save(user);
 
-        // Simulation d'envoi d'e-mail dans les logs serveur
-        log.info("================================================================================");
-        log.info("[RÉINITIALISATION DE MOT DE PASSE] E-mail simulé pour : {}", user.getEmail());
-        log.info("Token généré : {}", resetToken);
-        log.info("Expire le : {}", expiryDate);
-        log.info("Exemple de payload pour POST /api/auth/reset-password :");
-        log.info("{\n  \"token\": \"{}\",\n  \"nouveauMdp\": \"VotreNouveauMotDePasse123!\"\n}", resetToken);
-        log.info("================================================================================");
+        // 2. Traçabilité optionnelle dans la table des demandes pour consultation admin
+        if (requestRepository != null) {
+            try {
+                boolean dejaEnAttente = requestRepository.existsByUserAndStatut(user, PasswordResetRequest.Statut.PENDING);
+                if (!dejaEnAttente) {
+                    PasswordResetRequest demande = new PasswordResetRequest(user);
+                    demande.setCommentaireAdmin("Lien envoyé par e-mail");
+                    requestRepository.save(demande);
+                }
+            } catch (Exception e) {
+                log.warn("[PASSWORD RESET] Impossible d'enregistrer la demande en historique : {}", e.getMessage());
+            }
+        }
+
+        // 3. Construction du lien de redirection vers Next.js
+        String baseUrl = (frontendUrl != null && !frontendUrl.isBlank()) ? frontendUrl.replaceAll("/+$", "") : "http://localhost:3000";
+        String resetLink = baseUrl + "/reset-password?token=" + resetToken;
+
+        // 4. Envoi asynchrone de l'e-mail réel
+        if (emailService != null) {
+            emailService.envoyerLienReinitialisation(user.getEmail(), user.getNomComplet(), resetLink, TOKEN_EXPIRATION_MINUTES);
+            log.info("[PASSWORD RESET] Lien de réinitialisation généré et expédié à : {}", user.getEmail());
+        } else {
+            log.warn("[PASSWORD RESET] EmailService non injecté. Token généré : {}", resetToken);
+        }
 
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("status", 200);
-        response.put("message", "Un e-mail de réinitialisation a été envoyé (vérifiez également la console serveur).");
+        response.put("message", "Un e-mail contenant les instructions de réinitialisation a été envoyé à " + user.getEmail() + ".");
         response.put("email", user.getEmail());
-        // Renvoyé également dans la réponse HTTP pour faciliter le test dans Postman / dev
         response.put("resetToken", resetToken);
-        response.put("expiresAt", expiryDate);
+        response.put("expiresAt", expiryDate.toString());
+        response.put("expiresInMinutes", TOKEN_EXPIRATION_MINUTES);
 
         return response;
     }
 
     /**
-     * Étape 2 : Réinitialisation effective du mot de passe.
-     * Valide le token et sa date d'expiration, chiffre le nouveau mot de passe avec BCrypt,
-     * met à jour l'utilisateur et invalide le token.
+     * Étape 2 : Réinitialisation effective du mot de passe avec le token.
+     * Valide le token, sa durée de validité, chiffre le nouveau mot de passe (BCrypt)
+     * et invalide le token pour empêcher toute réutilisation.
+     *
+     * @param request DTO contenant le token et le nouveau mot de passe
+     * @return Confirmation de succès
      */
     @Transactional
     public Map<String, Object> processResetPassword(ResetPasswordRequest request) {
@@ -98,28 +163,42 @@ public class PasswordResetService {
         User user = userRepository.findByResetToken(token.trim())
                 .orElseThrow(() -> new IllegalArgumentException("Token de réinitialisation invalide ou introuvable."));
 
-        // Si un email a également été fourni dans la requête, vérifier la correspondance
+        // Vérification de la correspondance e-mail si fourni
         if (request.getEmail() != null && !request.getEmail().trim().isEmpty()) {
             if (!user.getEmail().equalsIgnoreCase(request.getEmail().trim())) {
                 throw new IllegalArgumentException("L'adresse e-mail ne correspond pas à ce token de réinitialisation.");
             }
         }
 
-        // Vérification de l'expiration du token
+        // Vérification de la date d'expiration
         if (user.getResetTokenExpiry() == null || user.getResetTokenExpiry().isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("Le token de réinitialisation a expiré. Veuillez refaire une demande.");
         }
 
-        // Chiffrement du nouveau mot de passe avec BCrypt
+        // Chiffrement BCrypt du nouveau mot de passe
         user.setMdp(passwordEncoder.encode(nouveauMdp.trim()));
 
-        // Invalidation du token pour empêcher tout réemploi
+        // Invalidation définitive du token
         user.setResetToken(null);
         user.setResetTokenExpiry(null);
-
         userRepository.save(user);
 
-        log.info("Mot de passe mis à jour avec succès pour l'utilisateur : {} ({})", user.getLogin(), user.getEmail());
+        // Clôture des éventuelles demandes PENDING en base
+        if (requestRepository != null) {
+            try {
+                requestRepository.findByUserAndStatut(user, PasswordResetRequest.Statut.PENDING)
+                        .ifPresent(demande -> {
+                            demande.setStatut(PasswordResetRequest.Statut.APPROVED);
+                            demande.setDateTraitement(LocalDateTime.now());
+                            demande.setCommentaireAdmin("Réinitialisé avec succès par l'utilisateur via lien e-mail");
+                            requestRepository.save(demande);
+                        });
+            } catch (Exception e) {
+                log.warn("[PASSWORD RESET] Mise à jour du statut de demande ignorée : {}", e.getMessage());
+            }
+        }
+
+        log.info("[PASSWORD RESET SUCCESS] Mot de passe réinitialisé avec succès pour : {} ({})", user.getLogin(), user.getEmail());
 
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("status", 200);

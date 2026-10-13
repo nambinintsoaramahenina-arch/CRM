@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { fetchUsers, createUser, updateUser, deleteUser, User } from '@/services/userServices';
+import { resetUserPasswordDirectly } from '@/services/passwordRequestService';
 
 // ─── Icônes SVG ────────────────────────────────────────────────────────────────
 
@@ -36,6 +37,21 @@ const EyeIcon = ({ size = 14, className = '' }) => (
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
   </svg>
 );
+const KeyIcon = ({ size = 14, className = '' }) => (
+  <svg width={size} height={size} className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+  </svg>
+);
+const CheckCircleIcon = ({ size = 16, className = '' }) => (
+  <svg width={size} height={size} className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+const XCircleIcon = ({ size = 16, className = '' }) => (
+  <svg width={size} height={size} className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -54,7 +70,13 @@ export const UsersCrudTable: React.FC = () => {
   const [editingUser, setEditingUser] = useState<User | null>(null);
   const [viewingUser, setViewingUser] = useState<User | null>(null);
 
+  // État pour la réinitialisation de mot de passe
+  const [resetConfirmUser, setResetConfirmUser] = useState<User | null>(null);
+  const [resettingId, setResettingId] = useState<number | null>(null);
+  const [toast, setToast] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
   const [matricule, setMatricule] = useState('');
+  const [loginError, setLoginError] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [telephone, setTelephone] = useState('');
@@ -87,6 +109,37 @@ export const UsersCrudTable: React.FC = () => {
 
   useEffect(() => { loadUsersFromAPI(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Auto-dismiss du toast après 5 secondes
+  useEffect(() => {
+    if (toast) {
+      const timer = setTimeout(() => setToast(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [toast]);
+
+  // Handler réinitialisation mot de passe
+  const handleResetPassword = useCallback(async (user: User) => {
+    const token = localStorage.getItem('crm-token');
+    if (!token) {
+      setToast({ type: 'error', message: 'Token manquant. Veuillez vous reconnecter.' });
+      return;
+    }
+    setResettingId(user.id);
+    setResetConfirmUser(null);
+    try {
+      const result = await resetUserPasswordDirectly(token, user.id);
+      setToast({
+        type: 'success',
+        message: result.message || `Mot de passe réinitialisé et envoyé par mail à ${user.email}.`,
+      });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Erreur lors de la réinitialisation du mot de passe.';
+      setToast({ type: 'error', message });
+    } finally {
+      setResettingId(null);
+    }
+  }, []);
+
   const filteredUsers = users.filter((u) => {
     // Les comptes ADMIN sont masqués de l'interface (frontend only)
     if (u.role === 'ADMIN') return false;
@@ -99,10 +152,30 @@ export const UsersCrudTable: React.FC = () => {
     return matchesSearch && matchesRole;
   });
 
+  // Valide le login selon le rôle : ADMIN = texte libre, autres = chiffres uniquement
+  const validateLogin = (value: string, role: string): string => {
+    if (role === 'ADMIN') return '';
+    if (!value.trim()) return '';
+    return /^\d+$/.test(value.trim())
+      ? ''
+      : 'Le matricule doit être exclusivement numérique pour ce rôle.';
+  };
+
+  const handleLoginChange = (value: string) => {
+    setMatricule(value);
+    setLoginError(validateLogin(value, formRole));
+  };
+
+  const handleRoleChange = (role: string) => {
+    setFormRole(role);
+    setLoginError(validateLogin(matricule, role));
+  };
+
   const handleOpenAddModal = () => {
     if (!canWrite) return;
     setEditingUser(null);
-    setMatricule(`SPAT-${Math.floor(100 + Math.random() * 900)}`);
+    setMatricule('');
+    setLoginError('');
     setName(''); setEmail(''); setTelephone(''); setPassword('');
     setFormRole('USER'); setStatus('ACTIF');
     setIsModalOpen(true);
@@ -111,9 +184,13 @@ export const UsersCrudTable: React.FC = () => {
   const handleOpenEditModal = (u: User) => {
     if (!canWrite) return;
     setEditingUser(u);
-    setMatricule(u.login || ''); setName(u.nomComplet || ''); setEmail(u.email || '');
+    const loginVal = u.login || '';
+    const roleVal = u.role;
+    setMatricule(loginVal);
+    setLoginError(validateLogin(loginVal, roleVal));
+    setName(u.nomComplet || ''); setEmail(u.email || '');
     setTelephone(u.telephone || ''); setPassword('');
-    setFormRole(u.role); setStatus(u.statut || 'ACTIF');
+    setFormRole(roleVal); setStatus(u.statut || 'ACTIF');
     setIsModalOpen(true);
   };
 
@@ -132,6 +209,8 @@ export const UsersCrudTable: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const currentLoginError = validateLogin(matricule, formRole);
+    if (currentLoginError) { setLoginError(currentLoginError); return; }
     if (!canWrite || !name || !email) return;
     const token = localStorage.getItem('crm-token');
     if (!token) { alert("Token manquant. Veuillez vous reconnecter."); return; }
@@ -215,11 +294,10 @@ export const UsersCrudTable: React.FC = () => {
             <button
               key={f.id}
               onClick={() => setRoleFilter(f.id)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${
-                roleFilter === f.id
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all shrink-0 ${roleFilter === f.id
                   ? 'bg-cyan-500 text-white shadow-sm'
                   : 'bg-[var(--bg-surface-2)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] border border-[var(--bg-border)]'
-              }`}
+                }`}
             >
               {f.label}
             </button>
@@ -273,8 +351,8 @@ export const UsersCrudTable: React.FC = () => {
                   u.role === 'ADMIN'
                     ? 'bg-rose-50 border-rose-200 text-rose-700 dark:bg-rose-950/60 dark:border-rose-800 dark:text-rose-300'
                     : u.role === 'MANAGER'
-                    ? 'bg-indigo-50 border-indigo-200 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-800 dark:text-indigo-300'
-                    : 'bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950/60 dark:border-emerald-800 dark:text-emerald-300';
+                      ? 'bg-indigo-50 border-indigo-200 text-indigo-700 dark:bg-indigo-950/60 dark:border-indigo-800 dark:text-indigo-300'
+                      : 'bg-emerald-50 border-emerald-200 text-emerald-700 dark:bg-emerald-950/60 dark:border-emerald-800 dark:text-emerald-300';
                 return (
                   <tr key={u.id} className="hover:bg-[var(--bg-surface-2)]/60 transition-colors">
                     <td className="py-3.5 px-4 font-bold text-cyan-600 dark:text-cyan-400">{u.login}</td>
@@ -302,9 +380,26 @@ export const UsersCrudTable: React.FC = () => {
                       </span>
                     </td>
                     <td className="py-3.5 px-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex items-center justify-end gap-1.5">
                         {isAdmin ? (
                           <>
+                            <button
+                              id={`btn-reset-pwd-${u.id}`}
+                              onClick={() => setResetConfirmUser(u)}
+                              disabled={resettingId === u.id}
+                              className={`p-1.5 rounded-lg transition-all ${
+                                resettingId === u.id
+                                  ? 'text-amber-400 cursor-wait'
+                                  : 'text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/40'
+                              }`}
+                              title="Réinitialiser le mot de passe"
+                            >
+                              {resettingId === u.id ? (
+                                <div className="w-[15px] h-[15px] border-2 border-amber-400/30 border-t-amber-500 rounded-full animate-spin" />
+                              ) : (
+                                <KeyIcon size={15} />
+                              )}
+                            </button>
                             <button
                               id={`btn-edit-user-${u.id}`}
                               onClick={() => handleOpenEditModal(u)}
@@ -369,9 +464,33 @@ export const UsersCrudTable: React.FC = () => {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1">
-                <label className="text-[11px] font-bold text-[var(--text-secondary)] uppercase">Login / Matricule</label>
-                <input id="form-matricule" type="text" value={matricule} onChange={(e) => setMatricule(e.target.value)} required
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all" />
+                <label className="text-[11px] font-bold text-[var(--text-secondary)] uppercase">
+                  Login / Matricule
+                  {formRole !== 'ADMIN' && (
+                    <span className="ml-1 normal-case font-normal text-[var(--text-muted)]">(chiffres uniquement)</span>
+                  )}
+                </label>
+                <input
+                  id="form-matricule"
+                  type={formRole === 'ADMIN' ? 'text' : 'text'}
+                  inputMode={formRole === 'ADMIN' ? 'text' : 'numeric'}
+                  pattern={formRole === 'ADMIN' ? undefined : '[0-9]*'}
+                  value={matricule}
+                  onChange={(e) => handleLoginChange(e.target.value)}
+                  required
+                  placeholder={formRole === 'ADMIN' ? 'Ex\u00a0: admin' : 'Ex\u00a0: 12345'}
+                  className={`w-full px-3.5 py-2.5 rounded-xl border bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 transition-all ${
+                    loginError
+                      ? 'border-rose-500 focus:ring-rose-500/20 focus:border-rose-500'
+                      : 'border-[var(--bg-border)] focus:ring-cyan-500/20 focus:border-cyan-500'
+                  }`}
+                />
+                {loginError && (
+                  <p className="flex items-center gap-1.5 text-[10px] font-semibold text-rose-500 mt-1">
+                    <span>⚠</span>
+                    <span>{loginError}</span>
+                  </p>
+                )}
               </div>
 
               <div className="space-y-1">
@@ -416,7 +535,7 @@ export const UsersCrudTable: React.FC = () => {
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1">
                   <label className="text-[11px] font-bold text-[var(--text-secondary)] uppercase">Role</label>
-                  <select id="form-role" value={formRole} onChange={(e) => setFormRole(e.target.value)}
+                  <select id="form-role" value={formRole} onChange={(e) => handleRoleChange(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all">
                     <option value="USER">Agent</option>
                     <option value="MANAGER">Manager</option>
@@ -443,6 +562,87 @@ export const UsersCrudTable: React.FC = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modale de confirmation réinitialisation mot de passe */}
+      {resetConfirmUser && isAdmin && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+          <div className="w-full max-w-md bg-[var(--bg-surface)] rounded-2xl border border-[var(--bg-border)] shadow-2xl p-6 space-y-5 animate-in">
+            <div className="flex items-center gap-3">
+              <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                <KeyIcon size={22} className="text-amber-500" />
+              </div>
+              <div>
+                <h4 className="text-base font-black text-[var(--text-primary)]">
+                  Réinitialiser le mot de passe
+                </h4>
+                <p className="text-[11px] text-[var(--text-muted)] mt-0.5">
+                  Un nouveau mot de passe sera généré automatiquement
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-[var(--bg-surface-2)] rounded-xl p-4 border border-[var(--bg-border)] space-y-2">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-black text-sm shrink-0">
+                  {resetConfirmUser.nomComplet?.charAt(0)?.toUpperCase() ?? '?'}
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-[var(--text-primary)]">{resetConfirmUser.nomComplet}</p>
+                  <p className="text-[11px] text-[var(--text-secondary)]">{resetConfirmUser.email}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 rounded-xl p-3">
+              <p className="text-[11px] text-amber-700 dark:text-amber-300 font-medium leading-relaxed">
+                ⚠️ Un mot de passe temporaire sera généré et envoyé par e-mail à <strong>{resetConfirmUser.email}</strong>.
+                L&apos;utilisateur devra le changer à sa prochaine connexion.
+              </p>
+            </div>
+
+            <div className="flex items-center justify-end gap-3 pt-2 border-t border-[var(--bg-border)]">
+              <button
+                onClick={() => setResetConfirmUser(null)}
+                className="px-4 py-2.5 rounded-xl text-xs font-bold text-[var(--text-secondary)] hover:bg-[var(--bg-surface-2)] transition-colors"
+              >
+                Annuler
+              </button>
+              <button
+                id={`btn-confirm-reset-pwd-${resetConfirmUser.id}`}
+                onClick={() => handleResetPassword(resetConfirmUser)}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 shadow-md shadow-amber-900/15 transition-all active:scale-95"
+              >
+                <KeyIcon size={14} />
+                Réinitialiser
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Toast notification */}
+      {toast && (
+        <div className="fixed bottom-6 right-6 z-[60] animate-in slide-in-from-bottom-4">
+          <div className={`flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-2xl border backdrop-blur-sm max-w-md ${
+            toast.type === 'success'
+              ? 'bg-emerald-50 dark:bg-emerald-950/90 border-emerald-200 dark:border-emerald-800/60 text-emerald-800 dark:text-emerald-200'
+              : 'bg-rose-50 dark:bg-rose-950/90 border-rose-200 dark:border-rose-800/60 text-rose-800 dark:text-rose-200'
+          }`}>
+            {toast.type === 'success' ? (
+              <CheckCircleIcon size={18} className="text-emerald-500 shrink-0" />
+            ) : (
+              <XCircleIcon size={18} className="text-rose-500 shrink-0" />
+            )}
+            <p className="text-xs font-semibold leading-relaxed">{toast.message}</p>
+            <button
+              onClick={() => setToast(null)}
+              className="ml-2 text-current opacity-50 hover:opacity-100 font-bold text-sm shrink-0 transition-opacity"
+            >
+              ✕
+            </button>
           </div>
         </div>
       )}

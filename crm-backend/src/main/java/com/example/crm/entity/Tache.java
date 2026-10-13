@@ -50,10 +50,16 @@ public class Tache {
     private String description;
 
     /**
-     * Date d'échéance de la tâche.
+     * Date principale de la tâche (obligatoire en base de données).
+     */
+    @Column(name = "date", nullable = false)
+    private LocalDateTime date;
+
+    /**
+     * Date d'échéance de la tâche (optionnelle).
      */
     @Column(name = "date_echeance")
-    private LocalDateTime date;
+    private LocalDateTime dateEcheance;
 
     /**
      * Statut de la tâche (ex : EN_ATTENTE, EN_COURS, TERMINEE, ANNULEE).

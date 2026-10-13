@@ -1,14 +1,16 @@
 package com.example.crm.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+/**
+ * DTO de la demande de réinitialisation de mot de passe.
+ * Le champ "email" accepte indifféremment une adresse e-mail ou un matricule/login.
+ */
 public class ForgotPasswordRequest {
 
-    @NotBlank(message = "L'adresse e-mail est obligatoire.")
-    @Email(message = "Le format de l'adresse e-mail est invalide.")
-    @JsonAlias({"mail", "userEmail"})
+    @NotBlank(message = "L'e-mail ou le matricule est obligatoire.")
+    @JsonAlias({"mail", "userEmail", "login", "matricule", "identifiant"})
     private String email;
 
     public ForgotPasswordRequest() {}

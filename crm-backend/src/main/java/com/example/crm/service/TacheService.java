@@ -64,7 +64,8 @@ public class TacheService {
         Tache tache = Tache.builder()
                 .titre(dto.getTitre())
                 .description(dto.getDescription())
-                .date(dto.getDate())
+                .date(dto.getDate())                  // Remplit la colonne SQL "date" (NOT NULL)
+                .dateEcheance(dto.getDate())            // Remplit la colonne SQL "date_echeance"
                 .statut(dto.getStatut() != null ? dto.getStatut() : "EN_ATTENTE")
                 .typeTache(dto.getTypeTache())
                 .utilisateur(utilisateur)
@@ -179,6 +180,7 @@ public class TacheService {
         tache.setTitre(dto.getTitre());
         tache.setDescription(dto.getDescription());
         tache.setDate(dto.getDate());
+        tache.setDateEcheance(dto.getDate());
         tache.setStatut(dto.getStatut() != null ? dto.getStatut() : tache.getStatut());
         tache.setTypeTache(dto.getTypeTache());
         tache.setUtilisateur(utilisateur);
@@ -235,13 +237,6 @@ public class TacheService {
     // MÉTHODES PRIVÉES UTILITAIRES
     // =========================================================================
 
-    /**
-     * Résout l'entité {@link Contact} à partir d'un identifiant optionnel.
-     *
-     * @param contactId l'identifiant du contact, ou {@code null}
-     * @return l'entité Contact, ou {@code null} si l'identifiant est absent
-     * @throws IllegalArgumentException si l'identifiant est fourni mais introuvable
-     */
     private Contact resolveContact(Long contactId) {
         if (contactId == null) {
             return null;
@@ -251,13 +246,6 @@ public class TacheService {
                         "Contact introuvable avec l'ID : " + contactId));
     }
 
-    /**
-     * Résout l'entité {@link Interaction} à partir d'un identifiant optionnel.
-     *
-     * @param interactionId l'identifiant de l'interaction, ou {@code null}
-     * @return l'entité Interaction, ou {@code null} si l'identifiant est absent
-     * @throws IllegalArgumentException si l'identifiant est fourni mais introuvable
-     */
     private Interaction resolveInteraction(Long interactionId) {
         if (interactionId == null) {
             return null;

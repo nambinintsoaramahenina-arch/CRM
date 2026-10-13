@@ -18,11 +18,11 @@ import { LogInIcon, ArrowRightIcon } from '@/components/ui/Icons';
  */
 export default function LoginPage() {
   const router = useRouter();
-  const [matricule, setMatricule]     = useState('');
-  const [password, setPassword]       = useState('');
+  const [matricule, setMatricule] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading]         = useState(false);
-  const [error, setError]             = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,17 +37,17 @@ export default function LoginPage() {
 
     try {
       // Appel réel vers l'API Spring Boot (correspondant à ton entité User : login et mdp)
-      const data = await loginUser({ 
-        login: matricule.trim(), 
-        mdp: password 
+      const data = await loginUser({
+        login: matricule.trim(),
+        mdp: password
       });
 
       if (data && data.token) {
         const role = data.role || 'USER';
         localStorage.setItem('crm-token', data.token);
         localStorage.setItem('jwt_token', data.token);
-        localStorage.setItem('crm-role',  role);
-        localStorage.setItem('crm-user',  matricule);
+        localStorage.setItem('crm-role', role);
+        localStorage.setItem('crm-user', matricule);
         if (data.nomComplet) localStorage.setItem('crm-name', data.nomComplet);
         // Redirection dynamique selon le rôle
         router.push('/dashboard');
@@ -160,15 +160,14 @@ export default function LoginPage() {
                   >
                     Mot de passe
                   </label>
-                  {/* Lien Mot de passe oublié */}
-                  <button
-                    type="button"
+                  {/* Lien Mot de passe oublié → redirection vers la page dédiée */}
+                  <Link
+                    href="/forgot-password"
                     id="forgot-password-btn"
                     className="text-[11px] font-semibold text-blue-500 hover:text-blue-400 transition-colors"
-                    onClick={() => alert('Veuillez contacter l\'administrateur système pour réinitialiser votre mot de passe.')}
                   >
                     Mot de passe oublié ?
-                  </button>
+                  </Link>
                 </div>
                 <div className="relative">
                   <input

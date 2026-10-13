@@ -14,15 +14,26 @@ import {
   ProfileIcon,
   CloseIcon
 } from '../ui/Icons';
+import { fetchPendingCount } from '@/services/passwordRequestService';
+
+const KeyIcon: React.FC<{ size?: number; className?: string }> = ({ size = 18, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="7.5" cy="15.5" r="4.5" />
+    <path d="m21 3-9.5 9.5" />
+    <path d="m15.5 7.5 3 3" />
+  </svg>
+);
 
 interface NavItem {
   name: string;
   href: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
   badge?: string;
+  badgeColor?: string;
+  adminOnly?: boolean;
 }
 
-const navItems: NavItem[] = [
+const baseNavItems: NavItem[] = [
   { name: 'Tableau de bord', href: '/dashboard', icon: DashboardIcon },
   { name: 'Utilisateurs', href: '/users', icon: UsersIcon },
   { name: 'Contacts', href: '/contacts', icon: ContactsIcon },
@@ -39,6 +50,39 @@ interface SidebarProps {
 
 export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen }) => {
   const pathname = usePathname();
+  const [isAdmin, setIsAdmin] = React.useState(false);
+  const [pendingCount, setPendingCount] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      const role = localStorage.getItem('crm-role');
+      const token = localStorage.getItem('crm-token') || '';
+      setIsAdmin(role === 'ADMIN');
+
+      if (role === 'ADMIN' && token) {
+        fetchPendingCount(token)
+          .then((count) => setPendingCount(count))
+          .catch(() => {});
+      }
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, [pathname]);
+
+  const navItems: NavItem[] = [
+    ...baseNavItems,
+    ...(isAdmin
+      ? [
+          {
+            name: 'Demandes MDP',
+            href: '/admin/password-requests',
+            icon: KeyIcon,
+            badge: pendingCount > 0 ? String(pendingCount) : undefined,
+            badgeColor: 'amber',
+          },
+        ]
+      : []),
+  ];
 
   const isCurrentActive = (href: string) => {
     if (href === '/dashboard' && (pathname === '/' || pathname === '/dashboard')) {
@@ -112,6 +156,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen }) =
                       className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
                         active
                           ? 'bg-white/20 text-white'
+                          : item.badgeColor === 'amber'
+                          ? 'bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30'
                           : 'bg-cyan-500/10 text-cyan-600 border border-cyan-500/20'
                       }`}
                     >
