@@ -19,7 +19,15 @@ import {
   deleteTask,
   patchTaskStatus,
   computeTaskStats,
+  fetchAllUsersForSelect,
+  fetchAllContactsForSelect,
+  fetchAllInteractionsForSelect,
+  formatUserOptionLabel,
+  formatInteractionOptionLabel,
   type Task,
+  type UserOption,
+  type ContactOption,
+  type InteractionOption,
 } from '@/services/taskService';
 
 // ─── Icônes locales ────────────────────────────────────────────────────────────
@@ -50,22 +58,33 @@ const ChevronIcon: React.FC<{ size?: number; className?: string }> = ({ size = 1
   </svg>
 );
 
+const LinkIcon: React.FC<{ size?: number; className?: string }> = ({ size = 12, className = '' }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+  </svg>
+);
+
 // ─── Constantes de configuration ────────────────────────────────────────────────
 
 const STATUT_CONFIG: Record<string, { label: string; color: string; bg: string; border: string }> = {
   EN_ATTENTE: { label: 'En attente',  color: 'text-sky-700',     bg: 'bg-sky-50',     border: 'border-sky-200' },
   EN_COURS:   { label: 'En cours',    color: 'text-amber-700',   bg: 'bg-amber-50',   border: 'border-amber-200' },
   TERMINE:    { label: 'Terminée',    color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200' },
+  TERMINEE:   { label: 'Terminée',    color: 'text-emerald-700', bg: 'bg-emerald-50', border: 'border-emerald-200' },
   ANNULE:     { label: 'Annulée',     color: 'text-rose-700',    bg: 'bg-rose-50',    border: 'border-rose-200' },
+  ANNULEE:    { label: 'Annulée',     color: 'text-rose-700',    bg: 'bg-rose-50',    border: 'border-rose-200' },
 };
 
 const TYPE_CONFIG: Record<string, string> = {
-  APPEL:    '📞 Appel',
-  EMAIL:    '✉️ Email',
-  REUNION:  '🤝 Réunion',
-  VISITE:   '🏢 Visite',
-  RELANCE:  '🔔 Relance',
-  AUTRE:    '📋 Autre',
+  APPEL:       '📞 Appel',
+  EMAIL:       '✉️ Email',
+  REUNION:     '🤝 Réunion',
+  RENDEZ_VOUS: '📅 Rendez-vous',
+  SUIVI:       '🔍 Suivi',
+  RELANCE:     '🔔 Relance',
+  VISITE:      '🏢 Visite',
+  AUTRE:       '📋 Autre',
 };
 
 const EMPTY_FORM = {
@@ -114,7 +133,7 @@ function Modal({ title, onClose, children }: ModalProps) {
           </button>
         </div>
         {/* Contenu */}
-        <div className="p-6 max-h-[70vh] overflow-y-auto">{children}</div>
+        <div className="p-6 max-h-[75vh] overflow-y-auto">{children}</div>
       </div>
     </div>
   );
@@ -123,22 +142,25 @@ function Modal({ title, onClose, children }: ModalProps) {
 // ─── Composant principal ─────────────────────────────────────────────────────────
 
 export default function TasksPage() {
-  const [tasks, setTasks]               = useState<Task[]>([]);
-  const [loading, setLoading]           = useState(true);
-  const [error, setError]               = useState('');
-  const [filterStatut, setFilterStatut] = useState('');
-  const [filterUser, setFilterUser]     = useState('');
-  const [search, setSearch]             = useState('');
-  const [modalOpen, setModalOpen]       = useState(false);
-  const [editTask, setEditTask]         = useState<Task | null>(null);
-  const [form, setForm]                 = useState(EMPTY_FORM);
-  const [saving, setSaving]             = useState(false);
-  const [saveError, setSaveError]       = useState('');
-  const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
-  const [deleting, setDeleting]         = useState(false);
-  const [statusDropdown, setStatusDropdown] = useState<number | null>(null);
+  const [tasks, setTasks]                           = useState<Task[]>([]);
+  const [loading, setLoading]                       = useState(true);
+  const [error, setError]                           = useState('');
+  const [filterStatut, setFilterStatut]             = useState('');
+  const [filterUser, setFilterUser]                 = useState('');
+  const [search, setSearch]                         = useState('');
+  const [modalOpen, setModalOpen]                   = useState(false);
+  const [editTask, setEditTask]                     = useState<Task | null>(null);
+  const [form, setForm]                             = useState(EMPTY_FORM);
+  const [saving, setSaving]                         = useState(false);
+  const [saveError, setSaveError]                   = useState('');
+  const [deleteConfirm, setDeleteConfirm]           = useState<number | null>(null);
+  const [deleting, setDeleting]                     = useState(false);
+  const [statusDropdown, setStatusDropdown]         = useState<number | null>(null);
+  const [userOptions, setUserOptions]               = useState<UserOption[]>([]);
+  const [contactOptions, setContactOptions]         = useState<ContactOption[]>([]);
+  const [interactionOptions, setInteractionOptions] = useState<InteractionOption[]>([]);
 
-  // ─── Chargement des tâches ──────────────────────────────────────────────────
+  // ─── Chargement des tâches réelles depuis PostgreSQL via /api/tasks ───────────
 
   const loadTasks = useCallback(async () => {
     const token = localStorage.getItem('crm-token') || '';
@@ -149,16 +171,43 @@ export default function TasksPage() {
       const data = await fetchTasks(token);
       setTasks(data);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Erreur de chargement';
+      const msg = err instanceof Error ? err.message : 'Erreur de chargement des tâches';
       setError(msg);
     } finally {
       setLoading(false);
     }
   }, []);
 
+  // ─── Chargement des données réelles (utilisateurs, contacts, interactions) ────
+
   useEffect(() => {
     loadTasks();
+    const token = localStorage.getItem('crm-token') || '';
+    if (token) {
+      // 1. Utilisateurs réels (/api/users)
+      fetchAllUsersForSelect(token)
+        .then(setUserOptions)
+        .catch(() => {});
+
+      // 2. Contacts réels (/api/contacts)
+      fetchAllContactsForSelect(token)
+        .then(setContactOptions)
+        .catch(() => {});
+
+      // 3. Interactions réelles (/api/interactions)
+      fetchAllInteractionsForSelect(token)
+        .then(setInteractionOptions)
+        .catch(() => {});
+    }
   }, [loadTasks]);
+
+  // ─── Interactions disponibles pour le contact sélectionné ────────────────────
+
+  const availableInteractions = useMemo(() => {
+    if (!form.contactId) return [];
+    const contactIdNum = Number(form.contactId);
+    return interactionOptions.filter((it) => it.contactId === contactIdNum);
+  }, [form.contactId, interactionOptions]);
 
   // ─── Statistiques ───────────────────────────────────────────────────────────
 
@@ -168,27 +217,31 @@ export default function TasksPage() {
 
   const filteredTasks = useMemo(() => {
     return tasks.filter((t) => {
-      const matchStatut  = !filterStatut || t.statut === filterStatut;
-      const userLabel    = t.utilisateur?.nomComplet ?? t.utilisateur?.login ?? String(t.utilisateurId ?? '');
-      const matchUser    = !filterUser   || userLabel.toLowerCase().includes(filterUser.toLowerCase());
-      const matchSearch  = !search       ||
+      const matchStatut = !filterStatut || t.statut === filterStatut;
+      const uid = String(t.utilisateurId ?? t.utilisateur?.id ?? '');
+      const matchUser = !filterUser || uid === filterUser;
+      const matchSearch =
+        !search ||
         t.titre.toLowerCase().includes(search.toLowerCase()) ||
-        (t.description ?? '').toLowerCase().includes(search.toLowerCase());
+        (t.description ?? '').toLowerCase().includes(search.toLowerCase()) ||
+        (t.contactNomComplet ?? t.contact?.nomComplet ?? '').toLowerCase().includes(search.toLowerCase());
       return matchStatut && matchUser && matchSearch;
     });
   }, [tasks, filterStatut, filterUser, search]);
 
-  // Liste unique d'utilisateurs pour le filtre
+  // Liste unique d'utilisateurs pour le filtre déroulant
   const uniqueUsers = useMemo(() => {
     const map = new Map<string, string>();
     tasks.forEach((t) => {
-      const key = String(t.utilisateurId ?? '');
-      if (key && !map.has(key)) {
-        map.set(key, t.utilisateur?.nomComplet ?? t.utilisateur?.login ?? key);
+      const uid = t.utilisateurId ?? t.utilisateur?.id;
+      if (uid && !map.has(String(uid))) {
+        const u = userOptions.find((uo) => uo.id === uid);
+        const label = u ? formatUserOptionLabel(u) : (t.utilisateurNomComplet ?? t.utilisateur?.nomComplet ?? `Utilisateur #${uid}`);
+        map.set(String(uid), label);
       }
     });
     return Array.from(map.entries());
-  }, [tasks]);
+  }, [tasks, userOptions]);
 
   // ─── Gestion du formulaire (création / modification) ──────────────────────
 
@@ -201,27 +254,52 @@ export default function TasksPage() {
 
   const openEdit = (task: Task) => {
     setEditTask(task);
+    const dateVal = task.date || task.dateTache;
     setForm({
       titre:          task.titre        ?? '',
       description:    task.description  ?? '',
-      dateTache:      task.dateTache    ? task.dateTache.slice(0, 10) : '',
+      dateTache:      dateVal ? dateVal.slice(0, 10) : '',
       typeTache:      task.typeTache    ?? 'AUTRE',
       statut:         task.statut       ?? 'EN_ATTENTE',
-      utilisateurId:  String(task.utilisateurId ?? ''),
-      contactId:      String(task.contactId     ?? ''),
-      interactionId:  String(task.interactionId ?? ''),
+      utilisateurId:  String(task.utilisateurId ?? task.utilisateur?.id ?? ''),
+      contactId:      String(task.contactId     ?? task.contact?.id     ?? ''),
+      interactionId:  String(task.interactionId ?? task.interaction?.id ?? ''),
     });
     setSaveError('');
     setModalOpen(true);
   };
 
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleFormChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  // Changement du contact : réinitialise l'interaction si elle n'appartient pas au nouveau contact
+  const handleContactChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newContactId = e.target.value;
+    setForm((prev) => {
+      const currentInteraction = interactionOptions.find((it) => String(it.id) === prev.interactionId);
+      const keepInteraction = currentInteraction && String(currentInteraction.contactId) === newContactId;
+      return {
+        ...prev,
+        contactId: newContactId,
+        interactionId: keepInteraction ? prev.interactionId : '',
+      };
+    });
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.titre.trim()) { setSaveError('Le titre est obligatoire.'); return; }
+    if (!form.titre.trim()) {
+      setSaveError('Le titre est obligatoire.');
+      return;
+    }
+    if (!form.utilisateurId) {
+      setSaveError("Veuillez sélectionner un utilisateur assigné.");
+      return;
+    }
+
     const token = localStorage.getItem('crm-token') || '';
     setSaving(true);
     setSaveError('');
@@ -229,13 +307,15 @@ export default function TasksPage() {
       const payload: Partial<Task> = {
         titre:         form.titre.trim(),
         description:   form.description || undefined,
-        dateTache:     form.dateTache   || undefined,
-        typeTache:     form.typeTache   || undefined,
-        statut:        form.statut      || 'EN_ATTENTE',
+        date:          form.dateTache ? (form.dateTache.includes('T') ? form.dateTache : `${form.dateTache}T00:00:00`) : undefined,
+        dateTache:     form.dateTache || undefined,
+        typeTache:     form.typeTache || undefined,
+        statut:        form.statut    || 'EN_ATTENTE',
         utilisateurId: form.utilisateurId ? Number(form.utilisateurId) : undefined,
         contactId:     form.contactId     ? Number(form.contactId)     : undefined,
         interactionId: form.interactionId ? Number(form.interactionId) : undefined,
       };
+
       if (editTask) {
         await updateTask(token, editTask.id, payload);
       } else {
@@ -261,7 +341,7 @@ export default function TasksPage() {
       setDeleteConfirm(null);
       await loadTasks();
     } catch {
-      // silent — leave confirm dialog open
+      // silent
     } finally {
       setDeleting(false);
     }
@@ -284,7 +364,13 @@ export default function TasksPage() {
 
   const fmtDate = (iso?: string) => {
     if (!iso) return '—';
-    return new Date(iso).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+    try {
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return iso;
+      return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+    } catch {
+      return iso;
+    }
   };
 
   // ─── Rendu ───────────────────────────────────────────────────────────────
@@ -307,7 +393,7 @@ export default function TasksPage() {
           <div>
             <h1 className="text-xl sm:text-2xl font-black text-[var(--text-primary)]">Gestion des Tâches</h1>
             <p className="text-xs text-[var(--text-secondary)]">
-              {loading ? 'Chargement…' : `${tasks.length} tâche${tasks.length !== 1 ? 's' : ''} au total`}
+              {loading ? 'Chargement…' : `${tasks.length} tâche${tasks.length !== 1 ? 's' : ''} au total (PostgreSQL)`}
             </p>
           </div>
         </div>
@@ -321,7 +407,7 @@ export default function TasksPage() {
         </button>
       </div>
 
-      {/* ── Mini-Dashboard Statistiques ── */}
+      {/* ── Mini-Dashboard Statistiques (Calculé en temps réel) ── */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
           { label: 'Total',      value: stats.total,     icon: TasksIcon,         color: 'text-blue-600',    bg: 'bg-blue-50 border-blue-200',       bar: 'bg-blue-500',    pct: 100 },
@@ -355,7 +441,7 @@ export default function TasksPage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Rechercher par titre ou description…"
+            placeholder="Rechercher par titre, description ou contact…"
             className="w-full pl-9 pr-4 py-2.5 text-xs rounded-xl bg-[var(--bg-surface)] border border-[var(--bg-border)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
           />
         </div>
@@ -380,11 +466,11 @@ export default function TasksPage() {
           <select
             value={filterUser}
             onChange={(e) => setFilterUser(e.target.value)}
-            className="appearance-none pl-3 pr-8 py-2.5 text-xs rounded-xl bg-[var(--bg-surface)] border border-[var(--bg-border)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all cursor-pointer min-w-[160px]"
+            className="appearance-none pl-3 pr-8 py-2.5 text-xs rounded-xl bg-[var(--bg-surface)] border border-[var(--bg-border)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all cursor-pointer min-w-[170px]"
           >
             <option value="">Tous les utilisateurs</option>
-            {uniqueUsers.map(([id, name]) => (
-              <option key={id} value={name}>{name}</option>
+            {uniqueUsers.map(([id, label]) => (
+              <option key={id} value={id}>{label}</option>
             ))}
           </select>
           <ChevronIcon className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none" />
@@ -429,7 +515,7 @@ export default function TasksPage() {
             <table className="w-full text-xs">
               <thead>
                 <tr className="bg-[var(--bg-surface-2)] border-b border-[var(--bg-border)]">
-                  {['#', 'Titre', 'Type', 'Date', 'Statut', 'Utilisateur', 'Contact', 'Actions'].map((h) => (
+                  {['#', 'Titre', 'Type', 'Date', 'Statut', 'Utilisateur', 'Contact', 'Interaction liée', 'Actions'].map((h) => (
                     <th key={h} className="px-4 py-3 text-left font-bold text-[var(--text-muted)] uppercase tracking-wider text-[10px] whitespace-nowrap">
                       {h}
                     </th>
@@ -437,96 +523,121 @@ export default function TasksPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[var(--bg-border)]">
-                {filteredTasks.map((task) => (
-                  <tr key={task.id} className="hover:bg-[var(--bg-surface-2)] transition-colors group">
-                    {/* ID */}
-                    <td className="px-4 py-3 font-mono text-[10px] text-[var(--text-muted)] shrink-0">
-                      #{task.id}
-                    </td>
-                    {/* Titre + Description */}
-                    <td className="px-4 py-3 max-w-[200px]">
-                      <p className="font-bold text-[var(--text-primary)] truncate" title={task.titre}>{task.titre}</p>
-                      {task.description && (
-                        <p className="text-[10px] text-[var(--text-muted)] truncate mt-0.5" title={task.description}>{task.description}</p>
-                      )}
-                    </td>
-                    {/* Type */}
-                    <td className="px-4 py-3 whitespace-nowrap">
-                      <span className="text-[11px] font-medium text-[var(--text-secondary)]">
-                        {TYPE_CONFIG[task.typeTache ?? ''] ?? task.typeTache ?? '—'}
-                      </span>
-                    </td>
-                    {/* Date */}
-                    <td className="px-4 py-3 whitespace-nowrap text-[var(--text-secondary)]">
-                      {fmtDate(task.dateTache)}
-                    </td>
-                    {/* Statut avec dropdown rapide */}
-                    <td className="px-4 py-3 whitespace-nowrap">
-                      <div className="relative inline-block">
-                        <button
-                          onClick={() => setStatusDropdown(statusDropdown === task.id ? null : task.id)}
-                          className="flex items-center gap-1 group/statut"
-                          title="Changer le statut rapidement"
-                        >
-                          <StatutBadge statut={task.statut} />
-                          <ChevronIcon size={10} className="text-[var(--text-muted)] group-hover/statut:text-cyan-500 transition-colors" />
-                        </button>
-                        {statusDropdown === task.id && (
-                          <div className="absolute top-full left-0 mt-1 z-20 bg-[var(--bg-surface)] border border-[var(--bg-border)] rounded-xl shadow-xl min-w-[140px] py-1 animate-fade-up">
-                            {Object.entries(STATUT_CONFIG).map(([k, v]) => (
-                              <button
-                                key={k}
-                                onClick={() => handleStatusChange(task.id, k)}
-                                className={`w-full text-left px-3 py-1.5 text-xs font-semibold hover:bg-[var(--bg-surface-2)] transition-colors ${task.statut === k ? v.color : 'text-[var(--text-secondary)]'}`}
-                              >
-                                {v.label} {task.statut === k && '✓'}
-                              </button>
-                            ))}
-                          </div>
+                {filteredTasks.map((task) => {
+                  const assignedUser = userOptions.find(
+                    (u) => u.id === task.utilisateurId || u.id === task.utilisateur?.id
+                  );
+                  const userDisplay = assignedUser
+                    ? formatUserOptionLabel(assignedUser)
+                    : (task.utilisateurNomComplet ?? task.utilisateur?.nomComplet ?? task.utilisateurLogin ?? (task.utilisateurId ? `#${task.utilisateurId}` : '—'));
+
+                  const contactDisplay = task.contactNomComplet ?? task.contact?.nomComplet ?? (task.contactId ? `#${task.contactId}` : '—');
+                  const linkedInteraction = interactionOptions.find((it) => it.id === task.interactionId);
+
+                  return (
+                    <tr key={task.id} className="hover:bg-[var(--bg-surface-2)] transition-colors group">
+                      {/* ID */}
+                      <td className="px-4 py-3 font-mono text-[10px] text-[var(--text-muted)] shrink-0">
+                        #{task.id}
+                      </td>
+                      {/* Titre + Description */}
+                      <td className="px-4 py-3 max-w-[200px]">
+                        <p className="font-bold text-[var(--text-primary)] truncate" title={task.titre}>{task.titre}</p>
+                        {task.description && (
+                          <p className="text-[10px] text-[var(--text-muted)] truncate mt-0.5" title={task.description}>{task.description}</p>
                         )}
-                      </div>
-                    </td>
-                    {/* Utilisateur */}
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-1.5">
-                        <UsersIcon size={12} className="text-[var(--text-muted)] shrink-0" />
-                        <span className="text-[var(--text-secondary)] truncate max-w-[100px]">
-                          {task.utilisateur?.nomComplet ?? task.utilisateur?.login ?? (task.utilisateurId ? `#${task.utilisateurId}` : '—')}
+                      </td>
+                      {/* Type */}
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <span className="text-[11px] font-medium text-[var(--text-secondary)]">
+                          {TYPE_CONFIG[task.typeTache ?? ''] ?? task.typeTache ?? '—'}
                         </span>
-                      </div>
-                    </td>
-                    {/* Contact */}
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-1.5">
-                        <ContactsIcon size={12} className="text-[var(--text-muted)] shrink-0" />
-                        <span className="text-[var(--text-secondary)] truncate max-w-[100px]">
-                          {task.contact?.nomComplet ?? (task.contactId ? `#${task.contactId}` : '—')}
-                        </span>
-                      </div>
-                    </td>
-                    {/* Actions */}
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        {/* Modifier */}
-                        <button
-                          onClick={() => openEdit(task)}
-                          title="Modifier"
-                          className="p-1.5 rounded-lg text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors"
-                        >
-                          <EditIcon size={14} />
-                        </button>
-                        {/* Supprimer */}
-                        <button
-                          onClick={() => setDeleteConfirm(task.id)}
-                          title="Supprimer"
-                          className="p-1.5 rounded-lg text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
-                        >
-                          <TrashIcon size={14} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      {/* Date */}
+                      <td className="px-4 py-3 whitespace-nowrap text-[var(--text-secondary)]">
+                        {fmtDate(task.date || task.dateTache)}
+                      </td>
+                      {/* Statut avec dropdown rapide */}
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <div className="relative inline-block">
+                          <button
+                            onClick={() => setStatusDropdown(statusDropdown === task.id ? null : task.id)}
+                            className="flex items-center gap-1 group/statut"
+                            title="Changer le statut rapidement"
+                          >
+                            <StatutBadge statut={task.statut} />
+                            <ChevronIcon size={10} className="text-[var(--text-muted)] group-hover/statut:text-cyan-500 transition-colors" />
+                          </button>
+                          {statusDropdown === task.id && (
+                            <div className="absolute top-full left-0 mt-1 z-20 bg-[var(--bg-surface)] border border-[var(--bg-border)] rounded-xl shadow-xl min-w-[140px] py-1 animate-fade-up">
+                              {Object.entries(STATUT_CONFIG).slice(0, 4).map(([k, v]) => (
+                                <button
+                                  key={k}
+                                  onClick={() => handleStatusChange(task.id, k)}
+                                  className={`w-full text-left px-3 py-1.5 text-xs font-semibold hover:bg-[var(--bg-surface-2)] transition-colors ${task.statut === k ? v.color : 'text-[var(--text-secondary)]'}`}
+                                >
+                                  {v.label} {task.statut === k && '✓'}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </td>
+                      {/* Utilisateur */}
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-1.5">
+                          <UsersIcon size={12} className="text-[var(--text-muted)] shrink-0" />
+                          <span className="text-[var(--text-secondary)] truncate max-w-[120px]" title={userDisplay}>
+                            {userDisplay}
+                          </span>
+                        </div>
+                      </td>
+                      {/* Contact */}
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-1.5">
+                          <ContactsIcon size={12} className="text-[var(--text-muted)] shrink-0" />
+                          <span className="text-[var(--text-secondary)] truncate max-w-[120px]" title={contactDisplay}>
+                            {contactDisplay}
+                          </span>
+                        </div>
+                      </td>
+                      {/* Interaction liée */}
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        {task.interactionId ? (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-cyan-50 text-cyan-700 border border-cyan-200">
+                            <LinkIcon size={10} />
+                            {linkedInteraction
+                              ? formatInteractionOptionLabel(linkedInteraction.type, linkedInteraction.date)
+                              : `Interaction #${task.interactionId}`}
+                          </span>
+                        ) : (
+                          <span className="text-[11px] text-[var(--text-muted)]">—</span>
+                        )}
+                      </td>
+                      {/* Actions */}
+                      <td className="px-4 py-3">
+                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          {/* Modifier */}
+                          <button
+                            onClick={() => openEdit(task)}
+                            title="Modifier"
+                            className="p-1.5 rounded-lg text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors"
+                          >
+                            <EditIcon size={14} />
+                          </button>
+                          {/* Supprimer */}
+                          <button
+                            onClick={() => setDeleteConfirm(task.id)}
+                            title="Supprimer"
+                            className="p-1.5 rounded-lg text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
+                          >
+                            <TrashIcon size={14} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -563,6 +674,7 @@ export default function TasksPage() {
                   className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all"
                 />
               </div>
+
               {/* Description */}
               <div className="sm:col-span-2 space-y-1.5">
                 <label className="block text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">Description</label>
@@ -576,6 +688,7 @@ export default function TasksPage() {
                   className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all resize-none"
                 />
               </div>
+
               {/* Date */}
               <div className="space-y-1.5">
                 <label className="block text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">Date de la tâche</label>
@@ -588,6 +701,7 @@ export default function TasksPage() {
                   className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all"
                 />
               </div>
+
               {/* Type */}
               <div className="space-y-1.5">
                 <label className="block text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">Type de tâche</label>
@@ -603,6 +717,7 @@ export default function TasksPage() {
                   ))}
                 </select>
               </div>
+
               {/* Statut */}
               <div className="space-y-1.5">
                 <label className="block text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">Statut</label>
@@ -613,53 +728,90 @@ export default function TasksPage() {
                   onChange={handleFormChange}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all"
                 >
-                  {Object.entries(STATUT_CONFIG).map(([k, v]) => (
+                  {Object.entries(STATUT_CONFIG).slice(0, 4).map(([k, v]) => (
                     <option key={k} value={k}>{v.label}</option>
                   ))}
                 </select>
               </div>
-              {/* Utilisateur ID */}
+
+              {/* ── Instruction 3 : Sélecteur "Utilisateur assigné" ── */}
               <div className="space-y-1.5">
                 <label className="block text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider flex items-center gap-1.5">
-                  <UsersIcon size={11} /> ID Utilisateur
+                  <UsersIcon size={11} /> Utilisateur assigné <span className="text-rose-500">*</span>
                 </label>
-                <input
+                <select
                   id="task-utilisateur"
                   name="utilisateurId"
-                  type="number"
                   value={form.utilisateurId}
                   onChange={handleFormChange}
-                  placeholder="ID de l'utilisateur assigné"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all"
-                />
+                  required
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all cursor-pointer"
+                >
+                  <option value="">-- Sélectionner un utilisateur --</option>
+                  {userOptions.map((u) => (
+                    <option key={u.id} value={String(u.id)}>
+                      {formatUserOptionLabel(u)}
+                    </option>
+                  ))}
+                </select>
               </div>
-              {/* Contact ID */}
+
+              {/* Contact associé */}
               <div className="space-y-1.5">
                 <label className="block text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider flex items-center gap-1.5">
-                  <ContactsIcon size={11} /> ID Contact
+                  <ContactsIcon size={11} /> Contact associé
                 </label>
-                <input
+                <select
                   id="task-contact"
                   name="contactId"
-                  type="number"
                   value={form.contactId}
-                  onChange={handleFormChange}
-                  placeholder="ID du contact lié (optionnel)"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all"
-                />
+                  onChange={handleContactChange}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all cursor-pointer"
+                >
+                  <option value="">-- Aucun contact (optionnel) --</option>
+                  {contactOptions.map((c) => (
+                    <option key={c.id} value={String(c.id)}>
+                      {c.nomComplet}{c.entreprise ? ` — ${c.entreprise}` : ''}
+                    </option>
+                  ))}
+                </select>
               </div>
-              {/* Interaction ID */}
+
+              {/* ── Instruction 2 : Sélecteur d'interactions (lié au contact) ── */}
               <div className="space-y-1.5">
-                <label className="block text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">ID Interaction</label>
-                <input
+                <label className="block text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider flex items-center justify-between">
+                  <span>Interaction liée</span>
+                  {form.contactId && (
+                    <span className="text-[10px] font-normal text-[var(--text-muted)]">
+                      {availableInteractions.length} interaction{availableInteractions.length !== 1 ? 's' : ''} disponible{availableInteractions.length !== 1 ? 's' : ''}
+                    </span>
+                  )}
+                </label>
+                <select
                   id="task-interaction"
                   name="interactionId"
-                  type="number"
                   value={form.interactionId}
                   onChange={handleFormChange}
-                  placeholder="ID de l'interaction liée (optionnel)"
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all"
-                />
+                  disabled={!form.contactId}
+                  className={`w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all ${
+                    !form.contactId ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'
+                  }`}
+                >
+                  {!form.contactId ? (
+                    <option value="">-- Veuillez d'abord sélectionner un contact --</option>
+                  ) : availableInteractions.length === 0 ? (
+                    <option value="">-- Aucune interaction trouvée pour ce contact --</option>
+                  ) : (
+                    <>
+                      <option value="">-- Aucune interaction liée (optionnel) --</option>
+                      {availableInteractions.map((it) => (
+                        <option key={it.id} value={String(it.id)}>
+                          {formatInteractionOptionLabel(it.type, it.date)}
+                        </option>
+                      ))}
+                    </>
+                  )}
+                </select>
               </div>
             </div>
 

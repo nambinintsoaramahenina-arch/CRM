@@ -38,7 +38,7 @@ const baseNavItems: NavItem[] = [
   { name: 'Utilisateurs', href: '/users', icon: UsersIcon },
   { name: 'Contacts', href: '/contacts', icon: ContactsIcon },
   { name: 'Interactions', href: '/interactions', icon: InteractionsIcon },
-  { name: 'Tâches', href: '/tasks', icon: TasksIcon, badge: '87' },
+  { name: 'Tâches', href: '/tasks', icon: TasksIcon },
   { name: 'Historique', href: '/history', icon: HistoryIcon },
   { name: 'Profil', href: '/profile', icon: ProfileIcon },
 ];
@@ -69,20 +69,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen }) =
     return () => clearTimeout(timer);
   }, [pathname]);
 
-  const navItems: NavItem[] = [
-    ...baseNavItems,
-    ...(isAdmin
-      ? [
-          {
-            name: 'Demandes MDP',
-            href: '/admin/password-requests',
-            icon: KeyIcon,
-            badge: pendingCount > 0 ? String(pendingCount) : undefined,
-            badgeColor: 'amber',
-          },
-        ]
-      : []),
-  ];
+  const navItems: NavItem[] = baseNavItems;
 
   const isCurrentActive = (href: string) => {
     if (href === '/dashboard' && (pathname === '/' || pathname === '/dashboard')) {
@@ -169,16 +156,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen }) =
             })}
           </div>
 
-          {/* Footer note/status */}
-          <div className="p-4 border-t border-[var(--bg-border)] bg-[var(--bg-surface-2)]/60 m-3 rounded-2xl">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span className="text-xs font-bold text-[var(--text-primary)]">Port de Toamasina</span>
-            </div>
-            <p className="text-[11px] text-[var(--text-muted)] leading-relaxed">
-              Plateforme CRM SPAT v2.0
-            </p>
-          </div>
+
         </div>
       </aside>
     </>

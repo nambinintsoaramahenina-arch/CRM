@@ -91,10 +91,16 @@ export async function fetchDashboardStats(
       }>(`${API_URL}/users?page=0&size=1000`, token).catch(() => null)
     : Promise.resolve(null);
 
-  const [contactsData, interactionsData, usersData] = await Promise.all([
+  const tasksPromise = safeFetch<any[]>(
+    `${API_URL}/tasks`,
+    token
+  ).catch(() => null);
+
+  const [contactsData, interactionsData, usersData, tasksData] = await Promise.all([
     contactsPromise,
     interactionsPromise,
     usersPromise,
+    tasksPromise,
   ]);
 
   // Contacts
@@ -139,8 +145,21 @@ export async function fetchDashboardStats(
     inactifs: usersList.filter((u) => u.statut === "INACTIF").length,
   };
 
-  // Taches (TODO: connecter a /api/tasks)
-  const tasks = { total: 0, enRetard: 0, terminees: 0 };
+  // Tâches réelles provenant de PostgreSQL via /api/tasks
+  const rawTasks: any = tasksData;
+  const tasksList: { statut?: string; date?: string; dateTache?: string }[] =
+    Array.isArray(rawTasks)
+      ? rawTasks
+      : (rawTasks?.content ?? []);
+
+  const tasks = {
+    total: tasksList.length,
+    enRetard: tasksList.filter((t) => {
+      const d = t.date || t.dateTache;
+      return t.statut === "ANNULE" || (d && new Date(d) < now && t.statut !== "TERMINE");
+    }).length,
+    terminees: tasksList.filter((t) => t.statut === "TERMINE" || t.statut === "TERMINEE").length,
+  };
 
   return { users, contacts, interactions, tasks };
 }

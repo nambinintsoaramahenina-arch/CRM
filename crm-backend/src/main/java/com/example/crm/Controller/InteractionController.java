@@ -30,17 +30,38 @@ public class InteractionController {
     private final InteractionService interactionService;
 
     // =========================================================================
-    // GET /api/interactions — Lister toutes les interactions
+    // GET /api/interactions — Lister les interactions (avec filtre optionnel contactId)
     // =========================================================================
 
     /**
-     * Retourne la liste complète de toutes les interactions enregistrées.
+     * Retourne la liste complète de toutes les interactions enregistrées,
+     * ou filtrées par contact si le paramètre contactId est fourni.
      *
+     * @param contactId (optionnel) identifiant du contact
      * @return {@code 200 OK} avec la liste des interactions
      */
     @GetMapping
-    public ResponseEntity<List<InteractionResponseDTO>> getAllInteractions() {
-        List<InteractionResponseDTO> interactions = interactionService.obtenirToutesLesInteractions();
+    public ResponseEntity<List<InteractionResponseDTO>> getAllInteractions(
+            @RequestParam(required = false) Long contactId) {
+        List<InteractionResponseDTO> interactions;
+        if (contactId != null) {
+            interactions = interactionService.obtenirInteractionsParContact(contactId);
+        } else {
+            interactions = interactionService.obtenirToutesLesInteractions();
+        }
+        return ResponseEntity.ok(interactions);
+    }
+
+    /**
+     * GET /api/interactions/contact/{contactId} — Lister les interactions d'un contact
+     *
+     * @param contactId identifiant du contact
+     * @return {@code 200 OK} avec la liste des interactions du contact
+     */
+    @GetMapping("/contact/{contactId}")
+    public ResponseEntity<List<InteractionResponseDTO>> getInteractionsByContact(
+            @PathVariable Long contactId) {
+        List<InteractionResponseDTO> interactions = interactionService.obtenirInteractionsParContact(contactId);
         return ResponseEntity.ok(interactions);
     }
 

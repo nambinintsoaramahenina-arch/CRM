@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { UsersIcon, ContactsIcon, InteractionsIcon, TasksIcon } from "../ui/Icons";
@@ -167,7 +167,7 @@ export const StatCards: React.FC<StatCardsProps> = ({ role = "USER" }) => {
       description: "Echanges, appels et requetes traites",
     });
 
-    // Taches (placeholder tant que /api/tasks n'est pas expose)
+    // Tâches connectées à /api/tasks (PostgreSQL)
     const tTotal = stats?.tasks.total ?? 0;
     const tRetard = stats?.tasks.enRetard ?? 0;
     const tTerminees = stats?.tasks.terminees ?? 0;

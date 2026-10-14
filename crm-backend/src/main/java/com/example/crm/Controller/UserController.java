@@ -17,9 +17,12 @@ import com.example.crm.service.UserService;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping({"/api/users", "/api/admin/users"})
-@PreAuthorize("hasRole('ADMIN')")
 @CrossOrigin(origins = "http://localhost:3000") 
 public class UserController {
 
@@ -38,13 +41,14 @@ public class UserController {
     // Le reste de tes méthodes reste inchangé...
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> createUser(@Valid @RequestBody UserCreateRequest request) {
         User createdUser = userService.meCreerUtilisateur(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Page<User>> getAllUsers(
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) String role,
@@ -77,6 +81,26 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    /**
+     * GET /api/users/all — Liste complète (non paginée) des utilisateurs.
+     * Retourne uniquement id, nomComplet, login et role pour alimenter
+     * les sélecteurs du formulaire de tâches côté frontend.
+     * Accessible à tout utilisateur authentifié.
+     */
+    @GetMapping("/all")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<Map<String, Object>>> getAllUsersForSelect() {
+        List<Map<String, Object>> users = userRepository.findAll().stream()
+                .map(u -> Map.<String, Object>of(
+                        "id", u.getId(),
+                        "nomComplet", u.getNomComplet() != null ? u.getNomComplet() : u.getLogin(),
+                        "login", u.getLogin() != null ? u.getLogin() : "",
+                        "role", u.getRole() != null ? u.getRole().name() : "USER"
+                ))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(users);
+    }
+
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
@@ -85,6 +109,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> updateUser(
             @PathVariable Long id,
             @Valid @RequestBody UserCreateRequest request) {
@@ -93,6 +118,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.meSupprimerUtilisateur(id);
         return ResponseEntity.noContent().build();
@@ -107,6 +133,7 @@ public class UserController {
      * le hache avec BCrypt, met à jour l'utilisateur et lui envoie un email avec le mot de passe temporaire.
      */
     @PostMapping("/{id}/reset-password")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<java.util.Map<String, Object>> resetPassword(
             @PathVariable Long id,
             @RequestBody(required = false) java.util.Map<String, String> body) {

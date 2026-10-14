@@ -92,6 +92,21 @@ public class InteractionService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retourne les interactions d'un contact spécifique.
+     *
+     * @param contactId identifiant du contact
+     * @return liste des interactions du contact
+     */
+    @Transactional(readOnly = true)
+    public List<InteractionResponseDTO> obtenirInteractionsParContact(Long contactId) {
+        log.debug("Récupération des interactions pour le contact ID={}", contactId);
+        return interactionRepository.findByContactId(contactId)
+                .stream()
+                .map(interactionMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+
     // =========================================================================
     // READ BY ID
     // =========================================================================

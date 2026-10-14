@@ -290,7 +290,7 @@ type FilterType = 'ALL' | 'PENDING' | 'APPROVED' | 'REJECTED';
 export default function PasswordRequestsPage() {
   const [requests, setRequests]       = useState<PasswordRequest[]>([]);
   const [loading, setLoading]         = useState(true);
-  const [filter, setFilter]           = useState<FilterType>('ALL');
+  const [filter, setFilter]           = useState<FilterType>('PENDING');
   const [actionLoading, setActionLoading] = useState(false);
   const [toast, setToast]             = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
   const [modal, setModal]             = useState<{

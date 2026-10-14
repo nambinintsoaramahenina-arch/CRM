@@ -14,8 +14,11 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 public class ContactController {
 
-    @Autowired
-    private ContactRepository contactRepository;
+    private final ContactRepository contactRepository;
+
+    public ContactController(ContactRepository contactRepository) {
+        this.contactRepository = contactRepository;
+    }
 
     @GetMapping
     public List<Contact> getAllContacts() {

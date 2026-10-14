@@ -1,62 +1,98 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { ClockIcon, CheckCircleIcon, AlertCircleIcon, TasksIcon } from '../ui/Icons';
-
-const taskStatusList = [
-  {
-    label: 'À faire',
-    count: 12,
-    percentage: '14%',
-    bar: 14,
-    barColor: 'bg-sky-500',
-    textColor: 'text-sky-600',
-    icon: ClockIcon,
-  },
-  {
-    label: 'En cours',
-    count: 5,
-    percentage: '6%',
-    bar: 6,
-    barColor: 'bg-amber-500',
-    textColor: 'text-amber-600',
-    icon: ClockIcon,
-  },
-  {
-    label: 'Terminées',
-    count: 64,
-    percentage: '73%',
-    bar: 73,
-    barColor: 'bg-emerald-500',
-    textColor: 'text-emerald-600',
-    icon: CheckCircleIcon,
-  },
-  {
-    label: 'En retard',
-    count: 6,
-    percentage: '7%',
-    bar: 7,
-    barColor: 'bg-rose-500',
-    textColor: 'text-rose-600',
-    icon: AlertCircleIcon,
-  },
-];
-
-const sampleTasks = [
-  { id: 'TSK-104', title: "Validation des fiches d'accès portuaires", priority: 'Haute',   status: 'En retard', date: 'Hier' },
-  { id: 'TSK-105', title: 'Attribution des rôles agents douaniers',   priority: 'Moyenne',  status: 'En cours',  date: "Aujourd'hui" },
-  { id: 'TSK-106', title: 'Revue mensuelle des comptes inactifs',     priority: 'Basse',    status: 'À faire',   date: 'Demain' },
-  { id: 'TSK-103', title: 'Audit de sécurité des accès terminaux',    priority: 'Haute',    status: 'Terminée',  date: '20 Sept.' },
-];
+import { fetchTasks, computeTaskStats, type Task } from '@/services/taskService';
 
 const statusBadge: Record<string, string> = {
-  'Terminée':  'bg-emerald-50 text-emerald-700 border-emerald-200',
-  'En retard': 'bg-rose-50 text-rose-700 border-rose-200',
-  'En cours':  'bg-amber-50 text-amber-700 border-amber-200',
-  'À faire':   'bg-sky-50 text-sky-700 border-sky-200',
+  EN_ATTENTE: 'bg-sky-50 text-sky-700 border-sky-200',
+  EN_COURS:   'bg-amber-50 text-amber-700 border-amber-200',
+  TERMINE:    'bg-emerald-50 text-emerald-700 border-emerald-200',
+  TERMINEE:   'bg-emerald-50 text-emerald-700 border-emerald-200',
+  ANNULE:     'bg-rose-50 text-rose-700 border-rose-200',
+  ANNULEE:    'bg-rose-50 text-rose-700 border-rose-200',
+};
+
+const statusLabels: Record<string, string> = {
+  EN_ATTENTE: 'En attente',
+  EN_COURS:   'En cours',
+  TERMINE:    'Terminée',
+  TERMINEE:   'Terminée',
+  ANNULE:     'Annulée',
+  ANNULEE:    'Annulée',
 };
 
 export const TasksOverview: React.FC = () => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('crm-token') || '' : '';
+    if (token) {
+      fetchTasks(token)
+        .then((data) => setTasks(data))
+        .catch(() => setTasks([]))
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  const stats = computeTaskStats(tasks);
+
+  const taskStatusList = [
+    {
+      label: 'En attente',
+      count: stats.enAttente,
+      percentage: stats.total ? `${Math.round((stats.enAttente / stats.total) * 100)}%` : '0%',
+      bar: stats.total ? Math.round((stats.enAttente / stats.total) * 100) : 0,
+      barColor: 'bg-sky-500',
+      textColor: 'text-sky-600',
+      icon: ClockIcon,
+    },
+    {
+      label: 'En cours',
+      count: stats.enCours,
+      percentage: stats.total ? `${Math.round((stats.enCours / stats.total) * 100)}%` : '0%',
+      bar: stats.total ? Math.round((stats.enCours / stats.total) * 100) : 0,
+      barColor: 'bg-amber-500',
+      textColor: 'text-amber-600',
+      icon: ClockIcon,
+    },
+    {
+      label: 'Terminées',
+      count: stats.termine,
+      percentage: stats.total ? `${Math.round((stats.termine / stats.total) * 100)}%` : '0%',
+      bar: stats.total ? Math.round((stats.termine / stats.total) * 100) : 0,
+      barColor: 'bg-emerald-500',
+      textColor: 'text-emerald-600',
+      icon: CheckCircleIcon,
+    },
+    {
+      label: 'Annulées',
+      count: stats.annule,
+      percentage: stats.total ? `${Math.round((stats.annule / stats.total) * 100)}%` : '0%',
+      bar: stats.total ? Math.round((stats.annule / stats.total) * 100) : 0,
+      barColor: 'bg-rose-500',
+      textColor: 'text-rose-600',
+      icon: AlertCircleIcon,
+    },
+  ];
+
+  const recentTasks = tasks.slice(0, 5);
+
+  const fmtDate = (iso?: string) => {
+    if (!iso) return '—';
+    try {
+      const d = new Date(iso);
+      if (isNaN(d.getTime())) return iso;
+      return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
+    } catch {
+      return iso;
+    }
+  };
+
   return (
     <div className="bg-[var(--bg-surface)] rounded-2xl p-6 border border-[var(--bg-border)] shadow-[var(--card-shadow)] flex flex-col gap-5">
       {/* En-tête */}
@@ -67,12 +103,17 @@ export const TasksOverview: React.FC = () => {
           </div>
           <div>
             <h3 className="font-bold text-[var(--text-primary)] text-base">Vue d'ensemble des Tâches</h3>
-            <p className="text-xs text-[var(--text-secondary)]">Répartition opérationnelle des 87 tâches</p>
+            <p className="text-xs text-[var(--text-secondary)]">
+              {loading ? 'Chargement des tâches…' : `Répartition opérationnelle des ${stats.total} tâche${stats.total !== 1 ? 's' : ''}`}
+            </p>
           </div>
         </div>
-        <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-[var(--bg-surface-2)] text-[var(--text-secondary)] border border-[var(--bg-border)]">
-          87 Total
-        </span>
+        <Link
+          href="/tasks"
+          className="text-xs font-bold px-3 py-1 rounded-full bg-[var(--bg-surface-2)] text-[var(--text-secondary)] hover:text-cyan-600 border border-[var(--bg-border)] transition-colors"
+        >
+          {loading ? '—' : `${stats.total} Total`} →
+        </Link>
       </div>
 
       {/* Grille statuts */}
@@ -86,7 +127,7 @@ export const TasksOverview: React.FC = () => {
                 <IconComp size={14} className={st.textColor} />
               </div>
               <div className="flex items-baseline justify-between">
-                <span className="text-2xl font-black text-[var(--text-primary)]">{st.count}</span>
+                <span className="text-2xl font-black text-[var(--text-primary)]">{loading ? '—' : st.count}</span>
                 <span className="text-[11px] font-semibold text-[var(--text-muted)]">{st.percentage}</span>
               </div>
               {/* Barre de progression */}
@@ -101,27 +142,41 @@ export const TasksOverview: React.FC = () => {
         })}
       </div>
 
-      {/* Liste des dernières tâches */}
+      {/* Liste des dernières tâches réelles */}
       <div className="space-y-2">
-        <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
-          Dernières tâches assignées
-        </span>
-        <div className="divide-y divide-[var(--bg-border)] border border-[var(--bg-border)] rounded-xl overflow-hidden">
-          {sampleTasks.map((task) => (
-            <div key={task.id} className="flex items-center justify-between p-3 text-xs hover:bg-[var(--bg-surface-2)] transition-colors">
-              <div className="flex items-center gap-3 overflow-hidden">
-                <span className="font-mono text-[11px] font-semibold text-[var(--text-muted)] shrink-0">{task.id}</span>
-                <span className="font-medium text-[var(--text-primary)] truncate">{task.title}</span>
-              </div>
-              <div className="flex items-center gap-2 shrink-0 ml-2">
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${statusBadge[task.status] ?? ''}`}>
-                  {task.status}
-                </span>
-                <span className="text-[11px] text-[var(--text-muted)] hidden sm:inline">{task.date}</span>
-              </div>
-            </div>
-          ))}
+        <div className="flex items-center justify-between">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+            Dernières tâches enregistrées
+          </span>
+          <Link href="/tasks" className="text-xs font-semibold text-cyan-600 hover:underline">
+            Voir tout
+          </Link>
         </div>
+
+        {loading ? (
+          <div className="py-6 text-center text-xs text-[var(--text-muted)]">Chargement des tâches…</div>
+        ) : recentTasks.length === 0 ? (
+          <div className="py-6 text-center text-xs text-[var(--text-muted)] border border-[var(--bg-border)] rounded-xl">
+            Aucune tâche enregistrée en base. <Link href="/tasks" className="text-cyan-600 underline font-semibold">Créer une tâche</Link>
+          </div>
+        ) : (
+          <div className="divide-y divide-[var(--bg-border)] border border-[var(--bg-border)] rounded-xl overflow-hidden">
+            {recentTasks.map((task) => (
+              <div key={task.id} className="flex items-center justify-between p-3 text-xs hover:bg-[var(--bg-surface-2)] transition-colors">
+                <div className="flex items-center gap-3 overflow-hidden">
+                  <span className="font-mono text-[11px] font-semibold text-[var(--text-muted)] shrink-0">#{task.id}</span>
+                  <span className="font-medium text-[var(--text-primary)] truncate">{task.titre}</span>
+                </div>
+                <div className="flex items-center gap-2 shrink-0 ml-2">
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md border ${statusBadge[task.statut ?? ''] ?? 'bg-slate-50 text-slate-700 border-slate-200'}`}>
+                    {statusLabels[task.statut ?? ''] ?? task.statut ?? '—'}
+                  </span>
+                  <span className="text-[11px] text-[var(--text-muted)] hidden sm:inline">{fmtDate(task.date || task.dateTache)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
