@@ -11,7 +11,6 @@ import {
   InteractionsIcon,
   TasksIcon,
   HistoryIcon,
-  ProfileIcon,
   CloseIcon
 } from '../ui/Icons';
 import { fetchPendingCount } from '@/services/passwordRequestService';
@@ -39,8 +38,7 @@ const baseNavItems: NavItem[] = [
   { name: 'Contacts', href: '/contacts', icon: ContactsIcon },
   { name: 'Interactions', href: '/interactions', icon: InteractionsIcon },
   { name: 'Tâches', href: '/tasks', icon: TasksIcon },
-  { name: 'Historique', href: '/history', icon: HistoryIcon },
-  { name: 'Profil', href: '/profile', icon: ProfileIcon },
+  { name: 'Historique', href: '/historique', icon: HistoryIcon },
 ];
 
 interface SidebarProps {
@@ -73,6 +71,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen }) =
 
   const isCurrentActive = (href: string) => {
     if (href === '/dashboard' && (pathname === '/' || pathname === '/dashboard')) {
+      return true;
+    }
+    if (href === '/historique' && (pathname.startsWith('/historique') || pathname.startsWith('/history') || pathname.startsWith('/activity-logs'))) {
       return true;
     }
     return pathname.startsWith(href);

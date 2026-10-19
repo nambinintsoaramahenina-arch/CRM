@@ -384,23 +384,6 @@ export const UsersCrudTable: React.FC = () => {
                         {isAdmin ? (
                           <>
                             <button
-                              id={`btn-reset-pwd-${u.id}`}
-                              onClick={() => setResetConfirmUser(u)}
-                              disabled={resettingId === u.id}
-                              className={`p-1.5 rounded-lg transition-all ${
-                                resettingId === u.id
-                                  ? 'text-amber-400 cursor-wait'
-                                  : 'text-amber-600 hover:bg-amber-50 dark:hover:bg-amber-950/40'
-                              }`}
-                              title="Réinitialiser le mot de passe"
-                            >
-                              {resettingId === u.id ? (
-                                <div className="w-[15px] h-[15px] border-2 border-amber-400/30 border-t-amber-500 rounded-full animate-spin" />
-                              ) : (
-                                <KeyIcon size={15} />
-                              )}
-                            </button>
-                            <button
                               id={`btn-edit-user-${u.id}`}
                               onClick={() => handleOpenEditModal(u)}
                               className="p-1.5 text-cyan-600 hover:bg-cyan-50 dark:hover:bg-cyan-950/40 rounded-lg transition-colors"

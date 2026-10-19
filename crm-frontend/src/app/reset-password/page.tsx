@@ -77,7 +77,7 @@ function ResetPasswordContent() {
               Validation du code de réinitialisation
             </h2>
             <p className="text-sm text-slate-300 leading-relaxed font-normal">
-              Saisissez le code reçu par e-mail pour confirmer votre réinitialisation. Votre nouveau mot de passe vous sera automatiquement envoyé.
+
             </p>
           </div>
         </div>

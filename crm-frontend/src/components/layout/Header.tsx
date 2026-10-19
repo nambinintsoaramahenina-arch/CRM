@@ -106,7 +106,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
     if (pathname.startsWith('/contacts'))     return 'Contacts';
     if (pathname.startsWith('/interactions')) return 'Interactions';
     if (pathname.startsWith('/tasks'))        return 'Tâches';
-    if (pathname.startsWith('/history'))      return 'Historique des activités';
+    if (pathname.startsWith('/historique') || pathname.startsWith('/activity-logs') || pathname.startsWith('/history')) return 'Historique des activités';
     if (pathname.startsWith('/profile'))      return 'Mon Profil';
     if (pathname.startsWith('/login'))        return 'Connexion';
     if (pathname.startsWith('/admin/password-requests')) return 'Demandes de réinitialisation';
@@ -221,27 +221,20 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
                 </div>
 
                 <div className="max-h-80 overflow-y-auto divide-y divide-[var(--bg-border)]">
-                  {notifications.length === 0 ? (
-                    <div className="p-6 text-center text-xs text-[var(--text-muted)]">
-                      Aucune notification pour le moment.
+                  {notifications.filter((n) => !n.lue).length === 0 ? (
+                    <div className="p-6 text-center text-xs text-[var(--text-muted)] space-y-1">
+                      <p className="font-bold text-[var(--text-primary)]">Aucune notification en attente</p>
+                      <p className="text-[11px]">Toutes les demandes de réinitialisation ont été traitées.</p>
                     </div>
                   ) : (
-                    notifications.map((n) => (
+                    notifications.filter((n) => !n.lue).map((n) => (
                       <div
                         key={n.id}
                         onClick={() => handleMarkAsRead(n.id)}
-                        className={`p-3.5 transition-colors cursor-pointer ${
-                          n.lue
-                            ? 'hover:bg-[var(--bg-surface-2)] opacity-75'
-                            : 'bg-cyan-500/5 hover:bg-cyan-500/10'
-                        }`}
+                        className="p-3.5 transition-colors cursor-pointer bg-cyan-500/5 hover:bg-cyan-500/10"
                       >
                         <div className="flex items-start gap-2.5">
-                          <span
-                            className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${
-                              n.lue ? 'bg-slate-300 dark:bg-slate-700' : 'bg-cyan-500'
-                            }`}
-                          />
+                          <span className="w-2 h-2 rounded-full mt-1.5 shrink-0 bg-cyan-500 animate-pulse" />
                           <div className="flex-1 space-y-1">
                             <p className="text-xs font-semibold text-[var(--text-primary)] leading-snug">
                               {n.message}

@@ -77,6 +77,13 @@ const STATUT_CONFIG: Record<string, { label: string; color: string; bg: string; 
   ANNULEE:    { label: 'Annulée',     color: 'text-rose-700',    bg: 'bg-rose-50',    border: 'border-rose-200' },
 };
 
+const STATUT_OPTIONS = [
+  { value: 'EN_ATTENTE', label: 'En attente' },
+  { value: 'EN_COURS',   label: 'En cours' },
+  { value: 'TERMINEE',   label: 'Terminée' },
+  { value: 'ANNULEE',    label: 'Annulée' },
+];
+
 const TYPE_CONFIG: Record<string, string> = {
   APPEL:       '📞 Appel',
   EMAIL:       '✉️ Email',
@@ -552,8 +559,8 @@ export default function TasksPage() {
             className="appearance-none pl-3 pr-8 py-2.5 text-xs rounded-xl bg-[var(--bg-surface)] border border-[var(--bg-border)] text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all cursor-pointer min-w-[140px]"
           >
             <option value="">Tous les statuts</option>
-            {Object.entries(STATUT_CONFIG).map(([k, v]) => (
-              <option key={k} value={k}>{v.label}</option>
+            {STATUT_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
             ))}
           </select>
           <ChevronIcon className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)] pointer-events-none" />
@@ -664,15 +671,18 @@ export default function TasksPage() {
                           </button>
                           {statusDropdown === task.id && (
                             <div className="absolute top-full left-0 mt-1 z-20 bg-[var(--bg-surface)] border border-[var(--bg-border)] rounded-xl shadow-xl min-w-[140px] py-1 animate-fade-up">
-                              {Object.entries(STATUT_CONFIG).slice(0, 4).map(([k, v]) => (
-                                <button
-                                  key={k}
-                                  onClick={() => handleStatusChange(task.id, k)}
-                                  className={`w-full text-left px-3 py-1.5 text-xs font-semibold hover:bg-[var(--bg-surface-2)] transition-colors ${task.statut === k ? v.color : 'text-[var(--text-secondary)]'}`}
-                                >
-                                  {v.label} {task.statut === k && '✓'}
-                                </button>
-                              ))}
+                              {STATUT_OPTIONS.map((opt) => {
+                                const cfg = STATUT_CONFIG[opt.value] || { color: 'text-slate-500' };
+                                return (
+                                  <button
+                                    key={opt.value}
+                                    onClick={() => handleStatusChange(task.id, opt.value)}
+                                    className={`w-full text-left px-3 py-1.5 text-xs font-semibold hover:bg-[var(--bg-surface-2)] transition-colors ${task.statut === opt.value ? cfg.color : 'text-[var(--text-secondary)]'}`}
+                                  >
+                                    {opt.label} {task.statut === opt.value && '✓'}
+                                  </button>
+                                );
+                              })}
                             </div>
                           )}
                         </div>
@@ -822,8 +832,8 @@ export default function TasksPage() {
                   onChange={handleFormChange}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all"
                 >
-                  {Object.entries(STATUT_CONFIG).slice(0, 4).map(([k, v]) => (
-                    <option key={k} value={k}>{v.label}</option>
+                  {STATUT_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
                   ))}
                 </select>
               </div>
