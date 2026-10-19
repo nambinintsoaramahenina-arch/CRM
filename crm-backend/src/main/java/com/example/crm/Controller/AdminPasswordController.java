@@ -2,6 +2,8 @@ package com.example.crm.Controller;
 
 import com.example.crm.dto.PasswordRequestDTO;
 import com.example.crm.service.PasswordRequestAdminService;
+import com.example.crm.service.PasswordResetService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +14,6 @@ import java.util.Map;
 /**
  * Contrôleur REST réservé aux administrateurs pour gérer les demandes
  * de réinitialisation de mot de passe.
- *
- * Routes exposées :
- *   GET  /api/admin/password-requests              → liste toutes les demandes
- *   GET  /api/admin/password-requests/pending      → liste demandes PENDING seulement
- *   GET  /api/admin/password-requests/count        → nombre de demandes PENDING
- *   POST /api/admin/password-requests/{id}/approve → approuver + envoyer email
- *   POST /api/admin/password-requests/{id}/reject  → rejeter la demande
  */
 @RestController
 @RequestMapping("/api/admin/password-requests")
@@ -27,9 +22,12 @@ import java.util.Map;
 public class AdminPasswordController {
 
     private final PasswordRequestAdminService adminService;
+    private final PasswordResetService passwordResetService;
 
-    public AdminPasswordController(PasswordRequestAdminService adminService) {
-        this.adminService = adminService;
+    public AdminPasswordController(PasswordRequestAdminService adminService,
+                                   @Autowired(required = false) PasswordResetService passwordResetService) {
+        this.adminService         = adminService;
+        this.passwordResetService = passwordResetService;
     }
 
     /**
@@ -110,5 +108,21 @@ public class AdminPasswordController {
         }
         Map<String, Object> result = adminService.reinitialiserMotDePasseParUserId(id, nouveauMdp, commentaire);
         return ResponseEntity.ok(result);
+    }
+
+    /**
+     * Valide la réinitialisation et génère le mot de passe :
+     * POST /api/admin/password-requests/approve-reset/{identifier}
+     */
+    @PostMapping({"/approve-reset/{identifier}", "/approve-reset/user/{identifier}"})
+    public ResponseEntity<Map<String, Object>> approveReset(
+            @PathVariable String identifier,
+            @RequestBody(required = false) Map<String, String> body) {
+        if (passwordResetService != null) {
+            String customMdp = body != null ? body.getOrDefault("nouveauMdp", body.get("password")) : null;
+            String commentaire = body != null ? body.get("commentaire") : null;
+            return ResponseEntity.ok(passwordResetService.approveResetByAdmin(identifier, customMdp, commentaire));
+        }
+        return ResponseEntity.notFound().build();
     }
 }

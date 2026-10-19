@@ -406,6 +406,45 @@ public class EmailService {
         }
     }
 
+    /**
+     * Envoie une notification à l'administrateur lorsqu'un nouveau mot de passe a été généré
+     * suite à la validation du code de réinitialisation par le collaborateur.
+     */
+    @Async("mailTaskExecutor")
+    public void notifierAdminNouveauMotDePasse(String login, String email, String nomComplet, String nouveauMdp) {
+        if (smtpUsername == null || smtpUsername.isBlank() || smtpUsername.contains("votre-email")) {
+            log.info("[ADMIN NOTIF] Nouveau mot de passe généré pour {} ({})", login, email);
+            return;
+        }
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            configurerExpediteur(helper);
+            helper.setTo(fromAddress);
+            helper.setSubject("🔑 [SPAT CRM] Nouveau mot de passe généré pour " + (nomComplet != null ? nomComplet : login));
+
+            String html =
+                "<div style='font-family:Arial,sans-serif;padding:20px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;'>" +
+                "<h3 style='color:#0f766e;'>🔑 Confirmation de réinitialisation de mot de passe</h3>" +
+                "<p>Le code de réinitialisation a été validé avec succès. Un nouveau mot de passe a été automatiquement généré et expédié au collaborateur :</p>" +
+                "<ul>" +
+                "<li><strong>Collaborateur :</strong> " + (nomComplet != null ? nomComplet : "N/A") + "</li>" +
+                "<li><strong>Matricule :</strong> " + login + "</li>" +
+                "<li><strong>Email du collaborateur :</strong> " + email + "</li>" +
+                "</ul>" +
+                "<p style='color:#64748b;font-size:12px;'>Le nouveau mot de passe a été chiffré dans la base PostgreSQL et communiqué au collaborateur par email.</p>" +
+                "</div>";
+
+            helper.setText(html, true);
+            mailSender.send(message);
+            log.info("[ADMIN NOTIF SUCCESS] Confirmation de réinitialisation transmise à l'administrateur ({})", fromAddress);
+        } catch (Exception e) {
+            log.warn("[ADMIN NOTIF SKIPPED] Impossible de notifier l'admin : {}", e.getMessage());
+        }
+    }
+
     // ─────────────────────────────────────────────────────────────────────────
     // Méthodes privées d'aide & Diagnostic des erreurs
     // ─────────────────────────────────────────────────────────────────────────

@@ -4,7 +4,6 @@ import com.example.crm.dto.InteractionRequestDTO;
 import com.example.crm.dto.InteractionResponseDTO;
 import com.example.crm.service.InteractionService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,10 +23,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/interactions")
 @CrossOrigin(origins = "*")
-@RequiredArgsConstructor
 public class InteractionController {
 
     private final InteractionService interactionService;
+
+    public InteractionController(InteractionService interactionService) {
+        this.interactionService = interactionService;
+    }
 
     // =========================================================================
     // GET /api/interactions — Lister les interactions (avec filtre optionnel contactId)

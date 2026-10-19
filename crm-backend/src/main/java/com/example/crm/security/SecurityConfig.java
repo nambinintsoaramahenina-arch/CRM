@@ -36,9 +36,9 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return identifier -> userRepository.findByLogin(identifier)
-                .or(() -> userRepository.findByEmail(identifier))
-                .or(() -> userRepository.findByTelephone(identifier))
+        return identifier -> userRepository.findFirstByLogin(identifier)
+                .or(() -> userRepository.findFirstByEmail(identifier))
+                .or(() -> userRepository.findFirstByTelephone(identifier))
                 .map(user -> org.springframework.security.core.userdetails.User.builder()
                         .username(user.getLogin() != null ? user.getLogin() : identifier)
                         .password(user.getMdp())

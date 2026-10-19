@@ -8,19 +8,16 @@ import { fetchTasks, computeTaskStats, type Task } from '@/services/taskService'
 const statusBadge: Record<string, string> = {
   EN_ATTENTE: 'bg-sky-50 text-sky-700 border-sky-200',
   EN_COURS:   'bg-amber-50 text-amber-700 border-amber-200',
-  TERMINE:    'bg-emerald-50 text-emerald-700 border-emerald-200',
   TERMINEE:   'bg-emerald-50 text-emerald-700 border-emerald-200',
-  ANNULE:     'bg-rose-50 text-rose-700 border-rose-200',
   ANNULEE:    'bg-rose-50 text-rose-700 border-rose-200',
 };
 
 const statusLabels: Record<string, string> = {
   EN_ATTENTE: 'En attente',
   EN_COURS:   'En cours',
-  TERMINE:    'Terminée',
   TERMINEE:   'Terminée',
   ANNULE:     'Annulée',
-  ANNULEE:    'Annulée',
+
 };
 
 export const TasksOverview: React.FC = () => {

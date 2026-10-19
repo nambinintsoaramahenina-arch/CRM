@@ -7,7 +7,6 @@ import { TasksOverview } from "@/components/dashboard/TasksOverview";
 import { RecentActivities } from "@/components/dashboard/RecentActivities";
 import { UsersCrudTable } from "@/components/dashboard/UsersCrudTable";
 import {
-  BellIcon,
   UsersIcon,
   ShieldCheckIcon,
 } from "@/components/ui/Icons";
@@ -109,14 +108,6 @@ export default function DashboardPage() {
 
           <div className="flex flex-wrap items-center gap-3 shrink-0">
             <ThemeToggle variant="dark" />
-
-            <button
-              className="relative p-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-slate-200 transition-all"
-              aria-label="Notifications"
-            >
-              <BellIcon size={18} />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-            </button>
 
             {isManager && (
               <Link

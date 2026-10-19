@@ -6,6 +6,8 @@ import com.example.crm.entity.Interaction;
 import com.example.crm.entity.User;
 import org.springframework.stereotype.Component;
 
+
+
 /**
  * Mapper responsable des conversions entre l'entité {@link Interaction}
  * et les DTOs {@link com.example.crm.dto.InteractionRequestDTO} /

@@ -11,8 +11,8 @@ import com.example.crm.repository.ContactRepository;
 import com.example.crm.repository.InteractionRepository;
 import com.example.crm.repository.TacheRepository;
 import com.example.crm.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,16 +27,31 @@ import java.util.stream.Collectors;
  * si un identifiant est fourni dans le DTO de requête.</p>
  */
 @Service
-@RequiredArgsConstructor
-@Slf4j
 @Transactional
 public class TacheService {
+
+    private static final Logger log = LoggerFactory.getLogger(TacheService.class);
 
     private final TacheRepository tacheRepository;
     private final UserRepository userRepository;
     private final ContactRepository contactRepository;
     private final InteractionRepository interactionRepository;
     private final TacheMapper tacheMapper;
+
+    /**
+     * Constructeur explicite pour garantir l'injection Spring sans dépendance exclusive à Lombok.
+     */
+    public TacheService(TacheRepository tacheRepository,
+                        UserRepository userRepository,
+                        ContactRepository contactRepository,
+                        InteractionRepository interactionRepository,
+                        TacheMapper tacheMapper) {
+        this.tacheRepository = tacheRepository;
+        this.userRepository = userRepository;
+        this.contactRepository = contactRepository;
+        this.interactionRepository = interactionRepository;
+        this.tacheMapper = tacheMapper;
+    }
 
     // =========================================================================
     // CREATE
@@ -47,8 +62,7 @@ public class TacheService {
      *
      * @param dto les données de la tâche à créer
      * @return le DTO de réponse de la tâche créée
-     * @throws IllegalArgumentException si l'utilisateur, le contact ou l'interaction
-     *                                  référencé est introuvable
+     * @throws IllegalArgumentException si l'utilisateur ou le contact référencé est introuvable
      */
     public TacheResponseDTO creerTache(TacheRequestDTO dto) {
         log.info("Création d'une nouvelle tâche '{}' assignée à l'utilisateur ID={}",
@@ -59,19 +73,18 @@ public class TacheService {
                         "Utilisateur introuvable avec l'ID : " + dto.getUtilisateurId()));
 
         Contact contact = resolveContact(dto.getContactId());
-        Interaction interaction = resolveInteraction(dto.getInteractionId());
+        Interaction interaction = resolveInteraction(dto.getContactId(), dto.getInteractionId());
 
-        Tache tache = Tache.builder()
-                .titre(dto.getTitre())
-                .description(dto.getDescription())
-                .date(dto.getDate())                  // Remplit la colonne SQL "date" (NOT NULL)
-                .dateEcheance(dto.getDate())            // Remplit la colonne SQL "date_echeance"
-                .statut(dto.getStatut() != null ? dto.getStatut() : "EN_ATTENTE")
-                .typeTache(dto.getTypeTache())
-                .utilisateur(utilisateur)
-                .contact(contact)
-                .interaction(interaction)
-                .build();
+        Tache tache = new Tache();
+        tache.setTitre(dto.getTitre());
+        tache.setDescription(dto.getDescription());
+        tache.setDate(dto.getDate());                  // Remplit la colonne SQL "date" (NOT NULL)
+        tache.setDateEcheance(dto.getDate());            // Remplit la colonne SQL "date_echeance"
+        tache.setStatut(dto.getStatut() != null ? dto.getStatut() : "EN_ATTENTE");
+        tache.setTypeTache(dto.getTypeTache());
+        tache.setUtilisateur(utilisateur);
+        tache.setContact(contact);
+        tache.setInteraction(interaction);
 
         Tache sauvegardee = tacheRepository.save(tache);
         log.info("Tâche créée avec succès, ID={}", sauvegardee.getId());
@@ -185,7 +198,7 @@ public class TacheService {
         tache.setTypeTache(dto.getTypeTache());
         tache.setUtilisateur(utilisateur);
         tache.setContact(resolveContact(dto.getContactId()));
-        tache.setInteraction(resolveInteraction(dto.getInteractionId()));
+        tache.setInteraction(resolveInteraction(dto.getContactId(), dto.getInteractionId()));
 
         Tache misAJour = tacheRepository.save(tache);
         log.info("Tâche ID={} modifiée avec succès", id);
@@ -246,12 +259,24 @@ public class TacheService {
                         "Contact introuvable avec l'ID : " + contactId));
     }
 
-    private Interaction resolveInteraction(Long interactionId) {
-        if (interactionId == null) {
+    /**
+     * Résout l'interaction liée :
+     * 1. Si aucun contactId n'est fourni, retourne null.
+     * 2. Si un interactionId est fourni explicitement, récupère cette interaction.
+     * 3. Si aucun interactionId n'est fourni (ou si introuvable), récupère automatiquement
+     *    la dernière Interaction associée à ce Contact (interactionRepository.findTopByContactIdOrderByDateDesc(contactId)).
+     */
+    private Interaction resolveInteraction(Long contactId, Long interactionId) {
+        if (contactId == null) {
             return null;
         }
-        return interactionRepository.findById(interactionId)
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "Interaction introuvable avec l'ID : " + interactionId));
+
+        if (interactionId != null) {
+            return interactionRepository.findById(interactionId)
+                    .orElseGet(() -> interactionRepository.findTopByContactIdOrderByDateDesc(contactId).orElse(null));
+        }
+
+        return interactionRepository.findTopByContactIdOrderByDateDesc(contactId)
+                .orElse(null);
     }
 }

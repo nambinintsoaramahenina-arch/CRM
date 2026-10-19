@@ -13,8 +13,6 @@ public class ResetPasswordRequest {
     @JsonAlias({"userEmail", "mail"})
     private String email;
 
-    @NotBlank(message = "Le nouveau mot de passe est obligatoire.")
-    @Size(min = 6, message = "Le nouveau mot de passe doit comporter au moins 6 caractères.")
     @JsonAlias({"password", "newPassword", "pwd"})
     private String nouveauMdp;
 

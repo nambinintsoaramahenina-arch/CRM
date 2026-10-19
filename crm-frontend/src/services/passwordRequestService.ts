@@ -26,7 +26,7 @@ export interface PasswordRequestCount {
  * L'identifiant peut être un e-mail ou un matricule.
  * POST /api/auth/forgot-password
  */
-export async function submitForgotPassword(identifiant: string): Promise<{
+export async function submitForgotPassword(matricule: string): Promise<{
   status: number;
   message: string;
   alreadyPending?: boolean;
@@ -34,7 +34,7 @@ export async function submitForgotPassword(identifiant: string): Promise<{
   const res = await fetch(`${API_URL}/auth/forgot-password`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: identifiant.trim() }),
+    body: JSON.stringify({ matricule: matricule.trim(), email: matricule.trim() }),
   });
 
   const data = await res.json().catch(() => ({}));
@@ -43,7 +43,39 @@ export async function submitForgotPassword(identifiant: string): Promise<{
     const msg =
       data?.message ||
       data?.error ||
-      "Une erreur est survenue. Veuillez réessayer ou contacter l'administrateur.";
+      "Une erreur est survenue. Veuillez vérifier votre matricule ou contacter l'administrateur.";
+    throw new Error(msg);
+  }
+
+  return data;
+}
+
+/**
+ * Valide le code de réinitialisation reçu par email.
+ * L'API confirme la validation, génère automatiquement un nouveau mot de passe,
+ * l'enregistre dans la base de données et l'envoie au collaborateur par email.
+ * POST /api/auth/reset-password
+ */
+export async function validateResetCode(token: string): Promise<{
+  status: number;
+  message: string;
+  userEmail?: string;
+  login?: string;
+}> {
+  const cleanCode = (token || '').replaceAll(/\s+/g, '').toUpperCase();
+  const res = await fetch(`${API_URL}/auth/reset-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token: cleanCode }),
+  });
+
+  const data = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    const msg =
+      data?.message ||
+      data?.error ||
+      "Code invalide ou expiré. Veuillez vérifier votre saisie.";
     throw new Error(msg);
   }
 
@@ -174,3 +206,63 @@ export async function rejectPasswordRequest(
   if (!res.ok) throw new Error(data?.message || `Erreur HTTP ${res.status}`);
   return data;
 }
+
+// ─── Notifications Administrateur ─────────────────────────────────────────────
+
+export interface AdminNotification {
+  id: number;
+  message: string;
+  type: string;
+  lue: boolean;
+  dateCreation: string;
+  user?: {
+    id: number;
+    nomComplet: string;
+    login: string;
+    email: string;
+  };
+}
+
+export async function fetchNotifications(token: string): Promise<AdminNotification[]> {
+  const res = await fetch(`${API_URL}/notifications`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!res.ok) return [];
+  return res.json().catch(() => []);
+}
+
+export async function fetchNotificationCount(token: string): Promise<number> {
+  const res = await fetch(`${API_URL}/notifications/count`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!res.ok) return 0;
+  const data = await res.json().catch(() => ({ count: 0 }));
+  return data.count || 0;
+}
+
+export async function markNotificationAsRead(token: string, id: number): Promise<void> {
+  await fetch(`${API_URL}/notifications/${id}/read`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+}
+
+export async function markAllNotificationsAsRead(token: string): Promise<void> {
+  await fetch(`${API_URL}/notifications/read-all`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+}
+

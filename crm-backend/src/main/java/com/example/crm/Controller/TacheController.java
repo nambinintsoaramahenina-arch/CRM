@@ -4,7 +4,6 @@ import com.example.crm.dto.TacheRequestDTO;
 import com.example.crm.dto.TacheResponseDTO;
 import com.example.crm.service.TacheService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,10 +24,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/tasks")
 @CrossOrigin(origins = "*")
-@RequiredArgsConstructor
 public class TacheController {
 
     private final TacheService tacheService;
+
+    public TacheController(TacheService tacheService) {
+        this.tacheService = tacheService;
+    }
 
     // =========================================================================
     // GET /api/tasks — Lister toutes les tâches

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository Spring Data JPA pour la gestion des interactions CRM.
@@ -20,6 +21,11 @@ public interface InteractionRepository extends JpaRepository<Interaction, Long> 
      * Trouve toutes les interactions liées à un contact donné.
      */
     List<Interaction> findByContactId(Long contactId);
+
+    /**
+     * Récupère automatiquement la dernière Interaction associée à un Contact par date décroissante.
+     */
+    Optional<Interaction> findTopByContactIdOrderByDateDesc(Long contactId);
 
     /**
      * Trouve toutes les interactions d'un utilisateur donné.

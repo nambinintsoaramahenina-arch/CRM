@@ -5,20 +5,21 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class ResetPasswordRequest {
-
-    @NotBlank(message = "Le token de réinitialisation est obligatoire.")
+    @NotBlank(message = "Le code de réinitialisation est obligatoire.")
     @JsonAlias({"resetToken", "code"})
     private String token;
 
     @JsonAlias({"userEmail", "mail"})
     private String email;
 
-    @NotBlank(message = "Le nouveau mot de passe est obligatoire.")
-    @Size(min = 6, message = "Le nouveau mot de passe doit comporter au moins 6 caractères.")
     @JsonAlias({"password", "newPassword", "pwd"})
     private String nouveauMdp;
 
     public ResetPasswordRequest() {}
+
+    public ResetPasswordRequest(String token) {
+        this.token = token;
+    }
 
     public ResetPasswordRequest(String token, String nouveauMdp) {
         this.token = token;

@@ -40,6 +40,24 @@ public class User {
 
     public User() {}
 
+    public User(Long id, String nomComplet, String email, String telephone, String login,
+                String mdp, String statut, LocalDateTime dateConnexion,
+                LocalDateTime derniereConnexion, Role role, String resetToken,
+                LocalDateTime resetTokenExpiry) {
+        this.id = id;
+        this.nomComplet = nomComplet;
+        this.email = email;
+        this.telephone = telephone;
+        this.login = login;
+        this.mdp = mdp;
+        this.statut = statut;
+        this.dateConnexion = dateConnexion;
+        this.derniereConnexion = derniereConnexion;
+        this.role = role;
+        this.resetToken = resetToken;
+        this.resetTokenExpiry = resetTokenExpiry;
+    }
+
     // Getters et Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

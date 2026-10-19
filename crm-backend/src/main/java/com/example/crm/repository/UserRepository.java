@@ -9,16 +9,42 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    Optional<User> findByEmailOrTelephone(String email, String telephone);
-    Optional<User> findByEmail(String email);
-    Optional<User> findByTelephone(String telephone);
-    Optional<User> findByLogin(String login);
-    Optional<User> findByResetToken(String resetToken);
+    // Méthodes findFirstBy... pour garantir qu'un seul résultat est renvoyé (évite l'erreur "2 results were returned")
+    Optional<User> findFirstByEmailOrTelephone(String email, String telephone);
+    Optional<User> findFirstByEmail(String email);
+    Optional<User> findFirstByTelephone(String telephone);
+    Optional<User> findFirstByLogin(String login);
+    Optional<User> findFirstByResetToken(String resetToken);
+
+    List<User> findAllByEmail(String email);
+    List<User> findAllByLogin(String login);
+    List<User> findAllByResetToken(String resetToken);
+
+    Optional<User> findByResetTokenIgnoreCase(String resetToken);
+    Optional<User> findFirstByResetTokenIgnoreCase(String resetToken);
+
+    // Délégués de compatibilité redirigeant vers findFirstBy...
+    default Optional<User> findByEmailOrTelephone(String email, String telephone) {
+        return findFirstByEmailOrTelephone(email, telephone);
+    }
+    default Optional<User> findByEmail(String email) {
+        return findFirstByEmail(email);
+    }
+    default Optional<User> findByTelephone(String telephone) {
+        return findFirstByTelephone(telephone);
+    }
+    default Optional<User> findByLogin(String login) {
+        return findFirstByLogin(login);
+    }
+    default Optional<User> findByResetToken(String resetToken) {
+        return findFirstByResetToken(resetToken);
+    }
 
     boolean existsByEmail(String email);
     boolean existsByLogin(String login);

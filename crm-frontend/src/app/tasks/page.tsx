@@ -9,6 +9,7 @@ import {
   AlertCircleIcon,
   UsersIcon,
   ContactsIcon,
+  InteractionsIcon,
   SearchIcon,
   CloseIcon,
 } from '@/components/ui/Icons';
@@ -245,6 +246,41 @@ export default function TasksPage() {
 
   // ─── Gestion du formulaire (création / modification) ──────────────────────
 
+  // Helper de formatage du type d'interaction
+  const formatInteractionTypeOnly = (type?: string) => {
+    if (!type) return '—';
+    const TYPE_MAP: Record<string, string> = {
+      APPEL: 'Appel',
+      EMAIL: 'Email',
+      REUNION: 'Réunion',
+      RENDEZ_VOUS: 'Rendez-vous',
+      MESSAGE: 'Message',
+      VISITE: 'Visite',
+      SUIVI: 'Suivi',
+      RELANCE: 'Relance',
+      AUTRE: 'Autre',
+    };
+    const t = type.toUpperCase();
+    return TYPE_MAP[t] || (t.charAt(0) + t.slice(1).toLowerCase());
+  };
+
+  // Interaction liée active (calculée automatiquement au changement de contact)
+  const currentInteraction = useMemo(() => {
+    if (!form.contactId) return null;
+    const cid = Number(form.contactId);
+    if (form.interactionId) {
+      const found = interactionOptions.find((it) => it.id === Number(form.interactionId) && it.contactId === cid);
+      if (found) return found;
+    }
+    const forContact = interactionOptions.filter((it) => it.contactId === cid);
+    if (forContact.length === 0) return null;
+    return [...forContact].sort((a, b) => {
+      const da = a.date ? new Date(a.date).getTime() : 0;
+      const db = b.date ? new Date(b.date).getTime() : 0;
+      return db - da;
+    })[0];
+  }, [form.contactId, form.interactionId, interactionOptions]);
+
   const openCreate = () => {
     setEditTask(null);
     setForm(EMPTY_FORM);
@@ -255,6 +291,23 @@ export default function TasksPage() {
   const openEdit = (task: Task) => {
     setEditTask(task);
     const dateVal = task.date || task.dateTache;
+    const initialContactId = String(task.contactId ?? task.contact?.id ?? '');
+    let initialInteractionId = String(task.interactionId ?? task.interaction?.id ?? '');
+
+    // Si un contact est lié mais pas d'interaction explicite, on lie la dernière interaction de ce contact
+    if (initialContactId && !initialInteractionId) {
+      const cid = Number(initialContactId);
+      const forContact = interactionOptions.filter((it) => it.contactId === cid);
+      if (forContact.length > 0) {
+        const latest = [...forContact].sort((a, b) => {
+          const da = a.date ? new Date(a.date).getTime() : 0;
+          const db = b.date ? new Date(b.date).getTime() : 0;
+          return db - da;
+        })[0];
+        initialInteractionId = String(latest.id);
+      }
+    }
+
     setForm({
       titre:          task.titre        ?? '',
       description:    task.description  ?? '',
@@ -262,8 +315,8 @@ export default function TasksPage() {
       typeTache:      task.typeTache    ?? 'AUTRE',
       statut:         task.statut       ?? 'EN_ATTENTE',
       utilisateurId:  String(task.utilisateurId ?? task.utilisateur?.id ?? ''),
-      contactId:      String(task.contactId     ?? task.contact?.id     ?? ''),
-      interactionId:  String(task.interactionId ?? task.interaction?.id ?? ''),
+      contactId:      initialContactId,
+      interactionId:  initialInteractionId,
     });
     setSaveError('');
     setModalOpen(true);
@@ -275,18 +328,55 @@ export default function TasksPage() {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // Changement du contact : réinitialise l'interaction si elle n'appartient pas au nouveau contact
-  const handleContactChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  // Liaison automatique Contact <-> Interaction : dès qu'un contact est sélectionné,
+  // on récupère/filtre automatiquement sa dernière interaction liée
+  const handleContactChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newContactId = e.target.value;
-    setForm((prev) => {
-      const currentInteraction = interactionOptions.find((it) => String(it.id) === prev.interactionId);
-      const keepInteraction = currentInteraction && String(currentInteraction.contactId) === newContactId;
-      return {
+    if (!newContactId) {
+      setForm((prev) => ({
         ...prev,
-        contactId: newContactId,
-        interactionId: keepInteraction ? prev.interactionId : '',
-      };
-    });
+        contactId: '',
+        interactionId: '',
+      }));
+      return;
+    }
+
+    const cid = Number(newContactId);
+    let forContact = interactionOptions.filter((it) => it.contactId === cid);
+
+    // Si pas encore en cache local, chargement via l'API
+    if (forContact.length === 0) {
+      try {
+        const token = localStorage.getItem('crm-token') || '';
+        if (token) {
+          const fetched = await fetchAllInteractionsForSelect(token, cid);
+          if (fetched && fetched.length > 0) {
+            forContact = fetched;
+            setInteractionOptions((prev) => {
+              const existingIds = new Set(prev.map((i) => i.id));
+              const newOnes = fetched.filter((i) => !existingIds.has(i.id));
+              return [...prev, ...newOnes];
+            });
+          }
+        }
+      } catch {
+        // ignore
+      }
+    }
+
+    const latest = forContact.length > 0
+      ? [...forContact].sort((a, b) => {
+          const da = a.date ? new Date(a.date).getTime() : 0;
+          const db = b.date ? new Date(b.date).getTime() : 0;
+          return db - da;
+        })[0]
+      : null;
+
+    setForm((prev) => ({
+      ...prev,
+      contactId: newContactId,
+      interactionId: latest ? String(latest.id) : '',
+    }));
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -304,16 +394,24 @@ export default function TasksPage() {
     setSaving(true);
     setSaveError('');
     try {
-      const payload: Partial<Task> = {
-        titre:         form.titre.trim(),
-        description:   form.description || undefined,
-        date:          form.dateTache ? (form.dateTache.includes('T') ? form.dateTache : `${form.dateTache}T00:00:00`) : undefined,
-        dateTache:     form.dateTache || undefined,
-        typeTache:     form.typeTache || undefined,
-        statut:        form.statut    || 'EN_ATTENTE',
-        utilisateurId: form.utilisateurId ? Number(form.utilisateurId) : undefined,
-        contactId:     form.contactId     ? Number(form.contactId)     : undefined,
-        interactionId: form.interactionId ? Number(form.interactionId) : undefined,
+      const resolvedInteractionId = currentInteraction
+        ? currentInteraction.id
+        : (form.interactionId ? Number(form.interactionId) : undefined);
+
+      const payload: any = {
+        titre:          form.titre.trim(),
+        description:    form.description || undefined,
+        date:           form.dateTache ? (form.dateTache.includes('T') ? form.dateTache : `${form.dateTache}T00:00:00`) : undefined,
+        dateTache:      form.dateTache || undefined,
+        typeTache:      form.typeTache || undefined,
+        statut:         form.statut    || 'EN_ATTENTE',
+        utilisateurId:  form.utilisateurId ? Number(form.utilisateurId) : undefined,
+        contactId:      form.contactId     ? Number(form.contactId)     : undefined,
+        interactionId:  resolvedInteractionId,
+        // Support direct pour snake_case et clés étrangères PostgreSQL
+        interaction_id: resolvedInteractionId,
+        contact_id:     form.contactId     ? Number(form.contactId)     : undefined,
+        utilisateur_id: form.utilisateurId ? Number(form.utilisateurId) : undefined,
       };
 
       if (editTask) {
@@ -515,7 +613,7 @@ export default function TasksPage() {
             <table className="w-full text-xs">
               <thead>
                 <tr className="bg-[var(--bg-surface-2)] border-b border-[var(--bg-border)]">
-                  {['#', 'Titre', 'Type', 'Date', 'Statut', 'Utilisateur', 'Contact', 'Interaction liée', 'Actions'].map((h) => (
+                  {['Titre', 'Type', 'Date', 'Statut', 'Utilisateur', 'Contact', 'Interaction liée', 'Actions'].map((h) => (
                     <th key={h} className="px-4 py-3 text-left font-bold text-[var(--text-muted)] uppercase tracking-wider text-[10px] whitespace-nowrap">
                       {h}
                     </th>
@@ -535,13 +633,9 @@ export default function TasksPage() {
                   const linkedInteraction = interactionOptions.find((it) => it.id === task.interactionId);
 
                   return (
-                    <tr key={task.id} className="hover:bg-[var(--bg-surface-2)] transition-colors group">
-                      {/* ID */}
-                      <td className="px-4 py-3 font-mono text-[10px] text-[var(--text-muted)] shrink-0">
-                        #{task.id}
-                      </td>
+                    <tr key={task.id} className="group hover:bg-[var(--bg-surface-2)] transition-colors">
                       {/* Titre + Description */}
-                      <td className="px-4 py-3 max-w-[200px]">
+                      <td className="px-4 py-3 max-w-[100px]">
                         <p className="font-bold text-[var(--text-primary)] truncate" title={task.titre}>{task.titre}</p>
                         {task.description && (
                           <p className="text-[10px] text-[var(--text-muted)] truncate mt-0.5" title={task.description}>{task.description}</p>
@@ -615,24 +709,25 @@ export default function TasksPage() {
                         )}
                       </td>
                       {/* Actions */}
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                          {/* Modifier */}
-                          <button
-                            onClick={() => openEdit(task)}
-                            title="Modifier"
-                            className="p-1.5 rounded-lg text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors"
-                          >
-                            <EditIcon size={14} />
-                          </button>
+                    <td className="px-4 py-3">
+                    {}
+                      <div className="flex items-center gap-1 transition-opacity">
+                       {/* Modifier */}
+                        <button
+                          onClick={() => openEdit(task)}
+                          title="Modifier"
+                          className="p-1.5 rounded-lg text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/30 transition-colors"
+                        >
+                        <EditIcon size={14} />
+                        </button>
                           {/* Supprimer */}
-                          <button
+                        <button
                             onClick={() => setDeleteConfirm(task.id)}
                             title="Supprimer"
                             className="p-1.5 rounded-lg text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition-colors"
-                          >
-                            <TrashIcon size={14} />
-                          </button>
+                        >
+                        <TrashIcon size={14} />
+                      </button>
                         </div>
                       </td>
                     </tr>
@@ -698,10 +793,9 @@ export default function TasksPage() {
                   type="date"
                   value={form.dateTache}
                   onChange={handleFormChange}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all cursor-pointer [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:opacity-70 hover:[&::-webkit-calendar-picker-indicator]:opacity-100"
                 />
               </div>
-
               {/* Type */}
               <div className="space-y-1.5">
                 <label className="block text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider">Type de tâche</label>
@@ -777,41 +871,42 @@ export default function TasksPage() {
                 </select>
               </div>
 
-              {/* ── Instruction 2 : Sélecteur d'interactions (lié au contact) ── */}
+              {/* ── Liaison automatique Contact <-> Interaction (Champs informatifs en lecture seule) ── */}
               <div className="space-y-1.5">
                 <label className="block text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider flex items-center justify-between">
-                  <span>Interaction liée</span>
-                  {form.contactId && (
-                    <span className="text-[10px] font-normal text-[var(--text-muted)]">
-                      {availableInteractions.length} interaction{availableInteractions.length !== 1 ? 's' : ''} disponible{availableInteractions.length !== 1 ? 's' : ''}
+                  <span className="flex items-center gap-1.5">
+                    <InteractionsIcon size={12} /> Type d&apos;interaction
+                  </span>
+                  {currentInteraction && (
+                    <span className="text-[10px] font-bold text-teal-600 dark:text-teal-400">
+                      Liée auto (#{currentInteraction.id})
                     </span>
                   )}
                 </label>
-                <select
-                  id="task-interaction"
-                  name="interactionId"
-                  value={form.interactionId}
-                  onChange={handleFormChange}
-                  disabled={!form.contactId}
-                  className={`w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all ${
-                    !form.contactId ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'
-                  }`}
-                >
-                  {!form.contactId ? (
-                    <option value="">-- Veuillez d'abord sélectionner un contact --</option>
-                  ) : availableInteractions.length === 0 ? (
-                    <option value="">-- Aucune interaction trouvée pour ce contact --</option>
-                  ) : (
-                    <>
-                      <option value="">-- Aucune interaction liée (optionnel) --</option>
-                      {availableInteractions.map((it) => (
-                        <option key={it.id} value={String(it.id)}>
-                          {formatInteractionOptionLabel(it.type, it.date)}
-                        </option>
-                      ))}
-                    </>
-                  )}
-                </select>
+                <input
+                  id="task-interaction-type"
+                  type="text"
+                  readOnly
+                  disabled
+                  value={form.contactId ? (currentInteraction ? formatInteractionTypeOnly(currentInteraction.type) : 'Aucune interaction trouvée') : '—'}
+                  placeholder="Sélectionnez un contact pour lier l'interaction"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)]/60 text-[var(--text-primary)] text-sm cursor-not-allowed select-none font-medium opacity-90"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="block text-[11px] font-bold text-[var(--text-secondary)] uppercase tracking-wider flex items-center gap-1.5">
+                  <ClockIcon size={12} /> Date de l&apos;interaction
+                </label>
+                <input
+                  id="task-interaction-date"
+                  type="text"
+                  readOnly
+                  disabled
+                  value={form.contactId ? (currentInteraction && currentInteraction.date ? fmtDate(currentInteraction.date) : '—') : '—'}
+                  placeholder="Date de la dernière interaction"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)]/60 text-[var(--text-primary)] text-sm cursor-not-allowed select-none font-medium opacity-90"
+                />
               </div>
             </div>
 

@@ -9,8 +9,8 @@ import jakarta.validation.constraints.NotBlank;
  */
 public class ForgotPasswordRequest {
 
-    @NotBlank(message = "L'e-mail ou le matricule est obligatoire.")
-    @JsonAlias({"mail", "userEmail", "login", "matricule", "identifiant"})
+    @NotBlank(message = "Le matricule est obligatoire.")
+    @JsonAlias({"matricule", "login", "identifiant", "email", "mail", "userEmail"})
     private String email;
 
     public ForgotPasswordRequest() {}
@@ -25,5 +25,13 @@ public class ForgotPasswordRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getMatricule() {
+        return getEmail();
+    }
+
+    public void setMatricule(String matricule) {
+        setEmail(matricule);
     }
 }

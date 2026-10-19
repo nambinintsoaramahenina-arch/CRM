@@ -386,7 +386,7 @@ export const InteractionsCrudTable: React.FC<{ isManager?: boolean }> = ({
                     <p className="text-[10px] text-[var(--text-muted)] mt-0.5">{it.utilisateurLogin}</p>
                   </td>
                   <td className="px-4 py-3">
-                    <div className="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex items-center gap-1 transition-opacity">
                       <button
                         onClick={() => openEdit(it)}
                         className="p-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-200 transition-all"

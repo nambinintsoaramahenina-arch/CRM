@@ -22,8 +22,16 @@ public interface PasswordResetRequestRepository extends JpaRepository<PasswordRe
     /** Vérifie si l'utilisateur a déjà une demande PENDING en cours */
     boolean existsByUserAndStatut(User user, Statut statut);
 
-    /** Récupère la demande PENDING active d'un utilisateur (s'il en existe une) */
-    Optional<PasswordResetRequest> findByUserAndStatut(User user, Statut statut);
+    /** Récupère la première demande active d'un utilisateur triée par date décroissante */
+    Optional<PasswordResetRequest> findFirstByUserAndStatutOrderByDateDemandeDesc(User user, Statut statut);
+
+    /** Récupère toutes les demandes correspondant au statut */
+    List<PasswordResetRequest> findAllByUserAndStatut(User user, Statut statut);
+
+    /** Délégué de compatibilité pour éviter NonUniqueResultException */
+    default Optional<PasswordResetRequest> findByUserAndStatut(User user, Statut statut) {
+        return findFirstByUserAndStatutOrderByDateDemandeDesc(user, statut);
+    }
 
     /** Nombre de demandes PENDING en attente */
     @Query("SELECT COUNT(r) FROM PasswordResetRequest r WHERE r.statut = 'PENDING'")

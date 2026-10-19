@@ -9,8 +9,8 @@ import com.example.crm.mapper.InteractionMapper;
 import com.example.crm.repository.ContactRepository;
 import com.example.crm.repository.InteractionRepository;
 import com.example.crm.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,15 +26,25 @@ import java.util.stream.Collectors;
  * sécurité Spring Security lors de la création d'une interaction.</p>
  */
 @Service
-@RequiredArgsConstructor
-@Slf4j
 @Transactional
 public class InteractionService {
+
+    private static final Logger log = LoggerFactory.getLogger(InteractionService.class);
 
     private final InteractionRepository interactionRepository;
     private final ContactRepository contactRepository;
     private final UserRepository userRepository;
     private final InteractionMapper interactionMapper;
+
+    public InteractionService(InteractionRepository interactionRepository,
+                              ContactRepository contactRepository,
+                              UserRepository userRepository,
+                              InteractionMapper interactionMapper) {
+        this.interactionRepository = interactionRepository;
+        this.contactRepository = contactRepository;
+        this.userRepository = userRepository;
+        this.interactionMapper = interactionMapper;
+    }
 
     // =========================================================================
     // CREATE
@@ -58,16 +68,15 @@ public class InteractionService {
 
         User utilisateur = obtenirUtilisateurConnecte();
 
-        Interaction interaction = Interaction.builder()
-                .type(dto.getType())
-                .date(dto.getDate())
-                .objet(dto.getObjet())
-                .description(dto.getDescription())
-                .resultat(dto.getResultat())
-                .prochaineAction(dto.getProchaineAction())
-                .contact(contact)
-                .utilisateur(utilisateur)
-                .build();
+        Interaction interaction = new Interaction();
+        interaction.setType(dto.getType());
+        interaction.setDate(dto.getDate());
+        interaction.setObjet(dto.getObjet());
+        interaction.setDescription(dto.getDescription());
+        interaction.setResultat(dto.getResultat());
+        interaction.setProchaineAction(dto.getProchaineAction());
+        interaction.setContact(contact);
+        interaction.setUtilisateur(utilisateur);
 
         Interaction sauvegardee = interactionRepository.save(interaction);
         log.info("Interaction créée avec succès, ID={}", sauvegardee.getId());

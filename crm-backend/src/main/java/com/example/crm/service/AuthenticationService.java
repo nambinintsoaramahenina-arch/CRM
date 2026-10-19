@@ -25,14 +25,33 @@ public class AuthenticationService {
     private PasswordEncoder passwordEncoder;
 
     public AuthResponse login(LoginRequest request) {
-        // 1. Recherche de l'utilisateur par Login, Email OU Téléphone
-        User user = userRepository.findByLogin(request.getIdentifiant())
-                .or(() -> userRepository.findByEmail(request.getIdentifiant()))
-                .or(() -> userRepository.findByTelephone(request.getIdentifiant()))
+        String identifiant = request.getIdentifiant() != null ? request.getIdentifiant().trim() : "";
+        String inputMdp = request.getMdp() != null ? request.getMdp().trim() : "";
+
+        // 1. Recherche de l'utilisateur par Login, Email OU Téléphone (findFirst pour éviter "2 results were returned")
+        User user = userRepository.findFirstByLogin(identifiant)
+                .or(() -> userRepository.findFirstByEmail(identifiant))
+                .or(() -> userRepository.findFirstByTelephone(identifiant))
                 .orElseThrow(() -> new RuntimeException("Identifiant ou mot de passe incorrect."));
 
-        // 2. Vérification du mot de passe
-        if (!passwordEncoder.matches(request.getMdp(), user.getMdp())) {
+        // 2. Vérification robuste du mot de passe
+        boolean passwordMatches = false;
+        String dbMdp = user.getMdp();
+
+        if (dbMdp != null) {
+            if (dbMdp.startsWith("$2a$") || dbMdp.startsWith("$2b$") || dbMdp.startsWith("$2y$")) {
+                passwordMatches = passwordEncoder.matches(inputMdp, dbMdp);
+            } else {
+                // Mot de passe potentiellement enregistré en texte clair : validation directe et migration automatique vers BCrypt
+                passwordMatches = inputMdp.equals(dbMdp) || passwordEncoder.matches(inputMdp, dbMdp);
+                if (passwordMatches) {
+                    user.setMdp(passwordEncoder.encode(inputMdp));
+                    userRepository.save(user);
+                }
+            }
+        }
+
+        if (!passwordMatches) {
             throw new RuntimeException("Identifiant ou mot de passe incorrect.");
         }
 

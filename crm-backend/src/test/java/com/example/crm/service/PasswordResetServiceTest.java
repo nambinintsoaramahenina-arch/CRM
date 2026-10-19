@@ -55,12 +55,37 @@ class PasswordResetServiceTest {
                 new Class<?>[]{UserRepository.class},
                 (proxy, method, args) -> {
                     String methodName = method.getName();
-                    if ("findByEmail".equals(methodName)) {
+                    if ("findById".equals(methodName)) {
+                        Long id = (Long) args[0];
+                        for (User u : emailDb.values()) {
+                            if (id != null && id.equals(u.getId())) {
+                                return Optional.of(u);
+                            }
+                        }
+                        return Optional.empty();
+                    }
+                    if ("findByEmail".equals(methodName) || "findFirstByEmail".equals(methodName)) {
                         String email = (String) args[0];
                         return Optional.ofNullable(emailDb.get(email));
                     }
-                    if ("findByResetToken".equals(methodName)) {
+                    if ("findByLogin".equals(methodName) || "findFirstByLogin".equals(methodName)) {
+                        String login = (String) args[0];
+                        for (User u : emailDb.values()) {
+                            if (login != null && login.equals(u.getLogin())) {
+                                return Optional.of(u);
+                            }
+                        }
+                        return Optional.empty();
+                    }
+                    if ("findByResetToken".equals(methodName) || "findFirstByResetToken".equals(methodName)
+                            || "findByResetTokenIgnoreCase".equals(methodName) || "findFirstByResetTokenIgnoreCase".equals(methodName)) {
                         String token = (String) args[0];
+                        if (token == null) return Optional.empty();
+                        for (User u : tokenDb.values()) {
+                            if (u.getResetToken() != null && u.getResetToken().equalsIgnoreCase(token)) {
+                                return Optional.of(u);
+                            }
+                        }
                         return Optional.ofNullable(tokenDb.get(token));
                     }
                     if ("save".equals(methodName)) {
@@ -103,22 +128,20 @@ class PasswordResetServiceTest {
 
         assertThat(result).isNotNull();
         assertThat(result.get("status")).isEqualTo(200);
-        assertThat(result.get("resetToken")).isNotNull();
-        assertThat(result.get("expiresAt")).isNotNull();
 
         assertThat(savedUser).isNotNull();
-        assertThat(savedUser.getResetToken()).isEqualTo(result.get("resetToken"));
+        assertThat(savedUser.getResetToken()).isNotNull();
         assertThat(savedUser.getResetTokenExpiry()).isAfter(LocalDateTime.now());
     }
 
     @Test
-    @DisplayName("processForgotPassword lève une exception si l'e-mail est inconnu")
+    @DisplayName("processForgotPassword lève une exception si le matricule ou email est inconnu")
     void testProcessForgotPassword_UserNotFound() {
         ForgotPasswordRequest request = new ForgotPasswordRequest("unknown@crm.com");
 
         assertThatThrownBy(() -> passwordResetService.processForgotPassword(request))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("Aucun compte n'est associé à cette adresse e-mail");
+                .hasMessageContaining("Aucun compte n'est associé au matricule");
     }
 
     @Test
@@ -159,10 +182,48 @@ class PasswordResetServiceTest {
     @Test
     @DisplayName("processResetPassword échoue si le mot de passe est trop court")
     void testProcessResetPassword_ShortPassword() {
-        ResetPasswordRequest request = new ResetPasswordRequest("any-token", "123");
+        String token = "any-token";
+        sampleUser.setResetToken(token);
+        sampleUser.setResetTokenExpiry(LocalDateTime.now().plusHours(1));
+        tokenDb.put(token, sampleUser);
+
+        ResetPasswordRequest request = new ResetPasswordRequest(token, "123");
 
         assertThatThrownBy(() -> passwordResetService.processResetPassword(request))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("au moins 6 caractères");
+    }
+
+    @Test
+    @DisplayName("approveResetByAdmin génère un mot de passe et l'enregistre avec BCrypt")
+    void testApproveResetByAdmin_Success() {
+        emailDb.put(sampleUser.getEmail(), sampleUser);
+
+        Map<String, Object> result = passwordResetService.approveResetByAdmin(
+                String.valueOf(sampleUser.getId()),
+                "MyNewSecretPass123",
+                "Validation manuelle par admin");
+
+        assertThat(result.get("status")).isEqualTo(200);
+        assertThat(result.get("temporaryPassword")).isEqualTo("MyNewSecretPass123");
+        assertThat(savedUser).isNotNull();
+        assertThat(savedUser.getMdp()).isEqualTo("ENCODED_MyNewSecretPass123");
+        assertThat(savedUser.getResetToken()).isNull();
+    }
+
+    @Test
+    @DisplayName("approveResetByAdmin fonctionne avec le matricule de l'utilisateur")
+    void testApproveResetByAdmin_WithMatricule() {
+        emailDb.put(sampleUser.getEmail(), sampleUser);
+
+        Map<String, Object> result = passwordResetService.approveResetByAdmin(
+                sampleUser.getLogin(),
+                null,
+                "Validé par matricule");
+
+        assertThat(result.get("status")).isEqualTo(200);
+        assertThat(result.get("temporaryPassword")).isNotNull();
+        assertThat(savedUser).isNotNull();
+        assertThat(savedUser.getMdp()).startsWith("ENCODED_");
     }
 }

@@ -3,11 +3,6 @@ package com.example.crm.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
 /**
@@ -18,10 +13,6 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "tache")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Tache {
 
     // =========================================================================
@@ -65,7 +56,6 @@ public class Tache {
      * Statut de la tâche (ex : EN_ATTENTE, EN_COURS, TERMINEE, ANNULEE).
      */
     @Column(length = 50)
-    @Builder.Default
     private String statut = "EN_ATTENTE";
 
     /**
@@ -117,6 +107,29 @@ public class Tache {
     @Column(name = "date_modification")
     private LocalDateTime dateModification;
 
+    // Constructeur sans argument
+    public Tache() {
+    }
+
+    // Constructeur avec tous les arguments
+    public Tache(Long id, String titre, String description, LocalDateTime date,
+                 LocalDateTime dateEcheance, String statut, TypeTache typeTache,
+                 User utilisateur, Contact contact, Interaction interaction,
+                 LocalDateTime dateCreation, LocalDateTime dateModification) {
+        this.id = id;
+        this.titre = titre;
+        this.description = description;
+        this.date = date;
+        this.dateEcheance = dateEcheance;
+        this.statut = statut;
+        this.typeTache = typeTache;
+        this.utilisateur = utilisateur;
+        this.contact = contact;
+        this.interaction = interaction;
+        this.dateCreation = dateCreation;
+        this.dateModification = dateModification;
+    }
+
     @PrePersist
     protected void onCreate() {
         this.dateCreation = LocalDateTime.now();
@@ -126,5 +139,103 @@ public class Tache {
     @PreUpdate
     protected void onUpdate() {
         this.dateModification = LocalDateTime.now();
+    }
+
+    // Getters et Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitre() {
+        return titre;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public LocalDateTime getDateEcheance() {
+        return dateEcheance;
+    }
+
+    public void setDateEcheance(LocalDateTime dateEcheance) {
+        this.dateEcheance = dateEcheance;
+    }
+
+    public String getStatut() {
+        return statut;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
+    }
+
+    public TypeTache getTypeTache() {
+        return typeTache;
+    }
+
+    public void setTypeTache(TypeTache typeTache) {
+        this.typeTache = typeTache;
+    }
+
+    public User getUtilisateur() {
+        return utilisateur;
+    }
+
+    public void setUtilisateur(User utilisateur) {
+        this.utilisateur = utilisateur;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public void setContact(Contact contact) {
+        this.contact = contact;
+    }
+
+    public Interaction getInteraction() {
+        return interaction;
+    }
+
+    public void setInteraction(Interaction interaction) {
+        this.interaction = interaction;
+    }
+
+    public LocalDateTime getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(LocalDateTime dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public LocalDateTime getDateModification() {
+        return dateModification;
+    }
+
+    public void setDateModification(LocalDateTime dateModification) {
+        this.dateModification = dateModification;
     }
 }

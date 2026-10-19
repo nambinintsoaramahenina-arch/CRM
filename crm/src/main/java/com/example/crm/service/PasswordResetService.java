@@ -41,7 +41,8 @@ public class PasswordResetService {
             throw new IllegalArgumentException("L'adresse e-mail est obligatoire.");
         }
 
-        User user = userRepository.findByEmail(email.trim())
+        User user = userRepository.findFirstByEmail(email.trim())
+                .or(() -> userRepository.findFirstByLogin(email.trim()))
                 .orElseThrow(() -> new IllegalArgumentException("Aucun compte n'est associé à cette adresse e-mail : " + email));
 
         // Génération du token unique et calcul de la date d'expiration
@@ -94,9 +95,12 @@ public class PasswordResetService {
             throw new IllegalArgumentException("Le nouveau mot de passe doit comporter au moins 6 caractères.");
         }
 
-        // Recherche de l'utilisateur porteur du token
-        User user = userRepository.findByResetToken(token.trim())
-                .orElseThrow(() -> new IllegalArgumentException("Token de réinitialisation invalide ou introuvable."));
+        // Nettoyage rigoureux : suppression de tous les espaces et passage en majuscules
+        String cleanToken = token.trim().replaceAll("\\s+", "").toUpperCase();
+
+        // Recherche de l'utilisateur porteur du token via findByResetTokenIgnoreCase
+        User user = userRepository.findByResetTokenIgnoreCase(cleanToken)
+                .orElseThrow(() -> new IllegalArgumentException("Code de réinitialisation invalide ou introuvable."));
 
         // Si un email a également été fourni dans la requête, vérifier la correspondance
         if (request.getEmail() != null && !request.getEmail().trim().isEmpty()) {
@@ -126,5 +130,38 @@ public class PasswordResetService {
         response.put("message", "Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter.");
 
         return response;
+    }
+
+    @Transactional
+    public Map<String, Object> approveResetByAdmin(String identifier, String customPassword, String commentaire) {
+        if (identifier == null || identifier.trim().isEmpty()) {
+            throw new IllegalArgumentException("L'identifiant ou matricule est obligatoire.");
+        }
+        String key = identifier.trim();
+        User user;
+        if (key.matches("^\\d+$")) {
+            user = userRepository.findById(Long.parseLong(key))
+                    .or(() -> userRepository.findFirstByLogin(key))
+                    .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable : " + key));
+        } else {
+            user = userRepository.findFirstByLogin(key)
+                    .or(() -> userRepository.findFirstByEmail(key))
+                    .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable : " + key));
+        }
+
+        String rawPassword = (customPassword != null && !customPassword.trim().isEmpty())
+                ? customPassword.trim()
+                : UUID.randomUUID().toString().substring(0, 10);
+
+        user.setMdp(passwordEncoder.encode(rawPassword));
+        user.setResetToken(null);
+        user.setResetTokenExpiry(null);
+        userRepository.save(user);
+
+        Map<String, Object> resp = new LinkedHashMap<>();
+        resp.put("status", 200);
+        resp.put("message", "Mot de passe réinitialisé pour " + user.getLogin());
+        resp.put("temporaryPassword", rawPassword);
+        return resp;
     }
 }

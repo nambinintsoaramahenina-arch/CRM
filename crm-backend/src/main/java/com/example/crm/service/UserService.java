@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.crm.dto.ForgotPasswordRequest;
+import com.example.crm.dto.ResetPasswordRequest;
 import com.example.crm.dto.UserCreateRequest;
 import com.example.crm.entity.PasswordResetRequest;
 import com.example.crm.entity.Role;

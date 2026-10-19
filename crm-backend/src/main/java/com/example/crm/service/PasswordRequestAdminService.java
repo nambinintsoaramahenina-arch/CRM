@@ -2,8 +2,10 @@ package com.example.crm.service;
 
 import com.example.crm.dto.ForgotPasswordRequest;
 import com.example.crm.dto.PasswordRequestDTO;
+import com.example.crm.entity.Notification;
 import com.example.crm.entity.PasswordResetRequest;
 import com.example.crm.entity.User;
+import com.example.crm.repository.NotificationRepository;
 import com.example.crm.repository.PasswordResetRequestRepository;
 import com.example.crm.repository.UserRepository;
 import jakarta.mail.MessagingException;
@@ -50,15 +52,18 @@ public class PasswordRequestAdminService {
     private final PasswordResetRequestRepository requestRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final NotificationRepository notificationRepository;
 
     public PasswordRequestAdminService(UserRepository userRepository,
                                        PasswordResetRequestRepository requestRepository,
                                        PasswordEncoder passwordEncoder,
-                                       EmailService emailService) {
-        this.userRepository    = userRepository;
-        this.requestRepository = requestRepository;
-        this.passwordEncoder   = passwordEncoder;
-        this.emailService      = emailService;
+                                       EmailService emailService,
+                                       @org.springframework.beans.factory.annotation.Autowired(required = false) NotificationRepository notificationRepository) {
+        this.userRepository         = userRepository;
+        this.requestRepository      = requestRepository;
+        this.passwordEncoder        = passwordEncoder;
+        this.emailService           = emailService;
+        this.notificationRepository = notificationRepository;
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -80,9 +85,9 @@ public class PasswordRequestAdminService {
             throw new IllegalArgumentException("L'e-mail ou le matricule est obligatoire.");
         }
 
-        // Recherche par email d'abord, puis par login (matricule)
-        User user = userRepository.findByEmail(identifiant.trim())
-                .or(() -> userRepository.findByLogin(identifiant.trim()))
+        // Recherche par email d'abord, puis par login (matricule) via findFirst
+        User user = userRepository.findFirstByEmail(identifiant.trim())
+                .or(() -> userRepository.findFirstByLogin(identifiant.trim()))
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Aucun compte n'est associé à cet identifiant. " +
                         "Vérifiez votre e-mail ou contactez votre administrateur."));
@@ -111,6 +116,20 @@ public class PasswordRequestAdminService {
 
         log.info("[PWD REQUEST] Nouvelle demande PENDING enregistrée pour : {} ({})",
                 user.getLogin(), user.getEmail());
+
+        // Alerte visuelle pour l'administrateur dans le tableau de bord
+        if (notificationRepository != null) {
+            try {
+                String messageNotification = "Demande de réinitialisation de " + user.getNomComplet() + " (Matricule : " + user.getLogin() + ")";
+                Notification notif = new Notification(messageNotification, user);
+                notif.setType("PASSWORD_RESET");
+                notif.setStatut("EN_ATTENTE");
+                notif.setLue(false);
+                notificationRepository.save(notif);
+            } catch (Exception e) {
+                log.warn("[PWD REQUEST] Erreur enregistrement notification : {}", e.getMessage());
+            }
+        }
 
         // Notification de l'administrateur (email d'alerte sans bloquer si échec SMTP)
         emailService.notifierAdminNouvelleDemande(user.getLogin(), user.getEmail(), user.getNomComplet());
@@ -180,33 +199,55 @@ public class PasswordRequestAdminService {
 
         User user = demande.getUser();
 
-        // Génération d'un code sécurisé de réinitialisation (6 caractères alphanumériques)
-        String resetCode = genererCodeReinitialisation();
-        LocalDateTime expiryDate = LocalDateTime.now().plusHours(TOKEN_EXPIRATION_HOURS);
+        // 1. Génération du mot de passe temporaire
+        String rawPassword = (customMdp != null && !customMdp.trim().isEmpty())
+                ? customMdp.trim()
+                : genererMotDePasseTemporaire();
 
-        // Enregistrement du code sur l'utilisateur (PAS de modification du mot de passe)
-        user.setResetToken(resetCode);
-        user.setResetTokenExpiry(expiryDate);
+        // 2. Chiffrement obligatoire BCrypt et persistance sur l'utilisateur
+        user.setMdp(passwordEncoder.encode(rawPassword));
+        user.setResetToken(null);
+        user.setResetTokenExpiry(null);
         userRepository.save(user);
 
-        // Envoi de l'e-mail avec le code de réinitialisation via EmailService
-        emailService.envoyerCodeReinitialisation(user.getEmail(), user.getNomComplet(), resetCode, TOKEN_EXPIRATION_HOURS);
+        // 3. Envoi du nouveau mot de passe par e-mail
+        emailService.envoyerMotDePasseTemporaire(user.getEmail(), user.getNomComplet(), rawPassword);
+        emailService.notifierAdminNouveauMotDePasse(user.getLogin(), user.getEmail(), user.getNomComplet(), rawPassword);
 
-        // Marquer la demande comme traitée
+        // 4. Marquer la demande comme traitée
         demande.setStatut(PasswordResetRequest.Statut.APPROVED);
         demande.setDateTraitement(LocalDateTime.now());
         demande.setCommentaireAdmin(commentaireAdmin != null ? commentaireAdmin.trim() : "Approuvé par l'administrateur");
         requestRepository.save(demande);
 
-        log.info("[PWD APPROVE] Demande {} approuvée — code envoyé à : {}", demandeId, user.getEmail());
+        // 5. Mise à jour de la notification à TRAITÉ et lue
+        if (notificationRepository != null) {
+            try {
+                List<Notification> notifs = notificationRepository.findAll();
+                for (Notification n : notifs) {
+                    if (n.getUser() != null && n.getUser().getId().equals(user.getId())
+                            && ("PASSWORD_RESET".equalsIgnoreCase(n.getType()) || n.getMessage().contains(user.getLogin()))) {
+                        n.setStatut("TRAITÉ");
+                        n.setLue(true);
+                        notificationRepository.save(n);
+                    }
+                }
+            } catch (Exception e) {
+                log.warn("[PWD APPROVE] Erreur mise à jour notification : {}", e.getMessage());
+            }
+        }
+
+        log.info("[PWD APPROVE] Demande {} approuvée — mot de passe envoyé à : {}", demandeId, user.getEmail());
 
         Map<String, Object> resp = new LinkedHashMap<>();
         resp.put("status", 200);
         resp.put("message",
-                "Demande approuvée. Un code de réinitialisation a été envoyé à " + user.getEmail() + ".");
+                "Demande approuvée. Le nouveau mot de passe a été envoyé par e-mail à " + user.getEmail() + ".");
         resp.put("userId", user.getId());
         resp.put("userEmail", user.getEmail());
-        resp.put("resetToken", resetCode);
+        resp.put("matricule", user.getLogin());
+        resp.put("nomComplet", user.getNomComplet());
+        resp.put("temporaryPassword", rawPassword);
         return resp;
     }
 
@@ -232,16 +273,18 @@ public class PasswordRequestAdminService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable avec l'ID : " + userId));
 
-        // Génération d'un code sécurisé de réinitialisation
-        String resetCode = genererCodeReinitialisation();
-        LocalDateTime expiryDate = LocalDateTime.now().plusHours(TOKEN_EXPIRATION_HOURS);
+        // 1. Génération du mot de passe temporaire
+        String rawPassword = (customMdp != null && !customMdp.trim().isEmpty())
+                ? customMdp.trim()
+                : genererMotDePasseTemporaire();
 
-        // Enregistrement du code (PAS de modification du mot de passe)
-        user.setResetToken(resetCode);
-        user.setResetTokenExpiry(expiryDate);
+        // 2. Chiffrement BCrypt et enregistrement sur l'utilisateur
+        user.setMdp(passwordEncoder.encode(rawPassword));
+        user.setResetToken(null);
+        user.setResetTokenExpiry(null);
         userRepository.save(user);
 
-        // Clôture d'une éventuelle demande PENDING existante pour cet utilisateur
+        // 3. Clôture d'une éventuelle demande PENDING existante pour cet utilisateur
         requestRepository.findByUserAndStatut(user, PasswordResetRequest.Statut.PENDING)
                 .ifPresent(demande -> {
                     demande.setStatut(PasswordResetRequest.Statut.APPROVED);
@@ -250,17 +293,37 @@ public class PasswordRequestAdminService {
                     requestRepository.save(demande);
                 });
 
-        // Envoi de l'e-mail avec le code de réinitialisation
-        emailService.envoyerCodeReinitialisation(user.getEmail(), user.getNomComplet(), resetCode, TOKEN_EXPIRATION_HOURS);
+        // 4. Mise à jour de la notification à TRAITÉ et lue
+        if (notificationRepository != null) {
+            try {
+                List<Notification> notifs = notificationRepository.findAll();
+                for (Notification n : notifs) {
+                    if (n.getUser() != null && n.getUser().getId().equals(user.getId())
+                            && ("PASSWORD_RESET".equalsIgnoreCase(n.getType()) || n.getMessage().contains(user.getLogin()))) {
+                        n.setStatut("TRAITÉ");
+                        n.setLue(true);
+                        notificationRepository.save(n);
+                    }
+                }
+            } catch (Exception e) {
+                log.warn("[PWD RESET DIRECT] Erreur màj notification : {}", e.getMessage());
+            }
+        }
 
-        log.info("[PWD RESET DIRECT] Code envoyé à : {} (userId={})", user.getEmail(), userId);
+        // 5. Envoi de l'e-mail avec le mot de passe temporaire
+        emailService.envoyerMotDePasseTemporaire(user.getEmail(), user.getNomComplet(), rawPassword);
+        emailService.notifierAdminNouveauMotDePasse(user.getLogin(), user.getEmail(), user.getNomComplet(), rawPassword);
+
+        log.info("[PWD RESET DIRECT] Nouveau mot de passe envoyé à : {} (userId={})", user.getEmail(), userId);
 
         Map<String, Object> resp = new LinkedHashMap<>();
         resp.put("status", 200);
-        resp.put("message", "Code de réinitialisation généré et envoyé par e-mail à " + user.getEmail() + ".");
+        resp.put("message", "Nouveau mot de passe généré et envoyé par e-mail à " + user.getEmail() + ".");
         resp.put("userId", user.getId());
         resp.put("userEmail", user.getEmail());
-        resp.put("resetToken", resetCode);
+        resp.put("matricule", user.getLogin());
+        resp.put("nomComplet", user.getNomComplet());
+        resp.put("temporaryPassword", rawPassword);
         return resp;
     }
 
