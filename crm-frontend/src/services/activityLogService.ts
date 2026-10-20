@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
 
 export interface ActivityUser {
@@ -21,45 +23,55 @@ export interface ActivityLog {
 }
 
 /**
- * Récupère l'historique complet et réel des activités depuis PostgreSQL via l'endpoint /api/historique.
+ * Récupère l'historique complet et réel des activités depuis PostgreSQL via Axios.
+ * Envoie le token JWT dans les en-têtes (Authorization: Bearer ...).
+ * Inclut un paramètre _t (timestamp) et des en-têtes anti-cache pour garantir
+ * un affichage immédiat des dernières insertions sans vider le cache du navigateur.
  *
- * @param token Jeton d'authentification JWT
+ * @param token Jeton d'authentification JWT (ou extrait automatiquement du localStorage)
  * @param utilisateurId (Optionnel) Filtre par ID utilisateur
  * @returns Liste ordonnée par date décroissante
  */
-export async function fetchActivityLogs(token: string, utilisateurId?: number): Promise<ActivityLog[]> {
-  const url = new URL(`${API_URL}/historique`);
-  if (utilisateurId) {
-    url.searchParams.append('utilisateurId', String(utilisateurId));
+export async function fetchActivityLogs(token?: string, utilisateurId?: number): Promise<ActivityLog[]> {
+  const jwt = token || (typeof window !== 'undefined' ? localStorage.getItem('crm-token') : null);
+
+  if (!jwt) {
+    throw new Error("Token d'authentification manquant ('crm-token'). Veuillez vous reconnecter.");
   }
 
-  const res = await fetch(url.toString(), {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    cache: 'no-store',
-  });
+  try {
+    const response = await axios.get<ActivityLog[]>(`${API_URL}/historique`, {
+      params: {
+        ...(utilisateurId ? { utilisateurId } : {}),
+        _t: Date.now(), // Cache-busting : force la lecture directe PostgreSQL
+      },
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        Pragma: 'no-cache',
+        Expires: '0',
+      },
+    });
 
-  if (!res.ok) {
-    // Tentative de fallback sur /activity-logs si /historique renvoie 404
-    if (res.status === 404) {
-      const fallbackUrl = new URL(`${API_URL}/activity-logs`);
-      if (utilisateurId) fallbackUrl.searchParams.append('utilisateurId', String(utilisateurId));
-      const fallbackRes = await fetch(fallbackUrl.toString(), {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+    return response.data;
+  } catch (error: any) {
+    // Si /api/historique renvoie 404, tentative de secours sur /api/activity-logs
+    if (error.response?.status === 404) {
+      const fallbackRes = await axios.get<ActivityLog[]>(`${API_URL}/activity-logs`, {
+        params: {
+          ...(utilisateurId ? { utilisateurId } : {}),
+          _t: Date.now(),
         },
-        cache: 'no-store',
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          Pragma: 'no-cache',
+        },
       });
-      if (fallbackRes.ok) {
-        return fallbackRes.json();
-      }
+      return fallbackRes.data;
     }
-    const errData = await res.json().catch(() => ({}));
-    throw new Error(errData?.message || `Erreur ${res.status}: Impossible de récupérer le journal d'activité`);
-  }
 
-  return res.json();
+    const message = error.response?.data?.message || error.message || "Erreur de récupération de l'historique";
+    throw new Error(message);
+  }
 }

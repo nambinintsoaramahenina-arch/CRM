@@ -53,17 +53,20 @@ public class PasswordRequestAdminService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final NotificationRepository notificationRepository;
+    private final JournalActiviteService journalActiviteService;
 
     public PasswordRequestAdminService(UserRepository userRepository,
                                        PasswordResetRequestRepository requestRepository,
                                        PasswordEncoder passwordEncoder,
                                        EmailService emailService,
-                                       @org.springframework.beans.factory.annotation.Autowired(required = false) NotificationRepository notificationRepository) {
+                                       @org.springframework.beans.factory.annotation.Autowired(required = false) NotificationRepository notificationRepository,
+                                       @org.springframework.beans.factory.annotation.Autowired(required = false) JournalActiviteService journalActiviteService) {
         this.userRepository         = userRepository;
         this.requestRepository      = requestRepository;
         this.passwordEncoder        = passwordEncoder;
         this.emailService           = emailService;
         this.notificationRepository = notificationRepository;
+        this.journalActiviteService = journalActiviteService;
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -239,6 +242,22 @@ public class PasswordRequestAdminService {
 
         log.info("[PWD APPROVE] Demande {} approuvée — mot de passe envoyé à : {}", demandeId, user.getEmail());
 
+        if (journalActiviteService != null) {
+            try {
+                String adminName = journalActiviteService.getNomAuteurAction();
+                String targetName = user.getNomComplet() != null ? user.getNomComplet() : user.getLogin();
+                journalActiviteService.logAction(
+                    "APPROVE",
+                    "DemandeMdp",
+                    demandeId,
+                    String.format("%s a validé la demande de réinitialisation de mot de passe de '%s' (Login: %s, Email: %s)",
+                        adminName, targetName, user.getLogin(), user.getEmail())
+                );
+            } catch (Exception e) {
+                log.warn("[PWD APPROVE LOG] Échec enregistrement journal : {}", e.getMessage());
+            }
+        }
+
         Map<String, Object> resp = new LinkedHashMap<>();
         resp.put("status", 200);
         resp.put("message",
@@ -316,6 +335,22 @@ public class PasswordRequestAdminService {
 
         log.info("[PWD RESET DIRECT] Nouveau mot de passe envoyé à : {} (userId={})", user.getEmail(), userId);
 
+        if (journalActiviteService != null) {
+            try {
+                String adminName = journalActiviteService.getNomAuteurAction();
+                String targetName = user.getNomComplet() != null ? user.getNomComplet() : user.getLogin();
+                journalActiviteService.logAction(
+                    "UPDATE",
+                    "DemandeMdp",
+                    userId,
+                    String.format("%s a réinitialisé manuellement le mot de passe de l'utilisateur '%s' (Login: %s)",
+                        adminName, targetName, user.getLogin())
+                );
+            } catch (Exception e) {
+                log.warn("[PWD RESET DIRECT LOG] Échec enregistrement journal : {}", e.getMessage());
+            }
+        }
+
         Map<String, Object> resp = new LinkedHashMap<>();
         resp.put("status", 200);
         resp.put("message", "Nouveau mot de passe généré et envoyé par e-mail à " + user.getEmail() + ".");
@@ -352,6 +387,23 @@ public class PasswordRequestAdminService {
         requestRepository.save(demande);
 
         log.info("[PWD REJECT] Demande {} rejetée pour : {}", demandeId, demande.getUser().getEmail());
+
+        if (journalActiviteService != null) {
+            try {
+                String adminName = journalActiviteService.getNomAuteurAction();
+                User targetUser = demande.getUser();
+                String targetName = targetUser != null && targetUser.getNomComplet() != null ? targetUser.getNomComplet() : (targetUser != null ? targetUser.getLogin() : "Utilisateur");
+                journalActiviteService.logAction(
+                    "REJECT",
+                    "DemandeMdp",
+                    demandeId,
+                    String.format("%s a rejeté une demande de mot de passe de '%s' (Raison: %s)",
+                        adminName, targetName, demande.getCommentaireAdmin())
+                );
+            } catch (Exception e) {
+                log.warn("[PWD REJECT LOG] Échec enregistrement journal : {}", e.getMessage());
+            }
+        }
 
         Map<String, Object> resp = new LinkedHashMap<>();
         resp.put("status", 200);

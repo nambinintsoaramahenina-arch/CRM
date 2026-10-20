@@ -24,6 +24,9 @@ public class AuthenticationService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired(required = false)
+    private JournalActiviteService journalActiviteService;
+
     public AuthResponse login(LoginRequest request) {
         String identifiant = request.getIdentifiant() != null ? request.getIdentifiant().trim() : "";
         String inputMdp = request.getMdp() != null ? request.getMdp().trim() : "";
@@ -65,7 +68,22 @@ public class AuthenticationService {
         user.setDateConnexion(LocalDateTime.now());
         userRepository.save(user);
 
-        // 5. Génération du Token JWT
+        // 5. Journalisation de la connexion dans PostgreSQL
+        if (journalActiviteService != null) {
+            try {
+                String userName = user.getNomComplet() != null ? user.getNomComplet() : user.getLogin();
+                journalActiviteService.logAction(
+                    user,
+                    "CONNEXION",
+                    "Authentification",
+                    user.getId(),
+                    String.format("Connexion réussie de l'utilisateur '%s' (Rôle: %s)", userName, user.getRole())
+                );
+            } catch (Exception ignored) {
+            }
+        }
+
+        // 6. Génération du Token JWT
         String token = jwtService.generateToken(user);
         return new AuthResponse(token, user.getRole() != null ? user.getRole().name() : "USER", user.getNomComplet());
     }

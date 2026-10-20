@@ -35,20 +35,23 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final PasswordResetRequestRepository requestRepository;
+    private final JournalActiviteService journalActiviteService;
 
     @Autowired
     public UserService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
                        @Autowired(required = false) EmailService emailService,
-                       @Autowired(required = false) PasswordResetRequestRepository requestRepository) {
+                       @Autowired(required = false) PasswordResetRequestRepository requestRepository,
+                       @Autowired(required = false) JournalActiviteService journalActiviteService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
         this.requestRepository = requestRepository;
+        this.journalActiviteService = journalActiviteService;
     }
 
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this(userRepository, passwordEncoder, null, null);
+        this(userRepository, passwordEncoder, null, null, null);
     }
 
     /**
@@ -126,7 +129,25 @@ public class UserService {
         user.setTelephone(dto.getTelephone() != null ? dto.getTelephone().trim() : null);
         user.setDateConnexion(LocalDateTime.now());
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        if (journalActiviteService != null) {
+            try {
+                String adminName = journalActiviteService.getNomAuteurAction();
+                String targetName = savedUser.getNomComplet() != null ? savedUser.getNomComplet() : savedUser.getLogin();
+                journalActiviteService.logAction(
+                    "CREATE",
+                    "Utilisateur",
+                    savedUser.getId(),
+                    String.format("%s a créé l'utilisateur '%s' (Login: %s, Rôle: %s, Email: %s)",
+                        adminName, targetName, savedUser.getLogin(), savedUser.getRole(), savedUser.getEmail())
+                );
+            } catch (Exception e) {
+                log.warn("[USER CREATE LOG] Échec enregistrement journal : {}", e.getMessage());
+            }
+        }
+
+        return savedUser;
     }
 
     // READ ALL
@@ -201,14 +222,48 @@ public class UserService {
             user.setMdp(passwordEncoder.encode(dto.getMdp().trim()));
         }
 
-        return userRepository.save(user);
+        User updatedUser = userRepository.save(user);
+
+        if (journalActiviteService != null) {
+            try {
+                String adminName = journalActiviteService.getNomAuteurAction();
+                String targetName = updatedUser.getNomComplet() != null ? updatedUser.getNomComplet() : updatedUser.getLogin();
+                journalActiviteService.logAction(
+                    "UPDATE",
+                    "Utilisateur",
+                    updatedUser.getId(),
+                    String.format("%s a modifié les informations de l'utilisateur '%s' (Login: %s, Rôle: %s, Statut: %s)",
+                        adminName, targetName, updatedUser.getLogin(), updatedUser.getRole(), updatedUser.getStatut())
+                );
+            } catch (Exception e) {
+                log.warn("[USER UPDATE LOG] Échec enregistrement journal : {}", e.getMessage());
+            }
+        }
+
+        return updatedUser;
     }
 
     // DELETE
     public void meSupprimerUtilisateur(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new IllegalArgumentException("Utilisateur introuvable avec l'ID : " + id);
-        }
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable avec l'ID : " + id));
+        String targetName = user.getNomComplet() != null ? user.getNomComplet() : user.getLogin();
+        String targetLogin = user.getLogin();
+
         userRepository.deleteById(id);
+
+        if (journalActiviteService != null) {
+            try {
+                String adminName = journalActiviteService.getNomAuteurAction();
+                journalActiviteService.logAction(
+                    "DELETE",
+                    "Utilisateur",
+                    id,
+                    String.format("%s a supprimé l'utilisateur '%s' (Login: %s)", adminName, targetName, targetLogin)
+                );
+            } catch (Exception e) {
+                log.warn("[USER DELETE LOG] Échec enregistrement journal : {}", e.getMessage());
+            }
+        }
     }
 }

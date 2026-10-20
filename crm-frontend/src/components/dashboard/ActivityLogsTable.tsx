@@ -43,25 +43,31 @@ const EyeIcon = ({ size = 15, className = '' }: { size?: number; className?: str
 
 const getActionBadge = (action: string) => {
   const norm = (action || '').toUpperCase();
-  if (norm.includes('CONNEXION') || norm.includes('LOGIN')) {
-    return 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/20';
+  if (norm.includes('REJECT') || norm.includes('REJET')) {
+    return 'bg-red-500/15 text-red-600 dark:text-red-400 border-red-500/30';
   }
-  if (norm.includes('DECONNEXION') || norm.includes('LOGOUT')) {
-    return 'bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20';
+  if (norm.includes('DELETE') || norm.includes('SUPPR') || norm.includes('REMOVE')) {
+    return 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/30';
   }
   if (norm.includes('CREAT') || norm.includes('AJOUT') || norm.includes('INSERT')) {
-    return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20';
+    return 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30';
   }
-  if (norm.includes('MODIF') || norm.includes('UPDATE') || norm.includes('EDIT')) {
-    return 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20';
+  if (norm.includes('UPDATE') || norm.includes('MODIF') || norm.includes('EDIT')) {
+    return 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30';
   }
-  if (norm.includes('SUPPR') || norm.includes('DELETE') || norm.includes('REMOVE')) {
-    return 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20';
+  if (norm.includes('APPROVE') || norm.includes('VALID')) {
+    return 'bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30';
+  }
+  if (norm.includes('CONNEXION') || norm.includes('LOGIN')) {
+    return 'bg-sky-500/15 text-sky-600 dark:text-sky-400 border-sky-500/30';
+  }
+  if (norm.includes('DECONNEXION') || norm.includes('LOGOUT')) {
+    return 'bg-slate-500/15 text-slate-600 dark:text-slate-400 border-slate-500/30';
   }
   if (norm.includes('REINIT') || norm.includes('RESET') || norm.includes('MDP')) {
-    return 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20';
+    return 'bg-purple-500/15 text-purple-600 dark:text-purple-400 border-purple-500/30';
   }
-  return 'bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border-cyan-500/20';
+  return 'bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border-cyan-500/30';
 };
 
 const getEntityIcon = (entity?: string) => {
@@ -109,30 +115,43 @@ export const ActivityLogsTable: React.FC = () => {
   // Modale Détails
   const [selectedLog, setSelectedLog] = useState<ActivityLog | null>(null);
 
-  const loadLogs = useCallback(async () => {
-    setLoading(true);
+  // Rafraîchissement fluide et automatique
+  const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+
+  const loadLogs = useCallback(async (isSilent = false) => {
+    if (!isSilent) setLoading(true);
     setError(null);
     const token = localStorage.getItem('crm-token');
     if (!token) {
-      setError("Token d'authentification manquant. Veuillez vous reconnecter.");
-      setLoading(false);
+      setError("Token d'authentification manquant ('crm-token'). Veuillez vous reconnecter.");
+      if (!isSilent) setLoading(false);
       return;
     }
 
     try {
       const data = await fetchActivityLogs(token);
       setLogs(data);
+      setLastUpdated(new Date());
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Erreur de chargement de l'historique";
-      setError(msg);
+      if (!isSilent) setError(msg);
     } finally {
-      setLoading(false);
+      if (!isSilent) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    loadLogs();
+    loadLogs(false);
   }, [loadLogs]);
+
+  useEffect(() => {
+    if (!autoRefresh) return;
+    const interval = setInterval(() => {
+      loadLogs(true);
+    }, 10000); // 10 secondes
+    return () => clearInterval(interval);
+  }, [autoRefresh, loadLogs]);
 
   // Liste distincte des entités pour le filtre
   const distinctEntities = useMemo(() => {
@@ -217,19 +236,38 @@ export const ActivityLogsTable: React.FC = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5">
+          {lastUpdated && (
+            <span className="text-[11px] text-[var(--text-muted)] font-mono hidden md:inline">
+              Synchro : {lastUpdated.toLocaleTimeString('fr-FR')}
+            </span>
+          )}
+
           <div className="px-3.5 py-1.5 rounded-xl bg-[var(--bg-surface-2)] border border-[var(--bg-border)] text-xs font-bold text-[var(--text-secondary)]">
             <span className="text-cyan-600 dark:text-cyan-400 font-black">{filteredLogs.length}</span>{' '}
             {filteredLogs.length > 1 ? 'événements' : 'événement'}
           </div>
 
           <button
-            onClick={loadLogs}
-            disabled={loading}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--bg-surface-2)] hover:bg-[var(--bg-surface-2)]/80 border border-[var(--bg-border)] text-xs font-bold text-[var(--text-primary)] transition-all disabled:opacity-50"
-            title="Rafraîchir les données"
+            onClick={() => setAutoRefresh(!autoRefresh)}
+            className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border text-xs font-bold transition-all ${
+              autoRefresh
+                ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400'
+                : 'bg-[var(--bg-surface-2)] border-[var(--bg-border)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
+            }`}
+            title={autoRefresh ? 'Désactiver le rafraîchissement auto' : 'Activer le rafraîchissement auto (10s)'}
           >
-            <RefreshCwIcon size={14} className={loading ? 'animate-spin text-cyan-500' : ''} />
+            <span className={`w-2 h-2 rounded-full ${autoRefresh ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
+            <span>Auto {autoRefresh ? '10s' : 'Off'}</span>
+          </button>
+
+          <button
+            onClick={() => loadLogs(false)}
+            disabled={loading}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold shadow-sm shadow-cyan-600/20 transition-all disabled:opacity-50"
+            title="Forcer l'actualisation immédiate depuis PostgreSQL"
+          >
+            <RefreshCwIcon size={14} className={loading ? 'animate-spin' : ''} />
             <span>Actualiser</span>
           </button>
         </div>
@@ -303,7 +341,7 @@ export const ActivityLogsTable: React.FC = () => {
       {error && (
         <div className="p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 text-xs font-semibold flex items-center justify-between">
           <span>{error}</span>
-          <button onClick={loadLogs} className="underline hover:no-underline font-bold">
+          <button onClick={() => loadLogs(false)} className="underline hover:no-underline font-bold">
             Réessayer
           </button>
         </div>
@@ -360,11 +398,6 @@ export const ActivityLogsTable: React.FC = () => {
 
                   return (
                     <tr key={log.id} className="hover:bg-[var(--bg-surface-2)]/60 transition-colors">
-                      {/* ID */}
-                      <td className="py-3.5 px-4 font-mono text-[11px] text-[var(--text-muted)]">
-                        #{log.id}
-                      </td>
-
                       {/* Date */}
                       <td className="py-3.5 px-4 whitespace-nowrap">
                         <span className="font-semibold text-xs text-[var(--text-primary)]">
@@ -385,7 +418,7 @@ export const ActivityLogsTable: React.FC = () => {
                               </span>
                               {log.utilisateur.login && (
                                 <span className="text-[10px] text-[var(--text-muted)] font-mono">
-                                  @{log.utilisateur.login}
+      
                                 </span>
                               )}
                             </div>
@@ -409,7 +442,6 @@ export const ActivityLogsTable: React.FC = () => {
                           <span>{log.entiteConcernee || 'Général'}</span>
                           {log.identifiantEntite != null && (
                             <span className="font-mono text-[10px] text-cyan-600 dark:text-cyan-400">
-                              #{log.identifiantEntite}
                             </span>
                           )}
                         </div>
@@ -428,9 +460,13 @@ export const ActivityLogsTable: React.FC = () => {
                       </td>
 
                       {/* Détails */}
-                      <td className="py-3.5 px-4 max-w-[240px]">
-                        <p className="truncate text-xs text-[var(--text-secondary)]" title={log.details || ''}>
-                          {log.details || '—'}
+                      <td className="py-3.5 px-4 max-w-[320px]">
+                        <p
+                          className="truncate text-xs text-[var(--text-primary)] font-medium cursor-pointer hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                          title={log.details ? `${log.details} (Cliquer pour voir)` : ''}
+                          onClick={() => setSelectedLog(log)}
+                        >
+                          {log.details || <span className="text-[var(--text-muted)] italic">—</span>}
                         </p>
                       </td>
 
@@ -507,7 +543,7 @@ export const ActivityLogsTable: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-sm font-black text-[var(--text-primary)]">
-                    Détail du Journal #{selectedLog.id}
+                    Détail du Journal d&apos;Activité
                   </h3>
                   <span className="text-[10px] text-[var(--text-muted)]">
                     {formatDate(selectedLog.date)}
@@ -521,7 +557,6 @@ export const ActivityLogsTable: React.FC = () => {
                 <CloseIcon size={16} />
               </button>
             </div>
-
             <div className="space-y-3 text-xs">
               <div className="grid grid-cols-2 gap-3 p-3 rounded-xl bg-[var(--bg-surface-2)]">
                 <div>
@@ -550,7 +585,7 @@ export const ActivityLogsTable: React.FC = () => {
                   </span>
                   <p className="mt-1 font-semibold text-[var(--text-primary)]">
                     {selectedLog.entiteConcernee || '—'}{' '}
-                    {selectedLog.identifiantEntite ? `(#${selectedLog.identifiantEntite})` : ''}
+                    {selectedLog.identifiantEntite ? `` : ''}
                   </p>
                 </div>
 

@@ -37,6 +37,7 @@ public class TacheService {
     private final ContactRepository contactRepository;
     private final InteractionRepository interactionRepository;
     private final TacheMapper tacheMapper;
+    private final JournalActiviteService journalActiviteService;
 
     /**
      * Constructeur explicite pour garantir l'injection Spring sans dépendance exclusive à Lombok.
@@ -45,12 +46,14 @@ public class TacheService {
                         UserRepository userRepository,
                         ContactRepository contactRepository,
                         InteractionRepository interactionRepository,
-                        TacheMapper tacheMapper) {
+                        TacheMapper tacheMapper,
+                        @org.springframework.beans.factory.annotation.Autowired(required = false) JournalActiviteService journalActiviteService) {
         this.tacheRepository = tacheRepository;
         this.userRepository = userRepository;
         this.contactRepository = contactRepository;
         this.interactionRepository = interactionRepository;
         this.tacheMapper = tacheMapper;
+        this.journalActiviteService = journalActiviteService;
     }
 
     // =========================================================================
@@ -88,6 +91,23 @@ public class TacheService {
 
         Tache sauvegardee = tacheRepository.save(tache);
         log.info("Tâche créée avec succès, ID={}", sauvegardee.getId());
+
+        if (journalActiviteService != null) {
+            try {
+                String auteur = journalActiviteService.getNomAuteurAction();
+                String assigne = utilisateur.getNomComplet() != null ? utilisateur.getNomComplet() : utilisateur.getLogin();
+                journalActiviteService.logAction(
+                    "CREATE",
+                    "Tache",
+                    sauvegardee.getId(),
+                    String.format("%s a créé la tâche '%s' (Assignée à: %s, Statut: %s)",
+                        auteur, sauvegardee.getTitre(), assigne, sauvegardee.getStatut())
+                );
+            } catch (Exception e) {
+                log.warn("[TACHE CREATE LOG] Échec enregistrement journal : {}", e.getMessage());
+            }
+        }
+
         return tacheMapper.toResponseDTO(sauvegardee);
     }
 
@@ -202,6 +222,23 @@ public class TacheService {
 
         Tache misAJour = tacheRepository.save(tache);
         log.info("Tâche ID={} modifiée avec succès", id);
+
+        if (journalActiviteService != null) {
+            try {
+                String auteur = journalActiviteService.getNomAuteurAction();
+                String assigne = utilisateur.getNomComplet() != null ? utilisateur.getNomComplet() : utilisateur.getLogin();
+                journalActiviteService.logAction(
+                    "UPDATE",
+                    "Tache",
+                    misAJour.getId(),
+                    String.format("%s a modifié la tâche '%s' (Assignée à: %s, Statut: %s)",
+                        auteur, misAJour.getTitre(), assigne, misAJour.getStatut())
+                );
+            } catch (Exception e) {
+                log.warn("[TACHE UPDATE LOG] Échec enregistrement journal : {}", e.getMessage());
+            }
+        }
+
         return tacheMapper.toResponseDTO(misAJour);
     }
 
@@ -224,6 +261,22 @@ public class TacheService {
                         "Tâche introuvable avec l'ID : " + id));
         tache.setStatut(statut);
         Tache misAJour = tacheRepository.save(tache);
+
+        if (journalActiviteService != null) {
+            try {
+                String auteur = journalActiviteService.getNomAuteurAction();
+                journalActiviteService.logAction(
+                    "UPDATE",
+                    "Tache",
+                    misAJour.getId(),
+                    String.format("%s a changé le statut de la tâche '%s' en '%s'",
+                        auteur, misAJour.getTitre(), statut)
+                );
+            } catch (Exception e) {
+                log.warn("[TACHE STATUT LOG] Échec enregistrement journal : {}", e.getMessage());
+            }
+        }
+
         return tacheMapper.toResponseDTO(misAJour);
     }
 
@@ -239,11 +292,26 @@ public class TacheService {
      */
     public void supprimerTache(Long id) {
         log.info("Suppression de la tâche ID={}", id);
-        if (!tacheRepository.existsById(id)) {
-            throw new IllegalArgumentException("Tâche introuvable avec l'ID : " + id);
-        }
+        Tache tache = tacheRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Tâche introuvable avec l'ID : " + id));
+        String titre = tache.getTitre();
+
         tacheRepository.deleteById(id);
         log.info("Tâche ID={} supprimée avec succès", id);
+
+        if (journalActiviteService != null) {
+            try {
+                String auteur = journalActiviteService.getNomAuteurAction();
+                journalActiviteService.logAction(
+                    "DELETE",
+                    "Tache",
+                    id,
+                    String.format("%s a supprimé la tâche '%s' (ID: #%d)", auteur, titre, id)
+                );
+            } catch (Exception e) {
+                log.warn("[TACHE DELETE LOG] Échec enregistrement journal : {}", e.getMessage());
+            }
+        }
     }
 
     // =========================================================================
