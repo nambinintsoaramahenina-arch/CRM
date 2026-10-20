@@ -26,8 +26,6 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
   const [userName, setUserName] = useState<string>('');
   const [token, setToken] = useState<string>('');
   const [isClient, setIsClient] = useState(false);
-
-  // Notifications
   const [notifications, setNotifications] = useState<AdminNotification[]>([]);
   const [unreadCount, setUnreadCount] = useState<number>(0);
   const [showNotifMenu, setShowNotifMenu] = useState<boolean>(false);
@@ -65,7 +63,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
     }
   };
 
-  // Fermer le menu notification si clic en dehors
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (notifRef.current && !notifRef.current.contains(event.target as Node)) {
@@ -141,7 +139,6 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
 
   return (
     <header className="h-16 lg:h-20 bg-[var(--bg-surface)] border-b border-[var(--bg-border)] px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30 transition-colors duration-200">
-      {/* Gauche : Hamburger (Mobile) + Titre de page */}
       <div className="flex items-center gap-3 sm:gap-4">
         <button
           onClick={onToggleMobileMenu}
@@ -161,19 +158,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
         </div>
       </div>
 
-      {/* Droite : recherche, notif, thème, user dynamique / déconnexion */}
       <div className="flex items-center gap-3 sm:gap-4">
-        {/* Barre de recherche (desktop) */}
-        <div className="relative hidden md:block">
-          <SearchIcon size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
-          <input
-            type="text"
-            placeholder="Rechercher…"
-            className="w-52 pl-10 pr-4 py-2 text-xs rounded-xl bg-[var(--bg-surface-2)] border border-[var(--bg-border)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
-          />
-        </div>
-
-        {/* Notifications Popover (réservé exclusivement à l'administrateur) */}
         {role === 'ADMIN' && (
           <div className="relative" ref={notifRef}>
             <button
@@ -183,7 +168,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
                 }
                 setShowNotifMenu(!showNotifMenu);
               }}
-              className="relative p-2.5 text-[var(--text-secondary)] rounded-xl hover:bg-[var(--bg-surface-2)] hover:text-[var(--text-primary)] transition-colors"
+              className="relative p-3.5 text-[var(--text-secondary)] rounded-xl hover:bg-[var(--bg-surface-10)] hover:text-[var(--text-primary)] transition-colors"
               aria-label="Notifications"
             >
               <BellIcon size={20} />
@@ -281,14 +266,9 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
             )}
           </div>
         )}
-
         {/* ThemeToggle */}
         <ThemeToggle variant="light" />
-
-        {/* Séparateur */}
         <div className="h-7 w-[1px] bg-[var(--bg-border)] hidden sm:block" />
-
-        {/* Utilisateur connecté ou Bouton Connexion */}
         {role ? (
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-2.5">

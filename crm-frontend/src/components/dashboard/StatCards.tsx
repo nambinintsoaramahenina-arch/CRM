@@ -10,7 +10,6 @@ interface StatCardsProps {
   role?: UserRole;
 }
 
-// Skeleton d'une stat card
 const SkeletonCard = () => (
   <div className="relative bg-[var(--bg-surface)] rounded-2xl p-6 border border-[var(--bg-border)] shadow-[var(--card-shadow)] animate-pulse">
     <div className="flex items-start justify-between mb-4">
@@ -30,7 +29,7 @@ const SkeletonCard = () => (
   </div>
 );
 
-// Carte d'une stat KPI
+
 interface CardData {
   title: string;
   total: string | number;
@@ -88,11 +87,9 @@ export const StatCards: React.FC<StatCardsProps> = ({ role = "USER" }) => {
   const isManager = role === "ADMIN" || role === "MANAGER";
   const { stats, loading } = useDashboardStats(isManager);
 
-  // Construction dynamique des stats a partir des donnees API
   const buildStats = (): CardData[] => {
     const cards: CardData[] = [];
 
-    // Utilisateurs (ADMIN/MANAGER uniquement)
     if (isManager) {
       const total = stats?.users.total ?? 0;
       const actifs = stats?.users.actifs ?? 0;
