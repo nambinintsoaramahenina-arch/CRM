@@ -139,7 +139,6 @@ export const TasksOverview: React.FC = () => {
         })}
       </div>
 
-      {/* Liste des dernières tâches réelles */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
@@ -161,7 +160,7 @@ export const TasksOverview: React.FC = () => {
             {recentTasks.map((task) => (
               <div key={task.id} className="flex items-center justify-between p-3 text-xs hover:bg-[var(--bg-surface-2)] transition-colors">
                 <div className="flex items-center gap-3 overflow-hidden">
-                  <span className="font-mono text-[11px] font-semibold text-[var(--text-muted)] shrink-0">#{task.id}</span>
+                  <span className="font-mono text-[11px] font-semibold text-[var(--text-muted)] shrink-0"></span>
                   <span className="font-medium text-[var(--text-primary)] truncate">{task.titre}</span>
                 </div>
                 <div className="flex items-center gap-2 shrink-0 ml-2">

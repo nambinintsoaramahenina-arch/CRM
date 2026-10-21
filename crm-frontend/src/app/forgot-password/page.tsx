@@ -8,13 +8,7 @@ import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { ArrowRightIcon } from '@/components/ui/Icons';
 import { submitForgotPassword } from '@/services/passwordRequestService';
 
-/**
- * Page "Mot de passe oublié" — SPAT CRM
- * Workflow simplifié :
- * Saisie du MATRICULE -> Envoi de la demande -> Message invitant à se connecter avec le nouveau mot de passe reçu par e-mail.
- */
 
-// ─── Icônes ───────────────────────────────────────────────────────────────────
 
 const ClockIcon: React.FC<{ className?: string }> = ({ className = '' }) => (
   <svg

@@ -16,7 +16,7 @@ interface HeaderProps {
   onToggleMobileMenu: () => void;
 }
 
-type UserRole = 'ADMIN' | 'MANAGER' | 'USER';
+type UserRole = 'ADMIN' | 'MANAGER' | 'AGENT';
 
 export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
   const pathname = usePathname();
@@ -83,7 +83,6 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
       );
       setUnreadCount((c) => Math.max(0, c - 1));
     } catch {
-      // ignore
     }
   };
 
