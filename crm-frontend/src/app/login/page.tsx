@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { loginUser } from '@/services/userServices';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -8,12 +8,18 @@ import Link from 'next/link';
 import { SpatLogo } from '@/components/ui/SpatLogo';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { LogInIcon, ArrowRightIcon } from '@/components/ui/Icons';
+import {
+  getStoredToken,
+  isTokenValid,
+  getLastActiveRoute,
+  clearAuthSession,
+} from '@/services/authService';
 
 /**
  * Page de Connexion — SPAT CRM
- * - Image générée par IA en arrière-plan / illustration
- * - Formulaire épuré, centré, sans démos ni badges superflus
- * - Champ MATRICULE à la place d'Email
+ * - Contrôle de session au chargement (useEffect, popstate, pageshow)
+ * - Si token valide présent, bloque le formulaire et redirige immédiatement vers /dashboard ou page active
+ * - Navigation avec router.replace pour empêcher /login d'être restauré via le bouton "Retour"
  * - Connexion via POST /api/auth/login vers Spring Boot (PostgreSQL)
  */
 export default function LoginPage() {
@@ -23,6 +29,50 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  // ── Contrôle au chargement / retour navigateur ──────────────────────────────
+  useEffect(() => {
+    const checkAuthAndRedirect = () => {
+      const token = getStoredToken();
+      if (token && isTokenValid(token)) {
+        // Utilisateur déjà connecté : redirection immédiate sans afficher le formulaire
+        const targetRoute = getLastActiveRoute();
+        router.replace(targetRoute);
+        return true;
+      } else if (token && !isTokenValid(token)) {
+        // Jeton expiré ou corrompu : nettoyage de la session
+        clearAuthSession();
+      }
+      return false;
+    };
+
+    // 1. Contrôle direct au montage
+    if (checkAuthAndRedirect()) {
+      return;
+    }
+
+    // Aucun token actif : on peut afficher le formulaire de connexion
+    setIsCheckingAuth(false);
+
+    // 2. Gestion de l'événement popstate (appui sur le bouton "Retour" du navigateur)
+    const handlePopState = () => {
+      checkAuthAndRedirect();
+    };
+
+    // 3. Gestion de pageshow (restauration depuis le cache bfcache du navigateur)
+    const handlePageShow = () => {
+      checkAuthAndRedirect();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('pageshow', handlePageShow);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('pageshow', handlePageShow);
+    };
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,8 +99,10 @@ export default function LoginPage() {
         localStorage.setItem('crm-role', role);
         localStorage.setItem('crm-user', matricule);
         if (data.nomComplet) localStorage.setItem('crm-name', data.nomComplet);
-        // Redirection dynamique selon le rôle
-        router.push('/dashboard');
+
+        // Redirection avec router.replace pour remplacer /login dans l'historique
+        // Ainsi le bouton "Retour" du navigateur ne reviendra pas sur /login
+        router.replace('/dashboard');
         return;
       } else {
         setError('Identifiants incorrects ou échec de l\'authentification.');
@@ -63,6 +115,21 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
+
+  // Tant que la présence d'une session est en cours de vérification,
+  // ne pas afficher le formulaire pour empêcher tout clignotement
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[var(--bg-page)] text-[var(--text-primary)]">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-3 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin" />
+          <p className="text-xs text-[var(--text-secondary)] font-medium">
+            Vérification de la session…
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex bg-[var(--bg-page)] text-[var(--text-primary)] transition-colors duration-300">

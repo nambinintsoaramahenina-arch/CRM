@@ -61,14 +61,24 @@ export default function ForgotPasswordPage() {
     e.preventDefault();
     setError('');
 
-    if (!matricule.trim()) {
+    const trimmed = matricule.trim();
+
+    if (!trimmed) {
       setError('Veuillez saisir votre matricule.');
+      return;
+    }
+
+    // Sécurité : seuls les matricules 100 % numériques sont autorisés.
+    // Cela bloque automatiquement les comptes administrateurs (login textuel)
+    // ainsi que tout identifiant contenant des lettres, tirets ou symboles.
+    if (!/^\d+$/.test(trimmed)) {
+      setError('Le matricule doit être composé uniquement de chiffres. Les comptes administrateurs ne peuvent pas réinitialiser leur mot de passe via ce formulaire.');
       return;
     }
 
     setLoading(true);
     try {
-      const data = await submitForgotPassword(matricule.trim());
+      const data = await submitForgotPassword(trimmed);
       setAlreadyPending(data.alreadyPending ?? false);
       setSubmitted(true);
     } catch (err: unknown) {
@@ -208,7 +218,7 @@ export default function ForgotPasswordPage() {
                       type="text"
                       value={matricule}
                       onChange={(e) => setMatricule(e.target.value)}
-                      placeholder="Entrez votre matricule (ex: AGT-0042, admin, etc.)"
+                      placeholder="Entrez votre matricule"
                       className="w-full px-4 py-3 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-[var(--text-primary)] text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500/30 focus:border-cyan-500 transition-all font-medium"
                       required
                       autoComplete="username"
@@ -228,7 +238,7 @@ export default function ForgotPasswordPage() {
                   <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-amber-500/5 border border-amber-500/20 text-[var(--text-secondary)] text-xs">
                     <span className="text-amber-500 shrink-0 font-bold mt-0.5">ℹ</span>
                     <span>
-                      Un e-mail contenant votre nouveau mot de passe vous sera envoyé après validation par l&apos;<strong>administrateur SPAT</strong>.
+                      Un e-mail contenant votre nouveau mot de passe vous sera envoyé après validation par l&apos;<strong>administrateur SPAT</strong>. Seuls les matricules numériques sont éligibles.
                     </span>
                   </div>
 

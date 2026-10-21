@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/Icons";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import Link from "next/link";
+import { clearAuthSession } from "@/services/authService";
 
 // ─── Types
 type UserRole = "ADMIN" | "MANAGER" | "USER";
@@ -54,11 +55,8 @@ export default function DashboardPage() {
   }, [router]);
 
   const handleLogout = () => {
-    localStorage.removeItem("crm-token");
-    localStorage.removeItem("crm-role");
-    localStorage.removeItem("crm-name");
-    localStorage.removeItem("crm-user");
-    router.push("/login");
+    clearAuthSession();
+    window.location.href = "/login";
   };
 
   if (!ready || !session) {

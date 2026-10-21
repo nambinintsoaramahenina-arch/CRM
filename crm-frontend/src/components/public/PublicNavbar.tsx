@@ -14,12 +14,15 @@ import {
   TasksIcon,
   AnchorIcon,
 } from '@/components/ui/Icons';
+import { isAuthenticated } from '@/services/authService';
 
 export const PublicNavbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
+    setLoggedIn(isAuthenticated());
     const handleScroll = () => setScrolled(window.scrollY > 15);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -65,15 +68,17 @@ export const PublicNavbar: React.FC = () => {
             {/* Theme Toggle */}
             <ThemeToggle variant="dark" />
 
-            {/* CTA Se connecter */}
+            {/* CTA Se connecter / Accéder au CRM */}
             <Link
-              href="/login"
+              href={loggedIn ? '/dashboard' : '/login'}
               id="nav-login-btn"
               className="relative group inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 active:scale-[0.98] shadow-lg shadow-blue-900/30 border border-blue-400/30 transition-all overflow-hidden"
             >
               <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 pointer-events-none" />
               <LogInIcon size={16} className="text-cyan-100 group-hover:translate-x-0.5 transition-transform" />
-              <span className="relative z-10 whitespace-nowrap">Se connecter</span>
+              <span className="relative z-10 whitespace-nowrap">
+                {loggedIn ? 'Accéder au CRM' : 'Se connecter'}
+              </span>
             </Link>
 
             {/* Mobile hamburger */}
@@ -105,12 +110,12 @@ export const PublicNavbar: React.FC = () => {
               ))}
               <div className="pt-3 border-t border-slate-800/80">
                 <Link
-                  href="/login"
+                  href={loggedIn ? '/dashboard' : '/login'}
                   onClick={() => setMobileMenuOpen(false)}
                   className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl font-bold text-sm text-white bg-blue-600 hover:bg-blue-500 text-center shadow-md shadow-blue-900/40"
                 >
                   <LogInIcon size={16} />
-                  <span>Se connecter</span>
+                  <span>{loggedIn ? 'Accéder au CRM' : 'Se connecter'}</span>
                 </Link>
               </div>
             </div>
