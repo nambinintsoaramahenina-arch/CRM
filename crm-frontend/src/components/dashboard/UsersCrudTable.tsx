@@ -249,8 +249,8 @@ export const UsersCrudTable: React.FC = () => {
           </h3>
           <p className="text-xs text-[var(--text-secondary)] mt-0.5">
             {isAdmin
-              ? "Tableau relie a la base de donnees PostgreSQL pour gerer les comptes de l'application."
-              : 'Consultation de la liste des utilisateurs enregistres dans la base de donnees.'}
+              ? ""
+              : ''}
           </p>
         </div>
 
@@ -325,7 +325,7 @@ export const UsersCrudTable: React.FC = () => {
                 <td colSpan={7} className="py-12 text-center">
                   <div className="flex flex-col items-center gap-3 text-[var(--text-muted)]">
                     <div className="w-7 h-7 border-2 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin" />
-                    <span className="text-xs">Chargement des utilisateurs depuis la base de donnees...</span>
+                    <span className="text-xs">Chargement des utilisateurs ...</span>
                   </div>
                 </td>
               </tr>
