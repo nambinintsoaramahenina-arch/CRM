@@ -39,7 +39,6 @@ const EyeIcon = ({ size = 15, className = '' }: { size?: number; className?: str
   </svg>
 );
 
-// ─── Helpers Visuels ──────────────────────────────────────────────────────────
 
 const getActionBadge = (action: string) => {
   const norm = (action || '').toUpperCase();
@@ -229,9 +228,6 @@ export const ActivityLogsTable: React.FC = () => {
               <h2 className="text-base sm:text-lg font-black text-[var(--text-primary)]">
                 Journal d&apos;Activité & Historique
               </h2>
-              <p className="text-xs text-[var(--text-secondary)]">
-                Audit complet et traçabilité des opérations en base PostgreSQL.
-              </p>
             </div>
           </div>
         </div>
@@ -354,13 +350,13 @@ export const ActivityLogsTable: React.FC = () => {
             <thead className="bg-[var(--bg-surface-2)] text-[11px] font-bold uppercase tracking-wider text-[var(--text-secondary)] border-b border-[var(--bg-border)]">
               <tr>
 
-                <th className="py-3 px-4">Date & Heure</th>
-                <th className="py-3 px-4">Utilisateur</th>
-                <th className="py-3 px-4">Action</th>
-                <th className="py-3 px-4">Entité Concernée</th>
-                <th className="py-3 px-4">Adresse IP</th>
-                <th className="py-3 px-4">Détails</th>
-                <th className="py-3 px-4 text-right">Voir</th>
+                <th className="py-3 px-2">Date & Heure</th>
+                <th className="py-3 px-2">Utilisateur</th>
+                <th className="py-3 px-2">Action</th>
+                <th className="py-3 px-2">Entité Concernée</th>
+                <th className="py-3 px-2">Adresse IP</th>
+                <th className="py-3 px-2">Détails</th>
+                <th className="py-3 px-2 text-right">Voir</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[var(--bg-border)] font-normal text-[var(--text-primary)]">
@@ -399,7 +395,7 @@ export const ActivityLogsTable: React.FC = () => {
                   return (
                     <tr key={log.id} className="hover:bg-[var(--bg-surface-2)]/60 transition-colors">
                       {/* Date */}
-                      <td className="py-3.5 px-4 whitespace-nowrap">
+                      <td className="py-1 px-2 whitespace-nowrap">
                         <span className="font-semibold text-xs text-[var(--text-primary)]">
                           {formatDate(log.date)}
                         </span>
@@ -408,10 +404,7 @@ export const ActivityLogsTable: React.FC = () => {
                       {/* Utilisateur */}
                       <td className="py-3.5 px-4 whitespace-nowrap">
                         {log.utilisateur ? (
-                          <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 rounded-lg bg-gradient-to-tr from-cyan-600 to-blue-600 text-white flex items-center justify-center font-bold text-[10px] shrink-0">
-                              {userInitial}
-                            </div>
+                  
                             <div className="flex flex-col">
                               <span className="text-xs font-bold text-[var(--text-primary)]">
                                 {log.utilisateur.nomComplet || log.utilisateur.login}
@@ -422,7 +415,7 @@ export const ActivityLogsTable: React.FC = () => {
                                 </span>
                               )}
                             </div>
-                          </div>
+                         
                         ) : (
                           <span className="text-[11px] text-[var(--text-muted)] italic">Système</span>
                         )}
@@ -448,7 +441,7 @@ export const ActivityLogsTable: React.FC = () => {
                       </td>
 
                       {/* Adresse IP */}
-                      <td className="py-3.5 px-4 whitespace-nowrap">
+                      <td className="py-3.5 px-2 whitespace-nowrap">
                         {log.adresseIp ? (
                           <span className="inline-flex items-center gap-1 font-mono text-[11px] text-[var(--text-secondary)]">
                             <GlobeIcon size={12} className="text-slate-400" />
@@ -471,7 +464,7 @@ export const ActivityLogsTable: React.FC = () => {
                       </td>
 
                       {/* Action bouton voir */}
-                      <td className="py-3.5 px-4 text-right">
+                      <td className="py-3.5 px-2 text-right">
                         <button
                           onClick={() => setSelectedLog(log)}
                           className="p-1.5 rounded-lg text-cyan-600 hover:text-cyan-500 hover:bg-cyan-50 dark:hover:bg-cyan-950/40 transition-colors"
@@ -569,7 +562,6 @@ export const ActivityLogsTable: React.FC = () => {
                     </span>
                   </div>
                 </div>
-
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
                     Adresse IP
@@ -578,7 +570,6 @@ export const ActivityLogsTable: React.FC = () => {
                     {selectedLog.adresseIp || 'Non renseignée'}
                   </p>
                 </div>
-
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
                     Entité ciblée
@@ -588,7 +579,6 @@ export const ActivityLogsTable: React.FC = () => {
                     {selectedLog.identifiantEntite ? `` : ''}
                   </p>
                 </div>
-
                 <div>
                   <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
                     Utilisateur
@@ -598,7 +588,6 @@ export const ActivityLogsTable: React.FC = () => {
                   </p>
                 </div>
               </div>
-
               <div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--text-muted)] block mb-1">
                   Contenu détaillé / Payload
@@ -610,7 +599,6 @@ export const ActivityLogsTable: React.FC = () => {
                 </div>
               </div>
             </div>
-
             <div className="flex justify-end pt-2 border-t border-[var(--bg-border)]">
               <button
                 onClick={() => setSelectedLog(null)}

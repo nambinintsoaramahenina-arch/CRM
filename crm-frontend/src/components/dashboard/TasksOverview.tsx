@@ -153,7 +153,7 @@ export const TasksOverview: React.FC = () => {
           <div className="py-6 text-center text-xs text-[var(--text-muted)]">Chargement des tâches…</div>
         ) : recentTasks.length === 0 ? (
           <div className="py-6 text-center text-xs text-[var(--text-muted)] border border-[var(--bg-border)] rounded-xl">
-            Aucune tâche enregistrée en base. <Link href="/tasks" className="text-cyan-600 underline font-semibold">Créer une tâche</Link>
+            Aucune tâche enregistrée . <Link href="/tasks" className="text-cyan-600 underline font-semibold">Créer une tâche</Link>
           </div>
         ) : (
           <div className="divide-y divide-[var(--bg-border)] border border-[var(--bg-border)] rounded-xl overflow-hidden">

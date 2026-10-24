@@ -152,7 +152,6 @@ export const UsersCrudTable: React.FC = () => {
     return matchesSearch && matchesRole;
   });
 
-  // Valide le login selon le rôle : ADMIN = texte libre, autres = chiffres uniquement
   const validateLogin = (value: string, role: string): string => {
     if (role === 'ADMIN') return '';
     if (!value.trim()) return '';
@@ -271,7 +270,6 @@ export const UsersCrudTable: React.FC = () => {
         )}
       </div>
 
-      {/* Barre recherche + filtres */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
         <div className="relative w-full sm:w-72">
           <SearchIcon size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
@@ -280,7 +278,7 @@ export const UsersCrudTable: React.FC = () => {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Rechercher par nom, login, telephone..."
+            placeholder=""
             className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-[var(--bg-surface-2)] border border-[var(--bg-border)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all font-medium"
           />
         </div>
@@ -580,10 +578,6 @@ export const UsersCrudTable: React.FC = () => {
             </div>
 
             <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 rounded-xl p-3">
-              <p className="text-[11px] text-amber-700 dark:text-amber-300 font-medium leading-relaxed">
-                ⚠️ Un mot de passe temporaire sera généré et envoyé par e-mail à <strong>{resetConfirmUser.email}</strong>.
-                L&apos;utilisateur devra le changer à sa prochaine connexion.
-              </p>
             </div>
 
             <div className="flex items-center justify-end gap-3 pt-2 border-t border-[var(--bg-border)]">

@@ -334,9 +334,6 @@ export default function TasksPage() {
   ) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
-  // Liaison automatique Contact <-> Interaction : dès qu'un contact est sélectionné,
-  // on récupère/filtre automatiquement sa dernière interaction liée
   const handleContactChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newContactId = e.target.value;
     if (!newContactId) {
@@ -415,7 +412,6 @@ export default function TasksPage() {
         utilisateurId:  form.utilisateurId ? Number(form.utilisateurId) : undefined,
         contactId:      form.contactId     ? Number(form.contactId)     : undefined,
         interactionId:  resolvedInteractionId,
-        // Support direct pour snake_case et clés étrangères PostgreSQL
         interaction_id: resolvedInteractionId,
         contact_id:     form.contactId     ? Number(form.contactId)     : undefined,
         utilisateur_id: form.utilisateurId ? Number(form.utilisateurId) : undefined,
@@ -920,7 +916,7 @@ export default function TasksPage() {
               </div>
             </div>
 
-            {/* Erreur sauvegarde */}
+
             {saveError && (
               <div className="flex items-center gap-2 p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-600 text-xs font-semibold">
                 <span>⚠</span> {saveError}

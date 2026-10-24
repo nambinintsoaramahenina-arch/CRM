@@ -304,11 +304,7 @@ export const ContactsCrudTable: React.FC = () => {
           <h3 className="text-xl sm:text-2xl font-black text-[var(--text-primary)] tracking-tight">
             Gestion des Contacts
           </h3>
-          <p className="text-xs text-[var(--text-secondary)] mt-0.5">
-            {isAdmin
-              ? "Annuaire centralisé des partenaires et contacts d'affaires — relié à la base de données PostgreSQL."
-              : "Consultation de l'annuaire des contacts enregistrés dans la base de données."}
-          </p>
+         
         </div>
 
         {isAdmin ? (
