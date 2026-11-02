@@ -448,7 +448,7 @@ export const UsersCrudTable: React.FC = () => {
                 <label className="text-[11px] font-bold text-[var(--text-secondary)] uppercase">
                   Login / Matricule
                   {formRole !== 'ADMIN' && (
-                    <span className="ml-1 normal-case font-normal text-[var(--text-muted)]">(chiffres uniquement)</span>
+                    <span className="ml-1 normal-case font-normal text-[var(--text-muted)]"></span>
                   )}
                 </label>
                 <input
@@ -459,7 +459,7 @@ export const UsersCrudTable: React.FC = () => {
                   value={matricule}
                   onChange={(e) => handleLoginChange(e.target.value)}
                   required
-                  placeholder={formRole === 'ADMIN' ? 'Ex\u00a0: admin' : 'Ex\u00a0: 12345'}
+                  placeholder={formRole === 'ADMIN' ? ': admin' : ''}
                   className={`w-full px-3.5 py-2.5 rounded-xl border bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 transition-all ${
                     loginError
                       ? 'border-rose-500 focus:ring-rose-500/20 focus:border-rose-500'
@@ -476,13 +476,13 @@ export const UsersCrudTable: React.FC = () => {
 
               <div className="space-y-1">
                 <label className="text-[11px] font-bold text-[var(--text-secondary)] uppercase">Nom complet</label>
-                <input id="form-nom" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex: Rova Harivelo" required
+                <input id="form-nom" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="" required
                   className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all" />
               </div>
 
               <div className="space-y-1">
                 <label className="text-[11px] font-bold text-[var(--text-secondary)] uppercase">Adresse Email</label>
-                <input id="form-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="exemple@spat.mg" required
+                <input id="form-email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="" required
                   className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all" />
               </div>
 
@@ -499,7 +499,7 @@ export const UsersCrudTable: React.FC = () => {
                     type="tel"
                     value={telephone}
                     onChange={(e) => setTelephone(e.target.value)}
-                    placeholder="Ex: +261 34 00 000 00"
+                    placeholder=""
                     className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
                   />
                 </div>

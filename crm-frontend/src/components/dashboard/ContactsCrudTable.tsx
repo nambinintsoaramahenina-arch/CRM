@@ -579,7 +579,7 @@ export const ContactsCrudTable: React.FC = () => {
                     type="text"
                     value={form.prenom ?? ''}
                     onChange={handleFormChange}
-                    placeholder="Ex: Rova"
+                    placeholder=""
                     required
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
                   />
@@ -592,7 +592,7 @@ export const ContactsCrudTable: React.FC = () => {
                     type="text"
                     value={form.nom ?? ''}
                     onChange={handleFormChange}
-                    placeholder="Ex: Harivelo"
+                    placeholder=""
                     required
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
                   />
@@ -610,7 +610,7 @@ export const ContactsCrudTable: React.FC = () => {
                     type="email"
                     value={form.email ?? ''}
                     onChange={handleFormChange}
-                    placeholder="contact@exemple.mg"
+                    placeholder=""
                     className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
                   />
                 </div>
@@ -627,7 +627,7 @@ export const ContactsCrudTable: React.FC = () => {
                     type="tel"
                     value={form.telephone ?? ''}
                     onChange={handleFormChange}
-                    placeholder="+261 34 00 000 00"
+                    placeholder=""
                     className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
                   />
                 </div>
@@ -643,7 +643,7 @@ export const ContactsCrudTable: React.FC = () => {
                     type="text"
                     value={form.entreprise ?? ''}
                     onChange={handleFormChange}
-                    placeholder="Ex: MSC Madagascar"
+                    placeholder=""
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
                   />
                 </div>
@@ -655,7 +655,7 @@ export const ContactsCrudTable: React.FC = () => {
                     type="text"
                     value={form.fonction ?? ''}
                     onChange={handleFormChange}
-                    placeholder="Ex: Directeur Commercial"
+                    placeholder=""
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
                   />
                 </div>
@@ -672,7 +672,7 @@ export const ContactsCrudTable: React.FC = () => {
                   className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all"
                 >
                   <option value="ACTIF">Actif</option>
-                  <option value="INACTIF">Inactif</option>
+            
                 </select>
               </div>
 
@@ -687,7 +687,7 @@ export const ContactsCrudTable: React.FC = () => {
                   rows={3}
                   value={form.commentaire ?? ''}
                   onChange={handleFormChange}
-                  placeholder="Informations complémentaires sur ce contact…"
+                  placeholder=""
                   className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all resize-none"
                 />
               </div>
