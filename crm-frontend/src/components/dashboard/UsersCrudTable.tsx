@@ -278,7 +278,7 @@ export const UsersCrudTable: React.FC = () => {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder=""
+            placeholder="Rechercher par nom,prenom,..."
             className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-[var(--bg-surface-2)] border border-[var(--bg-border)] text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all font-medium"
           />
         </div>
@@ -527,7 +527,6 @@ export const UsersCrudTable: React.FC = () => {
                   <select id="form-statut" value={status} onChange={(e) => setStatus(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-[var(--bg-border)] bg-[var(--bg-surface-2)] text-xs text-[var(--text-primary)] font-medium focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-500 transition-all">
                     <option value="ACTIF">Actif</option>
-                    <option value="INACTIF">Inactif</option>
                   </select>
                 </div>
               </div>
