@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -120,7 +120,7 @@ export const RecentActivities: React.FC = () => {
       {/* En-tete */}
       <div className="flex items-center justify-between pb-4 border-b border-[var(--bg-border)]">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-blue-50 text-blue-700">
+          <div className="p-2 rounded-xl bg-blue-500/15 text-blue-600 dark:text-blue-400">
             <HistoryIcon size={18} />
           </div>
           <div>

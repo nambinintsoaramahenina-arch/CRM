@@ -22,11 +22,11 @@ const MoonIcon: React.FC<{ size?: number; className?: string }> = ({ size = 20, 
 );
 
 interface ThemeToggleProps {
-  /** Variante visuelle selon le contexte (dark navbar, light card…) */
-  variant?: 'dark' | 'light';
+  /** Variante visuelle selon le contexte (auto / dark navbar / light card…) */
+  variant?: 'auto' | 'dark' | 'light';
 }
 
-export const ThemeToggle: React.FC<ThemeToggleProps> = ({ variant = 'dark' }) => {
+export const ThemeToggle: React.FC<ThemeToggleProps> = ({ variant = 'auto' }) => {
   const { theme, toggleTheme } = useTheme();
 
   const isDark = theme === 'dark';
@@ -34,10 +34,12 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ variant = 'dark' }) =>
   const baseClasses =
     'relative flex items-center justify-center w-9 h-9 rounded-xl transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-cyan-400/40';
 
-  const variantClasses =
-    variant === 'dark'
-      ? 'bg-slate-800/70 hover:bg-slate-700 border border-slate-700/60 text-slate-300 hover:text-white'
-      : 'bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-600 hover:text-slate-900';
+  let variantClasses = 'bg-[var(--bg-surface-2)] hover:bg-[var(--bg-border)] border border-[var(--bg-border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]';
+  if (variant === 'dark') {
+    variantClasses = 'bg-slate-800/70 hover:bg-slate-700 border border-slate-700/60 text-slate-300 hover:text-white';
+  } else if (variant === 'light') {
+    variantClasses = 'bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-600 hover:text-slate-900';
+  }
 
   return (
     <button

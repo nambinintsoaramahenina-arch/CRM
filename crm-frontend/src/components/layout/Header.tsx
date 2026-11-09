@@ -278,7 +278,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleMobileMenu }) => {
               )}
             </div>
           )}
-          <ThemeToggle variant="light" />
+          <ThemeToggle />
           <div className="h-7 w-[1px] bg-[var(--bg-border)] hidden sm:block" />
           {role ? (
             <div className="flex items-center gap-3">

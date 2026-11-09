@@ -61,7 +61,7 @@ export default function DashboardPage() {
 
   if (!ready || !session) {
     return (
-      <div className="flex items-center justify-center h-screen bg-slate-900">
+      <div className="flex items-center justify-center h-screen bg-[var(--bg-page)]">
         <div className="w-8 h-8 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin" />
       </div>
     );
@@ -81,36 +81,35 @@ export default function DashboardPage() {
       {/* ═══════════════════════════════════════════════
           BANNIÈRE DE BIENVENUE
       ═══════════════════════════════════════════════ */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-slate-700/50">
-        <div className="absolute inset-0 bg-[radial-gradient(#1e40af_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.08] pointer-events-none" />
-        <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-cyan-500/15 rounded-full blur-2xl pointer-events-none" />
+      <div className="relative overflow-hidden bg-[var(--bg-surface)] rounded-3xl p-6 sm:p-8 text-[var(--text-primary)] shadow-[var(--card-shadow)] border border-[var(--bg-border)] transition-colors duration-300">
+        <div className="absolute inset-0 bg-[radial-gradient(#0ea5e9_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.03] pointer-events-none" />
+        <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
-            <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-700 text-white flex items-center justify-center font-black text-lg shadow-lg shrink-0">
+            <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 text-white flex items-center justify-center font-black text-lg shadow-md shrink-0">
               {initials}
             </div>
             <div className="space-y-1">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+              <p className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-widest">
                 Tableau de bord CRM
               </p>
-              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-[var(--text-primary)]">
                 Bienvenue,{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-300">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 dark:from-cyan-400 dark:to-blue-400">
                   {roleDisplayTitle}
                 </span>
               </h2>
-
             </div>
           </div>
 
           <div className="flex flex-wrap items-center gap-3 shrink-0">
-            <ThemeToggle variant="dark" />
+            <ThemeToggle />
 
             {isManager && (
               <Link
                 href="/users"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/10 text-white text-xs font-semibold transition-all"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--bg-surface-2)] hover:bg-[var(--bg-border)] border border-[var(--bg-border)] text-[var(--text-primary)] text-xs font-semibold transition-all shadow-sm"
               >
                 <UsersIcon size={15} />
                 <span>Page Utilisateurs</span>
@@ -120,14 +119,13 @@ export default function DashboardPage() {
             {isAdmin && (
               <Link
                 href="/admin/password-requests"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/30 text-amber-200 text-xs font-semibold transition-all"
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/30 text-amber-700 dark:text-amber-300 text-xs font-semibold transition-all shadow-sm"
               >
                 <ShieldCheckIcon size={15} />
-                <span>Demandes Mot de passe </span>
+                <span>Demandes Mot de passe</span>
               </Link>
             )}
           </div>
-
         </div>
       </div>
 
